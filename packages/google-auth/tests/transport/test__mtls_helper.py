@@ -2071,9 +2071,11 @@ class TestReadCredentialBundleFile(object):
         bundle_file = tmpdir.join("x509.credential-bundle.private-key.pem")
         bundle_file.write_binary(pytest.public_cert_bytes + pytest.private_key_bytes)
 
-        cert_bytes, key_bytes = _mtls_helper._read_credential_bundle_file(
-            str(bundle_file)
-        )
+        with mock.patch("builtins.open", wraps=open) as mock_open:
+            cert_bytes, key_bytes = _mtls_helper._read_credential_bundle_file(
+                str(bundle_file)
+            )
+        mock_open.assert_called_once_with(str(bundle_file), "rb")
         assert cert_bytes == pytest.public_cert_bytes
         assert key_bytes == pytest.private_key_bytes
         assert b"PRIVATE KEY" not in cert_bytes

@@ -226,7 +226,7 @@ async def fetch_id_token(request, audience, bind_id_token=None):
         bind_id_token (Optional[bool]): Controls whether to request a
             certificate-bound ID token from the metadata server identity
             endpoint. If ``True``, requests a bound token whenever a valid
-            workload certificate is available and token binding is not disabled
+            agentic certificate is available and token binding is not disabled
             via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back to an
             unbound token otherwise. If ``False``, always requests an unbound
             token. If ``None`` (default), token binding is determined
@@ -241,6 +241,9 @@ async def fetch_id_token(request, audience, bind_id_token=None):
         ~google.auth.exceptions.DefaultCredentialsError:
             If metadata server doesn't exist and no valid service account
             credentials are found.
+        ~google.auth.exceptions.RefreshError:
+            If an error occurred while fetching the ID token or if a required
+            certificate file is not found after retries.
     """
     # 1. Try to get credentials from the GOOGLE_APPLICATION_CREDENTIALS environment
     # variable.

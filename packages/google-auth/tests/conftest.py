@@ -34,7 +34,7 @@ def pytest_configure():
 
 
 @pytest.fixture(autouse=True)
-def clean_cert_config_env(monkeypatch):
+def clean_cert_config_env(monkeypatch, tmp_path):
     monkeypatch.delenv(
         environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
         raising=False,
@@ -54,7 +54,7 @@ def clean_cert_config_env(monkeypatch):
     monkeypatch.setattr(
         _mtls_helper,
         "_GKE_CREDENTIAL_BUNDLE_PATH",
-        "/nonexistent/gke/credential/bundle/path",
+        str(tmp_path / "gke" / "credential" / "bundle" / "path"),
     )
 
 
