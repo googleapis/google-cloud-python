@@ -39,7 +39,7 @@ _CONTENT_RANGE_TEMPLATE = "bytes {:d}-{:d}/{:d}"
 _RANGE_UNKNOWN_TEMPLATE = "bytes {:d}-{:d}/*"
 _EMPTY_RANGE_TEMPLATE = "bytes */{:d}"
 _BOUNDARY_WIDTH = len(str(sys.maxsize - 1))
-_BOUNDARY_FORMAT = "==============={{:0{:d}d}}==".format(_BOUNDARY_WIDTH)
+_BOUNDARY_FORMAT = f"==============={{:0{_BOUNDARY_WIDTH:d}d}}=="
 _MULTIPART_SEP = b"--"
 _CRLF = b"\r\n"
 _MULTIPART_BEGIN = b"\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n"
@@ -73,7 +73,7 @@ _UPLOAD_ID_NODE = "UploadId"
 _MPU_FINAL_QUERY_TEMPLATE = "?uploadId={upload_id}"
 
 
-class UploadBase(object):
+class UploadBase:
     """Base class for upload helpers.
 
     Defines core shared behavior across different upload types.
@@ -281,7 +281,7 @@ class MultipartUpload(UploadBase):
     """
 
     def __init__(self, upload_url, headers=None, checksum="auto", retry=DEFAULT_RETRY):
-        super(MultipartUpload, self).__init__(upload_url, headers=headers, retry=retry)
+        super().__init__(upload_url, headers=headers, retry=retry)
         self._checksum_type = checksum
         if self._checksum_type == "auto":
             self._checksum_type = (
@@ -413,11 +413,9 @@ class ResumableUpload(UploadBase):
         headers=None,
         retry=DEFAULT_RETRY,
     ):
-        super(ResumableUpload, self).__init__(upload_url, headers=headers, retry=retry)
+        super().__init__(upload_url, headers=headers, retry=retry)
         if chunk_size % UPLOAD_CHUNK_SIZE != 0:
-            raise ValueError(
-                "{} KB must divide chunk size".format(UPLOAD_CHUNK_SIZE / 1024)
-            )
+            raise ValueError(f"{UPLOAD_CHUNK_SIZE / 1024} KB must divide chunk size")
         self._chunk_size = chunk_size
         self._stream = None
         self._content_type = None
@@ -543,7 +541,7 @@ class ResumableUpload(UploadBase):
             self._total_bytes = get_total_bytes(stream)
         # Add the total bytes to the headers if set.
         if self._total_bytes is not None:
-            content_length = "{:d}".format(self._total_bytes)
+            content_length = f"{self._total_bytes:d}"
             headers["x-upload-content-length"] = content_length
 
         payload = json.dumps(metadata).encode("utf-8")
@@ -1407,13 +1405,9 @@ class XMLMPUPart(UploadBase):
                     response,
                     (
                         "Checksum mismatch: checksum calculated by client and"
-                        " server did not match. Error code: {error_code},"
-                        " Error message: {error_message},"
-                        " Error details: {error_details}"
-                    ).format(
-                        error_code=error_code,
-                        error_message=error_message,
-                        error_details=error_details,
+                        f" server did not match. Error code: {error_code},"
+                        f" Error message: {error_message},"
+                        f" Error details: {error_details}"
                     ),
                 )
 

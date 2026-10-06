@@ -73,7 +73,7 @@ def _generate_report(json_path, csv_path):
     """
     logging.info(f"Generating CSV report from {json_path}")
 
-    with open(json_path, "r") as f:
+    with open(json_path) as f:
         data = json.load(f)
 
     benchmarks = data.get("benchmarks", [])

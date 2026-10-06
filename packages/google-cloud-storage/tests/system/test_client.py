@@ -56,8 +56,8 @@ def test_get_service_account_email(storage_client, service_account):
     domain = "gs-project-accounts.iam.gserviceaccount.com"
     email = storage_client.get_service_account_email()
 
-    new_style = re.compile(r"service-(?P<projnum>[^@]+)@{}".format(domain))
-    old_style = re.compile(r"{}@{}".format(storage_client.project, domain))
+    new_style = re.compile(rf"service-(?P<projnum>[^@]+)@{domain}")
+    old_style = re.compile(rf"{storage_client.project}@{domain}")
     patterns = [new_style, old_style]
     matches = [pattern.match(email) for pattern in patterns]
 

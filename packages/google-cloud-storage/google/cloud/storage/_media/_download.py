@@ -30,7 +30,7 @@ _GET = "GET"
 _ZERO_CONTENT_RANGE_HEADER = "bytes */0"
 
 
-class DownloadBase(object):
+class DownloadBase:
     """Base class for download helpers.
 
     Defines core shared behavior across different download types.
@@ -172,7 +172,7 @@ class Download(DownloadBase):
         retry=DEFAULT_RETRY,
         single_shot_download=False,
     ):
-        super(Download, self).__init__(
+        super().__init__(
             media_url, stream=stream, start=start, end=end, headers=headers, retry=retry
         )
         self.checksum = checksum
@@ -304,7 +304,7 @@ class ChunkedDownload(DownloadBase):
             raise ValueError(
                 "On a chunked download the starting value cannot be negative."
             )
-        super(ChunkedDownload, self).__init__(
+        super().__init__(
             media_url,
             stream=stream,
             start=start,
@@ -544,16 +544,16 @@ def add_bytes_range(start, end, headers):
             return
         else:
             # NOTE: This assumes ``end`` is non-negative.
-            bytes_range = "0-{:d}".format(end)
+            bytes_range = f"0-{end:d}"
     else:
         if end is None:
             if start < 0:
-                bytes_range = "{:d}".format(start)
+                bytes_range = f"{start:d}"
             else:
-                bytes_range = "{:d}-".format(start)
+                bytes_range = f"{start:d}-"
         else:
             # NOTE: This is invalid if ``start < 0``.
-            bytes_range = "{:d}-{:d}".format(start, end)
+            bytes_range = f"{start:d}-{end:d}"
 
     headers[_helpers.RANGE_HEADER] = "bytes=" + bytes_range
 

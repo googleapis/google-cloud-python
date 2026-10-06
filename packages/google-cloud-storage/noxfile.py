@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +17,6 @@ import pathlib
 import re
 import shutil
 import warnings
-from typing import Dict, List
 
 import nox
 
@@ -70,29 +68,29 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-cov",
     "pytest-asyncio",
 ]
-UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_DEPENDENCIES: List[str] = [
+UNIT_TEST_EXTERNAL_DEPENDENCIES: list[str] = []
+UNIT_TEST_LOCAL_DEPENDENCIES: list[str] = []
+UNIT_TEST_DEPENDENCIES: list[str] = [
     "brotli",
     "grpcio",
     "grpc-google-iam-v1",
     "opentelemetry-api",
     "opentelemetry-sdk",
 ]
-UNIT_TEST_EXTRAS: List[str] = []
-UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
+UNIT_TEST_EXTRAS: list[str] = []
+UNIT_TEST_EXTRAS_BY_PYTHON: dict[str, list[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
+SYSTEM_TEST_PYTHON_VERSIONS: list[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
     "google-cloud-testutils",
 ]
-SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_EXTRAS: List[str] = []
-SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_LOCAL_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_EXTRAS: list[str] = []
+SYSTEM_TEST_EXTRAS_BY_PYTHON: dict[str, list[str]] = {}
 
 nox.options.sessions = [
     "unit",
@@ -378,7 +376,7 @@ def system(session, test_type):
         "py.test",
         "--quiet",
         f"--junitxml=system_{session.python}_sponge_log.xml",
-        "--reruns={}".format(rerun_count),
+        f"--reruns={rerun_count}",
         os.path.join("tests", "system"),
         os.path.join("tests", "resumable_media", "system"),
         *session.posargs,

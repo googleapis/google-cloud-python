@@ -15,9 +15,7 @@
 import asyncio
 import sys
 from unittest import mock
-
 from unittest.mock import AsyncMock
-
 
 import pytest
 
@@ -27,6 +25,7 @@ except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import bidi_async, exceptions
+
 
 @pytest.mark.asyncio
 class Test_AsyncRequestQueueGenerator:

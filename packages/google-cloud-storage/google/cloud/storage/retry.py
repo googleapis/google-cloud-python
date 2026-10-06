@@ -86,7 +86,7 @@ DEFAULT_RETRY with a deadline of 30 seconds, pass
 """
 
 
-class ConditionalRetryPolicy(object):
+class ConditionalRetryPolicy:
     """A class for use when an API call is only conditionally safe to retry.
 
     This class is intended for use in inspecting the API call parameters of an

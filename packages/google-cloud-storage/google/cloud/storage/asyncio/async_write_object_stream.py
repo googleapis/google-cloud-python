@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Optional, Tuple
 
 import grpc
 from google.api_core.bidi_async import AsyncBidiRpc
@@ -68,11 +67,11 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         client: AsyncGrpcClient.grpc_client,
         bucket_name: str,
         object_name: str,
-        generation_number: Optional[int] = None,  # None means new object
-        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
-        routing_token: Optional[str] = None,
-        blob: Optional[Blob] = None,
-        storage_class: Optional[str] = None,
+        generation_number: int | None = None,  # None means new object
+        write_handle: _storage_v2.BidiWriteHandle | None = None,
+        routing_token: str | None = None,
+        blob: Blob | None = None,
+        storage_class: str | None = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -87,10 +86,10 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             generation_number=generation_number,
         )
         self.client: AsyncGrpcClient.grpc_client = client
-        self.write_handle: Optional[_storage_v2.BidiWriteHandle] = write_handle
-        self.routing_token: Optional[str] = routing_token
-        self.blob: Optional[Blob] = blob
-        self.storage_class: Optional[str] = storage_class
+        self.write_handle: _storage_v2.BidiWriteHandle | None = write_handle
+        self.routing_token: str | None = routing_token
+        self.blob: Blob | None = blob
+        self.storage_class: str | None = storage_class
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
         self.rpc = self.client._client._transport._wrapped_methods[
@@ -98,13 +97,13 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         ]
 
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)
-        self.socket_like_rpc: Optional[AsyncBidiRpc] = None
+        self.socket_like_rpc: AsyncBidiRpc | None = None
         self._is_stream_open: bool = False
         self.first_bidi_write_req = None
         self.persisted_size = 0
-        self.object_resource: Optional[_storage_v2.Object] = None
+        self.object_resource: _storage_v2.Object | None = None
 
-    async def open(self, metadata: Optional[List[Tuple[str, str]]] = None) -> None:
+    async def open(self, metadata: list[tuple[str, str]] | None = None) -> None:
         """
         Opens the bidi-gRPC connection to write to the object.
 

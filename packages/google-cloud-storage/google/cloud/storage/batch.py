@@ -79,7 +79,7 @@ class MIMEApplicationHTTP(MIMEApplication):
         super().__init__(payload, "http", encode_noop)
 
 
-class _FutureDict(object):
+class _FutureDict:
     """Class to hold a future value for a deferred request.
 
     Used by for requests that get sent in a :class:`Batch`.
@@ -130,7 +130,7 @@ class _FutureResponse(requests.Response):
     """Reponse that returns a placeholder dictionary for a batched requests."""
 
     def __init__(self, future_dict):
-        super(_FutureResponse, self).__init__()
+        super().__init__()
         self._future_dict = future_dict
         self.status_code = 204
 
@@ -167,9 +167,7 @@ class Batch(Connection):
     def __init__(self, client, raise_exception=True):
         api_endpoint = client._connection.API_BASE_URL
         client_info = client._connection._client_info
-        super(Batch, self).__init__(
-            client, client_info=client_info, api_endpoint=api_endpoint
-        )
+        super().__init__(client, client_info=client_info, api_endpoint=api_endpoint)
         self._requests = []
         self._target_objects = []
         self._responses = []
@@ -211,7 +209,7 @@ class Batch(Connection):
         """
         if len(self._requests) >= self._MAX_BATCH_SIZE:
             raise ValueError(
-                "Too many deferred requests (max %d)" % self._MAX_BATCH_SIZE
+                f"Too many deferred requests (max {self._MAX_BATCH_SIZE:d})"
             )
         self._requests.append((method, url, headers, data, timeout))
         result = _FutureDict()

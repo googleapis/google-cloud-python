@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Awaitable, Callable, Dict, Optional, Set
+from collections.abc import Awaitable, Callable
 
 import grpc
 
@@ -63,28 +63,28 @@ class _StreamMultiplexer:
     ):
         self._stream = stream
         self._stream_generation: int = 0
-        self._queues: Dict[int, asyncio.Queue] = {}
+        self._queues: dict[int, asyncio.Queue] = {}
         self._reopen_lock = asyncio.Lock()
-        self._recv_task: Optional[asyncio.Task] = None
+        self._recv_task: asyncio.Task | None = None
         self._queue_max_size = queue_max_size
 
     @property
     def stream_generation(self) -> int:
         return self._stream_generation
 
-    def register(self, read_ids: Set[int]) -> asyncio.Queue:
+    def register(self, read_ids: set[int]) -> asyncio.Queue:
         """Register read_ids for a task and return its response queue."""
         queue = asyncio.Queue(maxsize=self._queue_max_size)
         for read_id in read_ids:
             self._queues[read_id] = queue
         return queue
 
-    def unregister(self, read_ids: Set[int]) -> None:
+    def unregister(self, read_ids: set[int]) -> None:
         """Remove read_ids from routing."""
         for read_id in read_ids:
             self._queues.pop(read_id, None)
 
-    def _get_unique_queues(self) -> Set[asyncio.Queue]:
+    def _get_unique_queues(self) -> set[asyncio.Queue]:
         return set(self._queues.values())
 
     async def _put_with_timeout(self, queue: asyncio.Queue, item) -> None:
@@ -159,7 +159,7 @@ class _StreamMultiplexer:
                     return
 
                 if response.object_data_ranges:
-                    queues_to_notify: Set[asyncio.Queue] = set()
+                    queues_to_notify: set[asyncio.Queue] = set()
                     for data_range in response.object_data_ranges:
                         read_id = data_range.read_range.read_id
                         queue = self._queues.get(read_id)

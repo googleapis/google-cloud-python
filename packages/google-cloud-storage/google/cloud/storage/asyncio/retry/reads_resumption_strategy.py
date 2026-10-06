@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import logging
-from typing import IO, Any, Dict, List
+from typing import IO, Any
 
 import google_crc32c
 
@@ -60,7 +60,7 @@ class _DownloadState:
 class _ReadResumptionStrategy(_BaseResumptionStrategy):
     """The concrete resumption strategy for bidi reads."""
 
-    def generate_requests(self, state: Dict[str, Any]) -> List[storage_v2.ReadRange]:
+    def generate_requests(self, state: dict[str, Any]) -> list[storage_v2.ReadRange]:
         """Generates new ReadRange requests for all incomplete downloads.
 
         :type state: dict
@@ -68,7 +68,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                   _DownloadState object.
         """
         pending_requests = []
-        download_states: Dict[int, _DownloadState] = state["download_states"]
+        download_states: dict[int, _DownloadState] = state["download_states"]
 
         for read_id, read_state in download_states.items():
             if not read_state.is_complete:
@@ -89,7 +89,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         return pending_requests
 
     def update_state_from_response(
-        self, response: storage_v2.BidiReadObjectResponse, state: Dict[str, Any]
+        self, response: storage_v2.BidiReadObjectResponse, state: dict[str, Any]
     ) -> None:
         """Processes a server response, performs integrity checks, and updates state."""
         proto = getattr(response, "_pb", response)

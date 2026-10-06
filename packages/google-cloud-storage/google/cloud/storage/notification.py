@@ -45,7 +45,7 @@ _BAD_TOPIC = (
 )
 
 
-class BucketNotification(object):
+class BucketNotification:
     """Represent a single notification resource for a bucket.
 
     See: https://cloud.google.com/storage/docs/json_api/v1/notifications

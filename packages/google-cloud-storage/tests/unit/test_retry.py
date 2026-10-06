@@ -13,8 +13,7 @@
 # limitations under the License.
 
 import unittest
-
-import mock
+from unittest import mock
 
 from google.cloud.storage import _helpers
 from google.cloud.storage.exceptions import InvalidResponse
