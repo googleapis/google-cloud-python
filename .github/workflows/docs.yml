@@ -171,6 +171,7 @@ jobs:
         echo "Built local wheel: ${WHEEL_PATH}"
         echo "gcp-sphinx-docfx-yaml @ file://${WHEEL_PATH}" > /tmp/uv_overrides.txt
         echo "UV_OVERRIDE=/tmp/uv_overrides.txt" >> $GITHUB_ENV
+        echo "UV_FIND_LINKS=/tmp/local_wheels" >> $GITHUB_ENV
         echo "PIP_FIND_LINKS=/tmp/local_wheels" >> $GITHUB_ENV
     - name: Run docfx for ${{ matrix.package_shard.description }}
       env:

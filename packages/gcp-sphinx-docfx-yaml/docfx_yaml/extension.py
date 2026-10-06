@@ -1032,6 +1032,58 @@ def _extract_type_name(annotation: Any) -> str:
     return type_name
 
 
+class _AllClassesVisitor(ast.NodeVisitor):
+    """AST visitor that records starting line numbers for all classes in a file."""
+
+    def __init__(self) -> None:
+        self.stack: list[str] = []
+        self.class_lines: dict[str, int] = {}
+
+    def visit_FunctionDef(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
+        self.stack.append(node.name)
+        self.stack.append("<locals>")
+        self.generic_visit(node)
+        self.stack.pop()
+        self.stack.pop()
+
+    visit_AsyncFunctionDef = visit_FunctionDef  # type: ignore[assignment]
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> None:
+        self.stack.append(node.name)
+        qualname = ".".join(self.stack)
+        if qualname not in self.class_lines:
+            line_number = (
+                node.decorator_list[0].lineno if node.decorator_list else node.lineno
+            )
+            self.class_lines[qualname] = line_number
+        self.generic_visit(node)
+        self.stack.pop()
+
+
+_CLASS_LINES_CACHE: dict[str, dict[str, int]] = {}
+
+
+def _get_start_line(obj: Any, full_path: str) -> int:
+    """Returns the starting line number of an object, caching AST parses per file."""
+    unwrapped = inspect.unwrap(obj)
+    if inspect.isclass(unwrapped) and full_path:
+        class_lines = _CLASS_LINES_CACHE.get(full_path)
+        if class_lines is None:
+            try:
+                with open(full_path, "rb") as f:
+                    tree = ast.parse(f.read())
+                visitor = _AllClassesVisitor()
+                visitor.visit(tree)
+                class_lines = visitor.class_lines
+            except Exception:
+                class_lines = {}
+            _CLASS_LINES_CACHE[full_path] = class_lines
+        qualname = getattr(unwrapped, "__qualname__", None)
+        if qualname and qualname in class_lines:
+            return class_lines[qualname]
+    return inspect.getsourcelines(obj)[1]
+
+
 def _create_datam(
     app: sphinx.application.Sphinx,
     cls: str | None,
@@ -1187,7 +1239,7 @@ def _create_datam(
 
         # Make relative
         path = path.replace(os.sep, "", 1)
-        start_line = inspect.getsourcelines(obj)[1]
+        start_line = _get_start_line(obj, full_path)
 
         path = _update_friendly_package_name(path)
 
@@ -1920,6 +1972,43 @@ def _render_summary_content(
     return summary_content
 
 
+_UID_INDEX_CACHE: dict[Any, tuple[tuple[str, ...], dict[Any, Any]]] = {}
+
+
+def _get_uid_index(known_uids: list[str]) -> tuple[tuple[str, ...], dict[Any, Any]]:
+    """Builds and caches a prefix tuple and character Trie for fast UID substring matching."""
+    if not known_uids:
+        return ((), {})
+    if len(known_uids) < 100:
+        cache_key: Any = tuple(known_uids)
+    else:
+        cache_key = (id(known_uids), len(known_uids), known_uids[0], known_uids[-1])
+    cached = _UID_INDEX_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    root_prefixes = tuple({u.split(".")[0] for u in known_uids if u})
+    trie: dict[Any, Any] = {}
+    for rank, uid in enumerate(known_uids):
+        if not uid:
+            continue
+        node = trie
+        for ch in uid:
+            nxt = node.get(ch)
+            if nxt is None:
+                nxt = {}
+                node[ch] = nxt
+            node = nxt
+        if None not in node:
+            node[None] = (rank, uid)
+
+    result = (root_prefixes, trie)
+    if len(_UID_INDEX_CACHE) > 16:
+        _UID_INDEX_CACHE.clear()
+    _UID_INDEX_CACHE[cache_key] = result
+    return result
+
+
 def find_uid_to_convert(
     current_word: str,
     words: list[str],
@@ -1944,7 +2033,31 @@ def find_uid_to_convert(
         None if current word does not contain any reference `uid`, or the `uid`
           that should be converted.
     """
-    for uid in known_uids:
+    root_prefixes, trie = _get_uid_index(known_uids)
+    if not any(p in current_word for p in root_prefixes):
+        return None
+
+    matches = []
+    n = len(current_word)
+    for i in range(n):
+        node = trie.get(current_word[i])
+        if node is None:
+            continue
+        if None in node:
+            matches.append(node[None])
+        for j in range(i + 1, n):
+            node = node.get(current_word[j])
+            if node is None:
+                break
+            if None in node:
+                matches.append(node[None])
+
+    if not matches:
+        return None
+    if len(matches) > 1:
+        matches.sort(key=lambda item: item[0])
+
+    for _, uid in matches:
         # Do not convert references to itself or containing partial
         # references. This could result in `storage.types.ReadSession` being
         # prematurely converted to
@@ -1954,24 +2067,23 @@ def find_uid_to_convert(
         if uid in current_object_name:
             continue
 
-        if uid in current_word:
-            # If the cross reference has been processed already, "<xref" or
-            # "<a" will appear as the previous word.
-            # For hard coded references, we use "<a href" style.
-            if "<xref" not in words[index - 1] and "<a" not in words[index - 1]:
-                # Check to see if the reference has been converted already.
-                if not (
-                    processed_words
-                    and (
-                        f'<xref uid="{uid}' in processed_words[-1]
-                        or (
-                            hard_coded_references
-                            and f'<a href="{hard_coded_references.get(uid)}'
-                            in processed_words[-1]
-                        )
+        # If the cross reference has been processed already, "<xref" or
+        # "<a" will appear as the previous word.
+        # For hard coded references, we use "<a href" style.
+        if "<xref" not in words[index - 1] and "<a" not in words[index - 1]:
+            # Check to see if the reference has been converted already.
+            if not (
+                processed_words
+                and (
+                    f'<xref uid="{uid}' in processed_words[-1]
+                    or (
+                        hard_coded_references
+                        and f'<a href="{hard_coded_references.get(uid)}'
+                        in processed_words[-1]
                     )
-                ):
-                    return uid
+                )
+            ):
+                return uid
 
     return None
 
@@ -2001,13 +2113,6 @@ def convert_cross_references(
     Returns:
         content that has been modified with proper cross references if found.
     """
-    example_text = "Examples:"
-    words = content.split(" ")
-
-    # Contains a list of words that is not a valid reference or converted
-    # references.
-    processed_words = []
-
     # TODO(https://github.com/googleapis/sphinx-docfx-yaml/issues/208):
     # remove this in the future.
     iam_policy_link = "http://github.com/googleapis/python-grpc-google-iam-v1/blob/8e73b45993f030f521c0169b380d0fbafe66630b/google/iam/v1/iam_policy_pb2_grpc.py"
@@ -2021,7 +2126,21 @@ def convert_cross_references(
         "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse": iam_policy_link
         + "#L120-L131",
     }
-    known_uids.extend(hard_coded_references.keys())
+    tail = known_uids[-10:]
+    for ref_key in hard_coded_references:
+        if ref_key not in tail:
+            known_uids.append(ref_key)
+
+    root_prefixes, _ = _get_uid_index(known_uids)
+    if not any(p in content for p in root_prefixes):
+        return content
+
+    example_text = "Examples:"
+    words = content.split(" ")
+
+    # Contains a list of words that is not a valid reference or converted
+    # references.
+    processed_words = []
 
     # Used to keep track of current position to avoid converting if needed.
     example_index = len(content)
@@ -2284,6 +2403,8 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
     # Used to disambiguate entry names
     yaml_map = {}
 
+    known_uids = sorted(app.env.docfx_uid_names.keys(), reverse=True)
+
     # Order matters here, we need modules before lower level classes,
     # so that we can make sure to inject the TOC properly
     for data_set in (
@@ -2440,7 +2561,6 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
                 #   google.cloud.aiplatform.AutoMLForecastingTrainingJob
 
                 current_object_name = obj["fullName"]
-                known_uids = sorted(app.env.docfx_uid_names.keys(), reverse=True)
                 # Currently we only need to look in summary, syntax and
                 # attributes for cross references.
                 search_cross_references(obj, current_object_name, known_uids)
