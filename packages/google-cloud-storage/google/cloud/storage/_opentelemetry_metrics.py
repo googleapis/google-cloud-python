@@ -53,12 +53,29 @@ except ImportError:
     )
 
 
+_TRUTHY_ENV_VALUES = {"1", "true", "yes", "on"}
+_FALSY_ENV_VALUES = {"0", "false", "no", "off"}
+
+
 def _parse_bool_env(name: str, default: bool = False) -> bool:
     """Parses a boolean from an environment variable."""
     val = os.environ.get(name)
     if val is None:
         return default
-    return str(val).strip().lower() in {"1", "true", "yes", "on"}
+    normalized = val.strip().lower()
+    if not normalized:
+        return default
+    if normalized in _TRUTHY_ENV_VALUES:
+        return True
+    if normalized in _FALSY_ENV_VALUES:
+        return False
+    logger.warning(
+        "Unrecognized boolean value %r for environment variable %s; using default %s.",
+        val,
+        name,
+        default,
+    )
+    return default
 
 
 def is_metrics_enabled(client_setting: Optional[bool] = None) -> bool:
@@ -72,7 +89,7 @@ def is_metrics_enabled(client_setting: Optional[bool] = None) -> bool:
         bool: True if metrics recording is enabled, False otherwise.
     """
     if client_setting is not None and not isinstance(client_setting, bool):
-        raise TypeError("enable_metrics must be a boolean or None.")
+        raise TypeError("client_setting must be a boolean or None.")
 
     if not HAS_OPENTELEMETRY_METRICS:
         return False
@@ -88,23 +105,23 @@ def is_metrics_enabled(client_setting: Optional[bool] = None) -> bool:
 
 def is_advanced_metrics_enabled(
     client_setting: Optional[bool] = None,
-    base_setting: Optional[bool] = None,
 ) -> bool:
     """Evaluates whether high-frequency debug metrics should be recorded.
 
     Args:
         client_setting: Optional boolean configured on the client instance.
             Takes precedence over the environment variable if specified.
-        base_setting: Optional boolean configured on the client instance for
-            base metrics.
 
     Returns:
         bool: True if advanced metrics recording is enabled, False otherwise.
     """
     if client_setting is not None and not isinstance(client_setting, bool):
-        raise TypeError("enable_advanced_metrics must be a boolean or None.")
+        raise TypeError("client_setting must be a boolean or None.")
 
-    if not is_metrics_enabled(base_setting):
+    if not HAS_OPENTELEMETRY_METRICS:
+        return False
+
+    if not _ENABLE_METRICS_DEV_GATE:
         return False
 
     if client_setting is not None:
@@ -131,9 +148,16 @@ def get_common_attributes() -> Dict[str, Any]:
     return _COMMON_ATTRIBUTES.copy()
 
 
-def get_meter(meter_provider: Optional[Any] = None) -> Optional[Any]:
+def get_meter(
+    enable_metrics: Optional[bool] = None,
+    enable_advanced_metrics: Optional[bool] = None,
+    meter_provider: Optional[Any] = None,
+) -> Optional[Any]:
     """Returns the OpenTelemetry Meter for Google Cloud Storage."""
-    if not HAS_OPENTELEMETRY_METRICS or not _ENABLE_METRICS_DEV_GATE:
+    if not (
+        is_metrics_enabled(enable_metrics)
+        or is_advanced_metrics_enabled(enable_advanced_metrics)
+    ):
         return None
     return metrics.get_meter(
         "google.cloud.storage",
