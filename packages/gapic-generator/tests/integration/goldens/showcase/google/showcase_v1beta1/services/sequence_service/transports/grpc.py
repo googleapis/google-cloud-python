@@ -205,7 +205,8 @@ class SequenceServiceGrpcTransport(SequenceServiceTransport):
                 If not set, the host value will be used as a default.
             interceptors (Optional[Sequence[Union[ClientInterceptor, Callable[[grpc.Channel], grpc.Channel]]]]):
                 Additional interceptors (or callables that apply interceptors) to apply to the
-                gRPC channel.
+                gRPC channel. Note: applying interceptors requires ``google-api-core >= 2.36.0``;
+                on earlier versions, interceptors are ignored.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client, containing options such as
                 custom OpenTelemetry tracer providers.

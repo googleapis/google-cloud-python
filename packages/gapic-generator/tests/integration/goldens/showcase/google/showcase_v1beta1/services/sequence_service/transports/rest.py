@@ -626,7 +626,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -640,7 +641,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -721,6 +722,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 transcoded_request,
                 body,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -741,7 +743,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -755,7 +758,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -844,6 +847,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 transcoded_request,
                 body,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -885,7 +889,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -899,7 +904,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -987,6 +992,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 transcoded_request,
                 body,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1036,7 +1042,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -1050,7 +1057,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -1139,6 +1146,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 transcoded_request,
                 body,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1188,7 +1196,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -1202,7 +1211,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -1286,6 +1295,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1335,7 +1345,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -1349,7 +1360,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -1434,6 +1445,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1535,7 +1547,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -1549,7 +1562,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -1631,6 +1644,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1680,7 +1694,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -1694,7 +1709,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -1776,6 +1791,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1825,7 +1841,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -1839,7 +1856,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -1923,6 +1940,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 transcoded_request,
                 body,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1972,7 +1990,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -1986,7 +2005,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -2068,6 +2087,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2117,7 +2137,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -2131,7 +2152,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -2215,6 +2236,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 transcoded_request,
                 body,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2264,7 +2286,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -2278,7 +2301,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -2360,6 +2383,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2409,7 +2433,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -2423,7 +2448,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -2505,6 +2530,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2554,7 +2580,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -2568,7 +2595,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -2647,6 +2674,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2673,7 +2701,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None):
+            client_options=None,
+            url_template=None):
             """Execute the HTTP request over the transport session with
             OpenTelemetry tracing and metadata propagation."""
 
@@ -2687,7 +2716,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 client_options=client_options,
                 method=method,
                 url=url,
-                url_template=uri,
+                url_template=url_template,
                 headers=headers,
                 body=body,
             ) as trace_ctx:
@@ -2766,6 +2795,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 timeout,
                 transcoded_request,
                 client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
