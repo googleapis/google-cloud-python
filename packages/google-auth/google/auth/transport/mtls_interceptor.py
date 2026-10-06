@@ -143,7 +143,10 @@ class MTLSRefreshingChannel(grpc.Channel):
                     old_channel.unsubscribe(callback)
                 except Exception:
                     pass
-                self._channel.subscribe(callback)
+                try:
+                    self._channel.subscribe(callback)
+                except Exception:
+                    pass
 
     def unary_unary(self, method, *args, **kwargs):
         # Always return a callable from the CURRENT channel
@@ -265,6 +268,24 @@ class _DeadlineExceededError(grpc.RpcError, grpc.Call):
 
     def details(self):
         return self._details
+
+    def initial_metadata(self):
+        return None
+
+    def trailing_metadata(self):
+        return None
+
+    def time_remaining(self):
+        return 0.0
+
+    def is_active(self):
+        return False
+
+    def cancel(self):
+        return False
+
+    def add_callback(self, callback):
+        return False
 
 
 class _BaseCallWrapper(grpc.Future, grpc.Call):
@@ -422,7 +443,7 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                 )
 
                 should_retry, call_cert, call_key = self._interceptor._should_retry(
-                    status_code, self._retry_count, getattr(self, "_attempt_cert", None)
+                    status_code, self._retry_count, self._attempt_cert
                 )
                 if can_replay and should_retry:
                     if getattr(self._interceptor, "_wrapper", None):
@@ -434,6 +455,10 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                             with self._lock:
                                 self._terminal_exception = e
                                 self._completion_event.set()
+                                callbacks_to_fire = list(self._done_callbacks)
+                                self._done_callbacks.clear()
+                            for callback in callbacks_to_fire:
+                                callback(self)
                             return
                     with self._lock:
                         self._retry_count += 1
@@ -475,8 +500,8 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
         if fire_now:
             try:
                 fn(self)
-            except Exception:
-                pass
+            except Exception as e:
+                _LOGGER.warning("Callback failed: %s", e)
 
     def result(self, timeout=None):
         if not self._completion_event.wait(timeout):
@@ -574,7 +599,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
     def _start_call(self):
         self._attempt_cert = (
             self._interceptor._wrapper._cached_cert
-            if getattr(self._interceptor, "_wrapper", None)
+            if self._interceptor._wrapper
             else None
         )
         with self._lock:
@@ -614,8 +639,8 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
         for fn in callbacks:
             try:
                 fn(self)
-            except Exception:
-                pass
+            except Exception as e:
+                _LOGGER.warning("Callback failed: %s", e)
 
     def _on_inner_call_done(self, inner_call):
         with self._lock:
@@ -623,7 +648,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                 return
             # Intercept and suppress premature callbacks for UNAUTHENTICATED.
             # __next__ inherently handles this error and manages triggering callbacks
-            # later if retriies are exhausted.
+            # later if retries are exhausted.
             if (
                 callable(getattr(inner_call, "code", None))
                 and inner_call.code() == grpc.StatusCode.UNAUTHENTICATED
@@ -669,7 +694,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                     ) = self._interceptor._should_retry(
                         status_code,
                         self._retry_count,
-                        getattr(self, "_attempt_cert", None),
+                        self._attempt_cert,
                     )
 
                     if not self._yielded_any_response and can_replay and should_retry:
@@ -696,7 +721,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                                 chk_cert,
                                 chk_key,
                             ) = self._interceptor._should_retry(
-                                status_code, 0, getattr(self, "_attempt_cert", None)
+                                status_code, 0, self._attempt_cert
                             )
                             if chk_should_retry:
                                 try:
@@ -711,7 +736,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
 
     def add_done_callback(self, fn):
         with self._lock:
-            if getattr(self, "_is_completed", False):
+            if self._is_completed:
                 fire_now = True
             else:
                 self._done_callbacks.append(fn)
@@ -720,5 +745,5 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
         if fire_now:
             try:
                 fn(self)
-            except Exception:
-                pass
+            except Exception as e:
+                _LOGGER.warning("Callback failed: %s", e)
