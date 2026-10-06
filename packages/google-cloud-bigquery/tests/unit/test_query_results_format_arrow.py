@@ -25,7 +25,11 @@ from google.cloud.bigquery.table import RowIterator, _EmptyRowIterator
 
 class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_supported_by_jobs_query_includes_query_results_format(self):
-        body = {"query": "SELECT 1", "queryResultsFormat": "ARROW"}
+        body = {
+            "query": "SELECT 1",
+            "queryResultsFormat": "ARROW",
+            "arrowSerializationOptions": {"bufferCompression": "LZ4_FRAME"},
+        }
         self.assertTrue(_job_helpers._supported_by_jobs_query(body))
 
     def test_job_helpers_query_and_wait_sets_request_body(self):
@@ -75,9 +79,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         )
 
         call_args = client._call_api.call_args
-        self.assertIn("formatOptions", call_args.kwargs["data"])
+        self.assertIn("arrowSerializationOptions", call_args.kwargs["data"])
         self.assertEqual(
-            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"][
+            call_args.kwargs["data"]["arrowSerializationOptions"][
                 "bufferCompression"
             ],
             "LZ4_FRAME",
@@ -547,7 +551,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         call_args = client._call_api.call_args
         self.assertEqual(call_args.kwargs["data"]["queryResultsFormat"], "ARROW")
         self.assertEqual(
-            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"][
+            call_args.kwargs["data"]["arrowSerializationOptions"][
                 "bufferCompression"
             ],
             "LZ4_FRAME",

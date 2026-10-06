@@ -510,8 +510,7 @@ def query_and_wait(
     else:
         query_results_format = request_body.get("queryResultsFormat")
     if compression_codec is not None:
-        request_body.setdefault("formatOptions", {})
-        request_body["formatOptions"]["arrowSerializationOptions"] = {
+        request_body["arrowSerializationOptions"] = {
             "bufferCompression": compression_codec
         }
 
@@ -692,6 +691,7 @@ def _supported_by_jobs_query(request_body: Dict[str, Any]) -> bool:
         "reservation",
         "maxSlots",
         "queryResultsFormat",
+        "arrowSerializationOptions",
     }
 
     unsupported_keys = request_keys - keys_allowlist
