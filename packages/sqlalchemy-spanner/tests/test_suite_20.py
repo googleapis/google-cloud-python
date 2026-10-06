@@ -3092,6 +3092,13 @@ class JSONTest(_JSONTest):
     def test_path_typed_comparison(self):
         pass
 
+    @pytest.mark.skip(
+        "Spanner JSON_VALUE() always returns STRING,"
+        "thus, this test case can't be executed."
+    )
+    def test_index_cross_casts(self):
+        pass
+
     @pytest.mark.skip("Custom JSON de-/serializers are not supported.")
     def test_round_trip_custom_json(self):
         pass
