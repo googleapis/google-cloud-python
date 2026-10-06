@@ -444,13 +444,14 @@ class IDTokenCredentials(
         # since the signer is already instantiated,
         # the request is not needed
         if self._use_metadata_identity_endpoint:
-            return self.__class__(
+            cred = self.__class__(
                 None,
                 target_audience=target_audience,
                 use_metadata_identity_endpoint=True,
                 quota_project_id=self._quota_project_id,
-                bind_id_token=getattr(self, "_bind_id_token", None),
             )
+            cred._bind_id_token = getattr(self, "_bind_id_token", None)
+            return cred
         else:
             return self.__class__(
                 None,
@@ -468,13 +469,14 @@ class IDTokenCredentials(
         # since the signer is already instantiated,
         # the request is not needed
         if self._use_metadata_identity_endpoint:
-            return self.__class__(
+            cred = self.__class__(
                 None,
                 target_audience=self._target_audience,
                 use_metadata_identity_endpoint=True,
                 quota_project_id=quota_project_id,
-                bind_id_token=getattr(self, "_bind_id_token", None),
             )
+            cred._bind_id_token = getattr(self, "_bind_id_token", None)
+            return cred
         else:
             return self.__class__(
                 None,

@@ -114,15 +114,12 @@ def get_agent_identity_certificate_path():
         from google.auth.transport import _mtls_helper
 
         if (
-            _mtls_helper._has_explicit_cert_config_env()
-            or _mtls_helper._get_cert_config_path() is not None
+            not _mtls_helper._has_explicit_cert_config_env()
+            and _mtls_helper._has_gke_credential_bundle(
+                _mtls_helper._get_cert_config_path()
+            )
         ):
-            return None
-        try:
-            if _is_certificate_file_ready(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH):
-                return _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
-        except PermissionError:
-            return None
+            return _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
         return None
 
     # We trigger polling only if the config path points to the well-known directory.

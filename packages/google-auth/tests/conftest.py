@@ -36,6 +36,14 @@ def pytest_configure():
 @pytest.fixture(autouse=True)
 def clean_cert_config_env(monkeypatch):
     monkeypatch.delenv(
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+        raising=False,
+    )
+    monkeypatch.delenv(
+        environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
+        raising=False,
+    )
+    monkeypatch.delenv(
         environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
         raising=False,
     )

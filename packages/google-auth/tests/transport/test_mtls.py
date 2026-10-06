@@ -499,45 +499,38 @@ def test_get_default_ssl_context_no_default_source(mock_has_default, mock_should
     autospec=True,
 )
 @mock.patch(
-    "google.auth.transport._mtls_helper.path.exists",
+    "google.auth._agent_identity_utils._is_certificate_file_ready",
     return_value=True,
     autospec=True,
 )
-def test_has_default_client_cert_source_gke_bundle(
-    mock_exists, mock_get_cert, monkeypatch
-):
-    monkeypatch.delenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", raising=False)
-    monkeypatch.delenv("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", raising=False)
-    monkeypatch.delenv("GOOGLE_API_CERTIFICATE_CONFIG", raising=False)
-    monkeypatch.delenv(
-        "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH", raising=False
-    )
-
+def test_has_default_client_cert_source_gke_bundle(mock_is_ready, mock_get_cert):
     assert mtls.has_default_client_cert_source(include_context_aware=False) is True
-    mock_exists.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+    mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
 
 
 @mock.patch(
     "google.auth.transport._mtls_helper._get_cert_config_path",
-    return_value=None,
+    return_value="/path/to/cert.json",
     autospec=True,
 )
 @mock.patch(
     "google.auth.transport._mtls_helper._check_config_path",
-    return_value=None,
+    return_value="/path/to/context_aware_metadata.json",
     autospec=True,
 )
 @mock.patch(
-    "google.auth.transport._mtls_helper.path.exists",
+    "google.auth._agent_identity_utils._is_certificate_file_ready",
     return_value=True,
     autospec=True,
 )
-def test_has_default_client_cert_source_gke_bundle_disabled_by_env(
-    mock_exists, mock_check_config, mock_get_cert, monkeypatch
+def test_has_default_client_cert_source_disabled_by_env(
+    mock_is_ready, mock_check_config, mock_get_cert, monkeypatch
 ):
     monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
     assert mtls.has_default_client_cert_source(include_context_aware=True) is False
-    mock_exists.assert_not_called()
+    mock_get_cert.assert_not_called()
+    mock_is_ready.assert_not_called()
+    mock_check_config.assert_not_called()
 
 
 @mock.patch(
@@ -551,32 +544,22 @@ def test_has_default_client_cert_source_gke_bundle_disabled_by_env(
     autospec=True,
 )
 @mock.patch(
-    "google.auth.transport._mtls_helper.path.exists",
+    "google.auth._agent_identity_utils._is_certificate_file_ready",
     return_value=True,
     autospec=True,
 )
 def test_has_default_client_cert_source_config_without_workload_no_gke_fallback(
-    mock_exists, mock_get_cert, mock_load_json, monkeypatch
+    mock_is_ready, mock_get_cert, mock_load_json
 ):
-    monkeypatch.delenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", raising=False)
-    monkeypatch.delenv("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", raising=False)
-    monkeypatch.delenv("GOOGLE_API_CERTIFICATE_CONFIG", raising=False)
-    monkeypatch.delenv(
-        "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH", raising=False
-    )
-
     assert mtls.has_default_client_cert_source(include_context_aware=False) is False
-    assert (
-        mock.call(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
-        not in mock_exists.call_args_list
-    )
+    mock_is_ready.assert_not_called()
 
 
 @pytest.mark.parametrize(
-    "side_effect,expected",
+    "side_effect",
     [
-        (exceptions.ClientCertError("Invalid JSON"), True),
-        (OSError("Permission denied"), False),
+        exceptions.ClientCertError("Invalid JSON"),
+        OSError("Permission denied"),
     ],
 )
 @mock.patch(
@@ -589,20 +572,14 @@ def test_has_default_client_cert_source_config_without_workload_no_gke_fallback(
     autospec=True,
 )
 @mock.patch(
-    "google.auth.transport._mtls_helper.path.exists",
+    "google.auth._agent_identity_utils._is_certificate_file_ready",
     return_value=True,
     autospec=True,
 )
 def test_has_default_client_cert_source_malformed_config_no_gke_fallback(
-    mock_exists, mock_get_cert, mock_load_json, side_effect, expected, monkeypatch
+    mock_is_ready, mock_get_cert, mock_load_json, side_effect
 ):
-    monkeypatch.delenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", raising=False)
-    monkeypatch.delenv("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", raising=False)
-    monkeypatch.delenv("GOOGLE_API_CERTIFICATE_CONFIG", raising=False)
-    monkeypatch.delenv(
-        "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH", raising=False
-    )
     mock_load_json.side_effect = side_effect
 
-    assert mtls.has_default_client_cert_source(include_context_aware=False) is expected
-    mock_exists.assert_not_called()
+    assert mtls.has_default_client_cert_source(include_context_aware=False) is True
+    mock_is_ready.assert_not_called()

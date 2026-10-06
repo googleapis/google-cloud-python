@@ -367,6 +367,7 @@ class AsyncAuthorizedSession:
                     )
 
                     async def _recover_auth_state():
+                        is_mtls_endpoint = False
                         if self._is_mtls:
                             is_mtls_endpoint = (
                                 google.auth.transport._mtls_helper.is_mtls_endpoint(url)

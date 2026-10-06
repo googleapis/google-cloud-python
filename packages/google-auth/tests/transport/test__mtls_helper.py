@@ -2124,9 +2124,9 @@ class TestReadCredentialBundleFile(object):
         ):
             _mtls_helper._read_credential_bundle_file(str(bundle_file))
 
-    def test_os_error_raises_client_cert_error(self, tmpdir):
+    def test_os_error_propagates(self, tmpdir):
         missing_bundle = str(tmpdir.join("nonexistent_rotated_symlink.pem"))
-        with pytest.raises(exceptions.ClientCertError):
+        with pytest.raises(OSError):
             _mtls_helper._read_credential_bundle_file(missing_bundle)
 
 
@@ -2137,7 +2137,7 @@ class TestGkeCredentialBundleDiscovery(object):
         autospec=True,
     )
     @mock.patch(
-        "google.auth.transport._mtls_helper.path.exists",
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
         return_value=True,
         autospec=True,
     )
@@ -2146,15 +2146,8 @@ class TestGkeCredentialBundleDiscovery(object):
         autospec=True,
     )
     def test_get_workload_cert_and_key_gke_fallback(
-        self, mock_read_bundle, mock_exists, mock_get_config_path, monkeypatch
+        self, mock_read_bundle, mock_is_ready, mock_get_config_path
     ):
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
-        )
-        monkeypatch.delenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
-            raising=False,
-        )
         mock_read_bundle.return_value = (
             pytest.public_cert_bytes,
             pytest.private_key_bytes,
@@ -2163,18 +2156,42 @@ class TestGkeCredentialBundleDiscovery(object):
         cert, key = _mtls_helper._get_workload_cert_and_key()
         assert cert == pytest.public_cert_bytes
         assert key == pytest.private_key_bytes
-        mock_exists.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
         mock_read_bundle.assert_called_once_with(
             _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
         )
 
     @mock.patch(
         "google.auth.transport._mtls_helper.path.exists",
-        side_effect=lambda p: p == _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH,
+        return_value=False,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_get_workload_cert_and_key_no_gke_fallback_when_explicit_path_set(
+        self, mock_is_ready, mock_exists
+    ):
+        cert, key = _mtls_helper._get_workload_cert_and_key("/missing/config.json")
+        assert cert is None
+        assert key is None
+        mock_exists.assert_called_once_with("/missing/config.json")
+        mock_is_ready.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists",
+        return_value=False,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
         autospec=True,
     )
     def test_get_workload_cert_and_key_no_gke_fallback_when_explicit_env_set(
-        self, mock_exists, monkeypatch
+        self, mock_is_ready, mock_exists, monkeypatch
     ):
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, "/missing/config.json"
@@ -2183,15 +2200,21 @@ class TestGkeCredentialBundleDiscovery(object):
         assert cert is None
         assert key is None
         mock_exists.assert_called_once_with("/missing/config.json")
+        mock_is_ready.assert_not_called()
 
     @pytest.mark.parametrize("include_context_aware", [True, False])
     @mock.patch(
         "google.auth.transport._mtls_helper.path.exists",
-        side_effect=lambda p: p == _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH,
+        return_value=False,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
         autospec=True,
     )
     def test_get_workload_cert_and_key_no_gke_fallback_when_context_aware_env_set(
-        self, mock_exists, include_context_aware, monkeypatch
+        self, mock_is_ready, mock_exists, include_context_aware, monkeypatch
     ):
         monkeypatch.setenv(
             environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
@@ -2203,6 +2226,7 @@ class TestGkeCredentialBundleDiscovery(object):
         assert cert is None
         assert key is None
         assert mock_exists.call_count == 1
+        mock_is_ready.assert_not_called()
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
@@ -2210,40 +2234,45 @@ class TestGkeCredentialBundleDiscovery(object):
         autospec=True,
     )
     @mock.patch(
-        "google.auth.transport._mtls_helper.path.exists",
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
         return_value=True,
         autospec=True,
     )
     def test_check_use_client_cert_gke_auto_enabled(
-        self, mock_exists, mock_get_config_path, monkeypatch
+        self, mock_is_ready, mock_get_config_path
     ):
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, raising=False
-        )
-        monkeypatch.delenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
-            raising=False,
-        )
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
-        )
-        monkeypatch.delenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
-            raising=False,
-        )
-
         assert _mtls_helper.check_use_client_cert() is True
-        mock_exists.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
 
     @mock.patch(
-        "google.auth.transport._mtls_helper.path.exists",
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
         return_value=True,
         autospec=True,
     )
-    def test_check_use_client_cert_gke_disabled_by_env(self, mock_exists, monkeypatch):
+    def test_check_use_client_cert_gke_disabled_by_env(
+        self, mock_is_ready, monkeypatch
+    ):
         monkeypatch.setenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "false")
         assert _mtls_helper.check_use_client_cert() is False
-        mock_exists.assert_not_called()
+        mock_is_ready.assert_not_called()
+
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_no_gke_fallback_when_implicit_config_has_no_workload(
+        self, mock_is_ready, tmpdir, monkeypatch
+    ):
+        config_file = tmpdir.join("certificate_config.json")
+        config_file.write('{"cert_configs": {}}')
+        monkeypatch.setattr(
+            _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmpdir)
+        )
+
+        assert _mtls_helper._get_workload_cert_and_key() == (None, None)
+        assert _mtls_helper.check_use_client_cert() is False
+        mock_is_ready.assert_not_called()
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",

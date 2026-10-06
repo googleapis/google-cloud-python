@@ -42,6 +42,9 @@ def has_default_client_cert_source(include_context_aware=True):
     Returns:
         bool: indicating if the default client cert source exists.
     """
+    if _mtls_helper._check_use_client_cert_env() is False:
+        return False
+
     try:
         (
             cert_path,
@@ -50,18 +53,13 @@ def has_default_client_cert_source(include_context_aware=True):
         ) = _mtls_helper._resolve_workload_cert_and_key_paths(
             None, include_context_aware=include_context_aware
         )
-    except exceptions.ClientCertError:
-        # Config exists, but is malformed. Let caller surface error.
+    except (exceptions.ClientCertError, OSError):
+        # Config exists, but is malformed or unreadable. Let caller surface error.
         return True
-    except OSError:
-        cert_path, key_path, config_file_path = None, None, ""
 
     if cert_path is not None and key_path is not None:
         return True
-    if (
-        _mtls_helper._check_use_client_cert_env() is not False
-        and _mtls_helper._has_gke_credential_bundle(config_file_path)
-    ):
+    if _mtls_helper._has_gke_credential_bundle(config_file_path):
         return True
     if (
         include_context_aware

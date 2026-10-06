@@ -380,11 +380,14 @@ def _has_explicit_cert_config_env():
 
 def _has_gke_credential_bundle(config_file_path=None):
     """Returns True if GKE workload credential bundle should be used as fallback."""
-    return (
-        config_file_path is None
-        and not _has_explicit_cert_config_env()
-        and path.exists(_GKE_CREDENTIAL_BUNDLE_PATH)
-    )
+    if config_file_path is not None or _has_explicit_cert_config_env():
+        return False
+    try:
+        return _agent_identity_utils._is_certificate_file_ready(
+            _GKE_CREDENTIAL_BUNDLE_PATH
+        )
+    except PermissionError:
+        return False
 
 
 def _get_workload_cert_and_key(
@@ -562,12 +565,8 @@ def _read_credential_bundle_file(bundle_path):
     """Reads a combined PEM credential bundle containing certificate(s) and a private key."""
     # Read the bundle once so a certificate rotation on disk cannot pair an
     # old certificate chain with a new private key.
-    try:
-        with open(bundle_path, "rb") as bundle_file:
-            bundle_data = bundle_file.read()
-    except OSError as caught_exc:
-        new_exc = exceptions.ClientCertError(caught_exc)
-        raise new_exc from caught_exc
+    with open(bundle_path, "rb") as bundle_file:
+        bundle_data = bundle_file.read()
 
     return (
         _extract_cert_chain(bundle_data, bundle_path),
