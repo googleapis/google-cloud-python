@@ -1523,8 +1523,10 @@ class TestAuthorizedSessionMTLSReauth:
         mock_response = mock.Mock(status_code=http_client.UNAUTHORIZED)
         mock_success_response = mock.Mock(status_code=http_client.OK)
         lock_held_during_call = {"held": False}
+
         def mock_configure_mtls_channel(callback):
             lock_held_during_call["held"] = session._mtls_reauth_lock.locked()
+
         session.configure_mtls_channel = mock.Mock(
             side_effect=mock_configure_mtls_channel
         )

@@ -437,7 +437,9 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
             if response.status == http_client.UNAUTHORIZED:
-                use_mtls = getattr(self, "_is_mtls", False) and _mtls_helper.is_mtls_endpoint(url)
+                use_mtls = getattr(
+                    self, "_is_mtls", False
+                ) and _mtls_helper.is_mtls_endpoint(url)
 
                 if use_mtls:
                     with self._mtls_reauth_lock:

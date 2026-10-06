@@ -760,7 +760,7 @@ class AuthorizedSession(requests.Session):
                                         cached_fingerprint,
                                         current_cert_fingerprint,
                                     ) = _mtls_helper.check_parameters_for_unauthorized_response(
-                                         getattr(self, "_cached_cert", None)
+                                        getattr(self, "_cached_cert", None)
                                     )
                                     if cached_fingerprint != current_cert_fingerprint:
                                         try:
@@ -769,11 +769,15 @@ class AuthorizedSession(requests.Session):
                                                 "channel."
                                             )
                                             self.configure_mtls_channel(
-                                                lambda: (call_cert_bytes, call_key_bytes)
+                                                lambda: (
+                                                    call_cert_bytes,
+                                                    call_key_bytes,
+                                                )
                                             )
                                         except Exception as e:
                                             _LOGGER.error(
-                                                "Failed to reconfigure mTLS channel: %s", e
+                                                "Failed to reconfigure mTLS channel: %s",
+                                                e,
                                             )
                                             raise exceptions.MutualTLSChannelError(
                                                 "Failed to reconfigure mTLS channel"
@@ -786,7 +790,9 @@ class AuthorizedSession(requests.Session):
                                 except exceptions.MutualTLSChannelError:
                                     raise
                                 except Exception as e:
-                                    _LOGGER.warning("mTLS certificate check/rotation failed: %s", e)
+                                    _LOGGER.warning(
+                                        "mTLS certificate check/rotation failed: %s", e
+                                    )
                     remaining_time = guard.remaining_timeout
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
