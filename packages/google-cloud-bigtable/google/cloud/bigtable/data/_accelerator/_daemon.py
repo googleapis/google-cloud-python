@@ -29,7 +29,7 @@ import socket
 import subprocess
 import tempfile
 import time
-from typing import Sequence
+from typing import Mapping, Sequence
 
 # Wheels ship the binary at this path relative to the `_accelerator/` package.
 _DEFAULT_BIN_RELATIVE_PATH = "bin/accelerator"
@@ -77,6 +77,7 @@ class AcceleratorDaemon:
         cli_flags: Sequence[str] = (),
         *,
         startup_timeout: float = _DEFAULT_STARTUP_TIMEOUT,
+        extra_env: Mapping[str, str] | None = None,
     ):
         """Resolve the binary and pick the UDS path (does not spawn anything).
 
@@ -92,6 +93,10 @@ class AcceleratorDaemon:
         self._binary_path = _resolve_binary_path()
         self._cli_flags = list(cli_flags)
         self._startup_timeout = startup_timeout
+        # Extra environment for the subprocess, merged over the inherited env.
+        # Used to forward GOOGLE_APPLICATION_CREDENTIALS (path only) so the
+        # daemon's ADC resolves the caller's credentials_file.
+        self._extra_env = dict(extra_env) if extra_env else {}
         self._tempdir: str | None = None
         self._uds_path: str | None = None
         self._log_path: str | None = None
@@ -159,6 +164,9 @@ class AcceleratorDaemon:
         # attribute. Startup failures read the tail back from the path.
         argv = [self._binary_path, "--uds-path", self._uds_path, *self._cli_flags]
         log_file = None
+        env = None
+        if self._extra_env:
+            env = {**os.environ, **self._extra_env}
         try:
             log_file = open(self._log_path, "wb")
             self._proc = subprocess.Popen(
@@ -167,6 +175,7 @@ class AcceleratorDaemon:
                 stdout=log_file,
                 stderr=subprocess.STDOUT,
                 close_fds=True,
+                env=env,
             )
         except OSError as exc:
             self._cleanup_tempdir()
