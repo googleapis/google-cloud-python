@@ -1225,7 +1225,10 @@ class TestAuthorizedSession(object):
 
     def test_cert_rotation_check_params_fails(self):
         credentials = mock.Mock(wraps=CredentialsStub())
-        adapter = AdapterStub([make_response(status=http_client.UNAUTHORIZED)])
+        adapter = AdapterStub([
+            make_response(status=http_client.UNAUTHORIZED),
+            make_response(status=http_client.OK)
+        ])
 
         authed_session = google.auth.transport.requests.AuthorizedSession(
             credentials, refresh_timeout=60
@@ -1238,11 +1241,11 @@ class TestAuthorizedSession(object):
             "google.auth.transport.requests._mtls_helper.check_parameters_for_unauthorized_response",
             side_effect=Exception("check_params failed"),
         ) as mock_check_params:
-            with pytest.raises(Exception, match="check_params failed"):
-                authed_session.request("GET", self.MTLS_TEST_URL)
+            response = authed_session.request("GET", self.MTLS_TEST_URL)
 
             mock_check_params.assert_called_once()
-            credentials.refresh.assert_not_called()
+            assert credentials.refresh.called
+            assert response.status_code == http_client.OK
 
     def test_cert_rotation_logic_skipped_on_other_refresh_status_codes(self):
         """
@@ -1423,7 +1426,7 @@ class TestAuthorizedSession(object):
 
     def test_unauthorized_cert_discovery_exception_proceeds_to_token_refresh(self):
         credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-        session = requests.AuthorizedSession(credentials)
+        session = google.auth.transport.requests.AuthorizedSession(credentials)
         session._is_mtls = True
         mock_response_unauth = mock.Mock(status_code=http_client.UNAUTHORIZED)
         mock_response_ok = mock.Mock(status_code=http_client.OK)
@@ -1434,7 +1437,7 @@ class TestAuthorizedSession(object):
             side_effect=Exception("Certificate discovery failed"),
         ):
             with mock.patch.object(
-                super(requests.AuthorizedSession, session),
+                super(google.auth.transport.requests.AuthorizedSession, session),
                 "request",
                 side_effect=[mock_response_unauth, mock_response_ok],
             ):
@@ -1516,7 +1519,7 @@ class TestAuthorizedSessionMTLSReauth:
         "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
     )
     @mock.patch("google.auth.transport.requests.requests.Session.request")
-    def test_reauth_lock_acquired_on_unauthorized(self):
+    def test_reauth_lock_acquired_on_unauthorized(self, *args):
         credentials = mock.Mock(spec=google.auth.credentials.Credentials)
         session = requests.AuthorizedSession(credentials)
         session._is_mtls = True
