@@ -48,6 +48,7 @@ import subprocess
 import sphinx.application
 import yaml
 from docuploader import shell
+from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
 from sphinx.ext.napoleon import Config, GoogleDocstring, _process_docstring
 from sphinx.util import ensuredir
@@ -194,30 +195,25 @@ def _grab_repo_metadata() -> Mapping[str, str] | None:
         return None
 
 
-def _optimize_sphinx_pipeline(app: sphinx.application.Sphinx) -> None:
-    """Disables unused Sphinx work (intersphinx HTTP fetches, viewcode, and HTML rendering)."""
-    # DocFX YAML generation does not use intersphinx inventories; clearing the
-    # mapping before intersphinx's builder-inited handler runs avoids external
-    # HTTP fetches and timeouts on every package build.
-    if hasattr(app.config, "intersphinx_mapping"):
-        app.config.intersphinx_mapping = {}
+class DocFXHTMLBuilder(StandaloneHTMLBuilder):
+    """HTML builder subclass that skips rendering unused HTML pages during DocFX builds."""
 
-    # Remove sphinx.ext.viewcode listeners so Sphinx does not tokenize and
-    # highlight all Python source modules into throwaway _modules/*.html pages.
+    def write(self, *args: Any, **kwargs: Any) -> None:
+        pass
+
+    def finish(self) -> None:
+        pass
+
+
+def _configure_docfx(app: sphinx.application.Sphinx, config: Any) -> None:
+    """Configures Sphinx settings and disconnects unused extensions before the build starts."""
+    config.intersphinx_mapping = {}
+
     if hasattr(app, "events") and hasattr(app.events, "listeners"):
         for event_listeners in app.events.listeners.values():
-            event_listeners[:] = [
-                listener
-                for listener in event_listeners
-                if getattr(listener.handler, "__module__", "") != "sphinx.ext.viewcode"
-            ]
-
-    # When running with the html builder, DocFX YAML collects all metadata
-    # during the read phase and writes YAML in build-finished; skip rendering
-    # throwaway Jinja2 HTML pages and search indices.
-    if getattr(app.builder, "name", None) == "html":
-        app.builder.write = lambda *args, **kwargs: None
-        app.builder.finish = lambda *args, **kwargs: None
+            for listener in list(event_listeners):
+                if getattr(listener.handler, "__module__", "") == "sphinx.ext.viewcode":
+                    app.disconnect(listener.id)
 
 
 def build_init(app: sphinx.application.Sphinx) -> None:
@@ -2850,7 +2846,8 @@ def setup(app: sphinx.application.Sphinx) -> None:
     app.add_directive("remarks", RemarksDirective)
     app.add_directive("todo", TodoDirective)
 
-    app.connect("builder-inited", _optimize_sphinx_pipeline, priority=100)
+    app.add_builder(DocFXHTMLBuilder, override=True)
+    app.connect("config-inited", _configure_docfx)
     app.connect("builder-inited", build_init)
     app.connect("autodoc-process-docstring", process_docstring)
     app.connect("autodoc-process-signature", process_signature)

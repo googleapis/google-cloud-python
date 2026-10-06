@@ -411,7 +411,7 @@ google.cloud.pubsub_v1.message.Message
         result = extension.is_valid_python_code(invalid_syntax)
         self.assertFalse(result)
 
-    def test_optimize_sphinx_pipeline(self):
+    def test_configure_docfx_and_builder(self):
         class DummyHandler:
             pass
 
@@ -421,15 +421,16 @@ google.cloud.pubsub_v1.message.Message
         other_handler.__module__ = "docfx_yaml.extension"
 
         class DummyListener:
-            def __init__(self, handler):
+            def __init__(self, listener_id, handler):
+                self.id = listener_id
                 self.handler = handler
 
         class DummyEvents:
             def __init__(self):
                 self.listeners = {
                     "doctree-read": [
-                        DummyListener(viewcode_handler),
-                        DummyListener(other_handler),
+                        DummyListener(1, viewcode_handler),
+                        DummyListener(2, other_handler),
                     ]
                 }
 
@@ -437,32 +438,22 @@ google.cloud.pubsub_v1.message.Message
             def __init__(self):
                 self.intersphinx_mapping = {"python": ("https://example.com", None)}
 
-        class DummyBuilder:
-            name = "html"
-
-            def write(self, *args, **kwargs):
-                return "wrote"
-
-            def finish(self, *args, **kwargs):
-                return "finished"
-
         class DummyApp:
             def __init__(self):
                 self.config = DummyConfig()
                 self.events = DummyEvents()
-                self.builder = DummyBuilder()
+                self.disconnected = []
+
+            def disconnect(self, listener_id):
+                self.disconnected.append(listener_id)
 
         app = DummyApp()
-        extension._optimize_sphinx_pipeline(app)
+        extension._configure_docfx(app, app.config)
 
         self.assertEqual(app.config.intersphinx_mapping, {})
-        self.assertEqual(len(app.events.listeners["doctree-read"]), 1)
-        self.assertIs(
-            app.events.listeners["doctree-read"][0].handler,
-            other_handler,
-        )
-        self.assertIsNone(app.builder.write())
-        self.assertIsNone(app.builder.finish())
+        self.assertEqual(app.disconnected, [1])
+        self.assertIsNone(extension.DocFXHTMLBuilder.write(None))
+        self.assertIsNone(extension.DocFXHTMLBuilder.finish(None))
 
     def test_missing_reference_skips_markdown_builder(self):
         class DummyBuilder:
