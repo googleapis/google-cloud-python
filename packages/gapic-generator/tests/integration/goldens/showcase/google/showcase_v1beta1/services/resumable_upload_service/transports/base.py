@@ -23,6 +23,7 @@ import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core import resumable_transfer
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 import google.protobuf
@@ -116,6 +117,7 @@ class ResumableUploadServiceTransport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+        self._client_info = client_info
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:
@@ -196,8 +198,9 @@ class ResumableUploadServiceTransport(abc.ABC):
     def upload_media(self) -> Callable[
             [resumable_upload.UploadMediaRequest],
             Union[
-                resumable_upload.UploadMediaResponse,
-                Awaitable[resumable_upload.UploadMediaResponse]
+                resumable_transfer.ResumableUploadSession,
+                resumable_transfer.AsyncResumableUploadSession,
+                Awaitable[resumable_transfer.AsyncResumableUploadSession]
             ]]:
         raise NotImplementedError()
 
