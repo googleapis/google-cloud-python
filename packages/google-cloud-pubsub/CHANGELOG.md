@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.41.0...google-cloud-pubsub-v2.42.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.40.0...google-cloud-pubsub-v2.41.0) (2026-09-17)
 
 

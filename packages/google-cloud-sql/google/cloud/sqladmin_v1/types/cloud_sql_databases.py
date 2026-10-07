@@ -47,6 +47,8 @@ class SqlDatabasesDeleteRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     database: str = proto.Field(
@@ -60,6 +62,10 @@ class SqlDatabasesDeleteRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -75,6 +81,8 @@ class SqlDatabasesGetRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     database: str = proto.Field(
@@ -88,6 +96,10 @@ class SqlDatabasesGetRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -103,6 +115,8 @@ class SqlDatabasesInsertRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.Database):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -118,6 +132,10 @@ class SqlDatabasesInsertRequest(proto.Message):
         number=100,
         message=cloud_sql_resources.Database,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlDatabasesListRequest(proto.Message):
@@ -130,6 +148,8 @@ class SqlDatabasesListRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -139,6 +159,10 @@ class SqlDatabasesListRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -157,6 +181,8 @@ class SqlDatabasesUpdateRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.Database):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     database: str = proto.Field(
@@ -175,6 +201,10 @@ class SqlDatabasesUpdateRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message=cloud_sql_resources.Database,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

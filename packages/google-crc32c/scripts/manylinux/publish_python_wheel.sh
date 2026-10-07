@@ -15,6 +15,21 @@
 
 set -eo pipefail
 
+REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+
+# This script runs as a container entrypoint in quay.io/pypa/manylinux2014_x86_64.
+# The venv is load-bearing: `releasetool publish-reporter-script` emits bash that
+# hardcodes `python3`, which does not exist in this image outside a venv.
+PYTHON_BIN="/opt/python/cp312-cp312/bin/python"
+if [[ ! -x "${PYTHON_BIN}" ]]; then
+    echo "ERROR: ${PYTHON_BIN} not found; run this inside manylinux2014_x86_64." >&2
+    exit 1
+fi
+
+PUBLISH_VENV="$(mktemp -d)/venv"
+"${PYTHON_BIN}" -m venv "${PUBLISH_VENV}"
+source "${PUBLISH_VENV}/bin/activate"
+
 python -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 
 echo "Built wheels in ${REPO_ROOT}/wheels/:"

@@ -138,6 +138,23 @@ class _BaseIngestionServiceRestTransport(IngestionServiceTransport):
             ]
             return http_options
 
+    class _BaseIngestUsers:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/users:ingest",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
     class _BaseRemoveAllAudienceMembers:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -167,6 +184,23 @@ class _BaseIngestionServiceRestTransport(IngestionServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/audienceMembers:remove",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+    class _BaseRemoveUsers:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/users:remove",
                     "body": "*",
                 },
             ]

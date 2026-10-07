@@ -98,6 +98,7 @@ __protobuf__ = proto.module(
         "PointInTimeRestoreContext",
         "BinLogCoordinates",
         "DatabaseInstance",
+        "BlueGreenDeploymentInfo",
         "GeminiInstanceConfig",
         "ReplicationCluster",
         "AvailableDatabaseVersion",
@@ -169,6 +170,9 @@ class SqlInstanceType(proto.Enum):
             read-replica.
         READ_POOL_INSTANCE (5):
             A Cloud SQL read pool.
+        GREEN_INSTANCE (7):
+            A Cloud SQL instance acting as a Blue-Green
+            deployment target primary. (MySQL only)
     """
 
     SQL_INSTANCE_TYPE_UNSPECIFIED = 0
@@ -176,6 +180,7 @@ class SqlInstanceType(proto.Enum):
     ON_PREMISES_INSTANCE = 2
     READ_REPLICA_INSTANCE = 3
     READ_POOL_INSTANCE = 5
+    GREEN_INSTANCE = 7
 
 
 class SqlSuspensionReason(proto.Enum):
@@ -221,6 +226,8 @@ class SqlInstancesAddServerCaRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -230,6 +237,10 @@ class SqlInstancesAddServerCaRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -243,6 +254,8 @@ class SqlInstancesAddServerCertificateRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -252,6 +265,10 @@ class SqlInstancesAddServerCertificateRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -265,6 +282,8 @@ class SqlInstancesAddEntraIdCertificateRequest(proto.Message):
         project (str):
             Required. Project ID of the project that
             contains the instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -274,6 +293,10 @@ class SqlInstancesAddEntraIdCertificateRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -290,6 +313,8 @@ class SqlInstancesCloneRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.InstancesCloneRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -304,6 +329,10 @@ class SqlInstancesCloneRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="InstancesCloneRequest",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -343,6 +372,8 @@ class SqlInstancesDeleteRequest(proto.Message):
         final_backup_description (str):
             Optional. The description of the final
             backup.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -373,6 +404,10 @@ class SqlInstancesDeleteRequest(proto.Message):
         proto.STRING,
         number=5,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
 
 
 class SqlInstancesDemoteMasterRequest(proto.Message):
@@ -385,6 +420,8 @@ class SqlInstancesDemoteMasterRequest(proto.Message):
             ID of the project that contains the instance.
         body (google.cloud.sqladmin_v1.types.InstancesDemoteMasterRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -400,6 +437,10 @@ class SqlInstancesDemoteMasterRequest(proto.Message):
         number=100,
         message="InstancesDemoteMasterRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesDemoteRequest(proto.Message):
@@ -413,6 +454,8 @@ class SqlInstancesDemoteRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.InstancesDemoteRequest):
             Required. The request body.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -428,6 +471,10 @@ class SqlInstancesDemoteRequest(proto.Message):
         number=100,
         message="InstancesDemoteRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesExportRequest(proto.Message):
@@ -442,6 +489,8 @@ class SqlInstancesExportRequest(proto.Message):
             instance to be exported.
         body (google.cloud.sqladmin_v1.types.InstancesExportRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -457,6 +506,10 @@ class SqlInstancesExportRequest(proto.Message):
         number=100,
         message="InstancesExportRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class SqlInstancesFailoverRequest(proto.Message):
@@ -471,6 +524,8 @@ class SqlInstancesFailoverRequest(proto.Message):
             replica.
         body (google.cloud.sqladmin_v1.types.InstancesFailoverRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -486,6 +541,10 @@ class SqlInstancesFailoverRequest(proto.Message):
         number=100,
         message="InstancesFailoverRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesGetRequest(proto.Message):
@@ -498,6 +557,8 @@ class SqlInstancesGetRequest(proto.Message):
         project (str):
             Required. Project ID of the project that
             contains the instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -507,6 +568,10 @@ class SqlInstancesGetRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -522,6 +587,8 @@ class SqlInstancesImportRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.InstancesImportRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -537,6 +604,10 @@ class SqlInstancesImportRequest(proto.Message):
         number=100,
         message="InstancesImportRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesInsertRequest(proto.Message):
@@ -548,6 +619,8 @@ class SqlInstancesInsertRequest(proto.Message):
             created Cloud SQL instances should belong.
         body (google.cloud.sqladmin_v1.types.DatabaseInstance):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     project: str = proto.Field(
@@ -558,6 +631,10 @@ class SqlInstancesInsertRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="DatabaseInstance",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -588,6 +665,8 @@ class SqlInstancesListRequest(proto.Message):
         project (str):
             Project ID of the project for which to list
             Cloud SQL instances.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     filter: str = proto.Field(
@@ -606,6 +685,10 @@ class SqlInstancesListRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class SqlInstancesListServerCasRequest(proto.Message):
@@ -618,6 +701,8 @@ class SqlInstancesListServerCasRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -627,6 +712,10 @@ class SqlInstancesListServerCasRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -640,6 +729,8 @@ class SqlInstancesListServerCertificatesRequest(proto.Message):
         project (str):
             Required. Project ID of the project that
             contains the instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -649,6 +740,10 @@ class SqlInstancesListServerCertificatesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -662,6 +757,8 @@ class SqlInstancesListEntraIdCertificatesRequest(proto.Message):
         project (str):
             Required. Project ID of the project that
             contains the instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -671,6 +768,10 @@ class SqlInstancesListEntraIdCertificatesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -700,6 +801,8 @@ class SqlInstancesPatchRequest(proto.Message):
             This field is a member of `oneof`_ ``_reconcile_psc_networking_force``.
         body (google.cloud.sqladmin_v1.types.DatabaseInstance):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -725,6 +828,10 @@ class SqlInstancesPatchRequest(proto.Message):
         number=100,
         message="DatabaseInstance",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class SqlInstancesPromoteReplicaRequest(proto.Message):
@@ -745,6 +852,8 @@ class SqlInstancesPromoteReplicaRequest(proto.Message):
             back online. If set to false or not specified,
             then the original primary instance becomes an
             independent Cloud SQL primary instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -758,6 +867,10 @@ class SqlInstancesPromoteReplicaRequest(proto.Message):
     failover: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -775,6 +888,8 @@ class SqlInstancesSwitchoverRequest(proto.Message):
             of all database operations. Default value is 10
             minutes and can be modified to a maximum value
             of 24 hours.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -790,6 +905,10 @@ class SqlInstancesSwitchoverRequest(proto.Message):
         number=3,
         message=duration_pb2.Duration,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SqlInstancesResetSslConfigRequest(proto.Message):
@@ -804,6 +923,8 @@ class SqlInstancesResetSslConfigRequest(proto.Message):
             instance.
         mode (google.cloud.sqladmin_v1.types.SqlInstancesResetSslConfigRequest.ResetSslMode):
             Optional. Reset SSL mode to use.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     class ResetSslMode(proto.Enum):
@@ -839,6 +960,10 @@ class SqlInstancesResetSslConfigRequest(proto.Message):
         number=3,
         enum=ResetSslMode,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SqlInstancesRestartRequest(proto.Message):
@@ -851,6 +976,8 @@ class SqlInstancesRestartRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance to be restarted.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -860,6 +987,10 @@ class SqlInstancesRestartRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -875,6 +1006,8 @@ class SqlInstancesRestoreBackupRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.InstancesRestoreBackupRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -890,6 +1023,10 @@ class SqlInstancesRestoreBackupRequest(proto.Message):
         number=100,
         message="InstancesRestoreBackupRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesRotateServerCaRequest(proto.Message):
@@ -904,6 +1041,8 @@ class SqlInstancesRotateServerCaRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.InstancesRotateServerCaRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -918,6 +1057,10 @@ class SqlInstancesRotateServerCaRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="InstancesRotateServerCaRequest",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -934,6 +1077,8 @@ class SqlInstancesRotateServerCertificateRequest(proto.Message):
         body (google.cloud.sqladmin_v1.types.InstancesRotateServerCertificateRequest):
             Optional. Rotate server certificate request
             body.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -948,6 +1093,10 @@ class SqlInstancesRotateServerCertificateRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="InstancesRotateServerCertificateRequest",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -964,6 +1113,8 @@ class SqlInstancesRotateEntraIdCertificateRequest(proto.Message):
         body (google.cloud.sqladmin_v1.types.InstancesRotateEntraIdCertificateRequest):
             Optional. Rotate Entra ID certificate request
             body.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -979,6 +1130,10 @@ class SqlInstancesRotateEntraIdCertificateRequest(proto.Message):
         number=100,
         message="InstancesRotateEntraIdCertificateRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesStartReplicaRequest(proto.Message):
@@ -990,6 +1145,8 @@ class SqlInstancesStartReplicaRequest(proto.Message):
         project (str):
             ID of the project that contains the read
             replica.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -999,6 +1156,10 @@ class SqlInstancesStartReplicaRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1011,6 +1172,8 @@ class SqlInstancesStopReplicaRequest(proto.Message):
         project (str):
             ID of the project that contains the read
             replica.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1020,6 +1183,10 @@ class SqlInstancesStopReplicaRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1034,6 +1201,8 @@ class SqlInstancesTruncateLogRequest(proto.Message):
             Project ID of the Cloud SQL project.
         body (google.cloud.sqladmin_v1.types.InstancesTruncateLogRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1049,6 +1218,10 @@ class SqlInstancesTruncateLogRequest(proto.Message):
         number=100,
         message="InstancesTruncateLogRequest",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesPerformDiskShrinkRequest(proto.Message):
@@ -1063,6 +1236,8 @@ class SqlInstancesPerformDiskShrinkRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.PerformDiskShrinkContext):
             Perform disk shrink context.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1078,6 +1253,10 @@ class SqlInstancesPerformDiskShrinkRequest(proto.Message):
         number=100,
         message=cloud_sql_resources.PerformDiskShrinkContext,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesUpdateRequest(proto.Message):
@@ -1092,6 +1271,8 @@ class SqlInstancesUpdateRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1.types.DatabaseInstance):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1107,6 +1288,10 @@ class SqlInstancesUpdateRequest(proto.Message):
         number=100,
         message="DatabaseInstance",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SqlInstancesRescheduleMaintenanceRequest(proto.Message):
@@ -1120,6 +1305,8 @@ class SqlInstancesRescheduleMaintenanceRequest(proto.Message):
             ID of the project that contains the instance.
         body (google.cloud.sqladmin_v1.types.SqlInstancesRescheduleMaintenanceRequestBody):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1135,6 +1322,10 @@ class SqlInstancesRescheduleMaintenanceRequest(proto.Message):
         number=100,
         message="SqlInstancesRescheduleMaintenanceRequestBody",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlInstancesReencryptRequest(proto.Message):
@@ -1148,6 +1339,8 @@ class SqlInstancesReencryptRequest(proto.Message):
             ID of the project that contains the instance.
         body (google.cloud.sqladmin_v1.types.InstancesReencryptRequest):
             Reencrypt body that users request
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1162,6 +1355,10 @@ class SqlInstancesReencryptRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message="InstancesReencryptRequest",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -1257,6 +1454,8 @@ class SqlInstancesGetDiskShrinkConfigRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1266,6 +1465,10 @@ class SqlInstancesGetDiskShrinkConfigRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1305,6 +1508,8 @@ class SqlInstancesVerifyExternalSyncSettingsRequest(proto.Message):
             Optional. Migrate only the specified objects
             from the source instance. If this field is
             empty, then migrate all objects.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     class ExternalSyncMode(proto.Enum):
@@ -1388,6 +1593,10 @@ class SqlInstancesVerifyExternalSyncSettingsRequest(proto.Message):
             message="ExternalSyncSelectedObject",
         )
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class SqlInstancesStartExternalSyncRequest(proto.Message):
@@ -1424,6 +1633,8 @@ class SqlInstancesStartExternalSyncRequest(proto.Message):
             the proposed selected_objects. If this field is not set and
             there are both overlapping and additional databases
             proposed, an error will be returned.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1467,6 +1678,10 @@ class SqlInstancesStartExternalSyncRequest(proto.Message):
         proto.BOOL,
         number=9,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class SqlInstancesResetReplicaSizeRequest(proto.Message):
@@ -1478,6 +1693,8 @@ class SqlInstancesResetReplicaSizeRequest(proto.Message):
         project (str):
             ID of the project that contains the read
             replica.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1487,6 +1704,10 @@ class SqlInstancesResetReplicaSizeRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -1501,6 +1722,8 @@ class SqlInstancesCreateEphemeralCertRequest(proto.Message):
             Project ID of the Cloud SQL project.
         body (google.cloud.sqladmin_v1.types.SslCertsCreateEphemeralRequest):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1515,6 +1738,10 @@ class SqlInstancesCreateEphemeralCertRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="SslCertsCreateEphemeralRequest",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1820,6 +2047,11 @@ class InstancesRestoreBackupRequest(proto.Message):
             restore_instance_settings, changes any instance settings
             stored in the backup you are restoring from. With the
             difference that these fields are cleared in the settings.
+        ignore_maintenance_version (bool):
+            Optional. If true, the restore operation
+            proceeds even if the target instance's
+            maintenance version is older than the source
+            instance's maintenance version.
     """
 
     restore_backup_context: "RestoreBackupContext" = proto.Field(
@@ -1845,6 +2077,10 @@ class InstancesRestoreBackupRequest(proto.Message):
             proto.STRING,
             number=5,
         )
+    )
+    ignore_maintenance_version: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -1945,6 +2181,8 @@ class SqlInstancesPreCheckMajorVersionUpgradeRequest(proto.Message):
         body (google.cloud.sqladmin_v1.types.InstancesPreCheckMajorVersionUpgradeRequest):
             Required. The context for request to perform
             the pre-check major version upgrade operation.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -1959,6 +2197,10 @@ class SqlInstancesPreCheckMajorVersionUpgradeRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message="InstancesPreCheckMajorVersionUpgradeRequest",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -2035,6 +2277,8 @@ class SqlInstancesGetLatestRecoveryTimeRequest(proto.Message):
             is deleted, then you must set the timestamp.
 
             This field is a member of `oneof`_ ``_source_instance_deletion_time``.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -2050,6 +2294,10 @@ class SqlInstancesGetLatestRecoveryTimeRequest(proto.Message):
         number=3,
         optional=True,
         message=timestamp_pb2.Timestamp,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -2565,6 +2813,12 @@ class DatabaseInstance(proto.Message):
             instance is initiated.
 
             This field is a member of `oneof`_ ``_include_replicas_for_major_version_upgrade``.
+        skip_precheck (google.protobuf.wrappers_pb2.BoolValue):
+            Optional. Input only. Determines whether the
+            precheck step is skipped during a major version
+            upgrade.
+
+            This field is a member of `oneof`_ ``_skip_precheck``.
         tags (MutableMapping[str, str]):
             Optional. Input only. Immutable. Tag keys and tag values
             that are bound to this instance. You must represent each
@@ -2590,10 +2844,23 @@ class DatabaseInstance(proto.Message):
         dns_names (MutableSequence[google.cloud.sqladmin_v1.types.DnsNameMapping]):
             Output only. The list of DNS names used by
             this instance.
+        deployment_info (google.cloud.sqladmin_v1.types.BlueGreenDeploymentInfo):
+            Output only. Deployment info for the
+            instance. This is set if the instance is
+            currently part of any blue-green setup.
+
+            This field is a member of `oneof`_ ``_deployment_info``.
         database_center_integration_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Optional. If true, instance metadata is sent
             to the Database Center. If false, instance
             metadata is not sent to the Database Center.
+        database_center_integration (google.cloud.sqladmin_v1.types.DatabaseInstance.DatabaseCenterIntegration):
+            Optional. State of the Database Center
+            integration for this instance. When unspecified,
+            Database Center integration is enabled by
+            default.
+
+            This field is a member of `oneof`_ ``_database_center_integration``.
     """
 
     class SqlInstanceState(proto.Enum):
@@ -2652,6 +2919,24 @@ class DatabaseInstance(proto.Message):
         SQL_NETWORK_ARCHITECTURE_UNSPECIFIED = 0
         NEW_NETWORK_ARCHITECTURE = 1
         OLD_NETWORK_ARCHITECTURE = 2
+
+    class DatabaseCenterIntegration(proto.Enum):
+        r"""State of the integration with Database Center.
+
+        Values:
+            DATABASE_CENTER_INTEGRATION_UNSPECIFIED (0):
+                Default value. The integration state is
+                unspecified. When unspecified, Database Center
+                integration is enabled by default.
+            ENABLED (1):
+                Database Center integration is enabled.
+            DISABLED (2):
+                Database Center integration is disabled.
+        """
+
+        DATABASE_CENTER_INTEGRATION_UNSPECIFIED = 0
+        ENABLED = 1
+        DISABLED = 2
 
     class SqlFailoverReplica(proto.Message):
         r"""
@@ -3101,6 +3386,12 @@ class DatabaseInstance(proto.Message):
         optional=True,
         message=wrappers_pb2.BoolValue,
     )
+    skip_precheck: wrappers_pb2.BoolValue = proto.Field(
+        proto.MESSAGE,
+        number=77,
+        optional=True,
+        message=wrappers_pb2.BoolValue,
+    )
     tags: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -3123,10 +3414,139 @@ class DatabaseInstance(proto.Message):
             message=cloud_sql_resources.DnsNameMapping,
         )
     )
+    deployment_info: "BlueGreenDeploymentInfo" = proto.Field(
+        proto.MESSAGE,
+        number=73,
+        optional=True,
+        message="BlueGreenDeploymentInfo",
+    )
     database_center_integration_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=72,
         message=wrappers_pb2.BoolValue,
+    )
+    database_center_integration: DatabaseCenterIntegration = proto.Field(
+        proto.ENUM,
+        number=76,
+        optional=True,
+        enum=DatabaseCenterIntegration,
+    )
+
+
+class BlueGreenDeploymentInfo(proto.Message):
+    r"""Blue-green deployment metadata for a database instance. In a
+    blue-green deployment, we maintain two environments, one of
+    which is live. This message contains details about the
+    blue-green deployment.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        deployment_id (str):
+            Output only. The resource ID of the
+            blue-green deployment.
+
+            This field is a member of `oneof`_ ``_deployment_id``.
+        source (google.cloud.sqladmin_v1.types.BlueGreenDeploymentInfo.SourceRole):
+            Output only. The source instance for the
+            Blue-Green deployment.
+
+            This field is a member of `oneof`_ ``role_details``.
+        target (google.cloud.sqladmin_v1.types.BlueGreenDeploymentInfo.TargetRole):
+            Output only. The target instance for the
+            Blue-Green deployment.
+
+            This field is a member of `oneof`_ ``role_details``.
+        state (google.cloud.sqladmin_v1.types.BlueGreenDeploymentInfo.State):
+            Output only. The current state of
+            blue-green-deployment for UI tags
+
+            This field is a member of `oneof`_ ``_state``.
+    """
+
+    class State(proto.Enum):
+        r"""The state of blue-green-deployment for UI tags
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the deployment is unknown.
+            PRE_SWITCHOVER (1):
+                The deployment is pre-switchover.
+            POST_SWITCHOVER (2):
+                The deployment is post-switchover.
+        """
+
+        STATE_UNSPECIFIED = 0
+        PRE_SWITCHOVER = 1
+        POST_SWITCHOVER = 2
+
+    class SourceRole(proto.Message):
+        r"""The source instance for the Blue-Green deployment.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            target_id (google.cloud.sqladmin_v1.types.InstanceReference):
+                Output only. The target instance paired with
+                this source instance in a blue-green deployment.
+
+                This field is a member of `oneof`_ ``_target_id``.
+        """
+
+        target_id: cloud_sql_resources.InstanceReference = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            optional=True,
+            message=cloud_sql_resources.InstanceReference,
+        )
+
+    class TargetRole(proto.Message):
+        r"""The target instance for the Blue-Green deployment.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            source_id (google.cloud.sqladmin_v1.types.InstanceReference):
+                Output only. The source instance paired with
+                this target instance in a blue-green deployment.
+
+                This field is a member of `oneof`_ ``_source_id``.
+        """
+
+        source_id: cloud_sql_resources.InstanceReference = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            optional=True,
+            message=cloud_sql_resources.InstanceReference,
+        )
+
+    deployment_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    source: SourceRole = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="role_details",
+        message=SourceRole,
+    )
+    target: TargetRole = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="role_details",
+        message=TargetRole,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        optional=True,
+        enum=State,
     )
 
 
@@ -3793,6 +4213,15 @@ class SqlExternalSyncSettingError(proto.Message):
                 privileges to setup DDL replication. (e.g.
                 CREATE EVENT TRIGGER, CREATE SCHEMA) for
                 PostgreSQL.
+            WRITABLE_DESTINATION_REPLICA_RECREATION_DOWNTIME (59):
+                Read replicas of the Writable Destination
+                instance will be recreated after external
+                synchronization is complete, causing downtime on
+                read replicas.
+            WRITABLE_DESTINATION_STORAGE_AUTO_INCREASE_DISABLED (60):
+                A warning that disk storage auto increase is
+                disabled on the destination instance for a
+                Writable Destination migration.
         """
 
         SQL_EXTERNAL_SYNC_SETTING_ERROR_TYPE_UNSPECIFIED = 0
@@ -3854,6 +4283,8 @@ class SqlExternalSyncSettingError(proto.Message):
         PROMPT_DELETE_EXISTING = 56
         WILL_DELETE_EXISTING = 57
         PG_DDL_REPLICATION_INSUFFICIENT_PRIVILEGE = 58
+        WRITABLE_DESTINATION_REPLICA_RECREATION_DOWNTIME = 59
+        WRITABLE_DESTINATION_STORAGE_AUTO_INCREASE_DISABLED = 60
 
     kind: str = proto.Field(
         proto.STRING,
@@ -4060,7 +4491,7 @@ class ReplicaConfiguration(proto.Message):
 
 
 class SqlInstancesExecuteSqlRequest(proto.Message):
-    r"""Execute SQL statements request.
+    r"""
 
     Attributes:
         instance (str):
@@ -4071,6 +4502,8 @@ class SqlInstancesExecuteSqlRequest(proto.Message):
             contains the instance.
         body (google.cloud.sqladmin_v1.types.ExecuteSqlPayload):
             The request body.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -4085,6 +4518,10 @@ class SqlInstancesExecuteSqlRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="ExecuteSqlPayload",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -4109,7 +4546,8 @@ class ExecuteSqlPayload(proto.Message):
             sequence of statements separated by semicolons.
         database (str):
             Optional. Name of the database on which the
-            statement will be executed.
+            statement will be executed. For Postgres and SQL
+            Server it's required, for MySQL it's optional.
         password_secret_version (str):
             Optional. The resource name of the Secret Manager secret
             holding the password for the user to log into the database.
@@ -4205,7 +4643,7 @@ class ExecuteSqlPayload(proto.Message):
 
 
 class SqlInstancesExecuteSqlResponse(proto.Message):
-    r"""Execute SQL statements response.
+    r"""
 
     Attributes:
         messages (MutableSequence[google.cloud.sqladmin_v1.types.SqlInstancesExecuteSqlResponse.Message]):
@@ -4415,6 +4853,8 @@ class SqlInstancesAcquireSsrsLeaseRequest(proto.Message):
             contains the instance (Example: project-id).
         body (google.cloud.sqladmin_v1.types.InstancesAcquireSsrsLeaseRequest):
             Required. The request body.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -4429,6 +4869,10 @@ class SqlInstancesAcquireSsrsLeaseRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="InstancesAcquireSsrsLeaseRequest",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -4459,6 +4903,8 @@ class SqlInstancesReleaseSsrsLeaseRequest(proto.Message):
         project (str):
             Required. The project ID that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -4468,6 +4914,10 @@ class SqlInstancesReleaseSsrsLeaseRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -1219,9 +1219,13 @@ class TestSession(OpenTelemetryBase):
                 pass
 
         await session.create()
-        await session.run_in_transaction(unit_of_work)
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep"
+        ) as sleep_mock:
+            await session.run_in_transaction(unit_of_work)
 
         self.assertEqual(begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once()
 
         begin_transaction.assert_called_with(
             request=BeginTransactionRequest(
@@ -1261,10 +1265,14 @@ class TestSession(OpenTelemetryBase):
                 pass
 
         await session.create()
-        await session.run_in_transaction(unit_of_work)
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep"
+        ) as sleep_mock:
+            await session.run_in_transaction(unit_of_work)
 
         # Verify retried BeginTransaction API call.
         self.assertEqual(begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once()
 
         begin_transaction.assert_called_with(
             request=BeginTransactionRequest(
@@ -1308,10 +1316,14 @@ class TestSession(OpenTelemetryBase):
                 pass
 
         await session.create()
-        await session.run_in_transaction(unit_of_work)
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep"
+        ) as sleep_mock:
+            await session.run_in_transaction(unit_of_work)
 
         # Verify retried BeginTransaction API call.
         self.assertEqual(begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once()
 
         begin_transaction.assert_called_with(
             request=BeginTransactionRequest(
@@ -1812,7 +1824,7 @@ class TestSession(OpenTelemetryBase):
                 return _results[0]
             return 1.0
 
-        with mock.patch("time.time", _time):
+        with mock.patch("google.cloud.spanner_v1._async._helpers.time.time", _time):
             with mock.patch(
                 "google.cloud.spanner_v1._async._helpers.asyncio.sleep",
                 new_callable=mock.AsyncMock,
@@ -1893,7 +1905,7 @@ class TestSession(OpenTelemetryBase):
             return 1.0
 
         with (
-            mock.patch("time.time", _time),
+            mock.patch("google.cloud.spanner_v1._async._helpers.time.time", _time),
             mock.patch(
                 "google.cloud.spanner_v1._helpers.random.random", return_value=0
             ),
@@ -2817,11 +2829,15 @@ class TestSession(OpenTelemetryBase):
             return 3
 
         # check if current time > deadline
-        with mock.patch("time.time", _time_func):
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.time.time", _time_func
+        ):
             with pytest.raises(Exception):
                 _delay_until_retry(exc_mock, 2, 1, default_retry_delay=0)
 
-        with mock.patch("time.time", _time_func):
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.time.time", _time_func
+        ):
             with mock.patch(
                 "google.cloud.spanner_v1._helpers._get_retry_delay"
             ) as get_retry_delay_mock:
