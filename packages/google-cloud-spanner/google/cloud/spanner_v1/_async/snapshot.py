@@ -15,7 +15,6 @@
 """Model a set of read-only queries to a database as a snapshot."""
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.snapshot"
-import asyncio
 import functools
 import time
 from typing import List, Optional, Union
@@ -80,12 +79,6 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
 # transaction before giving up.
 _TRANSACTION_BEGIN_TIMEOUT_SECONDS = 30.0
 
-_DEFAULT_RETRY_TIMEOUT = 3600.0
-_DEFAULT_RETRY_INITIAL = 0.1
-_DEFAULT_RETRY_MAXIMUM = 32.0
-_DEFAULT_RETRY_MULTIPLIER = 1.3
-_DEFAULT_RETRY_PREDICATE = lambda e: isinstance(e, (ServiceUnavailable, ResourceExhausted))
-
 
 @CrossSync.convert
 async def _restart_on_unavailable(
@@ -138,44 +131,34 @@ async def _restart_on_unavailable(
     sleep_iter = None
     retry_predicate = None
     timeout = None
-    if retry is not None:
-        if retry is gapic_v1.method.DEFAULT:
-            timeout = _DEFAULT_RETRY_TIMEOUT
-            retry_predicate = _DEFAULT_RETRY_PREDICATE
-            initial = _DEFAULT_RETRY_INITIAL
-            maximum = _DEFAULT_RETRY_MAXIMUM
-            multiplier = _DEFAULT_RETRY_MULTIPLIER
-        else:
-            timeout = getattr(retry, "_timeout", getattr(retry, "timeout", None))
-            deadline_setting = getattr(retry, "_deadline", getattr(retry, "deadline", None))
-            if deadline_setting is not None:
-                timeout = deadline_setting
-            retry_predicate = getattr(retry, "_predicate", getattr(retry, "predicate", None))
-            initial = getattr(retry, "_initial", getattr(retry, "initial", 0.1))
-            maximum = getattr(retry, "_maximum", getattr(retry, "maximum", 32.0))
-            multiplier = getattr(retry, "_multiplier", getattr(retry, "multiplier", 1.3))
-
+    # GAPIC has no default retry for streaming reads/queries, so without an
+    # explicit ``Retry`` the stream is resumed on UNAVAILABLE as before.
+    if retry is not None and retry is not gapic_v1.method.DEFAULT:
+        # api_core's Retry exposes only `timeout` publicly; the backoff
+        # settings and predicate have no public accessors.
+        timeout = retry.timeout
+        retry_predicate = retry._predicate
         if timeout is not None:
             deadline = time.monotonic() + timeout
-        sleep_iter = iter(exponential_sleep_generator(initial, maximum, multiplier=multiplier))
+        sleep_iter = exponential_sleep_generator(
+            retry._initial, retry._maximum, multiplier=retry._multiplier
+        )
 
     async def sleep_or_raise(exc):
         if sleep_iter is not None:
-            try:
-                next_sleep = next(sleep_iter)
-            except StopIteration:
-                next_sleep = 0
+            next_sleep = next(sleep_iter)
             if deadline is not None and time.monotonic() + next_sleep > deadline:
                 final_exc, source_exc = build_retry_error(
                     [exc], RetryFailureReason.TIMEOUT, timeout
                 )
-                final_exc = _augment_error_with_request_id(final_exc, current_request_id)
-                source_exc = _augment_error_with_request_id(source_exc, current_request_id)
+                final_exc = _augment_error_with_request_id(
+                    final_exc, current_request_id
+                )
+                source_exc = _augment_error_with_request_id(
+                    source_exc, current_request_id
+                )
                 raise final_exc from source_exc
-            if CrossSync.is_async:
-                await asyncio.sleep(next_sleep)
-            else:
-                time.sleep(next_sleep)
+            await CrossSync.sleep(next_sleep)
 
     while True:
         try:
@@ -228,9 +211,11 @@ async def _restart_on_unavailable(
                     break
 
         except (ServiceUnavailable, ResourceExhausted) as exc:
-            if isinstance(exc, ResourceExhausted) and retry is None:
-                raise _augment_error_with_request_id(exc, current_request_id)
-            if retry_predicate is not None and not retry_predicate(exc):
+            if retry_predicate is None:
+                # No explicit Retry: resume on UNAVAILABLE only, as before.
+                if isinstance(exc, ResourceExhausted):
+                    raise _augment_error_with_request_id(exc, current_request_id)
+            elif not retry_predicate(exc):
                 raise _augment_error_with_request_id(exc, current_request_id)
             await sleep_or_raise(exc)
 
@@ -730,8 +715,6 @@ class _SnapshotBase(_SessionWrapper):
         retry=None,
     ):
         """Returns the streamed result set for a read or execute SQL request."""
-        if retry is gapic_v1.method.DEFAULT:
-            retry = getattr(method, "_retry", gapic_v1.method.DEFAULT)
         session = self._session
         database = session._database
 
