@@ -21,6 +21,23 @@
 # Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
+from typing import Set
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+# NOTE: We statically define all modules here to ensure static analysis tools
+# (mypy, pyright, Ruff) can easily parse them. If support is not present, the
+# imports are ignored, making their presence safe.
+__lazy_modules__: Set[str] = {
+    "google.api_core.exceptions",
+    "grpc",
+    "grpc._channel",
+}
+
 from google.api_core import exceptions
 
 try:

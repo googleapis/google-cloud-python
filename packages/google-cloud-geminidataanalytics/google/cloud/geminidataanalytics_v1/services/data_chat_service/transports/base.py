@@ -35,9 +35,7 @@ from google.cloud.geminidataanalytics_v1.types import conversation as gcg_conver
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class DataChatServiceTransport(abc.ABC):
@@ -161,6 +159,11 @@ class DataChatServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_conversation: gapic_v1.method.wrap_method(
+                self.update_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_conversation: gapic_v1.method.wrap_method(
                 self.get_conversation,
                 default_timeout=None,
@@ -241,6 +244,15 @@ class DataChatServiceTransport(abc.ABC):
     ) -> Callable[
         [conversation.DeleteConversationRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_conversation(
+        self,
+    ) -> Callable[
+        [gcg_conversation.UpdateConversationRequest],
+        Union[gcg_conversation.Conversation, Awaitable[gcg_conversation.Conversation]],
     ]:
         raise NotImplementedError()
 

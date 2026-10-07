@@ -31,14 +31,52 @@ class JsonObject(dict):
     """
 
     def __init__(self, *args, **kwargs):
-        self._is_null = (args, kwargs) == ((), {}) or args == (None,)
-        self._is_array = len(args) and isinstance(args[0], (list, tuple))
-        self._is_scalar_value = len(args) == 1 and not isinstance(args[0], (list, dict))
+        self._is_null = (
+            (args, kwargs) == ((), {})
+            or (len(args) == 1 and args[0] is None)
+            or (len(args) == 1 and isinstance(args[0], JsonObject) and args[0]._is_null)
+        )
+        self._is_array = (
+            len(args) == 1
+            and not self._is_null
+            and isinstance(
+                args[0]._array_value
+                if isinstance(args[0], JsonObject) and args[0]._is_array
+                else args[0],
+                (list, tuple),
+            )
+        )
+        self._is_scalar_value = (
+            len(args) == 1
+            and not self._is_null
+            and not self._is_array
+            and not isinstance(
+                args[0]._simple_value
+                if isinstance(args[0], JsonObject) and args[0]._is_scalar_value
+                else args[0],
+                dict,
+            )
+        )
+
+        if self._is_null:
+            super().__init__({"__json_null__": True})
+            return
+
+        if len(args) and isinstance(args[0], JsonObject):
+            if args[0]._is_array:
+                self._array_value = list(args[0]._array_value)
+                return
+            elif args[0]._is_scalar_value:
+                self._simple_value = args[0]._simple_value
+                return
+            else:
+                super().__init__(args[0].copy())
+                return
 
         # if the JSON object is represented with an array,
         # the value is contained separately
         if self._is_array:
-            self._array_value = args[0]
+            self._array_value = list(args[0])
             return
 
         # If it's a scalar value, set _simple_value and return early
@@ -46,16 +84,139 @@ class JsonObject(dict):
             self._simple_value = args[0]
             return
 
-        if len(args) and isinstance(args[0], JsonObject):
-            self._is_array = args[0]._is_array
-            self._is_scalar_value = args[0]._is_scalar_value
-            if self._is_array:
-                self._array_value = args[0]._array_value
-            elif self._is_scalar_value:
-                self._simple_value = args[0]._simple_value
+        super().__init__(*args, **kwargs)
 
-        if not self._is_null:
-            super(JsonObject, self).__init__(*args, **kwargs)
+    def get(self, key, default=None):
+        if self._is_array:
+            try:
+                return self._array_value[key]
+            except (IndexError, TypeError):
+                return default
+        if self._is_scalar_value or self._is_null:
+            return default
+        return super().get(key, default)
+
+    def copy(self):
+        if self._is_array:
+            return JsonObject(list(self._array_value))
+        if self._is_scalar_value:
+            return JsonObject(self._simple_value)
+        if self._is_null:
+            return JsonObject()
+        return JsonObject(super().copy())
+
+    def keys(self):
+        if self._is_array:
+            return dict(enumerate(self._array_value)).keys()
+        if self._is_scalar_value or self._is_null:
+            return {}.keys()
+        return super().keys()
+
+    def values(self):
+        if self._is_array:
+            return dict(enumerate(self._array_value)).values()
+        if self._is_scalar_value:
+            return {0: self._simple_value}.values()
+        if self._is_null:
+            return {}.values()
+        return super().values()
+
+    def items(self):
+        if self._is_array:
+            return dict(enumerate(self._array_value)).items()
+        if self._is_scalar_value:
+            return {0: self._simple_value}.items()
+        if self._is_null:
+            return {}.items()
+        return super().items()
+
+    def pop(self, key, *args):
+        if self._is_array:
+            try:
+                return self._array_value.pop(key)
+            except (IndexError, TypeError):
+                if args:
+                    return args[0]
+                raise KeyError(key) from None
+        if self._is_scalar_value or self._is_null:
+            if args:
+                return args[0]
+            raise KeyError(key)
+        return super().pop(key, *args)
+
+    def __len__(self):
+        if self._is_null:
+            return 0
+        if self._is_array:
+            return len(self._array_value)
+        if self._is_scalar_value:
+            return 1
+        return super().__len__()
+
+    def __bool__(self):
+        if self._is_null:
+            return False
+        if self._is_array:
+            return bool(self._array_value)
+        if self._is_scalar_value:
+            return bool(self._simple_value)
+        return super().__len__() > 0
+
+    def __iter__(self):
+        if self._is_null:
+            return iter([])
+        if self._is_array:
+            return iter(self._array_value)
+        if self._is_scalar_value:
+            raise TypeError(
+                f"'{type(self._simple_value).__name__}' object is not iterable"
+            )
+        return super().__iter__()
+
+    def __getitem__(self, key):
+        if self._is_array:
+            return self._array_value[key]
+        if self._is_scalar_value:
+            raise TypeError(
+                f"'{type(self._simple_value).__name__}' object is not subscriptable"
+            )
+        return super().__getitem__(key)
+
+    def __contains__(self, item):
+        if self._is_null:
+            return False
+        if self._is_array:
+            return item in self._array_value
+        if self._is_scalar_value:
+            raise TypeError(
+                f"argument of type '{type(self._simple_value).__name__}' "
+                "is not iterable"
+            )
+        return super().__contains__(item)
+
+    def __eq__(self, other):
+        if isinstance(other, JsonObject):
+            if self._is_array:
+                return other._is_array and self._array_value == other._array_value
+            if self._is_scalar_value:
+                return (
+                    other._is_scalar_value and self._simple_value == other._simple_value
+                )
+            if self._is_null:
+                return other._is_null
+            return not (
+                other._is_array or other._is_scalar_value or other._is_null
+            ) and super().__eq__(other)
+        if self._is_array:
+            return self._array_value == other
+        if self._is_scalar_value:
+            return self._simple_value == other
+        if self._is_null:
+            return other is None
+        return super().__eq__(other)
+
+    def __ne__(self, other):
+        return not (self == other)
 
     def __repr__(self):
         if self._is_array:
@@ -64,7 +225,7 @@ class JsonObject(dict):
         if self._is_scalar_value:
             return str(self._simple_value)
 
-        return super(JsonObject, self).__repr__()
+        return super().__repr__()
 
     @classmethod
     def from_str(cls, str_repr):
@@ -90,17 +251,33 @@ class JsonObject(dict):
         if self._is_null:
             return None
 
+        raw = _unwrap_for_json(self)
         if self._is_scalar_value:
-            return json.dumps(self._simple_value)
+            return json.dumps(raw)
 
-        if self._is_array:
-            return json.dumps(self._array_value, sort_keys=True, separators=(",", ":"))
+        return json.dumps(raw, sort_keys=True, separators=(",", ":"))
 
-        return json.dumps(self, sort_keys=True, separators=(",", ":"))
+
+def _unwrap_for_json(val):
+    """Recursively unwrap JsonObject instances for safe json.dumps serialization."""
+    if isinstance(val, JsonObject):
+        if val._is_null:
+            return None
+        if val._is_array:
+            return [_unwrap_for_json(item) for item in val._array_value]
+        if val._is_scalar_value:
+            return val._simple_value
+        return {k: _unwrap_for_json(v) for k, v in val.items()}
+    if isinstance(val, dict):
+        return {k: _unwrap_for_json(v) for k, v in val.items()}
+    if isinstance(val, (list, tuple)):
+        return [_unwrap_for_json(item) for item in val]
+    return val
 
 
 _INTERVAL_PATTERN = re.compile(
-    r"^P(-?\d+Y)?(-?\d+M)?(-?\d+D)?(T(-?\d+H)?(-?\d+M)?(-?((\d+([.,]\d{1,9})?)|([.,]\d{1,9}))S)?)?$"
+    r"^P(-?\d+Y)?(-?\d+M)?(-?\d+D)?"
+    r"(T(-?\d+H)?(-?\d+M)?(-?((\d+([.,]\d{1,9})?)|([.,]\d{1,9}))S)?)?$"
 )
 
 
@@ -109,7 +286,7 @@ class Interval:
     """Represents a Spanner INTERVAL type.
 
     An interval is a combination of months, days and nanoseconds.
-    Internally, Spanner supports Interval value with the following range of individual fields:
+    Internally, Spanner supports Interval value with individual fields range:
     months: [-120000, 120000]
     days: [-3660000, 3660000]
     nanoseconds: [-316224000000000000000, 316224000000000000000]
@@ -199,12 +376,14 @@ class Interval:
         parts = match.groups()
         if not any(parts[:3]) and not parts[3]:
             raise ValueError(
-                f"Invalid interval format: at least one component (Y/M/D/H/M/S) is required: {s}"
+                "Invalid interval format: at least one component "
+                f"(Y/M/D/H/M/S) is required: {s}"
             )
 
         if parts[3] == "T" and not any(parts[4:7]):
             raise ValueError(
-                f"Invalid interval format: time designator 'T' present but no time components specified: {s}"
+                "Invalid interval format: time designator 'T' present "
+                f"but no time components specified: {s}"
             )
 
         def parse_num(s: str, suffix: str) -> int:
@@ -298,14 +477,14 @@ def _proto_enum(int_val, proto_enum_object):
 
 
 def get_proto_message(bytes_string, proto_message_object):
-    """parses serialized protocol buffer bytes' data or its list into proto message or list of proto message.
+    """Parses serialized protocol buffer bytes data or list into proto message.
 
     Args:
         bytes_string (bytes or list[bytes]): bytes object.
         proto_message_object (Message): Message object for parsing
 
     Returns:
-        Message or list[Message]: parses serialized protocol buffer data into this message.
+        Message or list[Message]: Parsed protocol buffer message(s).
 
     Raises:
         ValueError: if the input proto_message_object is not of type Message

@@ -30,6 +30,9 @@ __protobuf__ = proto.module(
         "GetDocumentRequest",
         "BatchGetDocumentsRequest",
         "BatchGetDocumentsResponse",
+        "AnswerQueryRequest",
+        "AnswerQueryResponse",
+        "Answer",
         "DocumentChunk",
     },
 )
@@ -55,6 +58,7 @@ class DocumentView(proto.Enum):
             - ``description``
             - ``update_time``
             - ``view``
+            - ``content_length_bytes``
 
             This is the default of view for
             [DeveloperKnowledge.SearchDocumentChunks][google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks].
@@ -78,8 +82,9 @@ class DocumentView(proto.Enum):
 
 
 class Document(proto.Message):
-    r"""A Document represents a piece of content from the Developer
-    Knowledge corpus.
+    r"""A Document represents a page of documentation in the
+    Developer Knowledge corpus, like the page at
+    https://docs.cloud.google.com/storage/docs/creating-buckets.
 
     Attributes:
         name (str):
@@ -109,6 +114,8 @@ class Document(proto.Message):
             Output only. Specifies the
             [DocumentView][google.developers.knowledge.v1.DocumentView]
             of the document.
+        content_length_bytes (int):
+            Output only. The length of the ``content`` field in bytes.
     """
 
     name: str = proto.Field(
@@ -145,6 +152,10 @@ class Document(proto.Message):
         number=8,
         enum="DocumentView",
     )
+    content_length_bytes: int = proto.Field(
+        proto.INT32,
+        number=9,
+    )
 
 
 class SearchDocumentChunksRequest(proto.Message):
@@ -153,17 +164,20 @@ class SearchDocumentChunksRequest(proto.Message):
 
     Attributes:
         query (str):
-            Required. Provides the raw query string
-            provided by the user, such as "How to create a
-            Cloud Storage bucket?".
+            Required. Provides the raw query string provided by the
+            user, such as "How to create a Cloud Storage bucket?". The
+            query must not exceed 500 characters; values longer than 500
+            characters will result in an ``INVALID_ARGUMENT`` error.
         page_size (int):
-            Optional. Specifies the maximum number of results to return.
-            The service may return fewer than this value.
+            Optional. Specifies the maximum number of
+            results to return. The service may return fewer
+            than this value.
 
-            If unspecified, at most 5 results will be returned.
+            If unspecified, at most 5 results will be
+            returned.
 
-            The maximum value is 20; values above 20 will result in an
-            INVALID_ARGUMENT error.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
             Optional. Contains a page token, received from a previous
             ``SearchDocumentChunks`` call. Provide this to retrieve the
@@ -179,6 +193,8 @@ class SearchDocumentChunksRequest(proto.Message):
 
             Supported fields for filtering:
 
+            - ``content_length_bytes`` (INTEGER): The length of the
+              ``Document.content`` field in bytes.
             - ``data_source`` (STRING): The source of the document, e.g.
               ``docs.cloud.google.com``. See
               https://developers.google.com/knowledge/reference/corpus-reference
@@ -190,6 +206,9 @@ class SearchDocumentChunksRequest(proto.Message):
             - ``uri`` (STRING): The document URI, e.g.
               ``https://docs.cloud.google.com/bigquery/docs/tables``.
 
+            INTEGER fields support ``=``, ``<``, ``<=``, ``>``, and
+            ``>=`` operators.
+
             STRING fields support ``=`` (equals) and ``!=`` (not equals)
             operators for **exact match** on the whole string. Partial
             match, prefix match, and regexp match are not supported.
@@ -198,6 +217,11 @@ class SearchDocumentChunksRequest(proto.Message):
             ``>=`` operators. Timestamps must be in RFC-3339 format,
             e.g., ``"2025-01-01T00:00:00Z"``.
 
+            Note: Field names must be in ``snake_case`` (e.g.,
+            ``data_source``). Values on the right-hand side of filtering
+            expressions must be string literals enclosed in double
+            quotes (e.g., ``"docs.cloud.google.com"``).
+
             You can combine expressions using ``AND``, ``OR``, and
             ``NOT`` (or ``-``) logical operators. ``OR`` has higher
             precedence than ``AND``. Use parentheses for explicit
@@ -205,6 +229,8 @@ class SearchDocumentChunksRequest(proto.Message):
 
             Examples:
 
+            - Filter by ``Document.content_length_bytes``:
+              ``content_length_bytes < 50000``
             - ``data_source = "docs.cloud.google.com" OR data_source = "firebase.google.com"``
             - ``data_source != "firebase.google.com"``
             - ``update_time < "2024-01-01T00:00:00Z"``
@@ -251,9 +277,9 @@ class SearchDocumentChunksResponse(proto.Message):
             [DeveloperKnowledge.BatchGetDocuments][google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments]
             to retrieve the full document content.
         next_page_token (str):
-            Optional. Provides a token that can be sent as
-            ``page_token`` to retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            Provides a token that can be sent as ``page_token`` to
+            retrieve the next page. If this field is omitted, there are
+            no subsequent pages.
     """
 
     @property
@@ -280,6 +306,9 @@ class GetDocumentRequest(proto.Message):
             Required. Specifies the name of the document to retrieve.
             Format: ``documents/{uri_without_scheme}`` Example:
             ``documents/docs.cloud.google.com/storage/docs/creating-buckets``
+
+            The name must not exceed 500 characters; values longer than
+            500 characters will result in an ``INVALID_ARGUMENT`` error.
         view (google.developer_knowledge_v1.types.DocumentView):
             Optional. Specifies the
             [DocumentView][google.developers.knowledge.v1.DocumentView]
@@ -312,6 +341,9 @@ class BatchGetDocumentsRequest(proto.Message):
 
             Format: ``documents/{uri_without_scheme}`` Example:
             ``documents/docs.cloud.google.com/storage/docs/creating-buckets``
+
+            Each name must not exceed 500 characters; values longer than
+            500 characters will result in an ``INVALID_ARGUMENT`` error.
         view (google.developer_knowledge_v1.types.DocumentView):
             Optional. Specifies the
             [DocumentView][google.developers.knowledge.v1.DocumentView]
@@ -347,6 +379,204 @@ class BatchGetDocumentsResponse(proto.Message):
     )
 
 
+class AnswerQueryRequest(proto.Message):
+    r"""Request message for
+    [DeveloperKnowledge.AnswerQuery][google.developers.knowledge.v1.DeveloperKnowledge.AnswerQuery].
+
+    Attributes:
+        query (str):
+            Required. The query to answer.
+        filter (str):
+            Optional. Applies a strict filter to the search results used
+            to ground the answer. The expression supports a subset of
+            the syntax described at https://google.aip.dev/160.
+
+            Supported fields for filtering:
+
+            - ``content_length_bytes`` (INTEGER): The length of the
+              ``Document.content`` field in bytes.
+            - ``data_source`` (STRING): The source of the document, e.g.
+              ``docs.cloud.google.com``. See
+              https://developers.google.com/knowledge/reference/corpus-reference
+              for the complete list of data sources in the corpus.
+            - ``update_time`` (TIMESTAMP): The timestamp of when the
+              document was last meaningfully updated. A meaningful
+              update is one that changes document's markdown content or
+              metadata.
+            - ``uri`` (STRING): The document URI, e.g.
+              ``https://docs.cloud.google.com/bigquery/docs/tables``.
+
+            INTEGER fields support ``=``, ``<``, ``<=``, ``>``, and
+            ``>=`` operators.
+
+            STRING fields support ``=`` (equals) and ``!=`` (not equals)
+            operators for **exact match** on the whole string. Partial
+            match, prefix match, and regexp match are not supported.
+
+            TIMESTAMP fields support ``=``, ``<``, ``<=``, ``>``, and
+            ``>=`` operators. Timestamps must be in RFC-3339 format,
+            e.g., ``"2025-01-01T00:00:00Z"``.
+
+            You can combine expressions using ``AND``, ``OR``, and
+            ``NOT`` (or ``-``) logical operators. ``OR`` has higher
+            precedence than ``AND``. Use parentheses for explicit
+            precedence grouping.
+
+            Examples:
+
+            - Filter by ``Document.content_length_bytes``:
+              ``content_length_bytes < 50000``
+            - ``data_source = "docs.cloud.google.com" OR data_source = "firebase.google.com"``
+            - ``data_source != "firebase.google.com"``
+            - ``update_time < "2024-01-01T00:00:00Z"``
+            - ``update_time >= "2025-01-22T00:00:00Z" AND (data_source = "developer.chrome.com" OR data_source = "web.dev")``
+            - ``uri = "https://docs.cloud.google.com/release-notes"``
+
+            The ``filter`` string must not exceed 500 characters; values
+            longer than 500 characters will result in an
+            ``INVALID_ARGUMENT`` error.
+    """
+
+    query: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AnswerQueryResponse(proto.Message):
+    r"""Response message for
+    [DeveloperKnowledge.AnswerQuery][google.developers.knowledge.v1.DeveloperKnowledge.AnswerQuery].
+
+    Attributes:
+        answer (google.developer_knowledge_v1.types.Answer):
+            The answer to the query.
+    """
+
+    answer: "Answer" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Answer",
+    )
+
+
+class Answer(proto.Message):
+    r"""An answer to a query.
+
+    Attributes:
+        answer_text (str):
+            Contains the text of the answer.
+        citations (MutableSequence[google.developer_knowledge_v1.types.Answer.AnswerCitation]):
+            Output only. Contains citations for the
+            answer.
+        references (MutableSequence[google.developer_knowledge_v1.types.Answer.AnswerReference]):
+            Output only. Contains references for the
+            answer.
+    """
+
+    class AnswerCitation(proto.Message):
+        r"""Citation info for a segment.
+
+        Attributes:
+            start_index (int):
+                Output only. Indicates the start of the
+                segment, measured in bytes (UTF-8 unicode),
+                inclusive. If there are multi-byte characters,
+                such as non-ASCII characters, the index
+                measurement is longer than the string length.
+            end_index (int):
+                Output only. Indicates the end of the
+                segment, measured in bytes (UTF-8 unicode),
+                exclusive. If there are multi-byte characters,
+                such as non-ASCII characters, the index
+                measurement is longer than the string length.
+            sources (MutableSequence[google.developer_knowledge_v1.types.Answer.CitationSource]):
+                Output only. Contains citation sources for
+                the attributed segment.
+        """
+
+        start_index: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        end_index: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        sources: MutableSequence["Answer.CitationSource"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="Answer.CitationSource",
+        )
+
+    class CitationSource(proto.Message):
+        r"""Citation source.
+
+        Attributes:
+            reference_index (int):
+                Output only. Contains the index of the
+                [Answer.AnswerReference][google.developers.knowledge.v1.Answer.AnswerReference]
+                in the ``references`` repeated field.
+        """
+
+        reference_index: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+
+    class AnswerReference(proto.Message):
+        r"""Represents a reference to a source.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            document_reference (google.developer_knowledge_v1.types.Answer.DocumentReference):
+                Output only. The reference document.
+
+                This field is a member of `oneof`_ ``content``.
+        """
+
+        document_reference: "Answer.DocumentReference" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="content",
+            message="Answer.DocumentReference",
+        )
+
+    class DocumentReference(proto.Message):
+        r"""Represents a reference to a document.
+
+        Attributes:
+            document_chunk (google.developer_knowledge_v1.types.DocumentChunk):
+                Output only. Contains the document chunk. The
+                ``document_chunk.id`` field is not set and will be empty.
+        """
+
+        document_chunk: "DocumentChunk" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DocumentChunk",
+        )
+
+    answer_text: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    citations: MutableSequence[AnswerCitation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=AnswerCitation,
+    )
+    references: MutableSequence[AnswerReference] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=AnswerReference,
+    )
+
+
 class DocumentChunk(proto.Message):
     r"""A DocumentChunk represents a piece of content from a
     [Document][google.developers.knowledge.v1.Document] in the
@@ -355,6 +585,9 @@ class DocumentChunk(proto.Message):
     [DeveloperKnowledge.GetDocument][google.developers.knowledge.v1.DeveloperKnowledge.GetDocument]
     or
     [DeveloperKnowledge.BatchGetDocuments][google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         parent (str):
@@ -389,6 +622,12 @@ class DocumentChunk(proto.Message):
             or
             [DeveloperKnowledge.BatchGetDocuments][google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments]
             to fetch the full document content.
+        relevance_score (float):
+            Output only. Represents the relevance score of the chunk to
+            the search query. Higher score indicates higher chunk
+            relevance. The score is in range [0.0, 1.0].
+
+            This field is a member of `oneof`_ ``_relevance_score``.
     """
 
     parent: str = proto.Field(
@@ -407,6 +646,11 @@ class DocumentChunk(proto.Message):
         proto.MESSAGE,
         number=4,
         message="Document",
+    )
+    relevance_score: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+        optional=True,
     )
 
 

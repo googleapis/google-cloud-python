@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.servicecontrol_v1._compat import transcode_request
 from google.cloud.servicecontrol_v1.types import quota_controller
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class QuotaControllerRestInterceptor:
@@ -147,7 +147,8 @@ class QuotaControllerRestStub:
 class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
     """REST backend synchronous transport for QuotaController.
 
-    `Google Quota Control API </service-control/overview>`__
+    `Google Quota Control
+    API <https://cloud.google.com/service-control/overview>`__
 
     Allows clients to allocate and release quota against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.
@@ -294,19 +295,16 @@ class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
             http_options = (
                 _BaseQuotaControllerRestTransport._BaseAllocateQuota._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_allocate_quota(request, metadata)
-            transcoded_request = _BaseQuotaControllerRestTransport._BaseAllocateQuota._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseQuotaControllerRestTransport._BaseAllocateQuota._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseQuotaControllerRestTransport._BaseAllocateQuota._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseQuotaControllerRestTransport._BaseAllocateQuota,
+                    "_BaseAllocateQuota__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

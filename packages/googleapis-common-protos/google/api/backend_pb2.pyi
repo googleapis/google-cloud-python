@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -99,7 +99,7 @@ class BackendRule(_message.Message):
         operation_deadline: _Optional[float] = ...,
         path_translation: _Optional[_Union[BackendRule.PathTranslation, str]] = ...,
         jwt_audience: _Optional[str] = ...,
-        disable_auth: bool = ...,
+        disable_auth: _Optional[bool] = ...,
         protocol: _Optional[str] = ...,
         overrides_by_request_protocol: _Optional[_Mapping[str, BackendRule]] = ...,
         load_balancing_policy: _Optional[str] = ...,

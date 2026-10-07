@@ -22,10 +22,12 @@ from google.cloud.spanner_v1.metrics.constants import (
     METRIC_LABEL_KEY_CLIENT_UID,
     METRIC_LABEL_KEY_DATABASE,
     METRIC_LABEL_KEY_DIRECT_PATH_ENABLED,
+    METRIC_NAME_AFE_CONNECTIVITY_ERROR_COUNT,
+    METRIC_NAME_AFE_LATENCY,
     METRIC_NAME_ATTEMPT_COUNT,
     METRIC_NAME_ATTEMPT_LATENCIES,
+    METRIC_NAME_GFE_CONNECTIVITY_ERROR_COUNT,
     METRIC_NAME_GFE_LATENCY,
-    METRIC_NAME_GFE_MISSING_HEADER_COUNT,
     METRIC_NAME_OPERATION_COUNT,
     METRIC_NAME_OPERATION_LATENCIES,
     MONITORED_RES_LABEL_KEY_CLIENT_HASH,
@@ -50,13 +52,14 @@ class MetricsTracerFactory:
     """Factory class for creating MetricTracer instances. This class facilitates the creation of MetricTracer objects, which are responsible for collecting and tracing metrics."""
 
     enabled: bool
-    gfe_enabled: bool
     _instrument_attempt_latency: "Histogram"
     _instrument_attempt_counter: "Counter"
     _instrument_operation_latency: "Histogram"
     _instrument_operation_counter: "Counter"
     _instrument_gfe_latency: "Histogram"
-    _instrument_gfe_missing_header_count: "Counter"
+    _instrument_gfe_connectivity_error_count: "Counter"
+    _instrument_afe_latency: "Histogram"
+    _instrument_afe_connectivity_error_count: "Counter"
     _client_attributes: Dict[str, str]
 
     @property
@@ -268,6 +271,10 @@ class MetricsTracerFactory:
             instrument_operation_latency=self._instrument_operation_latency,
             instrument_operation_counter=self._instrument_operation_counter,
             client_attributes=self._client_attributes.copy(),
+            instrument_gfe_latency=self._instrument_gfe_latency,
+            instrument_gfe_connectivity_error_count=self._instrument_gfe_connectivity_error_count,
+            instrument_afe_latency=self._instrument_afe_latency,
+            instrument_afe_connectivity_error_count=self._instrument_afe_connectivity_error_count,
         )
         return metrics_tracer
 
@@ -320,8 +327,20 @@ class MetricsTracerFactory:
             description="GFE Latency.",
         )
 
-        self._instrument_gfe_missing_header_count = meter.create_counter(
-            name=METRIC_NAME_GFE_MISSING_HEADER_COUNT,
+        self._instrument_gfe_connectivity_error_count = meter.create_counter(
+            name=METRIC_NAME_GFE_CONNECTIVITY_ERROR_COUNT,
             unit="1",
-            description="GFE missing header count.",
+            description="GFE connectivity error count.",
+        )
+
+        self._instrument_afe_latency = meter.create_histogram(
+            name=METRIC_NAME_AFE_LATENCY,
+            unit="ms",
+            description="AFE Latency.",
+        )
+
+        self._instrument_afe_connectivity_error_count = meter.create_counter(
+            name=METRIC_NAME_AFE_CONNECTIVITY_ERROR_COUNT,
+            unit="1",
+            description="AFE connectivity error count.",
         )

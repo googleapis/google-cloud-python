@@ -32,6 +32,7 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.

@@ -35,9 +35,7 @@ from google.ads.marketingplatform_admin_v1alpha.types import (
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class MarketingplatformAdminServiceTransport(abc.ABC):
@@ -189,6 +187,76 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_user_group: gapic_v1.method.wrap_method(
+                self.get_user_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_user_groups: gapic_v1.method.wrap_method(
+                self.list_user_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_user_group: gapic_v1.method.wrap_method(
+                self.create_user_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_user_group: gapic_v1.method.wrap_method(
+                self.update_user_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_user_group: gapic_v1.method.wrap_method(
+                self.delete_user_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_user_group_member: gapic_v1.method.wrap_method(
+                self.get_user_group_member,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_user_group_members: gapic_v1.method.wrap_method(
+                self.list_user_group_members,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_user_group_member: gapic_v1.method.wrap_method(
+                self.create_user_group_member,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_user_group_member: gapic_v1.method.wrap_method(
+                self.update_user_group_member,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_user_group_member: gapic_v1.method.wrap_method(
+                self.delete_user_group_member,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_admin_access_binding: gapic_v1.method.wrap_method(
+                self.get_admin_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_admin_access_bindings: gapic_v1.method.wrap_method(
+                self.list_admin_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_admin_access_binding: gapic_v1.method.wrap_method(
+                self.create_admin_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_admin_access_binding: gapic_v1.method.wrap_method(
+                self.update_admin_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -286,6 +354,141 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
             marketingplatform_admin.ReportPropertyUsageResponse,
             Awaitable[marketingplatform_admin.ReportPropertyUsageResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_user_group(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.GetUserGroupRequest],
+        Union[resources.UserGroup, Awaitable[resources.UserGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_user_groups(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ListUserGroupsRequest],
+        Union[
+            marketingplatform_admin.ListUserGroupsResponse,
+            Awaitable[marketingplatform_admin.ListUserGroupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_user_group(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.CreateUserGroupRequest],
+        Union[resources.UserGroup, Awaitable[resources.UserGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_user_group(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.UpdateUserGroupRequest],
+        Union[resources.UserGroup, Awaitable[resources.UserGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_user_group(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.DeleteUserGroupRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_user_group_member(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.GetUserGroupMemberRequest],
+        Union[resources.UserGroupMember, Awaitable[resources.UserGroupMember]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_user_group_members(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ListUserGroupMembersRequest],
+        Union[
+            marketingplatform_admin.ListUserGroupMembersResponse,
+            Awaitable[marketingplatform_admin.ListUserGroupMembersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_user_group_member(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.CreateUserGroupMemberRequest],
+        Union[resources.UserGroupMember, Awaitable[resources.UserGroupMember]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_user_group_member(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.UpdateUserGroupMemberRequest],
+        Union[resources.UserGroupMember, Awaitable[resources.UserGroupMember]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_user_group_member(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.DeleteUserGroupMemberRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_admin_access_binding(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.GetAdminAccessBindingRequest],
+        Union[resources.AdminAccessBinding, Awaitable[resources.AdminAccessBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_admin_access_bindings(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ListAdminAccessBindingsRequest],
+        Union[
+            marketingplatform_admin.ListAdminAccessBindingsResponse,
+            Awaitable[marketingplatform_admin.ListAdminAccessBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_admin_access_binding(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.CreateAdminAccessBindingRequest],
+        Union[resources.AdminAccessBinding, Awaitable[resources.AdminAccessBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_admin_access_binding(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.UpdateAdminAccessBindingRequest],
+        Union[resources.AdminAccessBinding, Awaitable[resources.AdminAccessBinding]],
     ]:
         raise NotImplementedError()
 

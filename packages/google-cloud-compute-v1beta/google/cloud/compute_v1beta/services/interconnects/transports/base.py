@@ -32,9 +32,7 @@ from google.cloud.compute_v1beta.types import compute
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class InterconnectsTransport(abc.ABC):
@@ -227,6 +225,11 @@ class InterconnectsTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.set_name: gapic_v1.method.wrap_method(
+                self.set_name,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=600.0,
@@ -317,6 +320,15 @@ class InterconnectsTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SetLabelsInterconnectRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_name(
+        self,
+    ) -> Callable[
+        [compute.SetNameInterconnectRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

@@ -421,9 +421,15 @@ def test_create_channel_implicit_with_default_host(
     assert channel is grpc_secure_channel.return_value
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
-    auth_metadata_plugin.assert_called_once_with(
-        mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host
+    assert auth_metadata_plugin.call_count == 1
+    assert auth_metadata_plugin.call_args.args == (
+        mock.sentinel.credentials,
+        mock.sentinel.Request,
     )
+    assert auth_metadata_plugin.call_args.kwargs["default_host"] == default_host
+    # google-auth >= 2.56.3 supports suppress_metrics_header; older versions omit it during fallback
+    if "suppress_metrics_header" in auth_metadata_plugin.call_args.kwargs:
+        assert auth_metadata_plugin.call_args.kwargs["suppress_metrics_header"] is True
     grpc_secure_channel.assert_called_once_with(
         expected_target, composite_creds, compression=None
     )
@@ -737,3 +743,92 @@ async def test_fake_stream_unary_call():
     await fake_call.wait_for_connection()
     response = await fake_call
     assert fake_call.response == response
+
+
+def test_apply_channel_interceptors_none_or_empty():
+    channel = mock.Mock()
+    assert grpc_helpers_async.apply_channel_interceptors(channel, None) is channel
+    assert grpc_helpers_async.apply_channel_interceptors(channel, []) is channel
+
+
+def test_apply_channel_interceptors_channel_without_attr():
+    channel = object()
+    interceptor = mock.Mock()
+    assert (
+        grpc_helpers_async.apply_channel_interceptors(channel, [interceptor]) is channel
+    )
+
+
+def test_apply_channel_interceptors_list():
+    interceptor1 = mock.Mock()
+    interceptor2 = mock.Mock()
+    channel = mock.Mock()
+    channel._unary_unary_interceptors = [interceptor1]
+
+    result = grpc_helpers_async.apply_channel_interceptors(
+        channel, [interceptor1, interceptor2]
+    )
+    assert result is channel
+    assert channel._unary_unary_interceptors == [interceptor1, interceptor2]
+
+
+def test_apply_channel_interceptors_mock():
+    interceptor1 = mock.Mock()
+    interceptor2 = mock.Mock()
+    channel = mock.Mock()
+    channel._unary_unary_interceptors = mock.Mock(spec=["append"])
+
+    result = grpc_helpers_async.apply_channel_interceptors(
+        channel, [interceptor1, interceptor2]
+    )
+    assert result is channel
+    channel._unary_unary_interceptors.append.assert_any_call(interceptor1)
+    channel._unary_unary_interceptors.append.assert_any_call(interceptor2)
+
+
+def test_apply_channel_interceptors_inner_target_not_appendable():
+    channel = mock.Mock(spec=["_unary_unary_interceptors"])
+    channel._unary_unary_interceptors = 123
+    interceptor = mock.Mock(spec=["intercept_unary_unary"])
+    assert (
+        grpc_helpers_async.apply_channel_interceptors(channel, [interceptor]) is channel
+    )
+
+
+def test_apply_channel_interceptors_fallback_not_appendable():
+    channel = mock.Mock(spec=["_unary_unary_interceptors"])
+    channel._unary_unary_interceptors = 123
+    interceptor = mock.Mock(spec=[])
+    assert (
+        grpc_helpers_async.apply_channel_interceptors(channel, [interceptor]) is channel
+    )
+
+
+def test_apply_channel_interceptors_fallback_unary_unary_list():
+    class CustomInterceptor:
+        pass
+
+    interceptor1 = CustomInterceptor()
+    interceptor2 = CustomInterceptor()
+    channel = mock.Mock(spec=["_unary_unary_interceptors"])
+    channel._unary_unary_interceptors = [interceptor1]
+
+    result = grpc_helpers_async.apply_channel_interceptors(
+        channel, [interceptor1, interceptor2]
+    )
+    assert result is channel
+    assert channel._unary_unary_interceptors == [interceptor1, interceptor2]
+
+
+def test_apply_channel_interceptors_fallback_unary_unary_appendable():
+    class CustomInterceptor:
+        pass
+
+    interceptor = CustomInterceptor()
+    channel = mock.Mock(spec=["_unary_unary_interceptors"])
+    mock_append = mock.Mock(spec=["append"])
+    channel._unary_unary_interceptors = mock_append
+
+    result = grpc_helpers_async.apply_channel_interceptors(channel, [interceptor])
+    assert result is channel
+    mock_append.append.assert_called_once_with(interceptor)

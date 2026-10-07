@@ -202,9 +202,6 @@
         }
       ]
     },
-    "packages/google-auth": {
-      "component": "google-auth"
-    },
     "packages/google-auth-httplib2": {
       "component": "google-auth-httplib2"
     },
@@ -267,9 +264,15 @@
       "extra-files": [
         "google/cloud/agentidentitycredentials/gapic_version.py",
         "google/cloud/agentidentitycredentials_v1/gapic_version.py",
+        "google/cloud/agentidentitycredentials_v1beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.agentidentitycredentials.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.agentidentitycredentials.v1beta.json",
           "type": "json"
         }
       ]
@@ -351,18 +354,6 @@
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeconnect.v1.json",
-          "type": "json"
-        }
-      ]
-    },
-    "packages/google-cloud-apigee-registry": {
-      "component": "google-cloud-apigee-registry",
-      "extra-files": [
-        "google/cloud/apigee_registry/gapic_version.py",
-        "google/cloud/apigee_registry_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeregistry.v1.json",
           "type": "json"
         }
       ]
@@ -538,9 +529,15 @@
       "extra-files": [
         "google/cloud/backupdr/gapic_version.py",
         "google/cloud/backupdr_v1/gapic_version.py",
+        "google/cloud/backupdr_v1beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.backupdr.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.backupdr.v1beta.json",
           "type": "json"
         }
       ]
@@ -651,7 +648,13 @@
       "component": "google-cloud-biglake-hive",
       "extra-files": [
         "google/cloud/biglake_hive/gapic_version.py",
+        "google/cloud/biglake_hive_v1/gapic_version.py",
         "google/cloud/biglake_hive_v1beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.hive.v1.json",
+          "type": "json"
+        },
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.hive.v1beta.json",
@@ -1019,6 +1022,18 @@
         }
       ]
     },
+    "packages/google-cloud-commerceproducer": {
+      "component": "google-cloud-commerceproducer",
+      "extra-files": [
+        "google/cloud/commerceproducer/gapic_version.py",
+        "google/cloud/commerceproducer_v1beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.commerceproducer.v1beta.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-cloud-common": {
       "component": "google-cloud-common",
       "extra-files": [
@@ -1040,6 +1055,7 @@
     "packages/google-cloud-compute-v1beta": {
       "component": "google-cloud-compute-v1beta",
       "extra-files": [
+        "google/cloud/compute/gapic_version.py",
         "google/cloud/compute_v1beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
@@ -2152,7 +2168,6 @@
       "extra-files": [
         "google/cloud/monitoring_dashboard/gapic_version.py",
         "google/cloud/monitoring_dashboard_v1/gapic_version.py",
-        "google/monitoring/dashboard_v1/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.monitoring.dashboard.v1.json",
@@ -2252,9 +2267,15 @@
       "extra-files": [
         "google/cloud/network_services/gapic_version.py",
         "google/cloud/network_services_v1/gapic_version.py",
+        "google/cloud/network_services_v1beta1/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.networkservices.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.networkservices.v1beta1.json",
           "type": "json"
         }
       ]
@@ -2483,6 +2504,18 @@
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.privilegedaccessmanager.v1.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-cloud-productregistry": {
+      "component": "google-cloud-productregistry",
+      "extra-files": [
+        "google/cloud/productregistry/gapic_version.py",
+        "google/cloud/productregistry_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.productregistry.v1.json",
           "type": "json"
         }
       ]
@@ -2873,32 +2906,6 @@
       "extra-files": [
         "google/cloud/source_context/gapic_version.py",
         "google/cloud/source_context_v1/gapic_version.py"
-      ]
-    },
-    "packages/google-cloud-spanner": {
-      "component": "google-cloud-spanner",
-      "extra-files": [
-        "google/cloud/spanner/gapic_version.py",
-        "google/cloud/spanner_admin_database/gapic_version.py",
-        "google/cloud/spanner_admin_database_v1/gapic_version.py",
-        "google/cloud/spanner_admin_instance/gapic_version.py",
-        "google/cloud/spanner_admin_instance_v1/gapic_version.py",
-        "google/cloud/spanner_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.spanner.admin.database.v1.json",
-          "type": "json"
-        },
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.spanner.admin.instance.v1.json",
-          "type": "json"
-        },
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.spanner.v1.json",
-          "type": "json"
-        }
       ]
     },
     "packages/google-cloud-speech": {
@@ -3444,9 +3451,15 @@
       "extra-files": [
         "google/devicesandservices/health/gapic_version.py",
         "google/devicesandservices/health_v4/gapic_version.py",
+        "google/devicesandservices/health_v4beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.devicesandservices.health.v4.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.devicesandservices.health.v4beta.json",
           "type": "json"
         }
       ]
@@ -3517,11 +3530,29 @@
         }
       ]
     },
+    "packages/google-maps-isochrones": {
+      "component": "google-maps-isochrones",
+      "extra-files": [
+        "google/maps/isochrones/gapic_version.py",
+        "google/maps/isochrones_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.isochrones.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-maps-mapmanagement": {
       "component": "google-maps-mapmanagement",
       "extra-files": [
         "google/maps/mapmanagement/gapic_version.py",
+        "google/maps/mapmanagement_v2/gapic_version.py",
         "google/maps/mapmanagement_v2beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2.json",
+          "type": "json"
+        },
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2beta.json",
@@ -3881,14 +3912,14 @@
     "packages/grpc-google-iam-v1": {
       "component": "grpc-google-iam-v1"
     },
+    "packages/pandas-gbq": {
+      "component": "pandas-gbq"
+    },
     "packages/proto-plus": {
       "component": "proto-plus"
     },
     "packages/sqlalchemy-bigquery": {
       "component": "sqlalchemy-bigquery"
-    },
-    "packages/sqlalchemy-spanner": {
-      "component": "sqlalchemy-spanner"
     }
   },
   "release-type": "python-librarian"

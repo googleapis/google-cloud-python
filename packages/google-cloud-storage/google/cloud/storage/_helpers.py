@@ -767,7 +767,7 @@ def _get_default_headers(
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": user_agent,
-        "X-Goog-API-Client": x_goog_api_client,
+        "x-goog-api-client": x_goog_api_client,
         "content-type": content_type,
         "x-upload-content-type": x_upload_content_type or content_type,
     }
@@ -788,3 +788,23 @@ def generate_random_56_bit_integer():
     random_bytes = secrets.token_bytes(7)
     # Convert bytes to an integer
     return int.from_bytes(random_bytes, "big")
+
+
+def _parse_bool_env(name, default=False):
+    """Parses a boolean environment variable.
+
+    Raises ValueError if the environment variable is set to an invalid, empty,
+    or unrecognized boolean value.
+    """
+    env_val = os.getenv(name)
+    if env_val is None:
+        return default
+    cleaned = env_val.strip().lower()
+    if not cleaned:
+        raise ValueError(f"{name} cannot be empty or whitespace-only")
+    if cleaned in ("true", "1", "yes", "on"):
+        return True
+    elif cleaned in ("false", "0", "no", "off"):
+        return False
+    else:
+        raise ValueError(f"Invalid value for {name}: {env_val}")

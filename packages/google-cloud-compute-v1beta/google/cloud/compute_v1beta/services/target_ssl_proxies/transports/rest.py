@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.compute_v1beta._compat import transcode_request
 from google.cloud.compute_v1beta.types import compute
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class TargetSslProxiesRestInterceptor:
@@ -821,19 +821,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseDelete._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseDelete,
+                    "_BaseDelete__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -978,19 +975,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseGet._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseGet,
+                    "_BaseGet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1155,25 +1149,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseInsert._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseTargetSslProxiesRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseInsert,
+                    "_BaseInsert__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1312,19 +1297,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseList._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseList,
+                    "_BaseList__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1488,21 +1470,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             """
 
             http_options = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_http_options()
-
             request, metadata = self._interceptor.pre_set_backend_service(
                 request, metadata
             )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseSetBackendService,
+                    "_BaseSetBackendService__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1669,21 +1648,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             """
 
             http_options = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_http_options()
-
             request, metadata = self._interceptor.pre_set_certificate_map(
                 request, metadata
             )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap,
+                    "_BaseSetCertificateMap__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1849,21 +1825,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             """
 
             http_options = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_http_options()
-
             request, metadata = self._interceptor.pre_set_proxy_header(
                 request, metadata
             )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader,
+                    "_BaseSetProxyHeader__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2030,21 +2003,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             """
 
             http_options = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_http_options()
-
             request, metadata = self._interceptor.pre_set_ssl_certificates(
                 request, metadata
             )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates,
+                    "_BaseSetSslCertificates__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2212,19 +2182,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_set_ssl_policy(request, metadata)
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy,
+                    "_BaseSetSslPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2363,21 +2330,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             """
 
             http_options = _BaseTargetSslProxiesRestTransport._BaseTestIamPermissions._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTargetSslProxiesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTargetSslProxiesRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

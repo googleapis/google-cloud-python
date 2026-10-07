@@ -53,6 +53,8 @@ def write_batch(table):
                             SetCell(family_id, "connected_wifi", 1),
                             SetCell(family_id, "os_build", "12155.0.0-rc1"),
                         ]
+                        # batcher.append adds the RowMutationEntry to the batcher's
+                        # queue to be written in the next flush.
                         batcher.append(
                             RowMutationEntry("tablet#a0b81f74#20190501", mutation_list)
                         )
@@ -60,6 +62,8 @@ def write_batch(table):
                             RowMutationEntry("tablet#a0b81f74#20190502", mutation_list)
                         )
                 except MutationsExceptionGroup as e:
+                    # MutationsExceptionGroup contains a FailedMutationEntryError for
+                    # each mutation that failed.
                     for sub_exception in e.exceptions:
                         failed_entry: RowMutationEntry = sub_exception.entry
                         cause: Exception = sub_exception.__cause__
@@ -82,11 +86,13 @@ def write_increment(table):
                 family_id = "stats_summary"
                 row_key = "phone#4c410523#20190501"
 
+                # Decrement the connected_wifi value by 1.
                 increment_rule = IncrementRule(
                     family_id, "connected_wifi", increment_amount=-1
                 )
                 result_row = table.read_modify_write_row(row_key, increment_rule)
 
+                # check result
                 cell = result_row[0]
                 print(f"{cell.row_key} value: {int(cell)}")
 
@@ -135,21 +141,26 @@ def write_aggregate(table):
     from google.cloud.bigtable.data.mutations import AddToCell, RowMutationEntry
 
     def write_aggregate(project_id, instance_id, table_id):
+        """Increments a value in a Bigtable table using AddToCell mutation."""
         with BigtableDataClient(project=project_id) as client:
             table = client.get_table(instance_id, table_id)
             row_key = "unique_device_ids_1"
             try:
                 with table.mutations_batcher() as batcher:
+                    # The AddToCell mutation increments the value of a cell.
+                    # The `counters` family must be set up to be an aggregate
+                    # family with an int64 input type.
                     reading = AddToCell(
                         family="counters",
                         qualifier="odometer",
                         value=32304,
+                        # Convert nanoseconds to microseconds
                         timestamp_micros=time.time_ns() // 1000,
                     )
-                    batcher.append(
-                        RowMutationEntry(row_key.encode("utf-8"), [reading])
-                    )
+                    batcher.append(RowMutationEntry(row_key.encode("utf-8"), [reading]))
             except MutationsExceptionGroup as e:
+                # MutationsExceptionGroup contains a FailedMutationEntryError for
+                # each mutation that failed.
                 for sub_exception in e.exceptions:
                     failed_entry: RowMutationEntry = sub_exception.entry
                     cause: Exception = sub_exception.__cause__

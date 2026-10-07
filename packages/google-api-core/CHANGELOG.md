@@ -4,6 +4,104 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.40.0...google-api-core-v2.41.0) (2026-10-02)
+
+
+### Features
+
+* **api_core:** resumable upload supports request_body in constructor ([#18543](https://github.com/googleapis/google-cloud-python/issues/18543)) ([97bc619](https://github.com/googleapis/google-cloud-python/commit/97bc619323b524f8e686bb27c43bd7275f41c239))
+* **api-core:** support AsyncAuthorizedSession transport for resumable uploads ([#18544](https://github.com/googleapis/google-cloud-python/issues/18544)) ([9b96af7](https://github.com/googleapis/google-cloud-python/commit/9b96af76254c33b9c3e0ceb390bbaeab2e33bbea))
+* **auth:** Support sync credentials in AsyncAuthorizedSession ([#18542](https://github.com/googleapis/google-cloud-python/issues/18542)) ([3799568](https://github.com/googleapis/google-cloud-python/commit/379956865248ebc40e5b851ede520056e65abcac))
+
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.39.0...google-api-core-v2.40.0) (2026-09-29)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.38.0...google-api-core-v2.39.0) (2026-09-24)
+
+
+### Features
+
+* **google-api-core:** add support for resumable uploads ([#18352](https://github.com/googleapis/google-cloud-python/issues/18352)) ([17d6c53](https://github.com/googleapis/google-cloud-python/commit/17d6c53698fa430d59fe43b81001e36459d24ef1))
+
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.37.0...google-api-core-v2.38.0) (2026-09-17)
+
+
+### Features
+
+* **core:** add request hook to enrich T4 network spans with GCP resource attributes (E) ([#18272](https://github.com/googleapis/google-cloud-python/issues/18272)) ([1ca95e9](https://github.com/googleapis/google-cloud-python/commit/1ca95e90199cf0a40077437a4c00f8039599dd5e))
+
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.36.0...google-api-core-v2.37.0) (2026-09-14)
+
+
+### Features
+
+* **gapic:** add OpenTelemetry T3 client method span wrapping in gapic_v1.method (D) ([#18274](https://github.com/googleapis/google-cloud-python/issues/18274)) ([156e319](https://github.com/googleapis/google-cloud-python/commit/156e31941b4bf6257a4d719b9630c388435660e8))
+
+## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.35.0...google-api-core-v2.36.0) (2026-09-03)
+
+
+### Features
+
+* **api-core:** add ClientInterceptor and apply_interceptors helper (A) ([#18236](https://github.com/googleapis/google-cloud-python/issues/18236)) ([b6db5a9](https://github.com/googleapis/google-cloud-python/commit/b6db5a90845799701afda66239d423a2c4c997fa))
+* **api-core:** add tracer_provider to ClientOptions for OTel support ([#18139](https://github.com/googleapis/google-cloud-python/issues/18139)) ([9ffebc2](https://github.com/googleapis/google-cloud-python/commit/9ffebc2f499379031c27122fb9cd0fbdf503d48b))
+
+
+### Bug Fixes
+
+* **api-core:** handle list-shaped REST error payloads ([#18232](https://github.com/googleapis/google-cloud-python/issues/18232)) ([02d1fd8](https://github.com/googleapis/google-cloud-python/commit/02d1fd863e938aa0dd8aa9fbbe4e532372837cb3))
+* **api-core:** move http encoding into transcode method ([#18218](https://github.com/googleapis/google-cloud-python/issues/18218)) ([082a99a](https://github.com/googleapis/google-cloud-python/commit/082a99a2c4a3e8d5df28eaeab9b2c710dd4296d5))
+
+## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.34.0...google-api-core-v2.35.0) (2026-08-21)
+
+
+### Features
+
+* **api_core:** add deprecation warning for grpcio &lt; 1.83.0 for PQC ([#18045](https://github.com/googleapis/google-cloud-python/issues/18045)) ([7e2e23e](https://github.com/googleapis/google-cloud-python/commit/7e2e23e817f1672bef34f850f319928815b5f7fb))
+
+
+### Bug Fixes
+
+* **api_core:** improve rest path validation ([#17753](https://github.com/googleapis/google-cloud-python/issues/17753)) ([63bfb96](https://github.com/googleapis/google-cloud-python/commit/63bfb96a8063d0d6ee38c7804009f82c9c426772))
+* **api_core:** support suppress_metrics_header fallback in AuthMetadataPlugin ([#18029](https://github.com/googleapis/google-cloud-python/issues/18029)) ([dd2000d](https://github.com/googleapis/google-cloud-python/commit/dd2000d473b5ac315aa0f8408d7aefba793fd623))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.33.0...google-api-core-v2.34.0) (2026-08-06)
+
+
+### Features
+
+* Add Feature Gating configuration helpers. ([#17524](https://github.com/googleapis/google-cloud-python/issues/17524)) ([eceea95](https://github.com/googleapis/google-cloud-python/commit/eceea95be8f528afac4fe352ae6dbac913b6a202))
+* **api-core:** centralize rest transcoding helpers ([#17765](https://github.com/googleapis/google-cloud-python/issues/17765)) ([4f21b8b](https://github.com/googleapis/google-cloud-python/commit/4f21b8b07bab99e9ee92bf3c8a9e0f8da5350cf9))
+
+
+### Bug Fixes
+
+* **api-core:** use truthiness check in setup_request_id to support proto-plus messages ([#18000](https://github.com/googleapis/google-cloud-python/issues/18000)) ([ad8f93c](https://github.com/googleapis/google-cloud-python/commit/ad8f93c3211b3ae9d9b234a5b2fa52a8cbf4b206))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* deduplicate x-goog-api-client headers ([#17616](https://github.com/googleapis/google-cloud-python/issues/17616)) ([6167e41](https://github.com/googleapis/google-cloud-python/commit/6167e4136e24a40fa6fc77be5987ba9cab8ac5e8))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.32.0...google-api-core-v2.33.0) (2026-07-22)
+
+
+### Features
+
+* **api_core:** add request-id auto-population logic to gapic_v1 public helpers ([#17738](https://github.com/googleapis/google-cloud-python/issues/17738)) ([68e1313](https://github.com/googleapis/google-cloud-python/commit/68e131341bd5d20ee50d7be3ed0410af4c12a46d))
+* **api-core:** add get_universe_domain helper to universe.py ([#17799](https://github.com/googleapis/google-cloud-python/issues/17799)) ([d461da7](https://github.com/googleapis/google-cloud-python/commit/d461da7bde04f2a698469f413116873633aa1f12))
+
+
+### Bug Fixes
+
+* **api-core:** prevent overwriting explicit empty strings for optional request_id ([#17798](https://github.com/googleapis/google-cloud-python/issues/17798)) ([07f7503](https://github.com/googleapis/google-cloud-python/commit/07f7503437f495dbce19b4f346ea17efcd738a65))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.31.0...google-api-core-v2.32.0) (2026-07-16)
 
 

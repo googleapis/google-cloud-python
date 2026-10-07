@@ -21,11 +21,12 @@ import uuid
 
 import pytest
 from google.api_core import retry
-from google.api_core.exceptions import ClientError, PermissionDenied
+from google.api_core.exceptions import ClientError, PermissionDenied, ServerError
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.type import date_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics import OperationType
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
 from google.cloud.bigtable_v2.services.bigtable.transports.grpc import (
@@ -392,6 +393,35 @@ class TestSystem(SystemTestRunner):
             assert len(batcher._staged_entries) == 1
             CrossSync._Sync_Impl.sleep(flush_interval + 0.1)
             assert len(batcher._staged_entries) == 0
+            assert temp_rows.retrieve_cell_value(target, row_key) == new_value
+
+    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("target")
+    @CrossSync._Sync_Impl.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    def test_mutations_batcher_completed_callback(self, client, target, temp_rows):
+        """test batcher with batch completed callback. It should be called when the batcher flushes."""
+        import mock
+        from google.rpc import code_pb2, status_pb2
+
+        from google.cloud.bigtable.data.mutations import RowMutationEntry
+
+        callback = mock.Mock()
+        new_value = uuid.uuid4().hex.encode()
+        row_key, mutation = temp_rows.create_row_and_mutation(
+            target, new_value=new_value
+        )
+        bulk_mutation = RowMutationEntry(row_key, [mutation])
+        flush_interval = 0.1
+        with target.mutations_batcher(flush_interval=flush_interval) as batcher:
+            batcher._user_batch_completed_callback = callback
+            batcher.append(bulk_mutation)
+            CrossSync._Sync_Impl.yield_to_event_loop()
+            assert len(batcher._staged_entries) == 1
+            CrossSync._Sync_Impl.sleep(flush_interval + 0.1)
+            assert len(batcher._staged_entries) == 0
+            callback.assert_called_once_with([status_pb2.Status(code=code_pb2.OK)])
             assert temp_rows.retrieve_cell_value(target, row_key) == new_value
 
     @pytest.mark.usefixtures("client")
@@ -1149,3 +1179,50 @@ class TestSystem(SystemTestRunner):
         assert md[TEST_AGGREGATE_FAMILY].column_type == SqlType.Map(
             SqlType.Bytes(), SqlType.Int64()
         )
+
+    @pytest.fixture(scope="session")
+    def metrics_client(self, client):
+        if client._emulator_host is not None:
+            pytest.skip("Metrics export disabled when running against emulator")
+        yield client._metrics.handlers[0]._exporter.client
+
+    @pytest.mark.order("last")
+    @pytest.mark.parametrize(
+        "metric,methods",
+        [
+            ("attempt_latencies", [m.value for m in OperationType]),
+            ("operation_latencies", [m.value for m in OperationType]),
+            ("retry_count", [m.value for m in OperationType]),
+            ("first_response_latencies", [OperationType.READ_ROWS]),
+            ("server_latencies", [m.value for m in OperationType]),
+            ("connectivity_error_count", [m.value for m in OperationType]),
+            ("application_blocking_latencies", [OperationType.READ_ROWS]),
+        ],
+    )
+    @retry.Retry(predicate=retry.if_exception_type(AssertionError, ServerError))
+    def test_metric_existence(
+        self, client, table_id, metrics_client, start_timestamp, metric, methods
+    ):
+        """Checks to make sure metrics were exported by tests
+
+        Runs at the end of test suite, to let other tests write metrics"""
+        end_timestamp = datetime.datetime.now(datetime.timezone.utc)
+        for m in methods:
+            metric_filter = (
+                f'metric.type = "bigtable.googleapis.com/client/{metric}" '
+                + f'AND metric.labels.client_name = "python-bigtable/{client._client_version()}" '
+                + f'AND resource.labels.table = "{table_id}" '
+            )
+            results = list(
+                metrics_client.list_time_series(
+                    name=f"projects/{client.project}",
+                    filter=metric_filter,
+                    interval={"start_time": start_timestamp, "end_time": end_timestamp},
+                    view=0,
+                )
+            )
+            assert len(results) > 0, f"No data found for {metric} {m}"
+            for series in results:
+                assert series.resource.labels.get("table") == table_id
+                if "table_id" in series.metric.labels:
+                    assert series.metric.labels["table_id"] == table_id

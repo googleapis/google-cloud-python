@@ -272,7 +272,7 @@ class TestMutationsBatcher:
                 DeadlineExceeded,
                 ServiceUnavailable,
             )
-            table._metrics = BigtableClientSideMetricsController([])
+            table.client._metrics = BigtableClientSideMetricsController([])
         return self._get_target_class()(table, **kwargs)
 
     @staticmethod
@@ -561,7 +561,10 @@ class TestMutationsBatcher:
                 num_entries = 10
                 for _ in range(num_entries):
                     instance.append(self._make_mutation(size=1))
-                instance._wait_for_batch_results(*instance._flush_jobs)
+                jobs = instance._flush_jobs
+                instance._wait_for_batch_results(
+                    *[(job, mock.MagicMock()) for job in jobs]
+                )
                 assert op_mock.call_count == 1
                 sent_batch = op_mock.call_args[0][0]
                 assert len(sent_batch) == 2
@@ -651,7 +654,10 @@ class TestMutationsBatcher:
                         [self._make_mutation(count=1)]
                     )
                     CrossSync._Sync_Impl.sleep(0.01)
-                instance._wait_for_batch_results(*instance._flush_jobs)
+                jobs = instance._flush_jobs
+                instance._wait_for_batch_results(
+                    *[(job, mock.MagicMock()) for job in jobs]
+                )
                 duration = time.monotonic() - start_time
                 assert len(instance._oldest_exceptions) == 0
                 assert len(instance._newest_exceptions) == 0
@@ -804,7 +810,10 @@ class TestMutationsBatcher:
                 for m in mutations:
                     instance.append(m)
                 assert instance._entries_processed_since_last_raise == 0
-                CrossSync._Sync_Impl.sleep(0.1)
+                for _ in range(50):
+                    if instance._entries_processed_since_last_raise == num_mutations:
+                        break
+                    CrossSync._Sync_Impl.sleep(0.05)
                 assert instance._entries_processed_since_last_raise == num_mutations
 
     def test__execute_mutate_rows(self):
@@ -851,13 +860,128 @@ class TestMutationsBatcher:
             table.default_mutate_rows_attempt_timeout = 13
             table.default_mutate_rows_retryable_errors = ()
             with self._make_one(table) as instance:
-                batch = [self._make_mutation()]
+                batch = [self._make_mutation(), self._make_mutation()]
                 result = instance._execute_mutate_rows(batch, mock.Mock())
                 assert len(result) == 2
                 assert result[0] == err1
                 assert result[1] == err2
                 assert result[0].index is None
                 assert result[1].index is None
+
+    def test__execute_mutate_rows_batch_completed_callback(self):
+        from google.rpc import code_pb2, status_pb2
+
+        with mock.patch.object(
+            CrossSync._Sync_Impl, "_MutateRowsOperation"
+        ) as mutate_rows:
+            mutate_rows.return_value = CrossSync._Sync_Impl.Mock()
+            start_operation = mutate_rows().start
+            table = mock.Mock()
+            table.table_name = "test-table"
+            table.app_profile_id = "test-app-profile"
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            callback = mock.Mock()
+            with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = callback
+                batch = [self._make_mutation()]
+                result = instance._execute_mutate_rows(batch, mock.Mock())
+                callback.assert_called_once_with([status_pb2.Status(code=code_pb2.OK)])
+                assert start_operation.call_count == 1
+                args, kwargs = mutate_rows.call_args
+                assert args[0] == table.client._gapic_client
+                assert args[1] == table
+                assert args[2] == batch
+                assert kwargs["operation_timeout"] == 17
+                assert kwargs["attempt_timeout"] == 13
+                assert result == []
+
+    def test__execute_mutate_rows_batch_completed_callback_errors(self):
+        from google.api_core import exceptions
+        from google.rpc import code_pb2, status_pb2
+
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
+
+        with mock.patch.object(
+            CrossSync._Sync_Impl._MutateRowsOperation, "start"
+        ) as mutate_rows:
+            err1 = FailedMutationEntryError(
+                1, mock.Mock(), exceptions.DataLoss("test error")
+            )
+            err2 = FailedMutationEntryError(
+                2, mock.Mock(), exceptions.DataLoss("test error")
+            )
+            mutate_rows.side_effect = MutationsExceptionGroup([err1, err2], 10)
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            callback = mock.Mock()
+            with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = callback
+                batch = [
+                    self._make_mutation(),
+                    self._make_mutation(),
+                    self._make_mutation(),
+                ]
+                result = instance._execute_mutate_rows(batch, mock.Mock())
+                callback.assert_called_once_with(
+                    [
+                        status_pb2.Status(code=code_pb2.OK),
+                        status_pb2.Status(
+                            code=code_pb2.DATA_LOSS, message="test error"
+                        ),
+                        status_pb2.Status(
+                            code=code_pb2.DATA_LOSS, message="test error"
+                        ),
+                    ]
+                )
+                assert len(result) == 2
+                assert result[0] == err1
+                assert result[1] == err2
+                assert result[0].index is None
+                assert result[1].index is None
+
+    def test__execute_mutate_rows_batch_completed_callback_exception(self):
+        with mock.patch.object(
+            CrossSync._Sync_Impl, "_MutateRowsOperation"
+        ) as mutate_rows:
+            mutate_rows.return_value = CrossSync._Sync_Impl.Mock()
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            callback = mock.Mock(side_effect=RuntimeError("callback failed"))
+            with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = callback
+                batch = [self._make_mutation()]
+                result = instance._execute_mutate_rows(batch, mock.Mock())
+                callback.assert_called_once()
+                assert result == []
+
+    def test__execute_mutate_rows_batch_completed_callback_coroutine(self):
+        with mock.patch.object(
+            CrossSync._Sync_Impl, "_MutateRowsOperation"
+        ) as mutate_rows:
+            mutate_rows.return_value = CrossSync._Sync_Impl.Mock()
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            called_with = []
+            async_callback = mock.AsyncMock(
+                side_effect=lambda statuses: called_with.append(statuses)
+            )
+            with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = async_callback
+                batch = [self._make_mutation()]
+                result = instance._execute_mutate_rows(batch, mock.Mock())
+                assert result == []
+                assert called_with == []
 
     def test__raise_exceptions(self):
         """Raise exceptions and reset error state"""
@@ -1046,8 +1170,13 @@ class TestMutationsBatcher:
     def test_customizable_retryable_errors(self, input_retryables, expected_retryables):
         """Test that retryable functions support user-configurable arguments, and that the configured retryables are passed
         down to the gapic layer."""
-        from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+        from google.cloud.bigtable.data._metrics import (
+            ActiveOperationMetric,
+            BigtableClientSideMetricsController,
+        )
 
+        mock_client = mock.Mock()
+        mock_client._metrics = BigtableClientSideMetricsController(handlers=[])
         with mock.patch.object(
             google.api_core.retry, "if_exception_type"
         ) as predicate_builder_mock:
@@ -1056,7 +1185,7 @@ class TestMutationsBatcher:
             ) as retry_fn_mock:
                 table = None
                 with mock.patch("asyncio.create_task"):
-                    table = CrossSync._Sync_Impl.Table(mock.Mock(), "instance", "table")
+                    table = CrossSync._Sync_Impl.Table(mock_client, "instance", "table")
                 with self._make_one(
                     table, batch_retryable_errors=input_retryables
                 ) as instance:

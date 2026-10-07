@@ -32,9 +32,7 @@ from google.cloud.compute_v1beta.types import compute
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class SnapshotsTransport(abc.ABC):
@@ -182,6 +180,21 @@ class SnapshotsTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.get_effective_recycle_bin_rule: gapic_v1.method.wrap_method(
+                self.get_effective_recycle_bin_rule,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
                 default_retry=retries.Retry(
@@ -274,6 +287,18 @@ class SnapshotsTransport(abc.ABC):
     ) -> Callable[
         [compute.GetSnapshotRequest],
         Union[compute.Snapshot, Awaitable[compute.Snapshot]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_effective_recycle_bin_rule(
+        self,
+    ) -> Callable[
+        [compute.GetEffectiveRecycleBinRuleSnapshotRequest],
+        Union[
+            compute.SnapshotsGetEffectiveRecycleBinRuleResponse,
+            Awaitable[compute.SnapshotsGetEffectiveRecycleBinRuleResponse],
+        ],
     ]:
         raise NotImplementedError()
 

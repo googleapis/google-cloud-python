@@ -35,6 +35,8 @@ from google.cloud.apphub_v1 import gapic_version as package_version
 from google.cloud.apphub_v1.types import (
     apphub_service,
     application,
+    boundary,
+    extended_metadata_schema,
     service,
     service_project_attachment,
     workload,
@@ -43,9 +45,7 @@ from google.cloud.apphub_v1.types import (
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AppHubTransport(abc.ABC):
@@ -424,6 +424,26 @@ class AppHubTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_boundary: gapic_v1.method.wrap_method(
+                self.get_boundary,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_boundary: gapic_v1.method.wrap_method(
+                self.update_boundary,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_extended_metadata_schema: gapic_v1.method.wrap_method(
+                self.get_extended_metadata_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_extended_metadata_schemas: gapic_v1.method.wrap_method(
+                self.list_extended_metadata_schemas,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -758,6 +778,48 @@ class AppHubTransport(abc.ABC):
     ) -> Callable[
         [apphub_service.DeleteApplicationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_boundary(
+        self,
+    ) -> Callable[
+        [apphub_service.GetBoundaryRequest],
+        Union[boundary.Boundary, Awaitable[boundary.Boundary]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_boundary(
+        self,
+    ) -> Callable[
+        [apphub_service.UpdateBoundaryRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_extended_metadata_schema(
+        self,
+    ) -> Callable[
+        [apphub_service.GetExtendedMetadataSchemaRequest],
+        Union[
+            extended_metadata_schema.ExtendedMetadataSchema,
+            Awaitable[extended_metadata_schema.ExtendedMetadataSchema],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_extended_metadata_schemas(
+        self,
+    ) -> Callable[
+        [apphub_service.ListExtendedMetadataSchemasRequest],
+        Union[
+            apphub_service.ListExtendedMetadataSchemasResponse,
+            Awaitable[apphub_service.ListExtendedMetadataSchemasResponse],
+        ],
     ]:
         raise NotImplementedError()
 

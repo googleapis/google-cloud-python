@@ -18,11 +18,13 @@ import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
+from google.cloud.storagebatchoperations_v1._compat import transcode_request, trace_http_request
 import google.protobuf
 
 from google.protobuf import json_format
@@ -494,6 +496,7 @@ class StorageBatchOperationsRestStub:
     _session: AuthorizedSession
     _host: str
     _interceptor: StorageBatchOperationsRestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 
 class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTransport):
@@ -525,6 +528,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             url_scheme: str = 'https',
             interceptor: Optional[StorageBatchOperationsRestInterceptor] = None,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -568,6 +573,9 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -579,7 +587,9 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
@@ -651,20 +661,35 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: storage_batch_operations.CancelJobRequest, *,
@@ -691,14 +716,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_transcoded_request(http_options, request)
-
-            body = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseCancelJob,
+                    "_BaseCancelJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -724,7 +752,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._CancelJob._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = StorageBatchOperationsRestTransport._CancelJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -736,7 +774,6 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             pb_resp = storage_batch_operations.CancelJobResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_cancel_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_cancel_job_with_metadata(resp, response_metadata)
@@ -773,20 +810,35 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: storage_batch_operations.CreateJobRequest, *,
@@ -816,14 +868,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_http_options()
-
             request, metadata = self._interceptor.pre_create_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_transcoded_request(http_options, request)
-
-            body = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseCreateJob,
+                    "_BaseCreateJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -849,7 +904,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._CreateJob._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = StorageBatchOperationsRestTransport._CreateJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -859,7 +924,6 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_create_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_job_with_metadata(resp, response_metadata)
@@ -896,19 +960,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: storage_batch_operations.DeleteJobRequest, *,
@@ -931,12 +1010,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseDeleteJob,
+                    "_BaseDeleteJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -962,7 +1046,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._DeleteJob._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._DeleteJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -981,19 +1074,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: storage_batch_operations.GetBucketOperationRequest, *,
@@ -1023,12 +1131,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_bucket_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation,
+                    "_BaseGetBucketOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1054,7 +1167,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._GetBucketOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._GetBucketOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1066,7 +1188,6 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             pb_resp = storage_batch_operations_types.BucketOperation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_get_bucket_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_bucket_operation_with_metadata(resp, response_metadata)
@@ -1103,19 +1224,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: storage_batch_operations.GetJobRequest, *,
@@ -1144,12 +1280,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetJob._get_http_options()
-
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetJob._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseGetJob,
+                    "_BaseGetJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1175,7 +1316,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._GetJob._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._GetJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1187,7 +1337,6 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             pb_resp = storage_batch_operations_types.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_get_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_job_with_metadata(resp, response_metadata)
@@ -1224,19 +1373,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: storage_batch_operations.ListBucketOperationsRequest, *,
@@ -1266,12 +1430,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_bucket_operations(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations,
+                    "_BaseListBucketOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1297,7 +1466,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._ListBucketOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._ListBucketOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1309,7 +1487,6 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             pb_resp = storage_batch_operations.ListBucketOperationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_list_bucket_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_bucket_operations_with_metadata(resp, response_metadata)
@@ -1346,19 +1523,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: storage_batch_operations.ListJobsRequest, *,
@@ -1385,12 +1577,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListJobs._get_http_options()
-
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListJobs._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListJobs._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseListJobs,
+                    "_BaseListJobs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1416,7 +1613,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._ListJobs._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._ListJobs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1428,7 +1634,6 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             pb_resp = storage_batch_operations.ListJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_list_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_jobs_with_metadata(resp, response_metadata)
@@ -1459,7 +1664,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             storage_batch_operations.CancelJobResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CancelJob(self._session, self._host, self._interceptor) # type: ignore
+        return self._CancelJob(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def create_job(self) -> Callable[
@@ -1467,7 +1672,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateJob(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateJob(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def delete_job(self) -> Callable[
@@ -1475,7 +1680,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteJob(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteJob(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def get_bucket_operation(self) -> Callable[
@@ -1483,7 +1688,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             storage_batch_operations_types.BucketOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetBucketOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetBucketOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def get_job(self) -> Callable[
@@ -1491,7 +1696,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             storage_batch_operations_types.Job]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetJob(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetJob(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def list_bucket_operations(self) -> Callable[
@@ -1499,7 +1704,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             storage_batch_operations.ListBucketOperationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListBucketOperations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListBucketOperations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def list_jobs(self) -> Callable[
@@ -1507,11 +1712,11 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             storage_batch_operations.ListJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListJobs(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListJobs(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetLocation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetLocation(_BaseStorageBatchOperationsRestTransport._BaseGetLocation, StorageBatchOperationsRestStub):
         def __hash__(self):
@@ -1525,19 +1730,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.GetLocationRequest, *,
@@ -1564,12 +1784,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1595,7 +1820,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1629,7 +1863,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListLocations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListLocations(_BaseStorageBatchOperationsRestTransport._BaseListLocations, StorageBatchOperationsRestStub):
         def __hash__(self):
@@ -1643,19 +1877,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.ListLocationsRequest, *,
@@ -1682,12 +1931,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1713,7 +1967,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1747,7 +2010,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _CancelOperation(_BaseStorageBatchOperationsRestTransport._BaseCancelOperation, StorageBatchOperationsRestStub):
         def __hash__(self):
@@ -1761,20 +2024,35 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.CancelOperationRequest, *,
@@ -1798,14 +2076,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
-
-            body = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1831,7 +2112,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = StorageBatchOperationsRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1842,7 +2133,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _DeleteOperation(_BaseStorageBatchOperationsRestTransport._BaseDeleteOperation, StorageBatchOperationsRestStub):
         def __hash__(self):
@@ -1856,19 +2147,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.DeleteOperationRequest, *,
@@ -1892,12 +2198,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1923,7 +2234,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1934,7 +2254,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetOperation(_BaseStorageBatchOperationsRestTransport._BaseGetOperation, StorageBatchOperationsRestStub):
         def __hash__(self):
@@ -1948,19 +2268,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.GetOperationRequest, *,
@@ -1987,12 +2322,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2018,7 +2358,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2052,7 +2401,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListOperations(_BaseStorageBatchOperationsRestTransport._BaseListOperations, StorageBatchOperationsRestStub):
         def __hash__(self):
@@ -2066,19 +2415,34 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None,
+            url_template=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=url_template,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    )
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.ListOperationsRequest, *,
@@ -2105,12 +2469,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageBatchOperationsRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2136,7 +2505,16 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 )
 
             # Send the request
-            response = StorageBatchOperationsRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = StorageBatchOperationsRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+                url_template=http_options[0].get("uri") if http_options else None,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.

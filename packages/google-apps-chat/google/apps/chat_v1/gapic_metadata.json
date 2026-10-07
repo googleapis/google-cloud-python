@@ -30,6 +30,11 @@
                 "create_message"
               ]
             },
+            "CreateMessagePin": {
+              "methods": [
+                "create_message_pin"
+              ]
+            },
             "CreateReaction": {
               "methods": [
                 "create_reaction"
@@ -58,6 +63,11 @@
             "DeleteMessage": {
               "methods": [
                 "delete_message"
+              ]
+            },
+            "DeleteMessagePin": {
+              "methods": [
+                "delete_message_pin"
               ]
             },
             "DeleteReaction": {
@@ -145,6 +155,11 @@
                 "list_memberships"
               ]
             },
+            "ListMessagePins": {
+              "methods": [
+                "list_message_pins"
+              ]
+            },
             "ListMessages": {
               "methods": [
                 "list_messages"
@@ -198,6 +213,11 @@
             "PositionSection": {
               "methods": [
                 "position_section"
+              ]
+            },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
               ]
             },
             "SearchSpaces": {
@@ -275,6 +295,11 @@
                 "create_message"
               ]
             },
+            "CreateMessagePin": {
+              "methods": [
+                "create_message_pin"
+              ]
+            },
             "CreateReaction": {
               "methods": [
                 "create_reaction"
@@ -303,6 +328,11 @@
             "DeleteMessage": {
               "methods": [
                 "delete_message"
+              ]
+            },
+            "DeleteMessagePin": {
+              "methods": [
+                "delete_message_pin"
               ]
             },
             "DeleteReaction": {
@@ -390,6 +420,11 @@
                 "list_memberships"
               ]
             },
+            "ListMessagePins": {
+              "methods": [
+                "list_message_pins"
+              ]
+            },
             "ListMessages": {
               "methods": [
                 "list_messages"
@@ -443,6 +478,11 @@
             "PositionSection": {
               "methods": [
                 "position_section"
+              ]
+            },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
               ]
             },
             "SearchSpaces": {
@@ -520,6 +560,11 @@
                 "create_message"
               ]
             },
+            "CreateMessagePin": {
+              "methods": [
+                "create_message_pin"
+              ]
+            },
             "CreateReaction": {
               "methods": [
                 "create_reaction"
@@ -548,6 +593,11 @@
             "DeleteMessage": {
               "methods": [
                 "delete_message"
+              ]
+            },
+            "DeleteMessagePin": {
+              "methods": [
+                "delete_message_pin"
               ]
             },
             "DeleteReaction": {
@@ -635,6 +685,11 @@
                 "list_memberships"
               ]
             },
+            "ListMessagePins": {
+              "methods": [
+                "list_message_pins"
+              ]
+            },
             "ListMessages": {
               "methods": [
                 "list_messages"
@@ -688,6 +743,11 @@
             "PositionSection": {
               "methods": [
                 "position_section"
+              ]
+            },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
               ]
             },
             "SearchSpaces": {

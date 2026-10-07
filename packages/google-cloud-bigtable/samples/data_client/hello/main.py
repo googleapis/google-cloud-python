@@ -45,30 +45,36 @@ def main(project_id, instance_id, table_id):
     # [END bigtable_hw_connect_data_client]
 
     # [START bigtable_hw_create_table_data_client]
-    from google.cloud.bigtable import column_family
+    from google.api_core.exceptions import AlreadyExists
+    from google.cloud import bigtable_admin
 
     # the data client only supports the data API. Table creation is an admin operation
     # use admin client to create the table
     print("Creating the {} table.".format(table_id))
-    admin_client = bigtable.Client(project=project_id, admin=True)
-    admin_instance = admin_client.instance(instance_id)
-    admin_table = admin_instance.table(table_id)
+    admin_client = bigtable_admin.BigtableTableAdminClient()
+    instance_path = admin_client.instance_path(project_id, instance_id)
 
     print("Creating column family cf1 with Max Version GC rule...")
     # Create a column family with GC policy : most recent N versions
     # Define the GC policy to retain only the most recent 2 versions
-    max_versions_rule = column_family.MaxVersionsGCRule(2)
-    column_family_id = b"cf1"
-    column_families = {column_family_id: max_versions_rule}
-    if not admin_table.exists():
-        admin_table.create(column_families=column_families)
-    else:
+    max_versions_rule = bigtable_admin.GcRule(max_num_versions=2)
+    column_family_id = "cf1"
+    column_families = {
+        column_family_id: bigtable_admin.ColumnFamily(gc_rule=max_versions_rule)
+    }
+    try:
+        admin_client.create_table(
+            parent=instance_path,
+            table_id=table_id,
+            table=bigtable_admin.Table(column_families=column_families),
+        )
+    except AlreadyExists:
         print("Table {} already exists.".format(table_id))
     # [END bigtable_hw_create_table_data_client]
 
     try:
         # let table creation complete
-        wait_for_table(admin_table)
+        wait_for_table(table)
         # [START bigtable_hw_write_rows_data_client]
         print("Writing some greetings to the table.")
         greetings = [b"Hello World!", b"Hello Cloud Bigtable!", b"Hello Python!"]
@@ -111,8 +117,15 @@ def main(project_id, instance_id, table_id):
         # [END bigtable_hw_scan_with_filter_data_client]
     finally:
         # [START bigtable_hw_delete_table_data_client]
+        from google.cloud import bigtable_admin
+
+        # the data client only supports the data API. Table deletion is an admin operation
+        # use admin client to delete the table
+        admin_client = bigtable_admin.BigtableTableAdminClient()
+        table_path = admin_client.table_path(project_id, instance_id, table_id)
+
         print("Deleting the {} table.".format(table_id))
-        admin_table.delete()
+        admin_client.delete_table(name=table_path)
         client.close()
         # [END bigtable_hw_delete_table_data_client]
 

@@ -100,6 +100,11 @@
                 "publish_private_offer"
               ]
             },
+            "ResolveAmendmentTarget": {
+              "methods": [
+                "resolve_amendment_target"
+              ]
+            },
             "UpdatePrivateOffer": {
               "methods": [
                 "update_private_offer"
@@ -205,6 +210,11 @@
                 "publish_private_offer"
               ]
             },
+            "ResolveAmendmentTarget": {
+              "methods": [
+                "resolve_amendment_target"
+              ]
+            },
             "UpdatePrivateOffer": {
               "methods": [
                 "update_private_offer"
@@ -308,6 +318,11 @@
             "PublishPrivateOffer": {
               "methods": [
                 "publish_private_offer"
+              ]
+            },
+            "ResolveAmendmentTarget": {
+              "methods": [
+                "resolve_amendment_target"
               ]
             },
             "UpdatePrivateOffer": {

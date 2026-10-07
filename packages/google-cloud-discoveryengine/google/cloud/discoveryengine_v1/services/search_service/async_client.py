@@ -80,6 +80,8 @@ class SearchServiceAsyncClient:
     parse_branch_path = staticmethod(SearchServiceClient.parse_branch_path)
     chunk_path = staticmethod(SearchServiceClient.chunk_path)
     parse_chunk_path = staticmethod(SearchServiceClient.parse_chunk_path)
+    control_path = staticmethod(SearchServiceClient.control_path)
+    parse_control_path = staticmethod(SearchServiceClient.parse_control_path)
     data_store_path = staticmethod(SearchServiceClient.data_store_path)
     parse_data_store_path = staticmethod(SearchServiceClient.parse_data_store_path)
     document_path = staticmethod(SearchServiceClient.document_path)
@@ -717,9 +719,7 @@ class SearchServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("SearchServiceAsyncClient",)

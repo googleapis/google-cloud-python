@@ -29,6 +29,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.maintenance_api_v1beta._compat import transcode_request
 from google.cloud.maintenance_api_v1beta.types import maintenance_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class MaintenanceRestInterceptor:
@@ -461,17 +461,18 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             """
 
             http_options = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_http_options()
-
             request, metadata = self._interceptor.pre_get_resource_maintenance(
                 request, metadata
             )
-            transcoded_request = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMaintenanceRestTransport._BaseGetResourceMaintenance,
+                    "_BaseGetResourceMaintenance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -611,17 +612,18 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             """
 
             http_options = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_http_options()
-
             request, metadata = self._interceptor.pre_list_resource_maintenances(
                 request, metadata
             )
-            transcoded_request = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMaintenanceRestTransport._BaseListResourceMaintenances,
+                    "_BaseListResourceMaintenances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -762,17 +764,18 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             """
 
             http_options = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_http_options()
-
             request, metadata = self._interceptor.pre_summarize_maintenances(
                 request, metadata
             )
-            transcoded_request = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMaintenanceRestTransport._BaseSummarizeMaintenances,
+                    "_BaseSummarizeMaintenances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -952,19 +955,16 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             http_options = (
                 _BaseMaintenanceRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseMaintenanceRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseMaintenanceRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMaintenanceRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1096,17 +1096,16 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             http_options = (
                 _BaseMaintenanceRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseMaintenanceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseMaintenanceRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMaintenanceRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

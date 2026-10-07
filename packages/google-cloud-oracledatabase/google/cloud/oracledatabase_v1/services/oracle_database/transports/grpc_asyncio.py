@@ -1317,6 +1317,71 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
         return self._stubs["failover_autonomous_database"]
 
     @property
+    def refresh_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.RefreshAutonomousDatabaseRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the refresh autonomous database method over gRPC.
+
+        Refreshes the refreshable clone of an Autonomous
+        Database.
+
+        Returns:
+            Callable[[~.RefreshAutonomousDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "refresh_autonomous_database" not in self._stubs:
+            self._stubs["refresh_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/RefreshAutonomousDatabase",
+                    request_serializer=oracledatabase.RefreshAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["refresh_autonomous_database"]
+
+    @property
+    def get_autonomous_database_refreshable_clones(
+        self,
+    ) -> Callable[
+        [oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest],
+        Awaitable[oracledatabase.AutonomousDatabaseRefreshableClones],
+    ]:
+        r"""Return a callable for the get autonomous database
+        refreshable clones method over gRPC.
+
+        Gets the refreshable clones for a given Autonomous
+        Database.
+
+        Returns:
+            Callable[[~.GetAutonomousDatabaseRefreshableClonesRequest],
+                    Awaitable[~.AutonomousDatabaseRefreshableClones]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_autonomous_database_refreshable_clones" not in self._stubs:
+            self._stubs["get_autonomous_database_refreshable_clones"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetAutonomousDatabaseRefreshableClones",
+                    request_serializer=oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest.serialize,
+                    response_deserializer=oracledatabase.AutonomousDatabaseRefreshableClones.deserialize,
+                )
+            )
+        return self._stubs["get_autonomous_database_refreshable_clones"]
+
+    @property
     def list_odb_networks(
         self,
     ) -> Callable[
@@ -3086,6 +3151,16 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
             ),
             self.failover_autonomous_database: self._wrap_method(
                 self.failover_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.refresh_autonomous_database: self._wrap_method(
+                self.refresh_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_autonomous_database_refreshable_clones: self._wrap_method(
+                self.get_autonomous_database_refreshable_clones,
                 default_timeout=None,
                 client_info=client_info,
             ),

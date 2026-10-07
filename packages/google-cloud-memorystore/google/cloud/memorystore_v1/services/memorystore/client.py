@@ -46,6 +46,13 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.memorystore_v1 import gapic_version as package_version
+from google.cloud.memorystore_v1._compat import (
+    get_api_endpoint,
+    get_default_mtls_endpoint,
+    get_universe_domain,
+    read_environment_variables,
+    should_use_client_cert,
+)
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -116,76 +123,12 @@ class MemorystoreClientMeta(type):
 class MemorystoreClient(metaclass=MemorystoreClientMeta):
     """Service describing handlers for resources"""
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
-        """Converts api endpoint to mTLS endpoint.
-
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            Optional[str]: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        if m is None:
-            # Could not parse api_endpoint; return as-is.
-            return api_endpoint
-
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "memorystore.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT)
 
     _DEFAULT_ENDPOINT_TEMPLATE = "memorystore.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
-
-    @staticmethod
-    def _use_client_cert_effective():
-        """Returns whether client certificate should be used for mTLS if the
-        google-auth version supports should_use_client_cert automatic mTLS enablement.
-
-        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
-
-        Returns:
-            bool: whether client certificate should be used for mTLS
-        Raises:
-            ValueError: (If using a version of google-auth without should_use_client_cert and
-            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
-        """
-        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
-            return mtls.should_use_client_cert()
-        else:  # pragma: NO COVER
-            # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv(
-                "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-            ).lower()
-            if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
-            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -233,6 +176,32 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def auth_token_path(
+        project: str,
+        location: str,
+        instance: str,
+        token_auth_user: str,
+        auth_token: str,
+    ) -> str:
+        """Returns a fully-qualified auth_token string."""
+        return "projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{auth_token}".format(
+            project=project,
+            location=location,
+            instance=instance,
+            token_auth_user=token_auth_user,
+            auth_token=auth_token,
+        )
+
+    @staticmethod
+    def parse_auth_token_path(path: str) -> Dict[str, str]:
+        """Parses a auth_token path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/tokenAuthUsers/(?P<token_auth_user>.+?)/authTokens/(?P<auth_token>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def backup_path(
@@ -502,6 +471,30 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def token_auth_user_path(
+        project: str,
+        location: str,
+        instance: str,
+        token_auth_user: str,
+    ) -> str:
+        """Returns a fully-qualified token_auth_user string."""
+        return "projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}".format(
+            project=project,
+            location=location,
+            instance=instance,
+            token_auth_user=token_auth_user,
+        )
+
+    @staticmethod
+    def parse_token_auth_user_path(path: str) -> Dict[str, str]:
+        """Parses a token_auth_user path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/tokenAuthUsers/(?P<token_auth_user>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -619,7 +612,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = MemorystoreClient._use_client_cert_effective()
+        use_client_cert = should_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError(
@@ -640,34 +633,11 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT  # type: ignore
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
 
         return api_endpoint, client_cert_source
-
-    @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
-
-        Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
-        """
-        use_client_cert = MemorystoreClient._use_client_cert_effective()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -687,65 +657,6 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             elif mtls.has_default_client_cert_source():
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
-
-    @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ) -> str:
-        """Return the API endpoint used by the client.
-
-        Args:
-            api_override (str): The API endpoint override. If specified, this is always
-                the return value of this function and the other arguments are not used.
-            client_cert_source (bytes): The client certificate source used by the client.
-            universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
-                Possible values are "always", "auto", or "never".
-
-        Returns:
-            str: The API endpoint to be used by the client.
-        """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            _default_universe = MemorystoreClient._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
-            api_endpoint = MemorystoreClient.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = MemorystoreClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
-        return api_endpoint
-
-    @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = MemorystoreClient._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
@@ -876,13 +787,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            MemorystoreClient._read_environment_variables()
+            read_environment_variables()
         )
         self._client_cert_source = MemorystoreClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = MemorystoreClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
+        self._universe_domain = get_universe_domain(
+            universe_domain_opt,
+            self._universe_domain_env,
+            default_universe=MemorystoreClient._DEFAULT_UNIVERSE,
         )
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
@@ -917,11 +830,14 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             self._transport = cast(MemorystoreTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = self._api_endpoint or MemorystoreClient._get_api_endpoint(
-            self._client_options.api_endpoint,
-            self._client_cert_source,
-            self._universe_domain,
-            self._use_mtls_endpoint,
+        self._api_endpoint = self._api_endpoint or get_api_endpoint(
+            api_override=self._client_options.api_endpoint,
+            universe_domain=self._universe_domain,
+            default_universe=MemorystoreClient._DEFAULT_UNIVERSE,
+            default_mtls_endpoint=MemorystoreClient.DEFAULT_MTLS_ENDPOINT,
+            default_endpoint_template=MemorystoreClient._DEFAULT_ENDPOINT_TEMPLATE,
+            use_mtls=self._use_mtls_endpoint == "always"
+            or (self._use_mtls_endpoint == "auto" and self._client_cert_source),
         )
 
         if not transport_provided:
@@ -3081,6 +2997,999 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
+    def list_token_auth_users(
+        self,
+        request: Optional[Union[memorystore.ListTokenAuthUsersRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListTokenAuthUsersPager:
+        r"""Lists all the token auth users for a token based auth
+        enabled instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_list_token_auth_users():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.ListTokenAuthUsersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_token_auth_users(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.ListTokenAuthUsersRequest, dict]):
+                The request object. Request message for ``ListTokenAuthUsers``.
+            parent (str):
+                Required. The parent to list token
+                auth users from. Format:
+                projects/{project}/locations/{location}/instances/{instance}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.memorystore_v1.services.memorystore.pagers.ListTokenAuthUsersPager:
+                Response message for ListTokenAuthUsers.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.ListTokenAuthUsersRequest):
+            request = memorystore.ListTokenAuthUsersRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_token_auth_users]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListTokenAuthUsersPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_token_auth_user(
+        self,
+        request: Optional[Union[memorystore.GetTokenAuthUserRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> memorystore.TokenAuthUser:
+        r"""Gets a specific token auth user for a token based
+        auth enabled instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_get_token_auth_user():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.GetTokenAuthUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_token_auth_user(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.GetTokenAuthUserRequest, dict]):
+                The request object. Request message for ``GetTokenAuthUser``.
+            name (str):
+                Required. The name of token auth user for a basic auth
+                enabled instance. Format:
+                projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.memorystore_v1.types.TokenAuthUser:
+                Token based auth user for the
+                instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.GetTokenAuthUserRequest):
+            request = memorystore.GetTokenAuthUserRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_token_auth_user]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_auth_tokens(
+        self,
+        request: Optional[Union[memorystore.ListAuthTokensRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListAuthTokensPager:
+        r"""Lists all the auth tokens for a specific token auth
+        user.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_list_auth_tokens():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.ListAuthTokensRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_auth_tokens(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.ListAuthTokensRequest, dict]):
+                The request object. Request message for ``ListAuthTokens``.
+            parent (str):
+                Required. The parent to list auth tokens from. Format:
+                projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.memorystore_v1.services.memorystore.pagers.ListAuthTokensPager:
+                Response message for ListAuthTokens.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.ListAuthTokensRequest):
+            request = memorystore.ListAuthTokensRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_auth_tokens]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAuthTokensPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_auth_token(
+        self,
+        request: Optional[Union[memorystore.GetAuthTokenRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> memorystore.AuthToken:
+        r"""Gets a token based auth enabled instance's auth token
+        for a given user.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_get_auth_token():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.GetAuthTokenRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_auth_token(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.GetAuthTokenRequest, dict]):
+                The request object. Request message for ``GetAuthToken``.
+            name (str):
+                Required. The name of token auth user for a token auth
+                enabled instance. Format:
+                projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{auth_token}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.memorystore_v1.types.AuthToken:
+                Auth token for the instance.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.GetAuthTokenRequest):
+            request = memorystore.GetAuthTokenRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_auth_token]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def add_token_auth_user(
+        self,
+        request: Optional[Union[memorystore.AddTokenAuthUserRequest, dict]] = None,
+        *,
+        instance: Optional[str] = None,
+        token_auth_user: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Adds a token auth user for a token based auth enabled
+        instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_add_token_auth_user():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.AddTokenAuthUserRequest(
+                    instance="instance_value",
+                    token_auth_user="token_auth_user_value",
+                )
+
+                # Make the request
+                operation = client.add_token_auth_user(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.AddTokenAuthUserRequest, dict]):
+                The request object. Request message for ``AddTokenAuthUser``.
+            instance (str):
+                Required. The instance resource that
+                this token auth user will be added for.
+                Format:
+                projects/{project}/locations/{location}/instances/{instance}
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            token_auth_user (str):
+                Required. The name of the token auth
+                user to add.
+
+                This corresponds to the ``token_auth_user`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.memorystore_v1.types.Instance` A
+                Memorystore instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [instance, token_auth_user]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.AddTokenAuthUserRequest):
+            request = memorystore.AddTokenAuthUserRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if instance is not None:
+                request.instance = instance
+            if token_auth_user is not None:
+                request.token_auth_user = token_auth_user
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_token_auth_user]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("instance", request.instance),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            memorystore.Instance,
+            metadata_type=memorystore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_token_auth_user(
+        self,
+        request: Optional[Union[memorystore.DeleteTokenAuthUserRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a token auth user for a token based auth
+        enabled instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_delete_token_auth_user():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.DeleteTokenAuthUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_token_auth_user(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.DeleteTokenAuthUserRequest, dict]):
+                The request object. Request message for ``DeleteTokenAuthUser``.
+            name (str):
+                Required. The name of the token auth user to delete.
+                Format:
+                projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.DeleteTokenAuthUserRequest):
+            request = memorystore.DeleteTokenAuthUserRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_token_auth_user]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=memorystore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def add_auth_token(
+        self,
+        request: Optional[Union[memorystore.AddAuthTokenRequest, dict]] = None,
+        *,
+        token_auth_user: Optional[str] = None,
+        auth_token: Optional[memorystore.AuthToken] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Adds a token for a user of a token based auth enabled
+        instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_add_auth_token():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.AddAuthTokenRequest(
+                    token_auth_user="token_auth_user_value",
+                )
+
+                # Make the request
+                operation = client.add_auth_token(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.AddAuthTokenRequest, dict]):
+                The request object. Request message for ``AddAuthToken``.
+            token_auth_user (str):
+                Required. The name of the token auth
+                user resource that this token will be
+                added for.
+
+                This corresponds to the ``token_auth_user`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            auth_token (google.cloud.memorystore_v1.types.AuthToken):
+                Required. The auth token to add.
+                This corresponds to the ``auth_token`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.memorystore_v1.types.TokenAuthUser`
+                Token based auth user for the instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [token_auth_user, auth_token]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.AddAuthTokenRequest):
+            request = memorystore.AddAuthTokenRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if token_auth_user is not None:
+                request.token_auth_user = token_auth_user
+            if auth_token is not None:
+                request.auth_token = auth_token
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_auth_token]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("token_auth_user", request.token_auth_user),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            memorystore.TokenAuthUser,
+            metadata_type=memorystore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_auth_token(
+        self,
+        request: Optional[Union[memorystore.DeleteAuthTokenRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a token for a user of a token based auth
+        enabled instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_delete_auth_token():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.DeleteAuthTokenRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_auth_token(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.DeleteAuthTokenRequest, dict]):
+                The request object. Request message for ``DeleteAuthToken``.
+            name (str):
+                Required. The name of the token auth user resource that
+                this token will be deleted from. Format:
+                projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{name}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.DeleteAuthTokenRequest):
+            request = memorystore.DeleteAuthTokenRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_auth_token]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=memorystore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "MemorystoreClient":
         return self
 
@@ -3469,8 +4378,6 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("MemorystoreClient",)

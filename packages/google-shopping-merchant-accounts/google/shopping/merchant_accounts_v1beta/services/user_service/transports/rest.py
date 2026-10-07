@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_accounts_v1beta._compat import transcode_request
 from google.shopping.merchant_accounts_v1beta.types import user
 from google.shopping.merchant_accounts_v1beta.types import user as gsma_user
 
@@ -55,8 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class UserServiceRestInterceptor:
@@ -458,23 +458,16 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
             http_options = (
                 _BaseUserServiceRestTransport._BaseCreateUser._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_user(request, metadata)
-            transcoded_request = (
-                _BaseUserServiceRestTransport._BaseCreateUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseUserServiceRestTransport._BaseCreateUser._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseUserServiceRestTransport._BaseCreateUser._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserServiceRestTransport._BaseCreateUser,
+                    "_BaseCreateUser__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -607,19 +600,16 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
             http_options = (
                 _BaseUserServiceRestTransport._BaseDeleteUser._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_user(request, metadata)
-            transcoded_request = (
-                _BaseUserServiceRestTransport._BaseDeleteUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseUserServiceRestTransport._BaseDeleteUser._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserServiceRestTransport._BaseDeleteUser,
+                    "_BaseDeleteUser__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -721,19 +711,16 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
             http_options = (
                 _BaseUserServiceRestTransport._BaseGetUser._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_user(request, metadata)
-            transcoded_request = (
-                _BaseUserServiceRestTransport._BaseGetUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseUserServiceRestTransport._BaseGetUser._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserServiceRestTransport._BaseGetUser,
+                    "_BaseGetUser__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -867,19 +854,16 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
             http_options = (
                 _BaseUserServiceRestTransport._BaseListUsers._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_users(request, metadata)
-            transcoded_request = (
-                _BaseUserServiceRestTransport._BaseListUsers._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseUserServiceRestTransport._BaseListUsers._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserServiceRestTransport._BaseListUsers,
+                    "_BaseListUsers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1018,23 +1002,16 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
             http_options = (
                 _BaseUserServiceRestTransport._BaseUpdateUser._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_user(request, metadata)
-            transcoded_request = (
-                _BaseUserServiceRestTransport._BaseUpdateUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseUserServiceRestTransport._BaseUpdateUser._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseUserServiceRestTransport._BaseUpdateUser._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserServiceRestTransport._BaseUpdateUser,
+                    "_BaseUpdateUser__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

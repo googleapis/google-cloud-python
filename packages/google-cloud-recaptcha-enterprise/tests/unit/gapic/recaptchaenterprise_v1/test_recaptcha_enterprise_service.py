@@ -69,6 +69,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -124,232 +136,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert RecaptchaEnterpriseServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        RecaptchaEnterpriseServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_default_mtls_endpoint(
-            sandbox_mtls_endpoint
-        )
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                RecaptchaEnterpriseServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            RecaptchaEnterpriseServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert RecaptchaEnterpriseServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert RecaptchaEnterpriseServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert (
-                RecaptchaEnterpriseServiceClient._use_client_cert_effective() is False
-            )
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert RecaptchaEnterpriseServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert (
-                RecaptchaEnterpriseServiceClient._use_client_cert_effective() is False
-            )
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert RecaptchaEnterpriseServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert (
-                RecaptchaEnterpriseServiceClient._use_client_cert_effective() is False
-            )
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert RecaptchaEnterpriseServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert (
-                RecaptchaEnterpriseServiceClient._use_client_cert_effective() is False
-            )
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert (
-                RecaptchaEnterpriseServiceClient._use_client_cert_effective() is False
-            )
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                RecaptchaEnterpriseServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert (
-                RecaptchaEnterpriseServiceClient._use_client_cert_effective() is False
-            )
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert (
-                    RecaptchaEnterpriseServiceClient._use_client_cert_effective()
-                    is False
-                )
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -385,107 +171,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    RecaptchaEnterpriseServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(RecaptchaEnterpriseServiceClient),
-)
-@mock.patch.object(
-    RecaptchaEnterpriseServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(RecaptchaEnterpriseServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = RecaptchaEnterpriseServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = (
-        RecaptchaEnterpriseServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=default_universe
-        )
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = RecaptchaEnterpriseServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == RecaptchaEnterpriseServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
-        == RecaptchaEnterpriseServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == RecaptchaEnterpriseServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            None, None, mock_universe, "never"
-        )
-        == mock_endpoint
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        RecaptchaEnterpriseServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        RecaptchaEnterpriseServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        RecaptchaEnterpriseServiceClient._get_universe_domain(None, None)
-        == RecaptchaEnterpriseServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        RecaptchaEnterpriseServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -999,11 +684,19 @@ def test_recaptcha_enterprise_service_client_get_mtls_endpoint_and_cert_source(
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1046,11 +739,19 @@ def test_recaptcha_enterprise_service_client_get_mtls_endpoint_and_cert_source(
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -6033,6 +5734,658 @@ async def test_get_metrics_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        recaptchaenterprise.GetPolicyRequest(),
+        {},
+    ],
+)
+def test_get_policy(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Policy(
+            name="name_value",
+        )
+        response = client.get_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.GetPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.Policy)
+    assert response.name == "name_value"
+
+
+def test_get_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = recaptchaenterprise.GetPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.GetPolicyRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_policy] = mock_rpc
+        request = {}
+        client.get_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.get_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.GetPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_policy_async(request_type, transport: str = "grpc_asyncio"):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy(
+                name="name_value",
+            )
+        )
+        response = await client.get_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.GetPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.Policy)
+    assert response.name == "name_value"
+
+
+def test_get_policy_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.GetPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        call.return_value = recaptchaenterprise.Policy()
+        client.get_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_policy_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.GetPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy()
+        )
+        await client.get_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_policy_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Policy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_policy_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_policy(
+            recaptchaenterprise.GetPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_policy_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Policy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_policy_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_policy(
+            recaptchaenterprise.GetPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.UpdatePolicyRequest(),
+        {},
+    ],
+)
+def test_update_policy(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Policy(
+            name="name_value",
+        )
+        response = client.update_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.UpdatePolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.Policy)
+    assert response.name == "name_value"
+
+
+def test_update_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = recaptchaenterprise.UpdatePolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.UpdatePolicyRequest()
+        assert args[0] == request_msg
+
+
+def test_update_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_policy] = mock_rpc
+        request = {}
+        client.update_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.update_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.UpdatePolicyRequest(),
+        {},
+    ],
+)
+async def test_update_policy_async(request_type, transport: str = "grpc_asyncio"):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy(
+                name="name_value",
+            )
+        )
+        response = await client.update_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.UpdatePolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.Policy)
+    assert response.name == "name_value"
+
+
+def test_update_policy_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.UpdatePolicyRequest()
+
+    request.policy.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        call.return_value = recaptchaenterprise.Policy()
+        client.update_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "policy.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_policy_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.UpdatePolicyRequest()
+
+    request.policy.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy()
+        )
+        await client.update_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "policy.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_policy_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Policy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_policy(
+            policy=recaptchaenterprise.Policy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].policy
+        mock_val = recaptchaenterprise.Policy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_policy_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_policy(
+            recaptchaenterprise.UpdatePolicyRequest(),
+            policy=recaptchaenterprise.Policy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_policy_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Policy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_policy(
+            policy=recaptchaenterprise.Policy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].policy
+        mock_val = recaptchaenterprise.Policy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_policy_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_policy(
+            recaptchaenterprise.UpdatePolicyRequest(),
+            policy=recaptchaenterprise.Policy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         recaptchaenterprise.CreateFirewallPolicyRequest(),
         {},
     ],
@@ -10429,6 +10782,46 @@ def test_get_metrics_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_policy_empty_call_grpc():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        call.return_value = recaptchaenterprise.Policy()
+        client.get_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.GetPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_policy_empty_call_grpc():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        call.return_value = recaptchaenterprise.Policy()
+        client.update_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.UpdatePolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_firewall_policy_empty_call_grpc():
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10988,6 +11381,58 @@ async def test_get_metrics_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_get_policy_empty_call_grpc_asyncio():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy(
+                name="name_value",
+            )
+        )
+        await client.get_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.GetPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_policy_empty_call_grpc_asyncio():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Policy(
+                name="name_value",
+            )
+        )
+        await client.update_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.UpdatePolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_create_firewall_policy_empty_call_grpc_asyncio():
     client = RecaptchaEnterpriseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11286,6 +11731,8 @@ def test_recaptcha_enterprise_service_base_transport():
         "remove_ip_override",
         "list_ip_overrides",
         "get_metrics",
+        "get_policy",
+        "update_policy",
         "create_firewall_policy",
         "list_firewall_policies",
         "get_firewall_policy",
@@ -11746,9 +12193,32 @@ def test_parse_metrics_path():
     assert expected == actual
 
 
-def test_related_account_group_path():
+def test_policy_path():
     project = "oyster"
-    relatedaccountgroup = "nudibranch"
+    key = "nudibranch"
+    expected = "projects/{project}/keys/{key}/policy".format(
+        project=project,
+        key=key,
+    )
+    actual = RecaptchaEnterpriseServiceClient.policy_path(project, key)
+    assert expected == actual
+
+
+def test_parse_policy_path():
+    expected = {
+        "project": "cuttlefish",
+        "key": "mussel",
+    }
+    path = RecaptchaEnterpriseServiceClient.policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_policy_path(path)
+    assert expected == actual
+
+
+def test_related_account_group_path():
+    project = "winkle"
+    relatedaccountgroup = "nautilus"
     expected = "projects/{project}/relatedaccountgroups/{relatedaccountgroup}".format(
         project=project,
         relatedaccountgroup=relatedaccountgroup,
@@ -11761,8 +12231,8 @@ def test_related_account_group_path():
 
 def test_parse_related_account_group_path():
     expected = {
-        "project": "cuttlefish",
-        "relatedaccountgroup": "mussel",
+        "project": "scallop",
+        "relatedaccountgroup": "abalone",
     }
     path = RecaptchaEnterpriseServiceClient.related_account_group_path(**expected)
 
@@ -11772,9 +12242,9 @@ def test_parse_related_account_group_path():
 
 
 def test_related_account_group_membership_path():
-    project = "winkle"
-    relatedaccountgroup = "nautilus"
-    membership = "scallop"
+    project = "squid"
+    relatedaccountgroup = "clam"
+    membership = "whelk"
     expected = "projects/{project}/relatedaccountgroups/{relatedaccountgroup}/memberships/{membership}".format(
         project=project,
         relatedaccountgroup=relatedaccountgroup,
@@ -11788,9 +12258,9 @@ def test_related_account_group_membership_path():
 
 def test_parse_related_account_group_membership_path():
     expected = {
-        "project": "abalone",
-        "relatedaccountgroup": "squid",
-        "membership": "clam",
+        "project": "octopus",
+        "relatedaccountgroup": "oyster",
+        "membership": "nudibranch",
     }
     path = RecaptchaEnterpriseServiceClient.related_account_group_membership_path(
         **expected
@@ -11806,7 +12276,7 @@ def test_parse_related_account_group_membership_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -11818,7 +12288,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = RecaptchaEnterpriseServiceClient.common_billing_account_path(**expected)
 
@@ -11828,7 +12298,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -11838,7 +12308,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = RecaptchaEnterpriseServiceClient.common_folder_path(**expected)
 
@@ -11848,7 +12318,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -11858,7 +12328,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = RecaptchaEnterpriseServiceClient.common_organization_path(**expected)
 
@@ -11868,7 +12338,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -11878,7 +12348,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = RecaptchaEnterpriseServiceClient.common_project_path(**expected)
 
@@ -11888,8 +12358,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -11900,8 +12370,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = RecaptchaEnterpriseServiceClient.common_location_path(**expected)
 

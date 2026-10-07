@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.filestore_v1._compat import transcode_request
 from google.cloud.filestore_v1.types import cloud_filestore_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -55,8 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CloudFilestoreManagerRestInterceptor:
@@ -1495,19 +1495,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_http_options()
-
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup,
+                    "_BaseCreateBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1646,19 +1643,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance,
+                    "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1797,19 +1791,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_http_options()
-
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot,
+                    "_BaseCreateSnapshot__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1946,15 +1937,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup,
+                    "_BaseDeleteBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2091,15 +2083,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance,
+                    "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2236,15 +2229,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot,
+                    "_BaseDeleteSnapshot__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2378,15 +2372,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_http_options()
-
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseGetBackup,
+                    "_BaseGetBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2522,15 +2517,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseGetInstance,
+                    "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2668,15 +2664,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_http_options()
-
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot,
+                    "_BaseGetSnapshot__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2815,15 +2812,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_http_options()
-
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseListBackups,
+                    "_BaseListBackups__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2962,15 +2960,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_http_options()
-
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseListInstances,
+                    "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3109,15 +3108,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_http_options()
-
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots,
+                    "_BaseListSnapshots__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3259,19 +3259,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_http_options()
-
             request, metadata = self._interceptor.pre_promote_replica(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica,
+                    "_BasePromoteReplica__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3411,21 +3408,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_restore_instance(
                 request, metadata
             )
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance,
+                    "_BaseRestoreInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3567,19 +3561,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_revert_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance,
+                    "_BaseRevertInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3718,19 +3709,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_http_options()
-
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup,
+                    "_BaseUpdateBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3869,19 +3857,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance,
+                    "_BaseUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4021,19 +4006,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_http_options()
-
             request, metadata = self._interceptor.pre_update_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot,
+                    "_BaseUpdateSnapshot__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4353,15 +4335,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4492,15 +4475,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4629,21 +4613,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4749,17 +4730,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4867,15 +4849,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5006,15 +4989,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             """
 
             http_options = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudFilestoreManagerRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

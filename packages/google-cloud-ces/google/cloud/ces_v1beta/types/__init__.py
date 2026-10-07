@@ -148,6 +148,7 @@ from .client_function import (
 from .common import (
     Callback,
     ChannelProfile,
+    EvaluationRunCachingSettings,
     ExecutionType,
     ModelSettings,
     ServiceDirectoryConfig,
@@ -174,6 +175,8 @@ from .data_store_tool import (
 from .deployment import (
     Deployment,
     ExperimentConfig,
+    InstagramCredentials,
+    WhatsAppCredentials,
 )
 from .evaluation import (
     AggregatedMetrics,
@@ -481,6 +484,7 @@ __all__ = (
     "ClientFunction",
     "Callback",
     "ChannelProfile",
+    "EvaluationRunCachingSettings",
     "ModelSettings",
     "ServiceDirectoryConfig",
     "Span",
@@ -495,6 +499,8 @@ __all__ = (
     "DataStoreTool",
     "Deployment",
     "ExperimentConfig",
+    "InstagramCredentials",
+    "WhatsAppCredentials",
     "AggregatedMetrics",
     "Evaluation",
     "EvaluationConfig",

@@ -14,9 +14,9 @@ Python Client for Navigation Connect
    :target: https://pypi.org/project/google-maps-navconnect/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-navconnect.svg
    :target: https://pypi.org/project/google-maps-navconnect/
-.. _Navigation Connect: https://developers.google.com/maps/documentation/mobility/navigationconnect
+.. _Navigation Connect: https://developers.google.com/maps/documentation/navigation/connect
 .. _Client Library Documentation: https://googleapis.dev/python/google-maps-navconnect/latest
-.. _Product Documentation:  https://developers.google.com/maps/documentation/mobility/navigationconnect
+.. _Product Documentation:  https://developers.google.com/maps/documentation/navigation/connect
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Navigation Connect.:  https://developers.google.com/maps/documentation/mobility/navigationconnect
+.. _Enable the Navigation Connect.:  https://developers.google.com/maps/documentation/navigation/connect
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -105,7 +105,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Navigation Connect Product documentation:  https://developers.google.com/maps/documentation/mobility/navigationconnect
+.. _Navigation Connect Product documentation:  https://developers.google.com/maps/documentation/navigation/connect
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

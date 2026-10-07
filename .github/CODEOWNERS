@@ -28,7 +28,6 @@
 # Catch all. @googleapis/cloud-sdk-python-team is notified on every change for packages not owned by other teams.
 *                                             @googleapis/cloud-sdk-python-team
 
-/packages/bigframes/                          @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/bigquery-magics/                    @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/db-dtypes/                          @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/django-google-spanner/              @googleapis/spanner-team

@@ -54,6 +54,7 @@ library like `CacheControl`_ to create a cache-aware
     http://openid.net/specs/openid-connect-core-1_0.html#IDToken
 .. _CacheControl: https://cachecontrol.readthedocs.io
 """
+
 from __future__ import annotations
 
 import http.client as http_client
@@ -61,11 +62,7 @@ import json
 import os
 from typing import Any, Mapping, Union
 
-from google.auth import environment_vars
-from google.auth import exceptions
-from google.auth import jwt
-from google.auth import transport
-
+from google.auth import environment_vars, exceptions, jwt, transport
 
 # The URL that provides public certificates for verifying ID tokens issued
 # by Google's OAuth 2.0 authorization server.
@@ -124,7 +121,7 @@ def verify_token(
             intended for. If None then the audience is not verified.
         certs_url (str): The URL that specifies the certificates to use to
             verify the token. This URL should return JSON in the format of
-            ``{'key id': 'x509 certificate'}`` or a certificate array according to
+            ``{'key id': 'x509 certificate'}`` or a JWK Set according to
             the JWK spec (see https://tools.ietf.org/html/rfc7517).
         clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
             validation.
@@ -132,17 +129,35 @@ def verify_token(
     Returns:
         Mapping[str, Any]: The decoded token.
     """
+    if isinstance(id_token, bytes):
+        id_token = id_token.decode("utf-8")
+
     certs = _fetch_certs(request, certs_url)
 
     if "keys" in certs:
         try:
-            import jwt as jwt_lib  # type: ignore
+            import jwt as jwt_lib
+            from jwt.api_jwk import PyJWKSet
+            from jwt.exceptions import PyJWKClientError
         except ImportError as caught_exc:  # pragma: NO COVER
             raise ImportError(
                 "The pyjwt library is not installed, please install the pyjwt package to use the jwk certs format."
             ) from caught_exc
-        jwks_client = jwt_lib.PyJWKClient(certs_url)
-        signing_key = jwks_client.get_signing_key_from_jwt(id_token)
+        jwkset = PyJWKSet.from_dict(certs)
+        header = jwt_lib.get_unverified_header(id_token)
+        kid = header.get("kid")
+
+        signing_key = None
+        for key in jwkset.keys:
+            if kid and key.key_id == kid and key.public_key_use in ("sig", None):
+                signing_key = key
+                break
+
+        if signing_key is None:
+            raise PyJWKClientError(
+                f'Unable to find a signing key that matches: "{kid}"'
+            )
+
         return jwt_lib.decode(
             id_token,
             signing_key.key,
@@ -221,7 +236,7 @@ def verify_firebase_token(id_token, request, audience=None, clock_skew_in_second
     )
 
 
-def fetch_id_token_credentials(audience, request=None):
+def fetch_id_token_credentials(audience, request=None, bind_id_token=None):
     """Create the ID Token credentials from the current environment.
 
     This function acquires ID token from the environment in the following order.
@@ -257,6 +272,19 @@ def fetch_id_token_credentials(audience, request=None):
         audience (str): The audience that this ID token is intended for.
         request (Optional[google.auth.transport.Request]): A callable used to make
             HTTP requests. A request object will be created if not provided.
+        bind_id_token (Optional[bool]): Controls whether to request a
+            certificate-bound ID token from the metadata server identity
+            endpoint. If ``True``, requests a bound token whenever a valid
+            Agent Identity certificate is available and token binding is not
+            disabled via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back
+            to an unbound token otherwise (or raising
+            :class:`~google.auth.exceptions.RefreshError` if a configured
+            certificate is not found after retries). If ``False``, always
+            requests an unbound token. If ``None`` (default), token binding is
+            determined automatically by the library. Set ``True`` or ``False``
+            explicitly if your application requires a specific behavior. Has no
+            effect when credentials are loaded from
+            ``GOOGLE_APPLICATION_CREDENTIALS``.
 
     Returns:
         google.auth.credentials.Credentials: The ID token credentials.
@@ -320,7 +348,10 @@ def fetch_id_token_credentials(audience, request=None):
 
         if _metadata.ping(request):
             return compute_engine.IDTokenCredentials(
-                request, audience, use_metadata_identity_endpoint=True
+                request,
+                audience,
+                use_metadata_identity_endpoint=True,
+                bind_id_token=bind_id_token,
             )
     except (ImportError, exceptions.TransportError):
         pass
@@ -330,7 +361,7 @@ def fetch_id_token_credentials(audience, request=None):
     )
 
 
-def fetch_id_token(request, audience):
+def fetch_id_token(request, audience, bind_id_token=None):
     """Fetch the ID Token from the current environment.
 
     This function acquires ID token from the environment in the following order.
@@ -359,6 +390,19 @@ def fetch_id_token(request, audience):
         request (google.auth.transport.Request): A callable used to make
             HTTP requests.
         audience (str): The audience that this ID token is intended for.
+        bind_id_token (Optional[bool]): Controls whether to request a
+            certificate-bound ID token from the metadata server identity
+            endpoint. If ``True``, requests a bound token whenever a valid
+            Agent Identity certificate is available and token binding is not
+            disabled via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back
+            to an unbound token otherwise (or raising
+            :class:`~google.auth.exceptions.RefreshError` if a configured
+            certificate is not found after retries). If ``False``, always
+            requests an unbound token. If ``None`` (default), token binding is
+            determined automatically by the library. Set ``True`` or ``False``
+            explicitly if your application requires a specific behavior. Has no
+            effect when credentials are loaded from
+            ``GOOGLE_APPLICATION_CREDENTIALS``.
 
     Returns:
         str: The ID token.
@@ -367,7 +411,12 @@ def fetch_id_token(request, audience):
         ~google.auth.exceptions.DefaultCredentialsError:
             If metadata server doesn't exist and no valid service account
             credentials are found.
+        ~google.auth.exceptions.RefreshError:
+            If an error occurred while fetching the ID token or if a required
+            certificate file is not found after retries.
     """
-    id_token_credentials = fetch_id_token_credentials(audience, request=request)
+    id_token_credentials = fetch_id_token_credentials(
+        audience, request=request, bind_id_token=bind_id_token
+    )
     id_token_credentials.refresh(request)
     return id_token_credentials.token

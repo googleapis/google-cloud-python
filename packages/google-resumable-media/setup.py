@@ -30,12 +30,12 @@ EXTRAS_REQUIRE = {
     'requests': [
         'requests >= 2.18.0, < 3.0.0',
     ],
-    'aiohttp': ['aiohttp >= 3.6.2, < 4.0.0', 'google-auth >= 1.22.0, < 2.0.0']
+    'aiohttp': ['aiohttp >= 3.6.2, < 4.0.0', 'google-auth >= 2.14.1, < 3.0.0']
 }
 
 setuptools.setup(
     name='google-resumable-media',
-    version = "2.10.0",
+    version = "2.11.0",
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
@@ -63,6 +63,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3.13',
         'Programming Language :: Python :: 3.14',
+        'Programming Language :: Python :: 3.15',
         'Topic :: Internet',
     ],
 )

@@ -31,6 +31,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.commerceproducer_v1beta._compat import transcode_request
 from google.cloud.commerceproducer_v1beta.types import (
     commerce_transaction,
     private_offer,
@@ -66,8 +67,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CommerceTransactionRestInterceptor:
@@ -218,6 +218,14 @@ class CommerceTransactionRestInterceptor:
                 return request, metadata
 
             def post_publish_private_offer(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_resolve_amendment_target(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_resolve_amendment_target(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1066,6 +1074,58 @@ class CommerceTransactionRestInterceptor:
         """
         return response, metadata
 
+    def pre_resolve_amendment_target(
+        self,
+        request: commerce_transaction.ResolveAmendmentTargetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        commerce_transaction.ResolveAmendmentTargetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for resolve_amendment_target
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CommerceTransaction server.
+        """
+        return request, metadata
+
+    def post_resolve_amendment_target(
+        self, response: commerce_transaction.ResolveAmendmentTargetResponse
+    ) -> commerce_transaction.ResolveAmendmentTargetResponse:
+        """Post-rpc interceptor for resolve_amendment_target
+
+        DEPRECATED. Please use the `post_resolve_amendment_target_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CommerceTransaction server but before
+        it is returned to user code. This `post_resolve_amendment_target` interceptor runs
+        before the `post_resolve_amendment_target_with_metadata` interceptor.
+        """
+        return response
+
+    def post_resolve_amendment_target_with_metadata(
+        self,
+        response: commerce_transaction.ResolveAmendmentTargetResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        commerce_transaction.ResolveAmendmentTargetResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for resolve_amendment_target
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CommerceTransaction server but before it is returned to user code.
+
+        We recommend only using this `post_resolve_amendment_target_with_metadata`
+        interceptor in new development instead of the `post_resolve_amendment_target` interceptor.
+        When both interceptors are used, this `post_resolve_amendment_target_with_metadata` interceptor runs after the
+        `post_resolve_amendment_target` interceptor. The (possibly modified) response returned by
+        `post_resolve_amendment_target` will be passed to
+        `post_resolve_amendment_target_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_private_offer(
         self,
         request: commerce_transaction.UpdatePrivateOfferRequest,
@@ -1473,21 +1533,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseCancelPrivateOffer._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_private_offer(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseCancelPrivateOffer._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCommerceTransactionRestTransport._BaseCancelPrivateOffer._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseCancelPrivateOffer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseCancelPrivateOffer,
+                    "_BaseCancelPrivateOffer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1635,21 +1692,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOffer._get_http_options()
-
             request, metadata = self._interceptor.pre_create_private_offer(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOffer._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOffer._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOffer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseCreatePrivateOffer,
+                    "_BaseCreatePrivateOffer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1786,38 +1840,36 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
 
                 Returns:
                     ~.private_offer.PrivateOfferDocument:
-                        Message describing the
-                    PrivateOfferDocument resource. Used to
-                    attach documents to a private offer in
-                    state DRAFT. Once a private offer is no
-                    longer in state DRAFT, the set of child
-                    documents is immutable. Existing
-                    documents cannot be updated or deleted,
-                    and new documents cannot be added.
+                        Message describing the PrivateOfferDocument resource.
+                    Used to attach documents to a private offer in state
+                    DRAFT. Once a private offer is no longer in state DRAFT,
+                    the set of child documents is immutable. Existing
+                    documents cannot be updated or deleted, and new
+                    documents cannot be added.
 
-                    A private offer must include a EULA,
-                    either by assigning a standard EULA or
-                    attaching a custom EULA document, or a
-                    statement of work document.
+                    A private offer may have at most one document of each
+                    type, and may not have both a standard EULA and a custom
+                    EULA.
+
+                    Which document types are required, optional, or not
+                    permitted depends on the service the offer is for, and
+                    is returned in ``Service.document_requirement``.
 
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOfferDocument._get_http_options()
-
             request, metadata = self._interceptor.pre_create_private_offer_document(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOfferDocument._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOfferDocument._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseCreatePrivateOfferDocument._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseCreatePrivateOfferDocument,
+                    "_BaseCreatePrivateOfferDocument__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1953,17 +2005,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseDeletePrivateOffer._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_private_offer(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseDeletePrivateOffer._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseDeletePrivateOffer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseDeletePrivateOffer,
+                    "_BaseDeletePrivateOffer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2064,17 +2117,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseDeletePrivateOfferDocument._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_private_offer_document(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseDeletePrivateOfferDocument._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseDeletePrivateOfferDocument._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseDeletePrivateOfferDocument,
+                    "_BaseDeletePrivateOfferDocument__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2184,17 +2238,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseGetPrivateOffer._get_http_options()
-
             request, metadata = self._interceptor.pre_get_private_offer(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetPrivateOffer._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetPrivateOffer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetPrivateOffer,
+                    "_BaseGetPrivateOffer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2327,34 +2382,36 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
 
                 Returns:
                     ~.private_offer.PrivateOfferDocument:
-                        Message describing the
-                    PrivateOfferDocument resource. Used to
-                    attach documents to a private offer in
-                    state DRAFT. Once a private offer is no
-                    longer in state DRAFT, the set of child
-                    documents is immutable. Existing
-                    documents cannot be updated or deleted,
-                    and new documents cannot be added.
+                        Message describing the PrivateOfferDocument resource.
+                    Used to attach documents to a private offer in state
+                    DRAFT. Once a private offer is no longer in state DRAFT,
+                    the set of child documents is immutable. Existing
+                    documents cannot be updated or deleted, and new
+                    documents cannot be added.
 
-                    A private offer must include a EULA,
-                    either by assigning a standard EULA or
-                    attaching a custom EULA document, or a
-                    statement of work document.
+                    A private offer may have at most one document of each
+                    type, and may not have both a standard EULA and a custom
+                    EULA.
+
+                    Which document types are required, optional, or not
+                    permitted depends on the service the offer is for, and
+                    is returned in ``Service.document_requirement``.
 
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseGetPrivateOfferDocument._get_http_options()
-
             request, metadata = self._interceptor.pre_get_private_offer_document(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetPrivateOfferDocument._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetPrivateOfferDocument._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetPrivateOfferDocument,
+                    "_BaseGetPrivateOfferDocument__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2493,15 +2550,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseGetService._get_http_options()
-
             request, metadata = self._interceptor.pre_get_service(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetService._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetService._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetService,
+                    "_BaseGetService__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2658,15 +2716,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             http_options = (
                 _BaseCommerceTransactionRestTransport._BaseGetSku._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_sku(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetSku._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetSku._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetSku,
+                    "_BaseGetSku__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2801,15 +2860,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseGetSkuGroup._get_http_options()
-
             request, metadata = self._interceptor.pre_get_sku_group(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetSkuGroup._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetSkuGroup._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetSkuGroup,
+                    "_BaseGetSkuGroup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2946,17 +3006,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseGetStandardOffer._get_http_options()
-
             request, metadata = self._interceptor.pre_get_standard_offer(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetStandardOffer._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetStandardOffer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetStandardOffer,
+                    "_BaseGetStandardOffer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3095,17 +3156,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseListPrivateOfferDocuments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_private_offer_documents(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListPrivateOfferDocuments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListPrivateOfferDocuments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListPrivateOfferDocuments,
+                    "_BaseListPrivateOfferDocuments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3247,17 +3309,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseListPrivateOffers._get_http_options()
-
             request, metadata = self._interceptor.pre_list_private_offers(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListPrivateOffers._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListPrivateOffers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListPrivateOffers,
+                    "_BaseListPrivateOffers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3399,15 +3462,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseListServices._get_http_options()
-
             request, metadata = self._interceptor.pre_list_services(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListServices._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListServices._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListServices,
+                    "_BaseListServices__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3547,15 +3611,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseListSkuGroups._get_http_options()
-
             request, metadata = self._interceptor.pre_list_sku_groups(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListSkuGroups._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListSkuGroups._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListSkuGroups,
+                    "_BaseListSkuGroups__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3693,15 +3758,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             http_options = (
                 _BaseCommerceTransactionRestTransport._BaseListSkus._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_skus(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListSkus._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListSkus._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListSkus,
+                    "_BaseListSkus__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3841,17 +3907,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseListStandardOffers._get_http_options()
-
             request, metadata = self._interceptor.pre_list_standard_offers(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListStandardOffers._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListStandardOffers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListStandardOffers,
+                    "_BaseListStandardOffers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4002,21 +4069,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BasePublishPrivateOffer._get_http_options()
-
             request, metadata = self._interceptor.pre_publish_private_offer(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BasePublishPrivateOffer._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCommerceTransactionRestTransport._BasePublishPrivateOffer._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BasePublishPrivateOffer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BasePublishPrivateOffer,
+                    "_BasePublishPrivateOffer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4098,6 +4162,161 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
                 )
             return resp
 
+    class _ResolveAmendmentTarget(
+        _BaseCommerceTransactionRestTransport._BaseResolveAmendmentTarget,
+        CommerceTransactionRestStub,
+    ):
+        def __hash__(self):
+            return hash("CommerceTransactionRestTransport.ResolveAmendmentTarget")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: commerce_transaction.ResolveAmendmentTargetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> commerce_transaction.ResolveAmendmentTargetResponse:
+            r"""Call the resolve amendment target method over HTTP.
+
+            Args:
+                request (~.commerce_transaction.ResolveAmendmentTargetRequest):
+                    The request object. Message for resolving an amended
+                offer.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.commerce_transaction.ResolveAmendmentTargetResponse:
+                    Message in response to
+                ResolveAmendmentTarget.
+
+            """
+
+            http_options = _BaseCommerceTransactionRestTransport._BaseResolveAmendmentTarget._get_http_options()
+            request, metadata = self._interceptor.pre_resolve_amendment_target(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseResolveAmendmentTarget,
+                    "_BaseResolveAmendmentTarget__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.commerceproducer_v1beta.CommerceTransactionClient.ResolveAmendmentTarget",
+                    extra={
+                        "serviceName": "google.cloud.commerceproducer.v1beta.CommerceTransaction",
+                        "rpcName": "ResolveAmendmentTarget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CommerceTransactionRestTransport._ResolveAmendmentTarget._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = commerce_transaction.ResolveAmendmentTargetResponse()
+            pb_resp = commerce_transaction.ResolveAmendmentTargetResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_resolve_amendment_target(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_resolve_amendment_target_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        commerce_transaction.ResolveAmendmentTargetResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.commerceproducer_v1beta.CommerceTransactionClient.resolve_amendment_target",
+                    extra={
+                        "serviceName": "google.cloud.commerceproducer.v1beta.CommerceTransaction",
+                        "rpcName": "ResolveAmendmentTarget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdatePrivateOffer(
         _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOffer,
         CommerceTransactionRestStub,
@@ -4164,21 +4383,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOffer._get_http_options()
-
             request, metadata = self._interceptor.pre_update_private_offer(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOffer._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOffer._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOffer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOffer,
+                    "_BaseUpdatePrivateOffer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4315,38 +4531,36 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
 
                 Returns:
                     ~.private_offer.PrivateOfferDocument:
-                        Message describing the
-                    PrivateOfferDocument resource. Used to
-                    attach documents to a private offer in
-                    state DRAFT. Once a private offer is no
-                    longer in state DRAFT, the set of child
-                    documents is immutable. Existing
-                    documents cannot be updated or deleted,
-                    and new documents cannot be added.
+                        Message describing the PrivateOfferDocument resource.
+                    Used to attach documents to a private offer in state
+                    DRAFT. Once a private offer is no longer in state DRAFT,
+                    the set of child documents is immutable. Existing
+                    documents cannot be updated or deleted, and new
+                    documents cannot be added.
 
-                    A private offer must include a EULA,
-                    either by assigning a standard EULA or
-                    attaching a custom EULA document, or a
-                    statement of work document.
+                    A private offer may have at most one document of each
+                    type, and may not have both a standard EULA and a custom
+                    EULA.
+
+                    Which document types are required, optional, or not
+                    permitted depends on the service the offer is for, and
+                    is returned in ``Service.document_requirement``.
 
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOfferDocument._get_http_options()
-
             request, metadata = self._interceptor.pre_update_private_offer_document(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOfferDocument._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOfferDocument._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOfferDocument._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseUpdatePrivateOfferDocument,
+                    "_BaseUpdatePrivateOfferDocument__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4616,6 +4830,19 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
         return self._PublishPrivateOffer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def resolve_amendment_target(
+        self,
+    ) -> Callable[
+        [commerce_transaction.ResolveAmendmentTargetRequest],
+        commerce_transaction.ResolveAmendmentTargetResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ResolveAmendmentTarget(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def update_private_offer(
         self,
     ) -> Callable[
@@ -4697,15 +4924,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4836,15 +5064,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4973,21 +5202,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCommerceTransactionRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5091,17 +5317,18 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5207,15 +5434,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5346,15 +5574,16 @@ class CommerceTransactionRestTransport(_BaseCommerceTransactionRestTransport):
             """
 
             http_options = _BaseCommerceTransactionRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCommerceTransactionRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCommerceTransactionRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCommerceTransactionRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

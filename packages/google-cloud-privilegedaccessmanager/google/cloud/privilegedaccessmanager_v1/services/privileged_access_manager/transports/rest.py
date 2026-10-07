@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.privilegedaccessmanager_v1._compat import transcode_request
 from google.cloud.privilegedaccessmanager_v1.types import privilegedaccessmanager
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -55,8 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class PrivilegedAccessManagerRestInterceptor:
@@ -1263,19 +1263,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_http_options()
-
             request, metadata = self._interceptor.pre_approve_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant,
+                    "_BaseApproveGrant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1411,17 +1408,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_http_options()
-
             request, metadata = self._interceptor.pre_check_onboarding_status(
                 request, metadata
             )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus,
+                    "_BaseCheckOnboardingStatus__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1564,21 +1562,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_http_options()
-
             request, metadata = self._interceptor.pre_create_entitlement(
                 request, metadata
             )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement,
+                    "_BaseCreateEntitlement__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1718,19 +1713,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_http_options()
-
             request, metadata = self._interceptor.pre_create_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant,
+                    "_BaseCreateGrant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1869,17 +1861,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_entitlement(
                 request, metadata
             )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement,
+                    "_BaseDeleteEntitlement__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2018,19 +2011,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_http_options()
-
             request, metadata = self._interceptor.pre_deny_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant,
+                    "_BaseDenyGrant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2171,15 +2161,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_http_options()
-
             request, metadata = self._interceptor.pre_get_entitlement(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement,
+                    "_BaseGetEntitlement__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2321,15 +2312,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_http_options()
-
             request, metadata = self._interceptor.pre_get_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseGetGrant,
+                    "_BaseGetGrant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2467,17 +2459,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_http_options()
-
             request, metadata = self._interceptor.pre_list_entitlements(
                 request, metadata
             )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements,
+                    "_BaseListEntitlements__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2621,15 +2614,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_http_options()
-
             request, metadata = self._interceptor.pre_list_grants(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseListGrants,
+                    "_BaseListGrants__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2770,19 +2764,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_http_options()
-
             request, metadata = self._interceptor.pre_revoke_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant,
+                    "_BaseRevokeGrant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2916,17 +2907,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_http_options()
-
             request, metadata = self._interceptor.pre_search_entitlements(
                 request, metadata
             )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements,
+                    "_BaseSearchEntitlements__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3067,15 +3059,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_http_options()
-
             request, metadata = self._interceptor.pre_search_grants(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants,
+                    "_BaseSearchGrants__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3216,21 +3209,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_http_options()
-
             request, metadata = self._interceptor.pre_update_entitlement(
                 request, metadata
             )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement,
+                    "_BaseUpdateEntitlement__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3515,15 +3505,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3654,15 +3645,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3792,17 +3784,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3910,15 +3903,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4049,15 +4043,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             """
 
             http_options = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BasePrivilegedAccessManagerRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -353,6 +353,121 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
         return self._operations_client
 
     @property
+    def create_audit_schedule(
+        self,
+    ) -> Callable[
+        [auditmanager.CreateAuditScheduleRequest], Awaitable[auditmanager.AuditSchedule]
+    ]:
+        r"""Return a callable for the create audit schedule method over gRPC.
+
+        Creates a new audit schedule in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateAuditScheduleRequest],
+                    Awaitable[~.AuditSchedule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_audit_schedule" not in self._stubs:
+            self._stubs["create_audit_schedule"] = self._logged_channel.unary_unary(
+                "/google.cloud.auditmanager.v1.AuditManager/CreateAuditSchedule",
+                request_serializer=auditmanager.CreateAuditScheduleRequest.serialize,
+                response_deserializer=auditmanager.AuditSchedule.deserialize,
+            )
+        return self._stubs["create_audit_schedule"]
+
+    @property
+    def update_audit_schedule(
+        self,
+    ) -> Callable[
+        [auditmanager.UpdateAuditScheduleRequest], Awaitable[auditmanager.AuditSchedule]
+    ]:
+        r"""Return a callable for the update audit schedule method over gRPC.
+
+        Updates an existing audit schedule.
+
+        Returns:
+            Callable[[~.UpdateAuditScheduleRequest],
+                    Awaitable[~.AuditSchedule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_audit_schedule" not in self._stubs:
+            self._stubs["update_audit_schedule"] = self._logged_channel.unary_unary(
+                "/google.cloud.auditmanager.v1.AuditManager/UpdateAuditSchedule",
+                request_serializer=auditmanager.UpdateAuditScheduleRequest.serialize,
+                response_deserializer=auditmanager.AuditSchedule.deserialize,
+            )
+        return self._stubs["update_audit_schedule"]
+
+    @property
+    def get_audit_schedule(
+        self,
+    ) -> Callable[
+        [auditmanager.GetAuditScheduleRequest], Awaitable[auditmanager.AuditSchedule]
+    ]:
+        r"""Return a callable for the get audit schedule method over gRPC.
+
+        Gets details of a single audit schedule.
+
+        Returns:
+            Callable[[~.GetAuditScheduleRequest],
+                    Awaitable[~.AuditSchedule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_audit_schedule" not in self._stubs:
+            self._stubs["get_audit_schedule"] = self._logged_channel.unary_unary(
+                "/google.cloud.auditmanager.v1.AuditManager/GetAuditSchedule",
+                request_serializer=auditmanager.GetAuditScheduleRequest.serialize,
+                response_deserializer=auditmanager.AuditSchedule.deserialize,
+            )
+        return self._stubs["get_audit_schedule"]
+
+    @property
+    def list_audit_schedules(
+        self,
+    ) -> Callable[
+        [auditmanager.ListAuditSchedulesRequest],
+        Awaitable[auditmanager.ListAuditSchedulesResponse],
+    ]:
+        r"""Return a callable for the list audit schedules method over gRPC.
+
+        Lists audit schedules in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListAuditSchedulesRequest],
+                    Awaitable[~.ListAuditSchedulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_audit_schedules" not in self._stubs:
+            self._stubs["list_audit_schedules"] = self._logged_channel.unary_unary(
+                "/google.cloud.auditmanager.v1.AuditManager/ListAuditSchedules",
+                request_serializer=auditmanager.ListAuditSchedulesRequest.serialize,
+                response_deserializer=auditmanager.ListAuditSchedulesResponse.deserialize,
+            )
+        return self._stubs["list_audit_schedules"]
+
+    @property
     def enroll_resource(
         self,
     ) -> Callable[
@@ -360,14 +475,12 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the enroll resource method over gRPC.
 
-        Enrolls the customer
-        resource(folder/project/organization) to the audit
-        manager service by creating the audit managers Service
-        Agent in customers workload and granting required
-        permissions to the Service Agent. Please note that if
-        enrollment request is made on the already enrolled
-        workload then enrollment is executed overriding the
-        existing set of destinations.
+        Adds your project, folder, or organization to Audit
+        Manager. This method creates the Audit Manager service
+        agent in your workload and grants required permissions
+        to the service agent. If you make this request on a
+        workload that's already enrolled, then this method
+        overrides the existing set of destinations.
 
         Returns:
             Callable[[~.EnrollResourceRequest],
@@ -396,10 +509,14 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the generate audit scope report method over gRPC.
 
-        Generates a demo report highlighting different
-        responsibilities (Google/Customer/ shared) required to
-        be fulfilled for the customer's workload to be compliant
-        with the given standard.
+        Generates an audit scope report for the given standard.
+
+        The report includes the following:
+
+        - The technical attributes and constraints that Audit Manager
+          uses to verify your compliance with a framework.
+        - A list of Google Cloud services and resources that are within
+          the scope of the framework.
 
         Returns:
             Callable[[~.GenerateAuditScopeReportRequest],
@@ -429,9 +546,9 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the generate audit report method over gRPC.
 
-        Register the Audit Report generation requests and
-        returns the OperationId using which the customer can
-        track the report generation progress.
+        Registers audit report generation requests. This
+        method returns the operation identifier that you can use
+        to track the report generation progress.
 
         Returns:
             Callable[[~.GenerateAuditReportRequest],
@@ -460,7 +577,8 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the list audit reports method over gRPC.
 
-        Lists audit reports in the selected parent scope
+        Lists the audit reports for the organization, folder,
+        or project that you specify as the parent scope.
 
         Returns:
             Callable[[~.ListAuditReportsRequest],
@@ -488,7 +606,8 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the get audit report method over gRPC.
 
-        Get the overall audit report
+        Gets the full metadata and findings for an audit
+        report.
 
         Returns:
             Callable[[~.GetAuditReportRequest],
@@ -517,7 +636,7 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the get resource enrollment status method over gRPC.
 
-        Get a resource along with its enrollment status.
+        Gets a resource and its enrollment status.
 
         Returns:
             Callable[[~.GetResourceEnrollmentStatusRequest],
@@ -549,8 +668,8 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
         r"""Return a callable for the list resource enrollment
         statuses method over gRPC.
 
-        Fetches all resources under the parent along with
-        their enrollment.
+        Lists all the folders and projects in an organization
+        or folder, along with their enrollments.
 
         Returns:
             Callable[[~.ListResourceEnrollmentStatusesRequest],
@@ -580,8 +699,8 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the list controls method over gRPC.
 
-        Gets controls needed to be implemented to be
-        compliant to a standard.
+        Lists the controls that you must implement to become
+        compliant to a regulatory standard.
 
         Returns:
             Callable[[~.ListControlsRequest],
@@ -604,6 +723,35 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
+            self.create_audit_schedule: self._wrap_method(
+                self.create_audit_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_audit_schedule: self._wrap_method(
+                self.update_audit_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_audit_schedule: self._wrap_method(
+                self.get_audit_schedule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_audit_schedules: self._wrap_method(
+                self.list_audit_schedules,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.enroll_resource: self._wrap_method(
                 self.enroll_resource,
                 default_timeout=60.0,

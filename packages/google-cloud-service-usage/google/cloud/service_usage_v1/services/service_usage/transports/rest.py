@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.service_usage_v1._compat import transcode_request
 from google.cloud.service_usage_v1.types import resources, serviceusage
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ServiceUsageRestInterceptor:
@@ -664,21 +664,18 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             """
 
             http_options = _BaseServiceUsageRestTransport._BaseBatchEnableServices._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_enable_services(
                 request, metadata
             )
-            transcoded_request = _BaseServiceUsageRestTransport._BaseBatchEnableServices._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseServiceUsageRestTransport._BaseBatchEnableServices._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceUsageRestTransport._BaseBatchEnableServices._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseBatchEnableServices,
+                    "_BaseBatchEnableServices__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -813,17 +810,18 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseBatchGetServices._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_batch_get_services(
                 request, metadata
             )
-            transcoded_request = _BaseServiceUsageRestTransport._BaseBatchGetServices._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceUsageRestTransport._BaseBatchGetServices._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseBatchGetServices,
+                    "_BaseBatchGetServices__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -965,19 +963,16 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseDisableService._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_disable_service(request, metadata)
-            transcoded_request = _BaseServiceUsageRestTransport._BaseDisableService._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseServiceUsageRestTransport._BaseDisableService._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceUsageRestTransport._BaseDisableService._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseDisableService,
+                    "_BaseDisableService__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1116,19 +1111,16 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseEnableService._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_enable_service(request, metadata)
-            transcoded_request = _BaseServiceUsageRestTransport._BaseEnableService._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseServiceUsageRestTransport._BaseEnableService._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceUsageRestTransport._BaseEnableService._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseEnableService,
+                    "_BaseEnableService__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1265,19 +1257,16 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseGetService._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_service(request, metadata)
-            transcoded_request = (
-                _BaseServiceUsageRestTransport._BaseGetService._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceUsageRestTransport._BaseGetService._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseGetService,
+                    "_BaseGetService__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1413,17 +1402,16 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseListServices._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_services(request, metadata)
-            transcoded_request = _BaseServiceUsageRestTransport._BaseListServices._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceUsageRestTransport._BaseListServices._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseListServices,
+                    "_BaseListServices__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1616,17 +1604,16 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseServiceUsageRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceUsageRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1758,15 +1745,16 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseServiceUsageRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceUsageRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceUsageRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

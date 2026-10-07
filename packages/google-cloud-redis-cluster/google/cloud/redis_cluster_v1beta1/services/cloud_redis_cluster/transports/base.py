@@ -33,9 +33,7 @@ from google.cloud.redis_cluster_v1beta1.types import cloud_redis_cluster
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CloudRedisClusterTransport(abc.ABC):
@@ -149,8 +147,18 @@ class CloudRedisClusterTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.list_acl_policies: gapic_v1.method.wrap_method(
+                self.list_acl_policies,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.get_cluster: gapic_v1.method.wrap_method(
                 self.get_cluster,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_acl_policy: gapic_v1.method.wrap_method(
+                self.get_acl_policy,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
@@ -159,13 +167,38 @@ class CloudRedisClusterTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.update_acl_policy: gapic_v1.method.wrap_method(
+                self.update_acl_policy,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.delete_cluster: gapic_v1.method.wrap_method(
                 self.delete_cluster,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.delete_acl_policy: gapic_v1.method.wrap_method(
+                self.delete_acl_policy,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_acl_policy_revision: gapic_v1.method.wrap_method(
+                self.get_acl_policy_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_acl_policy_revisions: gapic_v1.method.wrap_method(
+                self.list_acl_policy_revisions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_cluster: gapic_v1.method.wrap_method(
                 self.create_cluster,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.create_acl_policy: gapic_v1.method.wrap_method(
+                self.create_acl_policy,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
@@ -278,6 +311,18 @@ class CloudRedisClusterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_acl_policies(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListAclPoliciesRequest],
+        Union[
+            cloud_redis_cluster.ListAclPoliciesResponse,
+            Awaitable[cloud_redis_cluster.ListAclPoliciesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_cluster(
         self,
     ) -> Callable[
@@ -287,10 +332,28 @@ class CloudRedisClusterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetAclPolicyRequest],
+        Union[cloud_redis_cluster.AclPolicy, Awaitable[cloud_redis_cluster.AclPolicy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def update_cluster(
         self,
     ) -> Callable[
         [cloud_redis_cluster.UpdateClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.UpdateAclPolicyRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -305,11 +368,53 @@ class CloudRedisClusterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def delete_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.DeleteAclPolicyRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_acl_policy_revision(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetAclPolicyRevisionRequest],
+        Union[
+            cloud_redis_cluster.AclPolicyRevision,
+            Awaitable[cloud_redis_cluster.AclPolicyRevision],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_acl_policy_revisions(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListAclPolicyRevisionsRequest],
+        Union[
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse,
+            Awaitable[cloud_redis_cluster.ListAclPolicyRevisionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def create_cluster(
         self,
     ) -> Callable[
         [cloud_redis_cluster.CreateClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.CreateAclPolicyRequest],
+        Union[cloud_redis_cluster.AclPolicy, Awaitable[cloud_redis_cluster.AclPolicy]],
     ]:
         raise NotImplementedError()
 

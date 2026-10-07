@@ -15,12 +15,12 @@
 from __future__ import absolute_import
 
 import contextlib
+from functools import wraps
 import os
 import pathlib
 import re
 import shutil
 import time
-from functools import wraps
 from typing import Generator
 
 import nox
@@ -38,7 +38,7 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 UNIT_TEST_PYTHON_VERSIONS = ALL_PYTHON
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
@@ -180,6 +180,14 @@ def default(session, install_extras=True):
 @_calculate_duration
 def unit(session, test_type):
     """Run the unit test suite."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17741):
+    # remove this skip once the optional extras resolve on 3.15.
+    # `unit_noextras` can be tested on 3.15
+    if session.python == "3.15" and test_type == "unit":
+        session.skip(
+            "Optional extras do not yet resolve on 3.15; "
+            "unit_noextras covers the core install."
+        )
 
     install_extras = True
     if test_type == "unit_noextras":
@@ -298,6 +306,41 @@ def system(session):
         "-W default::PendingDeprecationWarning",
         os.path.join("tests", "system"),
         *session.posargs,
+    )
+
+    # Maunally added samples tests.
+    # TODO: remove tests after samples are migrated to https://github.com/GoogleCloudPlatform/python-docs-samples
+    samples_tests = [
+        "desktopapp",
+        "geography",
+        "magics",
+        "notebooks",
+        "snippets",
+        "tests",
+    ]
+    for name in samples_tests:
+        _run_samples_test(session, name)
+
+
+# Maunally added samples tests helper function.
+# TODO(https://github.com/googleapis/google-cloud-python/issues/14417): remove tests after samples are migrated to https://github.com/GoogleCloudPlatform/python-docs-samples
+def _run_samples_test(session, name):
+    samples_path = os.path.join("samples", name)
+    samples_requirements_path = os.path.join("samples", name, "requirements.txt")
+    test_requirements_path = os.path.join("samples", name, "requirements-test.txt")
+
+    # Install dependencies.
+    if os.path.exists(samples_requirements_path):
+        session.install("-r", samples_requirements_path)
+
+    if os.path.exists(test_requirements_path):
+        session.install("-r", test_requirements_path)
+
+    session.run(
+        "pytest",
+        f"--junitxml=system_{session.python}_sponge_log.xml",
+        *session.posargs,
+        samples_path,
     )
 
 

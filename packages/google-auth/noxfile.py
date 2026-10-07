@@ -33,9 +33,8 @@ MYPY_CONFIG_FILE = next(
 
 
 CLICK_VERSION = "click"
-BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
-BLACK_PATHS = [
+LINT_PATHS = [
     "google",
     "tests",
     "tests_async",
@@ -46,10 +45,7 @@ BLACK_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
-# Switch this to Python 3.15 alpha1
-# https://peps.python.org/pep-0790/
-PREVIEW_PYTHON_VERSION = "3.14"
+PREVIEW_PYTHON_VERSION = "3.15"
 
 UNIT_TEST_PYTHON_VERSIONS = [
     "3.10",
@@ -57,6 +53,7 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS.copy()
 
@@ -85,15 +82,29 @@ nox.options.sessions = [
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
-    session.install(
-        "flake8", "flake8-import-order", "docutils", CLICK_VERSION, BLACK_VERSION
-    )
+    session.install("setuptools", "flake8", "docutils", CLICK_VERSION, RUFF_VERSION)
     session.install("-e", ".")
-    session.run("black", "--check", *BLACK_PATHS)
+    # 1. Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
+        "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
     session.run(
         "flake8",
-        "--import-order-style=google",
-        "--application-import-names=google,tests,system_tests",
         "google",
         "tests",
         "tests_async",
@@ -112,15 +123,20 @@ def lint_setup_py(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
-    Format code to uniform standard.
-    The Python version should be consistent with what is
-    supplied in the Python Owlbot postprocessor.
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
 
-    https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
-    """
-    session.install(CLICK_VERSION, BLACK_VERSION)
-    session.run("black", *BLACK_PATHS)
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -140,7 +156,7 @@ def format(session):
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
     # 3. Run Ruff to format code
@@ -149,7 +165,7 @@ def format(session):
         "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
 

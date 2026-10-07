@@ -95,6 +95,10 @@ class ConversationsAsyncClient:
     parse_app_path = staticmethod(ConversationsClient.parse_app_path)
     ces_tool_path = staticmethod(ConversationsClient.ces_tool_path)
     parse_ces_tool_path = staticmethod(ConversationsClient.parse_ces_tool_path)
+    companion_agent_path = staticmethod(ConversationsClient.companion_agent_path)
+    parse_companion_agent_path = staticmethod(
+        ConversationsClient.parse_companion_agent_path
+    )
     conversation_path = staticmethod(ConversationsClient.conversation_path)
     parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
     conversation_model_path = staticmethod(ConversationsClient.conversation_model_path)
@@ -1277,7 +1281,6 @@ class ConversationsAsyncClient:
 
                 # Initialize request argument(s)
                 stateless_conversation = dialogflow_v2.MinimalConversation()
-                stateless_conversation.messages.content = "content_value"
                 stateless_conversation.parent = "parent_value"
 
                 conversation_profile = dialogflow_v2.ConversationProfile()
@@ -1472,7 +1475,6 @@ class ConversationsAsyncClient:
 
                 # Initialize request argument(s)
                 query = dialogflow_v2.TextInput()
-                query.text = "text_value"
                 query.language_code = "language_code_value"
 
                 request = dialogflow_v2.SearchKnowledgeRequest(
@@ -1965,9 +1967,7 @@ class ConversationsAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("ConversationsAsyncClient",)

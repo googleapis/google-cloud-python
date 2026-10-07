@@ -295,7 +295,7 @@ class CellDataParser:
             return _date_from_iso8601_date(value)
 
     def time_to_py(self, value, field):
-        """Coerce 'value' to a datetime date, if set or not nullable"""
+        """Coerce 'value' to a datetime time, if set or not nullable"""
         if _not_null(value, field):
             if len(value) == 8:  # HH:MM:SS
                 fmt = _TIMEONLY_WO_MICROS

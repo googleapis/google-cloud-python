@@ -39,6 +39,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -92,10 +93,24 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install(FLAKE8_VERSION, RUFF_VERSION)
+    # 1. Check imports
     session.run(
-        "black",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
     session.run("flake8", "google_auth_httplib2.py", "tests")

@@ -71,6 +71,7 @@ from google.cloud.ces_v1.services.agent_service import (
 )
 from google.cloud.ces_v1.types import (
     agent,
+    agent_card,
     agent_service,
     agent_tool,
     agent_transfers,
@@ -119,6 +120,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -176,195 +189,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert AgentServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        AgentServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        AgentServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        AgentServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        AgentServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert AgentServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert (
-        AgentServiceClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert AgentServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert AgentServiceClient._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert AgentServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                AgentServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert AgentServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert AgentServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert AgentServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert AgentServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            AgentServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert AgentServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert AgentServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert AgentServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert AgentServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert AgentServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert AgentServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert AgentServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert AgentServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert AgentServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert AgentServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                AgentServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert AgentServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert AgentServiceClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -396,97 +220,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    AgentServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AgentServiceClient),
-)
-@mock.patch.object(
-    AgentServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AgentServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = AgentServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = AgentServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = AgentServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        AgentServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        AgentServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == AgentServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        AgentServiceClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        AgentServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == AgentServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        AgentServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == AgentServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        AgentServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        AgentServiceClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        AgentServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        AgentServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        AgentServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        AgentServiceClient._get_universe_domain(None, None)
-        == AgentServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        AgentServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -986,11 +719,19 @@ def test_agent_service_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1033,11 +774,19 @@ def test_agent_service_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1737,6 +1486,9 @@ def test_list_apps_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app.App) for i in results)
@@ -1825,6 +1577,8 @@ async def test_list_apps_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1910,6 +1664,7 @@ def test_get_app(request_type, transport: str = "grpc"):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
         response = client.get_app(request)
 
@@ -1932,6 +1687,7 @@ def test_get_app(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_app_non_empty_request_with_auto_populated_field():
@@ -2072,6 +1828,7 @@ async def test_get_app_async(request_type, transport: str = "grpc_asyncio"):
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.get_app(request)
@@ -2095,6 +1852,7 @@ async def test_get_app_async(request_type, transport: str = "grpc_asyncio"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_app_field_headers():
@@ -2616,6 +2374,7 @@ def test_update_app(request_type, transport: str = "grpc"):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
         response = client.update_app(request)
 
@@ -2638,6 +2397,7 @@ def test_update_app(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_app_non_empty_request_with_auto_populated_field():
@@ -2774,6 +2534,7 @@ async def test_update_app_async(request_type, transport: str = "grpc_asyncio"):
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.update_app(request)
@@ -2797,6 +2558,7 @@ async def test_update_app_async(request_type, transport: str = "grpc_asyncio"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_app_field_headers():
@@ -4337,6 +4099,9 @@ def test_list_agents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -4425,6 +4190,8 @@ async def test_list_agents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4508,6 +4275,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
         response = client.get_agent(request)
 
@@ -4528,6 +4296,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_agent_non_empty_request_with_auto_populated_field():
@@ -4666,6 +4435,7 @@ async def test_get_agent_async(request_type, transport: str = "grpc_asyncio"):
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.get_agent(request)
@@ -4687,6 +4457,7 @@ async def test_get_agent_async(request_type, transport: str = "grpc_asyncio"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_agent_field_headers():
@@ -4858,6 +4629,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
         response = client.create_agent(request)
 
@@ -4878,6 +4650,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_create_agent_non_empty_request_with_auto_populated_field():
@@ -5020,6 +4793,7 @@ async def test_create_agent_async(request_type, transport: str = "grpc_asyncio")
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.create_agent(request)
@@ -5041,6 +4815,7 @@ async def test_create_agent_async(request_type, transport: str = "grpc_asyncio")
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_create_agent_field_headers():
@@ -5232,6 +5007,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
         response = client.update_agent(request)
 
@@ -5252,6 +5028,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_agent_non_empty_request_with_auto_populated_field():
@@ -5388,6 +5165,7 @@ async def test_update_agent_async(request_type, transport: str = "grpc_asyncio")
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.update_agent(request)
@@ -5409,6 +5187,7 @@ async def test_update_agent_async(request_type, transport: str = "grpc_asyncio")
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_agent_field_headers():
@@ -6253,6 +6032,9 @@ def test_list_examples_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, example.Example) for i in results)
@@ -6341,6 +6123,8 @@ async def test_list_examples_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8133,6 +7917,9 @@ def test_list_tools_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tool.Tool) for i in results)
@@ -8221,6 +8008,8 @@ async def test_list_tools_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9005,6 +8794,9 @@ def test_list_conversations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation.Conversation) for i in results)
@@ -9097,6 +8889,8 @@ async def test_list_conversations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11606,6 +11400,9 @@ def test_list_guardrails_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, guardrail.Guardrail) for i in results)
@@ -11694,6 +11491,8 @@ async def test_list_guardrails_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13538,6 +13337,9 @@ def test_list_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, deployment.Deployment) for i in results)
@@ -13626,6 +13428,8 @@ async def test_list_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -15456,6 +15260,9 @@ def test_list_toolsets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, toolset.Toolset) for i in results)
@@ -15544,6 +15351,8 @@ async def test_list_toolsets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -17384,6 +17193,9 @@ def test_list_app_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app_version.AppVersion) for i in results)
@@ -17476,6 +17288,8 @@ async def test_list_app_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -19308,6 +19122,9 @@ def test_list_changelogs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, changelog.Changelog) for i in results)
@@ -19396,6 +19213,8 @@ async def test_list_changelogs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -19846,28 +19665,29 @@ def test_list_apps_rest_required_fields(request_type=agent_service.ListAppsReque
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_apps._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListApps,
+        "_BaseListApps__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_apps._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -19913,25 +19733,6 @@ def test_list_apps_rest_required_fields(request_type=agent_service.ListAppsReque
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_apps_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_apps._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_apps_rest_flattened():
@@ -20043,6 +19844,9 @@ def test_list_apps_rest_pager(transport: str = "rest"):
 
         pager = client.list_apps(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app.App) for i in results)
@@ -20101,19 +19905,19 @@ def test_get_app_rest_required_fields(request_type=agent_service.GetAppRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_app._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetApp,
+        "_BaseGetApp__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_app._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20159,15 +19963,6 @@ def test_get_app_rest_required_fields(request_type=agent_service.GetAppRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_app_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_app._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_app_rest_flattened():
@@ -20280,21 +20075,22 @@ def test_create_app_rest_required_fields(request_type=agent_service.CreateAppReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_app._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateApp,
+        "_BaseCreateApp__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_app._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("app_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("appId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -20338,23 +20134,6 @@ def test_create_app_rest_required_fields(request_type=agent_service.CreateAppReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_app_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_app._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("appId",))
-        & set(
-            (
-                "parent",
-                "app",
-            )
-        )
-    )
 
 
 def test_create_app_rest_flattened():
@@ -20464,19 +20243,20 @@ def test_update_app_rest_required_fields(request_type=agent_service.UpdateAppReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_app._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateApp,
+        "_BaseUpdateApp__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_app._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -20521,15 +20301,6 @@ def test_update_app_rest_required_fields(request_type=agent_service.UpdateAppReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_app_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_app._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("app",)))
 
 
 def test_update_app_rest_flattened():
@@ -20646,21 +20417,22 @@ def test_delete_app_rest_required_fields(request_type=agent_service.DeleteAppReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_app._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteApp,
+        "_BaseDeleteApp__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_app._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("etag",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20703,15 +20475,6 @@ def test_delete_app_rest_required_fields(request_type=agent_service.DeleteAppReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_app_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_app._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 def test_delete_app_rest_flattened():
@@ -20822,19 +20585,19 @@ def test_export_app_rest_required_fields(request_type=agent_service.ExportAppReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_app._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseExportApp,
+        "_BaseExportApp__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_app._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20878,23 +20641,6 @@ def test_export_app_rest_required_fields(request_type=agent_service.ExportAppReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_export_app_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.export_app._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "exportFormat",
-            )
-        )
-    )
 
 
 def test_export_app_rest_flattened():
@@ -21006,19 +20752,19 @@ def test_import_app_rest_required_fields(request_type=agent_service.ImportAppReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_app._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseImportApp,
+        "_BaseImportApp__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_app._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -21062,15 +20808,6 @@ def test_import_app_rest_required_fields(request_type=agent_service.ImportAppReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_import_app_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.import_app._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
 def test_import_app_rest_flattened():
@@ -21182,28 +20919,29 @@ def test_list_agents_rest_required_fields(request_type=agent_service.ListAgentsR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_agents._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListAgents,
+        "_BaseListAgents__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_agents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -21249,25 +20987,6 @@ def test_list_agents_rest_required_fields(request_type=agent_service.ListAgentsR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_agents_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_agents._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_agents_rest_flattened():
@@ -21380,6 +21099,9 @@ def test_list_agents_rest_pager(transport: str = "rest"):
 
         pager = client.list_agents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -21438,19 +21160,19 @@ def test_get_agent_rest_required_fields(request_type=agent_service.GetAgentReque
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_agent._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetAgent,
+        "_BaseGetAgent__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_agent._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -21496,15 +21218,6 @@ def test_get_agent_rest_required_fields(request_type=agent_service.GetAgentReque
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_agent_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_agent._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_agent_rest_flattened():
@@ -21618,21 +21331,22 @@ def test_create_agent_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_agent._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateAgent,
+        "_BaseCreateAgent__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_agent._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("agent_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("agentId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -21679,23 +21393,6 @@ def test_create_agent_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_agent_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_agent._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("agentId",))
-        & set(
-            (
-                "parent",
-                "agent",
-            )
-        )
-    )
 
 
 def test_create_agent_rest_flattened():
@@ -21810,19 +21507,20 @@ def test_update_agent_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_agent._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateAgent,
+        "_BaseUpdateAgent__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_agent._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -21867,15 +21565,6 @@ def test_update_agent_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_agent_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_agent._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("agent",)))
 
 
 def test_update_agent_rest_flattened():
@@ -21993,18 +21682,20 @@ def test_delete_agent_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_agent._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteAgent,
+        "_BaseDeleteAgent__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_agent._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -22012,7 +21703,6 @@ def test_delete_agent_rest_required_fields(
             "force",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -22055,23 +21745,6 @@ def test_delete_agent_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_agent_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_agent._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "etag",
-                "force",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_delete_agent_rest_flattened():
@@ -22183,28 +21856,29 @@ def test_list_examples_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_examples._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListExamples,
+        "_BaseListExamples__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_examples._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -22250,25 +21924,6 @@ def test_list_examples_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_examples_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_examples._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_examples_rest_flattened():
@@ -22383,6 +22038,9 @@ def test_list_examples_rest_pager(transport: str = "rest"):
 
         pager = client.list_examples(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, example.Example) for i in results)
@@ -22441,19 +22099,19 @@ def test_get_example_rest_required_fields(request_type=agent_service.GetExampleR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_example._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetExample,
+        "_BaseGetExample__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_example._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -22499,15 +22157,6 @@ def test_get_example_rest_required_fields(request_type=agent_service.GetExampleR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_example_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_example._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_example_rest_flattened():
@@ -22621,21 +22270,22 @@ def test_create_example_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_example._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateExample,
+        "_BaseCreateExample__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_example._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("example_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("exampleId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -22682,23 +22332,6 @@ def test_create_example_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_example_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_example._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("exampleId",))
-        & set(
-            (
-                "parent",
-                "example",
-            )
-        )
-    )
 
 
 def test_create_example_rest_flattened():
@@ -22813,19 +22446,20 @@ def test_update_example_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_example._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateExample,
+        "_BaseUpdateExample__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_example._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -22870,15 +22504,6 @@ def test_update_example_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_example_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_example._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("example",)))
 
 
 def test_update_example_rest_flattened():
@@ -22996,21 +22621,22 @@ def test_delete_example_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_example._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteExample,
+        "_BaseDeleteExample__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_example._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("etag",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -23053,15 +22679,6 @@ def test_delete_example_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_example_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_example._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 def test_delete_example_rest_flattened():
@@ -23171,28 +22788,29 @@ def test_list_tools_rest_required_fields(request_type=agent_service.ListToolsReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_tools._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListTools,
+        "_BaseListTools__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_tools._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -23238,25 +22856,6 @@ def test_list_tools_rest_required_fields(request_type=agent_service.ListToolsReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_tools_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_tools._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_tools_rest_flattened():
@@ -23369,6 +22968,9 @@ def test_list_tools_rest_pager(transport: str = "rest"):
 
         pager = client.list_tools(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tool.Tool) for i in results)
@@ -23427,19 +23029,19 @@ def test_get_tool_rest_required_fields(request_type=agent_service.GetToolRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_tool._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetTool,
+        "_BaseGetTool__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_tool._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -23485,15 +23087,6 @@ def test_get_tool_rest_required_fields(request_type=agent_service.GetToolRequest
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_tool_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_tool._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_tool_rest_flattened():
@@ -23611,29 +23204,30 @@ def test_list_conversations_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_conversations._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListConversations,
+        "_BaseListConversations__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_conversations._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
             "source",
             "sources",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -23679,26 +23273,6 @@ def test_list_conversations_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_conversations_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_conversations._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-                "source",
-                "sources",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_conversations_rest_flattened():
@@ -23813,6 +23387,9 @@ def test_list_conversations_rest_pager(transport: str = "rest"):
 
         pager = client.list_conversations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation.Conversation) for i in results)
@@ -23875,21 +23452,22 @@ def test_get_conversation_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_conversation._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetConversation,
+        "_BaseGetConversation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_conversation._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("source",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -23935,15 +23513,6 @@ def test_get_conversation_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_conversation_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_conversation._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("source",)) & set(("name",)))
 
 
 def test_get_conversation_rest_flattened():
@@ -24061,21 +23630,22 @@ def test_delete_conversation_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_conversation._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteConversation,
+        "_BaseDeleteConversation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_conversation._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("source",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -24118,15 +23688,6 @@ def test_delete_conversation_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_conversation_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_conversation._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("source",)) & set(("name",)))
 
 
 def test_delete_conversation_rest_flattened():
@@ -24248,20 +23809,20 @@ def test_batch_delete_conversations_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_conversations._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseBatchDeleteConversations,
+        "_BaseBatchDeleteConversations__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
     jsonified_request["conversations"] = "conversations_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_conversations._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -24307,23 +23868,6 @@ def test_batch_delete_conversations_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_batch_delete_conversations_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.batch_delete_conversations._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "conversations",
-            )
-        )
-    )
 
 
 def test_batch_delete_conversations_rest_flattened():
@@ -24431,21 +23975,22 @@ def test_create_tool_rest_required_fields(request_type=agent_service.CreateToolR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_tool._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateTool,
+        "_BaseCreateTool__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_tool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("tool_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("toolId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -24492,23 +24037,6 @@ def test_create_tool_rest_required_fields(request_type=agent_service.CreateToolR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_tool_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_tool._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("toolId",))
-        & set(
-            (
-                "parent",
-                "tool",
-            )
-        )
-    )
 
 
 def test_create_tool_rest_flattened():
@@ -24625,19 +24153,20 @@ def test_update_tool_rest_required_fields(request_type=agent_service.UpdateToolR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_tool._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateTool,
+        "_BaseUpdateTool__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_tool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -24682,15 +24211,6 @@ def test_update_tool_rest_required_fields(request_type=agent_service.UpdateToolR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_tool_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_tool._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("tool",)))
 
 
 def test_update_tool_rest_flattened():
@@ -24810,18 +24330,20 @@ def test_delete_tool_rest_required_fields(request_type=agent_service.DeleteToolR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_tool._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteTool,
+        "_BaseDeleteTool__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_tool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -24829,7 +24351,6 @@ def test_delete_tool_rest_required_fields(request_type=agent_service.DeleteToolR
             "force",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -24872,23 +24393,6 @@ def test_delete_tool_rest_required_fields(request_type=agent_service.DeleteToolR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_tool_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_tool._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "etag",
-                "force",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_delete_tool_rest_flattened():
@@ -25000,28 +24504,29 @@ def test_list_guardrails_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_guardrails._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGuardrails,
+        "_BaseListGuardrails__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_guardrails._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -25067,25 +24572,6 @@ def test_list_guardrails_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_guardrails_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_guardrails._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_guardrails_rest_flattened():
@@ -25200,6 +24686,9 @@ def test_list_guardrails_rest_pager(transport: str = "rest"):
 
         pager = client.list_guardrails(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, guardrail.Guardrail) for i in results)
@@ -25260,19 +24749,19 @@ def test_get_guardrail_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_guardrail._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetGuardrail,
+        "_BaseGetGuardrail__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_guardrail._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -25318,15 +24807,6 @@ def test_get_guardrail_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_guardrail_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_guardrail._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_guardrail_rest_flattened():
@@ -25442,21 +24922,22 @@ def test_create_guardrail_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_guardrail._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateGuardrail,
+        "_BaseCreateGuardrail__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_guardrail._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("guardrail_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("guardrailId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -25503,23 +24984,6 @@ def test_create_guardrail_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_guardrail_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_guardrail._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("guardrailId",))
-        & set(
-            (
-                "parent",
-                "guardrail",
-            )
-        )
-    )
 
 
 def test_create_guardrail_rest_flattened():
@@ -25644,19 +25108,20 @@ def test_update_guardrail_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_guardrail._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateGuardrail,
+        "_BaseUpdateGuardrail__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_guardrail._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -25701,15 +25166,6 @@ def test_update_guardrail_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_guardrail_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_guardrail._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("guardrail",)))
 
 
 def test_update_guardrail_rest_flattened():
@@ -25837,18 +25293,20 @@ def test_delete_guardrail_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_guardrail._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteGuardrail,
+        "_BaseDeleteGuardrail__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_guardrail._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -25856,7 +25314,6 @@ def test_delete_guardrail_rest_required_fields(
             "force",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -25899,23 +25356,6 @@ def test_delete_guardrail_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_guardrail_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_guardrail._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "etag",
-                "force",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_delete_guardrail_rest_flattened():
@@ -26029,27 +25469,28 @@ def test_list_deployments_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_deployments._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDeployments,
+        "_BaseListDeployments__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_deployments._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -26095,24 +25536,6 @@ def test_list_deployments_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_deployments_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_deployments._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_deployments_rest_flattened():
@@ -26227,6 +25650,9 @@ def test_list_deployments_rest_pager(transport: str = "rest"):
 
         pager = client.list_deployments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, deployment.Deployment) for i in results)
@@ -26287,19 +25713,19 @@ def test_get_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetDeployment,
+        "_BaseGetDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_deployment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -26345,15 +25771,6 @@ def test_get_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_deployment_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_deployment_rest_flattened():
@@ -26469,21 +25886,22 @@ def test_create_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateDeployment,
+        "_BaseCreateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("deployment_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("deploymentId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -26530,23 +25948,6 @@ def test_create_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_deployment_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("deploymentId",))
-        & set(
-            (
-                "parent",
-                "deployment",
-            )
-        )
-    )
 
 
 def test_create_deployment_rest_flattened():
@@ -26663,19 +26064,20 @@ def test_update_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateDeployment,
+        "_BaseUpdateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -26720,15 +26122,6 @@ def test_update_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_deployment_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("deployment",)))
 
 
 def test_update_deployment_rest_flattened():
@@ -26848,21 +26241,22 @@ def test_delete_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteDeployment,
+        "_BaseDeleteDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("etag",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -26905,15 +26299,6 @@ def test_delete_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_deployment_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 def test_delete_deployment_rest_flattened():
@@ -27025,28 +26410,29 @@ def test_list_toolsets_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_toolsets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListToolsets,
+        "_BaseListToolsets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_toolsets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -27092,25 +26478,6 @@ def test_list_toolsets_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_toolsets_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_toolsets._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_toolsets_rest_flattened():
@@ -27225,6 +26592,9 @@ def test_list_toolsets_rest_pager(transport: str = "rest"):
 
         pager = client.list_toolsets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, toolset.Toolset) for i in results)
@@ -27283,19 +26653,19 @@ def test_get_toolset_rest_required_fields(request_type=agent_service.GetToolsetR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_toolset._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetToolset,
+        "_BaseGetToolset__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_toolset._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -27341,15 +26711,6 @@ def test_get_toolset_rest_required_fields(request_type=agent_service.GetToolsetR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_toolset_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_toolset._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_toolset_rest_flattened():
@@ -27463,21 +26824,22 @@ def test_create_toolset_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_toolset._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateToolset,
+        "_BaseCreateToolset__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_toolset._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("toolset_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("toolsetId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -27524,23 +26886,6 @@ def test_create_toolset_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_toolset_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_toolset._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("toolsetId",))
-        & set(
-            (
-                "parent",
-                "toolset",
-            )
-        )
-    )
 
 
 def test_create_toolset_rest_flattened():
@@ -27663,19 +27008,20 @@ def test_update_toolset_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_toolset._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateToolset,
+        "_BaseUpdateToolset__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_toolset._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -27720,15 +27066,6 @@ def test_update_toolset_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_toolset_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_toolset._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("toolset",)))
 
 
 def test_update_toolset_rest_flattened():
@@ -27854,18 +27191,20 @@ def test_delete_toolset_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_toolset._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteToolset,
+        "_BaseDeleteToolset__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_toolset._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -27873,7 +27212,6 @@ def test_delete_toolset_rest_required_fields(
             "force",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -27916,23 +27254,6 @@ def test_delete_toolset_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_toolset_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_toolset._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "etag",
-                "force",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_delete_toolset_rest_flattened():
@@ -28046,28 +27367,29 @@ def test_list_app_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_app_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListAppVersions,
+        "_BaseListAppVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_app_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -28113,25 +27435,6 @@ def test_list_app_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_app_versions_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_app_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_app_versions_rest_flattened():
@@ -28246,6 +27549,9 @@ def test_list_app_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_app_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app_version.AppVersion) for i in results)
@@ -28306,19 +27612,19 @@ def test_get_app_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_app_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetAppVersion,
+        "_BaseGetAppVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_app_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -28364,15 +27670,6 @@ def test_get_app_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_app_version_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_app_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_app_version_rest_flattened():
@@ -28490,21 +27787,22 @@ def test_create_app_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_app_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateAppVersion,
+        "_BaseCreateAppVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_app_version._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("app_version_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("appVersionId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -28551,23 +27849,6 @@ def test_create_app_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_app_version_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_app_version._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("appVersionId",))
-        & set(
-            (
-                "parent",
-                "appVersion",
-            )
-        )
-    )
 
 
 def test_create_app_version_rest_flattened():
@@ -28687,21 +27968,22 @@ def test_delete_app_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_app_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteAppVersion,
+        "_BaseDeleteAppVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_app_version._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("etag",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -28744,15 +28026,6 @@ def test_delete_app_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_app_version_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_app_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 def test_delete_app_version_rest_flattened():
@@ -28872,19 +28145,19 @@ def test_restore_app_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_app_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRestoreAppVersion,
+        "_BaseRestoreAppVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_app_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -28928,15 +28201,6 @@ def test_restore_app_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_restore_app_version_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.restore_app_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_restore_app_version_rest_flattened():
@@ -29048,28 +28312,29 @@ def test_list_changelogs_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_changelogs._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListChangelogs,
+        "_BaseListChangelogs__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_changelogs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -29115,25 +28380,6 @@ def test_list_changelogs_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_changelogs_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_changelogs._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_changelogs_rest_flattened():
@@ -29248,6 +28494,9 @@ def test_list_changelogs_rest_pager(transport: str = "rest"):
 
         pager = client.list_changelogs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, changelog.Changelog) for i in results)
@@ -29308,19 +28557,19 @@ def test_get_changelog_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_changelog._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetChangelog,
+        "_BaseGetChangelog__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_changelog._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -29366,15 +28615,6 @@ def test_get_changelog_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_changelog_rest_unset_required_fields():
-    transport = transports.AgentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_changelog._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_changelog_rest_flattened():
@@ -30589,6 +29829,7 @@ async def test_get_app_empty_call_grpc_asyncio():
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.get_app(request=None)
@@ -30649,6 +29890,7 @@ async def test_update_app_empty_call_grpc_asyncio():
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.update_app(request=None)
@@ -30781,6 +30023,7 @@ async def test_get_agent_empty_call_grpc_asyncio():
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.get_agent(request=None)
@@ -30815,6 +30058,7 @@ async def test_create_agent_empty_call_grpc_asyncio():
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.create_agent(request=None)
@@ -30849,6 +30093,7 @@ async def test_update_agent_empty_call_grpc_asyncio():
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.update_agent(request=None)
@@ -32081,6 +31326,7 @@ def test_get_app_rest_call_success(request_type):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -32108,6 +31354,7 @@ def test_get_app_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -32245,17 +31492,29 @@ def test_create_app_rest_call_success(request_type):
                 "gcs_bucket": "gcs_bucket_value",
                 "gcs_path_prefix": "gcs_path_prefix_value",
             },
+            "unredacted_audio_recording_config": {},
             "bigquery_export_settings": {
                 "enabled": True,
                 "project": "project_value",
                 "dataset": "dataset_value",
             },
+            "unredacted_bigquery_export_settings": {},
             "cloud_logging_settings": {"enable_cloud_logging": True},
-            "conversation_logging_settings": {"disable_conversation_logging": True},
+            "conversation_logging_settings": {
+                "disable_conversation_logging": True,
+                "retention_window": {},
+            },
             "evaluation_audio_recording_config": {},
             "metric_analysis_settings": {"llm_metrics_opted_out": True},
         },
-        "error_handling_settings": {"error_handling_strategy": 1},
+        "error_handling_settings": {
+            "error_handling_strategy": 1,
+            "fallback_response_config": {
+                "custom_fallback_messages": {},
+                "max_fallback_attempts": 2214,
+            },
+            "end_session_config": {"escalate_session": True},
+        },
         "model_settings": {"model": "model_value", "temperature": 0.1198},
         "tool_execution_mode": 1,
         "evaluation_metrics_thresholds": {
@@ -32333,6 +31592,20 @@ def test_create_app_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "metadata": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -32344,7 +31617,11 @@ def test_create_app_rest_call_success(request_type):
             "private_key": "private_key_value",
             "passphrase": "passphrase_value",
         },
+        "vpc_sc_settings": {
+            "allowed_origins": ["allowed_origins_value1", "allowed_origins_value2"]
+        },
         "locked": True,
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32571,17 +31848,29 @@ def test_update_app_rest_call_success(request_type):
                 "gcs_bucket": "gcs_bucket_value",
                 "gcs_path_prefix": "gcs_path_prefix_value",
             },
+            "unredacted_audio_recording_config": {},
             "bigquery_export_settings": {
                 "enabled": True,
                 "project": "project_value",
                 "dataset": "dataset_value",
             },
+            "unredacted_bigquery_export_settings": {},
             "cloud_logging_settings": {"enable_cloud_logging": True},
-            "conversation_logging_settings": {"disable_conversation_logging": True},
+            "conversation_logging_settings": {
+                "disable_conversation_logging": True,
+                "retention_window": {},
+            },
             "evaluation_audio_recording_config": {},
             "metric_analysis_settings": {"llm_metrics_opted_out": True},
         },
-        "error_handling_settings": {"error_handling_strategy": 1},
+        "error_handling_settings": {
+            "error_handling_strategy": 1,
+            "fallback_response_config": {
+                "custom_fallback_messages": {},
+                "max_fallback_attempts": 2214,
+            },
+            "end_session_config": {"escalate_session": True},
+        },
         "model_settings": {"model": "model_value", "temperature": 0.1198},
         "tool_execution_mode": 1,
         "evaluation_metrics_thresholds": {
@@ -32659,6 +31948,20 @@ def test_update_app_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "metadata": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -32670,7 +31973,11 @@ def test_update_app_rest_call_success(request_type):
             "private_key": "private_key_value",
             "passphrase": "passphrase_value",
         },
+        "vpc_sc_settings": {
+            "allowed_origins": ["allowed_origins_value1", "allowed_origins_value2"]
+        },
         "locked": True,
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32756,6 +32063,7 @@ def test_update_app_rest_call_success(request_type):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -32783,6 +32091,7 @@ def test_update_app_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33397,6 +32706,7 @@ def test_get_agent_rest_call_success(request_type):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -33422,6 +32732,7 @@ def test_get_agent_rest_call_success(request_type):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33533,6 +32844,7 @@ def test_create_agent_rest_call_success(request_type):
             "input_variable_mapping": {},
             "output_variable_mapping": {},
             "respect_response_interruption_settings": True,
+            "language_code_variable": "language_code_variable_value",
         },
         "name": "name_value",
         "display_name": "display_name_value",
@@ -33576,6 +32888,7 @@ def test_create_agent_rest_call_success(request_type):
                 "direction": 1,
             }
         ],
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33659,6 +32972,7 @@ def test_create_agent_rest_call_success(request_type):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -33684,6 +32998,7 @@ def test_create_agent_rest_call_success(request_type):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33805,6 +33120,7 @@ def test_update_agent_rest_call_success(request_type):
             "input_variable_mapping": {},
             "output_variable_mapping": {},
             "respect_response_interruption_settings": True,
+            "language_code_variable": "language_code_variable_value",
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/agents/sample4",
         "display_name": "display_name_value",
@@ -33848,6 +33164,7 @@ def test_update_agent_rest_call_success(request_type):
                 "direction": 1,
             }
         ],
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33931,6 +33248,7 @@ def test_update_agent_rest_call_success(request_type):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -33956,6 +33274,7 @@ def test_update_agent_rest_call_success(request_type):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -36046,9 +35365,11 @@ def test_create_tool_rest_call_success(request_type):
             "name": "name_value",
             "python_code": "python_code_value",
             "description": "description_value",
+            "service_directory_config": {},
         },
         "mcp_tool": {
             "name": "name_value",
+            "name_override": "name_override_value",
             "description": "description_value",
             "input_schema": {},
             "output_schema": {},
@@ -36057,6 +35378,7 @@ def test_create_tool_rest_call_success(request_type):
             "tls_config": {},
             "service_directory_config": {},
             "custom_headers": {},
+            "state": 1,
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -36083,10 +35405,44 @@ def test_create_tool_rest_call_success(request_type):
                 "mode": 1,
                 "python_script": "python_script_value",
             },
+            "text_response_config": {
+                "type_": 1,
+                "static_text": "static_text_value",
+                "text_response_instruction": "text_response_instruction_value",
+            },
+        },
+        "remote_agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "agent_card": {
+                "name": "name_value",
+                "description": "description_value",
+                "supported_interfaces": [
+                    {
+                        "url": "url_value",
+                        "protocol_binding": "protocol_binding_value",
+                        "tenant": "tenant_value",
+                        "protocol_version": "protocol_version_value",
+                    }
+                ],
+                "version": "version_value",
+                "skills": [
+                    {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "description": "description_value",
+                        "tags": ["tags_value1", "tags_value2"],
+                        "examples": ["examples_value1", "examples_value2"],
+                        "input_modes": ["input_modes_value1", "input_modes_value2"],
+                        "output_modes": ["output_modes_value1", "output_modes_value2"],
+                    }
+                ],
+            },
         },
         "name": "name_value",
         "display_name": "display_name_value",
         "execution_type": 1,
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {},
         "update_time": {},
         "etag": "etag_value",
@@ -36484,9 +35840,11 @@ def test_update_tool_rest_call_success(request_type):
             "name": "name_value",
             "python_code": "python_code_value",
             "description": "description_value",
+            "service_directory_config": {},
         },
         "mcp_tool": {
             "name": "name_value",
+            "name_override": "name_override_value",
             "description": "description_value",
             "input_schema": {},
             "output_schema": {},
@@ -36495,6 +35853,7 @@ def test_update_tool_rest_call_success(request_type):
             "tls_config": {},
             "service_directory_config": {},
             "custom_headers": {},
+            "state": 1,
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -36521,10 +35880,44 @@ def test_update_tool_rest_call_success(request_type):
                 "mode": 1,
                 "python_script": "python_script_value",
             },
+            "text_response_config": {
+                "type_": 1,
+                "static_text": "static_text_value",
+                "text_response_instruction": "text_response_instruction_value",
+            },
+        },
+        "remote_agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "agent_card": {
+                "name": "name_value",
+                "description": "description_value",
+                "supported_interfaces": [
+                    {
+                        "url": "url_value",
+                        "protocol_binding": "protocol_binding_value",
+                        "tenant": "tenant_value",
+                        "protocol_version": "protocol_version_value",
+                    }
+                ],
+                "version": "version_value",
+                "skills": [
+                    {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "description": "description_value",
+                        "tags": ["tags_value1", "tags_value2"],
+                        "examples": ["examples_value1", "examples_value2"],
+                        "input_modes": ["input_modes_value1", "input_modes_value2"],
+                        "output_modes": ["output_modes_value1", "output_modes_value2"],
+                    }
+                ],
+            },
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/tools/sample4",
         "display_name": "display_name_value",
         "execution_type": 1,
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {},
         "update_time": {},
         "etag": "etag_value",
@@ -38073,10 +37466,48 @@ def test_create_deployment_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
+        "experiment_config": {
+            "version_release": {
+                "state": 1,
+                "traffic_allocations": [
+                    {
+                        "id": "id_value",
+                        "traffic_percentage": 1884,
+                        "app_version": "app_version_value",
+                    }
+                ],
+            }
+        },
+        "whatsapp_credentials": {
+            "auth_code": "auth_code_value",
+            "pin": "pin_value",
+            "phone_number": "phone_number_value",
+            "business_account_id": "business_account_id_value",
+            "waba_id": "waba_id_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
+        "instagram_credentials": {
+            "auth_code": "auth_code_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -38315,10 +37746,48 @@ def test_update_deployment_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
+        "experiment_config": {
+            "version_release": {
+                "state": 1,
+                "traffic_allocations": [
+                    {
+                        "id": "id_value",
+                        "traffic_percentage": 1884,
+                        "app_version": "app_version_value",
+                    }
+                ],
+            }
+        },
+        "whatsapp_credentials": {
+            "auth_code": "auth_code_value",
+            "pin": "pin_value",
+            "phone_number": "phone_number_value",
+            "business_account_id": "business_account_id_value",
+            "waba_id": "waba_id_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
+        "instagram_credentials": {
+            "auth_code": "auth_code_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -38938,6 +38407,45 @@ def test_create_toolset_rest_call_success(request_type):
                 ]
             },
             "custom_headers": {},
+            "tool_overrides": [
+                {
+                    "tool": "tool_value",
+                    "name_override": "name_override_value",
+                    "description_override": "description_override_value",
+                    "snapshot": {
+                        "description": "description_value",
+                        "input_schema": {
+                            "type_": 1,
+                            "properties": {},
+                            "required": ["required_value1", "required_value2"],
+                            "description": "description_value",
+                            "items": {},
+                            "nullable": True,
+                            "unique_items": True,
+                            "prefix_items": {},
+                            "additional_properties": {},
+                            "any_of": {},
+                            "enum": ["enum_value1", "enum_value2"],
+                            "default": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {"fields": {}},
+                                "list_value": {"values": {}},
+                            },
+                            "ref": "ref_value",
+                            "defs": {},
+                            "title": "title_value",
+                            "min_items": 965,
+                            "max_items": 967,
+                            "minimum": 0.764,
+                            "maximum": 0.766,
+                        },
+                        "output_schema": {},
+                    },
+                }
+            ],
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -38972,6 +38480,7 @@ def test_create_toolset_rest_call_success(request_type):
         "name": "name_value",
         "display_name": "display_name_value",
         "description": "description_value",
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
@@ -39224,6 +38733,45 @@ def test_update_toolset_rest_call_success(request_type):
                 ]
             },
             "custom_headers": {},
+            "tool_overrides": [
+                {
+                    "tool": "tool_value",
+                    "name_override": "name_override_value",
+                    "description_override": "description_override_value",
+                    "snapshot": {
+                        "description": "description_value",
+                        "input_schema": {
+                            "type_": 1,
+                            "properties": {},
+                            "required": ["required_value1", "required_value2"],
+                            "description": "description_value",
+                            "items": {},
+                            "nullable": True,
+                            "unique_items": True,
+                            "prefix_items": {},
+                            "additional_properties": {},
+                            "any_of": {},
+                            "enum": ["enum_value1", "enum_value2"],
+                            "default": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {"fields": {}},
+                                "list_value": {"values": {}},
+                            },
+                            "ref": "ref_value",
+                            "defs": {},
+                            "title": "title_value",
+                            "min_items": 965,
+                            "max_items": 967,
+                            "minimum": 0.764,
+                            "maximum": 0.766,
+                        },
+                        "output_schema": {},
+                    },
+                }
+            ],
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -39258,6 +38806,7 @@ def test_update_toolset_rest_call_success(request_type):
         "name": "projects/sample1/locations/sample2/apps/sample3/toolsets/sample4",
         "display_name": "display_name_value",
         "description": "description_value",
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
@@ -39911,19 +39460,29 @@ def test_create_app_version_rest_call_success(request_type):
                         "gcs_bucket": "gcs_bucket_value",
                         "gcs_path_prefix": "gcs_path_prefix_value",
                     },
+                    "unredacted_audio_recording_config": {},
                     "bigquery_export_settings": {
                         "enabled": True,
                         "project": "project_value",
                         "dataset": "dataset_value",
                     },
+                    "unredacted_bigquery_export_settings": {},
                     "cloud_logging_settings": {"enable_cloud_logging": True},
                     "conversation_logging_settings": {
-                        "disable_conversation_logging": True
+                        "disable_conversation_logging": True,
+                        "retention_window": {},
                     },
                     "evaluation_audio_recording_config": {},
                     "metric_analysis_settings": {"llm_metrics_opted_out": True},
                 },
-                "error_handling_settings": {"error_handling_strategy": 1},
+                "error_handling_settings": {
+                    "error_handling_strategy": 1,
+                    "fallback_response_config": {
+                        "custom_fallback_messages": {},
+                        "max_fallback_attempts": 2214,
+                    },
+                    "end_session_config": {"escalate_session": True},
+                },
                 "model_settings": {"model": "model_value", "temperature": 0.1198},
                 "tool_execution_mode": 1,
                 "evaluation_metrics_thresholds": {
@@ -40003,6 +39562,20 @@ def test_create_app_version_rest_call_success(request_type):
                         },
                     },
                     "noise_suppression_level": "noise_suppression_level_value",
+                    "whatsapp_config": {
+                        "waba_id": "waba_id_value",
+                        "phone_number_id": "phone_number_id_value",
+                        "phone_number": "phone_number_value",
+                        "display_name": "display_name_value",
+                        "thumbnail_url": "thumbnail_url_value",
+                        "description": "description_value",
+                    },
+                    "instagram_config": {
+                        "instagram_account_id": "instagram_account_id_value",
+                        "display_name": "display_name_value",
+                        "thumbnail_url": "thumbnail_url_value",
+                        "description": "description_value",
+                    },
                 },
                 "metadata": {},
                 "create_time": {},
@@ -40014,7 +39587,17 @@ def test_create_app_version_rest_call_success(request_type):
                     "private_key": "private_key_value",
                     "passphrase": "passphrase_value",
                 },
+                "vpc_sc_settings": {
+                    "allowed_origins": [
+                        "allowed_origins_value1",
+                        "allowed_origins_value2",
+                    ]
+                },
                 "locked": True,
+                "validation_errors": [
+                    "validation_errors_value1",
+                    "validation_errors_value2",
+                ],
             },
             "agents": [
                 {
@@ -40026,6 +39609,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "input_variable_mapping": {},
                         "output_variable_mapping": {},
                         "respect_response_interruption_settings": True,
+                        "language_code_variable": "language_code_variable_value",
                     },
                     "name": "name_value",
                     "display_name": "display_name_value",
@@ -40072,6 +39656,10 @@ def test_create_app_version_rest_call_success(request_type):
                             "child_agent": "child_agent_value",
                             "direction": 1,
                         }
+                    ],
+                    "validation_errors": [
+                        "validation_errors_value1",
+                        "validation_errors_value2",
                     ],
                 }
             ],
@@ -40243,9 +39831,11 @@ def test_create_app_version_rest_call_success(request_type):
                         "name": "name_value",
                         "python_code": "python_code_value",
                         "description": "description_value",
+                        "service_directory_config": {},
                     },
                     "mcp_tool": {
                         "name": "name_value",
+                        "name_override": "name_override_value",
                         "description": "description_value",
                         "input_schema": {},
                         "output_schema": {},
@@ -40254,6 +39844,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "tls_config": {},
                         "service_directory_config": {},
                         "custom_headers": {},
+                        "state": 1,
                     },
                     "file_search_tool": {
                         "corpus_type": 1,
@@ -40283,10 +39874,50 @@ def test_create_app_version_rest_call_success(request_type):
                             "mode": 1,
                             "python_script": "python_script_value",
                         },
+                        "text_response_config": {
+                            "type_": 1,
+                            "static_text": "static_text_value",
+                            "text_response_instruction": "text_response_instruction_value",
+                        },
+                    },
+                    "remote_agent_tool": {
+                        "name": "name_value",
+                        "description": "description_value",
+                        "agent_card": {
+                            "name": "name_value",
+                            "description": "description_value",
+                            "supported_interfaces": [
+                                {
+                                    "url": "url_value",
+                                    "protocol_binding": "protocol_binding_value",
+                                    "tenant": "tenant_value",
+                                    "protocol_version": "protocol_version_value",
+                                }
+                            ],
+                            "version": "version_value",
+                            "skills": [
+                                {
+                                    "id": "id_value",
+                                    "name": "name_value",
+                                    "description": "description_value",
+                                    "tags": ["tags_value1", "tags_value2"],
+                                    "examples": ["examples_value1", "examples_value2"],
+                                    "input_modes": [
+                                        "input_modes_value1",
+                                        "input_modes_value2",
+                                    ],
+                                    "output_modes": [
+                                        "output_modes_value1",
+                                        "output_modes_value2",
+                                    ],
+                                }
+                            ],
+                        },
                     },
                     "name": "name_value",
                     "display_name": "display_name_value",
                     "execution_type": 1,
+                    "timeout": {},
                     "create_time": {},
                     "update_time": {},
                     "etag": "etag_value",
@@ -40419,6 +40050,18 @@ def test_create_app_version_rest_call_success(request_type):
                         "service_directory_config": {},
                         "tls_config": {},
                         "custom_headers": {},
+                        "tool_overrides": [
+                            {
+                                "tool": "tool_value",
+                                "name_override": "name_override_value",
+                                "description_override": "description_override_value",
+                                "snapshot": {
+                                    "description": "description_value",
+                                    "input_schema": {},
+                                    "output_schema": {},
+                                },
+                            }
+                        ],
                     },
                     "open_api_toolset": {
                         "open_api_schema": "open_api_schema_value",
@@ -40436,6 +40079,7 @@ def test_create_app_version_rest_call_success(request_type):
                     "name": "name_value",
                     "display_name": "display_name_value",
                     "description": "description_value",
+                    "timeout": {},
                     "create_time": {},
                     "update_time": {},
                     "etag": "etag_value",

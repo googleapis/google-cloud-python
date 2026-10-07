@@ -113,6 +113,55 @@
           }
         }
       }
+    },
+    "QuotaAdjusterSettingsManager": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "QuotaAdjusterSettingsManagerClient",
+          "rpcs": {
+            "GetQuotaAdjusterSettings": {
+              "methods": [
+                "get_quota_adjuster_settings"
+              ]
+            },
+            "UpdateQuotaAdjusterSettings": {
+              "methods": [
+                "update_quota_adjuster_settings"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "QuotaAdjusterSettingsManagerAsyncClient",
+          "rpcs": {
+            "GetQuotaAdjusterSettings": {
+              "methods": [
+                "get_quota_adjuster_settings"
+              ]
+            },
+            "UpdateQuotaAdjusterSettings": {
+              "methods": [
+                "update_quota_adjuster_settings"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "QuotaAdjusterSettingsManagerClient",
+          "rpcs": {
+            "GetQuotaAdjusterSettings": {
+              "methods": [
+                "get_quota_adjuster_settings"
+              ]
+            },
+            "UpdateQuotaAdjusterSettings": {
+              "methods": [
+                "update_quota_adjuster_settings"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

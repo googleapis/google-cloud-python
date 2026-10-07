@@ -37,9 +37,7 @@ from google.cloud.beyondcorp_appconnectors_v1.types import app_connectors_servic
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AppConnectorsServiceTransport(abc.ABC):
@@ -173,6 +171,11 @@ class AppConnectorsServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.resolve_instance_config: gapic_v1.method.wrap_method(
+                self.resolve_instance_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.report_status: gapic_v1.method.wrap_method(
                 self.report_status,
                 default_timeout=None,
@@ -287,6 +290,18 @@ class AppConnectorsServiceTransport(abc.ABC):
     ) -> Callable[
         [app_connectors_service.DeleteAppConnectorRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resolve_instance_config(
+        self,
+    ) -> Callable[
+        [app_connectors_service.ResolveInstanceConfigRequest],
+        Union[
+            app_connectors_service.ResolveInstanceConfigResponse,
+            Awaitable[app_connectors_service.ResolveInstanceConfigResponse],
+        ],
     ]:
         raise NotImplementedError()
 

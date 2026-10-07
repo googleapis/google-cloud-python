@@ -195,10 +195,10 @@ class CloudExadataInfrastructureProperties(proto.Message):
             Output only. The compute model of the Exadata
             Infrastructure.
         database_server_type (str):
-            Output only. The database server type of the
+            Optional. The database server type of the
             Exadata Infrastructure.
         storage_server_type (str):
-            Output only. The storage server type of the
+            Optional. The storage server type of the
             Exadata Infrastructure.
         exascale_config (google.cloud.oracledatabase_v1.types.ExascaleConfig):
             Output only. The Exascale configuration for
@@ -384,6 +384,12 @@ class ExascaleConfig(proto.Message):
         available_storage_size_gb (int):
             Output only. Available storage size for
             Exascale in GBs.
+        total_vm_storage_size_gb (int):
+            Output only. Storage size needed for VM
+            storage on Exascale in GBs.
+        available_vm_storage_size_gb (int):
+            Output only. Available storage size for VM
+            storage on Exascale in GBs.
     """
 
     total_storage_size_gb: int = proto.Field(
@@ -393,6 +399,14 @@ class ExascaleConfig(proto.Message):
     available_storage_size_gb: int = proto.Field(
         proto.INT32,
         number=2,
+    )
+    total_vm_storage_size_gb: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    available_vm_storage_size_gb: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
 
 
@@ -537,6 +551,9 @@ class ConfigureExascaleCloudExadataInfrastructureRequest(proto.Message):
         total_storage_size_gb (int):
             Required. The total storage to be allocated
             to Exascale in GBs.
+        total_vm_storage_size_gb (int):
+            Optional. Storage size needed for VM storage
+            on Exascale in GBs.
         request_id (str):
             Optional. An optional ID to identify the
             request.
@@ -549,6 +566,10 @@ class ConfigureExascaleCloudExadataInfrastructureRequest(proto.Message):
     total_storage_size_gb: int = proto.Field(
         proto.INT32,
         number=2,
+    )
+    total_vm_storage_size_gb: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
     request_id: str = proto.Field(
         proto.STRING,

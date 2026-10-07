@@ -28,6 +28,9 @@ from .annotation import (
     SlashCommandMetadata,
     UserMentionMetadata,
 )
+from .app_command_metadata import (
+    AppCommandMetadata,
+)
 from .attachment import (
     Attachment,
     AttachmentDataRef,
@@ -81,6 +84,9 @@ from .group import (
 from .history_state import (
     HistoryState,
 )
+from .markup_syntax import (
+    MarkupSyntax,
+)
 from .matched_url import (
     MatchedUrl,
 )
@@ -110,8 +116,18 @@ from .message import (
     Message,
     QuotedMessageMetadata,
     QuotedMessageSnapshot,
+    SearchMessageResult,
+    SearchMessagesRequest,
+    SearchMessagesResponse,
     Thread,
     UpdateMessageRequest,
+)
+from .message_pin import (
+    CreateMessagePinRequest,
+    DeleteMessagePinRequest,
+    ListMessagePinsRequest,
+    ListMessagePinsResponse,
+    MessagePin,
 )
 from .reaction import (
     CreateCustomEmojiRequest,
@@ -205,6 +221,7 @@ __all__ = (
     "SlashCommandMetadata",
     "UserMentionMetadata",
     "AnnotationType",
+    "AppCommandMetadata",
     "Attachment",
     "AttachmentDataRef",
     "DriveDataRef",
@@ -242,6 +259,7 @@ __all__ = (
     "SpaceUpdatedEventData",
     "Group",
     "HistoryState",
+    "MarkupSyntax",
     "MatchedUrl",
     "CreateMembershipRequest",
     "DeleteMembershipRequest",
@@ -266,8 +284,16 @@ __all__ = (
     "Message",
     "QuotedMessageMetadata",
     "QuotedMessageSnapshot",
+    "SearchMessageResult",
+    "SearchMessagesRequest",
+    "SearchMessagesResponse",
     "Thread",
     "UpdateMessageRequest",
+    "CreateMessagePinRequest",
+    "DeleteMessagePinRequest",
+    "ListMessagePinsRequest",
+    "ListMessagePinsResponse",
+    "MessagePin",
     "CreateCustomEmojiRequest",
     "CreateReactionRequest",
     "CustomEmoji",

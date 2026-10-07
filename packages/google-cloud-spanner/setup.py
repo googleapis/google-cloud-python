@@ -42,12 +42,12 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 2.24.2, <3.0.0",
+    "google-api-core[grpc] >= 2.28.0, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
     "google-cloud-core >= 2.0.0, < 3.0.0",
-    "grpcio >= 1.49.1, < 2.0.0",
+    "grpcio >= 1.59.0, < 2.0.0",
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
     "proto-plus >= 1.26.1, <2.0.0",
@@ -64,6 +64,7 @@ dependencies = [
 ]
 extras = {
     "libcst": "libcst >= 0.2.5",
+    "omni": ["cryptography >= 44.0.0"],
     "test": [
         "pytest",
         "mock",
@@ -108,6 +109,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.15",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],

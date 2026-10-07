@@ -129,8 +129,11 @@ async def test_asyncquery_get_w_read_time():
 
 
 @pytest.mark.asyncio
-async def test_asyncquery_get_limit_to_last():
-    from google.cloud import firestore
+@pytest.mark.parametrize(
+    "direction, expected_direction",
+    [("DESCENDING", "ASCENDING"), ("ASCENDING", "DESCENDING")],
+)
+async def test_asyncquery_get_limit_to_last(direction, expected_direction):
     from google.cloud.firestore_v1.base_query import _enum_from_direction
 
     # Create a minimal fake GAPIC.
@@ -156,15 +159,11 @@ async def test_asyncquery_get_limit_to_last():
 
     # Execute the query and check the response.
     query = make_async_query(parent)
-    query = query.order_by(
-        "snooze", direction=firestore.AsyncQuery.DESCENDING
-    ).limit_to_last(2)
+    query = query.order_by("snooze", direction=direction).limit_to_last(2)
     returned = await query.get()
 
     assert isinstance(returned, list)
-    assert query._orders[0].direction == _enum_from_direction(
-        firestore.AsyncQuery.ASCENDING
-    )
+    assert query._orders[0].direction == _enum_from_direction(expected_direction)
     assert len(returned) == 2
 
     snapshot = returned[0]

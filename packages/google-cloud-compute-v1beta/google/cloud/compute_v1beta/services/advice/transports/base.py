@@ -31,9 +31,7 @@ from google.cloud.compute_v1beta.types import compute
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AdviceTransport(abc.ABC):
@@ -150,6 +148,11 @@ class AdviceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.calendar_mode_extension: gapic_v1.method.wrap_method(
+                self.calendar_mode_extension,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.capacity: gapic_v1.method.wrap_method(
                 self.capacity,
                 default_timeout=600.0,
@@ -179,6 +182,18 @@ class AdviceTransport(abc.ABC):
         Union[
             compute.CalendarModeAdviceResponse,
             Awaitable[compute.CalendarModeAdviceResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def calendar_mode_extension(
+        self,
+    ) -> Callable[
+        [compute.CalendarModeExtensionAdviceRpcRequest],
+        Union[
+            compute.CalendarModeExtensionAdviceResponse,
+            Awaitable[compute.CalendarModeExtensionAdviceResponse],
         ],
     ]:
         raise NotImplementedError()

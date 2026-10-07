@@ -78,6 +78,9 @@ from google.cloud.bigquery import (
     job,
 )
 from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import (
+    version as bq_version,
+)
 from google.cloud.bigquery._helpers import (
     _DEFAULT_HOST,
     _DEFAULT_HOST_TEMPLATE,
@@ -148,7 +151,7 @@ _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "multipart"
 _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "resumable"
 _GENERIC_CONTENT_TYPE = "*/*"
 _READ_LESS_THAN_SIZE = (
-    "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
+    "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
 )
 _NEED_TABLE_ARGUMENT = (
     "The table argument should be a table ID string, Table, or TableReference"
@@ -162,6 +165,16 @@ _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS = "jobReference,totalRows,pageToken,rows"
 # connection timeout before data can be downloaded.
 # https://github.com/googleapis/python-bigquery/issues/438
 _MIN_GET_QUERY_RESULTS_TIMEOUT = 120
+
+_LOAD_TABLE_FROM_DATAFRAME_DEPRECATED = (
+    "Loading DataFrames via google-cloud-bigquery is deprecated. "
+    "For direct, optimized loading, please call 'pandas_gbq.to_gbq()' directly."
+)
+
+_INSERT_ROWS_FROM_DATAFRAME_DEPRECATED = (
+    "Inserting rows from DataFrames via google-cloud-bigquery is deprecated. "
+    "For direct, optimized access, please call 'pandas_gbq.to_gbq()' directly."
+)
 
 TIMEOUT_HEADER = "X-Server-Timeout"
 
@@ -631,9 +644,16 @@ class Client(ClientWithProject):
             pandas_gbq = None  # type: ignore
 
         if pandas_gbq is None:
-            user_agent = "pandas-gbq/0.0.0"
+            # Even if pandas-gbq isn't installed, attribute all
+            # to_dataframe/to_arrow usage the same as we do the recommended
+            # (pandas-gbq) code paths.
+            pandas_user_agent = "pandas-gbq/0.0.0"
         else:
-            user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+            pandas_user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+
+        # Track the google-cloud-bigquery version as "legacy" because this code
+        # path is intended to be migrated to pandas-gbq itself.
+        user_agent = f"legacy-gcb/{bq_version.__version__} {pandas_user_agent}"
 
         if client_info is None:
             amended_client_info = google.api_core.gapic_v1.client_info.ClientInfo(
@@ -2830,6 +2850,12 @@ class Client(ClientWithProject):
                 If ``job_config`` is not an instance of
                 :class:`~google.cloud.bigquery.job.LoadJobConfig` class.
         """
+        warnings.warn(
+            _LOAD_TABLE_FROM_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         job_id = _make_job_id(job_id, job_id_prefix)
 
         if job_config is not None:
@@ -3649,6 +3675,8 @@ class Client(ClientWithProject):
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
+        query_results_format: Optional[str] = None,
+        compression_codec: Optional[str] = None,
     ) -> RowIterator:
         """Run the query, wait for it to finish, and return the results.
 
@@ -3696,6 +3724,10 @@ class Client(ClientWithProject):
                 by this parameter.
             max_results (Optional[int]):
                 The maximum total number of rows from this request.
+            query_results_format (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsFormat]]):
+                [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
+            compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
+                [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3726,6 +3758,8 @@ class Client(ClientWithProject):
             job_retry=job_retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
+            compression_codec=compression_codec,
         )
 
     def _query_and_wait_bigframes(
@@ -3741,6 +3775,8 @@ class Client(ClientWithProject):
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
+        query_results_format: Optional[str] = None,
+        compression_codec: Optional[str] = None,
         callback: Callable = lambda _: None,
     ) -> RowIterator:
         """See query_and_wait.
@@ -3773,6 +3809,8 @@ class Client(ClientWithProject):
             job_retry=job_retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
+            compression_codec=compression_codec,
             callback=callback,
         )
 
@@ -3900,6 +3938,12 @@ class Client(ClientWithProject):
         Raises:
             ValueError: if table's schema is not set
         """
+        warnings.warn(
+            _INSERT_ROWS_FROM_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         insert_results = []
 
         chunk_count = int(math.ceil(len(dataframe) / chunk_size))

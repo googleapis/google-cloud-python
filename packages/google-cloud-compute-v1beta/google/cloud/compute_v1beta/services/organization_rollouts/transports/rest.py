@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.compute_v1beta._compat import transcode_request
 from google.cloud.compute_v1beta.types import compute
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class OrganizationRolloutsRestInterceptor:
@@ -651,15 +651,16 @@ class OrganizationRolloutsRestTransport(_BaseOrganizationRolloutsRestTransport):
             http_options = (
                 _BaseOrganizationRolloutsRestTransport._BaseAdvance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_advance(request, metadata)
-            transcoded_request = _BaseOrganizationRolloutsRestTransport._BaseAdvance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOrganizationRolloutsRestTransport._BaseAdvance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOrganizationRolloutsRestTransport._BaseAdvance,
+                    "_BaseAdvance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -825,15 +826,16 @@ class OrganizationRolloutsRestTransport(_BaseOrganizationRolloutsRestTransport):
             http_options = (
                 _BaseOrganizationRolloutsRestTransport._BaseCancel._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel(request, metadata)
-            transcoded_request = _BaseOrganizationRolloutsRestTransport._BaseCancel._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOrganizationRolloutsRestTransport._BaseCancel._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOrganizationRolloutsRestTransport._BaseCancel,
+                    "_BaseCancel__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -999,15 +1001,16 @@ class OrganizationRolloutsRestTransport(_BaseOrganizationRolloutsRestTransport):
             http_options = (
                 _BaseOrganizationRolloutsRestTransport._BaseDelete._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseOrganizationRolloutsRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOrganizationRolloutsRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOrganizationRolloutsRestTransport._BaseDelete,
+                    "_BaseDelete__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1152,19 +1155,16 @@ class OrganizationRolloutsRestTransport(_BaseOrganizationRolloutsRestTransport):
             http_options = (
                 _BaseOrganizationRolloutsRestTransport._BaseGet._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseOrganizationRolloutsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseOrganizationRolloutsRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOrganizationRolloutsRestTransport._BaseGet,
+                    "_BaseGet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1300,17 +1300,16 @@ class OrganizationRolloutsRestTransport(_BaseOrganizationRolloutsRestTransport):
             http_options = (
                 _BaseOrganizationRolloutsRestTransport._BaseList._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseOrganizationRolloutsRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseOrganizationRolloutsRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOrganizationRolloutsRestTransport._BaseList,
+                    "_BaseList__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1476,15 +1475,16 @@ class OrganizationRolloutsRestTransport(_BaseOrganizationRolloutsRestTransport):
             http_options = (
                 _BaseOrganizationRolloutsRestTransport._BasePause._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_pause(request, metadata)
-            transcoded_request = _BaseOrganizationRolloutsRestTransport._BasePause._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOrganizationRolloutsRestTransport._BasePause._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOrganizationRolloutsRestTransport._BasePause,
+                    "_BasePause__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1650,15 +1650,16 @@ class OrganizationRolloutsRestTransport(_BaseOrganizationRolloutsRestTransport):
             http_options = (
                 _BaseOrganizationRolloutsRestTransport._BaseResume._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_resume(request, metadata)
-            transcoded_request = _BaseOrganizationRolloutsRestTransport._BaseResume._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOrganizationRolloutsRestTransport._BaseResume._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOrganizationRolloutsRestTransport._BaseResume,
+                    "_BaseResume__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

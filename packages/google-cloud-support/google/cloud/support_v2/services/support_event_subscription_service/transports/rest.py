@@ -20,6 +20,7 @@ import warnings
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -28,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.support_v2._compat import transcode_request
 from google.cloud.support_v2.types import (
     support_event_subscription,
     support_event_subscription_service,
@@ -59,8 +61,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class SupportEventSubscriptionServiceRestInterceptor:
@@ -93,6 +94,10 @@ class SupportEventSubscriptionServiceRestInterceptor:
             def post_delete_support_event_subscription(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_expunge_support_event_subscription(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_get_support_event_subscription(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -235,6 +240,21 @@ class SupportEventSubscriptionServiceRestInterceptor:
         `post_delete_support_event_subscription_with_metadata`.
         """
         return response, metadata
+
+    def pre_expunge_support_event_subscription(
+        self,
+        request: support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for expunge_support_event_subscription
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SupportEventSubscriptionService server.
+        """
+        return request, metadata
 
     def pre_get_support_event_subscription(
         self,
@@ -601,24 +621,35 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.gcs_support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseCreateSupportEventSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_create_support_event_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseSupportEventSubscriptionServiceRestTransport._BaseCreateSupportEventSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSupportEventSubscriptionServiceRestTransport._BaseCreateSupportEventSubscription._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSupportEventSubscriptionServiceRestTransport._BaseCreateSupportEventSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSupportEventSubscriptionServiceRestTransport._BaseCreateSupportEventSubscription,
+                    "_BaseCreateSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -761,20 +792,35 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseDeleteSupportEventSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_support_event_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseSupportEventSubscriptionServiceRestTransport._BaseDeleteSupportEventSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSupportEventSubscriptionServiceRestTransport._BaseDeleteSupportEventSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSupportEventSubscriptionServiceRestTransport._BaseDeleteSupportEventSubscription,
+                    "_BaseDeleteSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -859,6 +905,122 @@ class SupportEventSubscriptionServiceRestTransport(
                 )
             return resp
 
+    class _ExpungeSupportEventSubscription(
+        _BaseSupportEventSubscriptionServiceRestTransport._BaseExpungeSupportEventSubscription,
+        SupportEventSubscriptionServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "SupportEventSubscriptionServiceRestTransport.ExpungeSupportEventSubscription"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the expunge support event
+            subscription method over HTTP.
+
+                Args:
+                    request (~.support_event_subscription_service.ExpungeSupportEventSubscriptionRequest):
+                        The request object. Request message for
+                    ExpungeSupportEventSubscription.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+            """
+
+            http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseExpungeSupportEventSubscription._get_http_options()
+            request, metadata = (
+                self._interceptor.pre_expunge_support_event_subscription(
+                    request, metadata
+                )
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSupportEventSubscriptionServiceRestTransport._BaseExpungeSupportEventSubscription,
+                    "_BaseExpungeSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.SupportEventSubscriptionServiceClient.ExpungeSupportEventSubscription",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.SupportEventSubscriptionService",
+                        "rpcName": "ExpungeSupportEventSubscription",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SupportEventSubscriptionServiceRestTransport._ExpungeSupportEventSubscription._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _GetSupportEventSubscription(
         _BaseSupportEventSubscriptionServiceRestTransport._BaseGetSupportEventSubscription,
         SupportEventSubscriptionServiceRestStub,
@@ -916,20 +1078,35 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseGetSupportEventSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_get_support_event_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseSupportEventSubscriptionServiceRestTransport._BaseGetSupportEventSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSupportEventSubscriptionServiceRestTransport._BaseGetSupportEventSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSupportEventSubscriptionServiceRestTransport._BaseGetSupportEventSubscription,
+                    "_BaseGetSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1076,17 +1253,18 @@ class SupportEventSubscriptionServiceRestTransport(
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseListSupportEventSubscriptions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_support_event_subscriptions(
                 request, metadata
             )
-            transcoded_request = _BaseSupportEventSubscriptionServiceRestTransport._BaseListSupportEventSubscriptions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSupportEventSubscriptionServiceRestTransport._BaseListSupportEventSubscriptions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSupportEventSubscriptionServiceRestTransport._BaseListSupportEventSubscriptions,
+                    "_BaseListSupportEventSubscriptions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1229,26 +1407,37 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseUndeleteSupportEventSubscription._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_undelete_support_event_subscription(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseSupportEventSubscriptionServiceRestTransport._BaseUndeleteSupportEventSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSupportEventSubscriptionServiceRestTransport._BaseUndeleteSupportEventSubscription._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSupportEventSubscriptionServiceRestTransport._BaseUndeleteSupportEventSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSupportEventSubscriptionServiceRestTransport._BaseUndeleteSupportEventSubscription,
+                    "_BaseUndeleteSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1392,24 +1581,35 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.gcs_support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseUpdateSupportEventSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_update_support_event_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseSupportEventSubscriptionServiceRestTransport._BaseUpdateSupportEventSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSupportEventSubscriptionServiceRestTransport._BaseUpdateSupportEventSubscription._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSupportEventSubscriptionServiceRestTransport._BaseUpdateSupportEventSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSupportEventSubscriptionServiceRestTransport._BaseUpdateSupportEventSubscription,
+                    "_BaseUpdateSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1518,6 +1718,19 @@ class SupportEventSubscriptionServiceRestTransport(
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSupportEventSubscription(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def expunge_support_event_subscription(
+        self,
+    ) -> Callable[
+        [support_event_subscription_service.ExpungeSupportEventSubscriptionRequest],
+        empty_pb2.Empty,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExpungeSupportEventSubscription(
             self._session, self._host, self._interceptor
         )  # type: ignore
 

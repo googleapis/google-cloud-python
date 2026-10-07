@@ -51,6 +51,7 @@ __protobuf__ = proto.module(
         "VideoPositionTargeting",
         "VideoPosition",
         "DataSegmentTargeting",
+        "RequestFormatTargeting",
         "ContentTargeting",
         "MobileApplicationTargeting",
         "FirstPartyMobileApplicationTargeting",
@@ -83,6 +84,8 @@ class Targeting(proto.Message):
             Optional. Used to target video positions.
         data_segment_targeting (google.ads.admanager_v1.types.DataSegmentTargeting):
             Optional. Used to target data segments.
+        request_format_targeting (google.ads.admanager_v1.types.RequestFormatTargeting):
+            Optional. Used to target inventory formats.
         content_targeting (google.ads.admanager_v1.types.ContentTargeting):
             Optional. Used to target content.
         mobile_application_targeting (google.ads.admanager_v1.types.MobileApplicationTargeting):
@@ -128,6 +131,11 @@ class Targeting(proto.Message):
         proto.MESSAGE,
         number=13,
         message="DataSegmentTargeting",
+    )
+    request_format_targeting: "RequestFormatTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="RequestFormatTargeting",
     )
     content_targeting: "ContentTargeting" = proto.Field(
         proto.MESSAGE,
@@ -423,8 +431,7 @@ class DeviceManufacturerTargeting(proto.Message):
 class MobileCarrierTargeting(proto.Message):
     r"""Mobile Carrier Targeting.
 
-    Can be used to target/exclude a variety of mobile carriers, such
-    as AT&T, Verizon, or T-Mobile.
+    Used to target or exclude mobile carriers.
 
     Attributes:
         targeted_mobile_carriers (MutableSequence[str]):
@@ -854,6 +861,126 @@ class DataSegmentTargeting(proto.Message):
     has_data_segment_targeting: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class RequestFormatTargeting(proto.Message):
+    r"""Request Format Targeting
+
+    This message specifies inclusion or exclusion of various request
+    formats for targeting. Each optional boolean field controls the
+    targeting of a specific request format:
+
+    - If set to ``true``, the corresponding format is **included** in
+      targeting.
+    - If set to ``false``, the corresponding format is **excluded** from
+      targeting.
+    - If unset, the format is neither explicitly included nor excluded.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        app_open_enabled (bool):
+            Optional. Controls app open format targeting. Set to
+            ``true`` to include, ``false`` to exclude, or leave unset
+            for neither.
+
+            This field is a member of `oneof`_ ``_app_open_enabled``.
+        rewarded_enabled (bool):
+            Optional. Controls rewarded format targeting. Set to
+            ``true`` to include, ``false`` to exclude, or leave unset
+            for neither.
+
+            This field is a member of `oneof`_ ``_rewarded_enabled``.
+        rewarded_interstitial_enabled (bool):
+            Optional. Controls rewarded interstitial format targeting.
+            Set to ``true`` to include, ``false`` to exclude, or leave
+            unset for neither.
+
+            This field is a member of `oneof`_ ``_rewarded_interstitial_enabled``.
+        interstitial_enabled (bool):
+            Optional. Controls interstitial format targeting. Set to
+            ``true`` to include, ``false`` to exclude, or leave unset
+            for neither.
+
+            This field is a member of `oneof`_ ``_interstitial_enabled``.
+        anchor_enabled (bool):
+            Optional. Controls anchor format targeting. Set to ``true``
+            to include, ``false`` to exclude, or leave unset for
+            neither.
+
+            This field is a member of `oneof`_ ``_anchor_enabled``.
+        banner_enabled (bool):
+            Optional. Controls banner format targeting. Set to ``true``
+            to include, ``false`` to exclude, or leave unset for
+            neither.
+
+            This field is a member of `oneof`_ ``_banner_enabled``.
+        instream_video_enabled (bool):
+            Optional. Controls instream video format targeting. Set to
+            ``true`` to include, ``false`` to exclude, or leave unset
+            for neither.
+
+            This field is a member of `oneof`_ ``_instream_video_enabled``.
+        instream_audio_enabled (bool):
+            Optional. Controls instream audio format targeting. Set to
+            ``true`` to include, ``false`` to exclude, or leave unset
+            for neither.
+
+            This field is a member of `oneof`_ ``_instream_audio_enabled``.
+        native_advanced_enabled (bool):
+            Optional. Controls native advanced format targeting. Set to
+            ``true`` to include, ``false`` to exclude, or leave unset
+            for neither.
+
+            This field is a member of `oneof`_ ``_native_advanced_enabled``.
+    """
+
+    app_open_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    rewarded_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+        optional=True,
+    )
+    rewarded_interstitial_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    interstitial_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        optional=True,
+    )
+    anchor_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+        optional=True,
+    )
+    banner_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+    instream_video_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+        optional=True,
+    )
+    instream_audio_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+        optional=True,
+    )
+    native_advanced_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+        optional=True,
     )
 
 

@@ -32,6 +32,7 @@ from google.apps.chat_v1.types import (
     availability,
     membership,
     message,
+    message_pin,
     reaction,
     section,
     space,
@@ -44,6 +45,7 @@ from google.apps.chat_v1.types import (
 from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
+from google.apps.chat_v1.types import message_pin as gc_message_pin
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
@@ -55,9 +57,7 @@ from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ChatServiceTransport(abc.ABC):
@@ -69,6 +69,9 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
         "https://www.googleapis.com/auth/chat.admin.spaces",
         "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+        "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+        "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+        "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
         "https://www.googleapis.com/auth/chat.app.delete",
         "https://www.googleapis.com/auth/chat.app.memberships",
         "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -92,6 +95,8 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.messages.readonly",
         "https://www.googleapis.com/auth/chat.spaces",
         "https://www.googleapis.com/auth/chat.spaces.create",
+        "https://www.googleapis.com/auth/chat.spaces.pins",
+        "https://www.googleapis.com/auth/chat.spaces.pins.readonly",
         "https://www.googleapis.com/auth/chat.spaces.readonly",
         "https://www.googleapis.com/auth/chat.users.availability",
         "https://www.googleapis.com/auth/chat.users.availability.readonly",
@@ -289,6 +294,20 @@ class ChatServiceTransport(abc.ABC):
             ),
             self.delete_message: gapic_v1.method.wrap_method(
                 self.delete_message,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.search_messages: gapic_v1.method.wrap_method(
+                self.search_messages,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -551,6 +570,21 @@ class ChatServiceTransport(abc.ABC):
                     deadline=30.0,
                 ),
                 default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_message_pins: gapic_v1.method.wrap_method(
+                self.list_message_pins,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_message_pin: gapic_v1.method.wrap_method(
+                self.create_message_pin,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_message_pin: gapic_v1.method.wrap_method(
+                self.delete_message_pin,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_custom_emoji: gapic_v1.method.wrap_method(
@@ -952,6 +986,17 @@ class ChatServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def search_messages(
+        self,
+    ) -> Callable[
+        [message.SearchMessagesRequest],
+        Union[
+            message.SearchMessagesResponse, Awaitable[message.SearchMessagesResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_attachment(
         self,
     ) -> Callable[
@@ -1109,6 +1154,36 @@ class ChatServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [reaction.DeleteReactionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_message_pins(
+        self,
+    ) -> Callable[
+        [message_pin.ListMessagePinsRequest],
+        Union[
+            message_pin.ListMessagePinsResponse,
+            Awaitable[message_pin.ListMessagePinsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_message_pin(
+        self,
+    ) -> Callable[
+        [gc_message_pin.CreateMessagePinRequest],
+        Union[gc_message_pin.MessagePin, Awaitable[gc_message_pin.MessagePin]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_message_pin(
+        self,
+    ) -> Callable[
+        [message_pin.DeleteMessagePinRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()

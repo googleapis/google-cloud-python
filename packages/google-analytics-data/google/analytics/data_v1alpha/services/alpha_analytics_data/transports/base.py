@@ -32,9 +32,7 @@ from google.analytics.data_v1alpha.types import analytics_data_api
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AlphaAnalyticsDataTransport(abc.ABC):
@@ -42,6 +40,7 @@ class AlphaAnalyticsDataTransport(abc.ABC):
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/analytics",
+        "https://www.googleapis.com/auth/analytics.chatbot.read",
         "https://www.googleapis.com/auth/analytics.readonly",
     )
 
@@ -208,6 +207,11 @@ class AlphaAnalyticsDataTransport(abc.ABC):
             ),
             self.list_report_tasks: gapic_v1.method.wrap_method(
                 self.list_report_tasks,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.chat: gapic_v1.method.wrap_method(
+                self.chat,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -379,6 +383,17 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.ListReportTasksResponse,
             Awaitable[analytics_data_api.ListReportTasksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def chat(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ChatRequest],
+        Union[
+            analytics_data_api.ChatResponse, Awaitable[analytics_data_api.ChatResponse]
         ],
     ]:
         raise NotImplementedError()

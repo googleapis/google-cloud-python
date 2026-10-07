@@ -1122,7 +1122,9 @@ class TestClient(unittest.TestCase):
         cached = client._bucket_metadata_cache.get(bucket_name)
         self.assertIsNotNone(cached)
         dest_id, loc = cached
-        self.assertEqual(dest_id, f"projects/_/buckets/{bucket_name}")
+        self.assertEqual(
+            dest_id, f"//storage.googleapis.com/projects/_/buckets/{bucket_name}"
+        )
         self.assertEqual(loc, "global")
 
     def test_get_bucket_hit_w_string_w_timeout(self):
@@ -1359,7 +1361,9 @@ class TestClient(unittest.TestCase):
         cached = client._bucket_metadata_cache.get(bucket_name)
         self.assertIsNotNone(cached)
         dest_id, loc = cached
-        self.assertEqual(dest_id, f"projects/_/buckets/{bucket_name}")
+        self.assertEqual(
+            dest_id, f"//storage.googleapis.com/projects/_/buckets/{bucket_name}"
+        )
         self.assertEqual(loc, "global")
 
     def test_lookup_bucket_hit_w_timeout(self):
@@ -2169,8 +2173,8 @@ class TestClient(unittest.TestCase):
         client.download_blob_to_file(blob, file_obj)
 
         self.assertNotEqual(
-            blob._do_download.call_args_list[0][0][3]["X-Goog-API-Client"],
-            blob._do_download.call_args_list[1][0][3]["X-Goog-API-Client"],
+            blob._do_download.call_args_list[0][0][3]["x-goog-api-client"],
+            blob._do_download.call_args_list[1][0][3]["x-goog-api-client"],
         )
 
     def test_list_blobs_w_defaults_w_bucket_obj(self):

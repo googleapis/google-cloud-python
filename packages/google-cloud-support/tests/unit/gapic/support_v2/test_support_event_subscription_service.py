@@ -76,6 +76,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -131,261 +143,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert (
-        SupportEventSubscriptionServiceClient._get_default_mtls_endpoint(None) is None
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_default_mtls_endpoint(
-            api_mtls_endpoint
-        )
-        == api_mtls_endpoint
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_default_mtls_endpoint(
-            sandbox_endpoint
-        )
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_default_mtls_endpoint(
-            sandbox_mtls_endpoint
-        )
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_default_mtls_endpoint(
-            custom_endpoint
-        )
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert SupportEventSubscriptionServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert SupportEventSubscriptionServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert SupportEventSubscriptionServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                SupportEventSubscriptionServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert (
-                SupportEventSubscriptionServiceClient._read_environment_variables()
-                == (
-                    False,
-                    "auto",
-                    None,
-                )
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert SupportEventSubscriptionServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert SupportEventSubscriptionServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert SupportEventSubscriptionServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            SupportEventSubscriptionServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert SupportEventSubscriptionServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is True
-            )
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is False
-            )
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is True
-            )
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is False
-            )
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is True
-            )
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is False
-            )
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is True
-            )
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is False
-            )
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is False
-            )
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert (
-                SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                is False
-            )
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert (
-                    SupportEventSubscriptionServiceClient._use_client_cert_effective()
-                    is False
-                )
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -426,111 +183,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    SupportEventSubscriptionServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SupportEventSubscriptionServiceClient),
-)
-@mock.patch.object(
-    SupportEventSubscriptionServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SupportEventSubscriptionServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = SupportEventSubscriptionServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = (
-        SupportEventSubscriptionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=default_universe
-        )
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = (
-        SupportEventSubscriptionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=mock_universe
-        )
-    )
-
-    assert (
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == SupportEventSubscriptionServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
-        == SupportEventSubscriptionServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == SupportEventSubscriptionServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            None, None, mock_universe, "never"
-        )
-        == mock_endpoint
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        SupportEventSubscriptionServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        SupportEventSubscriptionServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_universe_domain(
-            None, universe_domain_env
-        )
-        == universe_domain_env
-    )
-    assert (
-        SupportEventSubscriptionServiceClient._get_universe_domain(None, None)
-        == SupportEventSubscriptionServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        SupportEventSubscriptionServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -1076,11 +728,19 @@ def test_support_event_subscription_service_client_get_mtls_endpoint_and_cert_so
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1123,11 +783,19 @@ def test_support_event_subscription_service_client_get_mtls_endpoint_and_cert_so
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -3876,6 +3544,349 @@ async def test_undelete_support_event_subscription_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(),
+        {},
+    ],
+)
+def test_expunge_support_event_subscription(request_type, transport: str = "grpc"):
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.expunge_support_event_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = (
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_expunge_support_event_subscription_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.expunge_support_event_subscription(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(
+                name="name_value",
+            )
+        )
+        assert args[0] == request_msg
+
+
+def test_expunge_support_event_subscription_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SupportEventSubscriptionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.expunge_support_event_subscription
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.expunge_support_event_subscription
+        ] = mock_rpc
+        request = {}
+        client.expunge_support_event_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.expunge_support_event_subscription(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_expunge_support_event_subscription_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SupportEventSubscriptionServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.expunge_support_event_subscription
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.expunge_support_event_subscription
+        ] = mock_rpc
+
+        request = {}
+        await client.expunge_support_event_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.expunge_support_event_subscription(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(),
+        {},
+    ],
+)
+async def test_expunge_support_event_subscription_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = SupportEventSubscriptionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.expunge_support_event_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = (
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_expunge_support_event_subscription_field_headers():
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+    )
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        call.return_value = None
+        client.expunge_support_event_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_expunge_support_event_subscription_field_headers_async():
+    client = SupportEventSubscriptionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+    )
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.expunge_support_event_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_expunge_support_event_subscription_flattened():
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.expunge_support_event_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_expunge_support_event_subscription_flattened_error():
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.expunge_support_event_subscription(
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_expunge_support_event_subscription_flattened_async():
+    client = SupportEventSubscriptionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.expunge_support_event_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_expunge_support_event_subscription_flattened_error_async():
+    client = SupportEventSubscriptionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.expunge_support_event_subscription(
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(),
+            name="name_value",
+        )
+
+
 def test_create_support_event_subscription_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3932,19 +3943,19 @@ def test_create_support_event_subscription_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_support_event_subscription._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateSupportEventSubscription,
+        "_BaseCreateSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_support_event_subscription._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3995,25 +4006,6 @@ def test_create_support_event_subscription_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_create_support_event_subscription_rest_unset_required_fields():
-    transport = transports.SupportEventSubscriptionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.create_support_event_subscription._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "supportEventSubscription",
-            )
-        )
-    )
-
-
 def test_create_support_event_subscription_rest_flattened():
     client = SupportEventSubscriptionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4026,7 +4018,7 @@ def test_create_support_event_subscription_rest_flattened():
         return_value = gcs_support_event_subscription.SupportEventSubscription()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "sample1/sample2"}
+        sample_request = {"parent": "organizations/sample1"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4056,7 +4048,8 @@ def test_create_support_event_subscription_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{parent=*/*}/supportEventSubscriptions" % client.transport._host,
+            "%s/v2/{parent=organizations/*}/supportEventSubscriptions"
+            % client.transport._host,
             args[1],
         )
 
@@ -4137,19 +4130,19 @@ def test_get_support_event_subscription_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_support_event_subscription._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSupportEventSubscription,
+        "_BaseGetSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_support_event_subscription._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4199,17 +4192,6 @@ def test_get_support_event_subscription_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_get_support_event_subscription_rest_unset_required_fields():
-    transport = transports.SupportEventSubscriptionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_support_event_subscription._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
 def test_get_support_event_subscription_rest_flattened():
     client = SupportEventSubscriptionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4222,7 +4204,9 @@ def test_get_support_event_subscription_rest_flattened():
         return_value = support_event_subscription.SupportEventSubscription()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+        sample_request = {
+            "name": "organizations/sample1/supportEventSubscriptions/sample2"
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4249,7 +4233,8 @@ def test_get_support_event_subscription_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{name=*/*/supportEventSubscriptions/*}" % client.transport._host,
+            "%s/v2/{name=organizations/*/supportEventSubscriptions/*}"
+            % client.transport._host,
             args[1],
         )
 
@@ -4325,28 +4310,29 @@ def test_list_support_event_subscriptions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_support_event_subscriptions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSupportEventSubscriptions,
+        "_BaseListSupportEventSubscriptions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_support_event_subscriptions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
-            "show_deleted",
+            "pageSize",
+            "pageToken",
+            "showDeleted",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -4398,27 +4384,6 @@ def test_list_support_event_subscriptions_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_list_support_event_subscriptions_rest_unset_required_fields():
-    transport = transports.SupportEventSubscriptionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_support_event_subscriptions._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-                "showDeleted",
-            )
-        )
-        & set(("parent",))
-    )
-
-
 def test_list_support_event_subscriptions_rest_flattened():
     client = SupportEventSubscriptionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4433,7 +4398,7 @@ def test_list_support_event_subscriptions_rest_flattened():
         )
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "sample1/sample2"}
+        sample_request = {"parent": "organizations/sample1"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4462,7 +4427,8 @@ def test_list_support_event_subscriptions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{parent=*/*}/supportEventSubscriptions" % client.transport._host,
+            "%s/v2/{parent=organizations/*}/supportEventSubscriptions"
+            % client.transport._host,
             args[1],
         )
 
@@ -4535,7 +4501,7 @@ def test_list_support_event_subscriptions_rest_pager(transport: str = "rest"):
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {"parent": "sample1/sample2"}
+        sample_request = {"parent": "organizations/sample1"}
 
         pager = client.list_support_event_subscriptions(request=sample_request)
 
@@ -4611,19 +4577,20 @@ def test_update_support_event_subscription_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_support_event_subscription._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSupportEventSubscription,
+        "_BaseUpdateSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_support_event_subscription._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -4672,19 +4639,6 @@ def test_update_support_event_subscription_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_update_support_event_subscription_rest_unset_required_fields():
-    transport = transports.SupportEventSubscriptionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.update_support_event_subscription._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(("updateMask",)) & set(("supportEventSubscription",))
-    )
-
-
 def test_update_support_event_subscription_rest_flattened():
     client = SupportEventSubscriptionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4699,7 +4653,7 @@ def test_update_support_event_subscription_rest_flattened():
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "support_event_subscription": {
-                "name": "sample1/sample2/supportEventSubscriptions/sample3"
+                "name": "organizations/sample1/supportEventSubscriptions/sample2"
             }
         }
 
@@ -4731,7 +4685,7 @@ def test_update_support_event_subscription_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{support_event_subscription.name=*/*/supportEventSubscriptions/*}"
+            "%s/v2/{support_event_subscription.name=organizations/*/supportEventSubscriptions/*}"
             % client.transport._host,
             args[1],
         )
@@ -4813,19 +4767,19 @@ def test_delete_support_event_subscription_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_support_event_subscription._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteSupportEventSubscription,
+        "_BaseDeleteSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_support_event_subscription._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4875,17 +4829,6 @@ def test_delete_support_event_subscription_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_delete_support_event_subscription_rest_unset_required_fields():
-    transport = transports.SupportEventSubscriptionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.delete_support_event_subscription._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
 def test_delete_support_event_subscription_rest_flattened():
     client = SupportEventSubscriptionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4898,7 +4841,9 @@ def test_delete_support_event_subscription_rest_flattened():
         return_value = support_event_subscription.SupportEventSubscription()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+        sample_request = {
+            "name": "organizations/sample1/supportEventSubscriptions/sample2"
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4925,7 +4870,8 @@ def test_delete_support_event_subscription_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{name=*/*/supportEventSubscriptions/*}" % client.transport._host,
+            "%s/v2/{name=organizations/*/supportEventSubscriptions/*}"
+            % client.transport._host,
             args[1],
         )
 
@@ -5003,19 +4949,19 @@ def test_undelete_support_event_subscription_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).undelete_support_event_subscription._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUndeleteSupportEventSubscription,
+        "_BaseUndeleteSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).undelete_support_event_subscription._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -5066,15 +5012,178 @@ def test_undelete_support_event_subscription_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_undelete_support_event_subscription_rest_unset_required_fields():
-    transport = transports.SupportEventSubscriptionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+def test_expunge_support_event_subscription_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SupportEventSubscriptionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.expunge_support_event_subscription
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.expunge_support_event_subscription
+        ] = mock_rpc
+
+        request = {}
+        client.expunge_support_event_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.expunge_support_event_subscription(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_expunge_support_event_subscription_rest_required_fields(
+    request_type=support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+):
+    transport_class = transports.SupportEventSubscriptionServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
-    unset_fields = (
-        transport.undelete_support_event_subscription._get_unset_required_fields({})
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseExpungeSupportEventSubscription,
+        "_BaseExpungeSupportEventSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.expunge_support_event_subscription(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_expunge_support_event_subscription_rest_flattened():
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/supportEventSubscriptions/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.expunge_support_event_subscription(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=organizations/*/supportEventSubscriptions/*}:expunge"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_expunge_support_event_subscription_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.expunge_support_event_subscription(
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(),
+            name="name_value",
+        )
 
 
 def test_credentials_transport_error():
@@ -5329,6 +5438,30 @@ def test_undelete_support_event_subscription_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_expunge_support_event_subscription_empty_call_grpc():
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        call.return_value = None
+        client.expunge_support_event_subscription(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+        )
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = SupportEventSubscriptionServiceAsyncClient.get_transport_class(
         "grpc_asyncio"
@@ -5538,6 +5671,32 @@ async def test_undelete_support_event_subscription_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_expunge_support_event_subscription_empty_call_grpc_asyncio():
+    client = SupportEventSubscriptionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.expunge_support_event_subscription(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+        )
+        assert args[0] == request_msg
+
+
 def test_transport_kind_rest():
     transport = SupportEventSubscriptionServiceClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
@@ -5552,7 +5711,7 @@ def test_create_support_event_subscription_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"parent": "sample1/sample2"}
+    request_init = {"parent": "organizations/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5584,7 +5743,7 @@ def test_create_support_event_subscription_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "sample1/sample2"}
+    request_init = {"parent": "organizations/sample1"}
     request_init["support_event_subscription"] = {
         "name": "name_value",
         "pub_sub_topic": "pub_sub_topic_value",
@@ -5789,7 +5948,7 @@ def test_get_support_event_subscription_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5821,7 +5980,7 @@ def test_get_support_event_subscription_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5945,7 +6104,7 @@ def test_list_support_event_subscriptions_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"parent": "sample1/sample2"}
+    request_init = {"parent": "organizations/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5977,7 +6136,7 @@ def test_list_support_event_subscriptions_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "sample1/sample2"}
+    request_init = {"parent": "organizations/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6095,7 +6254,7 @@ def test_update_support_event_subscription_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "support_event_subscription": {
-            "name": "sample1/sample2/supportEventSubscriptions/sample3"
+            "name": "organizations/sample1/supportEventSubscriptions/sample2"
         }
     }
     request = request_type(**request_init)
@@ -6131,11 +6290,11 @@ def test_update_support_event_subscription_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {
         "support_event_subscription": {
-            "name": "sample1/sample2/supportEventSubscriptions/sample3"
+            "name": "organizations/sample1/supportEventSubscriptions/sample2"
         }
     }
     request_init["support_event_subscription"] = {
-        "name": "sample1/sample2/supportEventSubscriptions/sample3",
+        "name": "organizations/sample1/supportEventSubscriptions/sample2",
         "pub_sub_topic": "pub_sub_topic_value",
         "state": 1,
         "failure_reason": 1,
@@ -6338,7 +6497,7 @@ def test_delete_support_event_subscription_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6370,7 +6529,7 @@ def test_delete_support_event_subscription_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6492,7 +6651,7 @@ def test_undelete_support_event_subscription_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6524,7 +6683,7 @@ def test_undelete_support_event_subscription_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "sample1/sample2/supportEventSubscriptions/sample3"}
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6637,6 +6796,119 @@ def test_undelete_support_event_subscription_rest_interceptors(null_interceptor)
         pre.assert_called_once()
         post.assert_called_once()
         post_with_metadata.assert_called_once()
+
+
+def test_expunge_support_event_subscription_rest_bad_request(
+    request_type=support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+):
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.expunge_support_event_subscription(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+        dict,
+    ],
+)
+def test_expunge_support_event_subscription_rest_call_success(request_type):
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/supportEventSubscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.expunge_support_event_subscription(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_expunge_support_event_subscription_rest_interceptors(null_interceptor):
+    transport = transports.SupportEventSubscriptionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SupportEventSubscriptionServiceRestInterceptor(),
+    )
+    client = SupportEventSubscriptionServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SupportEventSubscriptionServiceRestInterceptor,
+            "pre_expunge_support_event_subscription",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        pb_message = support_event_subscription_service.ExpungeSupportEventSubscriptionRequest.pb(
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        request = (
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.expunge_support_event_subscription(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
 
 
 def test_initialize_client_w_rest():
@@ -6784,6 +7056,29 @@ def test_undelete_support_event_subscription_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_expunge_support_event_subscription_empty_call_rest():
+    client = SupportEventSubscriptionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.expunge_support_event_subscription), "__call__"
+    ) as call:
+        client.expunge_support_event_subscription(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest()
+        )
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = SupportEventSubscriptionServiceClient(
@@ -6823,6 +7118,7 @@ def test_support_event_subscription_service_base_transport():
         "update_support_event_subscription",
         "delete_support_event_subscription",
         "undelete_support_event_subscription",
+        "expunge_support_event_subscription",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -7116,6 +7412,9 @@ def test_support_event_subscription_service_client_transport_session_collision(
     assert session1 != session2
     session1 = client1.transport.undelete_support_event_subscription._session
     session2 = client2.transport.undelete_support_event_subscription._session
+    assert session1 != session2
+    session1 = client1.transport.expunge_support_event_subscription._session
+    session2 = client2.transport.expunge_support_event_subscription._session
     assert session1 != session2
 
 

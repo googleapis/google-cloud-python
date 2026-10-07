@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-service-control/#history
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.21.0...google-cloud-service-control-v1.22.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.20.0...google-cloud-service-control-v1.21.0) (2026-08-06)
+
+
+### Features
+
+* update googleapis and regenerate ([#17893](https://github.com/googleapis/google-cloud-python/issues/17893)) ([e70ab6f](https://github.com/googleapis/google-cloud-python/commit/e70ab6fd45edfec5ca0c865e01876f0ea4f09cae))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.19.0...google-cloud-service-control-v1.20.0) (2026-06-02)
 
 

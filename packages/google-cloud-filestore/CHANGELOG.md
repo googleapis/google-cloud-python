@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-filestore/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.17.1...google-cloud-filestore-v1.18.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
+## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.17.0...google-cloud-filestore-v1.17.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.16.0...google-cloud-filestore-v1.17.0) (2026-06-22)
 
 

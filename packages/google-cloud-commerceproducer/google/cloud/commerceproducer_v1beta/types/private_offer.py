@@ -472,6 +472,34 @@ class PrivateOffer(proto.Message):
             end_policy (google.cloud.commerceproducer_v1beta.types.PrivateOffer.Term.EndPolicy):
                 Optional. Defines when an offer should end.
                 Must be set when publishing the offer.
+            effective_term_end_time (google.type.datetime_pb2.DateTime):
+                Output only. The expected end time of the current offer
+                term.
+
+                At the end of each offer term, an offer associated with an
+                active order will either renew or end. When an offer renews,
+                a new term begins and this value changes to reflect the end
+                time of the new term. When an offer ends this value is no
+                longer set and instead ``end_time`` is set.
+
+                When the term of an offer ends and the offer does not renew,
+                the associated order also ends if the base standard offer
+                has a subscription price model. Otherwise, the associated
+                order does not end and remains active.
+
+                Not included for PRIVATE_OFFER_VIEW_BASIC. Included for
+                PRIVATE_OFFER_VIEW_FULL when the offer has not ended and
+                either the offer has started or the value can be derived
+                from other fields.
+
+                For offers that have not started, this field is set when one
+                of the following conditions is true.
+
+                - The offer sets ``term.scheduled_end_time``.
+                - The offer sets ``term.scheduled_start_time`` and
+                  ``term.duration_months``, the offer's ``term.end_policy``
+                  is not ``MATCH_AMENDED_OFFER``, and the offer does not
+                  have standard_interval set to ``MONTHLY_POSTPAY``.
         """
 
         class StartPolicy(proto.Enum):
@@ -590,6 +618,11 @@ class PrivateOffer(proto.Message):
             proto.ENUM,
             number=3,
             enum="PrivateOffer.Term.EndPolicy",
+        )
+        effective_term_end_time: datetime_pb2.DateTime = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=datetime_pb2.DateTime,
         )
 
     class SingleProductOffer(proto.Message):
@@ -739,6 +772,10 @@ class PrivateOffer(proto.Message):
             revenue_share (google.cloud.commerceproducer_v1beta.types.PrivateOffer.SingleProductOffer.RevenueShare):
                 Output only. Revenue share information for this Private
                 Offer. Not included for ``PRIVATE_OFFER_VIEW_BASIC``.
+            additional_contract_value (google.cloud.commerceproducer_v1beta.types.PrivateOffer.SingleProductOffer.AdditionalContractValue):
+                Optional. Additional contract value that the
+                customer is legally obligated to spend on the
+                product over the duration of the offer.
         """
 
         class Feature(proto.Message):
@@ -1364,6 +1401,69 @@ class PrivateOffer(proto.Message):
                 message=decimal_pb2.Decimal,
             )
 
+        class AdditionalContractValue(proto.Message):
+            r"""Additional contract value that represents a spend obligation
+            or target contract value tracked out-of-band by the partner.
+
+            Attributes:
+                contract_value (google.type.money_pb2.Money):
+                    Optional. The absolute, cumulative contract value of the
+                    customer's spend obligation that is added on top of the
+                    automatically billed fees from Google. This amount is not
+                    automatically billed or invoiced by Google; instead, it is
+                    tracked as a legal spend guarantee to be met via usage
+                    reporting and manually trued-up by partners.
+
+                    The overall total contract value of the offer is calculated
+                    as the sum of Google-billed fees (from installments), plus
+                    this additional contract value.
+
+                    For amendments, this field must be set to the new cumulative
+                    additional total.
+
+                    For example:
+
+                    - Initial Offer: 3 installments of $15 (total $45 billed by
+                      Google) plus an ``additional_contract_value`` of $100
+                      (billed by Partner, with true-ups happening at the end of
+                      the offer's term). The overall total contract value of the
+                      offer is $145 ($45 + $100).
+                    - Amended Offer: 6 installments of $15 (total $90 billed by
+                      Google) plus an ``additional_contract_value`` of $70
+                      (billed by Partner, with true-ups happening at the end of
+                      the offer's term). The overall total contract value of the
+                      amended offer is $160 ($90 + $70).
+
+                    Must be non-negative. The maximum allowed value is
+                    1,000,000,000 USD.
+                eligible_skus (MutableSequence[str]):
+                    Optional. The resource names of the SKUs
+                    whose tracked usage is eligible to contribute
+                    toward satisfying this additional contract value
+                    obligation.
+
+                    This list explicitly separates core spend
+                    obligations from exclusions like overage fees,
+                    which do not count toward meeting the customer's
+                    legal spend commitment.
+
+                    Must be non-empty for the offer to be published.
+
+                    Format:
+
+                    projects/{project}/locations/{location}/services/{service}/skus/{sku}
+            """
+
+            contract_value: money_pb2.Money = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message=money_pb2.Money,
+            )
+            eligible_skus: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+
         amended_private_offer: str = proto.Field(
             proto.STRING,
             number=3,
@@ -1423,6 +1523,11 @@ class PrivateOffer(proto.Message):
             proto.MESSAGE,
             number=12,
             message="PrivateOffer.SingleProductOffer.RevenueShare",
+        )
+        additional_contract_value: "PrivateOffer.SingleProductOffer.AdditionalContractValue" = proto.Field(
+            proto.MESSAGE,
+            number=13,
+            message="PrivateOffer.SingleProductOffer.AdditionalContractValue",
         )
 
     single_product_offer: SingleProductOffer = proto.Field(
@@ -1524,15 +1629,18 @@ class PrivateOffer(proto.Message):
 
 
 class PrivateOfferDocument(proto.Message):
-    r"""Message describing the PrivateOfferDocument resource.
-    Used to attach documents to a private offer in state DRAFT. Once
-    a private offer is no longer in state DRAFT, the set of child
-    documents is immutable. Existing documents cannot be updated or
-    deleted, and new documents cannot be added.
+    r"""Message describing the PrivateOfferDocument resource. Used to attach
+    documents to a private offer in state DRAFT. Once a private offer is
+    no longer in state DRAFT, the set of child documents is immutable.
+    Existing documents cannot be updated or deleted, and new documents
+    cannot be added.
 
-    A private offer must include a EULA, either by assigning a
-    standard EULA or attaching a custom EULA document, or a
-    statement of work document.
+    A private offer may have at most one document of each type, and may
+    not have both a standard EULA and a custom EULA.
+
+    Which document types are required, optional, or not permitted
+    depends on the service the offer is for, and is returned in
+    ``Service.document_requirement``.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1578,33 +1686,45 @@ class PrivateOfferDocument(proto.Message):
             CUSTOM_END_USER_LICENSE_AGREEMENT (1):
                 The document is a custom EULA used in place of the standard
                 product EULA. A private offer may not have more than one
-                custom EULA document.
+                custom EULA document, and may not have both a custom EULA
+                and a standard EULA.
 
                 If this enum value is set, then mime_type and inline_content
                 must be set.
             STATEMENT_OF_WORK (2):
-                The document is the statement of work required by the `Cloud
-                Marketplace Product Specific
-                Terms <https://cloud.google.com/terms/marketplace-product-terms>`__
-                for all Professional Services product private offers. This
-                document type is not permitted for private offers of any
-                other product type. A private offer may not have more than
-                one statement of work document.
+                The document is the statement of work described by the
+                `Cloud Marketplace Product Specific
+                Terms <https://cloud.google.com/terms/marketplace-product-terms>`__.
+                A private offer may not have more than one statement of work
+                document.
+
+                Whether this document type is required, optional, or not
+                permitted depends on the service; see
+                ``Service.document_requirement``.
 
                 The mime_type and inline_content fields must be set.
             STANDARD_END_USER_LICENSE_AGREEMENT_V1 (3):
-                The document is the Marketplace standard
-                EULA, with the following link:
+                The document is the Marketplace standard EULA, with the
+                following link:
                 https://cloud.google.com/terms/marketplace/eula-standard-v1-12102020.
-                Existing offers may have this document type, but
-                this is not permitted for new offers.
+
+                This edition has been superseded by
+                STANDARD_END_USER_LICENSE_AGREEMENT_V2. Offers created
+                before that edition was published may have this document
+                type, but it is not permitted on any service for new offers.
             STANDARD_END_USER_LICENSE_AGREEMENT_V2 (4):
                 The document is the Marketplace standard EULA, with the
                 following link:
                 https://cloud.google.com/terms/marketplace/eula-standard-v2-01272021
 
                 New offers using Standard EULAs should set this enum value.
-                This is not permitted for Professional Services products.
+                A private offer may not have more than one standard EULA
+                document, and may not have both a standard EULA and a custom
+                EULA.
+
+                Whether this document type is required, optional, or not
+                permitted depends on the service; see
+                ``Service.document_requirement``.
 
                 The mime_type and inline_content fields must not be set.
         """

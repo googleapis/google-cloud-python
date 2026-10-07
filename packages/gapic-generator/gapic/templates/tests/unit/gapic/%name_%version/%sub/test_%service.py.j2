@@ -1,14 +1,14 @@
+{% extends "_base.py.j2" %}
+{% block content %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
 {% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
-{% extends "_base.py.j2" %}
-
-{% block content %}
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
 import asyncio
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 import re
 {% endif %}
 from unittest import mock
@@ -16,7 +16,7 @@ from unittest.mock import AsyncMock
 
 import grpc
 from grpc.experimental import aio
-{% if "rest" in opts.transport %}
+{% if "rest" in opts.transport or service.has_resumable_upload_methods %}
 from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 {% endif %}
@@ -27,8 +27,7 @@ from collections.abc import Sequence, Mapping
 from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
-{% if 'rest' in opts.transport %}
-{% if rest_async_io_enabled %}
+{% if ('rest' in opts.transport and rest_async_io_enabled) or ('grpc' in opts.transport and service.has_resumable_upload_methods) %}
 try:
     import aiohttp  # type: ignore
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession
@@ -37,7 +36,8 @@ try:
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_EXTRA = False
-{% endif %}{# if rest_async_io_enabled #}
+{% endif %}
+{% if 'rest' in opts.transport %}
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -64,6 +64,7 @@ from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + ser
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.async_client_name }}
 {% endif %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.client import _observability
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -107,9 +108,21 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 _UUID4_RE = re.compile(r"{{ uuid4_re }}")
 {% endif %}
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -156,150 +169,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert {{ service.client_name }}._get_default_mtls_endpoint(None) is None
-    assert {{ service.client_name }}._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert {{ service.client_name }}._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert {{ service.client_name }}._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert {{ service.client_name }}._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert {{ service.client_name }}._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert {{ service.client_name }}._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
-def test__read_environment_variables():
-    assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert {{ service.client_name }}._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                {{ service.client_name }}._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert {{ service.client_name }}._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert {{ service.client_name }}._read_environment_variables() == (False, "never", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert {{ service.client_name }}._read_environment_variables() == (False, "always", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            {{ service.client_name }}._read_environment_variables()
-    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert {{ service.client_name }}._read_environment_variables() == (False, "auto", "foo.com")
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
-            assert {{ service.client_name }}._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
-            assert {{ service.client_name }}._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert {{ service.client_name }}._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-            assert {{ service.client_name }}._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert {{ service.client_name }}._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
-            assert {{ service.client_name }}._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert {{ service.client_name }}._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
-            assert {{ service.client_name }}._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert {{ service.client_name }}._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            with pytest.raises(ValueError):
-                {{ service.client_name }}._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            assert {{ service.client_name }}._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert {{ service.client_name }}._use_client_cert_effective() is False
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -313,29 +182,7 @@ def test__get_client_cert_source():
             assert {{ service.client_name }}._get_client_cert_source(None, True) is mock_default_cert_source
             assert {{ service.client_name }}._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object({{ service.client_name }}, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template({{ service.client_name }}))
-{% if 'grpc' in opts.transport %}
-@mock.patch.object({{ service.async_client_name }}, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template({{ service.async_client_name }}))
-{% endif %}
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = {{ service.client_name }}._DEFAULT_UNIVERSE
-    default_endpoint = {{ service.client_name }}._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = {{ service.client_name }}._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert {{ service.client_name }}._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert {{ service.client_name }}._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
-    assert {{ service.client_name }}._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert {{ service.client_name }}._get_api_endpoint(None, None, default_universe, "always") == {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
-    assert {{ service.client_name }}._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
-    assert {{ service.client_name }}._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert {{ service.client_name }}._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        {{ service.client_name }}._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 {% if service.version %}
 {% for method in service.methods.values() %}{% with method_name = method.name|snake_case %}
@@ -368,6 +215,7 @@ def test_{{ method_name }}_api_version_header(transport_name):
                 type(client.transport.{{ method.transport_safe_name|snake_case }}),
                 '__call__'
             ) as call:
+                call.return_value = {{ method.output.ident }}()
             {% if mode == "async" %}
                 await client.{{ method_name }}()
             {% else %}
@@ -376,7 +224,10 @@ def test_{{ method_name }}_api_version_header(transport_name):
 
         # Establish that the api version header was sent.
         _, _, kw = call.mock_calls[0]
-        assert kw['metadata'][0] == (version_header.API_VERSION_METADATA_KEY, "{{ service.version }}")
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "{{ service.version }}",
+        ) in kw['metadata']
     else:
         pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
 {% endfor %}{# mode #}
@@ -384,17 +235,7 @@ def test_{{ method_name }}_api_version_header(transport_name):
 {% endfor %}
 {% endif %}{# service.version #}
 
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
 
-    assert {{ service.client_name }}._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert {{ service.client_name }}._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert {{ service.client_name }}._get_universe_domain(None, None) == {{ service.client_name }}._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        {{ service.client_name }}._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -434,84 +275,6 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
 
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
-def test__setup_request_id():
-    class MockRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    class MockProtoRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def HasField(self, key):
-            return hasattr(self, key)
-
-    # Test with proto3 optional field not in request
-    request = MockRequest()
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with proto3 optional field already in request
-    request = MockRequest(request_id="already_set")
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with non-proto3 optional field empty
-    request = MockRequest(request_id="")
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with non-proto3 optional field already set
-    request = MockRequest(request_id="already_set")
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert request.request_id == "already_set"
-
-    # Test with proto3 optional field not in request (MockProtoRequest)
-    request = MockProtoRequest()
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with proto3 optional field already in request (MockProtoRequest)
-    request = MockProtoRequest(request_id="already_set")
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with ValueError
-    class MockValueErrorRequest:
-        def HasField(self, key):
-            raise ValueError("Mismatched field")
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    request = MockValueErrorRequest()
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with dict and proto3 optional field not in request
-    request = {}
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
-
-    # Test with dict and proto3 optional field already in request
-    request = {"request_id": "already_set"}
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert request["request_id"] == "already_set"
-
-    # Test with dict and non-proto3 optional field empty
-    request = {"request_id": ""}
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
-
-    # Test with dict and non-proto3 optional field already set
-    request = {"request_id": "already_set"}
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert request["request_id"] == "already_set"
-
-{% endif %}
 @pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, "grpc"),
@@ -896,6 +659,7 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
@@ -943,6 +707,7 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
@@ -1139,6 +904,192 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             always_use_jwt_access=True,
             api_audience=None,
         )
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+@pytest.mark.parametrize("capabilities_enabled, expected_options_injected", [
+    pytest.param(True, True, id="otel_injection_enabled"),
+    pytest.param(False, False, id="otel_injection_disabled"),
+])
+def test_{{ service.client_name|snake_case }}_otel_channel_injection(capabilities_enabled, expected_options_injected):
+    with (
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
+            return_value=capabilities_enabled,
+            autospec=True,
+        ) as mock_is_otel_enabled,
+        mock.patch.object(
+            transports.{{ service.grpc_transport_name }}, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = {{ service.client_name }}(transport="grpc")
+
+        mock_is_otel_enabled.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        if expected_options_injected:
+            assert called_kwargs.get("client_options") == client._client_options
+        else:
+            assert not called_kwargs.get("client_options")
+
+
+def test_{{ service.name|snake_case }}_grpc_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.{{ service.grpc_transport_name }},
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        transport = transports.{{ service.grpc_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+def test_{{ service.name|snake_case }}_grpc_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            _observability,
+            "get_otel_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_interceptor,
+        mock.patch.object(
+            transports.{{ service.grpc_transport_name }},
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.{{ service.grpc_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_get_interceptor.assert_called_once_with(options)
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_otel_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_{{ service.name|snake_case }}_grpc_transport_custom_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
+        return_value=mock_custom_channel,
+        create=True,
+    ) as mock_apply_interceptors:
+        transport = transports.{{ service.grpc_transport_name }}(
+            channel=mock_custom_channel,
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_custom_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_custom_channel
+
+
+def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with mock.patch.object(
+        transports.{{ service.grpc_asyncio_transport_name }},
+        "create_channel",
+        return_value=mock_channel,
+    ) as mock_create_channel:
+        transport = transports.{{ service.grpc_asyncio_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        assert mock_create_channel.call_count == 1
+        assert mock_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+def test_{{ service.name|snake_case }}_grpc_asyncio_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with (
+        mock.patch.object(
+            _observability,
+            "get_otel_async_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_async_interceptor,
+        mock.patch.object(
+            transports.{{ service.grpc_asyncio_transport_name }},
+            "create_channel",
+            return_value=mock_channel,
+        ) as mock_create_channel,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.{{ service.grpc_asyncio_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_get_async_interceptor.assert_called_once_with(options)
+        assert mock_create_channel.call_count == 1
+        assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+def test_{{ service.name|snake_case }}_grpc_asyncio_transport_custom_channel():
+    mock_custom_channel = mock.Mock(spec=aio.Channel)
+
+    with mock.patch.object(
+        transports.{{ service.grpc_asyncio_transport_name }},
+        "create_channel",
+    ) as mock_create_channel:
+        transport = transports.{{ service.grpc_asyncio_transport_name }}(
+            channel=mock_custom_channel,
+        )
+
+        assert mock_create_channel.call_count == 0
+        assert transport.grpc_channel == mock_custom_channel
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
@@ -1756,6 +1707,524 @@ def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel():
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
+
+
+{% if service.has_resumable_upload_methods and 'grpc' in opts.transport %}
+{% for method in service.methods.values() if method.is_resumable_upload %}
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_channel_without_credentials_error():
+    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    transport = transports.{{ service.name }}GrpcTransport(
+        host="localhost:7469",
+        channel=channel,
+    )
+    with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
+        transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+    assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+    transport.close()
+
+
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_rest_stub():
+    transport = transports.{{ service.name }}GrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport._rest_transport is None
+    stub = transport.{{ method.transport_safe_name|snake_case }}
+    assert transport._rest_transport is None
+
+    result1 = stub({{ method.input.ident }}())
+    rest_transport = transport._rest_transport
+    assert rest_transport is not None
+    assert isinstance(result1, {{ method.client_output.ident }})
+
+    result2 = stub({{ method.input.ident }}())
+    assert isinstance(result2, {{ method.client_output.ident }})
+    assert transport._rest_transport is rest_transport
+
+    with mock.patch.object(rest_transport, "close") as mock_rest_close:
+        transport.close()
+        mock_rest_close.assert_called_once()
+
+
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_rest_stub_mtls():
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transport = transports.{{ service.name }}GrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_cert_source_for_mtls=client_cert_source_callback,
+        )
+        mock_configure_mtls_channel.assert_not_called()
+        stub = transport.{{ method.transport_safe_name|snake_case }}
+        stub({{ method.input.ident }}())
+        mock_configure_mtls_channel.assert_called_once_with(
+            client_cert_source_callback
+        )
+        transport.close()
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_mtls_error():
+    transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_cert_source_for_mtls=client_cert_source_callback,
+    )
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError) as exc_info:
+        await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+    assert "Mutual TLS (client_cert_source_for_mtls) is not currently supported for async resumable upload methods." in str(exc_info.value)
+    await transport.close()
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_channel_without_credentials_error():
+    channel = aio.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+        host="localhost:7469",
+        channel=channel,
+    )
+    with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
+        await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+    assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+    await transport.close()
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_rest_stub():
+    with mock.patch.object(transports.grpc_asyncio, "HAS_ASYNC_REST", True), mock.patch.object(
+        transports.grpc_asyncio,
+        "Async{{ service.name }}RestTransport",
+        create=True,
+    ) as mock_rest_transport_cls:
+        mock_rest_transport = mock.MagicMock()
+        mock_rest_transport.close = mock.AsyncMock()
+        expected_session = {{ method.client_output_async.ident }}()
+        mock_rest_transport.{{ method.transport_safe_name|snake_case }} = mock.AsyncMock(
+            return_value=expected_session
+        )
+        mock_rest_transport_cls.return_value = mock_rest_transport
+
+        transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+        mock_rest_transport_cls.assert_not_called()
+
+        stub = transport.{{ method.transport_safe_name|snake_case }}
+        result1 = await stub({{ method.input.ident }}())
+        result2 = await stub({{ method.input.ident }}())
+
+        assert result1 is expected_session
+        assert result2 is expected_session
+        mock_rest_transport_cls.assert_called_once_with(
+            host=transport._host,
+            credentials=transport._credentials,
+            client_info=transport._client_info,
+        )
+        assert mock_rest_transport.{{ method.transport_safe_name|snake_case }}.call_count == 2
+        await transport.close()
+        mock_rest_transport.close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_rest_stub_sync_credentials():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport._rest_transport is None
+    stub = transport.{{ method.transport_safe_name|snake_case }}
+    assert transport._rest_transport is None
+
+    result1 = await stub({{ method.input.ident }}())
+    rest_transport = transport._rest_transport
+    assert rest_transport is not None
+    assert rest_transport.kind == "rest_asyncio"
+    assert isinstance(result1, {{ method.client_output_async.ident }})
+
+    result2 = await stub({{ method.input.ident }}())
+    assert isinstance(result2, {{ method.client_output_async.ident }})
+    assert transport._rest_transport is rest_transport
+
+    with mock.patch.object(
+        rest_transport, "close", wraps=rest_transport.close
+    ) as mock_rest_close:
+        await transport.close()
+        mock_rest_close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_start_empty_body():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    with mock.patch.object(AsyncAuthorizedSession, "request") as req:
+        start_response = mock.MagicMock()
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.close = mock.AsyncMock(return_value=None)
+
+        expected_result = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_response.close = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_response, upload_response]
+        retry = retries.AsyncRetry()
+        response = await client.{{ method.client_method_name|snake_case }}(
+            {{ method.input.ident }}(),
+            config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
+            timeout=10.0,
+        )
+        assert isinstance(response, {{ method.client_output_async.ident }})
+        assert response._start_retry is retry
+        result = await response.upload(b"test data")
+        assert isinstance(result, {{ method.output.ident }})
+        assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_body_and_query_params():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    with mock.patch.object(
+        AsyncAuthorizedSession, "request"
+    ) as req, mock.patch.object(path_template, "transcode") as transcode:
+        request = {{ method.input.ident }}(
+            {% for field in method.input.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_request = {{ method.input.ident }}.pb(request)
+        {% else %}
+        pb_request = request
+        {% endif %}
+        transcode.return_value = {
+            "uri": "v1/sample_method",
+            "method": "{{ method.http_options[0].method }}",
+            "body": pb_request,
+            "query_params": pb_request,
+        }
+
+        start_response = mock.MagicMock()
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.close = mock.AsyncMock(return_value=None)
+
+        expected_result = {{ method.output.ident }}()
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_response.close = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_response, upload_response]
+        response = await client.{{ method.client_method_name|snake_case }}(request)
+        result = await response.upload(b"test data")
+        assert result == expected_result
+
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        {% for field in method.input.fields.values() | rejectattr('message') %}
+        {% if not field.oneof or field.proto3_optional %}
+        assert "{{ field.name | camel_case }}=" in start_call.args[1]
+        {% endif %}
+        {% endfor %}
+        {% if method.http_options[0].body %}
+        expected_body = json_format.MessageToJson(
+            pb_request,
+            use_integers_for_enums={{ opts.rest_numeric_enums }},
+        )
+        assert start_call.kwargs["data"] == expected_body.encode("UTF-8")
+        {% endif %}
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_without_async_rest_error():
+    with mock.patch.object(transports.grpc_asyncio, "HAS_ASYNC_REST", False):
+        transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+        with pytest.raises(NotImplementedError) as exc_info:
+            await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+        assert (
+            "Async REST transport is required for async resumable upload methods. "
+            "Install the library with the `async_rest` extra using "
+            "`pip install {{ api.naming.warehouse_package_name }}[async_rest]`."
+        ) in str(exc_info.value)
+{% endfor %}
+{% endif %}
+
+{% if service.has_resumable_upload_methods and 'rest' in opts.transport %}
+{% for method in service.methods.values() if method.is_resumable_upload %}
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_start_empty_body():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        start_response = mock.MagicMock()
+        start_response.ok = True
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.content = b""
+
+        expected_result = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.ok = True
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.content = json_return_value.encode("UTF-8")
+
+        req.side_effect = [start_response, upload_response]
+        retry = retries.Retry()
+        response = client.{{ method.client_method_name|snake_case }}(
+            {{ method.input.ident }}(),
+            config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
+            timeout=10.0,
+        )
+        assert isinstance(response, {{ method.client_output.ident }})
+        assert response._start_retry is retry
+        result = response.upload(b"test data")
+        assert isinstance(result, {{ method.output.ident }})
+        assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
+
+
+{% if rest_async_io_enabled %}
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_asyncio_start_empty_body():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        start_response = mock.MagicMock()
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.close = mock.AsyncMock(return_value=None)
+
+        expected_result = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_response.close = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_response, upload_response]
+        retry = retries.AsyncRetry()
+        response = await client.{{ method.client_method_name|snake_case }}(
+            {{ method.input.ident }}(),
+            config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
+            timeout=10.0,
+        )
+        assert isinstance(response, {{ method.client_output_async.ident }})
+        assert response._start_retry is retry
+        result = await response.upload(b"test data")
+        assert isinstance(result, {{ method.output.ident }})
+        assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
+{% endif %}
+
+
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_body_and_query_params():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode:
+        request = {{ method.input.ident }}(
+            {% for field in method.input.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_request = {{ method.input.ident }}.pb(request)
+        {% else %}
+        pb_request = request
+        {% endif %}
+        transcode.return_value = {
+            "uri": "v1/sample_method",
+            "method": "{{ method.http_options[0].method }}",
+            "body": pb_request,
+            "query_params": pb_request,
+        }
+
+        start_response = mock.MagicMock()
+        start_response.ok = True
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.content = b""
+
+        expected_result = {{ method.output.ident }}()
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.ok = True
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.content = json_return_value.encode("UTF-8")
+
+        req.side_effect = [start_response, upload_response]
+        response = client.{{ method.client_method_name|snake_case }}(request)
+        result = response.upload(b"test data")
+        assert result == expected_result
+
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        {% for field in method.input.fields.values() | rejectattr('message') %}
+        {% if not field.oneof or field.proto3_optional %}
+        assert "{{ field.name | camel_case }}=" in start_call.args[1]
+        {% endif %}
+        {% endfor %}
+        {% if method.http_options[0].body %}
+        expected_body = json_format.MessageToJson(
+            pb_request,
+            use_integers_for_enums={{ opts.rest_numeric_enums }},
+        )
+        assert start_call.kwargs["data"] == expected_body.encode("UTF-8")
+        {% endif %}
+
+
+{% if rest_async_io_enabled %}
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_asyncio_body_and_query_params():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(path_template, "transcode") as transcode:
+        request = {{ method.input.ident }}(
+            {% for field in method.input.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_request = {{ method.input.ident }}.pb(request)
+        {% else %}
+        pb_request = request
+        {% endif %}
+        transcode.return_value = {
+            "uri": "v1/sample_method",
+            "method": "{{ method.http_options[0].method }}",
+            "body": pb_request,
+            "query_params": pb_request,
+        }
+
+        start_response = mock.MagicMock()
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.close = mock.AsyncMock(return_value=None)
+
+        expected_result = {{ method.output.ident }}()
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_response.close = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_response, upload_response]
+        response = await client.{{ method.client_method_name|snake_case }}(request)
+        result = await response.upload(b"test data")
+        assert result == expected_result
+
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        {% for field in method.input.fields.values() | rejectattr('message') %}
+        {% if not field.oneof or field.proto3_optional %}
+        assert "{{ field.name | camel_case }}=" in start_call.args[1]
+        {% endif %}
+        {% endfor %}
+        {% if method.http_options[0].body %}
+        expected_body = json_format.MessageToJson(
+            pb_request,
+            use_integers_for_enums={{ opts.rest_numeric_enums }},
+        )
+        assert start_call.kwargs["data"] == expected_body.encode("UTF-8")
+        {% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
 
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are

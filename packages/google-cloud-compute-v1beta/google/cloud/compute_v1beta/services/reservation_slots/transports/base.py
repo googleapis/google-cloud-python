@@ -32,9 +32,7 @@ from google.cloud.compute_v1beta.types import compute
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ReservationSlotsTransport(abc.ABC):
@@ -162,6 +160,11 @@ class ReservationSlotsTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.get_health: gapic_v1.method.wrap_method(
+                self.get_health,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.get_version: gapic_v1.method.wrap_method(
                 self.get_version,
                 default_timeout=600.0,
@@ -207,6 +210,15 @@ class ReservationSlotsTransport(abc.ABC):
             compute.ReservationSlotsGetResponse,
             Awaitable[compute.ReservationSlotsGetResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_health(
+        self,
+    ) -> Callable[
+        [compute.GetHealthReservationSlotRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

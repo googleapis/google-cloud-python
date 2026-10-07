@@ -111,6 +111,7 @@ class AsyncAppendableObjectWriter:
         generation: Optional[int] = None,
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
+        storage_class: Optional[str] = None,
     ):
         """
         Class for appending data to a GCS Appendable Object.
@@ -179,6 +180,10 @@ class AsyncAppendableObjectWriter:
                 The number of bytes to append before "persisting" data in GCS
                 servers. Default is `_DEFAULT_FLUSH_INTERVAL_BYTES`.
                 Must be a multiple of `_MAX_CHUNK_SIZE_BYTES`.
+        :type storage_class: Optional[str]
+        :param storage_class: (Optional) Storage class of the object bytes.
+            If specified, it overrides the bucket's `storage_class`. If not, object storage class
+            will be the same as bucket's storage_class.
         """
         _utils.raise_if_no_fast_crc32c()
         self.client = client
@@ -186,6 +191,7 @@ class AsyncAppendableObjectWriter:
         self.object_name = object_name
         self.write_handle = write_handle
         self.generation = generation
+        self.storage_class = storage_class
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -263,6 +269,7 @@ class AsyncAppendableObjectWriter:
             generation=blob.generation,
             write_handle=write_handle,
             writer_options=writer_options,
+            storage_class=blob.storage_class,
         )
         instance.blob = blob
         return instance
@@ -299,6 +306,30 @@ class AsyncAppendableObjectWriter:
             if redirect_proto.generation:
                 self.generation = redirect_proto.generation
 
+    def _merge_retry_policy(
+        self, retry_policy: Optional[AsyncRetry] = None
+    ) -> AsyncRetry:
+        if retry_policy is None:
+            return AsyncRetry(
+                predicate=_is_write_retryable, on_error=self._on_open_error
+            )
+        else:
+            original_on_error = retry_policy._on_error
+
+            def combined_on_error(exc):
+                self._on_open_error(exc)
+                if original_on_error:
+                    original_on_error(exc)
+
+            return AsyncRetry(
+                predicate=_is_write_retryable,
+                initial=retry_policy._initial,
+                maximum=retry_policy._maximum,
+                multiplier=retry_policy._multiplier,
+                deadline=retry_policy._deadline,
+                on_error=combined_on_error,
+            )
+
     async def open(
         self,
         retry_policy: Optional[AsyncRetry] = None,
@@ -312,26 +343,7 @@ class AsyncAppendableObjectWriter:
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
-        if retry_policy is None:
-            retry_policy = AsyncRetry(
-                predicate=_is_write_retryable, on_error=self._on_open_error
-            )
-        else:
-            original_on_error = retry_policy._on_error
-
-            def combined_on_error(exc):
-                self._on_open_error(exc)
-                if original_on_error:
-                    original_on_error(exc)
-
-            retry_policy = AsyncRetry(
-                predicate=_is_write_retryable,
-                initial=retry_policy._initial,
-                maximum=retry_policy._maximum,
-                multiplier=retry_policy._multiplier,
-                deadline=retry_policy._deadline,
-                on_error=combined_on_error,
-            )
+        retry_policy = self._merge_retry_policy(retry_policy)
 
         async def _do_open():
             current_metadata = list(metadata) if metadata else []
@@ -356,6 +368,7 @@ class AsyncAppendableObjectWriter:
                 generation_number=self.generation,
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,
+                storage_class=self.storage_class,
             )
 
             if self._routing_token:
@@ -560,6 +573,7 @@ class AsyncAppendableObjectWriter:
         self,
         finalize_on_close=False,
         full_object_checksum: Optional[int] = None,
+        retry_policy: Optional[AsyncRetry] = None,
     ) -> Union[int, _storage_v2.Object]:
         """Closes the underlying bidi-gRPC stream.
 
@@ -580,6 +594,9 @@ class AsyncAppendableObjectWriter:
                 data = b"Hello, world!"
                 crc32c_int = google_crc32c.value(data)
                 print(crc32c_int)
+
+        :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
+        :param retry_policy: (Optional) The retry policy to use for the operation.
 
         rtype: Union[int, _storage_v2.Object]
         returns: Updated `self.persisted_size` by default after closing the
@@ -604,15 +621,47 @@ class AsyncAppendableObjectWriter:
             )
 
         if finalize_on_close:
-            return await self.finalize(full_object_checksum=full_object_checksum)
+            return await self.finalize(
+                full_object_checksum=full_object_checksum,
+                retry_policy=retry_policy,
+            )
 
-        await self.write_obj_stream.close()
+        retry_policy = self._merge_retry_policy(retry_policy)
 
-        self._is_stream_open = False
-        return self.persisted_size
+        attempt_count = 0
+        expected_offset = self.offset
+
+        async def _do_close():
+            nonlocal attempt_count
+            attempt_count += 1
+
+            if attempt_count > 1:
+                logger.info(
+                    f"Re-opening the stream for close retry attempt: {attempt_count}"
+                )
+                self._is_stream_open = False
+                await self.open()
+                if (
+                    self.offset is not None
+                    and expected_offset is not None
+                    and self.offset != expected_offset
+                ):
+                    raise exceptions.InternalServerError(
+                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                    )
+
+            await self.write_obj_stream.close()
+            return self.persisted_size
+
+        try:
+            return await retry_policy(_do_close)()
+        finally:
+            self._is_stream_open = False
 
     async def finalize(
-        self, full_object_checksum: Optional[int] = None
+        self,
+        full_object_checksum: Optional[int] = None,
+        retry_policy: Optional[AsyncRetry] = None,
     ) -> _storage_v2.Object:
         """Finalizes the Appendable Object.
 
@@ -637,6 +686,9 @@ class AsyncAppendableObjectWriter:
                 data = b"Hello, world!"
                 crc32c_int = google_crc32c.value(data)
                 print(crc32c_int)
+
+        :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
+        :param retry_policy: (Optional) The retry policy to use for the operation.
 
         rtype: google.cloud.storage_v2.types.Object
         returns: The finalized object resource.
@@ -666,14 +718,46 @@ class AsyncAppendableObjectWriter:
                 ),
             )
 
-        try:
+        retry_policy = self._merge_retry_policy(retry_policy)
+
+        attempt_count = 0
+        expected_offset = self.offset
+
+        async def _do_finalize():
+            nonlocal attempt_count
+            attempt_count += 1
+
+            if attempt_count > 1:
+                logger.info(
+                    f"Re-opening the stream for finalize retry attempt: {attempt_count}"
+                )
+                self._is_stream_open = False
+                await self.open()
+                if (
+                    self.offset is not None
+                    and expected_offset is not None
+                    and self.offset != expected_offset
+                ):
+                    raise exceptions.InternalServerError(
+                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                    )
+
             await self.write_obj_stream.send(finalize_req)
             response = await self.write_obj_stream.recv()
             self.object_resource = response.resource
             self.persisted_size = self.object_resource.size
             return self.object_resource
+
+        try:
+            return await retry_policy(_do_finalize)()
         finally:
-            await self.write_obj_stream.close()
+            if self.write_obj_stream:
+                try:
+                    await self.write_obj_stream.close()
+                except Exception as e:
+                    logger.debug(
+                        f"Stream close during finalize cleanup resulted in: {e}"
+                    )
             self._is_stream_open = False
             self.offset = None
 

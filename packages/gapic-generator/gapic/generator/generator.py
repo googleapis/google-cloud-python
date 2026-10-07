@@ -37,6 +37,12 @@ from gapic.utils import Options
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 
+ALLOWED_PRIVATE_TEMPLATES = (
+    "__init__.py.j2",
+    "_compat.py.j2",
+)
+
+
 class Generator:
     """A protoc code generator for client libraries.
 
@@ -118,9 +124,9 @@ class Generator:
         # and instead of iterating over it/them, we iterate over samples
         # and plug those into the template.
         for template_name in client_templates:
-            # Quick check: Skip "private" templates.
+            # Quick check: Skip "private" templates except explicitly allowed ones.
             filename = template_name.split("/")[-1]
-            if filename.startswith("_") and filename != "__init__.py.j2":
+            if filename.startswith("_") and filename not in ALLOWED_PRIVATE_TEMPLATES:
                 continue
 
             # Append to the output files dictionary.
@@ -336,7 +342,9 @@ class Generator:
                     )
                     or (
                         "transport" in template_name
-                        and not self._is_desired_transport(template_name, opts)
+                        and not self._is_desired_transport(
+                            template_name, opts, service=service
+                        )
                     )
                     or
                     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA.
@@ -352,8 +360,16 @@ class Generator:
                         and not api_schema.all_library_settings[
                             api_schema.naming.proto_package
                         ].python_settings.experimental_features.rest_async_io_enabled
+                        and not (
+                            "grpc" in opts.transport
+                            and service.has_resumable_upload_methods
+                        )
                     )
-                    or ("rest_base" in template_name and "rest" not in opts.transport)
+                    or (
+                        "rest_base" in template_name
+                        and "rest" not in opts.transport
+                        and not service.has_resumable_upload_methods
+                    )
                 ):
                     continue
 
@@ -380,9 +396,20 @@ class Generator:
         )
         return answer
 
-    def _is_desired_transport(self, template_name: str, opts: Options) -> bool:
+    def _is_desired_transport(
+        self,
+        template_name: str,
+        opts: Options,
+        service: Optional[Any] = None,
+    ) -> bool:
         """Returns true if template name contains a desired transport"""
         desired_transports = ["__init__", "base", "README"] + opts.transport
+        if (
+            service is not None
+            and service.has_resumable_upload_methods
+            and "rest" not in desired_transports
+        ):
+            desired_transports.append("rest")
         return any(transport in template_name for transport in desired_transports)
 
     def _get_file(
@@ -413,7 +440,7 @@ class Generator:
 
         # Quick check: Do not render empty files.
         if utils.empty(cgr_file.content) and not fn.endswith(
-            ("py.typed", "__init__.py")
+            ("py.typed", "__init__.py", "_compat.py")
         ):
             return {}
 

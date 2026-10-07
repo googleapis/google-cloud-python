@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.analytics.data_v1beta._compat import transcode_request
 from google.analytics.data_v1beta.types import analytics_data_api
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class BetaAnalyticsDataRestInterceptor:
@@ -911,21 +911,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_run_pivot_reports(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports,
+                    "_BaseBatchRunPivotReports__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1071,21 +1068,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_run_reports(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports,
+                    "_BaseBatchRunReports__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1231,21 +1225,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_http_options()
-
             request, metadata = self._interceptor.pre_check_compatibility(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility,
+                    "_BaseCheckCompatibility__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1388,21 +1379,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_http_options()
-
             request, metadata = self._interceptor.pre_create_audience_export(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport,
+                    "_BaseCreateAudienceExport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1545,17 +1533,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_http_options()
-
             request, metadata = self._interceptor.pre_get_audience_export(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport,
+                    "_BaseGetAudienceExport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1697,15 +1686,16 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             http_options = (
                 _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_metadata(request, metadata)
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata,
+                    "_BaseGetMetadata__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1843,17 +1833,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_http_options()
-
             request, metadata = self._interceptor.pre_list_audience_exports(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports,
+                    "_BaseListAudienceExports__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1996,21 +1987,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_http_options()
-
             request, metadata = self._interceptor.pre_query_audience_export(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport,
+                    "_BaseQueryAudienceExport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2154,21 +2142,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_http_options()
-
             request, metadata = self._interceptor.pre_run_pivot_report(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport,
+                    "_BaseRunPivotReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2310,21 +2295,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_http_options()
-
             request, metadata = self._interceptor.pre_run_realtime_report(
                 request, metadata
             )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport,
+                    "_BaseRunRealtimeReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2466,19 +2448,16 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             http_options = (
                 _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_run_report(request, metadata)
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBetaAnalyticsDataRestTransport._BaseRunReport,
+                    "_BaseRunReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

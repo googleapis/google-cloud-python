@@ -60,6 +60,11 @@
                 "get_metrics"
               ]
             },
+            "GetPolicy": {
+              "methods": [
+                "get_policy"
+              ]
+            },
             "ListFirewallPolicies": {
               "methods": [
                 "list_firewall_policies"
@@ -118,6 +123,11 @@
             "UpdateKey": {
               "methods": [
                 "update_key"
+              ]
+            },
+            "UpdatePolicy": {
+              "methods": [
+                "update_policy"
               ]
             }
           }
@@ -175,6 +185,11 @@
                 "get_metrics"
               ]
             },
+            "GetPolicy": {
+              "methods": [
+                "get_policy"
+              ]
+            },
             "ListFirewallPolicies": {
               "methods": [
                 "list_firewall_policies"
@@ -233,6 +248,11 @@
             "UpdateKey": {
               "methods": [
                 "update_key"
+              ]
+            },
+            "UpdatePolicy": {
+              "methods": [
+                "update_policy"
               ]
             }
           }

@@ -15,6 +15,7 @@
 import io
 import os
 import re
+
 import setuptools  # type: ignore
 
 version = None
@@ -49,13 +50,13 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/google-cloud-python/packages/google-cloud-testutils",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-testutils",
     packages=packages,
     entry_points={"console_scripts": scripts},
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
     install_requires=(
-        "google-auth >= 2.1.0",
+        "google-auth >= 2.14.1, < 3.0.0",
         "click>=7.0.0",
         "packaging>=22.0",
     ),
@@ -70,6 +71,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.15",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],

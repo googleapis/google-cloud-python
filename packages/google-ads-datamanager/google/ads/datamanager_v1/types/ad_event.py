@@ -316,8 +316,14 @@ class AdEvent(proto.Message):
             more data provided, the more likely a match will
             be found.
         device_info (google.ads.datamanager_v1.types.DeviceInfo):
-            Optional. Information gathered about the
+            Required. Information gathered about the
             device being used when the ad event happened.
+        ip_address (str):
+            Optional. IP address used for measurement. This must be same
+            value as
+            [DeviceInfo.ip_address][google.ads.datamanager.v1.DeviceInfo.ip_address].
+            Keep it blank if you do not want to share IP for
+            measurement.
         mobile_device_id (str):
             Optional. The device ID of the device that
             the ad was served to.
@@ -360,7 +366,7 @@ class AdEvent(proto.Message):
         ad_width (int):
             Optional. The width of the ad in pixels.
         region_code (str):
-            Required. The ISO 3166-2 country plus
+            Optional. The ISO 3166-2 country plus
             subdivision.
         source (str):
             Required. The platform source of the ad, akin
@@ -486,6 +492,10 @@ class AdEvent(proto.Message):
         proto.MESSAGE,
         number=8,
         message=gad_device_info.DeviceInfo,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=34,
     )
     mobile_device_id: str = proto.Field(
         proto.STRING,

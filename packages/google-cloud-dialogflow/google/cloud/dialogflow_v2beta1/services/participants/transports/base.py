@@ -34,9 +34,7 @@ from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ParticipantsTransport(abc.ABC):
@@ -187,6 +185,11 @@ class ParticipantsTransport(abc.ABC):
                 default_timeout=220.0,
                 client_info=client_info,
             ),
+            self.streaming_reactive_companion_suggestions: gapic_v1.method.wrap_method(
+                self.streaming_reactive_companion_suggestions,
+                default_timeout=5400.0,
+                client_info=client_info,
+            ),
             self.bidi_streaming_analyze_content: gapic_v1.method.wrap_method(
                 self.bidi_streaming_analyze_content,
                 default_retry=retries.Retry(
@@ -324,6 +327,18 @@ class ParticipantsTransport(abc.ABC):
         Union[
             participant.StreamingAnalyzeContentResponse,
             Awaitable[participant.StreamingAnalyzeContentResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def streaming_reactive_companion_suggestions(
+        self,
+    ) -> Callable[
+        [participant.StreamingReactiveCompanionSuggestionsRequest],
+        Union[
+            participant.StreamingReactiveCompanionSuggestionsResponse,
+            Awaitable[participant.StreamingReactiveCompanionSuggestionsResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.financialservices_v1._compat import transcode_request
 from google.cloud.financialservices_v1.types import (
     backtest_result,
     dataset,
@@ -73,8 +74,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AMLRestInterceptor:
@@ -2582,27 +2582,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseCreateBacktestResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_backtest_result(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseCreateBacktestResult,
+                    "_BaseCreateBacktestResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2738,23 +2729,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseCreateDataset._get_http_options()
-
             request, metadata = self._interceptor.pre_create_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseCreateDataset._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateDataset._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseCreateDataset,
+                    "_BaseCreateDataset__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2894,25 +2878,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseCreateEngineConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_engine_config(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseCreateEngineConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseCreateEngineConfig,
+                    "_BaseCreateEngineConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3048,23 +3025,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseCreateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseCreateInstance,
+                    "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3200,23 +3170,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseCreateModel._get_http_options()
-
             request, metadata = self._interceptor.pre_create_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseCreateModel._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateModel._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseCreateModel,
+                    "_BaseCreateModel__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3356,21 +3319,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseCreatePredictionResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_prediction_result(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseCreatePredictionResult._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAMLRestTransport._BaseCreatePredictionResult._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseCreatePredictionResult._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseCreatePredictionResult,
+                    "_BaseCreatePredictionResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3509,21 +3469,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseDeleteBacktestResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_backtest_result(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseDeleteBacktestResult,
+                    "_BaseDeleteBacktestResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3656,19 +3613,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseDeleteDataset._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteDataset._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseDeleteDataset,
+                    "_BaseDeleteDataset__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3805,21 +3759,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseDeleteEngineConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_engine_config(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseDeleteEngineConfig,
+                    "_BaseDeleteEngineConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3952,19 +3903,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseDeleteInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseDeleteInstance,
+                    "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4097,19 +4045,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseDeleteModel._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteModel._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseDeleteModel,
+                    "_BaseDeleteModel__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4247,17 +4192,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseDeletePredictionResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_prediction_result(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseDeletePredictionResult._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseDeletePredictionResult._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseDeletePredictionResult,
+                    "_BaseDeletePredictionResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4395,21 +4341,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_http_options()
-
             request, metadata = self._interceptor.pre_export_backtest_result_metadata(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseExportBacktestResultMetadata,
+                    "_BaseExportBacktestResultMetadata__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4550,21 +4493,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_http_options()
-
             request, metadata = self._interceptor.pre_export_engine_config_metadata(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseExportEngineConfigMetadata,
+                    "_BaseExportEngineConfigMetadata__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4705,27 +4645,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseExportModelMetadata._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_export_model_metadata(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseExportModelMetadata,
+                    "_BaseExportModelMetadata__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4864,21 +4795,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_http_options()
-
             request, metadata = self._interceptor.pre_export_prediction_result_metadata(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseExportPredictionResultMetadata,
+                    "_BaseExportPredictionResultMetadata__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5020,21 +4948,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseExportRegisteredParties._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_export_registered_parties(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseExportRegisteredParties._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAMLRestTransport._BaseExportRegisteredParties._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportRegisteredParties._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseExportRegisteredParties,
+                    "_BaseExportRegisteredParties__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5170,21 +5095,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseGetBacktestResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_backtest_result(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetBacktestResult,
+                    "_BaseGetBacktestResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5319,17 +5241,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseGetDataset._get_http_options()
-
             request, metadata = self._interceptor.pre_get_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseGetDataset._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetDataset,
+                    "_BaseGetDataset__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5466,21 +5387,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseGetEngineConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_engine_config(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetEngineConfig,
+                    "_BaseGetEngineConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5618,21 +5536,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseGetEngineVersion._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_engine_version(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetEngineVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetEngineVersion._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetEngineVersion,
+                    "_BaseGetEngineVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5773,19 +5688,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseGetInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetInstance,
+                    "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5918,17 +5830,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseGetModel._get_http_options()
-
             request, metadata = self._interceptor.pre_get_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseGetModel._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetModel,
+                    "_BaseGetModel__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6067,21 +5978,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseGetPredictionResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_prediction_result(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetPredictionResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetPredictionResult._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetPredictionResult,
+                    "_BaseGetPredictionResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6225,21 +6133,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseImportRegisteredParties._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_import_registered_parties(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseImportRegisteredParties._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAMLRestTransport._BaseImportRegisteredParties._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseImportRegisteredParties._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseImportRegisteredParties,
+                    "_BaseImportRegisteredParties__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6378,21 +6283,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseListBacktestResults._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_backtest_results(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListBacktestResults._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListBacktestResults._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListBacktestResults,
+                    "_BaseListBacktestResults__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6530,19 +6432,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseListDatasets._get_http_options()
-
             request, metadata = self._interceptor.pre_list_datasets(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListDatasets._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListDatasets._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListDatasets,
+                    "_BaseListDatasets__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6680,21 +6579,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseListEngineConfigs._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_engine_configs(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListEngineConfigs._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListEngineConfigs._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListEngineConfigs,
+                    "_BaseListEngineConfigs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6836,21 +6732,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseListEngineVersions._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_engine_versions(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListEngineVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListEngineVersions._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListEngineVersions,
+                    "_BaseListEngineVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6988,19 +6881,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseListInstances._get_http_options()
-
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListInstances._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListInstances._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListInstances,
+                    "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7136,17 +7026,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseListModels._get_http_options()
-
             request, metadata = self._interceptor.pre_list_models(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListModels._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseListModels._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListModels,
+                    "_BaseListModels__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7286,19 +7175,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseListPredictionResults._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_prediction_results(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseListPredictionResults._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListPredictionResults._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListPredictionResults,
+                    "_BaseListPredictionResults__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7442,27 +7330,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseUpdateBacktestResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_backtest_result(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseUpdateBacktestResult,
+                    "_BaseUpdateBacktestResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7597,23 +7476,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseUpdateDataset._get_http_options()
-
             request, metadata = self._interceptor.pre_update_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseUpdateDataset._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateDataset._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseUpdateDataset,
+                    "_BaseUpdateDataset__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7752,25 +7624,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseUpdateEngineConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_engine_config(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseUpdateEngineConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseUpdateEngineConfig,
+                    "_BaseUpdateEngineConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7905,23 +7770,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseUpdateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseUpdateInstance,
+                    "_BaseUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8056,23 +7914,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseUpdateModel._get_http_options()
-
             request, metadata = self._interceptor.pre_update_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseUpdateModel._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateModel._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseUpdateModel,
+                    "_BaseUpdateModel__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8212,21 +8063,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseUpdatePredictionResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_prediction_result(
                 request, metadata
             )
-            transcoded_request = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseUpdatePredictionResult,
+                    "_BaseUpdatePredictionResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8719,19 +8567,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8859,19 +8704,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8999,25 +8841,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseAMLRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9120,21 +8955,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = (
                 _BaseAMLRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9237,19 +9069,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9377,19 +9206,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
             """
 
             http_options = _BaseAMLRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAMLRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

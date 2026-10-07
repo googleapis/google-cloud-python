@@ -1218,7 +1218,7 @@ def test_upload_chunks_concurrently_with_metadata_and_encryption():
             "Accept": "application/json",
             "Accept-Encoding": "gzip, deflate",
             "User-Agent": "agent",
-            "X-Goog-API-Client": f"agent gccl-invocation-id/{invocation_id} gccl-gcs-cmd/tm.upload_sharded",
+            "x-goog-api-client": f"agent gccl-invocation-id/{invocation_id} gccl-gcs-cmd/tm.upload_sharded",
             "content-type": FAKE_CONTENT_TYPE,
             "x-upload-content-type": FAKE_CONTENT_TYPE,
             "X-Goog-Encryption-Algorithm": "AES256",

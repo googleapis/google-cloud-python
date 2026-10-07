@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.71.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.70.0...google-cloud-spanner-v3.71.0) (2026-09-03)
+
+
+### Features
+
+* add send and ack mutations Cloud Spanner Queues  ([#17728](https://github.com/googleapis/google-cloud-python/issues/17728)) ([182ff9f](https://github.com/googleapis/google-cloud-python/commit/182ff9f3ad1a1ce34ea0c57ca572c0d397f16ae9)), refs [#17727](https://github.com/googleapis/google-cloud-python/issues/17727)
+
+## [3.70.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.69.1...google-cloud-spanner-v3.70.0) (2026-08-21)
+
+
+### Features
+
+* check python and dependency versions in spanner packages ([#18177](https://github.com/googleapis/google-cloud-python/issues/18177)) ([b4d9717](https://github.com/googleapis/google-cloud-python/commit/b4d97179f151d5ff37e6c7dbbd190a84c7d936a9))
+* **spanner:** add DataBoost and auto_partition_mode support to DBAPI driver ([#18161](https://github.com/googleapis/google-cloud-python/issues/18161)) ([5bc3899](https://github.com/googleapis/google-cloud-python/commit/5bc3899be81702b50efc2b4b67fe7f80c7506242))
+
+
+### Bug Fixes
+
+* **spanner:** buffer returned rows in autocommit DML statements ([#18152](https://github.com/googleapis/google-cloud-python/issues/18152)) ([7f8a552](https://github.com/googleapis/google-cloud-python/commit/7f8a552e3201dcb75ca8f4b8861fa940d95ecd2f))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [3.69.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.69.0...google-cloud-spanner-v3.69.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* **metrics:** fix GFE and AFE metrics publishing ([#17561](https://github.com/googleapis/google-cloud-python/issues/17561)) ([abf1178](https://github.com/googleapis/google-cloud-python/commit/abf117892eac3e973749f94fc7a225f1d122fd20))
+* **spanner:** escape embedded backticks in dbapi escape_name ([#17810](https://github.com/googleapis/google-cloud-python/issues/17810)) ([c8b0b28](https://github.com/googleapis/google-cloud-python/commit/c8b0b2841d424ad24228d8b537d7920de078dd23))
+* **spanner:** implement dict protocol and nested unwrapping for JsonObject ([#17915](https://github.com/googleapis/google-cloud-python/issues/17915)) ([06c1f05](https://github.com/googleapis/google-cloud-python/commit/06c1f052147c1b69a8d858d17df87bbab3dfdda6)), refs [#15870](https://github.com/googleapis/google-cloud-python/issues/15870)
+
 ## [3.69.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.68.0...google-cloud-spanner-v3.69.0) (2026-06-25)
 
 

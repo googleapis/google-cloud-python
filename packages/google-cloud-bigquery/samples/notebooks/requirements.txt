@@ -1,0 +1,7 @@
+bigquery-magics==0.10.3
+db-dtypes==1.4.3
+google-cloud-bigquery==3.45.0
+google-cloud-bigquery-storage==2.33.1
+ipython==9.6.0
+matplotlib==3.10.6
+pandas==2.3.3

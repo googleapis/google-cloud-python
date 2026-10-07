@@ -34,6 +34,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.translate_v3beta1._compat import transcode_request
 from google.cloud.translate_v3beta1.types import translation_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -59,8 +60,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class TranslationServiceRestInterceptor:
@@ -1111,21 +1111,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_translate_document(
                 request, metadata
             )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument,
+                    "_BaseBatchTranslateDocument__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1265,21 +1262,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_translate_text(
                 request, metadata
             )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseBatchTranslateText,
+                    "_BaseBatchTranslateText__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1419,19 +1413,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_http_options()
-
             request, metadata = self._interceptor.pre_create_glossary(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseCreateGlossary,
+                    "_BaseCreateGlossary__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1568,15 +1559,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_glossary(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseDeleteGlossary,
+                    "_BaseDeleteGlossary__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1713,19 +1705,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_http_options()
-
             request, metadata = self._interceptor.pre_detect_language(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseDetectLanguage,
+                    "_BaseDetectLanguage__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1865,15 +1854,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_http_options()
-
             request, metadata = self._interceptor.pre_get_glossary(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseGetGlossary,
+                    "_BaseGetGlossary__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2011,17 +2001,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_http_options()
-
             request, metadata = self._interceptor.pre_get_supported_languages(
                 request, metadata
             )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages,
+                    "_BaseGetSupportedLanguages__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2160,15 +2151,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_http_options()
-
             request, metadata = self._interceptor.pre_list_glossaries(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseListGlossaries,
+                    "_BaseListGlossaries__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2307,19 +2299,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseRefineText._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_refine_text(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseRefineText._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseRefineText._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseRefineText._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseRefineText,
+                    "_BaseRefineText__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2460,21 +2449,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_http_options()
-
             request, metadata = self._interceptor.pre_translate_document(
                 request, metadata
             )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseTranslateDocument,
+                    "_BaseTranslateDocument__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2614,19 +2600,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseTranslateText._get_http_options()
-
             request, metadata = self._interceptor.pre_translate_text(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseTranslateText._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseTranslateText._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseTranslateText._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseTranslateText,
+                    "_BaseTranslateText__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2884,15 +2867,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3023,15 +3007,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3160,21 +3145,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3278,17 +3260,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3394,15 +3377,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3533,15 +3517,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3673,19 +3658,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             """
 
             http_options = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_wait_operation(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTranslationServiceRestTransport._BaseWaitOperation,
+                    "_BaseWaitOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

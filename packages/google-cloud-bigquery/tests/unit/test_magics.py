@@ -37,13 +37,13 @@ except ImportError:
 
 bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
 IPython = pytest.importorskip("IPython")
-interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")
+interactiveshell = pytest.importorskip("IPython.core.interactiveshell")
 tools = pytest.importorskip("IPython.testing.tools")
 io = pytest.importorskip("IPython.utils.io")
 pandas = pytest.importorskip("pandas")
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 def use_local_magics_context(monkeypatch):
     if magics is not None:  # pragma: NO COVER
         local_context = magics.Context()
@@ -58,8 +58,7 @@ def use_local_magics_context(monkeypatch):
 @pytest.fixture(scope="session")
 def ipython():
     config = tools.default_config()
-    config.TerminalInteractiveShell.simple_prompt = True
-    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
+    shell = interactiveshell.InteractiveShell.instance(config=config)
     return shell
 
 
@@ -143,10 +142,12 @@ QUERY_RESULTS_RESOURCE = {
 }
 
 
-def test_context_with_default_credentials():
-    """When Application Default Credentials are set, the context credentials
-    will be created the first time it is called
+def test_context_resolves_unset_credentials_and_project():
+    """When context credentials and project are unset (None), accessing them
+    resolves them from Application Default Credentials.
     """
+    magics.context._credentials = None
+    magics.context._project = None
     assert magics.context._credentials is None
     assert magics.context._project is None
 

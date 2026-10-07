@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "ListPrivateOffersRequest",
         "ListPrivateOffersResponse",
         "GetPrivateOfferRequest",
+        "ResolveAmendmentTargetRequest",
+        "ResolveAmendmentTargetResponse",
         "CreatePrivateOfferRequest",
         "UpdatePrivateOfferRequest",
         "PublishPrivateOfferRequest",
@@ -239,6 +241,115 @@ class GetPrivateOfferRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum="PrivateOfferView",
+    )
+
+
+class ResolveAmendmentTargetRequest(proto.Message):
+    r"""Message for resolving an amended offer.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            ResolveAmendmentTargetRequest
+        target_billing_account (str):
+            Required. The customer's billing account targeted by the
+            offer. This is the billing account for which the new private
+            offer will be created on. Format:
+            billingAccounts/{billing_account}.
+        base_standard_offer (str):
+            Required. The base standard offer that the private offer
+            will be based on. Format:
+            projects/{project}/locations/{location}/services/{service}/standardOffers/{standard_offer}.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_billing_account: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    base_standard_offer: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ResolveAmendmentTargetResponse(proto.Message):
+    r"""Message in response to ResolveAmendmentTarget.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        required_private_offer (str):
+            The resource name of an existing private offer that MUST be
+            amended.
+
+            If this is set, the new private offer the client creates
+            must populate the
+            ``single_product_offer.amended_private_offer`` field with
+            this value.
+
+            This field is a member of `oneof`_ ``amendment_requirement``.
+        required_standard_offer (str):
+            The resource name of an existing standard offer that MUST be
+            amended.
+
+            If this is set, the new private offer the client creates
+            must populate the
+            ``single_product_offer.amended_standard_offer`` field with
+            this value.
+
+            This field is a member of `oneof`_ ``amendment_requirement``.
+        optional_offers (google.cloud.commerceproducer_v1beta.types.ResolveAmendmentTargetResponse.OptionalOffers):
+            A list of existing offers that may optionally
+            be amended.
+
+            This field is a member of `oneof`_ ``amendment_requirement``.
+    """
+
+    class OptionalOffers(proto.Message):
+        r"""A wrapper message containing offers that can optionally be
+        amended.
+
+        Attributes:
+            private_offers (MutableSequence[str]):
+                A list of existing private offers that are eligible to be
+                amended.
+
+                When creating a new private offer, the client may choose to
+                populate the ``single_product_offer.amended_private_offer``
+                field with one of these resource names. Alternatively, the
+                client may leave the field unset to create a brand new
+                offer.
+        """
+
+        private_offers: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    required_private_offer: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="amendment_requirement",
+    )
+    required_standard_offer: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="amendment_requirement",
+    )
+    optional_offers: OptionalOffers = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="amendment_requirement",
+        message=OptionalOffers,
     )
 
 

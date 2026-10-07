@@ -57,9 +57,11 @@ from google.apps.chat_v1.types import (
     event_payload,
     group,
     history_state,
+    markup_syntax,
     matched_url,
     membership,
     message,
+    message_pin,
     reaction,
     section,
     slash_command,
@@ -74,6 +76,7 @@ from google.apps.chat_v1.types import (
 from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
+from google.apps.chat_v1.types import message_pin as gc_message_pin
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
@@ -120,6 +123,8 @@ class ChatServiceAsyncClient:
     parse_membership_path = staticmethod(ChatServiceClient.parse_membership_path)
     message_path = staticmethod(ChatServiceClient.message_path)
     parse_message_path = staticmethod(ChatServiceClient.parse_message_path)
+    message_pin_path = staticmethod(ChatServiceClient.message_pin_path)
+    parse_message_pin_path = staticmethod(ChatServiceClient.parse_message_pin_path)
     quoted_message_metadata_path = staticmethod(
         ChatServiceClient.quoted_message_metadata_path
     )
@@ -1473,6 +1478,330 @@ class ChatServiceAsyncClient:
             metadata=metadata,
         )
 
+    async def search_messages(
+        self,
+        request: Optional[Union[message.SearchMessagesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SearchMessagesAsyncPager:
+        r"""Searches for messages in Google Chat that the calling user has
+        access to. Returns a list of messages matching the search
+        criteria.
+
+        To search across all spaces the user has access to, set
+        ``parent`` to ``spaces/-``. Using any other value for ``parent``
+        results in an ``INVALID_ARGUMENT`` error. The returned messages
+        have their ``name`` field populated with the full resource name,
+        which includes the specific ``space`` in which the message
+        resides.
+
+        This API doesn't return all message types. The types of messages
+        listed below aren't included in the response. Use
+        [ListMessages][google.chat.v1.ChatService.ListMessages] to list
+        all messages.
+
+        - Private Messages that are visible to the authenticated user.
+        - Messages posted by Chat apps in spaces or group chats.
+        - Messages in a Chat app DM.
+        - Messages from blocked users.
+        - Messages in spaces that the caller has muted.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_search_messages():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.SearchMessagesRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                page_result = client.search_messages(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.SearchMessagesRequest, dict]]):
+                The request object. Request message for searching
+                messages.
+            parent (:class:`str`):
+                Required. The resource name of the space to search
+                within.
+
+                To search across all spaces the user has access to, set
+                this field to ``spaces/-``. Using any other value for
+                ``parent`` results in an ``INVALID_ARGUMENT`` error.
+
+                To limit the search to one or more spaces, use
+                ``space.name`` or ``space.display_name`` in the
+                ``filter``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            filter (:class:`str`):
+                Required. A search query.
+
+                The query can specify one or more search keywords, which
+                are used to filter the results,
+
+                You can also filter the results using the following
+                message fields:
+
+                - ``create_time``: Accepts a timestamp in
+                  `RFC-3339 <https://www.rfc-editor.org/rfc/rfc3339>`__
+                  format and the supported comparison operators are:
+                  ``<`` and ``>=``.
+                - ``sender.name``: The resource name of the sender
+                  (``users/{user}``). Only supports ``=``. You can use
+                  the e-mail as an alias for ``{user}``. For example,
+                  ``users/example@gmail.com``, where
+                  ``example@gmail.com`` is the e-mail of the Google Chat
+                  user.
+                - ``space.name``: The resource name of the space where
+                  the message is posted. (``spaces/{space}``). Only
+                  supports ``=``. If this filter is not set, the search
+                  is performed across all direct messages and spaces the
+                  user has access to as a space member.
+                - ``space.display_name``: Supports the operator ``:``
+                  (has) and filters spaces based on a partial match of
+                  their display name. Results are limited to the top
+                  five space matches. For example,
+                  ``space.display_name:Project`` searches for messages
+                  in the top five spaces that contain the word "Project"
+                  in their display names.
+                - ``space.space_type``: The type of the space. Only
+                  supports ``=``. For example,
+                  ``space.space_type="DIRECT_MESSAGE"`` returns only
+                  messages from direct messages. The possible values are
+                  ``DIRECT_MESSAGE``, ``GROUP_CHAT``, and ``SPACE``.
+                - ``attachment``: Supports the operator ``:*`` (has any)
+                  to check for the presence of attachments. If
+                  ``attachment:*`` is specified, only messages that have
+                  at least one attachment are returned.
+                - ``annotations.user_mentions.user.name``: The resource
+                  name of the mentioned user (``users/{user}``). Only
+                  supports ``:`` (has). For example:
+                  ``annotations.user_mentions.user.name:"users/1234567890"``
+                  returns only messages that contain a mention to the
+                  specified user. Alternatively, the alias ``me`` can be
+                  used to filter for messages that mention the caller
+                  user, for example:
+                  ``annotations.user_mentions.user.name:users/me``. You
+                  can also use the e-mail as an alias for ``{user}``,
+                  for example, ``users/example@gmail.com``.
+
+                For advanced filtering, the following functions are also
+                available:
+
+                - ``has_link()``: Returns only messages that have at
+                  least one hyperlink in the message text.
+                - ``is_unread()``: Filters out messages that have been
+                  read by the calling user.
+
+                Using the ``space.display_name`` or the
+                ``space.space_type`` filters requires that the calling
+                credentials include one of the following `authorization
+                scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+                - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+                - ``https://www.googleapis.com/auth/chat.spaces``
+
+                Using the ``is_unread()`` filter requires that the
+                calling credentials include one of the following
+                `authorization
+                scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+                - ``https://www.googleapis.com/auth/chat.users.readstate.readonly``
+                - ``https://www.googleapis.com/auth/chat.users.readstate``
+
+                Across different fields, only ``AND`` operators are
+                supported. A valid example is
+                ``sender.name = "users/1234567890" AND is_unread()``.
+                The word ``AND`` is optional and is implied if omitted.
+                For example,
+                ``sender.name = "users/1234567890" is_unread()`` is
+                valid and is equivalent to the previous example. An
+                invalid example is
+                ``sender.name = "users/1234567890" OR is_unread()``
+                because ``OR`` is not supported between different
+                fields.
+
+                Among the same field:
+
+                - ``create_time`` supports only ``AND``, and can only be
+                  used to represent an interval, such as
+                  ``create_time >= "2022-01-01T00:00:00+00:00" AND create_time < "2023-01-01T00:00:00+00:00"``.
+                - ``sender.name`` supports only the ``OR`` operator, for
+                  example:
+                  ``sender.name = "users/1234567890" OR sender.name = "users/0987654321"``.
+                - ``space.name`` supports only the ``OR`` operator, for
+                  example:
+                  ``space.name = "spaces/ABCDEFGH" OR space.name = "spaces/QWERTYUI"``.
+                - ``space.display_name`` supports the operators ``AND``
+                  and ``OR``, but not a mix of both. For example:
+                  ``space.display_name:Project AND space.display_name:Tasks``
+                  returns messages that are in spaces with display names
+                  containing both ``Project`` and ``Tasks``, whereas
+                  ``space.display_name:Project OR space.display_name:Tasks``
+                  returns messages that are in spaces with display names
+                  containing either ``Project`` or ``Tasks`` or both.
+                - ``space.space_type`` supports only the ``OR``
+                  operator, for example:
+                  ``space.space_type = "DIRECT_MESSAGE" OR space.space_type = "GROUP_CHAT"``.
+                - ``annotations.user_mentions.user.name`` supports the
+                  operators ``AND`` and ``OR``, but not a mix of both.
+                  For example:
+                  ``annotations.user_mentions.user.name:"users/1234567890" AND annotations.user_mentions.user.name:"users/0987654321"``
+                  returns only messages that mentions both users,
+                  whereas
+                  ``annotations.user_mentions.user.name:"users/1234567890" OR annotations.user_mentions.user.name:"users/0987654321"``
+                  returns messages that mention either user or both.
+
+                Parentheses are required to disambiguate operator
+                precedence when combining ``AND`` and ``OR`` operators
+                in the same query. For example:
+                ``(sender.name="users/me" OR sender.name="users/123456") AND is_unread()``.
+                Otherwise, parentheses are optional.
+
+                The following example queries are valid:
+
+                ::
+
+                   "Pending reports" AND create_time >= "2023-01-01T00:00:00Z"
+
+                   sender.name = "users/example@gmail.com"
+
+                   annotations.user_mentions.user.name:"users/0987654321"
+
+                   attachment:* AND space.name = "spaces/ABCDEFGH"
+
+                   tasks AND is_unread() AND sender.name = "users/1234567890"
+
+                   "things to do" "urgent"
+
+                   (sender.name = "users/1234567890")
+                   AND (create_time < "2023-05-01T00:00:00Z")
+
+                   tasks AND space.name = "spaces/ABCDEFGH" AND has_link()
+
+                   "project one" is_unread()
+
+                   space.display_name:Project tasks
+
+                The maximum query length is 1,000 characters.
+
+                Invalid queries are rejected by the server with an
+                ``INVALID_ARGUMENT`` error.
+
+                This corresponds to the ``filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.services.chat_service.pagers.SearchMessagesAsyncPager:
+                Response message for searching
+                messages.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, filter]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, message.SearchMessagesRequest):
+            request = message.SearchMessagesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if filter is not None:
+            request.filter = filter
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_messages
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.SearchMessagesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_attachment(
         self,
         request: Optional[Union[attachment.GetAttachmentRequest, dict]] = None,
@@ -1818,19 +2147,32 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchSpacesAsyncPager:
-        r"""Returns a list of spaces in a Google Workspace organization
-        based on an administrator's search. In the request, set
-        ``use_admin_access`` to ``true``. For an example, see `Search
-        for and manage
+        r"""Returns a list of spaces in a Google Workspace organization. For
+        an example, see `Search for and manage
         spaces <https://developers.google.com/workspace/chat/search-manage-admin>`__.
 
-        Requires `user authentication with administrator
-        privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
-        and one of the following `authorization
-        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+        When ``use_admin_access`` is set to ``false``, the results are
+        limited to spaces where the calling user is a joined member. To
+        search with administrator privileges, set ``use_admin_access``
+        to ``true``.
 
-        - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
-        - ``https://www.googleapis.com/auth/chat.admin.spaces``
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
+
+          - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.spaces``
+
+        - `User authentication with administrator
+          privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
+          and one of the following `authorization
+          scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+          - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.admin.spaces``
 
         .. code-block:: python
 
@@ -2555,6 +2897,7 @@ class ChatServiceAsyncClient:
 
                 - ``access_settings.access_permission_settings.discoverSpaceSetting``
                 - ``access_settings.access_permission_settings.joinSpaceSetting``
+                - ``access_settings.access_permission_settings.viewSpaceMembershipSetting``
 
                 ``permission_settings``: Supports changing the
                 `permission
@@ -2571,6 +2914,7 @@ class ChatServiceAsyncClient:
                 - ``permission_settings.manageApps``
                 - ``permission_settings.manageWebhooks``
                 - ``permission_settings.replyMessages``
+                - ``permission_settings.viewSpaceMembership``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4006,6 +4350,384 @@ class ChatServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.delete_reaction
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_message_pins(
+        self,
+        request: Optional[Union[message_pin.ListMessagePinsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListMessagePinsAsyncPager:
+        r"""Lists message pins in a space. Users can pin important messages
+        in spaces for easy access. For more information, see `Pin or
+        unpin a conversation in Google
+        Chat <https://support.google.com/chat/answer/15622437>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.spaces.pins.readonly``
+        - ``https://www.googleapis.com/auth/chat.spaces.pins``
+        - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+        - ``https://www.googleapis.com/auth/chat.spaces``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_list_message_pins():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.ListMessagePinsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_message_pins(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.ListMessagePinsRequest, dict]]):
+                The request object. Request message for listing message
+                pins.
+            parent (:class:`str`):
+                Required. The parent space which owns the collection of
+                pinned items Format: ``spaces/{space}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.services.chat_service.pagers.ListMessagePinsAsyncPager:
+                Response message for listing message
+                pins.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, message_pin.ListMessagePinsRequest):
+            request = message_pin.ListMessagePinsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_message_pins
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListMessagePinsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_message_pin(
+        self,
+        request: Optional[Union[gc_message_pin.CreateMessagePinRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        message_pin: Optional[gc_message_pin.MessagePin] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gc_message_pin.MessagePin:
+        r"""Creates a message pin.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.spaces.pins``
+        - ``https://www.googleapis.com/auth/chat.spaces``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_create_message_pin():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                message_pin = chat_v1.MessagePin()
+                message_pin.message = "message_value"
+
+                request = chat_v1.CreateMessagePinRequest(
+                    parent="parent_value",
+                    message_pin=message_pin,
+                )
+
+                # Make the request
+                response = await client.create_message_pin(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.CreateMessagePinRequest, dict]]):
+                The request object. Request message for creating a
+                message pin.
+            parent (:class:`str`):
+                Required. The parent space in which
+                to create the message pin. Format:
+                spaces/{space}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            message_pin (:class:`google.apps.chat_v1.types.MessagePin`):
+                Required. The MessagePin to create.
+                This corresponds to the ``message_pin`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.MessagePin:
+                A pin on a Chat message. For more information see [Pin a
+                   message](https://support.google.com/chat?p=chat-board-hc).
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, message_pin]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_message_pin.CreateMessagePinRequest):
+            request = gc_message_pin.CreateMessagePinRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if message_pin is not None:
+            request.message_pin = message_pin
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_message_pin
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_message_pin(
+        self,
+        request: Optional[Union[message_pin.DeleteMessagePinRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes a message pin.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.spaces.pins``
+        - ``https://www.googleapis.com/auth/chat.spaces``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_delete_message_pin():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.DeleteMessagePinRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_message_pin(request=request)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.DeleteMessagePinRequest, dict]]):
+                The request object. Request message for deleting a
+                message pin.
+            name (:class:`str`):
+                Required. The resource name of the message pin to
+                remove. Format: spaces/{space}/messagePins/{message_pin}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, message_pin.DeleteMessagePinRequest):
+            request = message_pin.DeleteMessagePinRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_message_pin
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -7172,9 +7894,7 @@ class ChatServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("ChatServiceAsyncClient",)

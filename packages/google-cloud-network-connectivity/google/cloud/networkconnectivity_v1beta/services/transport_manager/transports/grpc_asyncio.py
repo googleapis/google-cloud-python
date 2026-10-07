@@ -421,6 +421,36 @@ class TransportManagerGrpcAsyncIOTransport(TransportManagerTransport):
         return self._stubs["get_remote_transport_profile"]
 
     @property
+    def parse_from_activation_key(
+        self,
+    ) -> Callable[
+        [transport_manager.ParseFromActivationKeyRequest],
+        Awaitable[transport_manager.ParseFromActivationKeyResponse],
+    ]:
+        r"""Return a callable for the parse from activation key method over gRPC.
+
+        Gets details of a single RemoteTransportProfile given
+        an activation key.
+
+        Returns:
+            Callable[[~.ParseFromActivationKeyRequest],
+                    Awaitable[~.ParseFromActivationKeyResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "parse_from_activation_key" not in self._stubs:
+            self._stubs["parse_from_activation_key"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1beta.TransportManager/ParseFromActivationKey",
+                request_serializer=transport_manager.ParseFromActivationKeyRequest.serialize,
+                response_deserializer=transport_manager.ParseFromActivationKeyResponse.deserialize,
+            )
+        return self._stubs["parse_from_activation_key"]
+
+    @property
     def list_transports(
         self,
     ) -> Callable[
@@ -601,6 +631,11 @@ class TransportManagerGrpcAsyncIOTransport(TransportManagerTransport):
             ),
             self.get_remote_transport_profile: self._wrap_method(
                 self.get_remote_transport_profile,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.parse_from_activation_key: self._wrap_method(
+                self.parse_from_activation_key,
                 default_timeout=None,
                 client_info=client_info,
             ),

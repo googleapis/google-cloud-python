@@ -15,6 +15,7 @@
 #
 import logging as std_logging
 import re
+import warnings
 from collections import OrderedDict
 from typing import (
     Callable,
@@ -87,6 +88,10 @@ class AppGatewaysServiceAsyncClient:
 
     The AppGatewaysService service provides methods to manage
     (create/read/update/delete) BeyondCorp AppGateways.
+
+    Deprecated: App Connector is deprecated and creation of new App
+    Connector resources is no longer permitted. Use Security Gateway
+    instead.
     """
 
     _client: AppGatewaysServiceClient
@@ -395,6 +400,11 @@ class AppGatewaysServiceAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "AppGatewaysServiceAsyncClient.list_app_gateways is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -525,6 +535,11 @@ class AppGatewaysServiceAsyncClient:
                 single AppGateway.
 
         """
+        warnings.warn(
+            "AppGatewaysServiceAsyncClient.get_app_gateway is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -675,6 +690,11 @@ class AppGatewaysServiceAsyncClient:
                    authorised for a single AppGateway.
 
         """
+        warnings.warn(
+            "AppGatewaysServiceAsyncClient.create_app_gateway is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -814,6 +834,11 @@ class AppGatewaysServiceAsyncClient:
                       }
 
         """
+        warnings.warn(
+            "AppGatewaysServiceAsyncClient.delete_app_gateway is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1559,9 +1584,7 @@ class AppGatewaysServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("AppGatewaysServiceAsyncClient",)

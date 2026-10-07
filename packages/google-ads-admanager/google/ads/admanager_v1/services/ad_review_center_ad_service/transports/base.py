@@ -32,9 +32,7 @@ from google.ads.admanager_v1.types import ad_review_center_ad_service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AdReviewCenterAdServiceTransport(abc.ABC):
@@ -161,6 +159,16 @@ class AdReviewCenterAdServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.fetch_ad_review_center_custom_labels: gapic_v1.method.wrap_method(
+                self.fetch_ad_review_center_custom_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_apply_ad_review_center_custom_labels: gapic_v1.method.wrap_method(
+                self.batch_apply_ad_review_center_custom_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -214,6 +222,34 @@ class AdReviewCenterAdServiceTransport(abc.ABC):
     ) -> Callable[
         [ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_ad_review_center_custom_labels(
+        self,
+    ) -> Callable[
+        [ad_review_center_ad_service.FetchAdReviewCenterCustomLabelsRequest],
+        Union[
+            ad_review_center_ad_service.FetchAdReviewCenterCustomLabelsResponse,
+            Awaitable[
+                ad_review_center_ad_service.FetchAdReviewCenterCustomLabelsResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_apply_ad_review_center_custom_labels(
+        self,
+    ) -> Callable[
+        [ad_review_center_ad_service.BatchApplyAdReviewCenterCustomLabelsRequest],
+        Union[
+            ad_review_center_ad_service.BatchApplyAdReviewCenterCustomLabelsResponse,
+            Awaitable[
+                ad_review_center_ad_service.BatchApplyAdReviewCenterCustomLabelsResponse
+            ],
+        ],
     ]:
         raise NotImplementedError()
 

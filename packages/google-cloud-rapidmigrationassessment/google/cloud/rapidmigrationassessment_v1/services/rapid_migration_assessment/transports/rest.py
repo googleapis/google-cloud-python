@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.rapidmigrationassessment_v1._compat import transcode_request
 from google.cloud.rapidmigrationassessment_v1.types import (
     api_entities,
     rapidmigrationassessment,
@@ -58,8 +59,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class RapidMigrationAssessmentRestInterceptor:
@@ -1010,21 +1010,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_http_options()
-
             request, metadata = self._interceptor.pre_create_annotation(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation,
+                    "_BaseCreateAnnotation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1164,21 +1161,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_http_options()
-
             request, metadata = self._interceptor.pre_create_collector(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector,
+                    "_BaseCreateCollector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1317,17 +1311,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_collector(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector,
+                    "_BaseDeleteCollector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1463,15 +1458,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_annotation(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation,
+                    "_BaseGetAnnotation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1609,15 +1605,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_http_options()
-
             request, metadata = self._interceptor.pre_get_collector(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector,
+                    "_BaseGetCollector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1757,15 +1754,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_http_options()
-
             request, metadata = self._interceptor.pre_list_collectors(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors,
+                    "_BaseListCollectors__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1910,19 +1908,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_http_options()
-
             request, metadata = self._interceptor.pre_pause_collector(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector,
+                    "_BasePauseCollector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2062,21 +2057,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_http_options()
-
             request, metadata = self._interceptor.pre_register_collector(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector,
+                    "_BaseRegisterCollector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2216,21 +2208,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_http_options()
-
             request, metadata = self._interceptor.pre_resume_collector(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector,
+                    "_BaseResumeCollector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2370,21 +2359,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_http_options()
-
             request, metadata = self._interceptor.pre_update_collector(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector,
+                    "_BaseUpdateCollector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2624,15 +2610,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2763,15 +2750,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2902,21 +2890,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3022,17 +3007,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3140,15 +3126,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3281,15 +3268,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             """
 
             http_options = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRapidMigrationAssessmentRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -58,6 +58,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
+    "pytest-order==1.3.0",
     RUFF_VERSION,
     "pyyaml==6.0.2",
 ]
@@ -77,7 +78,6 @@ MYPY_CONFIG_FILE = next(
     ),
     str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
 )
-
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
@@ -109,6 +109,17 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", RUFF_VERSION)
+
+    # 1. Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
     # 2. Check formatting
     session.run(
@@ -188,7 +199,10 @@ def mypy(session):
     )
     session.install("google-cloud-testutils")
     session.run(
-        "mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud.bigtable.data"
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google.cloud.bigtable.data",
     )
 
 
@@ -234,11 +248,6 @@ def install_unittest_dependencies(session, *constraints):
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
-
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/17741):
-    # Remove once `google-crc32c` wheels are published for 3.15
-    if session.python == "3.15":
-        session.skip("Skipping 3.15 until wheels are available for google-crc32c.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -306,6 +315,7 @@ def system_emulated(session):
 
     hostport = "localhost:8789"
     session.env["BIGTABLE_EMULATOR_HOST"] = hostport
+    session.env["GOOGLE_CLOUD_PROJECT"] = "emulated-test-project"
 
     p = subprocess.Popen(
         ["gcloud", "beta", "emulators", "bigtable", "start", "--host-port", hostport]
@@ -571,7 +581,11 @@ def core_deps_from_source(session, protobuf_implementation):
     session.install("-e", ".")
 
     # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    unit_deps_all = (
+        UNIT_TEST_STANDARD_DEPENDENCIES
+        + UNIT_TEST_DEPENDENCIES
+        + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    )
     session.install(*unit_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python
@@ -609,9 +623,10 @@ def core_deps_from_source(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    # Locate the monorepo 'packages' directory containing core dependencies
+    deps_dir = next(
+        p / "packages" for p in CURRENT_DIRECTORY.parents if (p / "packages").is_dir()
+    )
 
     # Batch the pip installation to avoid sequential overhead
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]

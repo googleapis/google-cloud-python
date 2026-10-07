@@ -51,7 +51,6 @@ def sample_ingest_ad_events():
     ad_events.event_type = "EVENT_TYPE_CLICK"
     ad_events.campaign_id = "campaign_id_value"
     ad_events.campaign_name = "campaign_name_value"
-    ad_events.region_code = "region_code_value"
     ad_events.source = "source_value"
     ad_events.medium = "medium_value"
     ad_events.viewability_info.view_type = "VIEW_TYPE_MRC_RENDERED"

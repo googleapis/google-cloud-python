@@ -64,6 +64,7 @@ from google.cloud.redis_v1.services.cloud_redis import CloudRedisAsyncClient
 from google.cloud.redis_v1.services.cloud_redis import CloudRedisClient
 from google.cloud.redis_v1.services.cloud_redis import pagers
 from google.cloud.redis_v1.services.cloud_redis import transports
+from google.cloud.redis_v1.services.cloud_redis.client import _observability
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
@@ -84,6 +85,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -129,150 +142,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert CloudRedisClient._get_default_mtls_endpoint(None) is None
-    assert CloudRedisClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert CloudRedisClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert CloudRedisClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert CloudRedisClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert CloudRedisClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert CloudRedisClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
-def test__read_environment_variables():
-    assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert CloudRedisClient._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                CloudRedisClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert CloudRedisClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert CloudRedisClient._read_environment_variables() == (False, "never", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert CloudRedisClient._read_environment_variables() == (False, "always", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            CloudRedisClient._read_environment_variables()
-    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert CloudRedisClient._read_environment_variables() == (False, "auto", "foo.com")
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
-            assert CloudRedisClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
-            assert CloudRedisClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert CloudRedisClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-            assert CloudRedisClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert CloudRedisClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
-            assert CloudRedisClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert CloudRedisClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
-            assert CloudRedisClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert CloudRedisClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            with pytest.raises(ValueError):
-                CloudRedisClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            assert CloudRedisClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert CloudRedisClient._use_client_cert_effective() is False
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -286,40 +155,6 @@ def test__get_client_cert_source():
             assert CloudRedisClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert CloudRedisClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(CloudRedisClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisClient))
-@mock.patch.object(CloudRedisAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = CloudRedisClient._DEFAULT_UNIVERSE
-    default_endpoint = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert CloudRedisClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
-    assert CloudRedisClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert CloudRedisClient._get_api_endpoint(None, None, default_universe, "always") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
-    assert CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
-    assert CloudRedisClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert CloudRedisClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert CloudRedisClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert CloudRedisClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert CloudRedisClient._get_universe_domain(None, None) == CloudRedisClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        CloudRedisClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -704,6 +539,7 @@ def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
@@ -751,6 +587,7 @@ def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
@@ -930,6 +767,192 @@ def test_cloud_redis_client_client_options_from_dict():
             always_use_jwt_access=True,
             api_audience=None,
         )
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+@pytest.mark.parametrize("capabilities_enabled, expected_options_injected", [
+    pytest.param(True, True, id="otel_injection_enabled"),
+    pytest.param(False, False, id="otel_injection_disabled"),
+])
+def test_cloud_redis_client_otel_channel_injection(capabilities_enabled, expected_options_injected):
+    with (
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
+            return_value=capabilities_enabled,
+            autospec=True,
+        ) as mock_is_otel_enabled,
+        mock.patch.object(
+            transports.CloudRedisGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = CloudRedisClient(transport="grpc")
+
+        mock_is_otel_enabled.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        if expected_options_injected:
+            assert called_kwargs.get("client_options") == client._client_options
+        else:
+            assert not called_kwargs.get("client_options")
+
+
+def test_cloud_redis_grpc_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.CloudRedisGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        transport = transports.CloudRedisGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+def test_cloud_redis_grpc_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            _observability,
+            "get_otel_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_interceptor,
+        mock.patch.object(
+            transports.CloudRedisGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.CloudRedisGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_get_interceptor.assert_called_once_with(options)
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_otel_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_cloud_redis_grpc_transport_custom_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
+        return_value=mock_custom_channel,
+        create=True,
+    ) as mock_apply_interceptors:
+        transport = transports.CloudRedisGrpcTransport(
+            channel=mock_custom_channel,
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_custom_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_custom_channel
+
+
+def test_cloud_redis_grpc_asyncio_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with mock.patch.object(
+        transports.CloudRedisGrpcAsyncIOTransport,
+        "create_channel",
+        return_value=mock_channel,
+    ) as mock_create_channel:
+        transport = transports.CloudRedisGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        assert mock_create_channel.call_count == 1
+        assert mock_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+def test_cloud_redis_grpc_asyncio_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with (
+        mock.patch.object(
+            _observability,
+            "get_otel_async_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_async_interceptor,
+        mock.patch.object(
+            transports.CloudRedisGrpcAsyncIOTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ) as mock_create_channel,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.CloudRedisGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_get_async_interceptor.assert_called_once_with(options)
+        assert mock_create_channel.call_count == 1
+        assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+def test_cloud_redis_grpc_asyncio_transport_custom_channel():
+    mock_custom_channel = mock.Mock(spec=aio.Channel)
+
+    with mock.patch.object(
+        transports.CloudRedisGrpcAsyncIOTransport,
+        "create_channel",
+    ) as mock_create_channel:
+        transport = transports.CloudRedisGrpcAsyncIOTransport(
+            channel=mock_custom_channel,
+        )
+
+        assert mock_create_channel.call_count == 0
+        assert transport.grpc_channel == mock_custom_channel
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
@@ -2944,17 +2967,20 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_instances._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListInstances,
+        "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3001,13 +3027,6 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_instances_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_instances._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_instances_rest_flattened():
@@ -3177,15 +3196,17 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetInstance,
+        "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -3232,13 +3253,6 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_instance_rest_flattened():
@@ -3349,7 +3363,12 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     # verify fields with default values are dropped
     assert "instanceId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateInstance,
+        "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3359,10 +3378,8 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["instanceId"] = 'instance_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_instance._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("instance_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("instanceId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3413,13 +3430,6 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("instanceId", )) & set(("parent", "instanceId", "instance", )))
 
 
 def test_create_instance_rest_flattened():
@@ -3529,15 +3539,18 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateInstance,
+        "_BaseUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_instance._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask", ))
 
     # verify required fields with non-default values are left alone
 
@@ -3580,13 +3593,6 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask", )) & set(("updateMask", "instance", )))
 
 
 def test_update_instance_rest_flattened():
@@ -3695,15 +3701,17 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteInstance,
+        "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_instance._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -3747,13 +3755,6 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_delete_instance_rest_flattened():

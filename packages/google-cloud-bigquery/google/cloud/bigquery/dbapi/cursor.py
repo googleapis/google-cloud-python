@@ -17,8 +17,8 @@
 from __future__ import annotations
 
 import collections
-from collections import abc as collections_abc
 import re
+from collections import abc as collections_abc
 from typing import Optional
 
 try:
@@ -29,11 +29,9 @@ else:
     # Having BQ Storage available implies that pyarrow >=1.0.0 is available, too.
     _ARROW_COMPRESSION_SUPPORT = True
 
-from google.cloud.bigquery import job
-from google.cloud.bigquery.dbapi import _helpers
-from google.cloud.bigquery.dbapi import exceptions
 import google.cloud.exceptions  # type: ignore
-
+from google.cloud.bigquery import job
+from google.cloud.bigquery.dbapi import _helpers, exceptions
 
 # Per PEP 249: A 7-item sequence containing information describing one result
 # column. The first two items (name and type_code) are mandatory, the other
@@ -104,6 +102,15 @@ class Cursor(object):
     def close(self):
         """Mark the cursor as closed, preventing its further use."""
         self._closed = True
+
+        # Explicitly release references to query data and rows.
+        # This is important because these objects may hold references to underlying
+        # transports or gRPC streams (especially when using BQ Storage API).
+        # Clearing them ensures that resources can be garbage collected deterministically,
+        # preventing intermittent socket leaks (e.g., ESTABLISHED connections) in tests
+        # and long-running applications.
+        self._query_data = None
+        self._query_rows = None
 
     def _set_description(self, schema):
         """Set description from schema.

@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "Backup",
         "BackupFile",
         "CrossInstanceReplicationConfig",
+        "TokenAuthUser",
+        "AuthToken",
         "MaintenancePolicy",
         "WeeklyMaintenanceWindow",
         "MaintenanceSchedule",
@@ -66,6 +68,16 @@ __protobuf__ = proto.module(
         "ExportBackupRequest",
         "BackupInstanceRequest",
         "GetCertificateAuthorityRequest",
+        "ListTokenAuthUsersRequest",
+        "ListTokenAuthUsersResponse",
+        "GetTokenAuthUserRequest",
+        "ListAuthTokensRequest",
+        "ListAuthTokensResponse",
+        "GetAuthTokenRequest",
+        "AddTokenAuthUserRequest",
+        "DeleteTokenAuthUserRequest",
+        "AddAuthTokenRequest",
+        "DeleteAuthTokenRequest",
         "CertificateAuthority",
         "SharedRegionalCertificateAuthority",
         "GetSharedRegionalCertificateAuthorityRequest",
@@ -346,11 +358,14 @@ class Instance(proto.Message):
                 Authorization disabled.
             IAM_AUTH (2):
                 IAM basic authorization.
+            TOKEN_AUTH (3):
+                Token based authorization.
         """
 
         AUTHORIZATION_MODE_UNSPECIFIED = 0
         AUTH_DISABLED = 1
         IAM_AUTH = 2
+        TOKEN_AUTH = 3
 
     class TransitEncryptionMode(proto.Enum):
         r"""Possible in-transit encryption modes of the instance.
@@ -1500,6 +1515,105 @@ class CrossInstanceReplicationConfig(proto.Message):
     )
 
 
+class TokenAuthUser(proto.Message):
+    r"""Token based auth user for the instance.
+
+    Attributes:
+        name (str):
+            Identifier. Token based auth user name.
+        state (google.cloud.memorystore_v1.types.TokenAuthUser.State):
+            Output only. The state of the token based
+            auth user.
+    """
+
+    class State(proto.Enum):
+        r"""Represents the different states of a token based auth user.
+        New values may be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            ACTIVE (1):
+                The auth user is active.
+            CREATING (2):
+                The auth user is being created.
+            UPDATING (3):
+                The auth user is being updated.
+            DELETING (4):
+                The auth user is being deleted.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        UPDATING = 3
+        DELETING = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+
+
+class AuthToken(proto.Message):
+    r"""Auth token for the instance.
+
+    Attributes:
+        name (str):
+            Identifier. Name of the auth token.
+        token (str):
+            Output only. The auth token.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Create time of the auth token.
+        state (google.cloud.memorystore_v1.types.AuthToken.State):
+            Output only. The state of the auth token.
+    """
+
+    class State(proto.Enum):
+        r"""Represents the different states of an auth token.
+        New values may be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            ACTIVE (1):
+                The auth token is active.
+            CREATING (2):
+                The auth token is being created.
+            DELETING (3):
+                The auth token is being deleted.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        DELETING = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+
+
 class MaintenancePolicy(proto.Message):
     r"""Maintenance policy per instance.
 
@@ -2571,6 +2685,309 @@ class GetCertificateAuthorityRequest(proto.Message):
             authority. Format:
 
             projects/{project}/locations/{location}/instances/{instance}/certificateAuthority
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListTokenAuthUsersRequest(proto.Message):
+    r"""Request message for ``ListTokenAuthUsers``.
+
+    Attributes:
+        parent (str):
+            Required. The parent to list token auth users
+            from. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+        page_size (int):
+            Optional. The maximum number of items to return. The maximum
+            value is 1000; values above 1000 will be coerced to 1000. If
+            not specified, a default value of 1000 will be used by the
+            service. Regardless of the page_size value, the response may
+            include a partial list and a caller should only rely on
+            response's ``next_page_token`` to determine if there are
+            more token auth users left to be queried.
+        page_token (str):
+            Optional. The ``next_page_token`` value returned from a
+            previous ``ListTokenAuthUsers`` request, if any.
+        filter (str):
+            Optional. Expression for filtering results.
+        order_by (str):
+            Optional. Sort results by a defined order.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListTokenAuthUsersResponse(proto.Message):
+    r"""Response message for ``ListTokenAuthUsers``.
+
+    Attributes:
+        token_auth_users (MutableSequence[google.cloud.memorystore_v1.types.TokenAuthUser]):
+            A list of token auth users in the project.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+        unreachable (MutableSequence[str]):
+            Unordered list. Token auth users that could
+            not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    token_auth_users: MutableSequence["TokenAuthUser"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TokenAuthUser",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetTokenAuthUserRequest(proto.Message):
+    r"""Request message for ``GetTokenAuthUser``.
+
+    Attributes:
+        name (str):
+            Required. The name of token auth user for a basic auth
+            enabled instance. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListAuthTokensRequest(proto.Message):
+    r"""Request message for ``ListAuthTokens``.
+
+    Attributes:
+        parent (str):
+            Required. The parent to list auth tokens from. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+        page_size (int):
+            Optional. The maximum number of items to return. The maximum
+            value is 1000; values above 1000 will be coerced to 1000.
+
+            If not specified, a default value of 1000 will be used by
+            the service. Regardless of the page_size value, the response
+            may include a partial list and a caller should only rely on
+            response's ``next_page_token`` to determine if there are
+            more auth tokens left to be queried.
+        page_token (str):
+            Optional. The ``next_page_token`` value returned from a
+            previous ``ListAuthTokens`` request, if any.
+        filter (str):
+            Optional. Expression for filtering results.
+        order_by (str):
+            Optional. Sort results by a defined order.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListAuthTokensResponse(proto.Message):
+    r"""Response message for ``ListAuthTokens``.
+
+    Attributes:
+        auth_tokens (MutableSequence[google.cloud.memorystore_v1.types.AuthToken]):
+            A list of auth tokens in the project.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+        unreachable (MutableSequence[str]):
+            Unordered list. Auth tokens that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    auth_tokens: MutableSequence["AuthToken"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AuthToken",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetAuthTokenRequest(proto.Message):
+    r"""Request message for ``GetAuthToken``.
+
+    Attributes:
+        name (str):
+            Required. The name of token auth user for a token auth
+            enabled instance. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{auth_token}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AddTokenAuthUserRequest(proto.Message):
+    r"""Request message for ``AddTokenAuthUser``.
+
+    Attributes:
+        instance (str):
+            Required. The instance resource that this
+            token auth user will be added for. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+        token_auth_user (str):
+            Required. The name of the token auth user to
+            add.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    token_auth_user: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DeleteTokenAuthUserRequest(proto.Message):
+    r"""Request message for ``DeleteTokenAuthUser``.
+
+    Attributes:
+        name (str):
+            Required. The name of the token auth user to delete. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        force (bool):
+            Optional. If set to true, any auth tokens
+            from this user will also be deleted. Otherwise,
+            the request will only work if the user has no
+            auth tokens.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class AddAuthTokenRequest(proto.Message):
+    r"""Request message for ``AddAuthToken``.
+
+    Attributes:
+        token_auth_user (str):
+            Required. The name of the token auth user
+            resource that this token will be added for.
+        auth_token (google.cloud.memorystore_v1.types.AuthToken):
+            Required. The auth token to add.
+    """
+
+    token_auth_user: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    auth_token: "AuthToken" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AuthToken",
+    )
+
+
+class DeleteAuthTokenRequest(proto.Message):
+    r"""Request message for ``DeleteAuthToken``.
+
+    Attributes:
+        name (str):
+            Required. The name of the token auth user resource that this
+            token will be deleted from. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{name}
     """
 
     name: str = proto.Field(

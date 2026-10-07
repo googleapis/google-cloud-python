@@ -1020,7 +1020,6 @@ class RangeQueryParameter(_AbstractQueryParameter):
     ):
         self.name = name
         self.range_element_type = self._parse_range_element_type(range_element_type)
-        print(self.range_element_type.type_._type)
         self.start = start
         self.end = end
 

@@ -59,6 +59,8 @@ __protobuf__ = proto.module(
         "BatchUpdatePartitionsResponse",
         "ListPartitionsRequest",
         "ListPartitionsResponse",
+        "FailoverHiveCatalogRequest",
+        "FailoverHiveCatalogResponse",
     },
 )
 
@@ -1336,6 +1338,77 @@ class ListPartitionsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message="Partition",
+    )
+
+
+class FailoverHiveCatalogRequest(proto.Message):
+    r"""Request message for FailoverHiveCatalog.
+
+    Attributes:
+        name (str):
+            Required. The name of the catalog in the form
+            "projects/{project_id}/catalogs/{catalog_id}".
+        primary_replica (str):
+            Required. The region being assigned as the
+            new primary replica region. For example
+            "us-east1". This must be one of the replica
+            regions in the catalog's list of replicas marked
+            as a "secondary".
+        validate_only (bool):
+            Optional. If set, only validate the request, but do not
+            perform the update. This can be used to inspect the
+            replication_time at any time, including before performing a
+            fail-over.
+        conditional_failover_replication_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. If unset, wait for all data from
+            the source region to replicate to the new
+            primary region before completing the failover,
+            with no data loss (also called "soft failover").
+            If set, failover immediately, accepting the loss
+            of any data committed in the source region after
+            this timestamp, that has not yet replicated. If
+            any data committed before this time has not
+            replicated, the failover will not be performed
+            and an error will be returned (also called "hard
+            failover").
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    primary_replica: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    conditional_failover_replication_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class FailoverHiveCatalogResponse(proto.Message):
+    r"""Response message for FailoverHiveCatalog.
+
+    Attributes:
+        replication_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The min timestamp for which all namespaces and
+            table metadata have been replicated in the region specified
+            as the new primary_replica. Some resources may have been
+            replicated more recently than this timestamp. If empty, the
+            replica has just been created and has not yet been fully
+            initialized.
+    """
+
+    replication_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
 
 

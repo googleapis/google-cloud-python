@@ -1,6 +1,6 @@
 {% extends "_base.py.j2" %}
-
 {% block content %}
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
@@ -8,7 +8,7 @@ import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 import uuid
 {% endif %}
 {% if service.any_deprecated %}
@@ -21,6 +21,12 @@ from {{package_path}} import gapic_version as package_version
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+{% if service.has_resumable_upload_methods %}
+from google.api_core.resumable_transfer import ResumableUploadConfig
+{% endif %}
+{% if has_auto_populated_fields %}
+from {{package_path}}._compat import setup_request_id
+{% endif %}
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
@@ -286,6 +292,9 @@ class {{ service.async_client_name }}:
             requests: Optional[AsyncIterator[{{ method.input.ident }}]] = None,
             *,
             {% endif %}
+            {% if method.is_resumable_upload %}
+            config: Optional[ResumableUploadConfig] = None,
+            {% endif %}
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             {{ shared_macros.client_method_metadata_argument()|indent(8) }} = {{ shared_macros.client_method_metadata_default_value() }},
@@ -320,6 +329,10 @@ class {{ service.async_client_name }}:
             requests (AsyncIterator[`{{ method.input.ident.sphinx }}`]):
                 The request object AsyncIterator.{{ " " }}
                 {{- method.input.meta.doc|rst(width=72, indent=16, nl=False) }}
+            {% endif %}
+            {% if method.is_resumable_upload %}
+            config (Optional[google.api_core.resumable_transfer.ResumableUploadConfig]):
+                Optional configuration for the resumable upload session.
             {% endif %}
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -411,6 +424,10 @@ class {{ service.async_client_name }}:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+            {% if method.is_resumable_upload %}
+            config=config,
+            start_retry=retry,
+            {% endif %}
         )
         {% if method.lro %}
 

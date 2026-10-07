@@ -88,7 +88,7 @@ def get_pytest_env_vars() -> Dict[str, str]:
 
 # DO NOT EDIT - automatically generated.
 # All versions used to test samples.
-ALL_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 # Any default versions that should be ignored.
 IGNORED_VERSIONS = TEST_CONFIG["ignored_versions"]
@@ -120,7 +120,6 @@ nox.options.error_on_missing_interpreters = True
 # ['E226', 'W504', 'E126', 'E123', 'W503', 'E24', 'E704', 'E121']
 FLAKE8_COMMON_ARGS = [
     "--show-source",
-    "--builtin=gettext",
     "--max-complexity=20",
     "--exclude=.nox,.cache,env,lib,generated_pb2,*_pb2.py,*_pb2_grpc.py",
     "--ignore=E121,E123,E126,E203,E226,E24,E266,E501,E704,W503,W504,I202",

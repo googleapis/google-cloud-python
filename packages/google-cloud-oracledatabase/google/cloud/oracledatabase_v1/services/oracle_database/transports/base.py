@@ -71,9 +71,7 @@ from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class OracleDatabaseTransport(abc.ABC):
@@ -479,6 +477,16 @@ class OracleDatabaseTransport(abc.ABC):
             ),
             self.failover_autonomous_database: gapic_v1.method.wrap_method(
                 self.failover_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.refresh_autonomous_database: gapic_v1.method.wrap_method(
+                self.refresh_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_autonomous_database_refreshable_clones: gapic_v1.method.wrap_method(
+                self.get_autonomous_database_refreshable_clones,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1350,6 +1358,27 @@ class OracleDatabaseTransport(abc.ABC):
     ) -> Callable[
         [oracledatabase.FailoverAutonomousDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def refresh_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.RefreshAutonomousDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_autonomous_database_refreshable_clones(
+        self,
+    ) -> Callable[
+        [oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest],
+        Union[
+            oracledatabase.AutonomousDatabaseRefreshableClones,
+            Awaitable[oracledatabase.AutonomousDatabaseRefreshableClones],
+        ],
     ]:
         raise NotImplementedError()
 

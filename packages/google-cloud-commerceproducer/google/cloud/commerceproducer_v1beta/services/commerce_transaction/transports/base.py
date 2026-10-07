@@ -44,9 +44,7 @@ from google.cloud.commerceproducer_v1beta.types import (
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CommerceTransactionTransport(abc.ABC):
@@ -208,6 +206,11 @@ class CommerceTransactionTransport(abc.ABC):
                     ),
                     deadline=60.0,
                 ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.resolve_amendment_target: gapic_v1.method.wrap_method(
+                self.resolve_amendment_target,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -443,6 +446,18 @@ class CommerceTransactionTransport(abc.ABC):
     ) -> Callable[
         [commerce_transaction.GetPrivateOfferRequest],
         Union[private_offer.PrivateOffer, Awaitable[private_offer.PrivateOffer]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resolve_amendment_target(
+        self,
+    ) -> Callable[
+        [commerce_transaction.ResolveAmendmentTargetRequest],
+        Union[
+            commerce_transaction.ResolveAmendmentTargetResponse,
+            Awaitable[commerce_transaction.ResolveAmendmentTargetResponse],
+        ],
     ]:
         raise NotImplementedError()
 

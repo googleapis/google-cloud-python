@@ -16,18 +16,23 @@ import os
 
 import pytest
 
+from google.cloud.spanner_v1 import _helpers
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
 
-# Disable builtin metrics to avoid background thread noise and 401 errors in unit tests
+# Disable builtin metrics and AFE server timing in unit tests
 os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "true"
+os.environ["SPANNER_DISABLE_AFE_SERVER_TIMING"] = "true"
+_helpers.ENABLE_AFE_SERVER_TIMING = False
 
 
 @pytest.fixture(autouse=True)
 def reset_metrics_singletons(monkeypatch):
     # Reset singletons and env var before test to avoid state pollution
     monkeypatch.setenv("SPANNER_DISABLE_BUILTIN_METRICS", "true")
+    monkeypatch.setenv("SPANNER_DISABLE_AFE_SERVER_TIMING", "true")
+    monkeypatch.setattr(_helpers, "ENABLE_AFE_SERVER_TIMING", False)
     SpannerMetricsTracerFactory._metrics_tracer_factory = None
     SpannerMetricsTracerFactory._current_metrics_tracer_ctx.set(None)
     yield

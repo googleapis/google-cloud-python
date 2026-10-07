@@ -18,12 +18,13 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import environment_vars
-from google.auth import exceptions
-from google.auth import impersonated_credentials
-from google.auth import transport
-from google.oauth2 import id_token
-from google.oauth2 import service_account
+from google.auth import (
+    environment_vars,
+    exceptions,
+    impersonated_credentials,
+    transport,
+)
+from google.oauth2 import id_token, service_account
 
 SERVICE_ACCOUNT_FILE = os.path.join(
     os.path.dirname(__file__), "../data/service_account.json"
@@ -86,26 +87,64 @@ def test_verify_token(_fetch_certs, decode):
 
 
 @mock.patch("google.oauth2.id_token._fetch_certs", autospec=True)
-@mock.patch("jwt.PyJWKClient", autospec=True)
+@mock.patch("jwt.api_jwk.PyJWKSet", autospec=True)
+@mock.patch("jwt.get_unverified_header", autospec=True)
 @mock.patch("jwt.decode", autospec=True)
-def test_verify_token_jwk(decode, py_jwk, _fetch_certs):
+def test_verify_token_jwk(decode, get_unverified_header, py_jwk_set, _fetch_certs):
     certs_url = "abc123"
     data = {"keys": [{"alg": "RS256"}]}
     _fetch_certs.return_value = data
+    get_unverified_header.return_value = {"kid": "mock-kid"}
+
+    mock_key = mock.MagicMock()
+    mock_key.key_id = "mock-kid"
+    mock_key.public_key_use = "sig"
+    mock_key.key = mock.sentinel.key
+    mock_key.algorithm_name = "mock-alg"
+    py_jwk_set.from_dict.return_value.keys = [mock_key]
     result = id_token.verify_token(
         mock.sentinel.token, mock.sentinel.request, certs_url=certs_url
     )
     assert result == decode.return_value
-    py_jwk.assert_called_once_with(certs_url)
-    signing_key = py_jwk.return_value.get_signing_key_from_jwt
+    py_jwk_set.from_dict.assert_called_once_with(data)
+    get_unverified_header.assert_called_once_with(mock.sentinel.token)
+
     _fetch_certs.assert_called_once_with(mock.sentinel.request, certs_url)
-    signing_key.assert_called_once_with(mock.sentinel.token)
     decode.assert_called_once_with(
         mock.sentinel.token,
-        signing_key.return_value.key,
-        algorithms=[signing_key.return_value.algorithm_name],
+        mock.sentinel.key,
+        algorithms=["mock-alg"],
         audience=None,
     )
+
+
+@mock.patch("google.oauth2.id_token._fetch_certs", autospec=True)
+@mock.patch("jwt.api_jwk.PyJWKSet", autospec=True)
+@mock.patch("jwt.get_unverified_header", autospec=True)
+@mock.patch("jwt.decode", autospec=True)
+def test_verify_token_jwk_missing_kid(
+    decode, get_unverified_header, py_jwk_set, _fetch_certs
+):
+    from jwt.exceptions import PyJWKClientError
+
+    certs_url = "abc123"
+    data = {"keys": [{"alg": "RS256"}]}
+    _fetch_certs.return_value = data
+    get_unverified_header.return_value = {"kid": "mock-kid"}
+
+    mock_key = mock.MagicMock()
+    mock_key.key_id = "different-kid"
+    mock_key.public_key_use = "sig"
+    mock_key.key = mock.sentinel.key
+    mock_key.algorithm_name = "mock-alg"
+    py_jwk_set.from_dict.return_value.keys = [mock_key]
+
+    with pytest.raises(
+        PyJWKClientError, match='Unable to find a signing key that matches: "mock-kid"'
+    ):
+        id_token.verify_token(
+            mock.sentinel.token, mock.sentinel.request, certs_url=certs_url
+        )
 
 
 @mock.patch("google.auth.jwt.decode", autospec=True)
@@ -246,7 +285,18 @@ def test_fetch_id_token_credentials_optional_request(monkeypatch):
             mock_request.assert_called()
 
 
-def test_fetch_id_token_credentials_from_metadata_server(monkeypatch):
+@pytest.mark.parametrize(
+    "call_kwargs,expected_bind_id_token",
+    [
+        ({}, None),
+        ({"bind_id_token": None}, None),
+        ({"bind_id_token": True}, True),
+        ({"bind_id_token": False}, False),
+    ],
+)
+def test_fetch_id_token_credentials_from_metadata_server(
+    monkeypatch, call_kwargs, expected_bind_id_token
+):
     monkeypatch.delenv(environment_vars.CREDENTIALS, raising=False)
 
     mock_req = mock.Mock()
@@ -255,24 +305,39 @@ def test_fetch_id_token_credentials_from_metadata_server(monkeypatch):
         with mock.patch(
             "google.auth.compute_engine.IDTokenCredentials.__init__", return_value=None
         ) as mock_init:
-            id_token.fetch_id_token_credentials(ID_TOKEN_AUDIENCE, request=mock_req)
+            id_token.fetch_id_token_credentials(
+                ID_TOKEN_AUDIENCE, request=mock_req, **call_kwargs
+            )
         mock_init.assert_called_once_with(
-            mock_req, ID_TOKEN_AUDIENCE, use_metadata_identity_endpoint=True
+            mock_req,
+            ID_TOKEN_AUDIENCE,
+            use_metadata_identity_endpoint=True,
+            bind_id_token=expected_bind_id_token,
         )
 
 
-def test_fetch_id_token_credentials_from_explicit_cred_json_file(monkeypatch):
+@pytest.mark.parametrize("bind_id_token", [None, True, False])
+def test_fetch_id_token_credentials_from_explicit_cred_json_file(
+    monkeypatch, bind_id_token
+):
     monkeypatch.setenv(environment_vars.CREDENTIALS, SERVICE_ACCOUNT_FILE)
 
-    cred = id_token.fetch_id_token_credentials(ID_TOKEN_AUDIENCE)
+    cred = id_token.fetch_id_token_credentials(
+        ID_TOKEN_AUDIENCE, bind_id_token=bind_id_token
+    )
     assert isinstance(cred, service_account.IDTokenCredentials)
     assert cred._target_audience == ID_TOKEN_AUDIENCE
 
 
-def test_fetch_id_token_credentials_from_impersonated_cred_json_file(monkeypatch):
+@pytest.mark.parametrize("bind_id_token", [None, True, False])
+def test_fetch_id_token_credentials_from_impersonated_cred_json_file(
+    monkeypatch, bind_id_token
+):
     monkeypatch.setenv(environment_vars.CREDENTIALS, IMPERSONATED_SERVICE_ACCOUNT_FILE)
 
-    cred = id_token.fetch_id_token_credentials(ID_TOKEN_AUDIENCE)
+    cred = id_token.fetch_id_token_credentials(
+        ID_TOKEN_AUDIENCE, bind_id_token=bind_id_token
+    )
     assert isinstance(cred, impersonated_credentials.IDTokenCredentials)
     assert cred._target_audience == ID_TOKEN_AUDIENCE
 
@@ -334,7 +399,16 @@ def test_fetch_id_token_credentials_invalid_cred_path(monkeypatch):
     )
 
 
-def test_fetch_id_token(monkeypatch):
+@pytest.mark.parametrize(
+    "call_kwargs,expected_bind_id_token",
+    [
+        ({}, None),
+        ({"bind_id_token": None}, None),
+        ({"bind_id_token": True}, True),
+        ({"bind_id_token": False}, False),
+    ],
+)
+def test_fetch_id_token(call_kwargs, expected_bind_id_token):
     mock_cred = mock.MagicMock()
     mock_cred.token = "token"
 
@@ -343,7 +417,9 @@ def test_fetch_id_token(monkeypatch):
     with mock.patch(
         "google.oauth2.id_token.fetch_id_token_credentials", return_value=mock_cred
     ) as mock_fetch:
-        token = id_token.fetch_id_token(mock_req, ID_TOKEN_AUDIENCE)
-    mock_fetch.assert_called_once_with(ID_TOKEN_AUDIENCE, request=mock_req)
+        token = id_token.fetch_id_token(mock_req, ID_TOKEN_AUDIENCE, **call_kwargs)
+    mock_fetch.assert_called_once_with(
+        ID_TOKEN_AUDIENCE, request=mock_req, bind_id_token=expected_bind_id_token
+    )
     mock_cred.refresh.assert_called_once_with(mock_req)
     assert token == "token"

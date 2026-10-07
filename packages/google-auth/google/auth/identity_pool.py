@@ -46,9 +46,7 @@ import json
 import os
 from typing import NamedTuple
 
-from google.auth import _helpers
-from google.auth import exceptions
-from google.auth import external_account
+from google.auth import _helpers, exceptions, external_account
 from google.auth.transport import _mtls_helper
 
 
@@ -277,7 +275,7 @@ class Credentials(external_account.Credentials):
         credential_source=None,
         subject_token_supplier=None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """Instantiates an external account credentials object from a file/URL.
 
@@ -335,7 +333,7 @@ class Credentials(external_account.Credentials):
             token_url=token_url,
             credential_source=credential_source,
             *args,
-            **kwargs
+            **kwargs,
         )
         if credential_source is None and subject_token_supplier is None:
             raise exceptions.InvalidValue(
@@ -406,12 +404,17 @@ class Credentials(external_account.Credentials):
                 'The credential is not configured to use mtls requests. The credential should include a "certificate" section in the credential source.'
             )
         else:
-            return _mtls_helper._get_workload_cert_and_key_paths(
+            cert_path, key_path, _ = _mtls_helper._get_workload_cert_and_key_paths(
                 self._certificate_config_location
             )
+            return cert_path, key_path
 
     def _get_cert_bytes(self):
         cert_path, _ = self._get_mtls_cert_and_key_paths()
+        if cert_path is None:
+            raise exceptions.ClientCertError(
+                "Workload certificate configuration could not be found or does not contain workload certificate paths."
+            )
         return _mtls_helper._read_cert_file(cert_path)
 
     def _mtls_required(self):
@@ -568,8 +571,14 @@ class Credentials(external_account.Credentials):
         cert_fingerprint = None
         # Check if the credential is X.509 based.
         if self._credential_source_certificate is not None:
-            cert_bytes = self._get_cert_bytes()
-            cert = _agent_identity_utils.parse_certificate(cert_bytes)
+            try:
+                cert_bytes = self._get_cert_bytes()
+                cert = _agent_identity_utils.parse_certificate(cert_bytes)
+            except (exceptions.ClientCertError, OSError, ValueError) as e:
+                raise exceptions.RefreshError(
+                    "Failed to retrieve or parse certificate for external"
+                    " account credentials"
+                ) from e
             if _agent_identity_utils.should_request_bound_token(cert):
                 cert_fingerprint = (
                     _agent_identity_utils.calculate_certificate_fingerprint(cert)

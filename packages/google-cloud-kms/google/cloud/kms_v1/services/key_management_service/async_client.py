@@ -109,6 +109,10 @@ class KeyManagementServiceAsyncClient:
     parse_crypto_key_version_path = staticmethod(
         KeyManagementServiceClient.parse_crypto_key_version_path
     )
+    ekm_connection_path = staticmethod(KeyManagementServiceClient.ekm_connection_path)
+    parse_ekm_connection_path = staticmethod(
+        KeyManagementServiceClient.parse_ekm_connection_path
+    )
     import_job_path = staticmethod(KeyManagementServiceClient.import_job_path)
     parse_import_job_path = staticmethod(
         KeyManagementServiceClient.parse_import_job_path
@@ -5382,9 +5386,7 @@ class KeyManagementServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("KeyManagementServiceAsyncClient",)

@@ -35,9 +35,7 @@ from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin, instan
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class BigtableInstanceAdminTransport(abc.ABC):
@@ -282,6 +280,21 @@ class BigtableInstanceAdminTransport(abc.ABC):
             self.delete_cluster: gapic_v1.method.wrap_method(
                 self.delete_cluster,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_memory_layer: gapic_v1.method.wrap_method(
+                self.update_memory_layer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_memory_layers: gapic_v1.method.wrap_method(
+                self.list_memory_layers,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_memory_layer: gapic_v1.method.wrap_method(
+                self.get_memory_layer,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_app_profile: gapic_v1.method.wrap_method(
@@ -565,6 +578,36 @@ class BigtableInstanceAdminTransport(abc.ABC):
     ) -> Callable[
         [bigtable_instance_admin.DeleteClusterRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_memory_layer(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.UpdateMemoryLayerRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_memory_layers(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.ListMemoryLayersRequest],
+        Union[
+            bigtable_instance_admin.ListMemoryLayersResponse,
+            Awaitable[bigtable_instance_admin.ListMemoryLayersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_memory_layer(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.GetMemoryLayerRequest],
+        Union[instance.MemoryLayer, Awaitable[instance.MemoryLayer]],
     ]:
         raise NotImplementedError()
 

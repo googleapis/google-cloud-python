@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -575,6 +576,9 @@ class SessionOutput(proto.Message):
             during the processing of the input. Only populated in the
             last SessionOutput (with ``turn_completed=true``) for each
             turn.
+        context (MutableSequence[google.protobuf.any_pb2.Any]):
+            Context messages for external supervision
+            guardrails.
     """
 
     class DiagnosticInfo(proto.Message):
@@ -654,6 +658,11 @@ class SessionOutput(proto.Message):
         proto.MESSAGE,
         number=7,
         message=DiagnosticInfo,
+    )
+    context: MutableSequence[any_pb2.Any] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=any_pb2.Any,
     )
 
 
