@@ -491,10 +491,10 @@ def _build_token_request_options(metrics_header_value, bind_token=True):
 
     Args:
         metrics_header_value (str): Value for the x-goog-api-client header.
-        bind_token (bool): Whether to bind the token to the agentic
+        bind_token (bool): Whether to bind the token to the Agent Identity
             certificate. Defaults to ``True``. If ``False``, returns a ``GET``
             request without reading the certificate. If ``True``, requests a
-            bound token via ``POST`` when a valid agentic certificate is
+            bound token via ``POST`` when a valid Agent Identity certificate is
             present and token binding is enabled.
 
     Returns:

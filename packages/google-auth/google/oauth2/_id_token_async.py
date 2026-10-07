@@ -226,9 +226,9 @@ async def fetch_id_token(request, audience, bind_id_token=None):
         bind_id_token (Optional[bool]): Controls whether to request a
             certificate-bound ID token from the metadata server identity
             endpoint. If ``True``, requests a bound token whenever a valid
-            agentic certificate is available and token binding is not disabled
-            via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back to an
-            unbound token otherwise (or raising
+            Agent Identity certificate is available and token binding is not
+            disabled via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back
+            to an unbound token otherwise (or raising
             :class:`~google.auth.exceptions.RefreshError` if a configured
             certificate is not found after retries). If ``False``, always
             requests an unbound token. If ``None`` (default), token binding is
