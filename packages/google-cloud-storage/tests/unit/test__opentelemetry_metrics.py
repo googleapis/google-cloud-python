@@ -36,7 +36,16 @@ def test_opentelemetry_import_error_on_load(monkeypatch):
             importlib.reload(_opentelemetry_metrics)
             m.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
             assert _opentelemetry_metrics.HAS_OPENTELEMETRY_METRICS is False
-            assert _opentelemetry_metrics.get_meter() is None
+            assert (
+                _opentelemetry_metrics.is_metrics_enabled(enable_metrics=True) is False
+            )
+            assert (
+                _opentelemetry_metrics.is_advanced_metrics_enabled(
+                    enable_advanced_metrics=True
+                )
+                is False
+            )
+            assert _opentelemetry_metrics.get_meter(enable_metrics=True) is None
     finally:
         importlib.reload(_opentelemetry_metrics)
 
@@ -91,10 +100,11 @@ def test_dev_gate_locked_disables_metrics(monkeypatch):
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS", "true")
 
     assert _opentelemetry_metrics.is_metrics_enabled() is False
-    assert _opentelemetry_metrics.is_metrics_enabled(client_setting=True) is False
+    assert _opentelemetry_metrics.is_metrics_enabled(enable_metrics=True) is False
     assert _opentelemetry_metrics.is_advanced_metrics_enabled() is False
     assert (
-        _opentelemetry_metrics.is_advanced_metrics_enabled(client_setting=True) is False
+        _opentelemetry_metrics.is_advanced_metrics_enabled(enable_advanced_metrics=True)
+        is False
     )
 
 
@@ -125,21 +135,25 @@ def test_client_setting_overrides_env_var(monkeypatch):
 
     # Client disables while env var is True
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS", "true")
-    assert _opentelemetry_metrics.is_metrics_enabled(client_setting=False) is False
+    assert _opentelemetry_metrics.is_metrics_enabled(enable_metrics=False) is False
 
     # Client enables while env var is False
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS", "false")
-    assert _opentelemetry_metrics.is_metrics_enabled(client_setting=True) is True
+    assert _opentelemetry_metrics.is_metrics_enabled(enable_metrics=True) is True
 
 
 def test_non_boolean_client_setting_raises_type_error():
     """Passing a non-boolean setting such as 'false' must raise TypeError."""
     # Argument validation executes before the _ENABLE_METRICS_DEV_GATE check.
-    with pytest.raises(TypeError, match="client_setting must be a boolean or None"):
-        _opentelemetry_metrics.is_metrics_enabled(client_setting="false")  # type: ignore[arg-type]
+    with pytest.raises(TypeError, match="enable_metrics must be a boolean or None"):
+        _opentelemetry_metrics.is_metrics_enabled(enable_metrics="false")  # type: ignore[arg-type]
 
-    with pytest.raises(TypeError, match="client_setting must be a boolean or None"):
-        _opentelemetry_metrics.is_advanced_metrics_enabled(client_setting="false")  # type: ignore[arg-type]
+    with pytest.raises(
+        TypeError, match="enable_advanced_metrics must be a boolean or None"
+    ):
+        _opentelemetry_metrics.is_advanced_metrics_enabled(
+            enable_advanced_metrics="false"  # type: ignore[arg-type]
+        )
 
 
 def test_advanced_metrics_independent_of_base_metrics(monkeypatch):
@@ -150,9 +164,10 @@ def test_advanced_metrics_independent_of_base_metrics(monkeypatch):
 
     assert _opentelemetry_metrics.is_metrics_enabled() is False
     assert _opentelemetry_metrics.is_advanced_metrics_enabled() is True
-    assert _opentelemetry_metrics.is_metrics_enabled(client_setting=False) is False
+    assert _opentelemetry_metrics.is_metrics_enabled(enable_metrics=False) is False
     assert (
-        _opentelemetry_metrics.is_advanced_metrics_enabled(client_setting=True) is True
+        _opentelemetry_metrics.is_advanced_metrics_enabled(enable_advanced_metrics=True)
+        is True
     )
 
 
@@ -174,13 +189,16 @@ def test_advanced_metrics_client_setting_overrides_env_var(monkeypatch):
     # Client enables while debug env var is False
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS", "false")
     assert (
-        _opentelemetry_metrics.is_advanced_metrics_enabled(client_setting=True) is True
+        _opentelemetry_metrics.is_advanced_metrics_enabled(enable_advanced_metrics=True)
+        is True
     )
 
     # Client disables while debug env var is True
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS", "true")
     assert (
-        _opentelemetry_metrics.is_advanced_metrics_enabled(client_setting=False)
+        _opentelemetry_metrics.is_advanced_metrics_enabled(
+            enable_advanced_metrics=False
+        )
         is False
     )
 
@@ -195,6 +213,8 @@ def test_otel_missing_disables_metrics(monkeypatch):
     assert _opentelemetry_metrics.is_metrics_enabled() is False
     assert _opentelemetry_metrics.is_advanced_metrics_enabled() is False
     assert _opentelemetry_metrics.get_meter() is None
+    assert _opentelemetry_metrics.get_meter(enable_metrics=True) is None
+    assert _opentelemetry_metrics.get_meter(enable_advanced_metrics=True) is None
 
 
 def test_get_common_attributes():

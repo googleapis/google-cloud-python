@@ -78,18 +78,18 @@ def _parse_bool_env(name: str, default: bool = False) -> bool:
     return default
 
 
-def is_metrics_enabled(client_setting: Optional[bool] = None) -> bool:
+def is_metrics_enabled(enable_metrics: Optional[bool] = None) -> bool:
     """Evaluates whether standard GCS metrics should be recorded.
 
     Args:
-        client_setting: Optional boolean configured on the client instance.
+        enable_metrics: Optional boolean configured on the client instance.
             Takes precedence over the environment variable if specified.
 
     Returns:
         bool: True if metrics recording is enabled, False otherwise.
     """
-    if client_setting is not None and not isinstance(client_setting, bool):
-        raise TypeError("client_setting must be a boolean or None.")
+    if enable_metrics is not None and not isinstance(enable_metrics, bool):
+        raise TypeError("enable_metrics must be a boolean or None.")
 
     if not HAS_OPENTELEMETRY_METRICS:
         return False
@@ -97,26 +97,29 @@ def is_metrics_enabled(client_setting: Optional[bool] = None) -> bool:
     if not _ENABLE_METRICS_DEV_GATE:
         return False
 
-    if client_setting is not None:
-        return client_setting
+    if enable_metrics is not None:
+        return enable_metrics
 
     return _parse_bool_env(ENABLE_OTEL_METRICS_ENV_VAR, _DEFAULT_ENABLE_METRICS)
 
 
 def is_advanced_metrics_enabled(
-    client_setting: Optional[bool] = None,
+    enable_advanced_metrics: Optional[bool] = None,
 ) -> bool:
     """Evaluates whether high-frequency debug metrics should be recorded.
 
     Args:
-        client_setting: Optional boolean configured on the client instance.
-            Takes precedence over the environment variable if specified.
+        enable_advanced_metrics: Optional boolean configured on the client
+            instance. Takes precedence over the environment variable if
+            specified.
 
     Returns:
         bool: True if advanced metrics recording is enabled, False otherwise.
     """
-    if client_setting is not None and not isinstance(client_setting, bool):
-        raise TypeError("client_setting must be a boolean or None.")
+    if enable_advanced_metrics is not None and not isinstance(
+        enable_advanced_metrics, bool
+    ):
+        raise TypeError("enable_advanced_metrics must be a boolean or None.")
 
     if not HAS_OPENTELEMETRY_METRICS:
         return False
@@ -124,8 +127,8 @@ def is_advanced_metrics_enabled(
     if not _ENABLE_METRICS_DEV_GATE:
         return False
 
-    if client_setting is not None:
-        return client_setting
+    if enable_advanced_metrics is not None:
+        return enable_advanced_metrics
 
     return _parse_bool_env(
         ENABLE_OTEL_DEBUG_METRICS_ENV_VAR, _DEFAULT_ENABLE_DEBUG_METRICS
@@ -153,7 +156,20 @@ def get_meter(
     enable_advanced_metrics: Optional[bool] = None,
     meter_provider: Optional[Any] = None,
 ) -> Optional[Any]:
-    """Returns the OpenTelemetry Meter for Google Cloud Storage."""
+    """Returns the OpenTelemetry Meter for Google Cloud Storage.
+
+    Args:
+        enable_metrics: Optional boolean configured on the client instance for
+            standard metrics.
+        enable_advanced_metrics: Optional boolean configured on the client
+            instance for advanced debug metrics.
+        meter_provider: Optional custom OpenTelemetry MeterProvider instance.
+            Defaults to the global MeterProvider if None.
+
+    Returns:
+        Optional[Any]: The OpenTelemetry Meter instance if standard or advanced
+            metrics are enabled, or None otherwise.
+    """
     if not (
         is_metrics_enabled(enable_metrics)
         or is_advanced_metrics_enabled(enable_advanced_metrics)
