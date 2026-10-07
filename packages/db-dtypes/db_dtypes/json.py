@@ -113,7 +113,7 @@ class JSONArray(arrays.ArrowExtensionArray):
         """
         if pa_array.type != self._dtype.pyarrow_dtype:
             return arrays.ArrowExtensionArray(pa_array)
-        return super()._from_pyarrow_array(pa_array)
+        return super()._from_pyarrow_array(pa_array)  # type: ignore[misc]
 
     def _cast_pointwise_result(self, values):
         """Cast results of pointwise operations (e.g. loc expansion with dicts)
@@ -125,7 +125,7 @@ class JSONArray(arrays.ArrowExtensionArray):
         try:
             return self._from_sequence(values, dtype=self.dtype)
         except Exception:
-            return super()._cast_pointwise_result(values)
+            return super()._cast_pointwise_result(values)  # type: ignore[misc]
 
     @classmethod
     def _box_pa(
