@@ -17,7 +17,7 @@ Provides helper logic used across samples
 from google.api_core import exceptions
 from google.api_core.retry import Retry, if_exception_type
 
-from google.cloud import bigtable
+from google.cloud import bigtable, bigtable_admin
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable_admin_v2.types import ColumnFamily as ColumnFamily_pb
 
@@ -101,5 +101,12 @@ def wait_for_table(table):
     Because this method is wrapped with an api_core.Retry decorator, it will
     retry with backoff if the table is not ready
     """
-    if not table.exists():
-        raise exceptions.NotFound
+    if hasattr(table, "exists"):
+        if not table.exists():
+            raise exceptions.NotFound
+    else:
+        table_path = table.table_name if hasattr(table, "table_name") else str(table)
+        admin_client = bigtable_admin.BigtableTableAdminClient()
+        admin_client.get_table(
+            name=table_path, view=bigtable_admin.Table.View.NAME_ONLY
+        )
