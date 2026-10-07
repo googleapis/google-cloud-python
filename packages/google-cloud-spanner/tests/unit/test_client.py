@@ -639,6 +639,8 @@ class TestClient(unittest.TestCase):
     def test_list_instance_configs(self):
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceConfig as InstanceConfigPB,
+        )
+        from google.cloud.spanner_admin_instance_v1 import (
             ListInstanceConfigsRequest,
             ListInstanceConfigsResponse,
         )
@@ -685,6 +687,8 @@ class TestClient(unittest.TestCase):
     def test_list_instance_configs_w_options(self):
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceConfig as InstanceConfigPB,
+        )
+        from google.cloud.spanner_admin_instance_v1 import (
             ListInstanceConfigsRequest,
             ListInstanceConfigsResponse,
         )
@@ -761,6 +765,8 @@ class TestClient(unittest.TestCase):
     def test_list_instances(self):
         from google.cloud.spanner_admin_instance_v1 import (
             Instance as InstancePB,
+        )
+        from google.cloud.spanner_admin_instance_v1 import (
             ListInstancesRequest,
             ListInstancesResponse,
         )

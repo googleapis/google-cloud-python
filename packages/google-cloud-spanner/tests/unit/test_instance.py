@@ -598,6 +598,8 @@ class TestInstance(unittest.TestCase):
     def test_list_databases(self):
         from google.cloud.spanner_admin_database_v1 import (
             Database as DatabasePB,
+        )
+        from google.cloud.spanner_admin_database_v1 import (
             ListDatabasesRequest,
             ListDatabasesResponse,
         )
@@ -721,6 +723,8 @@ class TestInstance(unittest.TestCase):
     def test_list_backups_defaults(self):
         from google.cloud.spanner_admin_database_v1 import (
             Backup as BackupPB,
+        )
+        from google.cloud.spanner_admin_database_v1 import (
             ListBackupsRequest,
             ListBackupsResponse,
         )
@@ -761,6 +765,8 @@ class TestInstance(unittest.TestCase):
     def test_list_backups_w_options(self):
         from google.cloud.spanner_admin_database_v1 import (
             Backup as BackupPB,
+        )
+        from google.cloud.spanner_admin_database_v1 import (
             ListBackupsRequest,
             ListBackupsResponse,
         )
