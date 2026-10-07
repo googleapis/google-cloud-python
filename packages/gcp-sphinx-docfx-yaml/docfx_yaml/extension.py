@@ -29,7 +29,7 @@ import re
 import shutil
 from collections import defaultdict
 from collections.abc import Mapping, MutableSet, Sequence
-from functools import partial
+from functools import lru_cache, partial
 from itertools import chain, zip_longest
 from pathlib import Path
 from typing import Any, Iterable
@@ -1033,6 +1033,35 @@ def _extract_type_name(annotation: Any) -> str:
     return type_name
 
 
+@lru_cache(maxsize=512)
+def _get_class_lines(full_path: str) -> dict[str, int]:
+    """Parses a file once and maps class qualnames to their starting line numbers."""
+    lines: dict[str, int] = {}
+
+    def _visit(node: ast.AST, prefix: str = "") -> None:
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, ast.ClassDef):
+                qual = f"{prefix}{child.name}"
+                lines.setdefault(
+                    qual,
+                    child.decorator_list[0].lineno
+                    if child.decorator_list
+                    else child.lineno,
+                )
+                _visit(child, f"{qual}.")
+            elif isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                _visit(child, f"{prefix}{child.name}.<locals>.")
+            else:
+                _visit(child, prefix)
+
+    try:
+        with open(full_path, "rb") as f:
+            _visit(ast.parse(f.read()))
+    except Exception:
+        pass
+    return lines
+
+
 def _create_datam(
     app: sphinx.application.Sphinx,
     cls: str | None,
@@ -1188,7 +1217,12 @@ def _create_datam(
 
         # Make relative
         path = path.replace(os.sep, "", 1)
-        start_line = inspect.getsourcelines(obj)[1]
+        unwrapped = inspect.unwrap(obj)
+        start_line = (
+            _get_class_lines(full_path).get(getattr(unwrapped, "__qualname__", ""), 0)
+            if inspect.isclass(unwrapped)
+            else 0
+        ) or inspect.getsourcelines(obj)[1]
 
         path = _update_friendly_package_name(path)
 
@@ -1483,6 +1517,7 @@ def _reformat_pattern(code: str, pattern: str) -> str:
     return code
 
 
+@lru_cache(maxsize=4096)
 def format_code(code: str) -> str:
     """Reformats code using black.format_str().
 
