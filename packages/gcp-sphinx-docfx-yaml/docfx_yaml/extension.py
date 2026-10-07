@@ -2064,6 +2064,14 @@ def convert_cross_references(
     Returns:
         content that has been modified with proper cross references if found.
     """
+    # Every UID in `google-*` packages (and in `hard_coded_references`) starts
+    # with "google.", so if "google." isn't in `content`, no cross-reference can
+    # match. However, a few packages in the repo don't use the `google.*`
+    # namespace (e.g. `pandas_gbq.Context`), so we only take this shortcut when
+    # the package's `known_uids` actually start with "google.".
+    if known_uids and known_uids[0].startswith("google.") and "google." not in content:
+        return content
+
     example_text = "Examples:"
     words = content.split(" ")
 
