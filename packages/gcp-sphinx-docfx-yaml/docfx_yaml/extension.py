@@ -2069,7 +2069,12 @@ def convert_cross_references(
     # match. However, a few packages in the repo don't use the `google.*`
     # namespace (e.g. `pandas_gbq.Context`), so we only take this shortcut when
     # the package's `known_uids` actually start with "google.".
-    if known_uids and known_uids[0].startswith("google.") and "google." not in content:
+    if (
+        known_uids
+        and known_uids[0].startswith("google.")
+        and known_uids[-1].startswith("google.")
+        and "google." not in content
+    ):
         return content
 
     example_text = "Examples:"
