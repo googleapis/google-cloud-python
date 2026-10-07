@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-analytics-data/#history
 
+## [0.23.3](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.23.2...google-analytics-data-v0.23.3) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [0.23.2](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.23.1...google-analytics-data-v0.23.2) (2026-09-24)
 
 

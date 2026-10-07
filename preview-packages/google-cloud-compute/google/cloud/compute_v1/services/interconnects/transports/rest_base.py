@@ -218,5 +218,22 @@ class _BaseInterconnectsRestTransport(InterconnectsTransport):
             ]
             return http_options
 
+    class _BaseSetName:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/global/interconnects/{interconnect}/setName",
+                    "body": "interconnects_set_name_request_resource",
+                },
+            ]
+            return http_options
+
 
 __all__ = ("_BaseInterconnectsRestTransport",)

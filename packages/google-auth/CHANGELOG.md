@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.60.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.1...google-auth-v2.60.0) (2026-10-02)
+
+
+### Features
+
+* **auth:** Support sync credentials in AsyncAuthorizedSession ([#18542](https://github.com/googleapis/google-cloud-python/issues/18542)) ([3799568](https://github.com/googleapis/google-cloud-python/commit/379956865248ebc40e5b851ede520056e65abcac))
+
+## [2.59.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.0...google-auth-v2.59.1) (2026-09-30)
+
+
+### Bug Fixes
+
+* **auth:** support mTLS in requests.Request for token refresh and impersonation ([#18486](https://github.com/googleapis/google-cloud-python/issues/18486)) ([590376d](https://github.com/googleapis/google-cloud-python/commit/590376df522bf5f89e0d23b956a85db61c4d48d7))
+
+## [2.59.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.58.1...google-auth-v2.59.0) (2026-09-28)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [2.58.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.58.0...google-auth-v2.58.1) (2026-09-24)
 
 

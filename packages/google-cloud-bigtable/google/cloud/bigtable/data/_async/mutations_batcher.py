@@ -16,15 +16,20 @@ from __future__ import annotations
 
 import atexit
 import concurrent.futures
+import inspect
+import logging
 import time
 import warnings
 from collections import deque
-from typing import TYPE_CHECKING, Sequence, cast
+from typing import TYPE_CHECKING, Any, Callable, Sequence, cast
+
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     TABLE_DEFAULT,
     _get_retryable_errors,
+    _get_statuses_from_mutations_exception_group,
     _get_timeouts,
 )
 from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
@@ -54,6 +59,7 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.mutations_batc
 
 # used to make more readable default values
 _MB_SIZE = 1024 * 1024
+_LOGGER = logging.getLogger(__name__)
 
 
 @CrossSync.convert_class(sync_name="_FlowControl", add_mapping_for_name="_FlowControl")
@@ -290,10 +296,14 @@ class MutationsBatcherAsync:
         self._exceptions_since_last_raise: int = 0
         # keep track of the first and last _exception_list_limit exceptions
         self._exception_list_limit: int = 10
-        self._oldest_exceptions: list[Exception] = []
-        self._newest_exceptions: deque[Exception] = deque(
+        self._oldest_exceptions: list[FailedMutationEntryError] = []
+        self._newest_exceptions: deque[FailedMutationEntryError] = deque(
             maxlen=self._exception_list_limit
         )
+        # only used by the shim right now.
+        self._user_batch_completed_callback: (
+            Callable[[list[status_pb2.Status]], Any] | None
+        ) = None
         # clean up on program exit
         atexit.register(self._on_exit)
 
@@ -377,7 +387,11 @@ class MutationsBatcherAsync:
             new_entries list of RowMutationEntry objects to flush
         """
         # flush new entries
-        in_process_requests: list[CrossSync.Future[list[FailedMutationEntryError]]] = []
+        in_process_requests: list[
+            tuple[
+                CrossSync.Future[list[FailedMutationEntryError]], list[RowMutationEntry]
+            ]
+        ] = []
         async for batch, metric in self._flow_control.add_to_flow_with_metrics(
             new_entries, self._target.client._metrics
         ):
@@ -387,7 +401,7 @@ class MutationsBatcherAsync:
                 metric,
                 sync_executor=self._sync_rpc_executor,
             )
-            in_process_requests.append(batch_task)
+            in_process_requests.append((batch_task, batch))
         # wait for all inflight requests to complete
         found_exceptions = await self._wait_for_batch_results(*in_process_requests)
         # update exception data to reflect any new errors
@@ -410,6 +424,7 @@ class MutationsBatcherAsync:
                 list of FailedMutationEntryError objects for mutations that failed.
                 FailedMutationEntryError objects will not contain index information
         """
+        statuses = [status_pb2.Status(code=code_pb2.UNKNOWN) for _ in range(len(batch))]
         try:
             operation = CrossSync._MutateRowsOperation(
                 self._target.client._gapic_client,
@@ -422,16 +437,41 @@ class MutationsBatcherAsync:
             )
             await operation.start()
         except MutationsExceptionGroup as e:
+            statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
+
             # strip index information from exceptions, since it is not useful in a batch context
             for subexc in e.exceptions:
                 subexc.index = None
             return list(e.exceptions)
+        else:
+            statuses = [status_pb2.Status(code=code_pb2.OK) for _ in range(len(batch))]
         finally:
             # mark batch as complete in flow control
             await self._flow_control.remove_from_flow(batch)
+
+            # Call batch done callback with list of statuses.
+            # This is an internal callback used by the legacy synchronous shim,
+            # though async callbacks are awaited when running in async mode.
+            if self._user_batch_completed_callback:
+                try:
+                    result = self._user_batch_completed_callback(statuses)
+                    if CrossSync.is_async:
+                        if inspect.isawaitable(result):
+                            await result
+                    else:
+                        if inspect.isawaitable(result):
+                            if inspect.iscoroutine(result):
+                                result.close()
+                            raise TypeError(
+                                "_user_batch_completed_callback must be a synchronous callable"
+                            )
+                except Exception as exc:
+                    _LOGGER.warning(
+                        f"Exception raised in user batch completion callback: {exc}"
+                    )
         return []
 
-    def _add_exceptions(self, excs: list[Exception]):
+    def _add_exceptions(self, excs: list[FailedMutationEntryError]):
         """
         Add new list of exceptions to internal store. To avoid unbounded memory,
         the batcher will store the first and last _exception_list_limit exceptions,
@@ -531,26 +571,28 @@ class MutationsBatcherAsync:
     @staticmethod
     @CrossSync.convert
     async def _wait_for_batch_results(
-        *tasks: CrossSync.Future[list[FailedMutationEntryError]]
-        | CrossSync.Future[None],
-    ) -> list[Exception]:
+        *tasks: tuple[
+            CrossSync.Future[list[FailedMutationEntryError]] | CrossSync.Future[None],
+            list[RowMutationEntry],
+        ],
+    ) -> list[FailedMutationEntryError]:
         """
         Takes in a list of futures representing _execute_mutate_rows tasks,
         waits for them to complete, and returns a list of errors encountered.
 
         Args:
-            *tasks: futures representing _execute_mutate_rows or _flush_internal tasks
+            *tasks: Tuples of futures representing _execute_mutate_rows or
+                    _flush_internal tasks, and their associated batches
         Returns:
-            list[Exception]:
-                list of Exceptions encountered by any of the tasks. Errors are expected
-                to be FailedMutationEntryError, representing a failed mutation operation.
-                If a task fails with a different exception, it will be included in the
-                output list. Successful tasks will not be represented in the output list.
+            list[FailedMutationEntryError]:
+                list of FailedMutationEntryError encountered by any of the tasks,
+                representing a failed mutation operation.
+                Successful tasks will not be represented in the output list.
         """
         if not tasks:
             return []
-        exceptions: list[Exception] = []
-        for task in tasks:
+        exceptions: list[FailedMutationEntryError] = []
+        for task, batch in tasks:
             if CrossSync.is_async:
                 # futures don't need to be awaited in sync mode
                 await task
@@ -563,5 +605,13 @@ class MutationsBatcherAsync:
                         exc.index = None
                     exceptions.extend(exc_list)
             except Exception as e:
-                exceptions.append(e)
+                exceptions.extend(
+                    [
+                        FailedMutationEntryError(
+                            failed_idx=None, failed_mutation_entry=entry, cause=e
+                        )
+                        for entry in batch
+                    ]
+                )
+
         return exceptions

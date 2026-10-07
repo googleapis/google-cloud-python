@@ -13,14 +13,14 @@ COROS="${COROS:-1}"
 FILE_SIZE_MIB="${FILE_SIZE_MIB:-10240}"      # 10 GiB files by default
 CHUNK_SIZE_KIB="${CHUNK_SIZE_KIB:-102400}"   # ~100 MiB read chunks by default
 ROUNDS="${ROUNDS:-3}"                        # Run benchmark 3 rounds by default
-BUCKET_TYPE="${BUCKET_TYPE:-zonal}"          # "zonal" uses BidiReadObject gRPC DirectPath, "regional" uses REST/gRPC standard
-ZONAL_BUCKET="${ZONAL_BUCKET:-${DEFAULT_RAPID_ZONAL_BUCKET:-gcs-read-bench-zb-us-west4-a}}"
+BUCKET_TYPE="${BUCKET_TYPE:-rapid}"          # "rapid" uses BidiReadObject gRPC DirectPath, "regional" uses REST/gRPC standard
+RAPID_BUCKET="${RAPID_BUCKET:-${DEFAULT_RAPID_BUCKET:-gcs-read-bench-zb-us-west4-a}}"
 REGIONAL_BUCKET="${REGIONAL_BUCKET:-${DEFAULT_STANDARD_BUCKET:-gcs-read-bench-rb-us-west4}}"
 if [ -n "${TARGET_BUCKET:-}" ]; then
   if [ "${BUCKET_TYPE}" = "regional" ]; then
     REGIONAL_BUCKET="${TARGET_BUCKET}"
   else
-    ZONAL_BUCKET="${TARGET_BUCKET}"
+    RAPID_BUCKET="${TARGET_BUCKET}"
   fi
 fi
 # Ensure HOME is exported for gRPC / ALTS Application Default Credentials
@@ -37,13 +37,13 @@ echo " File Size:        ${FILE_SIZE_MIB} MiB"
 echo " Chunk Size:       ${CHUNK_SIZE_KIB} KiB"
 echo " Rounds:           ${ROUNDS}"
 echo " Bucket Type:      ${BUCKET_TYPE}"
-echo " Zonal Bucket:     gs://${ZONAL_BUCKET}"
+echo " Rapid Bucket:     gs://${RAPID_BUCKET}"
 echo " Regional Bucket:  gs://${REGIONAL_BUCKET}"
 echo " Output JSON Path: ${OUTPUT_JSON_PATH}"
 echo " Upload GCS Path:  ${UPLOAD_GCS_PREFIX:-None}"
 echo "========================================================================"
 
-export DEFAULT_RAPID_ZONAL_BUCKET="${ZONAL_BUCKET}"
+export DEFAULT_RAPID_BUCKET="${RAPID_BUCKET}"
 export DEFAULT_STANDARD_BUCKET="${REGIONAL_BUCKET}"
 export PROCESSES="${PROCESSES}"
 export COROS="${COROS}"

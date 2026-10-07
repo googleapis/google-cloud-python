@@ -258,8 +258,6 @@ class AcceleratorTypesRestStub:
 class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
     """REST backend synchronous transport for AcceleratorTypes.
 
-    Services
-
     The AcceleratorTypes API.
 
     This class defines the same methods as the primary client, so the

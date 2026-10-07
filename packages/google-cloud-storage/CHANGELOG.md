@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.15.1...google-cloud-storage-v3.16.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
+## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.15.0...google-cloud-storage-v3.15.1) (2026-09-29)
+
+
+### Bug Fixes
+
+* **storage:** add correct app hub uri prefix to aco traces ([#18483](https://github.com/googleapis/google-cloud-python/issues/18483)) ([7cead02](https://github.com/googleapis/google-cloud-python/commit/7cead0276b56d3d109114109a3a70343d7872de3))
+
 ## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.14.1...google-cloud-storage-v3.15.0) (2026-09-24)
 
 
