@@ -109,6 +109,10 @@ class TestMissing(base.BaseMissingTests):
 
 
 class TestMethods(base.BaseMethodsTests):
+    @pytest.mark.xfail(reason="read_json does not preserve custom ExtensionDtype")
+    def test_json_roundtrip(self, data):
+        super().test_json_roundtrip(data)
+
     def test_combine_add(self):
         pytest.skip("Cannot add dates.")
 
