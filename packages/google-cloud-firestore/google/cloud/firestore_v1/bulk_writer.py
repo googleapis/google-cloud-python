@@ -568,7 +568,7 @@ class BulkWriter(AsyncBulkWriterMixin):
         """
         self._verify_not_closed()
 
-        if reference._document_path in self._operations_document_paths:
+        if reference in self._operations_document_paths:
             self._enqueue_current_batch()
 
         self._operations.append(
@@ -578,7 +578,7 @@ class BulkWriter(AsyncBulkWriterMixin):
                 attempts=attempts,
             ),
         )
-        self._operations_document_paths.append(reference._document_path)
+        self._operations_document_paths.append(reference)
 
         self._maybe_enqueue_current_batch()
 
@@ -607,7 +607,7 @@ class BulkWriter(AsyncBulkWriterMixin):
         """
         self._verify_not_closed()
 
-        if reference._document_path in self._operations_document_paths:
+        if reference in self._operations_document_paths:
             self._enqueue_current_batch()
 
         self._operations.append(
@@ -617,7 +617,7 @@ class BulkWriter(AsyncBulkWriterMixin):
                 attempts=attempts,
             ),
         )
-        self._operations_document_paths.append(reference._document_path)
+        self._operations_document_paths.append(reference)
 
         self._maybe_enqueue_current_batch()
 
@@ -650,7 +650,7 @@ class BulkWriter(AsyncBulkWriterMixin):
         """
         self._verify_not_closed()
 
-        if reference._document_path in self._operations_document_paths:
+        if reference in self._operations_document_paths:
             self._enqueue_current_batch()
 
         self._operations.append(
@@ -661,7 +661,7 @@ class BulkWriter(AsyncBulkWriterMixin):
                 attempts=attempts,
             )
         )
-        self._operations_document_paths.append(reference._document_path)
+        self._operations_document_paths.append(reference)
 
         self._maybe_enqueue_current_batch()
 
@@ -698,7 +698,7 @@ class BulkWriter(AsyncBulkWriterMixin):
 
         self._verify_not_closed()
 
-        if reference._document_path in self._operations_document_paths:
+        if reference in self._operations_document_paths:
             self._enqueue_current_batch()
 
         self._operations.append(
@@ -709,7 +709,7 @@ class BulkWriter(AsyncBulkWriterMixin):
                 attempts=attempts,
             )
         )
-        self._operations_document_paths.append(reference._document_path)
+        self._operations_document_paths.append(reference)
 
         self._maybe_enqueue_current_batch()
 
