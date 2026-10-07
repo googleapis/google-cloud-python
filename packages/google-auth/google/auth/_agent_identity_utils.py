@@ -90,12 +90,16 @@ def _is_in_well_known_dir(path):
 
 
 def get_agent_identity_certificate_path():
-    """Gets the agent certificate path from the certificate config file.
+    """Gets the agent certificate path from the certificate config file or GKE bundle.
 
     The path to the certificate config file is read from the
     GOOGLE_API_CERTIFICATE_CONFIG environment variable. This function
     can optionally trigger polling to handle cases where the environment
     variable is set before the files are available on the filesystem.
+    When GOOGLE_API_CERTIFICATE_CONFIG and
+    CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH are unset and no
+    implicit certificate_config.json is present, it falls back to checking
+    the GKE workload credential bundle path without polling.
 
     Returns:
         Optional[str]: The path to the agent's certificate file, or None if unavailable.
@@ -104,9 +108,18 @@ def get_agent_identity_certificate_path():
         google.auth.exceptions.RefreshError: If the certificate config file
             or the certificate file cannot be found after retries.
     """
+    from google.auth.transport import _mtls_helper
+
     cert_config_path = os.environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
 
     if not cert_config_path:
+        if (
+            not _mtls_helper._has_explicit_cert_config_env()
+            and _mtls_helper._should_use_gke_credential_bundle(
+                _mtls_helper._get_cert_config_path()
+            )
+        ):
+            return _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
         return None
 
     # We trigger polling only if the config path points to the well-known directory.
@@ -251,14 +264,14 @@ def get_agent_identity_certificate_and_bytes():
             of (parsed certificate object, certificate bytes) if found and not
             opted out, otherwise (None, None).
     """
+    from google.auth.transport import _mtls_helper
+
     # If the user has opted out of cert bound tokens, there is no need to
     # look up the certificate.
     if _is_bound_token_opted_out():
         return None, None
 
     # Respect explicit opt-out of mTLS / client certs
-    from google.auth.transport import _mtls_helper
-
     env_override = _mtls_helper._check_use_client_cert_env()
     if env_override is False:
         return None, None
@@ -310,10 +323,10 @@ def parse_certificate(cert_bytes):
             is malformed.
         ImportError: If the cryptography library is not installed.
     """
+    from google.auth.transport import _mtls_helper
+
     if not cert_bytes:
         raise ValueError("Certificate bytes cannot be empty or None.")
-
-    from google.auth.transport import _mtls_helper
 
     try:
         from cryptography import x509
@@ -406,12 +419,12 @@ def should_request_bound_token(cert):
     Returns:
         bool: True if a bound token should be requested, False otherwise.
     """
+    from google.auth.transport import _mtls_helper
+
     if _is_bound_token_opted_out():
         return False
 
     # Respect explicit opt-out of mTLS / client certs
-    from google.auth.transport import _mtls_helper
-
     env_override = _mtls_helper._check_use_client_cert_env()
     if env_override is False:
         return False

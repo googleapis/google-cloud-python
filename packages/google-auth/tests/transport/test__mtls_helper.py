@@ -766,6 +766,37 @@ class TestGetWorkloadCertAndKey(object):
         with pytest.raises(exceptions.ClientCertError):
             _mtls_helper._get_workload_cert_and_key("")
 
+    @pytest.mark.parametrize(
+        "workload",
+        [
+            {"cert_path": None, "key_path": "path/to/key"},
+            {"cert_path": "path/to/cert", "key_path": None},
+            {"cert_path": None, "key_path": None},
+            {"cert_path": "", "key_path": "path/to/key"},
+            {"cert_path": "path/to/cert", "key_path": ""},
+            {"cert_path": 123, "key_path": "path/to/key"},
+            {"cert_path": "path/to/cert", "key_path": 123},
+        ],
+    )
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
+    )
+    def test_invalid_cert_or_key_path_value(
+        self,
+        mock_get_cert_config_path,
+        mock_load_json_file,
+        workload,
+    ):
+        mock_get_cert_config_path.return_value = "/path/to/cert"
+        mock_load_json_file.return_value = {"cert_configs": {"workload": workload}}
+
+        with pytest.raises(
+            exceptions.ClientCertError,
+            match='Workload certificate configuration is missing "cert_path" or "key_path"',
+        ):
+            _mtls_helper._get_workload_cert_and_key("")
+
 
 class TestReadCertAndKeyFile(object):
     def test_success(self):
@@ -2036,3 +2067,215 @@ class TestIsMtlsEndpoint(object):
     )
     def test_is_mtls_endpoint_false(self, url):
         assert _mtls_helper.is_mtls_endpoint(url) is False
+
+
+class TestReadCredentialBundleFile(object):
+    @pytest.mark.parametrize("key_index", [0, 1])
+    def test_single_cert_and_key(self, tmpdir, key_index):
+        bundle_file = tmpdir.join("x509.credential-bundle.private-key.pem")
+        blocks = [pytest.public_cert_bytes]
+        blocks.insert(key_index, pytest.private_key_bytes)
+        bundle_file.write_binary(b"".join(blocks))
+
+        with mock.patch("builtins.open", wraps=open) as mock_open:
+            cert_bytes, key_bytes = _mtls_helper._read_credential_bundle_file(
+                str(bundle_file)
+            )
+        mock_open.assert_called_once_with(str(bundle_file), "rb")
+        assert cert_bytes == pytest.public_cert_bytes
+        assert key_bytes == pytest.private_key_bytes
+
+    @pytest.mark.parametrize("key_index", [0, 1, 2])
+    def test_multi_cert_chain_and_key(self, tmpdir, key_index):
+        bundle_file = tmpdir.join("x509.credential-bundle.private-key.pem")
+        blocks = [
+            pytest.public_cert_bytes.rstrip(b"\n") + b"  \n",
+            pytest.public_cert_bytes,
+        ]
+        blocks.insert(key_index, pytest.private_key_bytes)
+        bundle_file.write_binary(b"".join(blocks))
+
+        cert_bytes, key_bytes = _mtls_helper._read_credential_bundle_file(
+            str(bundle_file)
+        )
+        assert cert_bytes == pytest.public_cert_bytes + pytest.public_cert_bytes
+        assert key_bytes == pytest.private_key_bytes
+
+    def test_missing_cert_raises_error(self, tmpdir):
+        bundle_file = tmpdir.join("key_only.pem")
+        bundle_file.write_binary(pytest.private_key_bytes)
+
+        with pytest.raises(exceptions.ClientCertError, match="at least one PEM"):
+            _mtls_helper._read_credential_bundle_file(str(bundle_file))
+
+    def test_missing_key_raises_error(self, tmpdir):
+        bundle_file = tmpdir.join("cert_only.pem")
+        bundle_file.write_binary(pytest.public_cert_bytes)
+
+        with pytest.raises(
+            exceptions.ClientCertError, match="a single PEM formatted private key"
+        ):
+            _mtls_helper._read_credential_bundle_file(str(bundle_file))
+
+    def test_multiple_keys_raises_error(self, tmpdir):
+        bundle_file = tmpdir.join("multi_key.pem")
+        bundle_file.write_binary(
+            pytest.public_cert_bytes
+            + pytest.private_key_bytes
+            + pytest.private_key_bytes
+        )
+
+        with pytest.raises(
+            exceptions.ClientCertError, match="a single PEM formatted private key"
+        ):
+            _mtls_helper._read_credential_bundle_file(str(bundle_file))
+
+    def test_os_error_propagates(self, tmpdir):
+        missing_bundle = str(tmpdir.join("nonexistent_rotated_symlink.pem"))
+        with pytest.raises(OSError):
+            _mtls_helper._read_credential_bundle_file(missing_bundle)
+
+
+class TestGkeCredentialBundleDiscovery(object):
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_credential_bundle_file",
+        autospec=True,
+    )
+    def test_get_workload_cert_and_key_gke_fallback(
+        self, mock_read_bundle, mock_is_ready, mock_get_config_path
+    ):
+        mock_read_bundle.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        cert, key = _mtls_helper._get_workload_cert_and_key()
+        assert cert == pytest.public_cert_bytes
+        assert key == pytest.private_key_bytes
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+        mock_read_bundle.assert_called_once_with(
+            _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
+        )
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists",
+        return_value=False,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_get_workload_cert_and_key_no_gke_fallback_when_explicit_path_set(
+        self, mock_is_ready, mock_exists
+    ):
+        cert, key = _mtls_helper._get_workload_cert_and_key("/missing/config.json")
+        assert cert is None
+        assert key is None
+        mock_exists.assert_called_once_with("/missing/config.json")
+        mock_is_ready.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists",
+        return_value=False,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_get_workload_cert_and_key_no_gke_fallback_when_explicit_env_set(
+        self, mock_is_ready, mock_exists, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, "/missing/config.json"
+        )
+        cert, key = _mtls_helper._get_workload_cert_and_key()
+        assert cert is None
+        assert key is None
+        mock_exists.assert_called_once_with("/missing/config.json")
+        mock_is_ready.assert_not_called()
+
+    @pytest.mark.parametrize("include_context_aware", [True, False])
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists",
+        return_value=False,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_get_workload_cert_and_key_no_gke_fallback_when_context_aware_env_set(
+        self, mock_is_ready, mock_exists, include_context_aware, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+            "/missing/context_aware_config.json",
+        )
+        cert, key = _mtls_helper._get_workload_cert_and_key(
+            include_context_aware=include_context_aware
+        )
+        assert cert is None
+        assert key is None
+        assert mock_exists.call_count == 1
+        mock_is_ready.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_check_use_client_cert_gke_auto_enabled(
+        self, mock_is_ready, mock_get_config_path
+    ):
+        assert _mtls_helper.check_use_client_cert() is True
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_check_use_client_cert_gke_disabled_by_env(
+        self, mock_is_ready, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "false")
+        assert _mtls_helper.check_use_client_cert() is False
+        mock_is_ready.assert_not_called()
+
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+        autospec=True,
+    )
+    def test_no_gke_fallback_when_implicit_config_has_no_workload(
+        self, mock_is_ready, tmpdir, monkeypatch
+    ):
+        config_file = tmpdir.join("certificate_config.json")
+        config_file.write('{"cert_configs": {}}')
+        monkeypatch.setattr(
+            _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmpdir)
+        )
+
+        assert _mtls_helper._get_workload_cert_and_key() == (None, None)
+        assert _mtls_helper.check_use_client_cert() is False
+        mock_is_ready.assert_not_called()

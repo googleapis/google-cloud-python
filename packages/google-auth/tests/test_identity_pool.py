@@ -1005,7 +1005,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(CERT_FILE, KEY_FILE),
+        return_value=(CERT_FILE, KEY_FILE, None),
     )
     def test_retrieve_subject_token_certificate_default(
         self, mock_get_workload_cert_and_key_paths
@@ -1020,7 +1020,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(CERT_FILE, KEY_FILE),
+        return_value=(CERT_FILE, KEY_FILE, None),
     )
     def test_retrieve_subject_token_certificate_non_default_path(
         self, mock_get_workload_cert_and_key_paths
@@ -1035,7 +1035,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(CERT_FILE, KEY_FILE),
+        return_value=(CERT_FILE, KEY_FILE, None),
     )
     def test_retrieve_subject_token_certificate_trust_chain_with_leaf(
         self, mock_get_workload_cert_and_key_paths
@@ -1049,7 +1049,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(CERT_FILE, KEY_FILE),
+        return_value=(CERT_FILE, KEY_FILE, None),
     )
     def test_retrieve_subject_token_certificate_trust_chain_without_leaf(
         self, mock_get_workload_cert_and_key_paths
@@ -1063,7 +1063,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(CERT_FILE, KEY_FILE),
+        return_value=(CERT_FILE, KEY_FILE, None),
     )
     def test_retrieve_subject_token_certificate_trust_chain_invalid_order(
         self, mock_get_workload_cert_and_key_paths
@@ -1081,7 +1081,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(CERT_FILE, KEY_FILE),
+        return_value=(CERT_FILE, KEY_FILE, None),
     )
     def test_retrieve_subject_token_certificate_trust_chain_file_does_not_exist(
         self, mock_get_workload_cert_and_key_paths
@@ -1102,7 +1102,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(CERT_FILE, KEY_FILE),
+        return_value=(CERT_FILE, KEY_FILE, None),
     )
     def test_retrieve_subject_token_certificate_invalid_trust_chain_file(
         self, mock_get_workload_cert_and_key_paths
@@ -1764,7 +1764,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=("cert", "key"),
+        return_value=("cert", "key", None),
     )
     def test_get_mtls_certs(self, mock_get_workload_cert_and_key_paths):
         credentials = self.make_credentials(
@@ -1789,7 +1789,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
-        return_value=(None, None),
+        return_value=(None, None, None),
     )
     def test_get_cert_bytes_none_raises_error(
         self, mock_get_workload_cert_and_key_paths

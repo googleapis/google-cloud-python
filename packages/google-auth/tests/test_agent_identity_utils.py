@@ -16,6 +16,7 @@ import base64
 import hashlib
 import json
 import os
+import stat
 import urllib.parse
 from unittest import mock
 
@@ -23,6 +24,7 @@ import pytest
 from cryptography import x509
 
 from google.auth import _agent_identity_utils, environment_vars, exceptions
+from google.auth.transport import _mtls_helper
 
 # A mock PEM-encoded certificate without an Agent Identity SPIFFE ID.
 NON_AGENT_IDENTITY_CERT_BYTES = (
@@ -78,10 +80,6 @@ AGENT_IDENTITY_CERT_BYTES = (
 
 @pytest.fixture(autouse=True)
 def clean_env(monkeypatch):
-    monkeypatch.delenv(
-        environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-        raising=False,
-    )
     monkeypatch.delenv(
         environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
         raising=False,
@@ -171,12 +169,83 @@ class TestAgentIdentityUtils:
         )
         assert _agent_identity_utils._is_in_well_known_dir(resolved_cert_path) is True
 
-    def test_get_agent_identity_certificate_path_empty_env(self, monkeypatch):
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=False,
+    )
+    def test_get_agent_identity_certificate_path_empty_env(
+        self, mock_is_ready, mock_get_config
+    ):
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+
+    @mock.patch("google.auth._agent_identity_utils.time.sleep")
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+    )
+    def test_get_agent_identity_certificate_path_gke_bundle_fallback(
+        self, mock_is_ready, mock_get_config, mock_sleep
+    ):
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result == _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+        mock_sleep.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        side_effect=PermissionError("Access denied"),
+    )
+    def test_get_agent_identity_certificate_path_gke_bundle_permission_error(
+        self, mock_is_ready, mock_get_config
+    ):
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value="/home/user/.config/gcloud/certificate_config.json",
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+    )
+    def test_get_agent_identity_certificate_path_no_gke_fallback_when_implicit_config_exists(
+        self, mock_is_ready, mock_get_config
+    ):
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
+        mock_get_config.assert_called_once()
+        mock_is_ready.assert_not_called()
+
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+    )
+    def test_get_agent_identity_certificate_path_no_gke_fallback_when_context_aware_env_set(
+        self, mock_is_ready, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+            "/missing/context_aware.json",
         )
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result is None
+        mock_is_ready.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.os.path.commonpath")
     @mock.patch(
@@ -238,8 +307,6 @@ class TestAgentIdentityUtils:
 
     @mock.patch("google.auth._agent_identity_utils.os.stat")
     def test_is_certificate_file_ready_not_a_file(self, mock_stat):
-        import stat
-
         mock_stat.return_value = mock.MagicMock(st_mode=stat.S_IFDIR, st_size=4096)
         result = _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
         assert result is False
@@ -761,9 +828,10 @@ class TestAgentIdentityUtils:
         assert isinstance(cert, x509.Certificate)
         assert cert_bytes == NON_AGENT_IDENTITY_CERT_BYTES
 
+    @pytest.mark.parametrize("key_index", [0, 1, 2])
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
     def test_get_agent_identity_certificate_and_bytes_combined_bundle(
-        self, mock_get_path, tmpdir
+        self, mock_get_path, tmpdir, key_index
     ):
         non_utf8_bag_attrs = b"Bag Attributes\n    friendlyName: \xff\xfe\n"
         private_key_pem = (
@@ -771,15 +839,13 @@ class TestAgentIdentityUtils:
             b"MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3\n"
             b"-----END PRIVATE KEY-----\n"
         )
-        combined_bundle = (
-            non_utf8_bag_attrs
-            + AGENT_IDENTITY_CERT_BYTES.rstrip(b"\n")
-            + b"   \n"
-            + private_key_pem
-            + NON_AGENT_IDENTITY_CERT_BYTES
-        )
+        blocks = [
+            AGENT_IDENTITY_CERT_BYTES.rstrip(b"\n") + b"   \n",
+            NON_AGENT_IDENTITY_CERT_BYTES,
+        ]
+        blocks.insert(key_index, private_key_pem)
         cert_file = tmpdir.join("credentialbundle.pem")
-        cert_file.write_binary(combined_bundle)
+        cert_file.write_binary(non_utf8_bag_attrs + b"".join(blocks))
         mock_get_path.return_value = str(cert_file)
 
         (
@@ -791,7 +857,6 @@ class TestAgentIdentityUtils:
         assert isinstance(cert, x509.Certificate)
         assert _agent_identity_utils._is_agent_identity_certificate(cert)
         assert cert_bytes == expected_certs
-        assert b"PRIVATE KEY" not in cert_bytes
         assert cert_bytes.decode("utf-8") == expected_certs.decode("utf-8")
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
