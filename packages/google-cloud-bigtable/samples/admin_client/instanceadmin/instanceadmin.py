@@ -22,17 +22,15 @@ Prerequisites:
 
 import argparse
 
-from google.api_core.exceptions import NotFound
-
-from google.cloud import bigtable_admin_v2
-
 
 def run_instance_operations(project_id, instance_id, cluster_id):
-    client = bigtable_admin_v2.BigtableInstanceAdminClient()
-    project_path = client.common_project_path(project_id)
+    # [START bigtable_check_instance_exists]
+    from google.api_core.exceptions import NotFound
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
     instance_path = client.instance_path(project_id, instance_id)
 
-    # [START bigtable_check_instance_exists]
     try:
         instance = client.get_instance(name=instance_path)
         print(f"Instance {instance_id} already exists.")
@@ -41,15 +39,22 @@ def run_instance_operations(project_id, instance_id, cluster_id):
     # [END bigtable_check_instance_exists]
 
     # [START bigtable_create_prod_instance]
-    cluster = bigtable_admin_v2.Cluster(
+    from google.api_core.exceptions import NotFound
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
+    project_path = client.common_project_path(project_id)
+    instance_path = client.instance_path(project_id, instance_id)
+
+    cluster = bigtable_admin.Cluster(
         location=client.common_location_path(project_id, "us-central1-f"),
         serve_nodes=1,
-        default_storage_type=bigtable_admin_v2.StorageType.SSD,
+        default_storage_type=bigtable_admin.StorageType.SSD,
     )
-    instance_obj = bigtable_admin_v2.Instance(
+    instance_obj = bigtable_admin.Instance(
         display_name=instance_id,
         labels={"prod-label": "prod-label"},
-        type_=bigtable_admin_v2.Instance.Type.PRODUCTION,
+        type_=bigtable_admin.Instance.Type.PRODUCTION,
     )
 
     try:
@@ -67,6 +72,11 @@ def run_instance_operations(project_id, instance_id, cluster_id):
     # [END bigtable_create_prod_instance]
 
     # [START bigtable_list_instances]
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
+    project_path = client.common_project_path(project_id)
+
     print("\nListing instances:")
     instances_response = client.list_instances(parent=project_path)
     for instance in instances_response.instances:
@@ -74,11 +84,21 @@ def run_instance_operations(project_id, instance_id, cluster_id):
     # [END bigtable_list_instances]
 
     # [START bigtable_get_instance]
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
+    instance_path = client.instance_path(project_id, instance_id)
+
     inst = client.get_instance(name=instance_path)
     print(f"\nName of instance: {inst.display_name}\nLabels: {dict(inst.labels)}")
     # [END bigtable_get_instance]
 
     # [START bigtable_get_clusters]
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
+    instance_path = client.instance_path(project_id, instance_id)
+
     print("\nListing clusters...")
     clusters_response = client.list_clusters(parent=instance_path)
     for cluster in clusters_response.clusters:
@@ -87,10 +107,13 @@ def run_instance_operations(project_id, instance_id, cluster_id):
 
 
 def delete_instance(project_id, instance_id):
-    client = bigtable_admin_v2.BigtableInstanceAdminClient()
+    # [START bigtable_delete_instance]
+    from google.api_core.exceptions import NotFound
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
     instance_path = client.instance_path(project_id, instance_id)
 
-    # [START bigtable_delete_instance]
     print("\nDeleting instance")
     try:
         client.delete_instance(name=instance_path)
@@ -101,20 +124,23 @@ def delete_instance(project_id, instance_id):
 
 
 def add_cluster(project_id, instance_id, cluster_id):
-    client = bigtable_admin_v2.BigtableInstanceAdminClient()
+    # [START bigtable_create_cluster]
+    from google.api_core.exceptions import NotFound
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
     instance_path = client.instance_path(project_id, instance_id)
     cluster_path = client.cluster_path(project_id, instance_id, cluster_id)
 
-    # [START bigtable_create_cluster]
     print("\nListing clusters...")
     clusters_response = client.list_clusters(parent=instance_path)
     for cluster in clusters_response.clusters:
         print(cluster.name.split("/")[-1])
 
-    new_cluster = bigtable_admin_v2.Cluster(
+    new_cluster = bigtable_admin.Cluster(
         location=client.common_location_path(project_id, "us-central1-a"),
         serve_nodes=1,
-        default_storage_type=bigtable_admin_v2.StorageType.SSD,
+        default_storage_type=bigtable_admin.StorageType.SSD,
     )
     try:
         client.get_cluster(name=cluster_path)
@@ -129,10 +155,13 @@ def add_cluster(project_id, instance_id, cluster_id):
 
 
 def delete_cluster(project_id, instance_id, cluster_id):
-    client = bigtable_admin_v2.BigtableInstanceAdminClient()
+    # [START bigtable_delete_cluster]
+    from google.api_core.exceptions import NotFound
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableInstanceAdminClient()
     cluster_path = client.cluster_path(project_id, instance_id, cluster_id)
 
-    # [START bigtable_delete_cluster]
     print("\nDeleting cluster")
     try:
         client.delete_cluster(name=cluster_path)
