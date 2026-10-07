@@ -1817,6 +1817,7 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
             host=transport._host,
             credentials=transport._credentials,
             client_info=transport._client_info,
+            client_options=getattr(transport, "_client_options", None),
         )
         assert mock_rest_transport.{{ method.transport_safe_name|snake_case }}.call_count == 2
         await transport.close()

@@ -2396,6 +2396,7 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_rest_stub():
             host=transport._host,
             credentials=transport._credentials,
             client_info=transport._client_info,
+            client_options=getattr(transport, "_client_options", None),
         )
         assert mock_rest_transport.upload_media.call_count == 2
         await transport.close()
