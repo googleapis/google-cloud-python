@@ -46,6 +46,7 @@ import ast
 import subprocess
 
 import sphinx.application
+import yaml
 from docuploader import shell
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
@@ -53,7 +54,13 @@ from sphinx.ext.napoleon import Config, GoogleDocstring, _process_docstring
 from sphinx.util import ensuredir
 from sphinx.util.console import bold, darkgreen
 from sphinx.util.nodes import make_refnode
-from yaml import safe_dump as dump
+
+try:
+    from yaml import CSafeDumper as SafeDumper
+except ImportError:
+    from yaml import SafeDumper
+
+dump = partial(yaml.dump, Dumper=SafeDumper)
 
 from docfx_yaml import markdown_utils
 
