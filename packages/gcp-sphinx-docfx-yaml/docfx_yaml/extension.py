@@ -195,6 +195,22 @@ class DocFXHTMLBuilder(StandaloneHTMLBuilder):
         pass
 
 
+def _configure_docfx(app: sphinx.application.Sphinx, config: Any) -> None:
+    """Disables Sphinx extensions from shared conf.py files that DocFX does not need.
+
+    Package conf.py files are shared between HTML docs and DocFX builds and
+    enable `sphinx.ext.intersphinx` and `sphinx.ext.viewcode` by default.
+    Neither is used in DocFX YAML output, so we clear `intersphinx_mapping`
+    (avoiding remote inventory downloads) and disconnect `viewcode` listeners
+    (avoiding source file tokenization during `doctree-read`).
+    """
+    config.intersphinx_mapping = {}
+    for listeners in getattr(getattr(app, "events", None), "listeners", {}).values():
+        for listener in list(listeners):
+            if getattr(listener.handler, "__module__", "") == "sphinx.ext.viewcode":
+                app.disconnect(listener.id)
+
+
 def build_init(app: sphinx.application.Sphinx) -> None:
     """Initializes the build.
 
@@ -2737,6 +2753,7 @@ def setup(app: sphinx.application.Sphinx) -> None:
     app.add_directive("todo", TodoDirective)
 
     app.add_builder(DocFXHTMLBuilder, override=True)
+    app.connect("config-inited", _configure_docfx)
     app.connect("builder-inited", build_init)
     app.connect("autodoc-process-docstring", process_docstring)
     app.connect("autodoc-process-signature", process_signature)

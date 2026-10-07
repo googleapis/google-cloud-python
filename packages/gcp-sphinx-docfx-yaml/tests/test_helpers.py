@@ -412,7 +412,19 @@ google.cloud.pubsub_v1.message.Message
         result = extension.is_valid_python_code(invalid_syntax)
         self.assertFalse(result)
 
-    def test_docfx_html_builder(self):
+    def test_configure_docfx_and_builder(self):
+        app = unittest.mock.MagicMock()
+        app.config.intersphinx_mapping = {"python": ("https://example.com", None)}
+        viewcode_listener = unittest.mock.MagicMock(id=1)
+        viewcode_listener.handler.__module__ = "sphinx.ext.viewcode"
+        other_listener = unittest.mock.MagicMock(id=2)
+        other_listener.handler.__module__ = "docfx_yaml.extension"
+        app.events.listeners = {"doctree-read": [viewcode_listener, other_listener]}
+
+        extension._configure_docfx(app, app.config)
+
+        self.assertEqual(app.config.intersphinx_mapping, {})
+        app.disconnect.assert_called_once_with(1)
         self.assertIsNone(extension.DocFXHTMLBuilder.write(None))
         self.assertIsNone(extension.DocFXHTMLBuilder.finish(None))
 
