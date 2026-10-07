@@ -28,6 +28,7 @@ from google.showcase_v1beta1 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core.resumable_transfer import ResumableUploadConfig
 from google.showcase_v1beta1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 from google.showcase_v1beta1._compat import setup_request_id
 from google.api_core import retry as retries
@@ -51,6 +52,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+from google.api_core import resumable_transfer
 from google.cloud.location import locations_pb2 # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -495,10 +497,11 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
     def upload_media(self,
             request: Optional[Union[resumable_upload.UploadMediaRequest, dict]] = None,
             *,
+            config: Optional[ResumableUploadConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> resumable_upload.UploadMediaResponse:
+            ) -> resumable_transfer.ResumableUploadSession:
         r"""A method with media_upload annotation enabled.
 
         .. code-block:: python
@@ -511,6 +514,8 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import showcase_v1beta1
+            from google.api_core.resumable_transfer import ResumableUploadConfig
+            import io
 
             def sample_upload_media():
                 # Create a client
@@ -520,8 +525,33 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
                 request = showcase_v1beta1.UploadMediaRequest(
                 )
 
+                # Configure optional transfer settings such as chunk size and stall detection
+                config = ResumableUploadConfig(
+                    chunk_size=8 * 1024 * 1024,  # 8 MB
+                    stall_minimum_rate=64 * 1024,
+                    stall_timeout=120,
+                )
+
                 # Make the request
-                response = client.upload_media(request=request)
+                upload_session = client.upload_media(request=request, config=config)
+
+                # Option 1: Upload the entire stream directly and return the final response
+                stream = io.BytesIO(b"Example upload data")
+                response = upload_session.upload(stream)
+
+                # Option 2: Alternatively, iterate over the upload to receive progress updates per chunk
+                # for progress in upload_session.iter_upload(stream):
+                #     print(f"Uploaded {progress.bytes_uploaded} bytes | State: {progress.state.name}")
+                #     print(f"Session URL: {progress.upload_url}")
+                # response = upload_session.response
+
+                # Option 3: Alternatively, resume an interrupted upload from a saved session URL
+                # response = upload_session.resume(upload_url, stream, chunk_size=config.chunk_size)
+
+                # Option 4: Alternatively, resume an interrupted upload while receiving progress updates
+                # for progress in upload_session.iter_resume(upload_url, stream, chunk_size=config.chunk_size):
+                #     print(f"Resumed {progress.bytes_uploaded} bytes | State: {progress.state.name}")
+                # response = upload_session.response
 
                 # Handle the response
                 print(response)
@@ -529,6 +559,8 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
         Args:
             request (Union[google.showcase_v1beta1.types.UploadMediaRequest, dict]):
                 The request object.
+            config (Optional[google.api_core.resumable_transfer.ResumableUploadConfig]):
+                Optional configuration for the resumable upload session.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -538,7 +570,9 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.showcase_v1beta1.types.UploadMediaResponse:
+            google.api_core.resumable_transfer.ResumableUploadSession:
+                An object representing a resumable
+                upload session.
 
         """
         # Create or coerce a protobuf request object.
@@ -560,6 +594,8 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+            config=config,
+            start_retry=retry,
         )
 
         # Done; return the response.

@@ -1084,11 +1084,12 @@ class Test_SnapshotBase(OpenTelemetryBase):
 
         self._execute_begin(derived)
 
+    @mock.patch("google.cloud.spanner_v1._helpers.time.sleep")
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
-    def test_begin_retry_for_internal_server_error(self, mock_region):
+    def test_begin_retry_for_internal_server_error(self, mock_region, mock_sleep):
         derived = _build_snapshot_derived(multi_use=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
@@ -1098,6 +1099,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         ]
 
         self._execute_begin(derived, attempts=2)
+        mock_sleep.assert_called_once_with(2)
 
         expected_statuses = [
             (
@@ -1108,11 +1110,12 @@ class Test_SnapshotBase(OpenTelemetryBase):
         actual_statuses = self.finished_spans_events_statuses()
         self.assertEqual(expected_statuses, actual_statuses)
 
+    @mock.patch("google.cloud.spanner_v1._helpers.time.sleep")
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
-    def test_begin_retry_for_aborted(self, mock_region):
+    def test_begin_retry_for_aborted(self, mock_region, mock_sleep):
         derived = _build_snapshot_derived(multi_use=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
@@ -1122,6 +1125,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         ]
 
         self._execute_begin(derived, attempts=2)
+        mock_sleep.assert_called_once_with(2)
 
         expected_statuses = [
             (
@@ -2057,7 +2061,8 @@ class Test_SnapshotBase(OpenTelemetryBase):
             ),
         )
 
-    def test_partition_read_w_retry(self):
+    @mock.patch("google.cloud.spanner_v1._helpers.time.sleep")
+    def test_partition_read_w_retry(self, mock_sleep):
         from google.cloud.spanner_v1 import Partition, PartitionResponse, Transaction
         from google.cloud.spanner_v1.keyset import KeySet
 
@@ -2087,6 +2092,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
 
         self.assertEqual(api.partition_read.call_count, 2)
+        mock_sleep.assert_called_once_with(2)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",

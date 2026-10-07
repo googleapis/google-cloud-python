@@ -211,23 +211,27 @@ class AsyncMetricsInterceptor(
     """Async Interceptor that collects metrics for Cloud Spanner operations."""
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        return await self._async_intercept(continuation, client_call_details, request)
+        return await self._async_intercept(
+            continuation, client_call_details, request, is_streaming=False
+        )
 
     async def intercept_unary_stream(self, continuation, client_call_details, request):
-        return await self._async_intercept(continuation, client_call_details, request)
+        return await self._async_intercept(
+            continuation, client_call_details, request, is_streaming=True
+        )
 
     async def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
         return await self._async_intercept(
-            continuation, client_call_details, request_iterator
+            continuation, client_call_details, request_iterator, is_streaming=False
         )
 
     async def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
         return await self._async_intercept(
-            continuation, client_call_details, request_iterator
+            continuation, client_call_details, request_iterator, is_streaming=True
         )
 
     async def _async_intercept(
@@ -235,6 +239,7 @@ class AsyncMetricsInterceptor(
         continuation: Any,
         call_details: grpc.ClientCallDetails,
         request_or_iterator: Any,
+        is_streaming: bool = False,
     ) -> Any:
         # Implementation for async interceptor
         factory = SpannerMetricsTracerFactory()
@@ -244,10 +249,9 @@ class AsyncMetricsInterceptor(
 
         MetricsInterceptor._prepare_attempt(tracer, call_details)
         response = await continuation(call_details, request_or_iterator)
-        if hasattr(response, "__anext__"):
+        if is_streaming:
             return _AsyncStreamingResponseWrapper(response, tracer)
-        else:
-            return _AsyncUnaryResponseWrapper(response, tracer)
+        return _AsyncUnaryResponseWrapper(response, tracer)
 
 
 class _StreamingResponseWrapper:
@@ -282,6 +286,8 @@ class _StreamingResponseWrapper:
                 return
             self._metrics_recorded = True
         try:
+            # TODO: Extract and pass the actual gRPC status (e.g. from self._response.code()
+            # or caught exceptions) to record_attempt_completion instead of defaulting to OK.
             self._tracer.record_attempt_completion()
             metadata = []
             if hasattr(self._response, "initial_metadata"):
@@ -412,6 +418,8 @@ class _BaseAsyncResponseWrapper:
                 return
             self._metrics_recorded = True
         try:
+            # TODO: Extract and pass the actual gRPC status (e.g. from self._response.code()
+            # or caught exceptions) to record_attempt_completion instead of defaulting to OK.
             self._tracer.record_attempt_completion()
             metadata = []
             if hasattr(self._response, "initial_metadata"):

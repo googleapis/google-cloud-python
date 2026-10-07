@@ -97,7 +97,7 @@ class _BaseResumableUploadServiceRestTransport(ResumableUploadServiceTransport):
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
                 'method': 'post',
-                'uri': '/v1beta1/files:upload',
+                'uri': '/resumable/upload/v1beta1/files:upload',
                 'body': '*',
             },
             ]

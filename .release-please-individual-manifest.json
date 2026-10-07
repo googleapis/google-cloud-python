@@ -1,5 +1,5 @@
 {
-  "packages/google-auth": "2.59.1",
+  "packages/google-auth": "2.60.0",
   "packages/google-cloud-apptopology": "0.1.0",
   "packages/google-cloud-ftp": "0.1.0",
   "packages/google-cloud-spanner": "3.71.0",
@@ -9,5 +9,5 @@
   "packages/google-crc32c": "1.9.0",
   "packages/google-shopping-merchant-loyaltycustomers": "0.1.1",
   "packages/sqlalchemy-spanner": "1.20.1",
-  "preview-packages/google-cloud-compute": "1.51.0-preview.1"
+  "preview-packages/google-cloud-compute": "1.56.0-preview.1"
 }
