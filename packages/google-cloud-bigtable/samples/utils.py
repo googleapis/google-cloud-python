@@ -101,5 +101,20 @@ def wait_for_table(table):
     Because this method is wrapped with an api_core.Retry decorator, it will
     retry with backoff if the table is not ready
     """
+<<<<<<< Updated upstream
     if not table.exists():
         raise exceptions.NotFound
+=======
+    if hasattr(table, "exists"):
+        if not table.exists():
+            raise exceptions.NotFound
+    else:
+        table_path = table.table_name if hasattr(table, "table_name") else str(table)
+        admin_client = bigtable_admin.BigtableTableAdminClient()
+        admin_client.get_table(
+            request={
+                "name": table_path,
+                "view": bigtable_admin.Table.View.NAME_ONLY,
+            }
+        )
+>>>>>>> Stashed changes

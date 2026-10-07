@@ -20,7 +20,7 @@ import uuid
 
 import pytest
 
-from ...utils import create_table_cm
+from ....utils import create_table_cm
 from . import deletes_snippets
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
