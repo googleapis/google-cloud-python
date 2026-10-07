@@ -13,15 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import sys
-
 import google.api_core as api_core
 
 from google.ads.admanager_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
-
-from importlib import metadata
 
 # PEP 0810: Explicit Lazy Imports
 # Python 3.15+ natively intercepts and defers these imports.
@@ -38,6 +34,7 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.application_service",
     "google.ads.admanager_v1.services.audience_segment_service",
     "google.ads.admanager_v1.services.bandwidth_group_service",
+    "google.ads.admanager_v1.services.break_template_service",
     "google.ads.admanager_v1.services.browser_language_service",
     "google.ads.admanager_v1.services.browser_service",
     "google.ads.admanager_v1.services.cdn_config_service",
@@ -49,6 +46,7 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.content_bundle_service",
     "google.ads.admanager_v1.services.content_label_service",
     "google.ads.admanager_v1.services.content_service",
+    "google.ads.admanager_v1.services.creative_service",
     "google.ads.admanager_v1.services.creative_set_service",
     "google.ads.admanager_v1.services.creative_template_service",
     "google.ads.admanager_v1.services.creative_wrapper_service",
@@ -57,19 +55,24 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.custom_targeting_value_service",
     "google.ads.admanager_v1.services.dai_authentication_key_service",
     "google.ads.admanager_v1.services.dai_encoding_profile_service",
+    "google.ads.admanager_v1.services.dai_session_service",
     "google.ads.admanager_v1.services.device_capability_service",
     "google.ads.admanager_v1.services.device_category_service",
     "google.ads.admanager_v1.services.device_manufacturer_service",
     "google.ads.admanager_v1.services.entity_signals_mapping_service",
+    "google.ads.admanager_v1.services.forecast_service",
     "google.ads.admanager_v1.services.geo_target_service",
     "google.ads.admanager_v1.services.label_service",
+    "google.ads.admanager_v1.services.line_item_creative_association_service",
     "google.ads.admanager_v1.services.line_item_service",
+    "google.ads.admanager_v1.services.line_item_template_service",
     "google.ads.admanager_v1.services.linked_device_service",
     "google.ads.admanager_v1.services.live_stream_service",
     "google.ads.admanager_v1.services.mcm_earnings_service",
     "google.ads.admanager_v1.services.mobile_carrier_service",
     "google.ads.admanager_v1.services.mobile_device_service",
     "google.ads.admanager_v1.services.mobile_device_submodel_service",
+    "google.ads.admanager_v1.services.native_style_service",
     "google.ads.admanager_v1.services.network_service",
     "google.ads.admanager_v1.services.operating_system_service",
     "google.ads.admanager_v1.services.operating_system_version_service",
@@ -92,16 +95,19 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.user_service",
     "google.ads.admanager_v1.services.viewability_provider_service",
     "google.ads.admanager_v1.types.ad_break_messages",
+    "google.ads.admanager_v1.types.ad_break_optimization_type_enum",
     "google.ads.admanager_v1.types.ad_break_service",
     "google.ads.admanager_v1.types.ad_review_center_ad_enums",
     "google.ads.admanager_v1.types.ad_review_center_ad_messages",
     "google.ads.admanager_v1.types.ad_review_center_ad_service",
     "google.ads.admanager_v1.types.ad_rule_enums",
+    "google.ads.admanager_v1.types.ad_rule_fill_order_direction_enum",
     "google.ads.admanager_v1.types.ad_rule_messages",
     "google.ads.admanager_v1.types.ad_rule_service",
     "google.ads.admanager_v1.types.ad_rule_slot_behavior_enum",
     "google.ads.admanager_v1.types.ad_rule_slot_bumper_enum",
     "google.ads.admanager_v1.types.ad_rule_slot_midroll_frequency_type_enum",
+    "google.ads.admanager_v1.types.ad_spot_fill_type_enum",
     "google.ads.admanager_v1.types.ad_spot_messages",
     "google.ads.admanager_v1.types.ad_spot_service",
     "google.ads.admanager_v1.types.ad_spot_targeting_type_enum",
@@ -113,11 +119,16 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.application_messages",
     "google.ads.admanager_v1.types.application_service",
     "google.ads.admanager_v1.types.applied_label",
+    "google.ads.admanager_v1.types.asset_enums",
+    "google.ads.admanager_v1.types.asset_messages",
+    "google.ads.admanager_v1.types.audience_segment_enums",
     "google.ads.admanager_v1.types.audience_segment_messages",
     "google.ads.admanager_v1.types.audience_segment_service",
     "google.ads.admanager_v1.types.bandwidth_group_messages",
     "google.ads.admanager_v1.types.bandwidth_group_service",
     "google.ads.admanager_v1.types.brand_lift_partner_enum",
+    "google.ads.admanager_v1.types.break_template_messages",
+    "google.ads.admanager_v1.types.break_template_service",
     "google.ads.admanager_v1.types.browser_language_messages",
     "google.ads.admanager_v1.types.browser_language_service",
     "google.ads.admanager_v1.types.browser_messages",
@@ -152,8 +163,11 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.content_messages",
     "google.ads.admanager_v1.types.content_service",
     "google.ads.admanager_v1.types.conversion_event_enum",
+    "google.ads.admanager_v1.types.creative_asset",
+    "google.ads.admanager_v1.types.creative_enums",
     "google.ads.admanager_v1.types.creative_messages",
     "google.ads.admanager_v1.types.creative_placeholder",
+    "google.ads.admanager_v1.types.creative_service",
     "google.ads.admanager_v1.types.creative_set_messages",
     "google.ads.admanager_v1.types.creative_set_service",
     "google.ads.admanager_v1.types.creative_targeting",
@@ -161,9 +175,11 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.creative_template_messages",
     "google.ads.admanager_v1.types.creative_template_service",
     "google.ads.admanager_v1.types.creative_template_variable_url_type_enum",
+    "google.ads.admanager_v1.types.creative_third_party_data_declaration_status_enum",
     "google.ads.admanager_v1.types.creative_wrapper_enums",
     "google.ads.admanager_v1.types.creative_wrapper_messages",
     "google.ads.admanager_v1.types.creative_wrapper_service",
+    "google.ads.admanager_v1.types.custom_creative_asset",
     "google.ads.admanager_v1.types.custom_field_enums",
     "google.ads.admanager_v1.types.custom_field_messages",
     "google.ads.admanager_v1.types.custom_field_service",
@@ -182,6 +198,10 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.dai_encoding_profile_enums",
     "google.ads.admanager_v1.types.dai_encoding_profile_messages",
     "google.ads.admanager_v1.types.dai_encoding_profile_service",
+    "google.ads.admanager_v1.types.dai_session_enums",
+    "google.ads.admanager_v1.types.dai_session_messages",
+    "google.ads.admanager_v1.types.dai_session_service",
+    "google.ads.admanager_v1.types.date_range",
     "google.ads.admanager_v1.types.deal_buyer_permission_type_enum",
     "google.ads.admanager_v1.types.deal_priority_tier_enum",
     "google.ads.admanager_v1.types.delivery_enums",
@@ -199,6 +219,9 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.environment_type_enum",
     "google.ads.admanager_v1.types.exchange_syndication_product_enum",
     "google.ads.admanager_v1.types.exclusion_scope_enum",
+    "google.ads.admanager_v1.types.forecast_messages",
+    "google.ads.admanager_v1.types.forecast_service",
+    "google.ads.admanager_v1.types.forecasting_enums",
     "google.ads.admanager_v1.types.frequency_cap",
     "google.ads.admanager_v1.types.geo_target_messages",
     "google.ads.admanager_v1.types.geo_target_service",
@@ -211,6 +234,9 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.label_messages",
     "google.ads.admanager_v1.types.label_service",
     "google.ads.admanager_v1.types.line_item_allowed_format_enum",
+    "google.ads.admanager_v1.types.line_item_creative_association_enums",
+    "google.ads.admanager_v1.types.line_item_creative_association_messages",
+    "google.ads.admanager_v1.types.line_item_creative_association_service",
     "google.ads.admanager_v1.types.line_item_deal_info",
     "google.ads.admanager_v1.types.line_item_delivery_forecast_source_enum",
     "google.ads.admanager_v1.types.line_item_discount",
@@ -218,6 +244,8 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.line_item_messages",
     "google.ads.admanager_v1.types.line_item_service",
     "google.ads.admanager_v1.types.line_item_stats",
+    "google.ads.admanager_v1.types.line_item_template_messages",
+    "google.ads.admanager_v1.types.line_item_template_service",
     "google.ads.admanager_v1.types.linked_device_enums",
     "google.ads.admanager_v1.types.linked_device_messages",
     "google.ads.admanager_v1.types.linked_device_service",
@@ -234,6 +262,9 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.mobile_device_service",
     "google.ads.admanager_v1.types.mobile_device_submodel_messages",
     "google.ads.admanager_v1.types.mobile_device_submodel_service",
+    "google.ads.admanager_v1.types.native_style_enums",
+    "google.ads.admanager_v1.types.native_style_messages",
+    "google.ads.admanager_v1.types.native_style_service",
     "google.ads.admanager_v1.types.network_messages",
     "google.ads.admanager_v1.types.network_service",
     "google.ads.admanager_v1.types.nielsen_ctv_pacing_enum",
@@ -269,6 +300,10 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.rich_media_ads_company_enums",
     "google.ads.admanager_v1.types.rich_media_ads_company_messages",
     "google.ads.admanager_v1.types.rich_media_ads_company_service",
+    "google.ads.admanager_v1.types.rich_media_studio_child_asset_type_enum",
+    "google.ads.admanager_v1.types.rich_media_studio_creative_billing_attribute_enum",
+    "google.ads.admanager_v1.types.rich_media_studio_creative_format_enum",
+    "google.ads.admanager_v1.types.rich_media_studio_messages",
     "google.ads.admanager_v1.types.role_enums",
     "google.ads.admanager_v1.types.role_messages",
     "google.ads.admanager_v1.types.role_service",
@@ -303,6 +338,7 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.time_unit_enum",
     "google.ads.admanager_v1.types.user_messages",
     "google.ads.admanager_v1.types.user_service",
+    "google.ads.admanager_v1.types.vast_redirect_type_enum",
     "google.ads.admanager_v1.types.video_position_enum",
     "google.ads.admanager_v1.types.video_tracking_url",
     "google.ads.admanager_v1.types.video_transcode_status_enum",
@@ -321,6 +357,7 @@ from .services.ad_unit_service import AdUnitServiceClient
 from .services.application_service import ApplicationServiceClient
 from .services.audience_segment_service import AudienceSegmentServiceClient
 from .services.bandwidth_group_service import BandwidthGroupServiceClient
+from .services.break_template_service import BreakTemplateServiceClient
 from .services.browser_language_service import BrowserLanguageServiceClient
 from .services.browser_service import BrowserServiceClient
 from .services.cdn_config_service import CdnConfigServiceClient
@@ -332,6 +369,7 @@ from .services.contact_service import ContactServiceClient
 from .services.content_bundle_service import ContentBundleServiceClient
 from .services.content_label_service import ContentLabelServiceClient
 from .services.content_service import ContentServiceClient
+from .services.creative_service import CreativeServiceClient
 from .services.creative_set_service import CreativeSetServiceClient
 from .services.creative_template_service import CreativeTemplateServiceClient
 from .services.creative_wrapper_service import CreativeWrapperServiceClient
@@ -340,19 +378,26 @@ from .services.custom_targeting_key_service import CustomTargetingKeyServiceClie
 from .services.custom_targeting_value_service import CustomTargetingValueServiceClient
 from .services.dai_authentication_key_service import DaiAuthenticationKeyServiceClient
 from .services.dai_encoding_profile_service import DaiEncodingProfileServiceClient
+from .services.dai_session_service import DaiSessionServiceClient
 from .services.device_capability_service import DeviceCapabilityServiceClient
 from .services.device_category_service import DeviceCategoryServiceClient
 from .services.device_manufacturer_service import DeviceManufacturerServiceClient
 from .services.entity_signals_mapping_service import EntitySignalsMappingServiceClient
+from .services.forecast_service import ForecastServiceClient
 from .services.geo_target_service import GeoTargetServiceClient
 from .services.label_service import LabelServiceClient
+from .services.line_item_creative_association_service import (
+    LineItemCreativeAssociationServiceClient,
+)
 from .services.line_item_service import LineItemServiceClient
+from .services.line_item_template_service import LineItemTemplateServiceClient
 from .services.linked_device_service import LinkedDeviceServiceClient
 from .services.live_stream_service import LiveStreamServiceClient
 from .services.mcm_earnings_service import McmEarningsServiceClient
 from .services.mobile_carrier_service import MobileCarrierServiceClient
 from .services.mobile_device_service import MobileDeviceServiceClient
 from .services.mobile_device_submodel_service import MobileDeviceSubmodelServiceClient
+from .services.native_style_service import NativeStyleServiceClient
 from .services.network_service import NetworkServiceClient
 from .services.operating_system_service import OperatingSystemServiceClient
 from .services.operating_system_version_service import (
@@ -377,6 +422,7 @@ from .services.third_party_company_service import ThirdPartyCompanyServiceClient
 from .services.user_service import UserServiceClient
 from .services.viewability_provider_service import ViewabilityProviderServiceClient
 from .types.ad_break_messages import AdBreak
+from .types.ad_break_optimization_type_enum import AdBreakOptimizationTypeEnum
 from .types.ad_break_service import (
     CreateAdBreakRequest,
     DeleteAdBreakRequest,
@@ -387,6 +433,7 @@ from .types.ad_break_service import (
 )
 from .types.ad_review_center_ad_enums import (
     AdReviewCenterAdStatusEnum,
+    ArcCreativeFormatEnum,
     ManualAdReviewCenterAdStatusEnum,
 )
 from .types.ad_review_center_ad_messages import AdReviewCenterAd
@@ -394,12 +441,17 @@ from .types.ad_review_center_ad_service import (
     BatchAdReviewCenterAdsOperationMetadata,
     BatchAllowAdReviewCenterAdsRequest,
     BatchAllowAdReviewCenterAdsResponse,
+    BatchApplyAdReviewCenterCustomLabelsRequest,
+    BatchApplyAdReviewCenterCustomLabelsResponse,
     BatchBlockAdReviewCenterAdsRequest,
     BatchBlockAdReviewCenterAdsResponse,
+    FetchAdReviewCenterCustomLabelsRequest,
+    FetchAdReviewCenterCustomLabelsResponse,
     SearchAdReviewCenterAdsRequest,
     SearchAdReviewCenterAdsResponse,
 )
 from .types.ad_rule_enums import AdRuleFrequencyCapBehaviorEnum, AdRuleStatusEnum
+from .types.ad_rule_fill_order_direction_enum import AdRuleFillOrderDirectionEnum
 from .types.ad_rule_messages import AdRule, AdRuleSlot
 from .types.ad_rule_service import (
     BatchActivateAdRulesRequest,
@@ -422,6 +474,7 @@ from .types.ad_rule_slot_bumper_enum import AdRuleSlotBumperEnum
 from .types.ad_rule_slot_midroll_frequency_type_enum import (
     AdRuleSlotMidrollFrequencyTypeEnum,
 )
+from .types.ad_spot_fill_type_enum import AdSpotFillTypeEnum
 from .types.ad_spot_messages import AdSpot
 from .types.ad_spot_service import (
     BatchCreateAdSpotsRequest,
@@ -485,11 +538,35 @@ from .types.application_service import (
     UpdateApplicationRequest,
 )
 from .types.applied_label import AppliedLabel
+from .types.asset_enums import AssetImageDensityEnum
+from .types.asset_messages import Asset
+from .types.audience_segment_enums import (
+    AudienceSegmentApprovalStatusEnum,
+    AudienceSegmentLicenseTypeEnum,
+    AudienceSegmentStatusEnum,
+    AudienceSegmentTypeEnum,
+)
 from .types.audience_segment_messages import AudienceSegment
 from .types.audience_segment_service import (
+    BatchActivateAudienceSegmentsRequest,
+    BatchActivateAudienceSegmentsResponse,
+    BatchApproveAudienceSegmentsRequest,
+    BatchApproveAudienceSegmentsResponse,
+    BatchCreateAudienceSegmentsRequest,
+    BatchCreateAudienceSegmentsResponse,
+    BatchDeactivateAudienceSegmentsRequest,
+    BatchDeactivateAudienceSegmentsResponse,
+    BatchPopulateAudienceSegmentsRequest,
+    BatchPopulateAudienceSegmentsResponse,
+    BatchRejectAudienceSegmentsRequest,
+    BatchRejectAudienceSegmentsResponse,
+    BatchUpdateAudienceSegmentsRequest,
+    BatchUpdateAudienceSegmentsResponse,
+    CreateAudienceSegmentRequest,
     GetAudienceSegmentRequest,
     ListAudienceSegmentsRequest,
     ListAudienceSegmentsResponse,
+    UpdateAudienceSegmentRequest,
 )
 from .types.bandwidth_group_messages import BandwidthGroup
 from .types.bandwidth_group_service import (
@@ -498,6 +575,18 @@ from .types.bandwidth_group_service import (
     ListBandwidthGroupsResponse,
 )
 from .types.brand_lift_partner_enum import BrandLiftPartnerEnum
+from .types.break_template_messages import BreakTemplate, BreakTemplateMember
+from .types.break_template_service import (
+    BatchCreateBreakTemplatesRequest,
+    BatchCreateBreakTemplatesResponse,
+    BatchUpdateBreakTemplatesRequest,
+    BatchUpdateBreakTemplatesResponse,
+    CreateBreakTemplateRequest,
+    GetBreakTemplateRequest,
+    ListBreakTemplatesRequest,
+    ListBreakTemplatesResponse,
+    UpdateBreakTemplateRequest,
+)
 from .types.browser_language_messages import BrowserLanguage
 from .types.browser_language_service import (
     GetBrowserLanguageRequest,
@@ -543,12 +632,21 @@ from .types.child_publisher_messages import ChildPublisher
 from .types.child_publisher_service import (
     BatchCreateChildPublishersRequest,
     BatchCreateChildPublishersResponse,
+    BatchRejectChildPublishersRequest,
+    BatchRejectChildPublishersResponse,
+    BatchRenegotiateChildPublisherAgreementsRequest,
+    BatchRenegotiateChildPublisherAgreementsResponse,
+    BatchResendChildPublisherInvitationEmailsRequest,
+    BatchResendChildPublisherInvitationEmailsResponse,
     BatchUpdateChildPublishersRequest,
     BatchUpdateChildPublishersResponse,
+    BatchWithdrawChildPublishersRequest,
+    BatchWithdrawChildPublishersResponse,
     CreateChildPublisherRequest,
     GetChildPublisherRequest,
     ListChildPublishersRequest,
     ListChildPublishersResponse,
+    RenegotiateChildPublisherAgreementRequest,
     UpdateChildPublisherRequest,
 )
 from .types.cms_metadata_key_enums import CmsMetadataKeyStatusEnum
@@ -629,10 +727,53 @@ from .types.content_service import (
     ListContentResponse,
 )
 from .types.conversion_event_enum import ConversionEventEnum
-from .types.creative_messages import Creative
+from .types.creative_asset import ClickTag, CreativeAsset
+from .types.creative_enums import (
+    CreativeDestinationUrlTypeEnum,
+    CreativeLockedOrientationEnum,
+    CreativeSslOverrideEnum,
+    CreativeSslScanResultEnum,
+    VastAdIdTypeEnum,
+)
+from .types.creative_messages import (
+    AdExchangeCreativeDetails,
+    AdSenseCreativeDetails,
+    AspectRatioImageCreativeDetails,
+    AudioCreativeDetails,
+    AudioRedirectCreativeDetails,
+    BuyerPlacementConfig,
+    ClickTrackingCreativeDetails,
+    Creative,
+    CustomCreativeDetails,
+    Html5CreativeDetails,
+    ImageCreativeDetails,
+    ImageOverlayCreativeDetails,
+    ImageRedirectCreativeDetails,
+    ImageRedirectOverlayCreativeDetails,
+    InternalRedirectCreativeDetails,
+    LegacyDfpCreativeDetails,
+    ProgrammaticCreativeDetails,
+    RichMediaStudioCreativeDetails,
+    SetTopBoxCreativeDetails,
+    TemplateCreativeDetails,
+    ThirdPartyCreativeDetails,
+    VastInfo,
+    VastRedirectCreativeDetails,
+    VideoCreativeDetails,
+    VideoRedirectCreativeDetails,
+)
 from .types.creative_placeholder import (
     CreativePlaceholder,
     CreativePlaceholderCompanion,
+)
+from .types.creative_service import (
+    BatchActivateCreativesRequest,
+    BatchActivateCreativesResponse,
+    BatchDeactivateCreativesRequest,
+    BatchDeactivateCreativesResponse,
+    GetCreativeRequest,
+    ListCreativesRequest,
+    ListCreativesResponse,
 )
 from .types.creative_set_messages import CreativeSet
 from .types.creative_set_service import (
@@ -656,6 +797,9 @@ from .types.creative_template_service import (
 from .types.creative_template_variable_url_type_enum import (
     CreativeTemplateVariableUrlTypeEnum,
 )
+from .types.creative_third_party_data_declaration_status_enum import (
+    CreativeThirdPartyDataDeclarationStatusEnum,
+)
 from .types.creative_wrapper_enums import (
     CreativeWrapperOrderingEnum,
     CreativeWrapperStatusEnum,
@@ -677,6 +821,7 @@ from .types.creative_wrapper_service import (
     ListCreativeWrappersResponse,
     UpdateCreativeWrapperRequest,
 )
+from .types.custom_creative_asset import CustomCreativeAsset
 from .types.custom_field_enums import (
     CustomFieldDataTypeEnum,
     CustomFieldEntityTypeEnum,
@@ -792,6 +937,24 @@ from .types.dai_encoding_profile_service import (
     ListDaiEncodingProfilesResponse,
     UpdateDaiEncodingProfileRequest,
 )
+from .types.dai_session_enums import (
+    AdBreakFindingTypeEnum,
+    AdRequestFindingTypeEnum,
+    AdResponseTypeEnum,
+    BreakTypeEnum,
+    CreativeFindingTypeEnum,
+    CreativeIdTypeEnum,
+    PodFindingTypeEnum,
+    PrefetchStageTypeEnum,
+    ReportingTypeEnum,
+    SessionFindingSeverityEnum,
+    SlateFindingTypeEnum,
+    StitchingTypeEnum,
+    TrackingPingFindingTypeEnum,
+)
+from .types.dai_session_messages import DaiSession
+from .types.dai_session_service import GetDaiSessionRequest
+from .types.date_range import DateRange
 from .types.deal_buyer_permission_type_enum import DealBuyerPermissionTypeEnum
 from .types.deal_priority_tier_enum import DealPriorityTierEnum
 from .types.delivery_enums import (
@@ -836,6 +999,38 @@ from .types.entity_signals_mapping_service import (
 from .types.environment_type_enum import EnvironmentTypeEnum
 from .types.exchange_syndication_product_enum import ExchangeSyndicationProductEnum
 from .types.exclusion_scope_enum import ExclusionScopeEnum
+from .types.forecast_messages import (
+    AlternativeUnitTypeForecast,
+    AvailabilityForecast,
+    AvailabilityForecastOptions,
+    ContendingLineItem,
+    DeliveryForecast,
+    DeliveryForecastOptions,
+    DeliveryForecastResult,
+    ExistingLineItemList,
+    ForecastBreakdown,
+    ForecastBreakdownEntry,
+    ForecastBreakdownOptions,
+    ForecastBreakdownTarget,
+    GrpDemographicBreakdown,
+    LineItemDeliveryForecast,
+    TargetingCriteriaBreakdown,
+    TimeSeries,
+)
+from .types.forecast_service import (
+    RunAvailabilityForecastRequest,
+    RunAvailabilityForecastResponse,
+    RunDeliveryForecastRequest,
+    RunDeliveryForecastResponse,
+    RunTrafficDataRequest,
+    RunTrafficDataResponse,
+)
+from .types.forecasting_enums import (
+    ForecastingGrpAgeEnum,
+    ForecastingGrpGenderEnum,
+    ForecastingGrpUnitEnum,
+    ForecastingTargetingDimensionEnum,
+)
 from .types.frequency_cap import FrequencyCap
 from .types.geo_target_messages import GeoTarget
 from .types.geo_target_service import (
@@ -866,6 +1061,18 @@ from .types.label_service import (
     UpdateLabelRequest,
 )
 from .types.line_item_allowed_format_enum import LineItemAllowedFormatEnum
+from .types.line_item_creative_association_enums import (
+    LineItemCreativeAssociationStatusEnum,
+)
+from .types.line_item_creative_association_messages import (
+    LineItemCreativeAssociation,
+    LineItemCreativeAssociationStats,
+)
+from .types.line_item_creative_association_service import (
+    GetLineItemCreativeAssociationRequest,
+    ListLineItemCreativeAssociationsRequest,
+    ListLineItemCreativeAssociationsResponse,
+)
 from .types.line_item_deal_info import LineItemDealInfo
 from .types.line_item_delivery_forecast_source_enum import (
     LineItemDeliveryForecastSourceEnum,
@@ -879,11 +1086,42 @@ from .types.line_item_enums import (
 )
 from .types.line_item_messages import LineItem
 from .types.line_item_service import (
+    BatchActivateLineItemsRequest,
+    BatchActivateLineItemsResponse,
+    BatchArchiveLineItemsRequest,
+    BatchArchiveLineItemsResponse,
+    BatchCreateLineItemsRequest,
+    BatchCreateLineItemsResponse,
+    BatchDeleteLineItemsRequest,
+    BatchPauseLineItemsRequest,
+    BatchPauseLineItemsResponse,
+    BatchReleaseLineItemsRequest,
+    BatchReleaseLineItemsResponse,
+    BatchReserveAndOverbookLineItemsRequest,
+    BatchReserveAndOverbookLineItemsResponse,
+    BatchReserveLineItemsRequest,
+    BatchReserveLineItemsResponse,
+    BatchResumeAndOverbookLineItemsRequest,
+    BatchResumeAndOverbookLineItemsResponse,
+    BatchResumeLineItemsRequest,
+    BatchResumeLineItemsResponse,
+    BatchUnarchiveLineItemsRequest,
+    BatchUnarchiveLineItemsResponse,
+    BatchUpdateLineItemsRequest,
+    BatchUpdateLineItemsResponse,
+    CreateLineItemRequest,
     GetLineItemRequest,
     ListLineItemsRequest,
     ListLineItemsResponse,
+    UpdateLineItemRequest,
 )
 from .types.line_item_stats import LineItemStats
+from .types.line_item_template_messages import LineItemTemplate
+from .types.line_item_template_service import (
+    GetLineItemTemplateRequest,
+    ListLineItemTemplatesRequest,
+    ListLineItemTemplatesResponse,
+)
 from .types.linked_device_enums import LinkedDeviceVisibilityEnum
 from .types.linked_device_messages import LinkedDevice
 from .types.linked_device_service import (
@@ -967,11 +1205,33 @@ from .types.mobile_device_submodel_service import (
     ListMobileDeviceSubmodelsRequest,
     ListMobileDeviceSubmodelsResponse,
 )
-from .types.network_messages import Network
+from .types.native_style_enums import NativeStyleStatusEnum
+from .types.native_style_messages import NativeStyle
+from .types.native_style_service import (
+    BatchActivateNativeStylesRequest,
+    BatchActivateNativeStylesResponse,
+    BatchArchiveNativeStylesRequest,
+    BatchArchiveNativeStylesResponse,
+    BatchCreateNativeStylesRequest,
+    BatchCreateNativeStylesResponse,
+    BatchDeactivateNativeStylesRequest,
+    BatchDeactivateNativeStylesResponse,
+    BatchUpdateNativeStylesRequest,
+    BatchUpdateNativeStylesResponse,
+    CreateNativeStyleRequest,
+    GetNativeStyleRequest,
+    ListNativeStylesRequest,
+    ListNativeStylesResponse,
+    UpdateNativeStyleRequest,
+)
+from .types.network_messages import DefaultThirdPartyDataDeclaration, Network
 from .types.network_service import (
+    GetDefaultThirdPartyDataDeclarationRequest,
     GetNetworkRequest,
     ListNetworksRequest,
     ListNetworksResponse,
+    ProvisionTestNetworkRequest,
+    UpdateNetworkRequest,
 )
 from .types.nielsen_ctv_pacing_enum import NielsenCtvPacingEnum
 from .types.non_guaranteed_deal_priority import NonGuaranteedDealPriority
@@ -1110,6 +1370,16 @@ from .types.rich_media_ads_company_service import (
     ListRichMediaAdsCompaniesRequest,
     ListRichMediaAdsCompaniesResponse,
 )
+from .types.rich_media_studio_child_asset_type_enum import (
+    RichMediaStudioChildAssetTypeEnum,
+)
+from .types.rich_media_studio_creative_billing_attribute_enum import (
+    RichMediaStudioCreativeBillingAttributeEnum,
+)
+from .types.rich_media_studio_creative_format_enum import (
+    RichMediaStudioCreativeFormatEnum,
+)
+from .types.rich_media_studio_messages import RichMediaStudioChildAssetProperty
 from .types.role_enums import RoleStatusEnum
 from .types.role_messages import Role
 from .types.role_service import GetRoleRequest, ListRolesRequest, ListRolesResponse
@@ -1245,7 +1515,22 @@ from .types.third_party_data_declaration_type_enum import (
 from .types.third_party_measurement_settings import ThirdPartyMeasurementSettings
 from .types.time_unit_enum import TimeUnitEnum
 from .types.user_messages import User
-from .types.user_service import GetUserRequest
+from .types.user_service import (
+    BatchActivateUsersRequest,
+    BatchActivateUsersResponse,
+    BatchCreateUsersRequest,
+    BatchCreateUsersResponse,
+    BatchDeactivateUsersRequest,
+    BatchDeactivateUsersResponse,
+    BatchUpdateUsersRequest,
+    BatchUpdateUsersResponse,
+    CreateUserRequest,
+    GetUserRequest,
+    ListUsersRequest,
+    ListUsersResponse,
+    UpdateUserRequest,
+)
+from .types.vast_redirect_type_enum import VastRedirectTypeEnum
 from .types.video_position_enum import VideoPositionEnum
 from .types.video_tracking_url import VideoTrackingUrl
 from .types.video_transcode_status_enum import VideoTranscodeStatusEnum
@@ -1264,103 +1549,26 @@ from .types.viewability_provider_service import (
 )
 from .types.web_property import WebProperty
 
-if hasattr(api_core, "check_python_version") and hasattr(
-    api_core, "check_dependency_versions"
-):  # pragma: NO COVER
-    api_core.check_python_version("google.ads.admanager_v1")  # type: ignore
-    api_core.check_dependency_versions("google.ads.admanager_v1")  # type: ignore
-else:  # pragma: NO COVER
-    # An older version of api_core is installed which does not define the
-    # functions above. We do equivalent checks manually.
-    try:
-        import warnings
-
-        _py_version_str = sys.version.split()[0]
-        _package_label = "google.ads.admanager_v1"
-        if sys.version_info < (3, 10):
-            warnings.warn(
-                "You are using a non-supported Python version "
-                + f"({_py_version_str}).  Google will not post any further "
-                + f"updates to {_package_label} supporting this Python version. "
-                + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.10, and then update {_package_label}.",
-                FutureWarning,
-            )
-
-        def parse_version_to_tuple(version_string: str):
-            """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "6.33.5" -> (6, 33, 5)
-            Ignores non-numeric parts and handles common version formats.
-            Args:
-                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
-            Returns:
-                Tuple of integers for the parsed version string.
-            """
-            parts = []
-            for part in version_string.split("."):
-                try:
-                    parts.append(int(part))
-                except ValueError:
-                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
-                    # This is a simplification compared to 'packaging.parse_version', but sufficient
-                    # for comparing strictly numeric semantic versions.
-                    break
-            return tuple(parts)
-
-        def _get_version(dependency_name):
-            try:
-                version_string: str = metadata.version(dependency_name)
-                parsed_version = parse_version_to_tuple(version_string)
-                return (parsed_version, version_string)
-            except Exception:
-                # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
-                # or errors during parse_version_to_tuple
-                return (None, "--")
-
-        _dependency_package = "google.protobuf"
-        _next_supported_version = "6.33.5"
-        _next_supported_version_tuple = (6, 33, 5)
-        _recommendation = " (we recommend 7.x)"
-        (_version_used, _version_used_string) = _get_version(_dependency_package)
-        if _version_used and _version_used < _next_supported_version_tuple:
-            warnings.warn(
-                f"Package {_package_label} depends on "
-                + f"{_dependency_package}, currently installed at version "
-                + f"{_version_used_string}. Future updates to "
-                + f"{_package_label} will require {_dependency_package} at "
-                + f"version {_next_supported_version} or higher{_recommendation}."
-                + " Please ensure "
-                + "that either (a) your Python environment doesn't pin the "
-                + f"version of {_dependency_package}, so that updates to "
-                + f"{_package_label} can require the higher version, or "
-                + "(b) you manually update your Python environment to use at "
-                + f"least version {_next_supported_version} of "
-                + f"{_dependency_package}.",
-                FutureWarning,
-            )
-    except Exception:
-        warnings.warn(
-            "Could not determine the version of Python "
-            + "currently being used. To continue receiving "
-            + "updates for {_package_label}, ensure you are "
-            + "using a supported version of Python; see "
-            + "https://devguide.python.org/versions/"
-        )
-
 __all__ = (
     "ActivateCustomTargetingValueRequest",
     "ActivateDaiEncodingProfileRequest",
     "AdBreak",
     "AdBreakFillTypeEnum",
+    "AdBreakFindingTypeEnum",
     "AdBreakMarkupTypeEnum",
+    "AdBreakOptimizationTypeEnum",
     "AdBreakServiceClient",
     "AdBreakStateEnum",
+    "AdExchangeCreativeDetails",
     "AdManagerError",
     "AdMediaDeliveryConfig",
+    "AdRequestFindingTypeEnum",
+    "AdResponseTypeEnum",
     "AdReviewCenterAd",
     "AdReviewCenterAdServiceClient",
     "AdReviewCenterAdStatusEnum",
     "AdRule",
+    "AdRuleFillOrderDirectionEnum",
     "AdRuleFrequencyCapBehaviorEnum",
     "AdRuleServiceClient",
     "AdRuleSlot",
@@ -1368,7 +1576,9 @@ __all__ = (
     "AdRuleSlotBumperEnum",
     "AdRuleSlotMidrollFrequencyTypeEnum",
     "AdRuleStatusEnum",
+    "AdSenseCreativeDetails",
     "AdSpot",
+    "AdSpotFillTypeEnum",
     "AdSpotServiceClient",
     "AdSpotTargetingTypeEnum",
     "AdUnit",
@@ -1377,18 +1587,31 @@ __all__ = (
     "AdUnitSize",
     "AdUnitStatusEnum",
     "AdUnitTargeting",
+    "AlternativeUnitTypeForecast",
     "Application",
     "ApplicationApprovalStatusEnum",
     "ApplicationPlatformEnum",
     "ApplicationServiceClient",
     "ApplicationStoreEnum",
     "AppliedLabel",
+    "ArcCreativeFormatEnum",
     "ArchiveDaiEncodingProfileRequest",
+    "AspectRatioImageCreativeDetails",
+    "Asset",
+    "AssetImageDensityEnum",
     "AudienceSegment",
+    "AudienceSegmentApprovalStatusEnum",
+    "AudienceSegmentLicenseTypeEnum",
     "AudienceSegmentServiceClient",
+    "AudienceSegmentStatusEnum",
     "AudienceSegmentTargeting",
+    "AudienceSegmentTypeEnum",
+    "AudioCreativeDetails",
+    "AudioRedirectCreativeDetails",
     "AudioSettings",
     "AuxiliaryAdSettings",
+    "AvailabilityForecast",
+    "AvailabilityForecastOptions",
     "BandwidthGroup",
     "BandwidthGroupServiceClient",
     "BandwidthTargeting",
@@ -1396,6 +1619,8 @@ __all__ = (
     "BatchActivateAdRulesResponse",
     "BatchActivateAdUnitsRequest",
     "BatchActivateAdUnitsResponse",
+    "BatchActivateAudienceSegmentsRequest",
+    "BatchActivateAudienceSegmentsResponse",
     "BatchActivateCdnConfigsRequest",
     "BatchActivateCdnConfigsResponse",
     "BatchActivateCmsMetadataKeysRequest",
@@ -1406,6 +1631,8 @@ __all__ = (
     "BatchActivateContentBundlesResponse",
     "BatchActivateCreativeWrappersRequest",
     "BatchActivateCreativeWrappersResponse",
+    "BatchActivateCreativesRequest",
+    "BatchActivateCreativesResponse",
     "BatchActivateCustomFieldsRequest",
     "BatchActivateCustomFieldsResponse",
     "BatchActivateCustomTargetingKeysRequest",
@@ -1418,17 +1645,27 @@ __all__ = (
     "BatchActivateDaiEncodingProfilesResponse",
     "BatchActivateLabelsRequest",
     "BatchActivateLabelsResponse",
+    "BatchActivateLineItemsRequest",
+    "BatchActivateLineItemsResponse",
     "BatchActivateLiveStreamsRequest",
     "BatchActivateLiveStreamsResponse",
+    "BatchActivateNativeStylesRequest",
+    "BatchActivateNativeStylesResponse",
     "BatchActivatePlacementsRequest",
     "BatchActivatePlacementsResponse",
     "BatchActivateTeamsRequest",
     "BatchActivateTeamsResponse",
+    "BatchActivateUsersRequest",
+    "BatchActivateUsersResponse",
     "BatchAdReviewCenterAdsOperationMetadata",
     "BatchAllowAdReviewCenterAdsRequest",
     "BatchAllowAdReviewCenterAdsResponse",
+    "BatchApplyAdReviewCenterCustomLabelsRequest",
+    "BatchApplyAdReviewCenterCustomLabelsResponse",
     "BatchApproveAndOverbookOrdersRequest",
     "BatchApproveAndOverbookOrdersResponse",
+    "BatchApproveAudienceSegmentsRequest",
+    "BatchApproveAudienceSegmentsResponse",
     "BatchApproveOrdersRequest",
     "BatchApproveOrdersResponse",
     "BatchApproveOrdersWithoutReservationRequest",
@@ -1443,8 +1680,12 @@ __all__ = (
     "BatchArchiveCdnConfigsResponse",
     "BatchArchiveDaiEncodingProfilesRequest",
     "BatchArchiveDaiEncodingProfilesResponse",
+    "BatchArchiveLineItemsRequest",
+    "BatchArchiveLineItemsResponse",
     "BatchArchiveLiveStreamsRequest",
     "BatchArchiveLiveStreamsResponse",
+    "BatchArchiveNativeStylesRequest",
+    "BatchArchiveNativeStylesResponse",
     "BatchArchiveOrdersRequest",
     "BatchArchiveOrdersResponse",
     "BatchArchivePlacementsRequest",
@@ -1461,6 +1702,10 @@ __all__ = (
     "BatchCreateAdUnitsResponse",
     "BatchCreateApplicationsRequest",
     "BatchCreateApplicationsResponse",
+    "BatchCreateAudienceSegmentsRequest",
+    "BatchCreateAudienceSegmentsResponse",
+    "BatchCreateBreakTemplatesRequest",
+    "BatchCreateBreakTemplatesResponse",
     "BatchCreateCdnConfigsRequest",
     "BatchCreateCdnConfigsResponse",
     "BatchCreateChildPublishersRequest",
@@ -1485,8 +1730,12 @@ __all__ = (
     "BatchCreateEntitySignalsMappingsResponse",
     "BatchCreateLabelsRequest",
     "BatchCreateLabelsResponse",
+    "BatchCreateLineItemsRequest",
+    "BatchCreateLineItemsResponse",
     "BatchCreateLiveStreamsRequest",
     "BatchCreateLiveStreamsResponse",
+    "BatchCreateNativeStylesRequest",
+    "BatchCreateNativeStylesResponse",
     "BatchCreateOrdersRequest",
     "BatchCreateOrdersResponse",
     "BatchCreatePlacementsRequest",
@@ -1499,12 +1748,16 @@ __all__ = (
     "BatchCreateTargetingPresetsResponse",
     "BatchCreateTeamsRequest",
     "BatchCreateTeamsResponse",
+    "BatchCreateUsersRequest",
+    "BatchCreateUsersResponse",
     "BatchCreateViewabilityProvidersRequest",
     "BatchCreateViewabilityProvidersResponse",
     "BatchDeactivateAdRulesRequest",
     "BatchDeactivateAdRulesResponse",
     "BatchDeactivateAdUnitsRequest",
     "BatchDeactivateAdUnitsResponse",
+    "BatchDeactivateAudienceSegmentsRequest",
+    "BatchDeactivateAudienceSegmentsResponse",
     "BatchDeactivateCmsMetadataKeysRequest",
     "BatchDeactivateCmsMetadataKeysResponse",
     "BatchDeactivateCmsMetadataValuesRequest",
@@ -1513,6 +1766,8 @@ __all__ = (
     "BatchDeactivateContentBundlesResponse",
     "BatchDeactivateCreativeWrappersRequest",
     "BatchDeactivateCreativeWrappersResponse",
+    "BatchDeactivateCreativesRequest",
+    "BatchDeactivateCreativesResponse",
     "BatchDeactivateCustomFieldsRequest",
     "BatchDeactivateCustomFieldsResponse",
     "BatchDeactivateCustomTargetingKeysRequest",
@@ -1523,6 +1778,8 @@ __all__ = (
     "BatchDeactivateDaiAuthenticationKeysResponse",
     "BatchDeactivateLabelsRequest",
     "BatchDeactivateLabelsResponse",
+    "BatchDeactivateNativeStylesRequest",
+    "BatchDeactivateNativeStylesResponse",
     "BatchDeactivatePlacementsRequest",
     "BatchDeactivatePlacementsResponse",
     "BatchDeactivateSitesRequest",
@@ -1531,7 +1788,10 @@ __all__ = (
     "BatchDeactivateTargetingPresetsResponse",
     "BatchDeactivateTeamsRequest",
     "BatchDeactivateTeamsResponse",
+    "BatchDeactivateUsersRequest",
+    "BatchDeactivateUsersResponse",
     "BatchDeleteAdRulesRequest",
+    "BatchDeleteLineItemsRequest",
     "BatchDeleteOrdersRequest",
     "BatchDeleteOrdersResponse",
     "BatchDisapproveOrdersRequest",
@@ -1540,14 +1800,36 @@ __all__ = (
     "BatchDisapproveOrdersWithoutReservationChangesResponse",
     "BatchPauseAdsLiveStreamsRequest",
     "BatchPauseAdsLiveStreamsResponse",
+    "BatchPauseLineItemsRequest",
+    "BatchPauseLineItemsResponse",
     "BatchPauseLiveStreamsRequest",
     "BatchPauseLiveStreamsResponse",
     "BatchPauseOrdersRequest",
     "BatchPauseOrdersResponse",
+    "BatchPopulateAudienceSegmentsRequest",
+    "BatchPopulateAudienceSegmentsResponse",
     "BatchRefreshMasterPlaylistsRequest",
     "BatchRefreshMasterPlaylistsResponse",
+    "BatchRejectAudienceSegmentsRequest",
+    "BatchRejectAudienceSegmentsResponse",
+    "BatchRejectChildPublishersRequest",
+    "BatchRejectChildPublishersResponse",
+    "BatchReleaseLineItemsRequest",
+    "BatchReleaseLineItemsResponse",
+    "BatchRenegotiateChildPublisherAgreementsRequest",
+    "BatchRenegotiateChildPublisherAgreementsResponse",
+    "BatchResendChildPublisherInvitationEmailsRequest",
+    "BatchResendChildPublisherInvitationEmailsResponse",
+    "BatchReserveAndOverbookLineItemsRequest",
+    "BatchReserveAndOverbookLineItemsResponse",
+    "BatchReserveLineItemsRequest",
+    "BatchReserveLineItemsResponse",
+    "BatchResumeAndOverbookLineItemsRequest",
+    "BatchResumeAndOverbookLineItemsResponse",
     "BatchResumeAndOverbookOrdersRequest",
     "BatchResumeAndOverbookOrdersResponse",
+    "BatchResumeLineItemsRequest",
+    "BatchResumeLineItemsResponse",
     "BatchResumeOrdersRequest",
     "BatchResumeOrdersResponse",
     "BatchRetractOrdersRequest",
@@ -1564,6 +1846,8 @@ __all__ = (
     "BatchSubmitSitesForApprovalResponse",
     "BatchUnarchiveApplicationsRequest",
     "BatchUnarchiveApplicationsResponse",
+    "BatchUnarchiveLineItemsRequest",
+    "BatchUnarchiveLineItemsResponse",
     "BatchUnarchiveOrdersRequest",
     "BatchUnarchiveOrdersResponse",
     "BatchUnarchiveSlatesRequest",
@@ -1576,6 +1860,10 @@ __all__ = (
     "BatchUpdateAdUnitsResponse",
     "BatchUpdateApplicationsRequest",
     "BatchUpdateApplicationsResponse",
+    "BatchUpdateAudienceSegmentsRequest",
+    "BatchUpdateAudienceSegmentsResponse",
+    "BatchUpdateBreakTemplatesRequest",
+    "BatchUpdateBreakTemplatesResponse",
     "BatchUpdateCdnConfigsRequest",
     "BatchUpdateCdnConfigsResponse",
     "BatchUpdateChildPublishersRequest",
@@ -1600,8 +1888,12 @@ __all__ = (
     "BatchUpdateEntitySignalsMappingsResponse",
     "BatchUpdateLabelsRequest",
     "BatchUpdateLabelsResponse",
+    "BatchUpdateLineItemsRequest",
+    "BatchUpdateLineItemsResponse",
     "BatchUpdateLiveStreamsRequest",
     "BatchUpdateLiveStreamsResponse",
+    "BatchUpdateNativeStylesRequest",
+    "BatchUpdateNativeStylesResponse",
     "BatchUpdateOrdersRequest",
     "BatchUpdateOrdersResponse",
     "BatchUpdatePartnersRequest",
@@ -1616,15 +1908,24 @@ __all__ = (
     "BatchUpdateTargetingPresetsResponse",
     "BatchUpdateTeamsRequest",
     "BatchUpdateTeamsResponse",
+    "BatchUpdateUsersRequest",
+    "BatchUpdateUsersResponse",
     "BatchUpdateViewabilityProvidersRequest",
     "BatchUpdateViewabilityProvidersResponse",
+    "BatchWithdrawChildPublishersRequest",
+    "BatchWithdrawChildPublishersResponse",
     "BrandLiftPartnerEnum",
+    "BreakTemplate",
+    "BreakTemplateMember",
+    "BreakTemplateServiceClient",
+    "BreakTypeEnum",
     "Browser",
     "BrowserLanguage",
     "BrowserLanguageServiceClient",
     "BrowserLanguageTargeting",
     "BrowserServiceClient",
     "BrowserTargeting",
+    "BuyerPlacementConfig",
     "CdnConfig",
     "CdnConfigServiceClient",
     "CdnConfigStatusEnum",
@@ -1638,6 +1939,8 @@ __all__ = (
     "ChildPublisherIdentityVerificationStatusEnum",
     "ChildPublisherOnboardingTaskEnum",
     "ChildPublisherServiceClient",
+    "ClickTag",
+    "ClickTrackingCreativeDetails",
     "CmsContent",
     "CmsMetadataKey",
     "CmsMetadataKeyServiceClient",
@@ -1655,6 +1958,7 @@ __all__ = (
     "ContactServiceClient",
     "ContactStatusEnum",
     "ContainerTypeEnum",
+    "ContendingLineItem",
     "Content",
     "ContentBundle",
     "ContentBundleServiceClient",
@@ -1671,6 +1975,8 @@ __all__ = (
     "CreateAdSpotRequest",
     "CreateAdUnitRequest",
     "CreateApplicationRequest",
+    "CreateAudienceSegmentRequest",
+    "CreateBreakTemplateRequest",
     "CreateCdnConfigRequest",
     "CreateChildPublisherRequest",
     "CreateCompanyRequest",
@@ -1684,7 +1990,9 @@ __all__ = (
     "CreateDaiEncodingProfileRequest",
     "CreateEntitySignalsMappingRequest",
     "CreateLabelRequest",
+    "CreateLineItemRequest",
     "CreateLiveStreamRequest",
+    "CreateNativeStyleRequest",
     "CreateOrderRequest",
     "CreatePlacementRequest",
     "CreatePrivateAuctionDealRequest",
@@ -1694,13 +2002,22 @@ __all__ = (
     "CreateSlateRequest",
     "CreateTargetingPresetRequest",
     "CreateTeamRequest",
+    "CreateUserRequest",
     "CreateViewabilityProviderRequest",
     "Creative",
+    "CreativeAsset",
+    "CreativeDestinationUrlTypeEnum",
+    "CreativeFindingTypeEnum",
+    "CreativeIdTypeEnum",
+    "CreativeLockedOrientationEnum",
     "CreativePlaceholder",
     "CreativePlaceholderCompanion",
     "CreativeRotationTypeEnum",
+    "CreativeServiceClient",
     "CreativeSet",
     "CreativeSetServiceClient",
+    "CreativeSslOverrideEnum",
+    "CreativeSslScanResultEnum",
     "CreativeTargeting",
     "CreativeTemplate",
     "CreativeTemplateServiceClient",
@@ -1708,11 +2025,14 @@ __all__ = (
     "CreativeTemplateTypeEnum",
     "CreativeTemplateVariable",
     "CreativeTemplateVariableUrlTypeEnum",
+    "CreativeThirdPartyDataDeclarationStatusEnum",
     "CreativeWrapper",
     "CreativeWrapperOrderingEnum",
     "CreativeWrapperServiceClient",
     "CreativeWrapperStatusEnum",
     "CreativeWrapperTypeEnum",
+    "CustomCreativeAsset",
+    "CustomCreativeDetails",
     "CustomField",
     "CustomFieldDataTypeEnum",
     "CustomFieldEntityTypeEnum",
@@ -1747,17 +2067,24 @@ __all__ = (
     "DaiIngestError",
     "DaiIngestErrorReasonEnum",
     "DaiIngestStatusEnum",
+    "DaiSession",
+    "DaiSessionServiceClient",
     "DashBridge",
     "DataSegmentTargeting",
+    "DateRange",
     "DeactivateCustomTargetingValueRequest",
     "DeactivateTargetingPresetRequest",
     "DealBuyerPermissionTypeEnum",
     "DealPriorityTierEnum",
+    "DefaultThirdPartyDataDeclaration",
     "DelegationAccountStatusEnum",
     "DelegationApprovalStatusEnum",
     "DelegationInvitationStatusEnum",
     "DelegationTypeEnum",
     "DeleteAdBreakRequest",
+    "DeliveryForecast",
+    "DeliveryForecastOptions",
+    "DeliveryForecastResult",
     "DeliveryIndicator",
     "DeviceCapability",
     "DeviceCapabilityServiceClient",
@@ -1777,11 +2104,23 @@ __all__ = (
     "EnvironmentTypeEnum",
     "ExchangeSyndicationProductEnum",
     "ExclusionScopeEnum",
+    "ExistingLineItemList",
+    "FetchAdReviewCenterCustomLabelsRequest",
+    "FetchAdReviewCenterCustomLabelsResponse",
     "FetchMcmEarningsRequest",
     "FetchMcmEarningsResponse",
     "FetchReportResultRowsRequest",
     "FetchReportResultRowsResponse",
     "FirstPartyMobileApplicationTargeting",
+    "ForecastBreakdown",
+    "ForecastBreakdownEntry",
+    "ForecastBreakdownOptions",
+    "ForecastBreakdownTarget",
+    "ForecastServiceClient",
+    "ForecastingGrpAgeEnum",
+    "ForecastingGrpGenderEnum",
+    "ForecastingGrpUnitEnum",
+    "ForecastingTargetingDimensionEnum",
     "FrequencyCap",
     "GeoTarget",
     "GeoTargetServiceClient",
@@ -1793,6 +2132,7 @@ __all__ = (
     "GetApplicationRequest",
     "GetAudienceSegmentRequest",
     "GetBandwidthGroupRequest",
+    "GetBreakTemplateRequest",
     "GetBrowserLanguageRequest",
     "GetBrowserRequest",
     "GetCdnConfigRequest",
@@ -1804,6 +2144,7 @@ __all__ = (
     "GetContentBundleRequest",
     "GetContentLabelRequest",
     "GetContentRequest",
+    "GetCreativeRequest",
     "GetCreativeSetRequest",
     "GetCreativeTemplateRequest",
     "GetCreativeWrapperRequest",
@@ -1812,18 +2153,23 @@ __all__ = (
     "GetCustomTargetingValueRequest",
     "GetDaiAuthenticationKeyRequest",
     "GetDaiEncodingProfileRequest",
+    "GetDaiSessionRequest",
+    "GetDefaultThirdPartyDataDeclarationRequest",
     "GetDeviceCapabilityRequest",
     "GetDeviceCategoryRequest",
     "GetDeviceManufacturerRequest",
     "GetEntitySignalsMappingRequest",
     "GetGeoTargetRequest",
     "GetLabelRequest",
+    "GetLineItemCreativeAssociationRequest",
     "GetLineItemRequest",
+    "GetLineItemTemplateRequest",
     "GetLinkedDeviceRequest",
     "GetLiveStreamRequest",
     "GetMobileCarrierRequest",
     "GetMobileDeviceRequest",
     "GetMobileDeviceSubmodelRequest",
+    "GetNativeStyleRequest",
     "GetNetworkRequest",
     "GetOperatingSystemRequest",
     "GetOperatingSystemVersionRequest",
@@ -1847,28 +2193,43 @@ __all__ = (
     "GetViewabilityProviderRequest",
     "Goal",
     "GoalTypeEnum",
+    "GrpDemographicBreakdown",
     "GrpProviderEnum",
     "GrpSettings",
     "GrpTargetGenderEnum",
     "HlsMasterPlaylistRefreshTypeEnum",
     "HlsSettings",
     "HlsSettingsPlaylistTypeEnum",
+    "Html5CreativeDetails",
+    "ImageCreativeDetails",
+    "ImageOverlayCreativeDetails",
+    "ImageRedirectCreativeDetails",
+    "ImageRedirectOverlayCreativeDetails",
+    "InternalRedirectCreativeDetails",
     "InventoryTargeting",
     "Label",
     "LabelFrequencyCap",
     "LabelServiceClient",
     "LabelTypeEnum",
+    "LegacyDfpCreativeDetails",
     "LineItem",
     "LineItemAllowedFormatEnum",
     "LineItemComputedStatusEnum",
     "LineItemCostTypeEnum",
+    "LineItemCreativeAssociation",
+    "LineItemCreativeAssociationServiceClient",
+    "LineItemCreativeAssociationStats",
+    "LineItemCreativeAssociationStatusEnum",
     "LineItemDealInfo",
+    "LineItemDeliveryForecast",
     "LineItemDeliveryForecastSourceEnum",
     "LineItemDeliveryRateTypeEnum",
     "LineItemDiscount",
     "LineItemReservationStatusEnum",
     "LineItemServiceClient",
     "LineItemStats",
+    "LineItemTemplate",
+    "LineItemTemplateServiceClient",
     "LineItemTypeEnum",
     "LinkedDevice",
     "LinkedDeviceServiceClient",
@@ -1889,6 +2250,8 @@ __all__ = (
     "ListAudienceSegmentsResponse",
     "ListBandwidthGroupsRequest",
     "ListBandwidthGroupsResponse",
+    "ListBreakTemplatesRequest",
+    "ListBreakTemplatesResponse",
     "ListBrowserLanguagesRequest",
     "ListBrowserLanguagesResponse",
     "ListBrowsersRequest",
@@ -1917,6 +2280,8 @@ __all__ = (
     "ListCreativeTemplatesResponse",
     "ListCreativeWrappersRequest",
     "ListCreativeWrappersResponse",
+    "ListCreativesRequest",
+    "ListCreativesResponse",
     "ListCustomFieldsRequest",
     "ListCustomFieldsResponse",
     "ListCustomTargetingKeysRequest",
@@ -1939,6 +2304,10 @@ __all__ = (
     "ListGeoTargetsResponse",
     "ListLabelsRequest",
     "ListLabelsResponse",
+    "ListLineItemCreativeAssociationsRequest",
+    "ListLineItemCreativeAssociationsResponse",
+    "ListLineItemTemplatesRequest",
+    "ListLineItemTemplatesResponse",
     "ListLineItemsRequest",
     "ListLineItemsResponse",
     "ListLinkedDevicesRequest",
@@ -1951,6 +2320,8 @@ __all__ = (
     "ListMobileDeviceSubmodelsResponse",
     "ListMobileDevicesRequest",
     "ListMobileDevicesResponse",
+    "ListNativeStylesRequest",
+    "ListNativeStylesResponse",
     "ListNetworksRequest",
     "ListNetworksResponse",
     "ListOperatingSystemVersionsRequest",
@@ -1989,6 +2360,8 @@ __all__ = (
     "ListTeamsResponse",
     "ListThirdPartyCompaniesRequest",
     "ListThirdPartyCompaniesResponse",
+    "ListUsersRequest",
+    "ListUsersResponse",
     "ListViewabilityProvidersRequest",
     "ListViewabilityProvidersResponse",
     "LiveStream",
@@ -2012,6 +2385,9 @@ __all__ = (
     "MobileDeviceServiceClient",
     "MobileDeviceSubmodel",
     "MobileDeviceSubmodelServiceClient",
+    "NativeStyle",
+    "NativeStyleServiceClient",
+    "NativeStyleStatusEnum",
     "Network",
     "NetworkServiceClient",
     "NielsenCtvPacingEnum",
@@ -2030,7 +2406,9 @@ __all__ = (
     "Placement",
     "PlacementServiceClient",
     "PlacementStatusEnum",
+    "PodFindingTypeEnum",
     "PrefetchSettings",
+    "PrefetchStageTypeEnum",
     "PrerollSettings",
     "PrivateAuction",
     "PrivateAuctionDeal",
@@ -2039,30 +2417,47 @@ __all__ = (
     "PrivateMarketplaceDealStatusEnum",
     "ProgrammaticBuyer",
     "ProgrammaticBuyerServiceClient",
+    "ProgrammaticCreativeDetails",
+    "ProvisionTestNetworkRequest",
     "ReachPartnerEnum",
     "RefreshRateTypeEnum",
+    "RenegotiateChildPublisherAgreementRequest",
     "Report",
     "ReportDataTable",
     "ReportDefinition",
     "ReportServiceClient",
     "ReportValue",
     "ReportVisibilityEnum",
+    "ReportingTypeEnum",
     "RequestFormatTargeting",
     "RequestPlatformEnum",
     "RequestPlatformTargeting",
     "RichMediaAdsCompany",
     "RichMediaAdsCompanyGdprStatusEnum",
     "RichMediaAdsCompanyServiceClient",
+    "RichMediaStudioChildAssetProperty",
+    "RichMediaStudioChildAssetTypeEnum",
+    "RichMediaStudioCreativeBillingAttributeEnum",
+    "RichMediaStudioCreativeDetails",
+    "RichMediaStudioCreativeFormatEnum",
     "RoadblockingTypeEnum",
     "Role",
     "RoleServiceClient",
     "RoleStatusEnum",
+    "RunAvailabilityForecastRequest",
+    "RunAvailabilityForecastResponse",
+    "RunDeliveryForecastRequest",
+    "RunDeliveryForecastResponse",
     "RunReportMetadata",
     "RunReportRequest",
     "RunReportResponse",
+    "RunTrafficDataRequest",
+    "RunTrafficDataResponse",
     "ScheduleOptions",
     "SearchAdReviewCenterAdsRequest",
     "SearchAdReviewCenterAdsResponse",
+    "SessionFindingSeverityEnum",
+    "SetTopBoxCreativeDetails",
     "Site",
     "SiteApprovalStatusEnum",
     "SiteDisapprovalReasonEnum",
@@ -2071,16 +2466,19 @@ __all__ = (
     "SizeTypeEnum",
     "SkippableAdTypeEnum",
     "Slate",
+    "SlateFindingTypeEnum",
     "SlateServiceClient",
     "SlateStatusEnum",
     "SmartSizeModeEnum",
     "SourceContentConfig",
+    "StitchingTypeEnum",
     "SuggestedAdUnit",
     "SuggestedAdUnitServiceClient",
     "TargetPlatformEnum",
     "TargetWindowEnum",
     "TargetedVideoBumperTypeEnum",
     "Targeting",
+    "TargetingCriteriaBreakdown",
     "TargetingPreset",
     "TargetingPresetServiceClient",
     "TargetingPresetStatusEnum",
@@ -2092,20 +2490,26 @@ __all__ = (
     "TeamServiceClient",
     "TeamStatusEnum",
     "TechnologyTargeting",
+    "TemplateCreativeDetails",
     "ThirdPartyCompany",
     "ThirdPartyCompanyServiceClient",
     "ThirdPartyCompanyStatusEnum",
     "ThirdPartyCompanyTypeEnum",
+    "ThirdPartyCreativeDetails",
     "ThirdPartyDataDeclaration",
     "ThirdPartyDataDeclarationTypeEnum",
     "ThirdPartyMeasurementSettings",
+    "TimeSeries",
     "TimeUnitEnum",
+    "TrackingPingFindingTypeEnum",
     "UnitTypeEnum",
     "UpdateAdBreakRequest",
     "UpdateAdRuleRequest",
     "UpdateAdSpotRequest",
     "UpdateAdUnitRequest",
     "UpdateApplicationRequest",
+    "UpdateAudienceSegmentRequest",
+    "UpdateBreakTemplateRequest",
     "UpdateCdnConfigRequest",
     "UpdateChildPublisherRequest",
     "UpdateCompanyRequest",
@@ -2119,7 +2523,10 @@ __all__ = (
     "UpdateDaiEncodingProfileRequest",
     "UpdateEntitySignalsMappingRequest",
     "UpdateLabelRequest",
+    "UpdateLineItemRequest",
     "UpdateLiveStreamRequest",
+    "UpdateNativeStyleRequest",
+    "UpdateNetworkRequest",
     "UpdateOrderRequest",
     "UpdatePartnerRequest",
     "UpdatePlacementRequest",
@@ -2130,13 +2537,20 @@ __all__ = (
     "UpdateSlateRequest",
     "UpdateTargetingPresetRequest",
     "UpdateTeamRequest",
+    "UpdateUserRequest",
     "UpdateViewabilityProviderRequest",
     "User",
     "UserDomainTargeting",
     "UserServiceClient",
+    "VastAdIdTypeEnum",
+    "VastInfo",
+    "VastRedirectCreativeDetails",
+    "VastRedirectTypeEnum",
+    "VideoCreativeDetails",
     "VideoPosition",
     "VideoPositionEnum",
     "VideoPositionTargeting",
+    "VideoRedirectCreativeDetails",
     "VideoSettings",
     "VideoTrackingUrl",
     "VideoTranscodeStatusEnum",
@@ -2146,3 +2560,6 @@ __all__ = (
     "WebProperty",
     "WebviewClaimingStatusEnum",
 )
+
+api_core.check_python_version("google.ads.admanager_v1")
+api_core.check_dependency_versions("google.ads.admanager_v1")

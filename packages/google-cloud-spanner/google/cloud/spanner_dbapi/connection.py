@@ -91,10 +91,29 @@ class Connection:
         the read-only transaction is semantically the same, and only indicates that the read-only transaction
         should end a that a new one should be started when the next statement is executed.
 
+    :type data_boost_enabled: bool
+    :param data_boost_enabled: (Optional) Whether to enable DataBoost for
+        partitioned queries executed via this connection. Defaults to False.
+        Note that DataBoost is only supported for partitioned query execution.
+
+    :type auto_partition_mode: bool
+    :param auto_partition_mode: (Optional) Whether to enable auto partition mode
+        for queries executed via this connection. When True, queries on read-only
+        or autocommit connections are automatically partitioned and executed in parallel.
+        Defaults to False.
+
     **kwargs: Initial value for connection variables.
     """
 
-    def __init__(self, instance, database=None, read_only=False, **kwargs):
+    def __init__(
+        self,
+        instance,
+        database=None,
+        read_only=False,
+        data_boost_enabled=False,
+        auto_partition_mode=False,
+        **kwargs,
+    ):
         self._instance = instance
         self._database = database
         self._ddl_statements = []
@@ -110,6 +129,8 @@ class Connection:
         # connection close
         self._own_pool = True
         self._read_only = read_only
+        self._data_boost_enabled = bool(data_boost_enabled)
+        self._auto_partition_mode = bool(auto_partition_mode)
         self._staleness = None
         self.request_priority = None
         self._transaction_begin_marked = False
@@ -122,6 +143,47 @@ class Connection:
         self._transaction_helper = TransactionRetryHelper(self)
         self._autocommit_dml_mode: AutocommitDmlMode = AutocommitDmlMode.TRANSACTIONAL
         self._connection_variables = kwargs
+
+    @property
+    def data_boost_enabled(self):
+        """Flag: whether DataBoost is enabled for partitioned queries on this connection.
+
+        Note that DataBoost is only supported for partitioned query execution.
+
+        Returns:
+            bool: True if DataBoost is enabled, False otherwise.
+        """
+        return self._data_boost_enabled
+
+    @data_boost_enabled.setter
+    def data_boost_enabled(self, value):
+        """Change the DataBoost enablement state for partitioned queries on this connection.
+
+        :type value: bool
+        :param value: New data_boost_enabled state.
+        """
+        self._data_boost_enabled = bool(value)
+
+    @property
+    def auto_partition_mode(self):
+        """Flag: whether auto partition mode is enabled for queries on this connection.
+
+        When enabled, standard queries executed on read-only or autocommit connections
+        are automatically partitioned and executed in parallel via run_partitioned_query.
+
+        Returns:
+            bool: True if auto partition mode is enabled, False otherwise.
+        """
+        return self._auto_partition_mode
+
+    @auto_partition_mode.setter
+    def auto_partition_mode(self, value):
+        """Change the auto partition mode enablement state for this connection.
+
+        :type value: bool
+        :param value: New auto_partition_mode state.
+        """
+        self._auto_partition_mode = bool(value)
 
     @property
     def spanner_client(self):
@@ -638,10 +700,14 @@ class Connection:
         self,
         parsed_statement: ParsedStatement,
         query_options=None,
+        data_boost_enabled=None,
     ):
         statement = parsed_statement.statement
         partitioned_query = parsed_statement.client_side_statement_params[0]
         self._partitioned_query_validation(partitioned_query, statement)
+
+        if data_boost_enabled is None:
+            data_boost_enabled = self.data_boost_enabled
 
         batch_snapshot = self._database.batch_snapshot()
         partition_ids = []
@@ -651,6 +717,7 @@ class Connection:
                 statement.params,
                 statement.param_types,
                 query_options=query_options,
+                data_boost_enabled=data_boost_enabled,
             )
         )
 
@@ -684,7 +751,10 @@ class Connection:
         self._partitioned_query_validation(partitioned_query, statement)
         batch_snapshot = self._database.batch_snapshot()
         return batch_snapshot.run_partitioned_query(
-            partitioned_query, statement.params, statement.param_types
+            partitioned_query,
+            statement.params,
+            statement.param_types,
+            data_boost_enabled=self.data_boost_enabled,
         )
 
     @check_not_closed
@@ -748,6 +818,10 @@ def connect(
     client_certificate=None,
     client_key=None,
     instance_type=None,
+    data_boost_enabled=False,
+    auto_partition_mode=False,
+    username=None,
+    password=None,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -795,6 +869,17 @@ def connect(
     :param database_role: (Optional) The database role to connect as when using
         fine-grained access controls.
 
+    :type data_boost_enabled: bool
+    :param data_boost_enabled: (Optional) Whether to enable DataBoost for
+        partitioned queries executed via this connection. Defaults to False.
+        Note that DataBoost is only supported for partitioned query execution.
+
+    :type auto_partition_mode: bool
+    :param auto_partition_mode: (Optional) Whether to enable auto partition mode
+        for queries executed via this connection. When True, queries on read-only
+        or autocommit connections are automatically partitioned and executed in parallel.
+        Defaults to False.
+
     **kwargs: Initial value for connection variables.
 
 
@@ -826,6 +911,10 @@ def connect(
     :param client_key: (Optional) The path to the client key file used for mTLS connection.
         This is intended only for Spanner Omni endpoints.
         This is mandatory if Spanner Omni requires an mTLS connection.
+    :type username: str
+    :param username: (Optional) Username for Spanner Omni authentication.
+    :type password: str
+    :param password: (Optional) Password for Spanner Omni authentication.
     """
     if client is None:
         client_info = ClientInfo(
@@ -873,7 +962,29 @@ def connect(
                     )
 
                 project = "default"
-                credentials = AnonymousCredentials()
+                has_username = username is not None
+                has_password = password is not None
+                if has_username != has_password:
+                    raise ValueError(
+                        "Both username and password must be specified for Omni authentication"
+                    )
+                from google.cloud.spanner_v1.omni.credentials import (
+                    SpannerOmniCredentials,
+                )
+
+                if has_username and has_password:
+                    credentials = SpannerOmniCredentials(
+                        username=username,
+                        password=password,
+                        target=host_endpoint,
+                        use_plain_text=use_plain_text,
+                        ca_certificate=ca_certificate,
+                        client_certificate=client_certificate,
+                        client_key=client_key,
+                    )
+                else:
+                    credentials = AnonymousCredentials()
+
                 client_options = kwargs.get("client_options")
                 if client_options is None:
                     client_options = ClientOptions(api_endpoint=host_endpoint)
@@ -885,7 +996,6 @@ def connect(
 
                     client_options = copy.copy(client_options)
                     client_options.api_endpoint = host_endpoint
-
             client = spanner.Client(
                 project=project,
                 credentials=credentials,
@@ -909,7 +1019,13 @@ def connect(
         database = instance.database(
             database_id, pool=pool, database_role=database_role, logger=logger
         )
-    conn = Connection(instance, database, **kwargs)
+    conn = Connection(
+        instance,
+        database,
+        data_boost_enabled=data_boost_enabled,
+        auto_partition_mode=auto_partition_mode,
+        **kwargs,
+    )
     if pool is not None:
         conn._own_pool = False
 

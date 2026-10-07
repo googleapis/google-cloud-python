@@ -1151,9 +1151,11 @@ class TestSession(OpenTelemetryBase):
             list(transaction.read(TABLE_NAME, COLUMNS, KEYSET))
 
         session.create()
-        session.run_in_transaction(unit_of_work)
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
+            session.run_in_transaction(unit_of_work)
 
         self.assertEqual(begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once()
 
         begin_transaction.assert_called_with(
             request=BeginTransactionRequest(
@@ -1191,10 +1193,12 @@ class TestSession(OpenTelemetryBase):
             list(transaction.read(TABLE_NAME, COLUMNS, KEYSET))
 
         session.create()
-        session.run_in_transaction(unit_of_work)
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
+            session.run_in_transaction(unit_of_work)
 
         # Verify retried BeginTransaction API call.
         self.assertEqual(begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once()
 
         begin_transaction.assert_called_with(
             request=BeginTransactionRequest(
@@ -1236,10 +1240,12 @@ class TestSession(OpenTelemetryBase):
             list(transaction.read(TABLE_NAME, COLUMNS, KEYSET))
 
         session.create()
-        session.run_in_transaction(unit_of_work)
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
+            session.run_in_transaction(unit_of_work)
 
         # Verify retried BeginTransaction API call.
         self.assertEqual(begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once()
 
         begin_transaction.assert_called_with(
             request=BeginTransactionRequest(
@@ -1524,7 +1530,7 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        with mock.patch("time.sleep") as sleep_mock:
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
             session.run_in_transaction(unit_of_work, "abc", some_arg="def")
 
         sleep_mock.assert_called_once_with(RETRY_SECONDS + RETRY_NANOS / 1.0e9)
@@ -1639,7 +1645,7 @@ class TestSession(OpenTelemetryBase):
                 raise _make_rpc_error(Aborted, trailing_metadata)
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        with mock.patch("time.sleep") as sleep_mock:
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
             session.run_in_transaction(unit_of_work)
 
         sleep_mock.assert_called_once_with(RETRY_SECONDS + RETRY_NANOS / 1.0e9)
@@ -1726,8 +1732,10 @@ class TestSession(OpenTelemetryBase):
                 return _results[0]
             return 1.0
 
-        with mock.patch("time.time", _time):
-            with mock.patch("time.sleep") as sleep_mock:
+        with mock.patch("google.cloud.spanner_v1._helpers.time.time", _time):
+            with mock.patch(
+                "google.cloud.spanner_v1._helpers.time.sleep"
+            ) as sleep_mock:
                 # Exception has request_id attribute added
                 with self.assertRaises(Aborted) as context:
                     session.run_in_transaction(unit_of_work, "abc", timeout_secs=1)
@@ -1803,11 +1811,11 @@ class TestSession(OpenTelemetryBase):
             return 1.0
 
         with (
-            mock.patch("time.time", _time),
+            mock.patch("google.cloud.spanner_v1._helpers.time.time", _time),
             mock.patch(
                 "google.cloud.spanner_v1._helpers.random.random", return_value=0
             ),
-            mock.patch("time.sleep") as sleep_mock,
+            mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock,
         ):
             # Exception has request_id attribute added
             with self.assertRaises(Aborted) as context:
@@ -2219,7 +2227,7 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        with mock.patch("time.sleep") as sleep_mock:
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
             session.run_in_transaction(
                 unit_of_work,
                 "abc",
@@ -2669,15 +2677,17 @@ class TestSession(OpenTelemetryBase):
             return 3
 
         # check if current time > deadline
-        with mock.patch("time.time", _time_func):
+        with mock.patch("google.cloud.spanner_v1._helpers.time.time", _time_func):
             with self.assertRaises(Exception):
                 _delay_until_retry(exc_mock, 2, 1, default_retry_delay=0)
 
-        with mock.patch("time.time", _time_func):
+        with mock.patch("google.cloud.spanner_v1._helpers.time.time", _time_func):
             with mock.patch(
                 "google.cloud.spanner_v1._helpers._get_retry_delay"
             ) as get_retry_delay_mock:
-                with mock.patch("time.sleep") as sleep_mock:
+                with mock.patch(
+                    "google.cloud.spanner_v1._helpers.time.sleep"
+                ) as sleep_mock:
                     get_retry_delay_mock.return_value = None
 
                     _delay_until_retry(exc_mock, 6, 1)

@@ -325,6 +325,14 @@ class AdIdentifiers(proto.Message):
             this event with a previous event.
         encrypted_user_ids (MutableSequence[google.ads.datamanager_v1.types.EncryptedUserId]):
             Optional. Any number of encrypted user IDs.
+        ppid (str):
+            Optional. A unique identifier for an
+            authenticated user (signed-in), as defined by
+            the publisher.
+        visitor_ppid (str):
+            Optional. A unique identifier for an
+            unauthenticated user (user who is not
+            signed-in), as defined by the publisher.
     """
 
     session_attributes: str = proto.Field(
@@ -370,6 +378,14 @@ class AdIdentifiers(proto.Message):
             number=10,
             message=encrypted_user_id.EncryptedUserId,
         )
+    )
+    ppid: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    visitor_ppid: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 

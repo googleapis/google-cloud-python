@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.13.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.13.4...google-cloud-geminidataanalytics-v0.13.5) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
+## [0.13.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.13.3...google-cloud-geminidataanalytics-v0.13.4) (2026-09-24)
+
+
+### Features
+
+* update API sources and regenerate ([#18446](https://github.com/googleapis/google-cloud-python/issues/18446)) ([54f1019](https://github.com/googleapis/google-cloud-python/commit/54f10190a4ab7b3772010bf9006de55266f74da9))
+
+## [0.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.13.2...google-cloud-geminidataanalytics-v0.13.3) (2026-09-14)
+
+
+### Features
+
+* update API sources and regenerate ([#18324](https://github.com/googleapis/google-cloud-python/issues/18324)) ([0766fb6](https://github.com/googleapis/google-cloud-python/commit/0766fb69c28973d5d51cffc490f195c60e8eee10))
+
+## [0.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.13.1...google-cloud-geminidataanalytics-v0.13.2) (2026-09-03)
+
+
+### Features
+
+* update API sources and regenerate ([#18267](https://github.com/googleapis/google-cloud-python/issues/18267)) ([813a5c1](https://github.com/googleapis/google-cloud-python/commit/813a5c17cbe42b3a8386e7ad7475a3d7ada33842))
+
 ## [0.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.13.0...google-cloud-geminidataanalytics-v0.13.1) (2026-06-22)
 
 
