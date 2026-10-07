@@ -1459,23 +1459,33 @@ class TestIDTokenCredentials(object):
             cred.sign_bytes(b"bytes")
 
     @pytest.mark.parametrize("bind_id_token", [None, True, False])
-    @mock.patch(
-        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
-    )
-    def test_with_target_audience_for_metadata(
-        self, get_service_account_info, bind_id_token
-    ):
-        get_service_account_info.return_value = {
-            "email": "foo@project.iam.gserviceaccount.com"
-        }
+    @responses.activate
+    def test_with_target_audience_for_metadata(self, bind_id_token):
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": "foo@project.iam.gserviceaccount.com"},
+        )
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/identity?audience=new_audience&format=full",
+            status=200,
+            content_type="text/plain",
+            body=SAMPLE_ID_TOKEN,
+        )
 
         cred = credentials.IDTokenCredentials(
-            mock.Mock(),
+            requests.Request(),
             "audience",
             use_metadata_identity_endpoint=True,
             bind_id_token=bind_id_token,
         )
         cred = cred.with_target_audience("new_audience")
+        cred.refresh(requests.Request())
 
         assert cred._target_audience == "new_audience"
         assert cred._use_metadata_identity_endpoint
@@ -1483,23 +1493,36 @@ class TestIDTokenCredentials(object):
         assert cred._signer is None
         assert cred._token_uri is None
         assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
+        assert cred.token == SAMPLE_ID_TOKEN.decode("utf-8")
 
     @pytest.mark.parametrize("bind_id_token", [None, True, False])
-    @mock.patch(
-        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
-    )
-    def test_id_token_with_quota_project(self, get_service_account_info, bind_id_token):
-        get_service_account_info.return_value = {
-            "email": "foo@project.iam.gserviceaccount.com"
-        }
+    @responses.activate
+    def test_id_token_with_quota_project(self, bind_id_token):
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": "foo@project.iam.gserviceaccount.com"},
+        )
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/identity?audience=audience&format=full",
+            status=200,
+            content_type="text/plain",
+            body=SAMPLE_ID_TOKEN,
+        )
 
         cred = credentials.IDTokenCredentials(
-            mock.Mock(),
+            requests.Request(),
             "audience",
             use_metadata_identity_endpoint=True,
             bind_id_token=bind_id_token,
         )
         cred = cred.with_quota_project("project-foo")
+        cred.refresh(requests.Request())
 
         assert cred._quota_project_id == "project-foo"
         assert cred._use_metadata_identity_endpoint
@@ -1507,25 +1530,33 @@ class TestIDTokenCredentials(object):
         assert cred._signer is None
         assert cred._token_uri is None
         assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
+        assert cred.token == SAMPLE_ID_TOKEN.decode("utf-8")
 
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
         return_value=(None, None),
     )
-    @mock.patch(
-        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
-    )
-    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
-    def test_id_token_missing_bind_id_token_attribute(
-        self, get, get_service_account_info, mock_get_agent_cert
-    ):
-        get.return_value = SAMPLE_ID_TOKEN
-        get_service_account_info.return_value = {
-            "email": "foo@project.iam.gserviceaccount.com"
-        }
+    @responses.activate
+    def test_id_token_missing_bind_id_token_attribute(self, mock_get_agent_cert):
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": "foo@project.iam.gserviceaccount.com"},
+        )
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/identity?audience=audience&format=full",
+            status=200,
+            content_type="text/plain",
+            body=SAMPLE_ID_TOKEN,
+        )
 
         cred = credentials.IDTokenCredentials(
-            mock.Mock(),
+            requests.Request(),
             "audience",
             use_metadata_identity_endpoint=True,
         )
@@ -1538,8 +1569,8 @@ class TestIDTokenCredentials(object):
         cred_with_quota = cred.with_quota_project("project-foo")
         assert cred_with_quota._bind_id_token is None
 
-        cred.refresh(request=mock.Mock())
-        assert cred.token == SAMPLE_ID_TOKEN
+        cred.refresh(requests.Request())
+        assert cred.token == SAMPLE_ID_TOKEN.decode("utf-8")
         mock_get_agent_cert.assert_called_once()
 
     @mock.patch(
