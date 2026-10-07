@@ -22,9 +22,9 @@ from .instanceadmin import (
 )
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
-INSTANCE_ID = f"instance-admin-{str(uuid.uuid4())[:16]}"
-CLUSTER_ID = f"cluster-admin-{str(uuid.uuid4())[:16]}"
-NEW_CLUSTER_ID = f"cluster-add-{str(uuid.uuid4())[:16]}"
+INSTANCE_ID = f"instance-admin-{str(uuid.uuid4())[:8]}"
+CLUSTER_ID = f"cluster-admin-{str(uuid.uuid4())[:8]}"
+NEW_CLUSTER_ID = f"cluster-add-{str(uuid.uuid4())[:8]}"
 
 
 def test_instance_operations(capsys):

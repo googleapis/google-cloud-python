@@ -30,7 +30,7 @@ import argparse
 from google.cloud import bigtable
 from google.cloud.bigtable.data import row_filters
 
-from ..utils import wait_for_table
+from ...utils import wait_for_table
 
 # [END bigtable_hw_imports_data_client]
 

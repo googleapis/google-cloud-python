@@ -14,6 +14,7 @@
 import os
 import uuid
 
+from ...utils import create_table_cm
 from .tableadmin import delete_table, run_table_operations
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
@@ -36,6 +37,9 @@ def test_run_table_operations(capsys):
 
 
 def test_delete_table(capsys):
-    delete_table(PROJECT, BIGTABLE_INSTANCE, TABLE_ID)
+    table_id = f"table-admin-to-delete-{str(uuid.uuid4())[:16]}"
+    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, table_id, verbose=False):
+        delete_table(PROJECT, BIGTABLE_INSTANCE, table_id)
     out, _ = capsys.readouterr()
-    assert f"Deleted {TABLE_ID} table." in out
+    assert f"Deleting {table_id} table." in out
+    assert f"Deleted {table_id} table." in out

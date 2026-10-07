@@ -20,7 +20,7 @@ import pytest
 
 from google.cloud.bigtable.data import BigtableDataClient, SetCell
 
-from ..utils import create_table_cm
+from ...utils import create_table_cm
 from .main import main
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]

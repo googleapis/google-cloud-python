@@ -22,7 +22,7 @@ Prerequisites:
 
 import argparse
 
-from ..utils import create_table_cm
+from ...utils import create_table_cm
 
 
 def run_table_operations(project_id, instance_id, table_id):
