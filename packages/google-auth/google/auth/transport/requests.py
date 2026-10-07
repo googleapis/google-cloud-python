@@ -725,6 +725,11 @@ class AuthorizedSession(requests.Session):
             self.credentials.before_request(auth_request, method, url, request_headers)
         remaining_time = guard.remaining_timeout
 
+        # Remember the client certificate that this request is sent with. If
+        # the request receives a 401 response, this tells whether another
+        # thread has already rotated the certificate in the meantime.
+        cert_at_request = getattr(self, "_cached_cert", None)
+
         with TimeoutGuard(remaining_time) as guard:
             _helpers.request_log(_LOGGER, method, url, data, headers)
             response = super(AuthorizedSession, self).request(
@@ -751,48 +756,7 @@ class AuthorizedSession(requests.Session):
                 use_mtls = self.is_mtls and _mtls_helper.is_mtls_endpoint(url)
                 if use_mtls:
                     with TimeoutGuard(remaining_time) as guard:
-                        with self._mtls_reauth_lock:
-                            if getattr(self, "is_mtls", False):
-                                try:
-                                    (
-                                        call_cert_bytes,
-                                        call_key_bytes,
-                                        cached_fingerprint,
-                                        current_cert_fingerprint,
-                                    ) = _mtls_helper.check_parameters_for_unauthorized_response(
-                                        getattr(self, "_cached_cert", None)
-                                    )
-                                    if cached_fingerprint != current_cert_fingerprint:
-                                        try:
-                                            _LOGGER.info(
-                                                "Client certificate has changed, reconfiguring mTLS "
-                                                "channel."
-                                            )
-                                            self.configure_mtls_channel(
-                                                lambda: (
-                                                    call_cert_bytes,
-                                                    call_key_bytes,
-                                                )
-                                            )
-                                        except Exception as e:
-                                            _LOGGER.error(
-                                                "Failed to reconfigure mTLS channel: %s",
-                                                e,
-                                            )
-                                            raise exceptions.MutualTLSChannelError(
-                                                "Failed to reconfigure mTLS channel"
-                                            ) from e
-                                    else:
-                                        _LOGGER.info(
-                                            "Skipping reconfiguration of mTLS channel because the client"
-                                            " certificate has not changed."
-                                        )
-                                except exceptions.MutualTLSChannelError:
-                                    raise
-                                except Exception as e:
-                                    _LOGGER.warning(
-                                        "mTLS certificate check/rotation failed: %s", e
-                                    )
+                        self._reconfigure_mtls_channel_if_cert_changed(cert_at_request)
                     remaining_time = guard.remaining_timeout
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
@@ -827,6 +791,74 @@ class AuthorizedSession(requests.Session):
             )
 
         return response
+
+    def _reconfigure_mtls_channel_if_cert_changed(self, cert_at_request):
+        """Reconfigures the mTLS channel if the client certificate has changed.
+
+        This is called when a request to an mTLS endpoint receives a 401
+        response. The certificate check and the channel reconfiguration run
+        while holding ``_mtls_reauth_lock``. When several threads receive a 401
+        response at the same time, only the first one reads the current
+        certificate and remounts the adapters. The other threads see that the
+        channel has already been reconfigured and reuse it.
+
+        Args:
+            cert_at_request (Optional[bytes]): The cached client certificate at
+                the time the request that received the 401 response was sent.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If the client
+                certificate has changed but the mTLS channel could not be
+                reconfigured.
+        """
+        with self._mtls_reauth_lock:
+            if not self.is_mtls:
+                # mTLS was disabled by another thread while this one waited.
+                return
+
+            if getattr(self, "_cached_cert", None) != cert_at_request:
+                _LOGGER.info(
+                    "Skipping reconfiguration of mTLS channel because it has already"
+                    " been reconfigured with a new client certificate."
+                )
+                return
+
+            try:
+                (
+                    call_cert_bytes,
+                    call_key_bytes,
+                    cached_fingerprint,
+                    current_cert_fingerprint,
+                ) = _mtls_helper.check_parameters_for_unauthorized_response(
+                    cert_at_request
+                )
+            except Exception as e:
+                # Failing to load the current certificate (for example, because
+                # the certificate file is missing or the certificate provider
+                # failed) must not prevent the token refresh that follows.
+                _LOGGER.warning(
+                    "Failed to check whether the client certificate has changed: %s",
+                    e,
+                )
+                return
+
+            if cached_fingerprint == current_cert_fingerprint:
+                _LOGGER.info(
+                    "Skipping reconfiguration of mTLS channel because the client"
+                    " certificate has not changed."
+                )
+                return
+
+            try:
+                _LOGGER.info(
+                    "Client certificate has changed, reconfiguring mTLS channel."
+                )
+                self.configure_mtls_channel(lambda: (call_cert_bytes, call_key_bytes))
+            except Exception as e:
+                _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                raise exceptions.MutualTLSChannelError(
+                    "Failed to reconfigure mTLS channel"
+                ) from e
 
     @property
     def is_mtls(self):
