@@ -61,12 +61,14 @@ def run_instance_operations(project_id, instance_id, cluster_id):
         client.get_instance(name=instance_path)
     except NotFound:
         print("\nCreating an instance")
+        # Create instance with given options
         operation = client.create_instance(
             parent=project_path,
             instance_id=instance_id,
             instance=instance_obj,
             clusters={cluster_id: cluster},
         )
+        # Ensure the operation completes.
         operation.result(timeout=480)
         print(f"\nCreated instance: {instance_id}")
     # [END bigtable_create_prod_instance]
@@ -149,12 +151,24 @@ def add_cluster(project_id, instance_id, cluster_id):
         operation = client.create_cluster(
             parent=instance_path, cluster_id=cluster_id, cluster=new_cluster
         )
+        # Ensure the operation completes.
         operation.result(timeout=480)
         print(f"\nCluster created: {cluster_id}")
     # [END bigtable_create_cluster]
 
 
 def delete_cluster(project_id, instance_id, cluster_id):
+    """Delete the cluster
+
+    :type project_id: str
+    :param project_id: Project id of the client.
+
+    :type instance_id: str
+    :param instance_id: Instance of the client.
+
+    :type cluster_id: str
+    :param cluster_id: Cluster id.
+    """
     # [START bigtable_delete_cluster]
     from google.api_core.exceptions import NotFound
     from google.cloud import bigtable_admin

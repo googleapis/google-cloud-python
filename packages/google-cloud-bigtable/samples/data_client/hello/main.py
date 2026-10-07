@@ -111,6 +111,8 @@ def main(project_id, instance_id, table_id):
         # [END bigtable_hw_scan_with_filter_data_client]
     finally:
         # [START bigtable_hw_delete_table_data_client]
+        # the data client only supports the data API. Table deletion is an admin operation
+        # use admin client to delete the table
         print("Deleting the {} table.".format(table_id))
         admin_table.delete()
         client.close()
