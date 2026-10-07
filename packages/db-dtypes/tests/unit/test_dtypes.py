@@ -732,7 +732,7 @@ def test_cast_pointwise_result(dtype):
     import unittest.mock
 
     with unittest.mock.patch.object(
-        cls, "_from_scalars", side_effect=TypeError("cannot cast")
+        cls, "_from_scalars", side_effect=TypeError("cannot cast"), create=True
     ):
         fallback = a._cast_pointwise_result(SAMPLE_RAW_VALUES[dtype])
         assert fallback is not None

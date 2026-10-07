@@ -126,10 +126,22 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
         Required override for pandas 3.1.0:
         https://pandas.pydata.org/pandas-docs/stable/dev/whatsnew/v3.1.0.html
         """
-        try:
-            return type(self)._from_scalars(values, dtype=self.dtype)  # type: ignore[attr-defined]
-        except (ValueError, TypeError, AttributeError):
-            return super()._cast_pointwise_result(values)  # type: ignore[misc]
+        _from_scalars = getattr(type(self), "_from_scalars", None)
+        if _from_scalars is not None:
+            try:
+                return _from_scalars(values, dtype=self.dtype)
+            except (ValueError, TypeError, AttributeError):
+                pass
+        else:
+            try:
+                return self._from_sequence(values, dtype=self.dtype)
+            except (ValueError, TypeError, AttributeError):
+                pass
+
+        _super_method = getattr(super(), "_cast_pointwise_result", None)
+        if _super_method is not None:
+            return _super_method(values)
+        return numpy.asarray(values, dtype=object)
 
     def isna(self):
         return pandas.isna(self._ndarray)
