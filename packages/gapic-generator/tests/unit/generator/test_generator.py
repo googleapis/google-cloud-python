@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import json
+import os
 from textwrap import dedent
 from typing import Mapping
 from unittest import mock
@@ -20,8 +21,11 @@ from unittest import mock
 import jinja2
 import pytest
 
-from google.api import service_pb2
+from google.api import annotations_pb2
 from google.api import client_pb2
+from google.api import http_pb2
+from google.api import routing_pb2
+from google.api import service_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
@@ -910,6 +914,111 @@ def test_generator_duplicate_samples(fs):
 
     with pytest.raises(types.DuplicateSample):
         generator.get_response(api_schema=api_schema, opts=Options.build(""))
+
+
+@pytest.mark.parametrize("use_ads_templates", (False, True))
+@pytest.mark.parametrize("explicit_routing", (False, True))
+@pytest.mark.parametrize("client_streaming", (False, True))
+@pytest.mark.parametrize("server_streaming", (False, True))
+def test_routing_headers_client_streaming(
+    use_ads_templates: bool,
+    explicit_routing: bool,
+    client_streaming: bool,
+    server_streaming: bool,
+):
+    ads_templates_dir = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), "..", "..", "..", "gapic", "ads-templates"
+        )
+    )
+    opts_str = (
+        f"autogen-snippets=false,python-gapic-templates={ads_templates_dir},old-naming"
+        if use_ads_templates
+        else "autogen-snippets=false"
+    )
+    opts = Options.build(opts_str)
+    generator_obj = generator.Generator(opts)
+
+    method_options = descriptor_pb2.MethodOptions()
+    method_options.Extensions[annotations_pb2.http].CopyFrom(
+        http_pb2.HttpRule(
+            post="/v1/{table_name=projects/*/tables/*}:someMethod",
+            body="*",
+        )
+    )
+    if explicit_routing:
+        method_options.Extensions[routing_pb2.routing].CopyFrom(
+            routing_pb2.RoutingRule(
+                routing_parameters=[
+                    routing_pb2.RoutingParameter(
+                        field="table_name",
+                        path_template="{table_name=projects/*/tables/*}",
+                    )
+                ]
+            )
+        )
+
+    file_pb = descriptor_pb2.FileDescriptorProto(
+        name="some_service.proto",
+        package="google.cloud.hatstand.v1",
+        message_type=[
+            descriptor_pb2.DescriptorProto(
+                name="SomeRequest",
+                field=[
+                    descriptor_pb2.FieldDescriptorProto(
+                        name="table_name",
+                        number=1,
+                        type=descriptor_pb2.FieldDescriptorProto.Type.Value(
+                            "TYPE_STRING"
+                        ),
+                    )
+                ],
+            ),
+            descriptor_pb2.DescriptorProto(name="SomeResponse"),
+        ],
+        service=[
+            descriptor_pb2.ServiceDescriptorProto(
+                name="SomeService",
+                method=[
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="SomeMethod",
+                        input_type=".google.cloud.hatstand.v1.SomeRequest",
+                        output_type=".google.cloud.hatstand.v1.SomeResponse",
+                        client_streaming=client_streaming,
+                        server_streaming=server_streaming,
+                        options=method_options,
+                    )
+                ],
+            )
+        ],
+    )
+    api_schema = api.API.build([file_pb], package="google.cloud.hatstand.v1", opts=opts)
+
+    cgr = generator_obj.get_response(api_schema=api_schema, opts=opts)
+    files_by_name = {f.name: f.content for f in cgr.file}
+
+    client_files = [
+        content
+        for name, content in files_by_name.items()
+        if name.endswith("/services/some_service/client.py")
+        or name.endswith("/services/some_service/async_client.py")
+    ]
+    assert len(client_files) == (1 if use_ads_templates else 2)
+
+    for content in client_files:
+        if client_streaming:
+            assert "gapic_v1.routing_header.to_grpc_metadata" not in content
+            assert "header_params" not in content
+        else:
+            assert "gapic_v1.routing_header.to_grpc_metadata" in content
+            if explicit_routing and not use_ads_templates:
+                assert "header_params: dict[str, str] = {}" in content
+                assert (
+                    "gapic_v1.routing_header.to_grpc_metadata(header_params)" in content
+                )
+            else:
+                assert "header_params" not in content
+                assert '("table_name", request.table_name)' in content
 
 
 def make_generator(opts_str: str = "") -> generator.Generator:
