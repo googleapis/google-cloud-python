@@ -126,7 +126,7 @@ class JSONArray(arrays.ArrowExtensionArray):
         https://pandas.pydata.org/pandas-docs/stable/dev/whatsnew/v3.1.0.html
         """
         try:
-            return self._from_sequence(values, dtype=self.dtype)
+            return type(self)._from_sequence(values, dtype=self.dtype)
         except Exception:
             _super_method = getattr(super(), "_cast_pointwise_result", None)
             if _super_method is not None:

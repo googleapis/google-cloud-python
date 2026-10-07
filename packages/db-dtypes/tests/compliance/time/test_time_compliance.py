@@ -85,9 +85,8 @@ class TestInterface(base.BaseInterfaceTests):
         # Until pandas changes the existing tests, this compliance test
         # will continue to fail.
         import numpy as np
-        import packaging.version
 
-        np_version_gt2 = packaging.version.parse(np.__version__).major >= 2
+        np_version_gt2 = int(np.__version__.split(".")[0]) >= 2
 
         result_copy1 = np.array(data, copy=True)
         result_copy2 = np.array(data, copy=True)
