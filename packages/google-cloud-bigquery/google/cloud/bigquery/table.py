@@ -2421,25 +2421,31 @@ class RowIterator(HTTPIterator):
         )
 
         more_pages_needed = not job_complete or offset < total_rows
+        owns_bqstorage_client = False
         if more_pages_needed and bqstorage_client is None:
             if self.client is None:
                 raise ValueError("RowIterator client is None.")
             bqstorage_client = self.client._ensure_bqstorage_client()
+            owns_bqstorage_client = True
             if bqstorage_client is None:
                 raise ValueError(
                     "The google-cloud-bigquery-storage library is required to read Arrow results."
                 )
 
-        if initial_batch:
-            yield initial_batch
+        try:
+            if initial_batch:
+                yield initial_batch
 
-        if not more_pages_needed:
-            return
+            if not more_pages_needed:
+                return
 
-        project = self._project or (self.client.project if self.client else None)
-        yield from self._stream_arrow_via_bqstorage(
-            bqstorage_client, project, offset, pa_schema, timeout
-        )
+            project = self._project or (self.client.project if self.client else None)
+            yield from self._stream_arrow_via_bqstorage(
+                bqstorage_client, project, offset, pa_schema, timeout
+            )
+        finally:
+            if owns_bqstorage_client and bqstorage_client is not None:
+                bqstorage_client._transport.close()
 
     # If changing the signature of this method, make sure to apply the same
     # changes to job.QueryJob.to_arrow()

@@ -665,6 +665,66 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         call_kwargs = client._list_rows_from_query_results.call_args.kwargs
         self.assertEqual(call_kwargs["first_page_response"], first_page_response)
 
+    def test_download_arrow_from_job_id_closes_auto_created_bqstorage_transport(self):
+        mock_client = mock.MagicMock()
+        mock_bqstorage = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-close",
+            query_results_format="ARROW",
+        )
+
+        mock_response = mock.MagicMock()
+        mock_response.arrow_schema = None
+        mock_response.arrow_record_batch = None
+        mock_bqstorage.read_rows.return_value = [mock_response]
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+            mock_pyarrow.py_buffer = lambda x: x
+            batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
+            self.assertEqual(batches, [])
+            mock_bqstorage._transport.close.assert_called_once()
+
+    def test_download_arrow_from_job_id_preserves_user_provided_bqstorage_transport(
+        self,
+    ):
+        mock_client = mock.MagicMock()
+        user_bqstorage = mock.MagicMock()
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-user-client",
+            query_results_format="ARROW",
+        )
+
+        mock_response = mock.MagicMock()
+        mock_response.arrow_schema = None
+        mock_response.arrow_record_batch = None
+        user_bqstorage.read_rows.return_value = [mock_response]
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+            mock_pyarrow.py_buffer = lambda x: x
+            batches = list(
+                iterator._download_arrow_from_job_id(
+                    bqstorage_client=user_bqstorage, timeout=5.0
+                )
+            )
+            self.assertEqual(batches, [])
+            mock_client._ensure_bqstorage_client.assert_not_called()
+            user_bqstorage._transport.close.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()
