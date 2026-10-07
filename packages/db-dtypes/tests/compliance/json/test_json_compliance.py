@@ -152,7 +152,9 @@ class TestJSONArrayInterface(base.BaseInterfaceTests):
         # Until pandas changes the existing tests, this compliance test
         # will continue to fail.
         import numpy as np
-        from pandas.compat.numpy import np_version_gt2
+        import packaging.version
+
+        np_version_gt2 = packaging.version.parse(np.__version__).major >= 2
 
         result_copy1 = np.array(data, copy=True)
         result_copy2 = np.array(data, copy=True)
