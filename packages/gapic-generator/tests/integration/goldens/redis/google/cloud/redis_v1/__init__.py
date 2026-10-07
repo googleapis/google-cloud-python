@@ -62,9 +62,6 @@ from .types.cloud_redis import UpgradeInstanceRequest
 from .types.cloud_redis import WeeklyMaintenanceWindow
 from .types.cloud_redis import ZoneMetadata
 
-api_core.check_python_version("google.cloud.redis_v1")
-api_core.check_dependency_versions("google.cloud.redis_v1")
-
 __all__ = (
     'CloudRedisAsyncClient',
 'CloudRedisClient',
@@ -96,3 +93,6 @@ __all__ = (
 'WeeklyMaintenanceWindow',
 'ZoneMetadata',
 )
+
+api_core.check_python_version("google.cloud.redis_v1")
+api_core.check_dependency_versions("google.cloud.redis_v1")

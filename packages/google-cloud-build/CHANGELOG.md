@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.39.0...google-cloud-build-v3.40.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
+## [3.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.38.1...google-cloud-build-v3.39.0) (2026-08-21)
+
+
+### Features
+
+* update sources and regenerate ([#18164](https://github.com/googleapis/google-cloud-python/issues/18164)) ([5ff8274](https://github.com/googleapis/google-cloud-python/commit/5ff8274ac2eb9375e918dff68303d3abdc3e6d6f))
+
 ## [3.38.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.38.0...google-cloud-build-v3.38.1) (2026-08-06)
 
 

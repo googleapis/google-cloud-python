@@ -29,20 +29,28 @@ mkdir -p "${LOG_DIR}"
 # Identify modified packages
 BUILD_TYPE="${BUILD_TYPE:-presubmit}"
 TARGET_BRANCH="${TARGET_BRANCH:-main}"
-
 PACKAGE_DIRS="${PACKAGE_DIRS:-packages preview-packages}"
 
-if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
+if [ "${PACKAGE_LIST+set}" = "set" ]; then
+    # If pre-determined package list is set, use it
+    modified_packages="${PACKAGE_LIST}"
+elif [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
     # Test all packages mode: evaluate coverage for every package in the repository
     modified_packages=$(for dir in ${PACKAGE_DIRS}; do ls -d ${dir}/*/ 2>/dev/null; done | cut -d/ -f1,2 | sort -u)
 elif [[ "${BUILD_TYPE}" == "presubmit" ]]; then
     # Presubmit build: evaluate coverage only for packages modified relative to the target branch
-    modified_packages=$(git diff --name-only "origin/${TARGET_BRANCH}" -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
+    modified_packages=$(git diff --name-only "origin/${TARGET_BRANCH}..." -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
 else
     # Continuous build (post-merge on main): evaluate coverage for packages modified in the last commit
     modified_packages=$(git diff --name-only HEAD~1 -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
 fi
 
+if [ -z "${modified_packages}" ]; then
+    echo "============================================================"
+    echo "No modified packages to evaluate coverage for."
+    echo "============================================================"
+    exit 0
+fi
 # Check if any modified package requires coverage
 requires_coverage=false
 for pkg in ${modified_packages}; do
@@ -52,7 +60,6 @@ for pkg in ${modified_packages}; do
     requires_coverage=true
     break
 done
-
 if [ ! -d "${RESULTS_DIR}" ] || [ -z "$(ls -A "${RESULTS_DIR}" 2>/dev/null)" ]; then
     if [ "${requires_coverage}" = "true" ]; then
         echo "Error: No coverage results found in ${RESULTS_DIR}, but some modified packages require coverage."

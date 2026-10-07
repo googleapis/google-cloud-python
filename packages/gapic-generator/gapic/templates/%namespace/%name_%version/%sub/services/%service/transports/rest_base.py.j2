@@ -120,7 +120,7 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
 
         {% set method_http_options = method.http_options %}
 
-        {{ shared_macros.http_options_method(method_http_options)|indent(8) }}
+        {{ shared_macros.http_options_method(method_http_options, method.is_resumable_upload, method.resumable_upload_prefix)|indent(8) }}
         {% endif %}{# method.http_options and not method.client_streaming #}
     {% endfor %}
 

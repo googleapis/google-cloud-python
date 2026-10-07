@@ -140,7 +140,6 @@ class ActiveAttemptMetric:
     # time waiting on user to process the response, in nanoseconds
     # currently only relevant for ReadRows
     application_blocking_time_ns: int = 0
-    # backoff time is added to application_blocking_time_ns
     backoff_before_attempt_ns: int = 0
 
 

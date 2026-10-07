@@ -78,6 +78,11 @@ class RequestStatusPerDestination(proto.Message):
             request.
 
             This field is a member of `oneof`_ ``status``.
+        remove_all_audience_members_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RemoveAllAudienceMembersStatus):
+            The status of the remove all audience members
+            request.
+
+            This field is a member of `oneof`_ ``status``.
     """
 
     class RequestStatus(proto.Enum):
@@ -177,6 +182,16 @@ class RequestStatusPerDestination(proto.Message):
                 the destination.
 
                 This field is a member of `oneof`_ ``status``.
+            google_user_id_data_ingestion_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.IngestGoogleUserIdDataStatus):
+                The status of the google user id data
+                ingestion to the destination.
+
+                This field is a member of `oneof`_ ``status``.
+            partner_provided_id_data_ingestion_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.IngestPartnerProvidedIdDataStatus):
+                The status of the partner provided id data
+                ingestion to the destination.
+
+                This field is a member of `oneof`_ ``status``.
         """
 
         user_data_ingestion_status: "RequestStatusPerDestination.IngestUserDataStatus" = proto.Field(
@@ -214,6 +229,18 @@ class RequestStatusPerDestination(proto.Message):
             number=6,
             oneof="status",
             message="RequestStatusPerDestination.IngestCompositeDataStatus",
+        )
+        google_user_id_data_ingestion_status: "RequestStatusPerDestination.IngestGoogleUserIdDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="status",
+            message="RequestStatusPerDestination.IngestGoogleUserIdDataStatus",
+        )
+        partner_provided_id_data_ingestion_status: "RequestStatusPerDestination.IngestPartnerProvidedIdDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            oneof="status",
+            message="RequestStatusPerDestination.IngestPartnerProvidedIdDataStatus",
         )
 
     class RemoveAudienceMembersStatus(proto.Message):
@@ -255,6 +282,16 @@ class RequestStatusPerDestination(proto.Message):
             composite_data_removal_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RemoveCompositeDataStatus):
                 The status of the composite data removal from
                 the destination.
+
+                This field is a member of `oneof`_ ``status``.
+            google_user_id_data_removal_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RemoveGoogleUserIdDataStatus):
+                The status of the google user id data removal
+                from the destination.
+
+                This field is a member of `oneof`_ ``status``.
+            partner_provided_id_data_removal_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RemovePartnerProvidedIdDataStatus):
+                The status of the partner provided id data
+                removal from the destination.
 
                 This field is a member of `oneof`_ ``status``.
         """
@@ -301,6 +338,21 @@ class RequestStatusPerDestination(proto.Message):
             oneof="status",
             message="RequestStatusPerDestination.RemoveCompositeDataStatus",
         )
+        google_user_id_data_removal_status: "RequestStatusPerDestination.RemoveGoogleUserIdDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="status",
+            message="RequestStatusPerDestination.RemoveGoogleUserIdDataStatus",
+        )
+        partner_provided_id_data_removal_status: "RequestStatusPerDestination.RemovePartnerProvidedIdDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            oneof="status",
+            message="RequestStatusPerDestination.RemovePartnerProvidedIdDataStatus",
+        )
+
+    class RemoveAllAudienceMembersStatus(proto.Message):
+        r"""The status of the remove all audience members request."""
 
     class IngestEventsStatus(proto.Message):
         r"""The status of the events ingestion to the destination.
@@ -654,6 +706,114 @@ class RequestStatusPerDestination(proto.Message):
             message="RequestStatusPerDestination.DataTypeCount",
         )
 
+    class IngestGoogleUserIdDataStatus(proto.Message):
+        r"""The status of the google user id data ingestion to the
+        destination containing stats related to the ingestion.
+
+        Attributes:
+            record_count (int):
+                The total count of audience members sent in
+                the upload request for the destination. Includes
+                all audience members in the request, regardless
+                of whether they were successfully ingested or
+                not.
+            google_user_id_count (int):
+                The total count of google user ids sent in
+                the upload request for the destination. Includes
+                all google user ids in the request, regardless
+                of whether they were successfully ingested or
+                not.
+        """
+
+        record_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        google_user_id_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
+    class RemoveGoogleUserIdDataStatus(proto.Message):
+        r"""The status of the google user id data removal from the
+        destination.
+
+        Attributes:
+            record_count (int):
+                The total count of audience members sent in
+                the removal request. Includes all audience
+                members in the request, regardless of whether
+                they were successfully removed or not.
+            google_user_id_count (int):
+                The total count of google user ids sent in
+                the removal request. Includes all google user
+                ids in the request, regardless of whether they
+                were successfully removed or not.
+        """
+
+        record_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        google_user_id_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
+    class IngestPartnerProvidedIdDataStatus(proto.Message):
+        r"""The status of the partner provided id data ingestion to the
+        destination containing stats related to the ingestion.
+
+        Attributes:
+            record_count (int):
+                The total count of audience members sent in
+                the upload request for the destination. Includes
+                all audience members in the request, regardless
+                of whether they were successfully ingested or
+                not.
+            partner_provided_id_count (int):
+                The total count of partner provided ids sent
+                in the upload request for the destination.
+                Includes all partner provided ids in the
+                request, regardless of whether they were
+                successfully ingested or not.
+        """
+
+        record_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        partner_provided_id_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
+    class RemovePartnerProvidedIdDataStatus(proto.Message):
+        r"""The status of the partner provided id data removal from the
+        destination.
+
+        Attributes:
+            record_count (int):
+                The total count of audience members sent in
+                the removal request. Includes all audience
+                members in the request, regardless of whether
+                they were successfully removed or not.
+            partner_provided_id_count (int):
+                The total count of partner provided ids sent
+                in the removal request. Includes all partner
+                provided ids in the request, regardless of
+                whether they were successfully removed or not.
+        """
+
+        record_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        partner_provided_id_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
     class DataTypeCount(proto.Message):
         r"""The count for a specific data type.
 
@@ -711,6 +871,12 @@ class RequestStatusPerDestination(proto.Message):
         number=6,
         oneof="status",
         message=RemoveAudienceMembersStatus,
+    )
+    remove_all_audience_members_status: RemoveAllAudienceMembersStatus = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="status",
+        message=RemoveAllAudienceMembersStatus,
     )
 
 

@@ -89,6 +89,10 @@ class TestParseUtils(unittest.TestCase):
             (" rollback TRANSACTION ", StatementType.CLIENT_SIDE),
             ("  SHOW   VARIABLE COMMIT_TIMESTAMP  ", StatementType.CLIENT_SIDE),
             ("SHOW VARIABLE READ_TIMESTAMP", StatementType.CLIENT_SIDE),
+            ("SET DATA_BOOST_ENABLED = TRUE", StatementType.CLIENT_SIDE),
+            ("SHOW VARIABLE DATA_BOOST_ENABLED", StatementType.CLIENT_SIDE),
+            ("SET AUTO_PARTITION_MODE = TRUE", StatementType.CLIENT_SIDE),
+            ("SHOW VARIABLE AUTO_PARTITION_MODE", StatementType.CLIENT_SIDE),
             ("GRANT SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
             ("REVOKE SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
             ("GRANT ROLE parent TO ROLE child", StatementType.DDL),
@@ -247,6 +251,108 @@ class TestParseUtils(unittest.TestCase):
                 Statement("set autocommit_dml_mode = PARTITIONED_NON_ATOMIC"),
                 ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE,
                 ["PARTITIONED_NON_ATOMIC"],
+            ),
+        )
+
+    def test_set_data_boost_enabled_stmt(self):
+        parsed_statement = classify_statement("  set data_boost_enabled = true  ")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("set data_boost_enabled = true"),
+                ClientSideStatementType.SET_DATA_BOOST_ENABLED,
+                ["true"],
+            ),
+        )
+        parsed_statement = classify_statement("SET DATA_BOOST_ENABLED = FALSE")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("SET DATA_BOOST_ENABLED = FALSE"),
+                ClientSideStatementType.SET_DATA_BOOST_ENABLED,
+                ["FALSE"],
+            ),
+        )
+
+    def test_show_data_boost_enabled_stmt(self):
+        parsed_statement = classify_statement("  show  variable data_boost_enabled  ")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("show  variable data_boost_enabled"),
+                ClientSideStatementType.SHOW_DATA_BOOST_ENABLED,
+                [],
+            ),
+        )
+
+        parsed_statement = classify_statement("SHOW VARIABLE DATA_BOOST_ENABLED;")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("SHOW VARIABLE DATA_BOOST_ENABLED;"),
+                ClientSideStatementType.SHOW_DATA_BOOST_ENABLED,
+                [],
+            ),
+        )
+
+    def test_set_auto_partition_mode_stmt(self):
+        parsed_statement = classify_statement("SET AUTO_PARTITION_MODE = TRUE")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("SET AUTO_PARTITION_MODE = TRUE"),
+                ClientSideStatementType.SET_AUTO_PARTITION_MODE,
+                ["TRUE"],
+            ),
+        )
+
+        parsed_statement = classify_statement("set auto_partition_mode = false")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("set auto_partition_mode = false"),
+                ClientSideStatementType.SET_AUTO_PARTITION_MODE,
+                ["false"],
+            ),
+        )
+
+        parsed_statement = classify_statement("SET AUTO_PARTITION_MODE = TRUE;")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("SET AUTO_PARTITION_MODE = TRUE;"),
+                ClientSideStatementType.SET_AUTO_PARTITION_MODE,
+                ["TRUE;"],
+            ),
+        )
+
+    def test_show_auto_partition_mode_stmt(self):
+        parsed_statement = classify_statement("  show  variable auto_partition_mode  ")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("show  variable auto_partition_mode"),
+                ClientSideStatementType.SHOW_AUTO_PARTITION_MODE,
+                [],
+            ),
+        )
+
+        parsed_statement = classify_statement("SHOW VARIABLE AUTO_PARTITION_MODE;")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("SHOW VARIABLE AUTO_PARTITION_MODE;"),
+                ClientSideStatementType.SHOW_AUTO_PARTITION_MODE,
+                [],
             ),
         )
 

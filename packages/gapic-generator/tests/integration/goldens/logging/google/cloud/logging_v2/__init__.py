@@ -120,9 +120,6 @@ from .types.logging_metrics import ListLogMetricsResponse
 from .types.logging_metrics import LogMetric
 from .types.logging_metrics import UpdateLogMetricRequest
 
-api_core.check_python_version("google.cloud.logging_v2")
-api_core.check_dependency_versions("google.cloud.logging_v2")
-
 __all__ = (
     'ConfigServiceV2AsyncClient',
     'LoggingServiceV2AsyncClient',
@@ -207,3 +204,6 @@ __all__ = (
 'WriteLogEntriesRequest',
 'WriteLogEntriesResponse',
 )
+
+api_core.check_python_version("google.cloud.logging_v2")
+api_core.check_dependency_versions("google.cloud.logging_v2")

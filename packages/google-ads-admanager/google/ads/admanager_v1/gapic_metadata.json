@@ -49,9 +49,19 @@
                 "batch_allow_ad_review_center_ads"
               ]
             },
+            "BatchApplyAdReviewCenterCustomLabels": {
+              "methods": [
+                "batch_apply_ad_review_center_custom_labels"
+              ]
+            },
             "BatchBlockAdReviewCenterAds": {
               "methods": [
                 "batch_block_ad_review_center_ads"
+              ]
+            },
+            "FetchAdReviewCenterCustomLabels": {
+              "methods": [
+                "fetch_ad_review_center_custom_labels"
               ]
             },
             "SearchAdReviewCenterAds": {
@@ -269,6 +279,46 @@
         "rest": {
           "libraryClient": "AudienceSegmentServiceClient",
           "rpcs": {
+            "BatchActivateAudienceSegments": {
+              "methods": [
+                "batch_activate_audience_segments"
+              ]
+            },
+            "BatchApproveAudienceSegments": {
+              "methods": [
+                "batch_approve_audience_segments"
+              ]
+            },
+            "BatchCreateAudienceSegments": {
+              "methods": [
+                "batch_create_audience_segments"
+              ]
+            },
+            "BatchDeactivateAudienceSegments": {
+              "methods": [
+                "batch_deactivate_audience_segments"
+              ]
+            },
+            "BatchPopulateAudienceSegments": {
+              "methods": [
+                "batch_populate_audience_segments"
+              ]
+            },
+            "BatchRejectAudienceSegments": {
+              "methods": [
+                "batch_reject_audience_segments"
+              ]
+            },
+            "BatchUpdateAudienceSegments": {
+              "methods": [
+                "batch_update_audience_segments"
+              ]
+            },
+            "CreateAudienceSegment": {
+              "methods": [
+                "create_audience_segment"
+              ]
+            },
             "GetAudienceSegment": {
               "methods": [
                 "get_audience_segment"
@@ -277,6 +327,11 @@
             "ListAudienceSegments": {
               "methods": [
                 "list_audience_segments"
+              ]
+            },
+            "UpdateAudienceSegment": {
+              "methods": [
+                "update_audience_segment"
               ]
             }
           }
@@ -296,6 +351,45 @@
             "ListBandwidthGroups": {
               "methods": [
                 "list_bandwidth_groups"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "BreakTemplateService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "BreakTemplateServiceClient",
+          "rpcs": {
+            "BatchCreateBreakTemplates": {
+              "methods": [
+                "batch_create_break_templates"
+              ]
+            },
+            "BatchUpdateBreakTemplates": {
+              "methods": [
+                "batch_update_break_templates"
+              ]
+            },
+            "CreateBreakTemplate": {
+              "methods": [
+                "create_break_template"
+              ]
+            },
+            "GetBreakTemplate": {
+              "methods": [
+                "get_break_template"
+              ]
+            },
+            "ListBreakTemplates": {
+              "methods": [
+                "list_break_templates"
+              ]
+            },
+            "UpdateBreakTemplate": {
+              "methods": [
+                "update_break_template"
               ]
             }
           }
@@ -389,6 +483,65 @@
         }
       }
     },
+    "ChildPublisherService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ChildPublisherServiceClient",
+          "rpcs": {
+            "BatchCreateChildPublishers": {
+              "methods": [
+                "batch_create_child_publishers"
+              ]
+            },
+            "BatchRejectChildPublishers": {
+              "methods": [
+                "batch_reject_child_publishers"
+              ]
+            },
+            "BatchRenegotiateChildPublisherAgreements": {
+              "methods": [
+                "batch_renegotiate_child_publisher_agreements"
+              ]
+            },
+            "BatchResendChildPublisherInvitationEmails": {
+              "methods": [
+                "batch_resend_child_publisher_invitation_emails"
+              ]
+            },
+            "BatchUpdateChildPublishers": {
+              "methods": [
+                "batch_update_child_publishers"
+              ]
+            },
+            "BatchWithdrawChildPublishers": {
+              "methods": [
+                "batch_withdraw_child_publishers"
+              ]
+            },
+            "CreateChildPublisher": {
+              "methods": [
+                "create_child_publisher"
+              ]
+            },
+            "GetChildPublisher": {
+              "methods": [
+                "get_child_publisher"
+              ]
+            },
+            "ListChildPublishers": {
+              "methods": [
+                "list_child_publishers"
+              ]
+            },
+            "UpdateChildPublisher": {
+              "methods": [
+                "update_child_publisher"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CmsMetadataKeyService": {
       "clients": {
         "rest": {
@@ -452,6 +605,21 @@
         "rest": {
           "libraryClient": "CompanyServiceClient",
           "rpcs": {
+            "BatchCreateCompanies": {
+              "methods": [
+                "batch_create_companies"
+              ]
+            },
+            "BatchUpdateCompanies": {
+              "methods": [
+                "batch_update_companies"
+              ]
+            },
+            "CreateCompany": {
+              "methods": [
+                "create_company"
+              ]
+            },
             "GetCompany": {
               "methods": [
                 "get_company"
@@ -460,6 +628,11 @@
             "ListCompanies": {
               "methods": [
                 "list_companies"
+              ]
+            },
+            "UpdateCompany": {
+              "methods": [
+                "update_company"
               ]
             }
           }
@@ -572,6 +745,35 @@
         }
       }
     },
+    "CreativeService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CreativeServiceClient",
+          "rpcs": {
+            "BatchActivateCreatives": {
+              "methods": [
+                "batch_activate_creatives"
+              ]
+            },
+            "BatchDeactivateCreatives": {
+              "methods": [
+                "batch_deactivate_creatives"
+              ]
+            },
+            "GetCreative": {
+              "methods": [
+                "get_creative"
+              ]
+            },
+            "ListCreatives": {
+              "methods": [
+                "list_creatives"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CreativeSetService": {
       "clients": {
         "rest": {
@@ -614,6 +816,55 @@
             "ListCreativeTemplates": {
               "methods": [
                 "list_creative_templates"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CreativeWrapperService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CreativeWrapperServiceClient",
+          "rpcs": {
+            "BatchActivateCreativeWrappers": {
+              "methods": [
+                "batch_activate_creative_wrappers"
+              ]
+            },
+            "BatchCreateCreativeWrappers": {
+              "methods": [
+                "batch_create_creative_wrappers"
+              ]
+            },
+            "BatchDeactivateCreativeWrappers": {
+              "methods": [
+                "batch_deactivate_creative_wrappers"
+              ]
+            },
+            "BatchUpdateCreativeWrappers": {
+              "methods": [
+                "batch_update_creative_wrappers"
+              ]
+            },
+            "CreateCreativeWrapper": {
+              "methods": [
+                "create_creative_wrapper"
+              ]
+            },
+            "GetCreativeWrapper": {
+              "methods": [
+                "get_creative_wrapper"
+              ]
+            },
+            "ListCreativeWrappers": {
+              "methods": [
+                "list_creative_wrappers"
+              ]
+            },
+            "UpdateCreativeWrapper": {
+              "methods": [
+                "update_creative_wrapper"
               ]
             }
           }
@@ -767,6 +1018,118 @@
         }
       }
     },
+    "DaiAuthenticationKeyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DaiAuthenticationKeyServiceClient",
+          "rpcs": {
+            "BatchActivateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_activate_dai_authentication_keys"
+              ]
+            },
+            "BatchCreateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_create_dai_authentication_keys"
+              ]
+            },
+            "BatchDeactivateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_deactivate_dai_authentication_keys"
+              ]
+            },
+            "BatchUpdateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_update_dai_authentication_keys"
+              ]
+            },
+            "CreateDaiAuthenticationKey": {
+              "methods": [
+                "create_dai_authentication_key"
+              ]
+            },
+            "GetDaiAuthenticationKey": {
+              "methods": [
+                "get_dai_authentication_key"
+              ]
+            },
+            "ListDaiAuthenticationKeys": {
+              "methods": [
+                "list_dai_authentication_keys"
+              ]
+            },
+            "UpdateDaiAuthenticationKey": {
+              "methods": [
+                "update_dai_authentication_key"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DaiEncodingProfileService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DaiEncodingProfileServiceClient",
+          "rpcs": {
+            "BatchActivateDaiEncodingProfiles": {
+              "methods": [
+                "batch_activate_dai_encoding_profiles"
+              ]
+            },
+            "BatchArchiveDaiEncodingProfiles": {
+              "methods": [
+                "batch_archive_dai_encoding_profiles"
+              ]
+            },
+            "BatchCreateDaiEncodingProfiles": {
+              "methods": [
+                "batch_create_dai_encoding_profiles"
+              ]
+            },
+            "BatchUpdateDaiEncodingProfiles": {
+              "methods": [
+                "batch_update_dai_encoding_profiles"
+              ]
+            },
+            "CreateDaiEncodingProfile": {
+              "methods": [
+                "create_dai_encoding_profile"
+              ]
+            },
+            "GetDaiEncodingProfile": {
+              "methods": [
+                "get_dai_encoding_profile"
+              ]
+            },
+            "ListDaiEncodingProfiles": {
+              "methods": [
+                "list_dai_encoding_profiles"
+              ]
+            },
+            "UpdateDaiEncodingProfile": {
+              "methods": [
+                "update_dai_encoding_profile"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DaiSessionService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DaiSessionServiceClient",
+          "rpcs": {
+            "GetDaiSession": {
+              "methods": [
+                "get_dai_session"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DeviceCapabilityService": {
       "clients": {
         "rest": {
@@ -863,6 +1226,30 @@
         }
       }
     },
+    "ForecastService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ForecastServiceClient",
+          "rpcs": {
+            "RunAvailabilityForecast": {
+              "methods": [
+                "run_availability_forecast"
+              ]
+            },
+            "RunDeliveryForecast": {
+              "methods": [
+                "run_delivery_forecast"
+              ]
+            },
+            "RunTrafficData": {
+              "methods": [
+                "run_traffic_data"
+              ]
+            }
+          }
+        }
+      }
+    },
     "GeoTargetService": {
       "clients": {
         "rest": {
@@ -931,11 +1318,95 @@
         }
       }
     },
+    "LineItemCreativeAssociationService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LineItemCreativeAssociationServiceClient",
+          "rpcs": {
+            "GetLineItemCreativeAssociation": {
+              "methods": [
+                "get_line_item_creative_association"
+              ]
+            },
+            "ListLineItemCreativeAssociations": {
+              "methods": [
+                "list_line_item_creative_associations"
+              ]
+            }
+          }
+        }
+      }
+    },
     "LineItemService": {
       "clients": {
         "rest": {
           "libraryClient": "LineItemServiceClient",
           "rpcs": {
+            "BatchActivateLineItems": {
+              "methods": [
+                "batch_activate_line_items"
+              ]
+            },
+            "BatchArchiveLineItems": {
+              "methods": [
+                "batch_archive_line_items"
+              ]
+            },
+            "BatchCreateLineItems": {
+              "methods": [
+                "batch_create_line_items"
+              ]
+            },
+            "BatchDeleteLineItems": {
+              "methods": [
+                "batch_delete_line_items"
+              ]
+            },
+            "BatchPauseLineItems": {
+              "methods": [
+                "batch_pause_line_items"
+              ]
+            },
+            "BatchReleaseLineItems": {
+              "methods": [
+                "batch_release_line_items"
+              ]
+            },
+            "BatchReserveAndOverbookLineItems": {
+              "methods": [
+                "batch_reserve_and_overbook_line_items"
+              ]
+            },
+            "BatchReserveLineItems": {
+              "methods": [
+                "batch_reserve_line_items"
+              ]
+            },
+            "BatchResumeAndOverbookLineItems": {
+              "methods": [
+                "batch_resume_and_overbook_line_items"
+              ]
+            },
+            "BatchResumeLineItems": {
+              "methods": [
+                "batch_resume_line_items"
+              ]
+            },
+            "BatchUnarchiveLineItems": {
+              "methods": [
+                "batch_unarchive_line_items"
+              ]
+            },
+            "BatchUpdateLineItems": {
+              "methods": [
+                "batch_update_line_items"
+              ]
+            },
+            "CreateLineItem": {
+              "methods": [
+                "create_line_item"
+              ]
+            },
             "GetLineItem": {
               "methods": [
                 "get_line_item"
@@ -944,6 +1415,30 @@
             "ListLineItems": {
               "methods": [
                 "list_line_items"
+              ]
+            },
+            "UpdateLineItem": {
+              "methods": [
+                "update_line_item"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LineItemTemplateService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LineItemTemplateServiceClient",
+          "rpcs": {
+            "GetLineItemTemplate": {
+              "methods": [
+                "get_line_item_template"
+              ]
+            },
+            "ListLineItemTemplates": {
+              "methods": [
+                "list_line_item_templates"
               ]
             }
           }
@@ -1104,11 +1599,70 @@
         }
       }
     },
+    "NativeStyleService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "NativeStyleServiceClient",
+          "rpcs": {
+            "BatchActivateNativeStyles": {
+              "methods": [
+                "batch_activate_native_styles"
+              ]
+            },
+            "BatchArchiveNativeStyles": {
+              "methods": [
+                "batch_archive_native_styles"
+              ]
+            },
+            "BatchCreateNativeStyles": {
+              "methods": [
+                "batch_create_native_styles"
+              ]
+            },
+            "BatchDeactivateNativeStyles": {
+              "methods": [
+                "batch_deactivate_native_styles"
+              ]
+            },
+            "BatchUpdateNativeStyles": {
+              "methods": [
+                "batch_update_native_styles"
+              ]
+            },
+            "CreateNativeStyle": {
+              "methods": [
+                "create_native_style"
+              ]
+            },
+            "GetNativeStyle": {
+              "methods": [
+                "get_native_style"
+              ]
+            },
+            "ListNativeStyles": {
+              "methods": [
+                "list_native_styles"
+              ]
+            },
+            "UpdateNativeStyle": {
+              "methods": [
+                "update_native_style"
+              ]
+            }
+          }
+        }
+      }
+    },
     "NetworkService": {
       "clients": {
         "rest": {
           "libraryClient": "NetworkServiceClient",
           "rpcs": {
+            "GetDefaultThirdPartyDataDeclaration": {
+              "methods": [
+                "get_default_third_party_data_declaration"
+              ]
+            },
             "GetNetwork": {
               "methods": [
                 "get_network"
@@ -1117,6 +1671,16 @@
             "ListNetworks": {
               "methods": [
                 "list_networks"
+              ]
+            },
+            "ProvisionTestNetwork": {
+              "methods": [
+                "provision_test_network"
+              ]
+            },
+            "UpdateNetwork": {
+              "methods": [
+                "update_network"
               ]
             }
           }
@@ -1264,6 +1828,35 @@
             "ListOrders": {
               "methods": [
                 "list_orders"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PartnerService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PartnerServiceClient",
+          "rpcs": {
+            "BatchUpdatePartners": {
+              "methods": [
+                "batch_update_partners"
+              ]
+            },
+            "GetPartner": {
+              "methods": [
+                "get_partner"
+              ]
+            },
+            "ListPartners": {
+              "methods": [
+                "list_partners"
+              ]
+            },
+            "UpdatePartner": {
+              "methods": [
+                "update_partner"
               ]
             }
           }
@@ -1736,9 +2329,83 @@
         "rest": {
           "libraryClient": "UserServiceClient",
           "rpcs": {
+            "BatchActivateUsers": {
+              "methods": [
+                "batch_activate_users"
+              ]
+            },
+            "BatchCreateUsers": {
+              "methods": [
+                "batch_create_users"
+              ]
+            },
+            "BatchDeactivateUsers": {
+              "methods": [
+                "batch_deactivate_users"
+              ]
+            },
+            "BatchUpdateUsers": {
+              "methods": [
+                "batch_update_users"
+              ]
+            },
+            "CreateUser": {
+              "methods": [
+                "create_user"
+              ]
+            },
             "GetUser": {
               "methods": [
                 "get_user"
+              ]
+            },
+            "ListUsers": {
+              "methods": [
+                "list_users"
+              ]
+            },
+            "UpdateUser": {
+              "methods": [
+                "update_user"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ViewabilityProviderService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ViewabilityProviderServiceClient",
+          "rpcs": {
+            "BatchCreateViewabilityProviders": {
+              "methods": [
+                "batch_create_viewability_providers"
+              ]
+            },
+            "BatchUpdateViewabilityProviders": {
+              "methods": [
+                "batch_update_viewability_providers"
+              ]
+            },
+            "CreateViewabilityProvider": {
+              "methods": [
+                "create_viewability_provider"
+              ]
+            },
+            "GetViewabilityProvider": {
+              "methods": [
+                "get_viewability_provider"
+              ]
+            },
+            "ListViewabilityProviders": {
+              "methods": [
+                "list_viewability_providers"
+              ]
+            },
+            "UpdateViewabilityProvider": {
+              "methods": [
+                "update_viewability_provider"
               ]
             }
           }

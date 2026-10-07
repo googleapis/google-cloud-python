@@ -57,7 +57,7 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
-{% for ref_type in method.flat_ref_types
+{% for ref_type in method.ref_types
    if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
            or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') %}
 {{ ref_type.ident.python_import }}
@@ -664,6 +664,7 @@ def test_{{ method_name }}_api_version_header(transport_name):
                 type(client.transport.{{ method.transport_safe_name|snake_case }}),
                 '__call__'
             ) as call:
+                call.return_value = {{ method.output.ident }}()
                 client.{{ method_name }}()
 
         # Establish that the api version header was sent.

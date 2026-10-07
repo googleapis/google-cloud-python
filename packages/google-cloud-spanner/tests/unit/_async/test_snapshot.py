@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import datetime
 import unittest
 from datetime import timedelta
@@ -71,20 +72,55 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
     async def test_read_errors(self):
         snapshot = self._make_snapshot(_Session(), multi_use=False)
         snapshot._read_request_count = 1
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             await snapshot.read(TABLE_NAME, COLUMNS, None)
 
+    @mock.patch(
+        "google.cloud.spanner_v1._async.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS",
+        0.01,
+    )
+    async def test_read_w_multi_use_not_begun_times_out(self):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
         snapshot = self._make_snapshot(_Session(), multi_use=True)
         snapshot._read_request_count = 1
         snapshot._transaction_id = None
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             await snapshot.read(TABLE_NAME, COLUMNS, None)
 
     async def test_execute_sql_errors(self):
         snapshot = self._make_snapshot(_Session(), multi_use=False)
         snapshot._read_request_count = 1
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             await snapshot.execute_sql(SQL_QUERY)
+
+    async def test_wait_for_transaction_begin_waits_for_concurrent_begin(self):
+        """A concurrent request must wait for the in-flight inline begin.
+
+        Regression test: without the begin event, the second request observes
+        ``_transaction_id is None`` and wrongly raises "Transaction has not begun."
+        """
+
+        snapshot = self._make_snapshot(_Session(), multi_use=True)
+
+        # First request claims the inline begin, but has not completed yet, so
+        # no transaction id is available.
+        await snapshot._wait_for_transaction_begin()
+        self.assertTrue(snapshot._begin_request_sent)
+
+        concurrent_request = asyncio.ensure_future(
+            snapshot._wait_for_transaction_begin()
+        )
+
+        # The concurrent request blocks while the transaction id is unknown.
+        done, _ = await asyncio.wait([concurrent_request], timeout=0.1)
+        self.assertEqual(done, set())
+
+        # Completing the inline begin releases it.
+        snapshot._update_for_transaction_pb(TransactionPB(id=TXN_ID))
+        await asyncio.wait_for(concurrent_request, timeout=10)
 
     async def test_partition_read_ok(self):
         token_1 = b"TOKEN1"
@@ -138,6 +174,334 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         async for _ in resumable:
             pass
         self.assertEqual(snapshot._precommit_token, token_pb)
+
+    async def test_restart_on_unavailable_last(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        item_last = PartialResultSet(last=True)
+        trailing_item = PartialResultSet()
+
+        raw = _MockIterator(item_last, trailing_item)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.snapshot._drain_stream"
+        ) as mock_drain:
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                metadata=None,
+                trace_name="span",
+                session=session,
+                attributes={},
+                transaction=snapshot,
+                request_id_manager=session._database,
+            )
+            items = []
+            async for item in resumable:
+                items.append(item)
+
+            mock_drain.assert_called_once_with(raw)
+            self.assertEqual(len(items), 1)
+            self.assertEqual(items[0], item_last)
+
+    async def test_restart_on_unavailable_finally_cancels_on_early_termination(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        item = PartialResultSet(last=False)
+        raw = _MockIterator(item)
+        raw.cancel = mock.Mock()
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        resumable = _restart_on_unavailable(
+            restart,
+            request,
+            metadata=None,
+            trace_name="span",
+            session=session,
+            attributes={},
+            transaction=snapshot,
+            request_id_manager=session._database,
+        )
+        async for received_item in resumable:
+            break
+        await resumable.aclose()
+
+        raw.cancel.assert_called_once()
+
+    async def test_restart_on_unavailable_item_without_last_attribute(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+
+        item = mock.Mock(
+            spec=["resume_token", "_pb", "metadata"],
+            resume_token=b"",
+            _pb=None,
+            metadata=None,
+        )
+        raw = _MockIterator(item)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        resumable = _restart_on_unavailable(
+            restart,
+            request,
+            metadata=None,
+            trace_name="span",
+            session=session,
+            attributes={},
+            transaction=snapshot,
+            request_id_manager=session._database,
+        )
+        items = []
+        async for received in resumable:
+            items.append(received)
+
+        self.assertEqual(items, [item])
+
+    async def test_restart_on_unavailable_finally_handles_cancel_exception(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        item = PartialResultSet(last=False)
+        raw = _MockIterator(item)
+        raw.cancel = mock.Mock(side_effect=RuntimeError("cancel failed"))
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        resumable = _restart_on_unavailable(
+            restart,
+            request,
+            metadata=None,
+            trace_name="span",
+            session=session,
+            attributes={},
+            transaction=snapshot,
+            request_id_manager=session._database,
+        )
+        async for _ in resumable:
+            break
+        await resumable.aclose()
+        raw.cancel.assert_called_once()
+
+    async def test_restart_on_unavailable_last_does_not_cancel_iterator_in_finally(
+        self,
+    ):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        item_last = PartialResultSet(last=True)
+        raw = _MockIterator(item_last)
+        raw.cancel = mock.Mock()
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        with mock.patch("google.cloud.spanner_v1._async.snapshot._drain_stream"):
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                metadata=None,
+                trace_name="span",
+                session=session,
+                attributes={},
+                transaction=snapshot,
+                request_id_manager=session._database,
+            )
+            async for _ in resumable:
+                pass
+
+        raw.cancel.assert_not_called()
+
+    async def test_streamed_result_set_with_last(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1._async.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        fields = [StructType.Field(name="greeting", type_=Type(code=TypeCode.STRING))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        item = PartialResultSet(metadata=metadata_pb, last=True)
+        item.values.append(Value(string_value="hello"))
+
+        raw = _MockIterator(item)
+        streamed_result_set = StreamedResultSet(raw)
+        rows = [row async for row in streamed_result_set]
+
+        self.assertEqual(rows, [["hello"]])
+        self.assertTrue(streamed_result_set._done)
+
+    async def test_restart_on_unavailable_multi_chunk_with_last(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1._async.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+            ResultSetStats,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        fields = [StructType.Field(name="greeting", type_=Type(code=TypeCode.STRING))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        stats_pb = ResultSetStats(row_count_exact=2)
+
+        chunk_one = PartialResultSet(
+            metadata=metadata_pb, last=False, resume_token=b"token_1"
+        )
+        chunk_one.values.append(Value(string_value="hello"))
+
+        chunk_two = PartialResultSet(last=True, stats=stats_pb)
+        chunk_two.values.append(Value(string_value="world"))
+
+        raw = _MockIterator(chunk_one, chunk_two)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.snapshot._drain_stream"
+        ) as mock_drain:
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                metadata=None,
+                trace_name="span",
+                session=session,
+                attributes={},
+                transaction=snapshot,
+                request_id_manager=session._database,
+            )
+            streamed_result_set = StreamedResultSet(resumable)
+            rows = [row async for row in streamed_result_set]
+
+            mock_drain.assert_called_once_with(raw)
+            self.assertEqual(rows, [["hello"], ["world"]])
+            self.assertEqual(streamed_result_set.metadata, metadata_pb)
+            self.assertEqual(streamed_result_set.stats, stats_pb)
+            self.assertTrue(streamed_result_set._done)
+
+    async def test_restart_on_unavailable_zero_rows_with_last(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1._async.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+            ResultSetStats,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        fields = [StructType.Field(name="greeting", type_=Type(code=TypeCode.STRING))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        stats_pb = ResultSetStats(row_count_exact=0)
+
+        chunk = PartialResultSet(metadata=metadata_pb, last=True, stats=stats_pb)
+
+        raw = _MockIterator(chunk)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.snapshot._drain_stream"
+        ) as mock_drain:
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                metadata=None,
+                trace_name="span",
+                session=session,
+                attributes={},
+                transaction=snapshot,
+                request_id_manager=session._database,
+            )
+            streamed_result_set = StreamedResultSet(resumable)
+            rows = [row async for row in streamed_result_set]
+
+            mock_drain.assert_called_once_with(raw)
+            self.assertEqual(rows, [])
+            self.assertEqual(streamed_result_set.metadata, metadata_pb)
+            self.assertEqual(streamed_result_set.stats, stats_pb)
+            self.assertTrue(streamed_result_set._done)
+
+    async def test_restart_on_unavailable_retry_before_last(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        resume_token = b"DEADBEEF"
+        chunk_one = PartialResultSet(last=False, resume_token=resume_token)
+        chunk_two = PartialResultSet(last=True)
+
+        stream_one = _MockIterator(
+            chunk_one, fail_after=True, error=ServiceUnavailable("transient")
+        )
+        stream_two = _MockIterator(chunk_two)
+        stream_two.cancel = mock.Mock()
+
+        restart = mock.Mock(side_effect=[stream_one, stream_two])
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.snapshot._drain_stream"
+        ) as mock_drain:
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                metadata=None,
+                trace_name="span",
+                session=session,
+                attributes={},
+                transaction=snapshot,
+                request_id_manager=session._database,
+            )
+            items = []
+            async for item in resumable:
+                items.append(item)
+
+            self.assertEqual(items, [chunk_one, chunk_two])
+            self.assertEqual(len(restart.mock_calls), 2)
+            self.assertEqual(request.resume_token, resume_token)
+            mock_drain.assert_called_once_with(stream_two)
+            stream_two.cancel.assert_not_called()
 
     async def test_execute_sql_ok(self):
         database = _Database()
@@ -695,12 +1059,20 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         call_args = api.execute_streaming_sql.call_args
         self.assertEqual(call_args.kwargs["request"].partition_token, b"token")
 
+    @mock.patch(
+        "google.cloud.spanner_v1._async.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS",
+        0.01,
+    )
     async def test_execute_sql_not_begun_error(self):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
         session = _Session()
         snapshot = self._make_snapshot(session, multi_use=True)
         snapshot._read_request_count = 1
         snapshot._transaction_id = None
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             await snapshot.execute_sql(SQL_QUERY)
 
     async def test_execute_sql_w_params(self):
@@ -995,9 +1367,14 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             TransactionPB(id=TXN_ID),
         ]
 
-        tid = await snapshot._begin_transaction()
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep"
+        ) as sleep_mock:
+            tid = await snapshot._begin_transaction()
+
         self.assertEqual(tid, TXN_ID)
         self.assertEqual(api.begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once_with(2)
 
     async def test_update_for_transaction_pb_w_precommit_token(self):
         from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken

@@ -27,6 +27,14 @@ __protobuf__ = proto.module(
         "AbandonInstancesInstanceGroupManagerRequest",
         "AbandonInstancesRegionInstanceGroupManagerRequest",
         "AcceleratorConfig",
+        "AcceleratorInterconnect",
+        "AcceleratorInterconnectAcceleratorInterconnectStatus",
+        "AcceleratorInterconnectAcceleratorInterconnectStatusAcceleratorInterconnectStateDetails",
+        "AcceleratorInterconnectMemberInstance",
+        "AcceleratorInterconnectMemberInstancesListResponse",
+        "AcceleratorInterconnectParams",
+        "AcceleratorInterconnectsInsertRequest",
+        "AcceleratorInterconnectsList",
         "AcceleratorTopologiesInfo",
         "AcceleratorTopologiesInfoAcceleratorTopologyInfo",
         "AcceleratorTopologiesInfoAcceleratorTopologyInfoInfoPerTopologyState",
@@ -76,6 +84,7 @@ __protobuf__ = proto.module(
         "AggregatedListFutureReservationsRequest",
         "AggregatedListGlobalOperationsRequest",
         "AggregatedListGlobalVmExtensionPoliciesRequest",
+        "AggregatedListHaControllersRequest",
         "AggregatedListHealthChecksRequest",
         "AggregatedListInstanceGroupManagersRequest",
         "AggregatedListInstanceGroupsRequest",
@@ -230,6 +239,29 @@ __protobuf__ = proto.module(
         "CancelRegionInstanceGroupManagerResizeRequestRequest",
         "CancelRequestRemovePeeringNetworkRequest",
         "CancelRolloutRequest",
+        "CapacityAdviceRequest",
+        "CapacityAdviceRequestDistributionPolicy",
+        "CapacityAdviceRequestDistributionPolicyZoneConfiguration",
+        "CapacityAdviceRequestInstanceFlexibilityPolicy",
+        "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection",
+        "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk",
+        "CapacityAdviceRequestInstanceProperties",
+        "CapacityAdviceRequestInstancePropertiesScheduling",
+        "CapacityAdviceResponse",
+        "CapacityAdviceResponseRecommendation",
+        "CapacityAdviceResponseRecommendationScores",
+        "CapacityAdviceResponseRecommendationShard",
+        "CapacityAdviceRpcRequest",
+        "CapacityHistoryAdviceRequest",
+        "CapacityHistoryRequest",
+        "CapacityHistoryRequestInstanceProperties",
+        "CapacityHistoryRequestInstancePropertiesAttachedDisk",
+        "CapacityHistoryRequestInstancePropertiesScheduling",
+        "CapacityHistoryRequestLocationPolicy",
+        "CapacityHistoryResponse",
+        "CapacityHistoryResponsePreemptionRecord",
+        "CapacityHistoryResponsePriceRecord",
+        "CapacityPool",
         "CircuitBreakers",
         "CloneRulesFirewallPolicyRequest",
         "CloneRulesNetworkFirewallPolicyRequest",
@@ -266,6 +298,7 @@ __protobuf__ = proto.module(
         "Data",
         "Date",
         "DateTime",
+        "DeleteAcceleratorInterconnectRequest",
         "DeleteAccessConfigInstanceRequest",
         "DeleteAddressRequest",
         "DeleteAutoscalerRequest",
@@ -287,6 +320,7 @@ __protobuf__ = proto.module(
         "DeleteGlobalOrganizationOperationResponse",
         "DeleteGlobalPublicDelegatedPrefixeRequest",
         "DeleteGlobalVmExtensionPolicyRequest",
+        "DeleteHaControllerRequest",
         "DeleteHealthCheckRequest",
         "DeleteImageRequest",
         "DeleteInstanceGroupManagerRequest",
@@ -426,6 +460,7 @@ __protobuf__ = proto.module(
         "ExternalVpnGatewayInterface",
         "ExternalVpnGatewayList",
         "ExternalVpnGatewayParams",
+        "FailoverHaControllerRequest",
         "FileContentBuffer",
         "Firewall",
         "FirewallList",
@@ -458,6 +493,8 @@ __protobuf__ = proto.module(
         "FutureReservationStatusLastKnownGoodState",
         "FutureReservationStatusLastKnownGoodStateFutureReservationSpecs",
         "FutureReservationStatusSpecificSKUProperties",
+        "FutureReservationStoragePoolProperties",
+        "FutureReservationStoragePoolProvisionedCapacity",
         "FutureReservationTimeWindow",
         "FutureReservationsAggregatedListResponse",
         "FutureReservationsListResponse",
@@ -473,6 +510,7 @@ __protobuf__ = proto.module(
         "FutureResourcesSpecTargetResources",
         "GRPCHealthCheck",
         "GRPCTLSHealthCheck",
+        "GetAcceleratorInterconnectRequest",
         "GetAcceleratorTypeRequest",
         "GetAddressRequest",
         "GetAssociationFirewallPolicyRequest",
@@ -499,18 +537,24 @@ __protobuf__ = proto.module(
         "GetFutureReservationRequest",
         "GetGlobalAddressRequest",
         "GetGlobalForwardingRuleRequest",
+        "GetGlobalFrontendSettingRequest",
         "GetGlobalNetworkEndpointGroupRequest",
         "GetGlobalOperationRequest",
         "GetGlobalOrganizationOperationRequest",
         "GetGlobalPublicDelegatedPrefixeRequest",
         "GetGlobalVmExtensionPolicyRequest",
         "GetGuestAttributesInstanceRequest",
+        "GetHaControllerRequest",
         "GetHealthBackendServiceRequest",
         "GetHealthCheckRequest",
+        "GetHealthOperationMetadata",
+        "GetHealthOperationMetadataHealthInfo",
         "GetHealthRegionBackendServiceRequest",
         "GetHealthRegionCompositeHealthCheckRequest",
         "GetHealthRegionHealthSourceRequest",
+        "GetHealthReservationSlotRequest",
         "GetHealthTargetPoolRequest",
+        "GetHostRequest",
         "GetIamPolicyBackendBucketRequest",
         "GetIamPolicyBackendServiceRequest",
         "GetIamPolicyDiskRequest",
@@ -546,6 +590,7 @@ __protobuf__ = proto.module(
         "GetIamPolicySubnetworkRequest",
         "GetImageFamilyViewRequest",
         "GetImageRequest",
+        "GetImageViewRequest",
         "GetInstanceGroupManagerRequest",
         "GetInstanceGroupManagerResizeRequestRequest",
         "GetInstanceGroupRequest",
@@ -565,6 +610,7 @@ __protobuf__ = proto.module(
         "GetMachineImageRequest",
         "GetMachineTypeRequest",
         "GetMacsecConfigInterconnectRequest",
+        "GetManagedRulesetRequest",
         "GetNamedSetRouterRequest",
         "GetNatIpInfoRouterRequest",
         "GetNatMappingInfoRoutersRequest",
@@ -584,6 +630,7 @@ __protobuf__ = proto.module(
         "GetPacketMirroringRuleNetworkFirewallPolicyRequest",
         "GetPreviewFeatureRequest",
         "GetProjectRequest",
+        "GetProjectViewRequest",
         "GetPublicAdvertisedPrefixeRequest",
         "GetPublicDelegatedPrefixeRequest",
         "GetRegionAutoscalerRequest",
@@ -617,6 +664,7 @@ __protobuf__ = proto.module(
         "GetRegionTargetHttpsProxyRequest",
         "GetRegionTargetTcpProxyRequest",
         "GetRegionUrlMapRequest",
+        "GetReliabilityRiskRequest",
         "GetReservationBlockRequest",
         "GetReservationRequest",
         "GetReservationSlotRequest",
@@ -656,6 +704,7 @@ __protobuf__ = proto.module(
         "GetTargetTcpProxyRequest",
         "GetTargetVpnGatewayRequest",
         "GetUrlMapRequest",
+        "GetVersionHostRequest",
         "GetVersionOperationMetadata",
         "GetVersionOperationMetadataSbomInfo",
         "GetVersionReservationSlotRequest",
@@ -669,6 +718,8 @@ __protobuf__ = proto.module(
         "GetZoneRequest",
         "GetZoneVmExtensionPolicyRequest",
         "GlobalAddressesMoveRequest",
+        "GlobalFrontendSettings",
+        "GlobalFrontendSettingsPatchResponse",
         "GlobalNetworkEndpointGroupsAttachEndpointsRequest",
         "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
         "GlobalOrganizationSetPolicyRequest",
@@ -692,6 +743,23 @@ __protobuf__ = proto.module(
         "HTTP2HealthCheck",
         "HTTPHealthCheck",
         "HTTPSHealthCheck",
+        "HaController",
+        "HaControllerNetworkingAutoConfiguration",
+        "HaControllerNetworkingAutoConfigurationInternal",
+        "HaControllerStatus",
+        "HaControllerStatusFailoverProgress",
+        "HaControllerStatusFailoverProgressLastFailoverAttempt",
+        "HaControllerStatusFailoverProgressLastFailoverAttemptErrors",
+        "HaControllerStatusZoneStatus",
+        "HaControllerStatusZoneStatusLastError",
+        "HaControllerStatusZoneStatusLastErrorErrors",
+        "HaControllerZoneConfiguration",
+        "HaControllerZoneConfigurationNodeAffinity",
+        "HaControllerZoneConfigurationReservationAffinity",
+        "HaControllersAggregatedList",
+        "HaControllersFailoverRequest",
+        "HaControllersList",
+        "HaControllersScopedList",
         "HealthAggregationPoliciesScopedList",
         "HealthAggregationPolicy",
         "HealthAggregationPolicyAggregatedList",
@@ -718,7 +786,12 @@ __protobuf__ = proto.module(
         "HealthStatusForNetworkEndpoint",
         "Help",
         "HelpLink",
+        "Host",
+        "HostPhysicalTopology",
         "HostRule",
+        "HostStatus",
+        "HostsGetVersionRequest",
+        "HostsListResponse",
         "HttpFaultAbort",
         "HttpFaultDelay",
         "HttpFaultInjection",
@@ -735,7 +808,10 @@ __protobuf__ = proto.module(
         "ImageFamilyView",
         "ImageList",
         "ImageParams",
+        "ImageView",
+        "ImageViewsListResponse",
         "InitialStateConfig",
+        "InsertAcceleratorInterconnectRequest",
         "InsertAddressRequest",
         "InsertAutoscalerRequest",
         "InsertBackendBucketRequest",
@@ -752,6 +828,7 @@ __protobuf__ = proto.module(
         "InsertGlobalNetworkEndpointGroupRequest",
         "InsertGlobalPublicDelegatedPrefixeRequest",
         "InsertGlobalVmExtensionPolicyRequest",
+        "InsertHaControllerRequest",
         "InsertHealthCheckRequest",
         "InsertImageRequest",
         "InsertInstanceGroupManagerRequest",
@@ -924,6 +1001,7 @@ __protobuf__ = proto.module(
         "InstancesSetSecurityPolicyRequest",
         "InstancesSetServiceAccountRequest",
         "InstancesStartWithEncryptionKeyRequest",
+        "InstancesTroubleshootOperationMetadata",
         "InstantSnapshot",
         "InstantSnapshotAggregatedList",
         "InstantSnapshotGroup",
@@ -1010,6 +1088,8 @@ __protobuf__ = proto.module(
         "InterconnectRemoteLocationPermittedConnections",
         "InterconnectsGetDiagnosticsResponse",
         "InterconnectsGetMacsecConfigResponse",
+        "InterconnectsSetNameRequest",
+        "Interval",
         "InvalidateCacheUrlMapRequest",
         "Items",
         "License",
@@ -1019,6 +1099,8 @@ __protobuf__ = proto.module(
         "LicenseResourceCommitment",
         "LicenseResourceRequirements",
         "LicensesListResponse",
+        "ListAcceleratorInterconnectMemberInstancesRequest",
+        "ListAcceleratorInterconnectsRequest",
         "ListAcceleratorTypesRequest",
         "ListAddressesRequest",
         "ListAssociationsFirewallPolicyRequest",
@@ -1047,7 +1129,10 @@ __protobuf__ = proto.module(
         "ListGlobalOrganizationOperationsRequest",
         "ListGlobalPublicDelegatedPrefixesRequest",
         "ListGlobalVmExtensionPoliciesRequest",
+        "ListHaControllersRequest",
         "ListHealthChecksRequest",
+        "ListHostsRequest",
+        "ListImageViewsRequest",
         "ListImagesRequest",
         "ListInstanceGroupManagerResizeRequestsRequest",
         "ListInstanceGroupManagersRequest",
@@ -1070,6 +1155,7 @@ __protobuf__ = proto.module(
         "ListMachineTypesRequest",
         "ListManagedInstancesInstanceGroupManagersRequest",
         "ListManagedInstancesRegionInstanceGroupManagersRequest",
+        "ListManagedRulesetsRequest",
         "ListNamedSetsRoutersRequest",
         "ListNetworkAttachmentsRequest",
         "ListNetworkEndpointGroupsRequest",
@@ -1125,6 +1211,7 @@ __protobuf__ = proto.module(
         "ListRegionUrlMapsRequest",
         "ListRegionZonesRequest",
         "ListRegionsRequest",
+        "ListReliabilityRisksRequest",
         "ListReservationBlocksRequest",
         "ListReservationSlotsRequest",
         "ListReservationSubBlocksRequest",
@@ -1185,9 +1272,12 @@ __protobuf__ = proto.module(
         "ManagedInstanceScheduling",
         "ManagedInstanceShutdownDetails",
         "ManagedInstanceVersion",
+        "ManagedRuleset",
+        "ManagedRulesetList",
         "Metadata",
         "MetadataFilter",
         "MetadataFilterLabelMatch",
+        "Money",
         "MoveAddressRequest",
         "MoveDiskProjectRequest",
         "MoveFirewallPolicyRequest",
@@ -1207,6 +1297,7 @@ __protobuf__ = proto.module(
         "NetworkAttachmentsScopedList",
         "NetworkEdgeSecurityService",
         "NetworkEdgeSecurityServiceAggregatedList",
+        "NetworkEdgeSecurityServiceParams",
         "NetworkEdgeSecurityServicesScopedList",
         "NetworkEndpoint",
         "NetworkEndpointGroup",
@@ -1289,6 +1380,9 @@ __protobuf__ = proto.module(
         "PacketMirroringMirroredResourceInfoSubnetInfo",
         "PacketMirroringNetworkInfo",
         "PacketMirroringsScopedList",
+        "PartitionFormability",
+        "PartitionFormabilityStatus",
+        "PatchAssociationRegionNetworkFirewallPolicyRequest",
         "PatchAutoscalerRequest",
         "PatchBackendBucketRequest",
         "PatchBackendServiceRequest",
@@ -1297,7 +1391,9 @@ __protobuf__ = proto.module(
         "PatchFirewallRequest",
         "PatchForwardingRuleRequest",
         "PatchGlobalForwardingRuleRequest",
+        "PatchGlobalFrontendSettingRequest",
         "PatchGlobalPublicDelegatedPrefixeRequest",
+        "PatchHaControllerRequest",
         "PatchHealthCheckRequest",
         "PatchImageRequest",
         "PatchInstanceGroupManagerRequest",
@@ -1377,6 +1473,7 @@ __protobuf__ = proto.module(
         "PreviewFeatureStatusReleaseStatus",
         "PreviewRouterRequest",
         "Project",
+        "ProjectView",
         "ProjectsDisableXpnResourceRequest",
         "ProjectsEnableXpnResourceRequest",
         "ProjectsGetXpnResources",
@@ -1391,13 +1488,16 @@ __protobuf__ = proto.module(
         "PublicDelegatedPrefixList",
         "PublicDelegatedPrefixPublicDelegatedSubPrefix",
         "PublicDelegatedPrefixesScopedList",
-        "Quota",
+        "QueryFormabilityAcceleratorInterconnectsRequest",
+        "QueryFormabilityRequest",
+        "QueryFormabilityResponse",
         "QuotaExceededInfo",
         "QuotaStatusWarning",
         "RawDisk",
         "RecreateInstancesInstanceGroupManagerRequest",
         "RecreateInstancesRegionInstanceGroupManagerRequest",
         "Reference",
+        "RegexRewrite",
         "Region",
         "RegionAddressesMoveRequest",
         "RegionAutoscalerList",
@@ -1440,6 +1540,8 @@ __protobuf__ = proto.module(
         "RegionSnapshotUpdateKmsKeyRequest",
         "RegionTargetHttpsProxiesSetSslCertificatesRequest",
         "RegionUrlMapsValidateRequest",
+        "ReliabilityRisk",
+        "ReliabilityRisksListResponse",
         "RemoveAssociationFirewallPolicyRequest",
         "RemoveAssociationNetworkFirewallPolicyRequest",
         "RemoveAssociationOrganizationSecurityPolicyRequest",
@@ -1467,6 +1569,8 @@ __protobuf__ = proto.module(
         "ReservationAffinity",
         "ReservationAggregatedList",
         "ReservationBlock",
+        "ReservationBlockBlockDetailedHealthInfo",
+        "ReservationBlockBlockStatus",
         "ReservationBlockHealthInfo",
         "ReservationBlockPhysicalTopology",
         "ReservationBlockPhysicalTopologyInstance",
@@ -1484,6 +1588,8 @@ __protobuf__ = proto.module(
         "ReservationSubBlock",
         "ReservationSubBlockHealthInfo",
         "ReservationSubBlockPhysicalTopology",
+        "ReservationSubBlockSubBlockDetailedHealthInfo",
+        "ReservationSubBlockSubBlockStatus",
         "ReservationSubBlocksGetResponse",
         "ReservationSubBlocksGetVersionRequest",
         "ReservationSubBlocksListResponse",
@@ -1501,6 +1607,7 @@ __protobuf__ = proto.module(
         "ResizeReservationRequest",
         "ResourceCommitment",
         "ResourceGroupReference",
+        "ResourceMetadata",
         "ResourcePoliciesScopedList",
         "ResourcePolicy",
         "ResourcePolicyAggregatedList",
@@ -1526,10 +1633,14 @@ __protobuf__ = proto.module(
         "ResourceStatusPhysicalHostTopologyAdditionalAttributes",
         "ResourceStatusReservationConsumptionInfo",
         "ResourceStatusScheduling",
+        "ResourceStatusShutdownDetails",
         "ResumeInstanceRequest",
         "ResumeInstancesInstanceGroupManagerRequest",
         "ResumeInstancesRegionInstanceGroupManagerRequest",
         "ResumeRolloutRequest",
+        "RiskDetails",
+        "RiskDetailsGlobalDnsInsight",
+        "RiskRecommendation",
         "Rollout",
         "RolloutPlan",
         "RolloutPlanWave",
@@ -1587,6 +1698,7 @@ __protobuf__ = proto.module(
         "SavedDisk",
         "ScalingScheduleStatus",
         "Scheduling",
+        "SchedulingGracefulShutdown",
         "SchedulingNodeAffinity",
         "SchedulingOnInstanceStopAction",
         "Screenshot",
@@ -1604,6 +1716,7 @@ __protobuf__ = proto.module(
         "SecurityPolicyAssociation",
         "SecurityPolicyDdosProtectionConfig",
         "SecurityPolicyList",
+        "SecurityPolicyParams",
         "SecurityPolicyRecaptchaOptionsConfig",
         "SecurityPolicyReference",
         "SecurityPolicyRule",
@@ -1710,6 +1823,7 @@ __protobuf__ = proto.module(
         "SetMetadataInstanceRequest",
         "SetMinCpuPlatformInstanceRequest",
         "SetNameInstanceRequest",
+        "SetNameInterconnectRequest",
         "SetNamedPortsInstanceGroupRequest",
         "SetNamedPortsRegionInstanceGroupRequest",
         "SetNodeTemplateNodeGroupRequest",
@@ -1800,6 +1914,8 @@ __protobuf__ = proto.module(
         "StoragePoolListDisks",
         "StoragePoolParams",
         "StoragePoolResourceStatus",
+        "StoragePoolShareSettings",
+        "StoragePoolShareSettingsProjectConfig",
         "StoragePoolType",
         "StoragePoolTypeAggregatedList",
         "StoragePoolTypeList",
@@ -2280,6 +2396,412 @@ class AcceleratorConfig(proto.Message):
     )
 
 
+class AcceleratorInterconnect(proto.Message):
+    r"""Represents an Accelerator Interconnect resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_topology (str):
+            The target topology shape (e.g. "4x4x8").
+
+            This field is a member of `oneof`_ ``_accelerator_topology``.
+        annotations (MutableMapping[str, str]):
+            The annotations for the accelerator
+            interconnect.
+        creation_timestamp (str):
+            Output only. [Output Only] The creation time of this
+            resource inRFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        id (int):
+            Output only. [Output Only] A unique identifier for this
+            resource type.
+
+            This field is a member of `oneof`_ ``_id``.
+        labels (MutableMapping[str, str]):
+            The labels for the accelerator interconnect.
+        name (str):
+            The name of the resource. The name must be
+            1-63 characters long, and comply withRFC1035.
+
+            This field is a member of `oneof`_ ``_name``.
+        params (google.cloud.compute_v1.types.AcceleratorInterconnectParams):
+            Input only. [Input Only] Additional params passed with the
+            creation request, but not persisted as part of resource
+            payload.
+
+            This field is a member of `oneof`_ ``_params``.
+        reactivation_mode (str):
+            The reactivation mode for the accelerator
+            interconnect. Check the ReactivationMode enum
+            for the list of possible values.
+
+            This field is a member of `oneof`_ ``_reactivation_mode``.
+        self_link (str):
+            Output only. [Output Only] The fully-qualified URL of this
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            Output only. [Output Only] The fully-qualified URL of this
+            resource containing its unique identifier.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        status (google.cloud.compute_v1.types.AcceleratorInterconnectAcceleratorInterconnectStatus):
+            Output only. [Output Only] The status of the interconnect.
+
+            This field is a member of `oneof`_ ``_status``.
+        zone (str):
+            Output only. [Output Only] The URL of azone where the
+            interconnect resides. You must specify this field as part of
+            the HTTP request URL. It is not settable as a field in the
+            request body.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    class ReactivationMode(proto.Enum):
+        r"""The reactivation mode for the accelerator interconnect.
+
+        Values:
+            UNDEFINED_REACTIVATION_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            MANUAL (119397318):
+                Manual reactivation mode.
+            REACTIVATION_MODE_UNSPECIFIED (248939633):
+                Unspecified value.
+        """
+
+        UNDEFINED_REACTIVATION_MODE = 0
+        MANUAL = 119397318
+        REACTIVATION_MODE_UNSPECIFIED = 248939633
+
+    accelerator_topology: str = proto.Field(
+        proto.STRING,
+        number=389323203,
+        optional=True,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=112032548,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=500195327,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    params: "AcceleratorInterconnectParams" = proto.Field(
+        proto.MESSAGE,
+        number=78313862,
+        optional=True,
+        message="AcceleratorInterconnectParams",
+    )
+    reactivation_mode: str = proto.Field(
+        proto.STRING,
+        number=384308377,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    status: "AcceleratorInterconnectAcceleratorInterconnectStatus" = proto.Field(
+        proto.MESSAGE,
+        number=181260274,
+        optional=True,
+        message="AcceleratorInterconnectAcceleratorInterconnectStatus",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class AcceleratorInterconnectAcceleratorInterconnectStatus(proto.Message):
+    r"""Detailed status information for the interconnect resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_type (str):
+            Output only. [Output Only] The accelerator type (e.g.,
+            "TPU7X").
+
+            This field is a member of `oneof`_ ``_accelerator_type``.
+        state (str):
+            Output only. [Output Only] The current state of the
+            interconnect. Check the State enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_state``.
+        state_details (google.cloud.compute_v1.types.AcceleratorInterconnectAcceleratorInterconnectStatusAcceleratorInterconnectStateDetails):
+            Output only. [Output Only] The result of the latest
+            accelerator topology state check.
+
+            This field is a member of `oneof`_ ``_state_details``.
+    """
+
+    class State(proto.Enum):
+        r"""Output only. [Output Only] The current state of the interconnect.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVATING (378825968):
+                The interconnect is being activated.
+            ACTIVE (314733318):
+                The interconnect is active and fully
+                configured.
+            ACTIVE_DEGRADED (471128135):
+                The interconnect is active but operating in
+                degraded mode.
+            DEACTIVATING (57182257):
+                The interconnect is being deactivated.
+            FAILED (455706685):
+                The interconnect is failed and no longer
+                active.
+            STATE_UNSPECIFIED (470755401):
+                The interconnect is in an unspecified state.
+        """
+
+        UNDEFINED_STATE = 0
+        ACTIVATING = 378825968
+        ACTIVE = 314733318
+        ACTIVE_DEGRADED = 471128135
+        DEACTIVATING = 57182257
+        FAILED = 455706685
+        STATE_UNSPECIFIED = 470755401
+
+    accelerator_type: str = proto.Field(
+        proto.STRING,
+        number=138031246,
+        optional=True,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=109757585,
+        optional=True,
+    )
+    state_details: "AcceleratorInterconnectAcceleratorInterconnectStatusAcceleratorInterconnectStateDetails" = proto.Field(
+        proto.MESSAGE,
+        number=95566996,
+        optional=True,
+        message="AcceleratorInterconnectAcceleratorInterconnectStatusAcceleratorInterconnectStateDetails",
+    )
+
+
+class AcceleratorInterconnectAcceleratorInterconnectStatusAcceleratorInterconnectStateDetails(
+    proto.Message
+):
+    r"""Holds the details of the current accelerator interconnect
+    state.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        error (google.cloud.compute_v1.types.Error):
+            Output only. Encountered errors.
+
+            This field is a member of `oneof`_ ``_error``.
+        timestamp (str):
+            Output only. Timestamp is shown only if there
+            is an error.
+
+            This field is a member of `oneof`_ ``_timestamp``.
+    """
+
+    error: "Error" = proto.Field(
+        proto.MESSAGE,
+        number=96784904,
+        optional=True,
+        message="Error",
+    )
+    timestamp: str = proto.Field(
+        proto.STRING,
+        number=55126294,
+        optional=True,
+    )
+
+
+class AcceleratorInterconnectMemberInstance(proto.Message):
+    r"""Represents an Accelerator Interconnect Member Instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance (str):
+            Output only. [Output Only] The VM instance resource URL
+            (e.g., https://.../instances/my-vm).
+
+            This field is a member of `oneof`_ ``_instance``.
+        instance_id (int):
+            Output only. [Output Only] The unique server-defined ID of
+            the VM instance.
+
+            This field is a member of `oneof`_ ``_instance_id``.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=18257045,
+        optional=True,
+    )
+    instance_id: int = proto.Field(
+        proto.UINT64,
+        number=45488389,
+        optional=True,
+    )
+
+
+class AcceleratorInterconnectMemberInstancesListResponse(proto.Message):
+    r"""Response message for
+    AcceleratorInterconnectMemberInstances.List.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        items (MutableSequence[google.cloud.compute_v1.types.AcceleratorInterconnectMemberInstance]):
+            The list of
+            AcceleratorInterconnectMemberInstances.
+        next_page_token (str):
+            Token to retrieve the next page of results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    items: MutableSequence["AcceleratorInterconnectMemberInstance"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=100526016,
+            message="AcceleratorInterconnectMemberInstance",
+        )
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+
+
+class AcceleratorInterconnectParams(proto.Message):
+    r"""Additional accelerator interconnect creation params.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        capacity_pool (google.cloud.compute_v1.types.CapacityPool):
+            The capacity pool to use for the accelerator
+            interconnect.
+
+            This field is a member of `oneof`_ ``_capacity_pool``.
+    """
+
+    capacity_pool: "CapacityPool" = proto.Field(
+        proto.MESSAGE,
+        number=418128001,
+        optional=True,
+        message="CapacityPool",
+    )
+
+
+class AcceleratorInterconnectsInsertRequest(proto.Message):
+    r"""Insert an Accelerator Interconnect resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        resource (google.cloud.compute_v1.types.AcceleratorInterconnect):
+            Required. The accelerator interconnect
+            resource to insert.
+
+            This field is a member of `oneof`_ ``_resource``.
+    """
+
+    resource: "AcceleratorInterconnect" = proto.Field(
+        proto.MESSAGE,
+        number=195806222,
+        optional=True,
+        message="AcceleratorInterconnect",
+    )
+
+
+class AcceleratorInterconnectsList(proto.Message):
+    r"""Response message for AcceleratorInterconnects.List.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        items (MutableSequence[google.cloud.compute_v1.types.AcceleratorInterconnect]):
+            A list of AcceleratorInterconnect resources.
+        next_page_token (str):
+            This token allows you to get the next page of
+            results for list requests. If the number of
+            results is larger thanmaxResults, use the
+            nextPageToken as a value for the query parameter
+            pageToken in the next list request. Subsequent
+            list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    items: MutableSequence["AcceleratorInterconnect"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="AcceleratorInterconnect",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+
+
 class AcceleratorTopologiesInfo(proto.Message):
     r"""Info for accelerator topologies within a densely packed
     reservation.
@@ -2435,6 +2957,14 @@ class AcceleratorType(proto.Message):
             [Output Only] Name of the resource.
 
             This field is a member of `oneof`_ ``_name``.
+        resource_metadata (google.cloud.compute_v1.types.ResourceMetadata):
+            Output only. Contains standard resource metadata for an
+            AcceleratorType resource. It is populated for each instance
+            of the AcceleratorType resource, and includes the
+            api_version the instance was retrieved through, and its
+            canonical resource_type name.
+
+            This field is a member of `oneof`_ ``_resource_metadata``.
         self_link (str):
             Output only. [Output Only] Server-defined, fully qualified
             URL for this resource.
@@ -2484,6 +3014,12 @@ class AcceleratorType(proto.Message):
         proto.STRING,
         number=3373707,
         optional=True,
+    )
+    resource_metadata: "ResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=99063872,
+        optional=True,
+        message="ResourceMetadata",
     )
     self_link: str = proto.Field(
         proto.STRING,
@@ -3207,6 +3743,12 @@ class AddAssociationRegionNetworkFirewallPolicyRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        associated_policy_to_be_replaced (str):
+            Name of the firewall policy associated with the target
+            network to swap association with. This field is mutually
+            exclusive with 'replace_existing_association'.
+
+            This field is a member of `oneof`_ ``_associated_policy_to_be_replaced``.
         firewall_policy (str):
             Name of the firewall policy to update.
         firewall_policy_association_resource (google.cloud.compute_v1.types.FirewallPolicyAssociation):
@@ -3246,6 +3788,11 @@ class AddAssociationRegionNetworkFirewallPolicyRequest(proto.Message):
             This field is a member of `oneof`_ ``_request_id``.
     """
 
+    associated_policy_to_be_replaced: str = proto.Field(
+        proto.STRING,
+        number=240901404,
+        optional=True,
+    )
     firewall_policy: str = proto.Field(
         proto.STRING,
         number=498173265,
@@ -4467,34 +5014,34 @@ class Address(proto.Message):
 
             It supports the following cases:
 
-               -
-                 Case 1: PublicDelegatedPrefix (PDP) for
-            BYOIP external IPv4      addresses. The PDP must
-            support enhanced IPv4 allocations.    -
-                 Case 2: Internal Range for global internal
-            addresses.
+            ::
 
-            Use one of the following formats to specify the
-            resource:
+               -
+                 Case 1: PublicDelegatedPrefix (PDP) for BYOIP external
+                 addresses. If an IPv4 PDP is used, the PDP must support enhanced IPv4
+                 allocations. If an IPv6 PDP is used, the PDP must be in
+                 EXTERNAL_IPV6_FORWARDING_RULE_CREATION mode.
+               -
+                 Case 2: Internal Range for global internal addresses.
+
+            Use one of the following formats to specify the resource:
 
             For a Public Delegated Prefix:
 
-               -
-               Full resource
-            URL:https://www.googleapis.com/compute/v1/projects/projectId/regions/region/publicDelegatedPrefixes/pdp
-               - Partial URL:
+            ::
 
-                  -
-              projects/projectId/regions/region/publicDelegatedPrefixes/pdp-name
-                  -
-              regions/region/publicDelegatedPrefixes/pdp-name
+               -
+               Full resource URL:https://www.googleapis.com/compute/v1/projects/projectId/regions/region/publicDelegatedPrefixes/pdp
+               - Partial URL:
+                  - projects/projectId/regions/region/publicDelegatedPrefixes/pdp-name
+                  - regions/region/publicDelegatedPrefixes/pdp-name
 
             For an Internal Range:
 
-               - Full
-              URL:https://networkconnectivity.googleapis.com/v1/projects/project/locations/global/internalRanges/internal-range
-               - Partial
-              URL:projects/project/locations/global/internalRanges/internal-range
+            ::
+
+               - Full URL:https://networkconnectivity.googleapis.com/v1/projects/project/locations/global/internalRanges/internal-range
+               - Partial URL:projects/project/locations/global/internalRanges/internal-range
 
             This field is a member of `oneof`_ ``_ip_collection``.
         ip_version (str):
@@ -4603,6 +5150,12 @@ class Address(proto.Message):
                  - `PRIVATE_SERVICE_CONNECT` for a private network address that is
                  used to configure Private Service Connect. Only global internal addresses
                  can use this purpose.
+                 - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP0` for addresses
+                 that can only be assigned to global external Passthrough Network Load
+                 Balancer forwarding rules, as an Availability Group 0 address.
+                 - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP1` for addresses that
+                 can only be assigned to global external Passthrough Network Load Balancer
+                 forwarding rules, as an Availability Group 1 address.
 
             Check the Purpose enum for the list of possible values.
 
@@ -4764,6 +5317,12 @@ class Address(proto.Message):
              - `PRIVATE_SERVICE_CONNECT` for a private network address that is
              used to configure Private Service Connect. Only global internal addresses
              can use this purpose.
+             - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP0` for addresses
+             that can only be assigned to global external Passthrough Network Load
+             Balancer forwarding rules, as an Availability Group 0 address.
+             - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP1` for addresses that
+             can only be assigned to global external Passthrough Network Load Balancer
+             forwarding rules, as an Availability Group 1 address.
 
         Values:
             UNDEFINED_PURPOSE (0):
@@ -4784,7 +5343,7 @@ class Address(proto.Message):
                 attachment is created with the reserved IP
                 address range, when creating a new VPN gateway,
                 its interface IP address is allocated from the
-                associated VLAN attachment’s IP address range.
+                associated VLAN attachment's IP address range.
             NAT_AUTO (163666477):
                 External IP automatically reserved for Cloud
                 NAT.
@@ -5431,17 +5990,6 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -5478,11 +6026,6 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -5617,17 +6160,6 @@ class AggregatedListAddressesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -5664,11 +6196,6 @@ class AggregatedListAddressesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -5803,17 +6330,6 @@ class AggregatedListAutoscalersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -5850,11 +6366,6 @@ class AggregatedListAutoscalersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -5989,17 +6500,6 @@ class AggregatedListBackendBucketsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -6036,11 +6536,6 @@ class AggregatedListBackendBucketsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -6175,17 +6670,6 @@ class AggregatedListBackendServicesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -6222,11 +6706,6 @@ class AggregatedListBackendServicesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -6361,17 +6840,6 @@ class AggregatedListDiskTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -6408,11 +6876,6 @@ class AggregatedListDiskTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -6547,17 +7010,6 @@ class AggregatedListDisksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -6594,11 +7046,6 @@ class AggregatedListDisksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -6733,17 +7180,6 @@ class AggregatedListForwardingRulesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -6780,11 +7216,6 @@ class AggregatedListForwardingRulesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -6919,17 +7350,6 @@ class AggregatedListFutureReservationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -6966,11 +7386,6 @@ class AggregatedListFutureReservationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -7105,17 +7520,6 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -7152,11 +7556,6 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -7292,17 +7691,6 @@ class AggregatedListGlobalVmExtensionPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -7340,10 +7728,175 @@ class AggregatedListGlobalVmExtensionPoliciesRequest(proto.Message):
         proto.STRING,
         number=227560217,
     )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
+    )
+
+
+class AggregatedListHaControllersRequest(proto.Message):
+    r"""A request message for HaControllers.AggregatedList. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        include_all_scopes (bool):
+            Indicates whether every visible scope for
+            each scope type (zone, region, global) should be
+            included in the response. For new resource types
+            added after this field, the flag has no effect
+            as new resource types will always include every
+            visible scope for each scope type in response.
+            For resource types which predate this field, if
+            this flag is omitted or false, only scopes of
+            the scope types where the resource type is
+            expected to be found will be included.
+
+            This field is a member of `oneof`_ ``_include_all_scopes``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
+
+            This field is a member of `oneof`_ ``_service_project_number``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    include_all_scopes: bool = proto.Field(
+        proto.BOOL,
+        number=391327988,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -7478,17 +8031,6 @@ class AggregatedListHealthChecksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -7525,11 +8067,6 @@ class AggregatedListHealthChecksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -7664,17 +8201,6 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -7711,11 +8237,6 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -7850,17 +8371,6 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -7897,11 +8407,6 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -8036,17 +8541,6 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -8083,11 +8577,6 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -8222,17 +8711,6 @@ class AggregatedListInstancesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -8269,11 +8747,6 @@ class AggregatedListInstancesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -8408,17 +8881,6 @@ class AggregatedListInstantSnapshotsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -8455,11 +8917,6 @@ class AggregatedListInstantSnapshotsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -8594,17 +9051,6 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -8641,11 +9087,6 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -8780,17 +9221,6 @@ class AggregatedListMachineTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -8827,11 +9257,6 @@ class AggregatedListMachineTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -8966,17 +9391,6 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -9013,11 +9427,6 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -9153,17 +9562,6 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -9200,11 +9598,6 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -9339,17 +9732,6 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -9386,11 +9768,6 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -9525,17 +9902,6 @@ class AggregatedListNetworkFirewallPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -9572,11 +9938,6 @@ class AggregatedListNetworkFirewallPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -9711,17 +10072,6 @@ class AggregatedListNodeGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -9758,11 +10108,6 @@ class AggregatedListNodeGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -9897,17 +10242,6 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -9944,11 +10278,6 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -10083,17 +10412,6 @@ class AggregatedListNodeTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -10130,11 +10448,6 @@ class AggregatedListNodeTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -10269,17 +10582,6 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -10316,11 +10618,6 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -10455,17 +10752,6 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -10502,11 +10788,6 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -10641,17 +10922,6 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -10688,11 +10958,6 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -10828,17 +11093,6 @@ class AggregatedListRegionCompositeHealthChecksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -10875,11 +11129,6 @@ class AggregatedListRegionCompositeHealthChecksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -11015,17 +11264,6 @@ class AggregatedListRegionHealthAggregationPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -11062,11 +11300,6 @@ class AggregatedListRegionHealthAggregationPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -11202,17 +11435,6 @@ class AggregatedListRegionHealthCheckServicesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -11249,11 +11471,6 @@ class AggregatedListRegionHealthCheckServicesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -11388,17 +11605,6 @@ class AggregatedListRegionHealthSourcesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -11435,11 +11641,6 @@ class AggregatedListRegionHealthSourcesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -11575,17 +11776,6 @@ class AggregatedListRegionNotificationEndpointsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -11622,11 +11812,6 @@ class AggregatedListRegionNotificationEndpointsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -11761,17 +11946,6 @@ class AggregatedListReservationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -11808,11 +11982,6 @@ class AggregatedListReservationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -11947,17 +12116,6 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -11994,11 +12152,6 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -12133,17 +12286,6 @@ class AggregatedListRoutersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -12180,11 +12322,6 @@ class AggregatedListRoutersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -12319,17 +12456,6 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -12366,11 +12492,6 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -12505,17 +12626,6 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -12552,11 +12662,6 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -12691,17 +12796,6 @@ class AggregatedListSslCertificatesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -12738,11 +12832,6 @@ class AggregatedListSslCertificatesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -12877,17 +12966,6 @@ class AggregatedListSslPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -12924,11 +13002,6 @@ class AggregatedListSslPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -13063,17 +13136,6 @@ class AggregatedListStoragePoolTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -13110,11 +13172,6 @@ class AggregatedListStoragePoolTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -13249,17 +13306,6 @@ class AggregatedListStoragePoolsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -13296,11 +13342,6 @@ class AggregatedListStoragePoolsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -13435,17 +13476,6 @@ class AggregatedListSubnetworksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -13517,11 +13547,6 @@ class AggregatedListSubnetworksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -13661,17 +13686,6 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -13708,11 +13722,6 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -13847,17 +13856,6 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -13894,11 +13892,6 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -14033,17 +14026,6 @@ class AggregatedListTargetInstancesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -14080,11 +14062,6 @@ class AggregatedListTargetInstancesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -14219,17 +14196,6 @@ class AggregatedListTargetPoolsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -14266,11 +14232,6 @@ class AggregatedListTargetPoolsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -14405,17 +14366,6 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -14452,11 +14402,6 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -14591,17 +14536,6 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -14638,11 +14572,6 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -14777,17 +14706,6 @@ class AggregatedListUrlMapsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Name of the project scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -14824,11 +14742,6 @@ class AggregatedListUrlMapsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -14963,17 +14876,6 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -15010,11 +14912,6 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -15149,17 +15046,6 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
             The Shared VPC service project id or service
             project number for which aggregated list request
@@ -15196,11 +15082,6 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project_number: int = proto.Field(
         proto.INT64,
@@ -15469,6 +15350,12 @@ class AllocationResourceStatus(proto.Message):
             [Output only] Health information for the reservation.
 
             This field is a member of `oneof`_ ``_health_info``.
+        machine_count (int):
+            The number of machines in the reservation.
+            Only populated for families where machine to
+            host ratio is not 1:1 such as TPU8i.
+
+            This field is a member of `oneof`_ ``_machine_count``.
         reservation_block_count (int):
             The number of reservation blocks associated
             with this reservation.
@@ -15489,6 +15376,11 @@ class AllocationResourceStatus(proto.Message):
         number=235287729,
         optional=True,
         message="AllocationResourceStatusHealthInfo",
+    )
+    machine_count: int = proto.Field(
+        proto.INT32,
+        number=63727383,
+        optional=True,
     )
     reservation_block_count: int = proto.Field(
         proto.INT32,
@@ -16713,6 +16605,56 @@ class AttachedDiskInitializeParams(proto.Message):
 
             This field is a member of `oneof`_ ``_disk_size_gb``.
         disk_type (str):
+            Specifies the disk type used for the boot
+            disk or an additional data disk. For valid disk
+            type values, see Supported types for Hyperdisk
+            volumes and
+            Persistent Disk type variables.
+
+            When creating a single instance, you must
+            provide either the full or partial URL of the
+            disk type. For example, the following values are
+            valid:
+
+
+                 -
+              https://www.googleapis.com/compute/v1/projects/project/zones/zone/diskTypes/diskType
+                 -
+              projects/project/zones/zone/diskTypes/diskType
+                 - zones/zone/diskTypes/diskType
+
+            When creating an instance template, instance
+            flexibility policy, or when creating or updating
+            an all-instances configuration, you specify the
+            disk type without a URL, for example,
+            hyperdisk-balanced.
+
+            If you omit this field for a disk, the default
+            disk type depends on the instance's machine
+            series, as follows.
+
+
+                - For first- and second-generation machine
+              series like N1, N2, T2, and     M1, the
+                   default disk type is Standard Persistent
+            Disk        (pd-standard).
+                - For C3, C3D, and M3 the default is
+              Balanced Persistent Disk     (pd-balanced).
+               - For other third-generation machine
+                series like A3, H3, Z3, all
+                    fourth-generation types like C4, N4, M4,
+            and newer machine series,         the default is
+            Hyperdisk Balanced
+                    (hyperdisk-balanced).
+
+            The disk type you specify must be compatible
+            with the instance's machine series. For a list
+            of machine series that support Persistent Disk,
+            see Machine series support for Persistent Disk.
+
+            For a list of machine series that support
+            Hyperdisk, seeMachine series support for
+            Hyperdisk.
 
             This field is a member of `oneof`_ ``_disk_type``.
         enable_confidential_compute (bool):
@@ -17069,8 +17011,6 @@ class AuditConfig(proto.Message):
         audit_log_configs (MutableSequence[google.cloud.compute_v1.types.AuditLogConfig]):
             The configuration for logging of each type of
             permission.
-        exempted_members (MutableSequence[str]):
-
         service (str):
             Specifies a service that will be enabled for audit logging.
             For example, ``storage.googleapis.com``,
@@ -17084,10 +17024,6 @@ class AuditConfig(proto.Message):
         proto.MESSAGE,
         number=488420626,
         message="AuditLogConfig",
-    )
-    exempted_members: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=232615576,
     )
     service: str = proto.Field(
         proto.STRING,
@@ -17127,9 +17063,6 @@ class AuditLogConfig(proto.Message):
             Specifies the identities that do not cause
             logging for this type of permission.
             Follows the same format of Binding.members.
-        ignore_child_exemptions (bool):
-
-            This field is a member of `oneof`_ ``_ignore_child_exemptions``.
         log_type (str):
             The log type that this config enables.
             Check the LogType enum for the list of possible
@@ -17164,11 +17097,6 @@ class AuditLogConfig(proto.Message):
     exempted_members: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=232615576,
-    )
-    ignore_child_exemptions: bool = proto.Field(
-        proto.BOOL,
-        number=70141850,
-        optional=True,
     )
     log_type: str = proto.Field(
         proto.STRING,
@@ -18067,6 +17995,18 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
               PredictiveMethod enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_predictive_method``.
+        utilization_max (float):
+            The upper bound of the utilization range. Must be a float
+            value in the range ('utilization_min', 1]. A value of 0.0 is
+            equivalent to leaving the field unset.
+
+            This field is a member of `oneof`_ ``_utilization_max``.
+        utilization_min (float):
+            The lower bound of the utilization range. Must be a float
+            value in the range (0, 'utilization_max']. A value of 0.0 is
+            equivalent to leaving the field unset.
+
+            This field is a member of `oneof`_ ``_utilization_min``.
         utilization_target (float):
             The target CPU utilization that the autoscaler maintains.
             Must be a float value in the range (0, 1]. If not specified,
@@ -18118,6 +18058,16 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
     predictive_method: str = proto.Field(
         proto.STRING,
         number=390220737,
+        optional=True,
+    )
+    utilization_max: float = proto.Field(
+        proto.DOUBLE,
+        number=256713159,
+        optional=True,
+    )
+    utilization_min: float = proto.Field(
+        proto.DOUBLE,
+        number=256713397,
         optional=True,
     )
     utilization_target: float = proto.Field(
@@ -18448,9 +18398,11 @@ class Backend(proto.Message):
             guidelines, see Connection balancing mode.
 
             Backends must use compatible balancing modes.
-            For more information, see Supported balancing
-            modes and target capacity settings and
-            Restrictions and guidance for instance groups.
+            Backends of a backend service may use different
+            balancing modes. For more information, see
+            Supported balancing modes and target capacity
+            settings and Restrictions and guidance for
+            instance groups.
 
             Note: Currently, if you use the API to configure
             incompatible balancing modes, the configuration
@@ -18492,6 +18444,11 @@ class Backend(proto.Message):
             This field designates whether this is a
             failover backend. More than one failover backend
             can be configured for a given BackendService.
+
+            This field can only be used for a regional
+            external Passthrough Network Load Balancer or a
+            regional internal Passthrough Network Load
+            Balancer.
 
             This field is a member of `oneof`_ ``_failover``.
         group (str):
@@ -18611,6 +18568,14 @@ class Backend(proto.Message):
               would be used and traffic would be    assigned
               based on the load balancing algorithm you use.
               This is the    default
+
+            For global external Passthrough Network Load
+            Balancers, the following restrictions apply:
+
+               - At most one backend can be marked as
+              PREFERRED.
+               - PREFERRED and DEFAULT backends cannot
+              reside    in the same Cloud region.
             Check the Preference enum for the list of
             possible values.
 
@@ -18627,7 +18592,8 @@ class Backend(proto.Message):
         balancer can handle additional traffic or is fully loaded. For
         usage guidelines, see Connection balancing mode.
 
-        Backends must use compatible balancing modes. For more
+        Backends must use compatible balancing modes. Backends of a
+        backend service may use different balancing modes. For more
         information, see Supported balancing modes and target capacity
         settings and Restrictions and guidance for instance groups.
 
@@ -18674,6 +18640,13 @@ class Backend(proto.Message):
           capacity, backends in this layer would be used and traffic
           would be    assigned based on the load balancing algorithm you
           use. This is the    default
+
+        For global external Passthrough Network Load Balancers, the
+        following restrictions apply:
+
+           - At most one backend can be marked as PREFERRED.
+           - PREFERRED and DEFAULT backends cannot reside
+           in the same Cloud region.
 
         Values:
             UNDEFINED_PREFERENCE (0):
@@ -19162,16 +19135,16 @@ class BackendBucketCdnPolicy(proto.Message):
             This field is a member of `oneof`_ ``_cache_key_policy``.
         cache_mode (str):
             Specifies the cache setting for all responses from this
-            backend. The possible values are:USE_ORIGIN_HEADERS Requires
-            the origin to set valid caching headers to cache content.
-            Responses without these headers will not be cached at
-            Google's edge, and will require a full trip to the origin on
-            every request, potentially impacting performance and
-            increasing load on the origin server.FORCE_CACHE_ALL Cache
+            backend. The possible values are: USE_ORIGIN_HEADERS
+            Requires the origin to set valid caching headers to cache
+            content. Responses without these headers will not be cached
+            at Google's edge, and will require a full trip to the origin
+            on every request, potentially impacting performance and
+            increasing load on the origin server. FORCE_CACHE_ALL Cache
             all content, ignoring any "private", "no-store" or
             "no-cache" directives in Cache-Control response headers.
             Warning: this may result in Cloud CDN caching private,
-            per-user (user identifiable) content.CACHE_ALL_STATIC
+            per-user (user identifiable) content. CACHE_ALL_STATIC
             Automatically cache static content, including common image
             formats, media (video and audio), and web assets (JavaScript
             and CSS). Requests and responses that are marked as
@@ -19300,19 +19273,19 @@ class BackendBucketCdnPolicy(proto.Message):
 
     class CacheMode(proto.Enum):
         r"""Specifies the cache setting for all responses from this backend. The
-        possible values are:USE_ORIGIN_HEADERS Requires the origin to set
+        possible values are: USE_ORIGIN_HEADERS Requires the origin to set
         valid caching headers to cache content. Responses without these
         headers will not be cached at Google's edge, and will require a full
         trip to the origin on every request, potentially impacting
-        performance and increasing load on the origin server.FORCE_CACHE_ALL
-        Cache all content, ignoring any "private", "no-store" or "no-cache"
-        directives in Cache-Control response headers. Warning: this may
-        result in Cloud CDN caching private, per-user (user identifiable)
-        content.CACHE_ALL_STATIC Automatically cache static content,
-        including common image formats, media (video and audio), and web
-        assets (JavaScript and CSS). Requests and responses that are marked
-        as uncacheable, as well as dynamic content (including HTML), will
-        not be cached.
+        performance and increasing load on the origin server.
+        FORCE_CACHE_ALL Cache all content, ignoring any "private",
+        "no-store" or "no-cache" directives in Cache-Control response
+        headers. Warning: this may result in Cloud CDN caching private,
+        per-user (user identifiable) content. CACHE_ALL_STATIC Automatically
+        cache static content, including common image formats, media (video
+        and audio), and web assets (JavaScript and CSS). Requests and
+        responses that are marked as uncacheable, as well as dynamic content
+        (including HTML), will not be cached.
 
         If no value is provided for cdnPolicy.cacheMode, it defaults to
         CACHE_ALL_STATIC.
@@ -19951,8 +19924,9 @@ class BackendService(proto.Message):
             Balancers <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
             and `external passthrough Network Load
             Balancers <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
-
-            failoverPolicy cannot be specified with haPolicy.
+            failoverPolicy cannot be specified with
+            haPolicy.failoverPolicy cannot be used by global external
+            Passthrough Network Load Balancers.
 
             This field is a member of `oneof`_ ``_failover_policy``.
         fingerprint (str):
@@ -19998,11 +19972,10 @@ class BackendService(proto.Message):
             haPolicy requires customers to be responsible for tracking
             backend endpoint health and electing a leader among the
             healthy endpoints. Therefore, haPolicy cannot be specified
-            with healthChecks.
-
-            haPolicy can only be specified for External Passthrough
-            Network Load Balancers and Internal Passthrough Network Load
-            Balancers.
+            with healthChecks. haPolicy can only be specified for
+            External Passthrough Network Load Balancers and Internal
+            Passthrough Network Load Balancers.haPolicy cannot be used
+            by global external Passthrough Network Load Balancers.
 
             This field is a member of `oneof`_ ``_ha_policy``.
         health_checks (MutableSequence[str]):
@@ -20078,8 +20051,8 @@ class BackendService(proto.Message):
             Specifies the load balancer type. A backend
             service created for one type of load balancer
             cannot be used with another. For more
-            information, refer toChoosing
-            a load balancer.
+            information, refer to
+            Backend services product and scheme table.
             Check the LoadBalancingScheme enum for the list
             of possible values.
 
@@ -20130,31 +20103,39 @@ class BackendService(proto.Message):
                If set, the Backend Service responses are expected to contain non-standard
                HTTP response header field Endpoint-Load-Metrics. The reported
                metrics to use for computing the weights are specified via thecustomMetrics field.
+               - WEIGHTED_MAGLEV: Per-endpoint weighted load balancing via
+               health check reported weights. If set, the backend service must configure
+               an HTTP-based Health Check, and health check replies are expected to
+               contain the non-standard HTTP response header fieldX-Load-Balancing-Endpoint-Weight to specify the per-endpoint
+               weights. If set, load balancing is weighted based on the per-endpoint
+               weights reported in the last processed health check replies, as long as
+               every instance either reported a valid weight or had UNAVAILABLE_WEIGHT.
+               Otherwise, load balancing remains equal-weight.
 
-               This field is applicable to either:
-                  - A regional backend service with the service protocol set to HTTP,
-                  HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
-                  INTERNAL_MANAGED.
-                  - A global backend service with the
-                  load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
-                  EXTERNAL_MANAGED.
+            This field is applicable to either:
 
+            ::
 
-               If sessionAffinity is not configured—that is, if session
-               affinity remains at the default value of NONE—then the
-               default value for localityLbPolicy
-               is ROUND_ROBIN. If session affinity is set to a value other
-               than NONE,
-               then the default value for localityLbPolicy isMAGLEV.
+               - A regional backend service with the service protocol set to HTTP,
+               HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
+               INTERNAL_MANAGED.
+               - A global backend service with the
+               load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
+               EXTERNAL_MANAGED.
 
-               Only ROUND_ROBIN and RING_HASH are supported
-               when the backend service is referenced by a URL map that is bound to
-               target gRPC proxy that has validateForProxyless field set to true.
+            If sessionAffinity is not configured—that is, if session
+            affinity remains at the default value of NONE—then the
+            default value for localityLbPolicy is ROUND_ROBIN. If
+            session affinity is set to a value other than NONE, then the
+            default value for localityLbPolicy isMAGLEV.
 
-               localityLbPolicy cannot be specified with haPolicy.
+            Only ROUND_ROBIN and RING_HASH are supported when the
+            backend service is referenced by a URL map that is bound to
+            target gRPC proxy that has validateForProxyless field set to
+            true.
 
-            Check the LocalityLbPolicy enum for the list of possible
-            values.
+            localityLbPolicy cannot be specified with haPolicy. Check
+            the LocalityLbPolicy enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_locality_lb_policy``.
         log_config (google.cloud.compute_v1.types.BackendServiceLogConfig):
@@ -20298,13 +20279,12 @@ class BackendService(proto.Message):
         protocol (str):
             The protocol this BackendService uses to
             communicate with backends.
-
             Possible values are HTTP, HTTPS, HTTP2, H2C,
-            TCP, SSL, UDP or GRPC. depending on the chosen
-            load balancer or Traffic Director configuration.
-            Refer to the documentation for the load
-            balancers or for Traffic Director for more
-            information.
+            TCP, SSL, UDP, GRPC, or UNSPECIFIED, depending
+            on the chosen load balancer or Traffic Director
+            configuration.
+            Refer to
+            Load balancing features for more information.
 
             Must be set to GRPC when the backend service is
             referenced by a URL map that is bound to target
@@ -20348,7 +20328,11 @@ class BackendService(proto.Message):
 
             Can only be set if load balancing scheme is
             EXTERNAL_MANAGED, INTERNAL_MANAGED or INTERNAL_SELF_MANAGED
-            and the scope is global.
+            for a global backend service, and EXTERNAL_MANAGED or
+            INTERNAL_MANAGED for a regional backend service. For a
+            global backend service, the service lb policy must be
+            global. For a regional backend service, the service lb
+            policy must be regional and in the same region.
 
             This field is a member of `oneof`_ ``_service_lb_policy``.
         session_affinity (str):
@@ -20534,8 +20518,8 @@ class BackendService(proto.Message):
     class LoadBalancingScheme(proto.Enum):
         r"""Specifies the load balancer type. A backend service
         created for one type of load balancer cannot be used with
-        another. For more information, refer toChoosing
-        a load balancer.
+        another. For more information, refer to
+        Backend services product and scheme table.
 
         Values:
             UNDEFINED_LOAD_BALANCING_SCHEME (0):
@@ -20603,28 +20587,37 @@ class BackendService(proto.Message):
            If set, the Backend Service responses are expected to contain non-standard
            HTTP response header field Endpoint-Load-Metrics. The reported
            metrics to use for computing the weights are specified via thecustomMetrics field.
+           - WEIGHTED_MAGLEV: Per-endpoint weighted load balancing via
+           health check reported weights. If set, the backend service must configure
+           an HTTP-based Health Check, and health check replies are expected to
+           contain the non-standard HTTP response header fieldX-Load-Balancing-Endpoint-Weight to specify the per-endpoint
+           weights. If set, load balancing is weighted based on the per-endpoint
+           weights reported in the last processed health check replies, as long as
+           every instance either reported a valid weight or had UNAVAILABLE_WEIGHT.
+           Otherwise, load balancing remains equal-weight.
 
-           This field is applicable to either:
-              - A regional backend service with the service protocol set to HTTP,
-              HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
-              INTERNAL_MANAGED.
-              - A global backend service with the
-              load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
-              EXTERNAL_MANAGED.
+        This field is applicable to either:
 
+        ::
 
-           If sessionAffinity is not configured—that is, if session
-           affinity remains at the default value of NONE—then the
-           default value for localityLbPolicy
-           is ROUND_ROBIN. If session affinity is set to a value other
-           than NONE,
-           then the default value for localityLbPolicy isMAGLEV.
+           - A regional backend service with the service protocol set to HTTP,
+           HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
+           INTERNAL_MANAGED.
+           - A global backend service with the
+           load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
+           EXTERNAL_MANAGED.
 
-           Only ROUND_ROBIN and RING_HASH are supported
-           when the backend service is referenced by a URL map that is bound to
-           target gRPC proxy that has validateForProxyless field set to true.
+        If sessionAffinity is not configured—that is, if session affinity
+        remains at the default value of NONE—then the default value for
+        localityLbPolicy is ROUND_ROBIN. If session affinity is set to a
+        value other than NONE, then the default value for localityLbPolicy
+        isMAGLEV.
 
-           localityLbPolicy cannot be specified with haPolicy.
+        Only ROUND_ROBIN and RING_HASH are supported when the backend
+        service is referenced by a URL map that is bound to target gRPC
+        proxy that has validateForProxyless field set to true.
+
+        localityLbPolicy cannot be specified with haPolicy.
 
         Values:
             UNDEFINED_LOCALITY_LB_POLICY (0):
@@ -20709,13 +20702,13 @@ class BackendService(proto.Message):
         WEIGHTED_ROUND_ROBIN = 5584977
 
     class Protocol(proto.Enum):
-        r"""The protocol this BackendService uses to communicate
-        with backends.
-
-        Possible values are HTTP, HTTPS, HTTP2, H2C, TCP, SSL, UDP or
-        GRPC. depending on the chosen load balancer or Traffic Director
-        configuration. Refer to the documentation for the load balancers
-        or for Traffic Director for more information.
+        r"""The protocol this BackendService uses to communicate with
+        backends.
+        Possible values are HTTP, HTTPS, HTTP2, H2C, TCP, SSL, UDP,
+        GRPC, or UNSPECIFIED, depending on the chosen load balancer or
+        Traffic Director configuration.
+        Refer to
+        Load balancing features for more information.
 
         Must be set to GRPC when the backend service is referenced by a
         URL map that is bound to target gRPC proxy.
@@ -21215,16 +21208,16 @@ class BackendServiceCdnPolicy(proto.Message):
             This field is a member of `oneof`_ ``_cache_key_policy``.
         cache_mode (str):
             Specifies the cache setting for all responses from this
-            backend. The possible values are:USE_ORIGIN_HEADERS Requires
-            the origin to set valid caching headers to cache content.
-            Responses without these headers will not be cached at
-            Google's edge, and will require a full trip to the origin on
-            every request, potentially impacting performance and
-            increasing load on the origin server.FORCE_CACHE_ALL Cache
+            backend. The possible values are: USE_ORIGIN_HEADERS
+            Requires the origin to set valid caching headers to cache
+            content. Responses without these headers will not be cached
+            at Google's edge, and will require a full trip to the origin
+            on every request, potentially impacting performance and
+            increasing load on the origin server. FORCE_CACHE_ALL Cache
             all content, ignoring any "private", "no-store" or
             "no-cache" directives in Cache-Control response headers.
             Warning: this may result in Cloud CDN caching private,
-            per-user (user identifiable) content.CACHE_ALL_STATIC
+            per-user (user identifiable) content. CACHE_ALL_STATIC
             Automatically cache static content, including common image
             formats, media (video and audio), and web assets (JavaScript
             and CSS). Requests and responses that are marked as
@@ -21353,19 +21346,19 @@ class BackendServiceCdnPolicy(proto.Message):
 
     class CacheMode(proto.Enum):
         r"""Specifies the cache setting for all responses from this backend. The
-        possible values are:USE_ORIGIN_HEADERS Requires the origin to set
+        possible values are: USE_ORIGIN_HEADERS Requires the origin to set
         valid caching headers to cache content. Responses without these
         headers will not be cached at Google's edge, and will require a full
         trip to the origin on every request, potentially impacting
-        performance and increasing load on the origin server.FORCE_CACHE_ALL
-        Cache all content, ignoring any "private", "no-store" or "no-cache"
-        directives in Cache-Control response headers. Warning: this may
-        result in Cloud CDN caching private, per-user (user identifiable)
-        content.CACHE_ALL_STATIC Automatically cache static content,
-        including common image formats, media (video and audio), and web
-        assets (JavaScript and CSS). Requests and responses that are marked
-        as uncacheable, as well as dynamic content (including HTML), will
-        not be cached.
+        performance and increasing load on the origin server.
+        FORCE_CACHE_ALL Cache all content, ignoring any "private",
+        "no-store" or "no-cache" directives in Cache-Control response
+        headers. Warning: this may result in Cloud CDN caching private,
+        per-user (user identifiable) content. CACHE_ALL_STATIC Automatically
+        cache static content, including common image formats, media (video
+        and audio), and web assets (JavaScript and CSS). Requests and
+        responses that are marked as uncacheable, as well as dynamic content
+        (including HTML), will not be cached.
 
         If no value is provided for cdnPolicy.cacheMode, it defaults to
         CACHE_ALL_STATIC.
@@ -22127,10 +22120,11 @@ class BackendServiceHAPolicyLeaderNetworkEndpoint(proto.Message):
             attached to the NEG specified in the
             haPolicy.leader.backendGroup.
 
-            The name must be 1-63 characters long, and
-            comply with RFC1035. Authorization requires the
-            following IAM permission on the specified
-            resource instance: compute.instances.use
+            The value must be a valid RFC1035 name (1-63
+            characters) or a valid instance URL.
+            Authorization requires the following IAM
+            permission on the specified resource instance:
+            compute.instances.use
 
             This field is a member of `oneof`_ ``_instance``.
     """
@@ -22910,6 +22904,51 @@ class BackendServiceTlsSettings(proto.Message):
             if authenticationMode is not NONE.
 
             This field is a member of `oneof`_ ``_authentication_config``.
+        identity (str):
+            Assigns the Managed Identity for the BackendService
+            Workload.
+
+            Use this property to configure the load balancer back-end to
+            use certificates and roots of trust provisioned by the
+            Managed Workload Identity system.
+
+            The ``identity`` property is the fully-specified SPIFFE ID
+            to use in the SVID presented by the Load Balancer Workload.
+
+            The SPIFFE ID must be a resource starting with the
+            ``trustDomain`` property value, followed by the path to the
+            Managed Workload Identity.
+
+            Supported SPIFFE ID format:
+
+            ::
+
+               - //<trust_domain>/ns/<namespace>/sa/<subject>
+
+            The Trust Domain within the Managed Identity must refer to a
+            valid Workload Identity Pool. The TrustConfig and
+            CertificateIssuanceConfig will be inherited from the
+            Workload Identity Pool.
+
+            Restrictions:
+
+            ::
+
+               - If you set the `identity` property, you cannot manually set
+               the following fields:
+                   - tlsSettings.sni
+                  - tlsSettings.subjectAltNames
+                  - tlsSettings.authenticationConfig
+
+            When defining a ``identity`` for a RegionBackendServices,
+            the corresponding Workload Identity Pool must have a ca_pool
+            configured in the same region.
+
+            The system will set up a
+            read-onlytlsSettings.authenticationConfig for the Managed
+            Identity.
+
+            This field is a member of `oneof`_ ``_identity``.
         sni (str):
             Server Name Indication - see RFC3546 section 3.1. If set,
             the load balancer sends this string as the SNI hostname in
@@ -22939,6 +22978,11 @@ class BackendServiceTlsSettings(proto.Message):
     authentication_config: str = proto.Field(
         proto.STRING,
         number=408053481,
+        optional=True,
+    )
+    identity: str = proto.Field(
+        proto.STRING,
+        number=401109182,
         optional=True,
     )
     sni: str = proto.Field(
@@ -23733,9 +23777,6 @@ class Binding(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        binding_id (str):
-
-            This field is a member of `oneof`_ ``_binding_id``.
         condition (google.cloud.compute_v1.types.Expr):
             The condition that is associated with this binding.
 
@@ -23854,11 +23895,6 @@ class Binding(proto.Message):
             This field is a member of `oneof`_ ``_role``.
     """
 
-    binding_id: str = proto.Field(
-        proto.STRING,
-        number=441088277,
-        optional=True,
-    )
     condition: "Expr" = proto.Field(
         proto.MESSAGE,
         number=212430107,
@@ -24829,6 +24865,10 @@ class CachePolicy(proto.Message):
             UNDEFINED_CACHE_MODE (0):
                 A value indicating that the enum field is not
                 set.
+            BYPASS_CACHE (372518219):
+                Bypasses the cache for this route. All
+                requests are forwarded to the origin, and
+                responses are not cached.
             CACHE_ALL_STATIC (355027945):
                 Automatically cache static content, including
                 common image formats, media (video and audio),
@@ -24852,6 +24892,7 @@ class CachePolicy(proto.Message):
         """
 
         UNDEFINED_CACHE_MODE = 0
+        BYPASS_CACHE = 372518219
         CACHE_ALL_STATIC = 355027945
         FORCE_CACHE_ALL = 486026928
         USE_ORIGIN_HEADERS = 55380261
@@ -25484,6 +25525,910 @@ class CancelRolloutRequest(proto.Message):
     )
 
 
+class CapacityAdviceRequest(proto.Message):
+    r"""A request to provide Assistant Scores. These scores determine
+    VM obtainability and preemption likelihood.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        distribution_policy (google.cloud.compute_v1.types.CapacityAdviceRequestDistributionPolicy):
+            Policy specifying the distribution of
+            instances across zones within the requested
+            region.
+
+            This field is a member of `oneof`_ ``_distribution_policy``.
+        instance_flexibility_policy (google.cloud.compute_v1.types.CapacityAdviceRequestInstanceFlexibilityPolicy):
+            Policy for instance selectors.
+
+            This field is a member of `oneof`_ ``_instance_flexibility_policy``.
+        instance_properties (google.cloud.compute_v1.types.CapacityAdviceRequestInstanceProperties):
+            Instance properties for this request.
+
+            This field is a member of `oneof`_ ``_instance_properties``.
+        size (int):
+            The number of VM instances to request.
+
+            This field is a member of `oneof`_ ``_size``.
+    """
+
+    distribution_policy: "CapacityAdviceRequestDistributionPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=534558541,
+        optional=True,
+        message="CapacityAdviceRequestDistributionPolicy",
+    )
+    instance_flexibility_policy: "CapacityAdviceRequestInstanceFlexibilityPolicy" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=26937090,
+            optional=True,
+            message="CapacityAdviceRequestInstanceFlexibilityPolicy",
+        )
+    )
+    instance_properties: "CapacityAdviceRequestInstanceProperties" = proto.Field(
+        proto.MESSAGE,
+        number=215355165,
+        optional=True,
+        message="CapacityAdviceRequestInstanceProperties",
+    )
+    size: int = proto.Field(
+        proto.INT32,
+        number=3530753,
+        optional=True,
+    )
+
+
+class CapacityAdviceRequestDistributionPolicy(proto.Message):
+    r"""Distribution policy.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        target_shape (str):
+            Target distribution shape. You can specify the following
+            values:ANY, ANY_SINGLE_ZONE, or BALANCED. Check the
+            TargetShape enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_target_shape``.
+        zones (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceRequestDistributionPolicyZoneConfiguration]):
+            Zones where Capacity Advisor looks for
+            capacity.
+    """
+
+    class TargetShape(proto.Enum):
+        r"""Target distribution shape. You can specify the following values:ANY,
+        ANY_SINGLE_ZONE, or BALANCED.
+
+        Values:
+            UNDEFINED_TARGET_SHAPE (0):
+                A value indicating that the enum field is not
+                set.
+            ANY (64972):
+                Picks zones for creating VM instances to
+                fulfill the requested number of VMs within
+                present resource constraints.
+            ANY_SINGLE_ZONE (61100880):
+                Creates all VM instances within a single
+                zone. The zone is selected based on the present
+                resource constraints.
+            BALANCED (468409608):
+                Prioritizes acquisition of resources,
+                scheduling VMs in zones where resources are
+                available while distributing VMs as evenly as
+                possible across selected zones to minimize the
+                impact of zonal failure.
+            TARGET_SHAPE_UNSPECIFIED (449316907):
+                Default value, unused.
+        """
+
+        UNDEFINED_TARGET_SHAPE = 0
+        ANY = 64972
+        ANY_SINGLE_ZONE = 61100880
+        BALANCED = 468409608
+        TARGET_SHAPE_UNSPECIFIED = 449316907
+
+    target_shape: str = proto.Field(
+        proto.STRING,
+        number=338621299,
+        optional=True,
+    )
+    zones: MutableSequence[
+        "CapacityAdviceRequestDistributionPolicyZoneConfiguration"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=116085319,
+        message="CapacityAdviceRequestDistributionPolicyZoneConfiguration",
+    )
+
+
+class CapacityAdviceRequestDistributionPolicyZoneConfiguration(proto.Message):
+    r"""Zone configuration for the distribution policy.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        zone (str):
+            The URL of the zone. It can be a
+            partial or full URL. For example, the following
+            are valid values:
+
+
+                 -
+              https://www.googleapis.com/compute/v1/projects/project/zones/zone
+               - projects/project/zones/zone
+               - zones/zone
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class CapacityAdviceRequestInstanceFlexibilityPolicy(proto.Message):
+    r"""Specification of alternative, flexible instance
+    configurations.
+
+    Attributes:
+        instance_selections (MutableMapping[str, google.cloud.compute_v1.types.CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection]):
+            Named instance selections to configure
+            properties. The key is an arbitrary, unique
+            RFC1035 string that identifies the instance
+            selection.
+    """
+
+    instance_selections: MutableMapping[
+        str, "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=22954577,
+        message="CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection",
+    )
+
+
+class CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection(proto.Message):
+    r"""Machine specification.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        disks (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk]):
+            Local SSDs.
+        guest_accelerators (MutableSequence[google.cloud.compute_v1.types.AcceleratorConfig]):
+            Accelerators configuration.
+        machine_types (MutableSequence[str]):
+            Full machine-type names, e.g.
+            "n1-standard-16".
+        rank (int):
+            Optional. Rank when prioritizing the shape
+            flexibilities. The instance selections are
+            considered in the ascending order of the rank.
+            If not set, defaults to 0.
+
+            This field is a member of `oneof`_ ``_rank``.
+    """
+
+    disks: MutableSequence[
+        "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=95594102,
+        message="CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk",
+    )
+    guest_accelerators: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=463595119,
+        message="AcceleratorConfig",
+    )
+    machine_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=79720065,
+    )
+    rank: int = proto.Field(
+        proto.INT64,
+        number=3492908,
+        optional=True,
+    )
+
+
+class CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk(
+    proto.Message
+):
+    r"""Attached disk configuration.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        type_ (str):
+            Specifies the type of the disk.
+            Check the Type enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Type(proto.Enum):
+        r"""Specifies the type of the disk.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DISK_TYPE_UNSPECIFIED (333621236):
+                Default value, unspecified disk type.
+            SCRATCH (496778970):
+                Scratch disk (Local SSD).
+        """
+
+        UNDEFINED_TYPE = 0
+        DISK_TYPE_UNSPECIFIED = 333621236
+        SCRATCH = 496778970
+
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3575610,
+        optional=True,
+    )
+
+
+class CapacityAdviceRequestInstanceProperties(proto.Message):
+    r"""Instance provisioning properties.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scheduling (google.cloud.compute_v1.types.CapacityAdviceRequestInstancePropertiesScheduling):
+            Specifies the scheduling options.
+
+            This field is a member of `oneof`_ ``_scheduling``.
+    """
+
+    scheduling: "CapacityAdviceRequestInstancePropertiesScheduling" = proto.Field(
+        proto.MESSAGE,
+        number=386688404,
+        optional=True,
+        message="CapacityAdviceRequestInstancePropertiesScheduling",
+    )
+
+
+class CapacityAdviceRequestInstancePropertiesScheduling(proto.Message):
+    r"""Defines the instance scheduling options.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        provisioning_model (str):
+            Specifies the provisioning model.
+            Check the ProvisioningModel enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_provisioning_model``.
+    """
+
+    class ProvisioningModel(proto.Enum):
+        r"""Specifies the provisioning model.
+
+        Values:
+            UNDEFINED_PROVISIONING_MODEL (0):
+                A value indicating that the enum field is not
+                set.
+            FLEX_START (101746812):
+                Instance is provisioned using the Flex Start
+                provisioning model and has a limited runtime.
+            RESERVATION_BOUND (293538571):
+                Bound to the lifecycle of the reservation in
+                which it is provisioned.
+            SPOT (2552066):
+                Heavily discounted, no guaranteed runtime.
+            STANDARD (484642493):
+                Standard provisioning with user controlled
+                runtime, no discounts.
+        """
+
+        UNDEFINED_PROVISIONING_MODEL = 0
+        FLEX_START = 101746812
+        RESERVATION_BOUND = 293538571
+        SPOT = 2552066
+        STANDARD = 484642493
+
+    provisioning_model: str = proto.Field(
+        proto.STRING,
+        number=494423,
+        optional=True,
+    )
+
+
+class CapacityAdviceResponse(proto.Message):
+    r"""A response contains scoring recommendations.
+
+    Attributes:
+        recommendations (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceResponseRecommendation]):
+            Initially the API will provide one
+            recommendation which balances the individual
+            scores according to the service provider's
+            preference.
+    """
+
+    recommendations: MutableSequence["CapacityAdviceResponseRecommendation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=324515802,
+            message="CapacityAdviceResponseRecommendation",
+        )
+    )
+
+
+class CapacityAdviceResponseRecommendation(proto.Message):
+    r"""Recommendation.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scores (google.cloud.compute_v1.types.CapacityAdviceResponseRecommendationScores):
+            Scores for the recommendation.
+
+            This field is a member of `oneof`_ ``_scores``.
+        shards (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceResponseRecommendationShard]):
+            Shards represent blocks of uniform capacity
+            in recommendations.
+    """
+
+    scores: "CapacityAdviceResponseRecommendationScores" = proto.Field(
+        proto.MESSAGE,
+        number=165975073,
+        optional=True,
+        message="CapacityAdviceResponseRecommendationScores",
+    )
+    shards: MutableSequence["CapacityAdviceResponseRecommendationShard"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=170175573,
+            message="CapacityAdviceResponseRecommendationShard",
+        )
+    )
+
+
+class CapacityAdviceResponseRecommendationScores(proto.Message):
+    r"""Groups information about a shard of capacity.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        estimated_uptime (str):
+            The estimated run time of the majority of
+            Spot VMs in the request before preemption. The
+            estimate is best-effort only. It is based on
+            historical data and current conditions.
+
+            This field is a member of `oneof`_ ``_estimated_uptime``.
+        obtainability (float):
+            The obtainability score indicates the
+            likelihood of successfully obtaining
+            (provisioning) the requested number of VMs. The
+            score range is 0.0 through 1.0. Higher is
+            better.
+
+            This field is a member of `oneof`_ ``_obtainability``.
+    """
+
+    estimated_uptime: str = proto.Field(
+        proto.STRING,
+        number=223976779,
+        optional=True,
+    )
+    obtainability: float = proto.Field(
+        proto.DOUBLE,
+        number=260735205,
+        optional=True,
+    )
+
+
+class CapacityAdviceResponseRecommendationShard(proto.Message):
+    r"""Shards represent blocks of uniform capacity in
+    recommendations. Each shard is for a single zone and a single
+    machine shape. Each shard defines a size expressed as the number
+    of VMs.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_count (int):
+            The number of instances.
+
+            This field is a member of `oneof`_ ``_instance_count``.
+        machine_type (str):
+            The machine type corresponds to the instance
+            selection in the request.
+
+            This field is a member of `oneof`_ ``_machine_type``.
+        provisioning_model (str):
+            The provisioning model that you want to view
+            recommendations for. Check the ProvisioningModel
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_provisioning_model``.
+        zone (str):
+            Output only. The zone name for this shard.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    class ProvisioningModel(proto.Enum):
+        r"""The provisioning model that you want to view recommendations
+        for.
+
+        Values:
+            UNDEFINED_PROVISIONING_MODEL (0):
+                A value indicating that the enum field is not
+                set.
+            FLEX_START (101746812):
+                Instance is provisioned using the Flex Start
+                provisioning model and has a limited runtime.
+            RESERVATION_BOUND (293538571):
+                Bound to the lifecycle of the reservation in
+                which it is provisioned.
+            SPOT (2552066):
+                Heavily discounted, no guaranteed runtime.
+            STANDARD (484642493):
+                Standard provisioning with user controlled
+                runtime, no discounts.
+        """
+
+        UNDEFINED_PROVISIONING_MODEL = 0
+        FLEX_START = 101746812
+        RESERVATION_BOUND = 293538571
+        SPOT = 2552066
+        STANDARD = 484642493
+
+    instance_count: int = proto.Field(
+        proto.INT32,
+        number=77317349,
+        optional=True,
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=227711026,
+        optional=True,
+    )
+    provisioning_model: str = proto.Field(
+        proto.STRING,
+        number=494423,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class CapacityAdviceRpcRequest(proto.Message):
+    r"""A request message for Advice.Capacity. See the method
+    description for details.
+
+    Attributes:
+        capacity_advice_request_resource (google.cloud.compute_v1.types.CapacityAdviceRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+    """
+
+    capacity_advice_request_resource: "CapacityAdviceRequest" = proto.Field(
+        proto.MESSAGE,
+        number=176354208,
+        message="CapacityAdviceRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+
+
+class CapacityHistoryAdviceRequest(proto.Message):
+    r"""A request message for Advice.CapacityHistory. See the method
+    description for details.
+
+    Attributes:
+        capacity_history_request_resource (google.cloud.compute_v1.types.CapacityHistoryRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+    """
+
+    capacity_history_request_resource: "CapacityHistoryRequest" = proto.Field(
+        proto.MESSAGE,
+        number=182030318,
+        message="CapacityHistoryRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+
+
+class CapacityHistoryRequest(proto.Message):
+    r"""A request to get the capacity history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_properties (google.cloud.compute_v1.types.CapacityHistoryRequestInstanceProperties):
+            Instance properties for this request.
+
+            This field is a member of `oneof`_ ``_instance_properties``.
+        location_policy (google.cloud.compute_v1.types.CapacityHistoryRequestLocationPolicy):
+            Location policy for this request.
+
+            This field is a member of `oneof`_ ``_location_policy``.
+        types (MutableSequence[str]):
+            List of history types to get capacity history
+            for. Check the Types enum for the list of
+            possible values.
+    """
+
+    class Types(proto.Enum):
+        r"""
+
+        Values:
+            UNDEFINED_TYPES (0):
+                A value indicating that the enum field is not
+                set.
+            HISTORY_TYPE_UNSPECIFIED (58549757):
+                Default value, unused.
+            PREEMPTION (512869337):
+                Preemption history.
+            PRICE (76396841):
+                Price history.
+        """
+
+        UNDEFINED_TYPES = 0
+        HISTORY_TYPE_UNSPECIFIED = 58549757
+        PREEMPTION = 512869337
+        PRICE = 76396841
+
+    instance_properties: "CapacityHistoryRequestInstanceProperties" = proto.Field(
+        proto.MESSAGE,
+        number=215355165,
+        optional=True,
+        message="CapacityHistoryRequestInstanceProperties",
+    )
+    location_policy: "CapacityHistoryRequestLocationPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=465689852,
+        optional=True,
+        message="CapacityHistoryRequestLocationPolicy",
+    )
+    types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=110844025,
+    )
+
+
+class CapacityHistoryRequestInstanceProperties(proto.Message):
+    r"""Instance properties for this request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        disks (MutableSequence[google.cloud.compute_v1.types.CapacityHistoryRequestInstancePropertiesAttachedDisk]):
+            Local SSDs.
+        guest_accelerators (MutableSequence[google.cloud.compute_v1.types.AcceleratorConfig]):
+            Accelerators configuration.
+        machine_type (str):
+            The machine type for the VM, such as ``n2-standard-4``.
+
+            This field is a member of `oneof`_ ``_machine_type``.
+        scheduling (google.cloud.compute_v1.types.CapacityHistoryRequestInstancePropertiesScheduling):
+            Specifies the scheduling options.
+
+            This field is a member of `oneof`_ ``_scheduling``.
+    """
+
+    disks: MutableSequence["CapacityHistoryRequestInstancePropertiesAttachedDisk"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=95594102,
+            message="CapacityHistoryRequestInstancePropertiesAttachedDisk",
+        )
+    )
+    guest_accelerators: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=463595119,
+        message="AcceleratorConfig",
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=227711026,
+        optional=True,
+    )
+    scheduling: "CapacityHistoryRequestInstancePropertiesScheduling" = proto.Field(
+        proto.MESSAGE,
+        number=386688404,
+        optional=True,
+        message="CapacityHistoryRequestInstancePropertiesScheduling",
+    )
+
+
+class CapacityHistoryRequestInstancePropertiesAttachedDisk(proto.Message):
+    r"""AttachedDisk modeled after Instance's AttachedDisk.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        type_ (str):
+            Specifies the type of the disk.
+            Check the Type enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Type(proto.Enum):
+        r"""Specifies the type of the disk.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DISK_TYPE_UNSPECIFIED (333621236):
+                Default value, unused.
+            SCRATCH (496778970):
+                Scratch disk (Local SSD).
+        """
+
+        UNDEFINED_TYPE = 0
+        DISK_TYPE_UNSPECIFIED = 333621236
+        SCRATCH = 496778970
+
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3575610,
+        optional=True,
+    )
+
+
+class CapacityHistoryRequestInstancePropertiesScheduling(proto.Message):
+    r"""Scheduling options.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        provisioning_model (str):
+            The provisioning model to get capacity
+            history for. This field must be set to SPOT.
+
+            For more information, see
+            Compute Engine instances provisioning models.
+            Check the ProvisioningModel enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_provisioning_model``.
+    """
+
+    class ProvisioningModel(proto.Enum):
+        r"""The provisioning model to get capacity history for.
+        This field must be set to SPOT.
+
+        For more information, see
+        Compute Engine instances provisioning models.
+
+        Values:
+            UNDEFINED_PROVISIONING_MODEL (0):
+                A value indicating that the enum field is not
+                set.
+            FLEX_START (101746812):
+                Instance is provisioned using the Flex Start
+                provisioning model and has a limited runtime.
+            RESERVATION_BOUND (293538571):
+                Bound to the lifecycle of the reservation in
+                which it is provisioned.
+            SPOT (2552066):
+                Heavily discounted, no guaranteed runtime.
+            STANDARD (484642493):
+                Standard provisioning with user controlled
+                runtime, no discounts.
+        """
+
+        UNDEFINED_PROVISIONING_MODEL = 0
+        FLEX_START = 101746812
+        RESERVATION_BOUND = 293538571
+        SPOT = 2552066
+        STANDARD = 484642493
+
+    provisioning_model: str = proto.Field(
+        proto.STRING,
+        number=494423,
+        optional=True,
+    )
+
+
+class CapacityHistoryRequestLocationPolicy(proto.Message):
+    r"""Location policy for this request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        location (str):
+            The region or zone to get capacity history
+            for.
+            It can be a partial or full URL. For example,
+            the following are valid values:
+
+
+                 -
+              https://www.googleapis.com/compute/v1/projects/project/zones/zone
+               - projects/project/zones/zone
+               - zones/zone
+
+            This field is optional.
+
+            This field is a member of `oneof`_ ``_location``.
+    """
+
+    location: str = proto.Field(
+        proto.STRING,
+        number=290430901,
+        optional=True,
+    )
+
+
+class CapacityHistoryResponse(proto.Message):
+    r"""Contains the capacity history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        location (str):
+            Output only. The location (region or zone)
+            for which the capacity history is returned. It
+            is returned as a URL - For
+            example,https://www.googleapis.com/compute/v1/projects/project/zones/zone.
+
+            This field is a member of `oneof`_ ``_location``.
+        machine_type (str):
+            The machine type for which the capacity
+            history is returned.
+
+            This field is a member of `oneof`_ ``_machine_type``.
+        preemption_history (MutableSequence[google.cloud.compute_v1.types.CapacityHistoryResponsePreemptionRecord]):
+            The preemption history for the requested
+            machine type and location.
+        price_history (MutableSequence[google.cloud.compute_v1.types.CapacityHistoryResponsePriceRecord]):
+            The price history for the requested machine
+            type and location.
+    """
+
+    location: str = proto.Field(
+        proto.STRING,
+        number=290430901,
+        optional=True,
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=227711026,
+        optional=True,
+    )
+    preemption_history: MutableSequence["CapacityHistoryResponsePreemptionRecord"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=364018222,
+            message="CapacityHistoryResponsePreemptionRecord",
+        )
+    )
+    price_history: MutableSequence["CapacityHistoryResponsePriceRecord"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=326230942,
+            message="CapacityHistoryResponsePriceRecord",
+        )
+    )
+
+
+class CapacityHistoryResponsePreemptionRecord(proto.Message):
+    r"""A record of Spot VM preemption history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        interval (google.cloud.compute_v1.types.Interval):
+            The time interval for this preemption record.
+
+            This field is a member of `oneof`_ ``_interval``.
+        preemption_rate (float):
+            The preemption rate during the interval,
+            representing the fraction of Spot VMs that were
+            preempted. Range: 0.0 to 1.0. Preemption rate is
+            calculated as (total preempted Spots) / (total
+            Spots that stopped running).
+
+            This field is a member of `oneof`_ ``_preemption_rate``.
+    """
+
+    interval: "Interval" = proto.Field(
+        proto.MESSAGE,
+        number=33547461,
+        optional=True,
+        message="Interval",
+    )
+    preemption_rate: float = proto.Field(
+        proto.DOUBLE,
+        number=140651910,
+        optional=True,
+    )
+
+
+class CapacityHistoryResponsePriceRecord(proto.Message):
+    r"""A record of price history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        interval (google.cloud.compute_v1.types.Interval):
+            The time interval for this price record.
+
+            This field is a member of `oneof`_ ``_interval``.
+        list_price (google.cloud.compute_v1.types.Money):
+            The Spot VM list price during the interval.
+
+            This field is a member of `oneof`_ ``_list_price``.
+    """
+
+    interval: "Interval" = proto.Field(
+        proto.MESSAGE,
+        number=33547461,
+        optional=True,
+        message="Interval",
+    )
+    list_price: "Money" = proto.Field(
+        proto.MESSAGE,
+        number=167990888,
+        optional=True,
+        message="Money",
+    )
+
+
+class CapacityPool(proto.Message):
+    r"""Structured representation of the capacity pool.
+
+    Attributes:
+        partition_ids (MutableSequence[str]):
+            The list of physical topology block
+            identifiers.
+        resources (MutableSequence[str]):
+            A list of fully qualified resource names that
+            form the logical bounds. Both full and relative
+            URIs are supported.
+    """
+
+    partition_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=451826659,
+    )
+    resources: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=164412965,
+    )
+
+
 class CircuitBreakers(proto.Message):
     r"""Settings controlling the volume of requests, connections and
     retries to this backend service.
@@ -25944,12 +26889,14 @@ class Commitment(proto.Message):
             GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED,
             GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED,
             MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4,
-            STORAGE_OPTIMIZED_Z3. For example, type MEMORY_OPTIMIZED
-            specifies a commitment that applies only to eligible
-            resources of memory optimized M1 and M2 machine series. Type
-            GENERAL_PURPOSE specifies a commitment that applies only to
-            eligible resources of general purpose N1 machine series.
-            Check the Type enum for the list of possible values.
+            STORAGE_OPTIMIZED_Z3,STORAGE_OPTIMIZED_Z4DS,
+            STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T,STORAGE_OPTIMIZED_Z4M.
+            For example, type MEMORY_OPTIMIZED specifies a commitment
+            that applies only to eligible resources of memory optimized
+            M1 and M2 machine series. Type GENERAL_PURPOSE specifies a
+            commitment that applies only to eligible resources of
+            general purpose N1 machine series. Check the Type enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -26053,11 +27000,14 @@ class Commitment(proto.Message):
         GENERAL_PURPOSE_N2D,GENERAL_PURPOSE_N4,
         GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED,
         GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED,
-        MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4, STORAGE_OPTIMIZED_Z3. For
-        example, type MEMORY_OPTIMIZED specifies a commitment that applies
-        only to eligible resources of memory optimized M1 and M2 machine
-        series. Type GENERAL_PURPOSE specifies a commitment that applies
-        only to eligible resources of general purpose N1 machine series.
+        MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4,
+        STORAGE_OPTIMIZED_Z3,STORAGE_OPTIMIZED_Z4DS,
+        STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T,STORAGE_OPTIMIZED_Z4M.
+        For example, type MEMORY_OPTIMIZED specifies a commitment that
+        applies only to eligible resources of memory optimized M1 and M2
+        machine series. Type GENERAL_PURPOSE specifies a commitment that
+        applies only to eligible resources of general purpose N1 machine
+        series.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -26085,6 +27035,8 @@ class Commitment(proto.Message):
                 No description available.
             COMPUTE_OPTIMIZED_H4D (383251320):
                 No description available.
+            COMPUTE_OPTIMIZED_H4D_3TB (443379866):
+                CUD bucket for COMPUTE_OPTIMIZED_H4D_3TB machines.
             GENERAL_PURPOSE (299793543):
                 No description available.
             GENERAL_PURPOSE_C4 (301911817):
@@ -26145,8 +27097,24 @@ class Commitment(proto.Message):
             MEMORY_OPTIMIZED_X4_960_16T (424752534):
                 CUD bucket for X4 machine with 960 vCPUs and
                 16TB of memory.
+            NETWORK_OPTIMIZED_C4N (147027572):
+                CUD bucket for C4N (dual Diorite) machines.
+            NETWORK_OPTIMIZED_U4C (147044859):
+                CUD bucket for NETWORK_OPTIMIZED_U4C machines.
+            NETWORK_OPTIMIZED_U4P (147044872):
+                CUD bucket for NETWORK_OPTIMIZED_U4P machines.
+            NETWORK_OPTIMIZED_U4S (147044875):
+                CUD bucket for NETWORK_OPTIMIZED_U4S machines.
             STORAGE_OPTIMIZED_Z3 (316796085):
                 No description available.
+            STORAGE_OPTIMIZED_Z4D4T (18503022):
+                CUD bucket for Z4D-4T machines.
+            STORAGE_OPTIMIZED_Z4DH (35233722):
+                CUD bucket for Z4DH machines.
+            STORAGE_OPTIMIZED_Z4DS (35233733):
+                CUD bucket for Z4DS machines.
+            STORAGE_OPTIMIZED_Z4M (157002327):
+                CUD bucket for Z4M (bare metal) machines.
             TYPE_UNSPECIFIED (437714322):
                 Note for internal users: When adding a new enum Type for v1,
                 make sure to also add it in the comment for the
@@ -26166,6 +27134,7 @@ class Commitment(proto.Message):
         COMPUTE_OPTIMIZED_C3D = 383246484
         COMPUTE_OPTIMIZED_H3 = 428004939
         COMPUTE_OPTIMIZED_H4D = 383251320
+        COMPUTE_OPTIMIZED_H4D_3TB = 443379866
         GENERAL_PURPOSE = 299793543
         GENERAL_PURPOSE_C4 = 301911817
         GENERAL_PURPOSE_C4A = 232460888
@@ -26193,7 +27162,15 @@ class Commitment(proto.Message):
         MEMORY_OPTIMIZED_X4_480_8T = 478547804
         MEMORY_OPTIMIZED_X4_960_12T = 424752410
         MEMORY_OPTIMIZED_X4_960_16T = 424752534
+        NETWORK_OPTIMIZED_C4N = 147027572
+        NETWORK_OPTIMIZED_U4C = 147044859
+        NETWORK_OPTIMIZED_U4P = 147044872
+        NETWORK_OPTIMIZED_U4S = 147044875
         STORAGE_OPTIMIZED_Z3 = 316796085
+        STORAGE_OPTIMIZED_Z4D4T = 18503022
+        STORAGE_OPTIMIZED_Z4DH = 35233722
+        STORAGE_OPTIMIZED_Z4DS = 35233733
+        STORAGE_OPTIMIZED_Z4M = 157002327
         TYPE_UNSPECIFIED = 437714322
 
     auto_renew: bool = proto.Field(
@@ -27030,6 +28007,8 @@ class ConfidentialInstanceConfig(proto.Message):
             UNDEFINED_CONFIDENTIAL_INSTANCE_TYPE (0):
                 A value indicating that the enum field is not
                 set.
+            BMSAI (63328144):
+                Bare Metal Secure AI.
             CCA (66529):
                 Arm Confidential Compute Architecture.
             CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED (115021829):
@@ -27044,6 +28023,7 @@ class ConfidentialInstanceConfig(proto.Message):
         """
 
         UNDEFINED_CONFIDENTIAL_INSTANCE_TYPE = 0
+        BMSAI = 63328144
         CCA = 66529
         CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED = 115021829
         SEV = 81988
@@ -27967,45 +28947,44 @@ class CustomerEncryptionKey(proto.Message):
 
             This field is a member of `oneof`_ ``_kms_key_service_account``.
         raw_key (str):
-            Specifies a 256-bit customer-supplied
-            encryption key, encoded in RFC
-            4648 base64 to either encrypt or decrypt this
+            [DEPRECATED] CSEK is no longer supported. Use CMEK instead.
+            Specifies a 256-bit customer-supplied encryption key,
+            encoded in RFC 4648 base64 to either encrypt or decrypt this
             resource. You can provide either the rawKey or
             thersaEncryptedKey. For example:
 
-            "rawKey":
-
-            "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=".
+            "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=".
 
             This field is a member of `oneof`_ ``_raw_key``.
         rsa_encrypted_key (str):
-            Specifies an RFC 4648 base64 encoded,
-            RSA-wrapped 2048-bit customer-supplied
-            encryption key to either encrypt or decrypt this
-            resource. You can provide either the rawKey or
+            [DEPRECATED] CSEK is no longer supported. Use CMEK instead.
+            Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+            customer-supplied encryption key to either encrypt or
+            decrypt this resource. You can provide either the rawKey or
             thersaEncryptedKey. For example:
 
             "rsaEncryptedKey":
-
             "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
             z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
             D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
 
-            The key must meet the following requirements
-            before you can provide it to Compute Engine:
+            The key must meet the following requirements before you can
+            provide it to Compute Engine:
 
-               1. The key is wrapped using a RSA public key
-                certificate provided by    Google.
-               2. After being wrapped, the key must be
-                encoded in RFC 4648 base64    encoding.
+            ::
 
-            Gets the RSA public key certificate provided by
-            Google at:
+               1. The key is wrapped using a RSA public key certificate provided by
+               Google.
+               2. After being wrapped, the key must be encoded in RFC 4648 base64
+               encoding.
+
+            Gets the RSA public key certificate provided by Google at:
 
             https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem
 
             This field is a member of `oneof`_ ``_rsa_encrypted_key``.
         sha256 (str):
+            [DEPRECATED] CSEK is no longer supported. Use CMEK instead.
             [Output only] TheRFC 4648 base64 encoded SHA-256 hash of the
             customer-supplied encryption key that protects this
             resource.
@@ -28301,6 +29280,66 @@ class DateTime(proto.Message):
         proto.INT32,
         number=3704893,
         optional=True,
+    )
+
+
+class DeleteAcceleratorInterconnectRequest(proto.Message):
+    r"""A request message for AcceleratorInterconnects.Delete. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_interconnect (str):
+            The name of the accelerator interconnect to
+            delete. Name should conform to RFC1035.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be
+            a valid UUID with the exception that zero UUID
+            is not supported
+            (00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of thezone where the
+            accelerator interconnect is located. Zone name
+            should conform to RFC1035.
+    """
+
+    accelerator_interconnect: str = proto.Field(
+        proto.STRING,
+        number=313143778,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
     )
 
 
@@ -29289,6 +30328,62 @@ class DeleteGlobalVmExtensionPolicyRequest(proto.Message):
     )
 
 
+class DeleteHaControllerRequest(proto.Message):
+    r"""A request message for HaControllers.Delete. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        force (bool):
+            Force-deletes HA Controller when the Delete
+            is stuck. Instance that is not primary at the
+            moment will also be deleted. Can only be used
+            against the HA Controller resource that is
+            already being deleted.
+
+            This field is a member of `oneof`_ ``_force``.
+        ha_controller (str):
+            Name of the HaController resource to delete.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=97618667,
+        optional=True,
+    )
+    ha_controller: str = proto.Field(
+        proto.STRING,
+        number=375850658,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class DeleteHealthCheckRequest(proto.Message):
     r"""A request message for HealthChecks.Delete. See the method
     description for details.
@@ -29599,6 +30694,10 @@ class DeleteInstanceRequest(proto.Message):
     Attributes:
         instance (str):
             Name of the instance resource to delete.
+        no_graceful_shutdown (bool):
+            If set to true, Graceful Shutdown is skipped.
+
+            This field is a member of `oneof`_ ``_no_graceful_shutdown``.
         project (str):
             Project ID for this request.
         request_id (str):
@@ -29630,6 +30729,11 @@ class DeleteInstanceRequest(proto.Message):
     instance: str = proto.Field(
         proto.STRING,
         number=18257045,
+    )
+    no_graceful_shutdown: bool = proto.Field(
+        proto.BOOL,
+        number=336255890,
+        optional=True,
     )
     project: str = proto.Field(
         proto.STRING,
@@ -37854,6 +38958,58 @@ class ExternalVpnGatewayParams(proto.Message):
     )
 
 
+class FailoverHaControllerRequest(proto.Message):
+    r"""A request message for HaControllers.Failover. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        ha_controller (str):
+            ID of the HaController resource to update.
+        ha_controllers_failover_request_resource (google.cloud.compute_v1.types.HaControllersFailoverRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    ha_controller: str = proto.Field(
+        proto.STRING,
+        number=375850658,
+    )
+    ha_controllers_failover_request_resource: "HaControllersFailoverRequest" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=301008573,
+            message="HaControllersFailoverRequest",
+        )
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class FileContentBuffer(proto.Message):
     r"""
 
@@ -38687,6 +39843,16 @@ class FirewallPolicyAssociation(proto.Message):
             The name for an association.
 
             This field is a member of `oneof`_ ``_name``.
+        priority (int):
+            An integer indicating the priority of an association. The
+            priority must be a positive value between 1 and 2147483647.
+            Firewall Policies are evaluated from highest to lowest
+            priority where 1 is the highest priority and 2147483647 is
+            the lowest priority. The default value is ``1000``. If two
+            associations have the same priority then lexicographical
+            order on association names is applied.
+
+            This field is a member of `oneof`_ ``_priority``.
         short_name (str):
             Output only. [Output Only] The short name of the firewall
             policy of the association.
@@ -38712,6 +39878,11 @@ class FirewallPolicyAssociation(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
+        optional=True,
+    )
+    priority: int = proto.Field(
+        proto.INT32,
+        number=445151652,
         optional=True,
     )
     short_name: str = proto.Field(
@@ -39589,6 +40760,9 @@ class ForwardingRule(proto.Message):
               - global/addresses/address-name
               - address-name
 
+            The IP address can only be set at creation. Once set, it
+            cannot be updated.
+
             The forwarding rule's target or backendService, and in most
             cases, also the loadBalancingScheme, determine the type of
             IP address that you can use. For detailed information, see
@@ -39597,6 +40771,13 @@ class ForwardingRule(proto.Message):
 
             When reading an IPAddress, the API always returns the IP
             address number.
+
+            When creating a global external Passthrough Network Load
+            Balancer forwarding rule (a parent forwarding rule), you
+            must use theIPAddresses field, but the Google Cloud
+            generated child forwarding rules set the IPAddress field
+            instead. Refer to theavailabilityGroup field for further
+            details.
 
             This field is a member of `oneof`_ ``_I_p_address``.
         I_p_protocol (str):
@@ -39654,10 +40835,18 @@ class ForwardingRule(proto.Message):
             to this ForwardingRule.
         backend_service (str):
             Identifies the backend service to which the
-            forwarding rule sends traffic. Required for
-            internal and external passthrough Network Load
-            Balancers; must be omitted for all other load
-            balancer types.
+            forwarding rule sends traffic.
+            It is a required field for the following load
+            balancers:
+
+               - Internal passthrough Network Load Balancers
+               - Backend service-based regional external
+              passthrough Network Load    Balancers
+               - Global external passthrough Network Load
+              Balancers
+
+            It cannot be set by other load balancer types
+            and protocol forwarding rules.
 
             This field is a member of `oneof`_ ``_backend_service``.
         base_forwarding_rule (str):
@@ -39797,8 +40986,8 @@ class ForwardingRule(proto.Message):
         load_balancing_scheme (str):
             Specifies the forwarding rule type.
 
-            For more information about forwarding rules,
-            refer to Forwarding rule concepts.
+            For more information, refer to
+            Forwarding rule product and scheme table.
             Check the LoadBalancingScheme enum for the list
             of possible values.
 
@@ -39840,6 +41029,16 @@ class ForwardingRule(proto.Message):
             traffic to Google APIs, the forwarding rule name must be a
             1-20 characters string with lowercase letters and numbers
             and must start with a letter.
+
+            For global external Passthrough Network Load Balancer
+            forwarding rules, the forwarding rule name must be 1-43
+            characters long. For each global external Passthrough
+            Network Load Balancer forwarding rule (a parent forwarding
+            rule) that you create, Google Cloud generates two
+            output-only child forwarding rules that are named by
+            concatenating the parent forwarding rule name with the
+            ``-ag0`` and ``-ag1`` suffixes, respectively. Refer to
+            theavailabilityGroup field for further details.
 
             This field is a member of `oneof`_ ``_name``.
         network (str):
@@ -39904,8 +41103,9 @@ class ForwardingRule(proto.Message):
                port specifications for details.
 
             For external forwarding rules, two or more forwarding rules
-            cannot use the same [IPAddress, IPProtocol] pair, and cannot
-            have overlappingportRanges.
+            cannot use the same [IPAddress, IPProtocol] pair (specified
+            inIPAddress, IPAddresses, IPProtocol fields) if they have
+            overlapping portRanges.
 
             For internal forwarding rules within the same VPC network,
             two or more forwarding rules cannot use the same [IPAddress,
@@ -39933,8 +41133,9 @@ class ForwardingRule(proto.Message):
                commas. The ports can be contiguous or discontiguous.
 
             For external forwarding rules, two or more forwarding rules
-            cannot use the same [IPAddress, IPProtocol] pair if they
-            share at least one port number.
+            cannot use the same [IPAddress, IPProtocol] pair (specified
+            inIPAddress, IPAddresses, IPProtocol fields) if they share
+            at least one port number.
 
             For internal forwarding rules within the same VPC network,
             two or more forwarding rules cannot use the same [IPAddress,
@@ -40040,6 +41241,16 @@ class ForwardingRule(proto.Message):
 
                  -  For Private Service Connect forwarding rules that forward traffic to managed services, the target must be a service attachment. The target is not mutable once set as a service attachment.
 
+            The following load balancers cannot set the target field
+            (they should set the backendService field instead):
+
+            ::
+
+               - Internal passthrough Network Load Balancers
+               - Backend service-based regional external passthrough Network Load
+               Balancers
+               - Global external passthrough Network Load Balancers
+
             This field is a member of `oneof`_ ``_target``.
     """
 
@@ -40143,8 +41354,8 @@ class ForwardingRule(proto.Message):
     class LoadBalancingScheme(proto.Enum):
         r"""Specifies the forwarding rule type.
 
-        For more information about forwarding rules, refer to Forwarding
-        rule concepts.
+        For more information, refer to
+        Forwarding rule product and scheme table.
 
         Values:
             UNDEFINED_LOAD_BALANCING_SCHEME (0):
@@ -40756,6 +41967,13 @@ class FutureReservation(proto.Message):
             should be set to false.
 
             This field is a member of `oneof`_ ``_auto_delete_auto_created_reservations``.
+        colocation_resource (str):
+            Full or partial URL of an existing future
+            reservation to indicate intent for reserving
+            capacity in the same cluster as the colocation
+            resource.
+
+            This field is a member of `oneof`_ ``_colocation_resource``.
         commitment_info (google.cloud.compute_v1.types.FutureReservationCommitmentInfo):
             If not present, then FR will not deliver a
             new commitment or update an existing commitment.
@@ -40845,6 +42063,21 @@ class FutureReservation(proto.Message):
             reservation_name or a name_prefix.
 
             This field is a member of `oneof`_ ``_reservation_name``.
+        resource_metadata (google.cloud.compute_v1.types.ResourceMetadata):
+            Output only. Contains standard resource metadata for an
+            FutureReservation resource. It is populated for each
+            instance of the FutureReservation resource, and includes the
+            api_version the instance was retrieved through, and its
+            canonical resource_type name.
+
+            This field is a member of `oneof`_ ``_resource_metadata``.
+        resource_name (str):
+            Name of the resource intended to be
+            delivered. Name should conform to RFC1035. This
+            will be the name of storage pool or Exapool for
+            persistent disk FRs.
+
+            This field is a member of `oneof`_ ``_resource_name``.
         scheduling_type (str):
             Maintenance information for this reservation
             Check the SchedulingType enum for the list of
@@ -40882,6 +42115,11 @@ class FutureReservation(proto.Message):
             Output only. [Output only] Status of the Future Reservation
 
             This field is a member of `oneof`_ ``_status``.
+        storage_pool_properties (google.cloud.compute_v1.types.FutureReservationStoragePoolProperties):
+            Storage pool details for the future
+            reservation.
+
+            This field is a member of `oneof`_ ``_storage_pool_properties``.
         time_window (google.cloud.compute_v1.types.FutureReservationTimeWindow):
             Time window for this Future Reservation.
 
@@ -40900,6 +42138,8 @@ class FutureReservation(proto.Message):
             UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE (0):
                 A value indicating that the enum field is not
                 set.
+            CONFIDENTIAL_COMPUTE_TYPE_BMSAI (103738250):
+                Bare Metal Secure AI.
             CONFIDENTIAL_COMPUTE_TYPE_TDX (301241954):
                 Intel Trust Domain Extensions.
             CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED (42227601):
@@ -40907,6 +42147,7 @@ class FutureReservation(proto.Message):
         """
 
         UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE = 0
+        CONFIDENTIAL_COMPUTE_TYPE_BMSAI = 103738250
         CONFIDENTIAL_COMPUTE_TYPE_TDX = 301241954
         CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED = 42227601
 
@@ -41021,6 +42262,11 @@ class FutureReservation(proto.Message):
         number=491352490,
         optional=True,
     )
+    colocation_resource: str = proto.Field(
+        proto.STRING,
+        number=32901740,
+        optional=True,
+    )
     commitment_info: "FutureReservationCommitmentInfo" = proto.Field(
         proto.MESSAGE,
         number=164362136,
@@ -41093,6 +42339,17 @@ class FutureReservation(proto.Message):
         number=277311262,
         optional=True,
     )
+    resource_metadata: "ResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=99063872,
+        optional=True,
+        message="ResourceMetadata",
+    )
+    resource_name: str = proto.Field(
+        proto.STRING,
+        number=442550300,
+        optional=True,
+    )
     scheduling_type: str = proto.Field(
         proto.STRING,
         number=199835397,
@@ -41130,6 +42387,12 @@ class FutureReservation(proto.Message):
         number=181260274,
         optional=True,
         message="FutureReservationStatus",
+    )
+    storage_pool_properties: "FutureReservationStoragePoolProperties" = proto.Field(
+        proto.MESSAGE,
+        number=71410546,
+        optional=True,
+        message="FutureReservationStoragePoolProperties",
     )
     time_window: "FutureReservationTimeWindow" = proto.Field(
         proto.MESSAGE,
@@ -41317,6 +42580,11 @@ class FutureReservationStatus(proto.Message):
         auto_created_reservations (MutableSequence[str]):
             Output only. Fully qualified urls of the automatically
             created reservations at start_time.
+        exapool_provisioned_capacity_gb (google.cloud.compute_v1.types.StoragePoolExapoolProvisionedCapacityGb):
+            Output only. Exapool provisioned capacities
+            for each SKU type.
+
+            This field is a member of `oneof`_ ``_exapool_provisioned_capacity_gb``.
         existing_matching_usage_info (google.cloud.compute_v1.types.FutureReservationStatusExistingMatchingUsageInfo):
             Output only. [Output Only] Represents the existing matching
             usage for the future reservation.
@@ -41357,6 +42625,11 @@ class FutureReservationStatus(proto.Message):
         specific_sku_properties (google.cloud.compute_v1.types.FutureReservationStatusSpecificSKUProperties):
 
             This field is a member of `oneof`_ ``_specific_sku_properties``.
+        storage_pool_provisioned_capacity (google.cloud.compute_v1.types.FutureReservationStoragePoolProvisionedCapacity):
+            Output only. Storage pool provisioned
+            capacities for each SKU type.
+
+            This field is a member of `oneof`_ ``_storage_pool_provisioned_capacity``.
     """
 
     class AmendmentStatus(proto.Enum):
@@ -41461,6 +42734,14 @@ class FutureReservationStatus(proto.Message):
         proto.STRING,
         number=140217006,
     )
+    exapool_provisioned_capacity_gb: "StoragePoolExapoolProvisionedCapacityGb" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=345174240,
+            optional=True,
+            message="StoragePoolExapoolProvisionedCapacityGb",
+        )
+    )
     existing_matching_usage_info: "FutureReservationStatusExistingMatchingUsageInfo" = (
         proto.Field(
             proto.MESSAGE,
@@ -41497,6 +42778,12 @@ class FutureReservationStatus(proto.Message):
             optional=True,
             message="FutureReservationStatusSpecificSKUProperties",
         )
+    )
+    storage_pool_provisioned_capacity: "FutureReservationStoragePoolProvisionedCapacity" = proto.Field(
+        proto.MESSAGE,
+        number=135892964,
+        optional=True,
+        message="FutureReservationStoragePoolProvisionedCapacity",
     )
 
 
@@ -41734,6 +43021,87 @@ class FutureReservationStatusSpecificSKUProperties(proto.Message):
     source_instance_template_id: str = proto.Field(
         proto.STRING,
         number=111196154,
+        optional=True,
+    )
+
+
+class FutureReservationStoragePoolProperties(proto.Message):
+    r"""Storage pool properties for the future reservation.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        requested_exapool_provisioned_capacity_gb (google.cloud.compute_v1.types.StoragePoolExapoolProvisionedCapacityGb):
+            Requested exapool provisioned capacity in
+            GiB.
+
+            This field is a member of `oneof`_ ``_requested_exapool_provisioned_capacity_gb``.
+        requested_storage_pool_provisioned_capacity (google.cloud.compute_v1.types.FutureReservationStoragePoolProvisionedCapacity):
+            Requested storage pool provisioned capacity.
+
+            This field is a member of `oneof`_ ``_requested_storage_pool_provisioned_capacity``.
+        storage_pool_type (str):
+            Type of the storage pool.
+
+            This field is a member of `oneof`_ ``_storage_pool_type``.
+    """
+
+    requested_exapool_provisioned_capacity_gb: "StoragePoolExapoolProvisionedCapacityGb" = proto.Field(
+        proto.MESSAGE,
+        number=174982159,
+        optional=True,
+        message="StoragePoolExapoolProvisionedCapacityGb",
+    )
+    requested_storage_pool_provisioned_capacity: "FutureReservationStoragePoolProvisionedCapacity" = proto.Field(
+        proto.MESSAGE,
+        number=326931283,
+        optional=True,
+        message="FutureReservationStoragePoolProvisionedCapacity",
+    )
+    storage_pool_type: str = proto.Field(
+        proto.STRING,
+        number=285999289,
+        optional=True,
+    )
+
+
+class FutureReservationStoragePoolProvisionedCapacity(proto.Message):
+    r"""Storage pool provisioned capacities for each SKU type.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        pool_provisioned_capacity_gb (int):
+            Size of the storage pool in GiB.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_capacity_gb``.
+        pool_provisioned_iops (int):
+            Provisioned IOPS of the storage pool. Only
+            relevant if the storage pool type is
+            hyperdisk-balanced.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_iops``.
+        pool_provisioned_throughput (int):
+            Provisioned throughput of the storage pool in
+            MiB/s. Only relevant if the storage pool type is
+            hyperdisk-balanced or hyperdisk-throughput.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_throughput``.
+    """
+
+    pool_provisioned_capacity_gb: int = proto.Field(
+        proto.INT64,
+        number=478537682,
+        optional=True,
+    )
+    pool_provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=112092311,
+        optional=True,
+    )
+    pool_provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=169215640,
         optional=True,
     )
 
@@ -42768,6 +44136,36 @@ class GRPCTLSHealthCheck(proto.Message):
     )
 
 
+class GetAcceleratorInterconnectRequest(proto.Message):
+    r"""A request message for AcceleratorInterconnects.Get. See the
+    method description for details.
+
+    Attributes:
+        accelerator_interconnect (str):
+            The name of the accelerator interconnect.
+            Name should conform to RFC1035.
+        project (str):
+            Project ID for this request.
+        zone (str):
+            The name of thezone where the
+            accelerator interconnect is located. Zone name
+            should conform to RFC1035.
+    """
+
+    accelerator_interconnect: str = proto.Field(
+        proto.STRING,
+        number=313143778,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetAcceleratorTypeRequest(proto.Message):
     r"""A request message for AcceleratorTypes.Get. See the method
     description for details.
@@ -43481,6 +44879,21 @@ class GetGlobalForwardingRuleRequest(proto.Message):
     )
 
 
+class GetGlobalFrontendSettingRequest(proto.Message):
+    r"""A request message for GlobalFrontendSettingsService.Get. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Required. Project ID for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+
+
 class GetGlobalNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for GlobalNetworkEndpointGroups.Get. See
     the method description for details.
@@ -43648,6 +45061,33 @@ class GetGuestAttributesInstanceRequest(proto.Message):
     )
 
 
+class GetHaControllerRequest(proto.Message):
+    r"""A request message for HaControllers.Get. See the method
+    description for details.
+
+    Attributes:
+        ha_controller (str):
+            Name of the HaController resource to return.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+    """
+
+    ha_controller: str = proto.Field(
+        proto.STRING,
+        number=375850658,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+
+
 class GetHealthBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.GetHealth. See the
     method description for details.
@@ -43695,6 +45135,190 @@ class GetHealthCheckRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
+    )
+
+
+class GetHealthOperationMetadata(proto.Message):
+    r"""Metadata for GetHealth operations.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        health_info (google.cloud.compute_v1.types.GetHealthOperationMetadataHealthInfo):
+            Output only. The health information.
+
+            This field is a member of `oneof`_ ``_health_info``.
+    """
+
+    health_info: "GetHealthOperationMetadataHealthInfo" = proto.Field(
+        proto.MESSAGE,
+        number=235287729,
+        optional=True,
+        message="GetHealthOperationMetadataHealthInfo",
+    )
+
+
+class GetHealthOperationMetadataHealthInfo(proto.Message):
+    r"""Health information.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        availability_slo_status (str):
+            Output only. The availability SLO status.
+            Check the AvailabilitySloStatus enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_availability_slo_status``.
+        health_status (str):
+            Output only. The health status.
+            Check the HealthStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_health_status``.
+        repair_category (str):
+            Output only. The repair category.
+            Check the RepairCategory enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_repair_category``.
+        unhealthy_reason (str):
+            Output only. The reason for unhealthy status.
+            Check the UnhealthyReason enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_unhealthy_reason``.
+        update_time (str):
+            Output only. The time when health info was
+            updated.
+
+            This field is a member of `oneof`_ ``_update_time``.
+    """
+
+    class AvailabilitySloStatus(proto.Enum):
+        r"""Output only. The availability SLO status.
+
+        Values:
+            UNDEFINED_AVAILABILITY_SLO_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            AVAILABILITY_SLO_STATUS_IN_SLO (142966428):
+                The slot availability is in SLO.
+            AVAILABILITY_SLO_STATUS_OUT_OF_SLO (112099455):
+                The slot availability is out of SLO.
+            AVAILABILITY_SLO_STATUS_SLO_UNKNOWN (280579681):
+                The slot availability is unknown.
+            AVAILABILITY_SLO_STATUS_UNSPECIFIED (481084279):
+                Unspecified availability SLO status.
+        """
+
+        UNDEFINED_AVAILABILITY_SLO_STATUS = 0
+        AVAILABILITY_SLO_STATUS_IN_SLO = 142966428
+        AVAILABILITY_SLO_STATUS_OUT_OF_SLO = 112099455
+        AVAILABILITY_SLO_STATUS_SLO_UNKNOWN = 280579681
+        AVAILABILITY_SLO_STATUS_UNSPECIFIED = 481084279
+
+    class HealthStatus(proto.Enum):
+        r"""Output only. The health status.
+
+        Values:
+            UNDEFINED_HEALTH_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            HEALTH_STATUS_HEALTHY (281715315):
+                The reservation slot is healthy.
+            HEALTH_STATUS_UNHEALTHY (476038202):
+                The reservation slot is unhealthy.
+            HEALTH_STATUS_UNSPECIFIED (482246925):
+                Unspecified health status.
+        """
+
+        UNDEFINED_HEALTH_STATUS = 0
+        HEALTH_STATUS_HEALTHY = 281715315
+        HEALTH_STATUS_UNHEALTHY = 476038202
+        HEALTH_STATUS_UNSPECIFIED = 482246925
+
+    class RepairCategory(proto.Enum):
+        r"""Output only. The repair category.
+
+        Values:
+            UNDEFINED_REPAIR_CATEGORY (0):
+                A value indicating that the enum field is not
+                set.
+            REPAIR_CATEGORY_CRITICAL_FAILURE (58241977):
+                The repair is because of critical failures,
+                that are scoped outside emergent maintenance
+            REPAIR_CATEGORY_EMERGENT_MAINTENANCE (400869148):
+                The repair is because of an emergent
+                maintenance
+            REPAIR_CATEGORY_PLANNED_MAINTENANCE (489286537):
+                The repair is because of a planned
+                maintenance
+            REPAIR_CATEGORY_UNSPECIFIED (287264456):
+                Unspecified repair category.
+            REPAIR_CATEGORY_USER_REPORTED_FAULT (227760443):
+                The repair is because of a user reported
+                fault
+        """
+
+        UNDEFINED_REPAIR_CATEGORY = 0
+        REPAIR_CATEGORY_CRITICAL_FAILURE = 58241977
+        REPAIR_CATEGORY_EMERGENT_MAINTENANCE = 400869148
+        REPAIR_CATEGORY_PLANNED_MAINTENANCE = 489286537
+        REPAIR_CATEGORY_UNSPECIFIED = 287264456
+        REPAIR_CATEGORY_USER_REPORTED_FAULT = 227760443
+
+    class UnhealthyReason(proto.Enum):
+        r"""Output only. The reason for unhealthy status.
+
+        Values:
+            UNDEFINED_UNHEALTHY_REASON (0):
+                A value indicating that the enum field is not
+                set.
+            UNHEALTHY_REASON_PENDING_USER_APPROVAL (315397455):
+                The slot is unhealthy because there is a
+                pending repair, waiting for customer approval
+            UNHEALTHY_REASON_REPAIRING (199320309):
+                The slot is unhealthy because repair is in
+                progress
+            UNHEALTHY_REASON_UNSCHEDULABLE (118083439):
+                The slot is unhealthy because a vm cannot be
+                scheduled on it, and no repairs are running on
+                the slot
+            UNHEALTHY_REASON_UNSPECIFIED (337725687):
+                Unspecified unhealthy reason.
+        """
+
+        UNDEFINED_UNHEALTHY_REASON = 0
+        UNHEALTHY_REASON_PENDING_USER_APPROVAL = 315397455
+        UNHEALTHY_REASON_REPAIRING = 199320309
+        UNHEALTHY_REASON_UNSCHEDULABLE = 118083439
+        UNHEALTHY_REASON_UNSPECIFIED = 337725687
+
+    availability_slo_status: str = proto.Field(
+        proto.STRING,
+        number=255971455,
+        optional=True,
+    )
+    health_status: str = proto.Field(
+        proto.STRING,
+        number=380545845,
+        optional=True,
+    )
+    repair_category: str = proto.Field(
+        proto.STRING,
+        number=113376624,
+        optional=True,
+    )
+    unhealthy_reason: str = proto.Field(
+        proto.STRING,
+        number=448838143,
+        optional=True,
+    )
+    update_time: str = proto.Field(
+        proto.STRING,
+        number=500295811,
+        optional=True,
     )
 
 
@@ -43789,6 +45413,56 @@ class GetHealthRegionHealthSourceRequest(proto.Message):
     )
 
 
+class GetHealthReservationSlotRequest(proto.Message):
+    r"""A request message for ReservationSlots.GetHealth. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent_name (str):
+            The name of the parent reservation, parent block and parent
+            sub-block. In the format of
+            reservations/{reservation_name}/reservationBlocks/{reservation_block_name}/reservationSubBlocks/{reservation_sub_block_name}
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+
+            This field is a member of `oneof`_ ``_request_id``.
+        reservation_slot (str):
+            The name of the reservation slot.
+            Name should conform to RFC1035 or be a resource
+            ID.
+        zone (str):
+            Name of the zone for this request. Zone name
+            should conform to RFC1035.
+    """
+
+    parent_name: str = proto.Field(
+        proto.STRING,
+        number=478151936,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    reservation_slot: str = proto.Field(
+        proto.STRING,
+        number=277470865,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetHealthTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.GetHealth. See the method
     description for details.
@@ -43821,6 +45495,47 @@ class GetHealthTargetPoolRequest(proto.Message):
     target_pool: str = proto.Field(
         proto.STRING,
         number=62796298,
+    )
+
+
+class GetHostRequest(proto.Message):
+    r"""A request message for Hosts.Get. See the method description
+    for details.
+
+    Attributes:
+        association (str):
+            The parent resource association for the Host. This field
+            specifies the hierarchical context (e.g., reservation,
+            block, sub-block) when accessing the host. For example,
+            reservations/reservation_name,
+            reservations/reservation_name/reservationBlocks/reservation_block_name
+            or
+            reservations/reservation_name/reservationBlocks/reservation_block_name/reservationSubBlocks/reservation_sub_block_name.
+        host (str):
+            The name of the host, formatted as RFC1035 or
+            a resource ID number.
+        project (str):
+            The project ID for this request.
+        zone (str):
+            The name of the zone for this request,
+            formatted as RFC1035.
+    """
+
+    association: str = proto.Field(
+        proto.STRING,
+        number=449371265,
+    )
+    host: str = proto.Field(
+        proto.STRING,
+        number=3208616,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
     )
 
 
@@ -45098,6 +46813,34 @@ class GetImageRequest(proto.Message):
     )
 
 
+class GetImageViewRequest(proto.Message):
+    r"""A request message for ImageViews.Get. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Required. Project ID for this request.
+        region (str):
+            Required. Name of the region for this
+            request.
+        resource_id (str):
+            Name of the image resource to return.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    resource_id: str = proto.Field(
+        proto.STRING,
+        number=160795372,
+    )
+
+
 class GetInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.Get. See the
     method description for details.
@@ -45567,6 +47310,27 @@ class GetMacsecConfigInterconnectRequest(proto.Message):
     )
 
 
+class GetManagedRulesetRequest(proto.Message):
+    r"""A request message for ManagedRulesets.Get. See the method
+    description for details.
+
+    Attributes:
+        managed_ruleset (str):
+            Name of the managed ruleset to return.
+        project (str):
+            Project ID for this request.
+    """
+
+    managed_ruleset: str = proto.Field(
+        proto.STRING,
+        number=447322950,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+
+
 class GetNamedSetRouterRequest(proto.Message):
     r"""A request message for Routers.GetNamedSet. See the method
     description for details.
@@ -45774,17 +47538,6 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         router (str):
             Name of the Router resource to query for Nat
             Mapping information of VM endpoints.
@@ -45822,11 +47575,6 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     router: str = proto.Field(
         proto.STRING,
@@ -46222,6 +47970,29 @@ class GetProjectRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
+    )
+
+
+class GetProjectViewRequest(proto.Message):
+    r"""A request message for ProjectViews.Get. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Required. Project ID for this request. This
+            is part of the URL path.
+        region (str):
+            Required. Name of the region for this
+            request. This is part of the URL path.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
     )
 
 
@@ -47130,6 +48901,28 @@ class GetRegionUrlMapRequest(proto.Message):
     url_map: str = proto.Field(
         proto.STRING,
         number=367020684,
+    )
+
+
+class GetReliabilityRiskRequest(proto.Message):
+    r"""A request message for ReliabilityRisks.Get. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        reliability_risk (str):
+            Name of the ReliabilityRisk resource to
+            return.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    reliability_risk: str = proto.Field(
+        proto.STRING,
+        number=340233140,
     )
 
 
@@ -48372,6 +50165,67 @@ class GetUrlMapRequest(proto.Message):
     )
 
 
+class GetVersionHostRequest(proto.Message):
+    r"""A request message for Hosts.GetVersion. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        association (str):
+            The parent resource association for the Host.
+            This field specifies the hierarchical context
+            (e.g., reservation, block, sub-block) when
+            accessing the host.
+        host (str):
+            The name of the host, formatted as RFC1035 or
+            a resource ID number.
+        hosts_get_version_request_resource (google.cloud.compute_v1.types.HostsGetVersionRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            Name of the zone for this request. Zone name
+            should conform to RFC1035.
+    """
+
+    association: str = proto.Field(
+        proto.STRING,
+        number=449371265,
+    )
+    host: str = proto.Field(
+        proto.STRING,
+        number=3208616,
+    )
+    hosts_get_version_request_resource: "HostsGetVersionRequest" = proto.Field(
+        proto.MESSAGE,
+        number=273373442,
+        message="HostsGetVersionRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetVersionOperationMetadata(proto.Message):
     r"""
 
@@ -48775,17 +50629,6 @@ class GetXpnResourcesProjectsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -48811,11 +50654,6 @@ class GetXpnResourcesProjectsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -48934,6 +50772,133 @@ class GlobalAddressesMoveRequest(proto.Message):
         proto.STRING,
         number=371693763,
         optional=True,
+    )
+
+
+class GlobalFrontendSettings(proto.Message):
+    r"""Represents the Global Frontend Bundle settings for a single
+    project.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        bundle_type (str):
+            Customer-settable bundle type.
+            Check the BundleType enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_bundle_type``.
+        creation_timestamp (str):
+            Output only. [Output Only] Creation timestamp in RFC3339
+            text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            Output only. [Output Only] An optional description of this
+            resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        etag (str):
+            Output only. For optimistic locking.
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (int):
+            Output only. [Output Only] The unique identifier for the
+            resource. This identifier is defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        name (str):
+            Output only. OUTPUT_ONLY fields [Output Only] Name of the
+            resource. Must be 1-63 characters long and match the regular
+            expression ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the
+            first character must be a lowercase letter, and all
+            following characters must be a dash, lowercase letter, or
+            digit, except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        self_link (str):
+            Output only. [Output Only] Server-defined URL for the
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+    """
+
+    class BundleType(proto.Enum):
+        r"""Customer-settable bundle type.
+
+        Values:
+            UNDEFINED_BUNDLE_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            BUNDLE_TYPE_UNSPECIFIED (466587567):
+                Bundling is not active.
+            GLOBAL_FRONT_END (182122473):
+                Standard Global Frontend bundle.
+            INDIVIDUAL (438800025):
+                Ala Carte mode.
+        """
+
+        UNDEFINED_BUNDLE_TYPE = 0
+        BUNDLE_TYPE_UNSPECIFIED = 466587567
+        GLOBAL_FRONT_END = 182122473
+        INDIVIDUAL = 438800025
+
+    bundle_type: str = proto.Field(
+        proto.STRING,
+        number=291903703,
+        optional=True,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+
+
+class GlobalFrontendSettingsPatchResponse(proto.Message):
+    r"""Response to an UpdateGlobalFrontendSettingsRequest.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        operation (google.cloud.compute_v1.types.Operation):
+            The Operation resource for this long-running
+            operation.
+
+            This field is a member of `oneof`_ ``_operation``.
+    """
+
+    operation: "Operation" = proto.Field(
+        proto.MESSAGE,
+        number=52090215,
+        optional=True,
+        message="Operation",
     )
 
 
@@ -50011,6 +51976,7 @@ class GuestOsFeature(proto.Message):
                - IDPF
                - SNP_SVSM_CAPABLE
                - CCA_CAPABLE
+               - SUSPEND_SAFE_FPR
 
             For more information, see Enabling guest operating system
             features. Check the Type enum for the list of possible
@@ -50038,6 +52004,7 @@ class GuestOsFeature(proto.Message):
            - IDPF
            - SNP_SVSM_CAPABLE
            - CCA_CAPABLE
+           - SUSPEND_SAFE_FPR
 
         For more information, see Enabling guest operating system features.
 
@@ -50047,6 +52014,9 @@ class GuestOsFeature(proto.Message):
                 set.
             BARE_METAL_LINUX_COMPATIBLE (354232740):
                 No description available.
+            BMSAI_CAPABLE (449302109):
+                Indicates the guest OS is capable of Bare
+                Metal Secure AI (BMSAI) confidential computing.
             CCA_CAPABLE (79012270):
                 No description available.
             FEATURE_TYPE_UNSPECIFIED (531767259):
@@ -50069,6 +52039,9 @@ class GuestOsFeature(proto.Message):
                 No description available.
             SNP_SVSM_CAPABLE (52921460):
                 No description available.
+            SUSPEND_SAFE_FPR (223956441):
+                Indicates the guest OS is safe for free page
+                reporting (FPR) during suspend.
             TDX_CAPABLE (240446133):
                 No description available.
             UEFI_COMPATIBLE (195865408):
@@ -50081,6 +52054,7 @@ class GuestOsFeature(proto.Message):
 
         UNDEFINED_TYPE = 0
         BARE_METAL_LINUX_COMPATIBLE = 354232740
+        BMSAI_CAPABLE = 449302109
         CCA_CAPABLE = 79012270
         FEATURE_TYPE_UNSPECIFIED = 531767259
         GVNIC = 68209305
@@ -50092,6 +52066,7 @@ class GuestOsFeature(proto.Message):
         SEV_LIVE_MIGRATABLE_V2 = 168551983
         SEV_SNP_CAPABLE = 426919
         SNP_SVSM_CAPABLE = 52921460
+        SUSPEND_SAFE_FPR = 223956441
         TDX_CAPABLE = 240446133
         UEFI_COMPATIBLE = 195865408
         VIRTIO_SCSI_MULTIQUEUE = 201597069
@@ -50665,6 +52640,1083 @@ class HTTPSHealthCheck(proto.Message):
     )
 
 
+class HaController(proto.Message):
+    r"""HaController handles failover for a VM Instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        backend_services (MutableSequence[str]):
+            Advanced configuration option. If specified,
+            these Backend Services need to be pre-created.
+
+            Currently, only one backend service can be
+            specified, and it must be L4 Internal Load
+            Balancer (ILB).
+        creation_timestamp (str):
+            Output only. [Output Only] Creation timestamp in RFC3339
+            text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        failover_initiation (str):
+            Indicates how failover should be initiated.
+            Check the FailoverInitiation enum for the list
+            of possible values.
+
+            This field is a member of `oneof`_ ``_failover_initiation``.
+        id (int):
+            Output only. [Output Only] The unique identifier for the
+            resource. This identifier is defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        instance_name (str):
+            Name of the instance that HaController is in charge of. If
+            not specified the HaController's resource name will be used
+            instead. The name must be 1-63 characters long, and comply
+            withRFC1035. Specifically, the name must be 1-63 characters
+            long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_instance_name``.
+        kind (str):
+            Output only. [Output Only] Type of the resource.
+            Alwayscompute#haController for HaControllers.
+
+            This field is a member of `oneof`_ ``_kind``.
+        name (str):
+            Name of the resource. Provided by the client when the
+            resource is created. The name must be 1-63 characters long,
+            and comply withRFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        networking_auto_configuration (google.cloud.compute_v1.types.HaControllerNetworkingAutoConfiguration):
+            Basic networking configuration. Required
+            backend services and forwarding rules will be
+            automatically created with default parameters.
+
+            This field is a member of `oneof`_ ``_networking_auto_configuration``.
+        region (str):
+            Output only. [Output Only] URL of the region where the
+            resource resides. You must specify this field as part of the
+            HTTP request URL. It is not settable as a field in the
+            request body.
+
+            This field is a member of `oneof`_ ``_region``.
+        self_link (str):
+            Output only. [Output only] Server-defined URL for the
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            Output only. [Output Only] Server-defined URL for this
+            resource with the resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        state (str):
+            Output only. The current state of the HA
+            Controller. Check the State enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_state``.
+        status (google.cloud.compute_v1.types.HaControllerStatus):
+            Output only. [Output Only] Status information for the
+            HaController resource.
+
+            This field is a member of `oneof`_ ``_status``.
+        zone_configurations (MutableMapping[str, google.cloud.compute_v1.types.HaControllerZoneConfiguration]):
+            Map of zone configurations
+            Key: name of the zone
+            Value: ZoneConfiguration
+    """
+
+    class FailoverInitiation(proto.Enum):
+        r"""Indicates how failover should be initiated.
+
+        Values:
+            UNDEFINED_FAILOVER_INITIATION (0):
+                A value indicating that the enum field is not
+                set.
+            AUTOMATIC (165298699):
+                Failover will be initiated automatically in
+                case of an outage
+            FAILOVER_INITIATION_UNSPECIFIED (468387457):
+                No description available.
+            MANUAL_ONLY (261251205):
+                Failover will be initiated only when
+                compute.haControllers.failover method is called.
+        """
+
+        UNDEFINED_FAILOVER_INITIATION = 0
+        AUTOMATIC = 165298699
+        FAILOVER_INITIATION_UNSPECIFIED = 468387457
+        MANUAL_ONLY = 261251205
+
+    class State(proto.Enum):
+        r"""Output only. The current state of the HA Controller.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The HA Controller is active and ready to
+                perform failover.
+            CREATING (455564985):
+                The HA Controller is being created.
+            DELETING (528602024):
+                The HA Controller is being deleted.
+            FAILOVER_IN_PROGRESS (401022010):
+                The HA Controller is in the process of
+                failing over.
+            FAILOVER_UNAVAILABLE (345584739):
+                The HA Controller is not ready to perform
+                failover.
+            MULTI_ZONE_FAILURE (149123389):
+                The HA Controller requires a failover
+                operation to be performed but the secondary zone
+                is not available to failover to.
+            PENDING_FAILOVER (237082298):
+                The HA Controller requires a failover
+                operation to be performed.
+            STARTING (488820800):
+                The HA Controller is being started.
+            STATE_UNSPECIFIED (470755401):
+                Unspecified state.
+            STOPPED (444276141):
+                The HA Controller is stopped.
+            STOPPING (350791796):
+                The HA Controller is being stopped.
+            UPDATING (494614342):
+                The HA Controller is being updated.
+        """
+
+        UNDEFINED_STATE = 0
+        ACTIVE = 314733318
+        CREATING = 455564985
+        DELETING = 528602024
+        FAILOVER_IN_PROGRESS = 401022010
+        FAILOVER_UNAVAILABLE = 345584739
+        MULTI_ZONE_FAILURE = 149123389
+        PENDING_FAILOVER = 237082298
+        STARTING = 488820800
+        STATE_UNSPECIFIED = 470755401
+        STOPPED = 444276141
+        STOPPING = 350791796
+        UPDATING = 494614342
+
+    backend_services: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=388522409,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    failover_initiation: str = proto.Field(
+        proto.STRING,
+        number=441991849,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    instance_name: str = proto.Field(
+        proto.STRING,
+        number=227947509,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    networking_auto_configuration: "HaControllerNetworkingAutoConfiguration" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=142342545,
+            optional=True,
+            message="HaControllerNetworkingAutoConfiguration",
+        )
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=109757585,
+        optional=True,
+    )
+    status: "HaControllerStatus" = proto.Field(
+        proto.MESSAGE,
+        number=181260274,
+        optional=True,
+        message="HaControllerStatus",
+    )
+    zone_configurations: MutableMapping[str, "HaControllerZoneConfiguration"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=296036144,
+            message="HaControllerZoneConfiguration",
+        )
+    )
+
+
+class HaControllerNetworkingAutoConfiguration(proto.Message):
+    r"""Basic networking configuration. Required backend services and
+    forwarding rules will be automatically created with default
+    parameters.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        internal (google.cloud.compute_v1.types.HaControllerNetworkingAutoConfigurationInternal):
+            Internal networking configuration
+
+            This field is a member of `oneof`_ ``_internal``.
+    """
+
+    internal: "HaControllerNetworkingAutoConfigurationInternal" = proto.Field(
+        proto.MESSAGE,
+        number=33539773,
+        optional=True,
+        message="HaControllerNetworkingAutoConfigurationInternal",
+    )
+
+
+class HaControllerNetworkingAutoConfigurationInternal(proto.Message):
+    r"""Internal networking configuration
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        ip_address (str):
+            Optional. IP addresses will be automatically
+            allocated according to StackType if not
+            provided.
+
+            This field is a member of `oneof`_ ``_ip_address``.
+        ipv6_address (str):
+
+            This field is a member of `oneof`_ ``_ipv6_address``.
+        stack_type (str):
+            Determine which IP addresses to automatically
+            create. Field and option naming consistent with
+            NetworkInterface configuration on Instances.
+            Check the StackType enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_stack_type``.
+    """
+
+    class StackType(proto.Enum):
+        r"""Determine which IP addresses to automatically create. Field
+        and option naming consistent with NetworkInterface configuration
+        on Instances.
+
+        Values:
+            UNDEFINED_STACK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4_IPV6 (22197249):
+                The HA Controller Networking Endpoint will be
+                assigned with both IPv4 and IPv6 addresses.
+            IPV4_ONLY (22373798):
+                The HA Controller Networking Endpoint will
+                only be assigned with IPv4 address.
+            IPV6_ONLY (79632100):
+                The HA Controller Networking Endpoint will
+                only be assigned with IPv6 address.
+        """
+
+        UNDEFINED_STACK_TYPE = 0
+        IPV4_IPV6 = 22197249
+        IPV4_ONLY = 22373798
+        IPV6_ONLY = 79632100
+
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=406272220,
+        optional=True,
+    )
+    ipv6_address: str = proto.Field(
+        proto.STRING,
+        number=341563804,
+        optional=True,
+    )
+    stack_type: str = proto.Field(
+        proto.STRING,
+        number=425908881,
+        optional=True,
+    )
+
+
+class HaControllerStatus(proto.Message):
+    r"""Contains information about current status of the
+    HaController.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        failover_progress (google.cloud.compute_v1.types.HaControllerStatusFailoverProgress):
+            Output only. [Output Only] Contains the details of the
+            ongoing failover. This message is not displayed if failover
+            is NOT in progress.
+
+            This field is a member of `oneof`_ ``_failover_progress``.
+        last_failover_info (google.cloud.compute_v1.types.HaControllerStatusFailoverProgress):
+            Output only. [Output Only] Contains the details of the last
+            successful failover.
+
+            This field is a member of `oneof`_ ``_last_failover_info``.
+        ongoing_failover (bool):
+            Output only. [Output Only] Indicates if the failover is
+            currently in-progress.
+
+            This field is a member of `oneof`_ ``_ongoing_failover``.
+        primary_instance (str):
+            Output only. [Output Only] The URL to the instance that is
+            intended to be primary at this moment. Primary instance will
+            be changed at the very beginning of a failover operation.
+
+            This field is a member of `oneof`_ ``_primary_instance``.
+        primary_zone (str):
+            Output only. [Output Only] The name of the zone that is
+            intended to be primary at this moment. Primary zone will be
+            changed at the very beginning of a failover operation. The
+            zone may not be operational in the middle of a failover
+            operation.
+
+            This field is a member of `oneof`_ ``_primary_zone``.
+        ready_for_failover (bool):
+            Output only. [Output Only] Indicates if the resource is
+            ready for initiating a failover to the secondary zone.
+
+            This field is a member of `oneof`_ ``_ready_for_failover``.
+        zone_status (MutableMapping[str, google.cloud.compute_v1.types.HaControllerStatusZoneStatus]):
+            Output only. [Output Only] Map of zone statuses. Key: name
+            of the zone Value: ZoneStatus
+    """
+
+    failover_progress: "HaControllerStatusFailoverProgress" = proto.Field(
+        proto.MESSAGE,
+        number=131993306,
+        optional=True,
+        message="HaControllerStatusFailoverProgress",
+    )
+    last_failover_info: "HaControllerStatusFailoverProgress" = proto.Field(
+        proto.MESSAGE,
+        number=12006898,
+        optional=True,
+        message="HaControllerStatusFailoverProgress",
+    )
+    ongoing_failover: bool = proto.Field(
+        proto.BOOL,
+        number=250444086,
+        optional=True,
+    )
+    primary_instance: str = proto.Field(
+        proto.STRING,
+        number=446782002,
+        optional=True,
+    )
+    primary_zone: str = proto.Field(
+        proto.STRING,
+        number=496582601,
+        optional=True,
+    )
+    ready_for_failover: bool = proto.Field(
+        proto.BOOL,
+        number=146529476,
+        optional=True,
+    )
+    zone_status: MutableMapping[str, "HaControllerStatusZoneStatus"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=508653541,
+        message="HaControllerStatusZoneStatus",
+    )
+
+
+class HaControllerStatusFailoverProgress(proto.Message):
+    r"""Contains information about the current failover operation.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        failover_complete_timestamp (str):
+            Output only. [Output Only] Timestamp of the failover
+            completion. Filled only if the failover is completed, in
+            lastFailoverInfo.
+
+            This field is a member of `oneof`_ ``_failover_complete_timestamp``.
+        failover_duration (str):
+            Output only. The duration of the last
+            failover.
+
+            This field is a member of `oneof`_ ``_failover_duration``.
+        failover_trigger (str):
+            Output only. [Output Only] Indicates if failover has been
+            triggered automatically or manually. Check the
+            FailoverTrigger enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_failover_trigger``.
+        failover_trigger_timestamp (str):
+            Output only. [Output Only] Timestamp of the last failover
+            trigger.
+
+            This field is a member of `oneof`_ ``_failover_trigger_timestamp``.
+        last_failover_attempt (google.cloud.compute_v1.types.HaControllerStatusFailoverProgressLastFailoverAttempt):
+            Output only. [Output Only] Contains details of the last
+            failed failover. This field is filled only if the current
+            failover is failing
+
+            This field is a member of `oneof`_ ``_last_failover_attempt``.
+    """
+
+    class FailoverTrigger(proto.Enum):
+        r"""Output only. [Output Only] Indicates if failover has been triggered
+        automatically or manually.
+
+        Values:
+            UNDEFINED_FAILOVER_TRIGGER (0):
+                A value indicating that the enum field is not
+                set.
+            AUTOMATIC (165298699):
+                Failover has been triggered automatically.
+            FAILOVER_TRIGGER_UNSPECIFIED (213753891):
+                No description available.
+            MANUAL (119397318):
+                Failover has been triggered manually.
+        """
+
+        UNDEFINED_FAILOVER_TRIGGER = 0
+        AUTOMATIC = 165298699
+        FAILOVER_TRIGGER_UNSPECIFIED = 213753891
+        MANUAL = 119397318
+
+    failover_complete_timestamp: str = proto.Field(
+        proto.STRING,
+        number=295238141,
+        optional=True,
+    )
+    failover_duration: str = proto.Field(
+        proto.STRING,
+        number=214800961,
+        optional=True,
+    )
+    failover_trigger: str = proto.Field(
+        proto.STRING,
+        number=466042731,
+        optional=True,
+    )
+    failover_trigger_timestamp: str = proto.Field(
+        proto.STRING,
+        number=488986946,
+        optional=True,
+    )
+    last_failover_attempt: "HaControllerStatusFailoverProgressLastFailoverAttempt" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=205277961,
+            optional=True,
+            message="HaControllerStatusFailoverProgressLastFailoverAttempt",
+        )
+    )
+
+
+class HaControllerStatusFailoverProgressLastFailoverAttempt(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        errors (google.cloud.compute_v1.types.HaControllerStatusFailoverProgressLastFailoverAttemptErrors):
+            Output only. [Output Only] Encountered errors during the
+            last attempt to process failover.
+
+            This field is a member of `oneof`_ ``_errors``.
+        timestamp (str):
+            Output only. [Output Only] Show timestamp only if there is
+            an error.RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_timestamp``.
+    """
+
+    errors: "HaControllerStatusFailoverProgressLastFailoverAttemptErrors" = proto.Field(
+        proto.MESSAGE,
+        number=315977579,
+        optional=True,
+        message="HaControllerStatusFailoverProgressLastFailoverAttemptErrors",
+    )
+    timestamp: str = proto.Field(
+        proto.STRING,
+        number=55126294,
+        optional=True,
+    )
+
+
+class HaControllerStatusFailoverProgressLastFailoverAttemptErrors(proto.Message):
+    r"""Output only. [Output Only] Encountered errors during the last
+    attempt to process failover.
+
+    Attributes:
+        errors (MutableSequence[google.cloud.compute_v1.types.Errors]):
+            [Output Only] The array of errors encountered while
+            processing this operation.
+    """
+
+    errors: MutableSequence["Errors"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=315977579,
+        message="Errors",
+    )
+
+
+class HaControllerStatusZoneStatus(proto.Message):
+    r"""Contains the status of a specific zone.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        is_primary (bool):
+            Output only. [Output Only] Indicates if the zone is primary
+            at this moment.
+
+            This field is a member of `oneof`_ ``_is_primary``.
+        is_zone_ready (bool):
+            Output only. [Output Only] Indicates if the zone is ready
+            for initiating a failover.
+
+            This field is a member of `oneof`_ ``_is_zone_ready``.
+        last_error (google.cloud.compute_v1.types.HaControllerStatusZoneStatusLastError):
+            Output only. [Output Only] This field is filled only if the
+            current operation is failing.
+
+            This field is a member of `oneof`_ ``_last_error``.
+    """
+
+    is_primary: bool = proto.Field(
+        proto.BOOL,
+        number=111802349,
+        optional=True,
+    )
+    is_zone_ready: bool = proto.Field(
+        proto.BOOL,
+        number=138295685,
+        optional=True,
+    )
+    last_error: "HaControllerStatusZoneStatusLastError" = proto.Field(
+        proto.MESSAGE,
+        number=121962271,
+        optional=True,
+        message="HaControllerStatusZoneStatusLastError",
+    )
+
+
+class HaControllerStatusZoneStatusLastError(proto.Message):
+    r"""Contains details of the last failed operation.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        errors (google.cloud.compute_v1.types.HaControllerStatusZoneStatusLastErrorErrors):
+            Output only. [Output Only] Encountered errors.
+
+            This field is a member of `oneof`_ ``_errors``.
+        timestamp (str):
+            Output only. [Output Only] Show timestamp only if there is
+            an error.RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_timestamp``.
+    """
+
+    errors: "HaControllerStatusZoneStatusLastErrorErrors" = proto.Field(
+        proto.MESSAGE,
+        number=315977579,
+        optional=True,
+        message="HaControllerStatusZoneStatusLastErrorErrors",
+    )
+    timestamp: str = proto.Field(
+        proto.STRING,
+        number=55126294,
+        optional=True,
+    )
+
+
+class HaControllerStatusZoneStatusLastErrorErrors(proto.Message):
+    r"""Output only. [Output Only] Encountered errors.
+
+    Attributes:
+        errors (MutableSequence[google.cloud.compute_v1.types.Errors]):
+            [Output Only] The array of errors encountered while
+            processing this operation.
+    """
+
+    errors: MutableSequence["Errors"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=315977579,
+        message="Errors",
+    )
+
+
+class HaControllerZoneConfiguration(proto.Message):
+    r"""Config for a zone that the HaController may use for running
+    the VM instance.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        node_affinities (MutableSequence[google.cloud.compute_v1.types.HaControllerZoneConfigurationNodeAffinity]):
+            A set of node affinity configurations. Refer
+            toConfiguring node affinity for more
+            information. Overrides reservationAffinity.
+        reservation_affinity (google.cloud.compute_v1.types.HaControllerZoneConfigurationReservationAffinity):
+            Specifies the reservations that the instance
+            can consume from.
+
+            This field is a member of `oneof`_ ``_reservation_affinity``.
+    """
+
+    node_affinities: MutableSequence["HaControllerZoneConfigurationNodeAffinity"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=461799971,
+            message="HaControllerZoneConfigurationNodeAffinity",
+        )
+    )
+    reservation_affinity: "HaControllerZoneConfigurationReservationAffinity" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=157850683,
+            optional=True,
+            message="HaControllerZoneConfigurationReservationAffinity",
+        )
+    )
+
+
+class HaControllerZoneConfigurationNodeAffinity(proto.Message):
+    r"""Node Affinity: the configuration of desired nodes onto which
+    the  Instance could be scheduled.
+     This message should be an exact copy of the Instances
+    representation  of NodeAffinity.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        key (str):
+            Corresponds to the label key of Node
+            resource.
+
+            This field is a member of `oneof`_ ``_key``.
+        operator (str):
+            Defines the operation of node selection. Valid operators
+            areIN for affinity and NOT_IN for anti-affinity. Check the
+            Operator enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_operator``.
+        values (MutableSequence[str]):
+            Corresponds to the label values of Node
+            resource.
+    """
+
+    class Operator(proto.Enum):
+        r"""Defines the operation of node selection. Valid operators areIN for
+        affinity and NOT_IN for anti-affinity.
+
+        Values:
+            UNDEFINED_OPERATOR (0):
+                A value indicating that the enum field is not
+                set.
+            IN (2341):
+                Requires Compute Engine to seek for matched
+                nodes.
+            NOT_IN (161144369):
+                Requires Compute Engine to avoid certain
+                nodes.
+            OPERATOR_UNSPECIFIED (128892924):
+                No description available.
+        """
+
+        UNDEFINED_OPERATOR = 0
+        IN = 2341
+        NOT_IN = 161144369
+        OPERATOR_UNSPECIFIED = 128892924
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=106079,
+        optional=True,
+    )
+    operator: str = proto.Field(
+        proto.STRING,
+        number=36317348,
+        optional=True,
+    )
+    values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=249928994,
+    )
+
+
+class HaControllerZoneConfigurationReservationAffinity(proto.Message):
+    r"""Specifies the reservations that this instance can consume
+    from. This message should be an exact copy of the Instances
+    representation of AllocationAffinity.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        consume_reservation_type (str):
+            Specifies the type of reservation from which this instance
+            can consume resources: ANY_RESERVATION
+            (default),SPECIFIC_RESERVATION, or NO_RESERVATION. See
+            Consuming reserved instances for examples. Check the
+            ConsumeReservationType enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_consume_reservation_type``.
+        key (str):
+            Corresponds to the label key of a reservation resource. To
+            target aSPECIFIC_RESERVATION by name,
+            specifygoogleapis.com/reservation-name as the key and
+            specify the name of your reservation as its value.
+
+            This field is a member of `oneof`_ ``_key``.
+        values (MutableSequence[str]):
+            Corresponds to the label values of a
+            reservation resource. This can be either a name
+            to a reservation in the same project or
+            "projects/different-project/reservations/some-reservation-name"
+            to target a shared reservation in the same zone
+            but in a different project.
+    """
+
+    class ConsumeReservationType(proto.Enum):
+        r"""Specifies the type of reservation from which this instance can
+        consume resources: ANY_RESERVATION (default),SPECIFIC_RESERVATION,
+        or NO_RESERVATION. See Consuming reserved instances for examples.
+
+        Values:
+            UNDEFINED_CONSUME_RESERVATION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ANY_RESERVATION (200008121):
+                Consume any allocation available.
+            ANY_RESERVATION_THEN_FAIL (236541178):
+                Consume any reservation available, but fail
+                if no reservation is available. Will not consume
+                from the on-demand pool.
+            NO_RESERVATION (169322030):
+                Do not consume from any allocated capacity.
+            SPECIFIC_RESERVATION (229889055):
+                Must consume from a specific reservation.
+                Must specify key value fields for specifying the
+                reservations.
+            SPECIFIC_THEN_ANY_RESERVATION (37025924):
+                Prefer to consume from a specific
+                reservation, but still consume any reservation
+                available if the specified reservation is not
+                available or exhausted. Must specify key value
+                fields for specifying the reservations.
+            SPECIFIC_THEN_NO_RESERVATION (406522371):
+                Prefer to consume from a specific
+                reservation, but still consume from the
+                on-demand pool if the specified reservation is
+                exhausted. Must specify key value fields for
+                specifying the reservations.
+            UNSPECIFIED (526786327):
+                No description available.
+        """
+
+        UNDEFINED_CONSUME_RESERVATION_TYPE = 0
+        ANY_RESERVATION = 200008121
+        ANY_RESERVATION_THEN_FAIL = 236541178
+        NO_RESERVATION = 169322030
+        SPECIFIC_RESERVATION = 229889055
+        SPECIFIC_THEN_ANY_RESERVATION = 37025924
+        SPECIFIC_THEN_NO_RESERVATION = 406522371
+        UNSPECIFIED = 526786327
+
+    consume_reservation_type: str = proto.Field(
+        proto.STRING,
+        number=300736944,
+        optional=True,
+    )
+    key: str = proto.Field(
+        proto.STRING,
+        number=106079,
+        optional=True,
+    )
+    values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=249928994,
+    )
+
+
+class HaControllersAggregatedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableMapping[str, google.cloud.compute_v1.types.HaControllersScopedList]):
+            A list of HaControllersScopedList resources.
+        kind (str):
+            Output only. [Output Only] Type of resource.
+            Alwayscompute#haControllersAggregatedList for lists of
+            HaControllers.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger thanmaxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            Output only. [Output Only] Server-defined URL for this
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            Output only. [Output Only] Unreachable resources.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableMapping[str, "HaControllersScopedList"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=100526016,
+        message="HaControllersScopedList",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class HaControllersFailoverRequest(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        failover_to_zone (str):
+            Name of the destination zone for the
+            failover.
+
+            This field is a member of `oneof`_ ``_failover_to_zone``.
+    """
+
+    failover_to_zone: str = proto.Field(
+        proto.STRING,
+        number=371494051,
+        optional=True,
+    )
+
+
+class HaControllersList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            Unique identifier for the resource; defined
+            by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.HaController]):
+            A list of HaControllers in the specified
+            project and region.
+        next_page_token (str):
+            This token allows you to get the next page of
+            results formaxResults, use the nextPageToken as
+            a value for the query parameter pageToken in the
+            next list request. Subsequent list requests will
+            have their own nextPageToken to continue paging
+            through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            Output only. [Output only] Server-defined URL for this
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            Output only. [Output only] Unreachable resources.
+        warning (google.cloud.compute_v1.types.Warning):
+            Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["HaController"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="HaController",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class HaControllersScopedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        ha_controllers (MutableSequence[google.cloud.compute_v1.types.HaController]):
+            List of HaControllers contained in this
+            scope.
+        warning (google.cloud.compute_v1.types.Warning):
+            Informational warning which replaces the list
+            of backend services when the list is empty.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    ha_controllers: MutableSequence["HaController"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=377081361,
+        message="HaController",
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
 class HealthAggregationPoliciesScopedList(proto.Message):
     r"""
 
@@ -51158,26 +54210,24 @@ class HealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_self_link``.
         source_regions (MutableSequence[str]):
-            The list of cloud regions from which health
-            checks are performed. If any regions are
-            specified, then exactly 3 regions should be
-            specified. The region names must be valid names
-            of Google Cloud regions. This can only be set
-            for global health check. If this list is
-            non-empty, then there are restrictions on what
-            other health check fields are supported and what
-            other resources can use this health check:
+            The list of cloud regions from which health checks are
+            performed. If any regions are specified, then exactly 3
+            regions should be specified. The region names must be valid
+            names of Google Cloud regions. This can only be set for
+            global health check. If this list is non-empty, then there
+            are restrictions on what other health check fields are
+            supported and what other resources can use this health
+            check:
 
-               - SSL, HTTP2, and GRPC protocols are not
-              supported.
+            ::
+
+               - SSL, HTTP2, GRPC, and GRPC_WITH_TLS protocols are not supported.
                - The TCP request field is not supported.
-               - The proxyHeader field for HTTP, HTTPS, and
-              TCP is not    supported.
-               - The checkIntervalSec field must be at least
-              30.
-               - The health check cannot be used with
-              BackendService nor with managed    instance
-              group auto-healing.
+               - The proxyHeader field for HTTP, HTTPS, and TCP is not
+               supported.
+               - The checkIntervalSec field must be at least 30.
+               - The health check cannot be used with BackendService nor with managed
+               instance group auto-healing.
         ssl_health_check (google.cloud.compute_v1.types.SSLHealthCheck):
 
             This field is a member of `oneof`_ ``_ssl_health_check``.
@@ -51192,12 +54242,11 @@ class HealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_timeout_sec``.
         type_ (str):
-            Specifies the type of the healthCheck, either
-            TCP,SSL, HTTP, HTTPS,HTTP2 or GRPC. Exactly one
-            of the protocol-specific health check fields
-            must be specified, which must matchtype field.
-            Check the Type enum for the list of possible
-            values.
+            Specifies the type of the healthCheck, either TCP,SSL, HTTP,
+            HTTPS,HTTP2, GRPC or GRPC_WITH_TLS. Exactly one of the
+            protocol-specific health check fields must be specified,
+            which must match type field. Check the Type enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
         unhealthy_threshold (int):
@@ -51210,8 +54259,9 @@ class HealthCheck(proto.Message):
 
     class Type(proto.Enum):
         r"""Specifies the type of the healthCheck, either TCP,SSL, HTTP,
-        HTTPS,HTTP2 or GRPC. Exactly one of the protocol-specific health
-        check fields must be specified, which must matchtype field.
+        HTTPS,HTTP2, GRPC or GRPC_WITH_TLS. Exactly one of the
+        protocol-specific health check fields must be specified, which must
+        match type field.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -52579,11 +55629,6 @@ class HealthStatus(proto.Message):
 
     class HealthState(proto.Enum):
         r"""Health state of the IPv4 address of the instance.
-        Additional supported values which may be not listed in the enum
-        directly due to technical reasons:
-
-        HEALTHY
-        UNHEALTHY
 
         Values:
             UNDEFINED_HEALTH_STATE (0):
@@ -52758,26 +55803,19 @@ class HealthStatusForNetworkEndpoint(proto.Message):
     class HealthState(proto.Enum):
         r"""Health state of the network endpoint determined based on the
         health checks configured.
-        Additional supported values which may be not listed in the enum
-        directly due to technical reasons:
-
-        DRAINING
-        HEALTHY
-        UNHEALTHY
-        UNKNOWN
 
         Values:
             UNDEFINED_HEALTH_STATE (0):
                 A value indicating that the enum field is not
                 set.
             DRAINING (480455402):
-                No description available.
+                Endpoint is being drained.
             HEALTHY (439801213):
-                No description available.
+                Endpoint is healthy.
             UNHEALTHY (462118084):
-                No description available.
+                Endpoint is unhealthy.
             UNKNOWN (433141802):
-                No description available.
+                Health status of the endpoint is unknown.
         """
 
         UNDEFINED_HEALTH_STATE = 0
@@ -52890,6 +55928,200 @@ class HelpLink(proto.Message):
     )
 
 
+class Host(proto.Message):
+    r"""Represents a host resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        alias_links (MutableSequence[str]):
+            Output only. All aliases for this resource.
+            e.g.
+            projects/123/zones/us-centra1-a/reservation/r1/reservationBlock/b1/hosts/h1
+        creation_timestamp (str):
+            Output only. The creation timestamp,
+            formatted asRFC3339 text.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        id (int):
+            Output only. The unique identifier for this
+            resource. This identifier is defined by the
+            server.
+
+            This field is a member of `oneof`_ ``_id``.
+        kind (str):
+            Output only. The type of resource.
+            Alwayscompute#host for hosts.
+
+            This field is a member of `oneof`_ ``_kind``.
+        name (str):
+            Output only. The name of the host.
+
+            This field is a member of `oneof`_ ``_name``.
+        self_link (str):
+            Output only. The self link of the host.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            Output only. The self link with id of the
+            host.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        state (str):
+            Output only. The state of the host.
+            Check the State enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_state``.
+        status (google.cloud.compute_v1.types.HostStatus):
+            Output only. The status of the host
+
+            This field is a member of `oneof`_ ``_status``.
+        zone (str):
+            Output only. The zone in which the host
+            resides.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    class State(proto.Enum):
+        r"""Output only. The state of the host.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The host has allocated all its resources.
+            CREATING (455564985):
+                The resources are being allocated for the
+                host.
+            DELETING (528602024):
+                The host is currently being deleted.
+            STATE_UNSPECIFIED (470755401):
+                No description available.
+            UNAVAILABLE (413756464):
+                The host is currently unavailable.
+        """
+
+        UNDEFINED_STATE = 0
+        ACTIVE = 314733318
+        CREATING = 455564985
+        DELETING = 528602024
+        STATE_UNSPECIFIED = 470755401
+        UNAVAILABLE = 413756464
+
+    alias_links: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=296963338,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=109757585,
+        optional=True,
+    )
+    status: "HostStatus" = proto.Field(
+        proto.MESSAGE,
+        number=181260274,
+        optional=True,
+        message="HostStatus",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class HostPhysicalTopology(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        block (str):
+            The unique identifier of the capacity block
+            within the cluster.
+
+            This field is a member of `oneof`_ ``_block``.
+        cluster (str):
+            The cluster name of the reservation
+            sub-block.
+
+            This field is a member of `oneof`_ ``_cluster``.
+        host (str):
+            The unique identifier of the capacity host
+            within the capacity sub-block.
+
+            This field is a member of `oneof`_ ``_host``.
+        sub_block (str):
+            The unique identifier of the capacity
+            sub-block within the capacity block.
+
+            This field is a member of `oneof`_ ``_sub_block``.
+    """
+
+    block: str = proto.Field(
+        proto.STRING,
+        number=93832333,
+        optional=True,
+    )
+    cluster: str = proto.Field(
+        proto.STRING,
+        number=335221242,
+        optional=True,
+    )
+    host: str = proto.Field(
+        proto.STRING,
+        number=3208616,
+        optional=True,
+    )
+    sub_block: str = proto.Field(
+        proto.STRING,
+        number=478033358,
+        optional=True,
+    )
+
+
 class HostRule(proto.Message):
     r"""UrlMaps
     A host-matching rule for a URL. If matched, will use the
@@ -52937,6 +56169,161 @@ class HostRule(proto.Message):
         proto.STRING,
         number=337813272,
         optional=True,
+    )
+
+
+class HostStatus(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        physical_topology (google.cloud.compute_v1.types.HostPhysicalTopology):
+            Output only. The physical topology of the
+            reservation sub-block, if present
+
+            This field is a member of `oneof`_ ``_physical_topology``.
+        running_instances (MutableSequence[str]):
+            Output only. The URIs of the instances
+            currently running on this host.
+    """
+
+    physical_topology: "HostPhysicalTopology" = proto.Field(
+        proto.MESSAGE,
+        number=279778519,
+        optional=True,
+        message="HostPhysicalTopology",
+    )
+    running_instances: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=536292350,
+    )
+
+
+class HostsGetVersionRequest(proto.Message):
+    r"""
+
+    Attributes:
+        sbom_selections (MutableSequence[str]):
+            The SBOM selection to return. Duplicate
+            values in the list will be ignored. Check the
+            SbomSelections enum for the list of possible
+            values.
+    """
+
+    class SbomSelections(proto.Enum):
+        r"""
+
+        Values:
+            UNDEFINED_SBOM_SELECTIONS (0):
+                A value indicating that the enum field is not
+                set.
+            SBOM_SELECTION_CURRENT (423856692):
+                No description available.
+            SBOM_SELECTION_TARGET (152837462):
+                No description available.
+            SBOM_SELECTION_UNSPECIFIED (379615858):
+                No description available.
+        """
+
+        UNDEFINED_SBOM_SELECTIONS = 0
+        SBOM_SELECTION_CURRENT = 423856692
+        SBOM_SELECTION_TARGET = 152837462
+        SBOM_SELECTION_UNSPECIFIED = 379615858
+
+    sbom_selections: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=69155705,
+    )
+
+
+class HostsListResponse(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            The unique identifier for the resource;
+            defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.Host]):
+            A list of host resources.
+        kind (str):
+            The type of resource. Always compute#host for
+            a list of hosts.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            This token allows you to get the next page of
+            results for list requests. If the number of
+            results is larger thanmaxResults, use the
+            nextPageToken as a value for the query parameter
+            pageToken in the next list request. Subsequent
+            list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            The server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            Unreachable resources. end_interface:
+            MixerListResponseWithEtagBuilder
+        warning (google.cloud.compute_v1.types.Warning):
+            An informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["Host"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="Host",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
     )
 
 
@@ -54813,6 +58200,108 @@ class ImageParams(proto.Message):
     )
 
 
+class ImageView(proto.Message):
+    r"""Represents a read-only view of a global Image resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        image (google.cloud.compute_v1.types.Image):
+            The Image resource.
+
+            This field is a member of `oneof`_ ``_image``.
+    """
+
+    image: "Image" = proto.Field(
+        proto.MESSAGE,
+        number=100313435,
+        optional=True,
+        message="Image",
+    )
+
+
+class ImageViewsListResponse(proto.Message):
+    r"""Response message for ImageViewsService.List
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+            Etag of the resource.
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.ImageView]):
+            A list of Image resources.
+        kind (str):
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            Output only. [Output Only] Server-defined URL for this
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            Output only. [Output Only] Unreachable resources.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["ImageView"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="ImageView",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
 class InitialStateConfig(proto.Message):
     r"""Initial State for shielded instance,
     these are public keys which are safe to store in public
@@ -54853,6 +58342,67 @@ class InitialStateConfig(proto.Message):
         number=3579,
         optional=True,
         message="FileContentBuffer",
+    )
+
+
+class InsertAcceleratorInterconnectRequest(proto.Message):
+    r"""A request message for AcceleratorInterconnects.Insert. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_interconnects_insert_request_resource (google.cloud.compute_v1.types.AcceleratorInterconnectsInsertRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be
+            a valid UUID with the exception that zero UUID
+            is not supported
+            (00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone
+            where you want to create the accelerator
+            interconnect. Zone name should conform to
+            RFC1035.
+    """
+
+    accelerator_interconnects_insert_request_resource: "AcceleratorInterconnectsInsertRequest" = proto.Field(
+        proto.MESSAGE,
+        number=159033622,
+        message="AcceleratorInterconnectsInsertRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
     )
 
 
@@ -55270,6 +58820,8 @@ class InsertFirewallPolicyRequest(proto.Message):
             "folders/[FOLDER_ID]" if the parent is a folder or
             "organizations/[ORGANIZATION_ID]" if the parent is an
             organization.
+
+            This field is a member of `oneof`_ ``_parent_id``.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -55302,6 +58854,7 @@ class InsertFirewallPolicyRequest(proto.Message):
     parent_id: str = proto.Field(
         proto.STRING,
         number=459714768,
+        optional=True,
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -55731,6 +59284,50 @@ class InsertGlobalVmExtensionPolicyRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
+class InsertHaControllerRequest(proto.Message):
+    r"""A request message for HaControllers.Insert. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        ha_controller_resource (google.cloud.compute_v1.types.HaController):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    ha_controller_resource: "HaController" = proto.Field(
+        proto.MESSAGE,
+        number=229262603,
+        message="HaController",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -60388,6 +63985,7 @@ class Instance(proto.Message):
 
             For example:
             zones/us-central1-f/machineTypes/custom-4-5120
+
             For a full list of restrictions, read
             theSpecifications for custom machine types.
 
@@ -60637,6 +64235,8 @@ class Instance(proto.Message):
                 For Flex Start provisioning instance is
                 waiting for available capacity from Dynamic
                 Workload Scheduler (DWS).
+            PENDING_STOP (362509770):
+                The instance is gracefully shutting down.
             PROVISIONING (290896621):
                 Resources are being allocated for the
                 instance.
@@ -60664,6 +64264,7 @@ class Instance(proto.Message):
         UNDEFINED_STATUS = 0
         DEPROVISIONING = 428935662
         PENDING = 35394935
+        PENDING_STOP = 362509770
         PROVISIONING = 290896621
         REPAIRING = 413483285
         RUNNING = 121282975
@@ -61146,6 +64747,12 @@ class InstanceFlexibilityPolicyInstanceSelection(proto.Message):
             created from these properties. This field only accepts a
             machine type names, for example ``n2-standard-4`` and not
             URLs or partial URLs.
+        min_cpu_platform (str):
+            Name of the minimum CPU platform to be used
+            by this instance selection. e.g. 'Intel Ice
+            Lake'.
+
+            This field is a member of `oneof`_ ``_min_cpu_platform``.
         rank (int):
             Rank when prioritizing the shape
             flexibilities. The instance selections with rank
@@ -61164,6 +64771,11 @@ class InstanceFlexibilityPolicyInstanceSelection(proto.Message):
     machine_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=79720065,
+    )
+    min_cpu_platform: str = proto.Field(
+        proto.STRING,
+        number=242912759,
+        optional=True,
     )
     rank: int = proto.Field(
         proto.INT64,
@@ -62304,9 +65916,18 @@ class InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection(proto.Messa
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        disks (MutableSequence[google.cloud.compute_v1.types.AttachedDisk]):
+            List of disks to be attached to the instances
+            created from this selection.
         machine_types (MutableSequence[str]):
             Full machine-type names, e.g.
             "n1-standard-16".
+        min_cpu_platform (str):
+            Name of the minimum CPU platform to be used
+            by this instance selection. e.g. 'Intel Ice
+            Lake'.
+
+            This field is a member of `oneof`_ ``_min_cpu_platform``.
         rank (int):
             Preference of this instance selection. Lower
             number means higher preference. MIG will first
@@ -62319,9 +65940,19 @@ class InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection(proto.Messa
             This field is a member of `oneof`_ ``_rank``.
     """
 
+    disks: MutableSequence["AttachedDisk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=95594102,
+        message="AttachedDisk",
+    )
     machine_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=79720065,
+    )
+    min_cpu_platform: str = proto.Field(
+        proto.STRING,
+        number=242912759,
+        optional=True,
     )
     rank: int = proto.Field(
         proto.INT32,
@@ -62411,17 +66042,16 @@ class InstanceGroupManagerInstanceLifecyclePolicy(proto.Message):
            repairing VMs in a MIG.
            - DO_NOTHING: MIG does not repair a failed VM.
 
-        Additional supported values which may be not listed in the enum
-        directly due to technical reasons: DO_NOTHING REPAIR
-
         Values:
             UNDEFINED_DEFAULT_ACTION_ON_FAILURE (0):
                 A value indicating that the enum field is not
                 set.
             DO_NOTHING (451307513):
-                No description available.
+                MIG does not repair a failed VM.
             REPAIR (266277773):
-                No description available.
+                (default): MIG automatically repairs a failed
+                VM by recreating it. For more information, see
+                About repairing VMs in a MIG.
         """
 
         UNDEFINED_DEFAULT_ACTION_ON_FAILURE = 0
@@ -65656,7 +69286,15 @@ class InstancePropertiesPatch(proto.Message):
     r"""Represents the change that you want to make to the instance
     properties.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        expose_host_topology (bool):
+            This optional flag exposes the hashed
+            physical host ID.
+
+            This field is a member of `oneof`_ ``_expose_host_topology``.
         labels (MutableMapping[str, str]):
             The label key-value pairs that you want to
             patch onto the instance.
@@ -65666,6 +69304,11 @@ class InstancePropertiesPatch(proto.Message):
             see Project and instance metadata.
     """
 
+    expose_host_topology: bool = proto.Field(
+        proto.BOOL,
+        number=428530155,
+        optional=True,
+    )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -66157,6 +69800,8 @@ class InstanceWithNamedPorts(proto.Message):
                 For Flex Start provisioning instance is
                 waiting for available capacity from Dynamic
                 Workload Scheduler (DWS).
+            PENDING_STOP (362509770):
+                The instance is gracefully shutting down.
             PROVISIONING (290896621):
                 Resources are being allocated for the
                 instance.
@@ -66184,6 +69829,7 @@ class InstanceWithNamedPorts(proto.Message):
         UNDEFINED_STATUS = 0
         DEPROVISIONING = 428935662
         PENDING = 35394935
+        PENDING_STOP = 362509770
         PROVISIONING = 290896621
         REPAIRING = 413483285
         RUNNING = 121282975
@@ -66727,6 +70373,26 @@ class InstancesStartWithEncryptionKeyRequest(proto.Message):
         proto.MESSAGE,
         number=95594102,
         message="CustomerEncryptionKeyProtectedDisk",
+    )
+
+
+class InstancesTroubleshootOperationMetadata(proto.Message):
+    r"""[Output Only] Operation metadata for instances.troubleshoot.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        troubleshoot_output (str):
+            Output only. [Output Only] Serialized output of the
+            troubleshooting diagnostic run.
+
+            This field is a member of `oneof`_ ``_troubleshoot_output``.
+    """
+
+    troubleshoot_output: str = proto.Field(
+        proto.STRING,
+        number=327251096,
+        optional=True,
     )
 
 
@@ -67861,6 +71527,11 @@ class Interconnect(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            Output only. Server-defined URL for this
+            resource with the resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
         state (str):
             Output only. [Output Only] The current state of Interconnect
             functionality, which can take one of the following values:
@@ -68232,6 +71903,11 @@ class Interconnect(proto.Message):
     self_link: str = proto.Field(
         proto.STRING,
         number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
         optional=True,
     )
     state: str = proto.Field(
@@ -72977,11 +76653,33 @@ class InterconnectLocationCrossSiteInterconnectInfo(proto.Message):
             InterconnectLocations.
 
             This field is a member of `oneof`_ ``_city``.
+        max_dynamic_path_bandwidth_gbps (int):
+            Output only. The maximum unmetered bandwidth
+            for dynamic paths allowable per WireGroup for
+            this metro.
+
+            This field is a member of `oneof`_ ``_max_dynamic_path_bandwidth_gbps``.
+        max_fixed_path_bandwidth_gbps (int):
+            Output only. The maximum unmetered bandwidth
+            for fixed paths allowable per WireGroup for this
+            metro.
+
+            This field is a member of `oneof`_ ``_max_fixed_path_bandwidth_gbps``.
     """
 
     city: str = proto.Field(
         proto.STRING,
         number=3053931,
+        optional=True,
+    )
+    max_dynamic_path_bandwidth_gbps: int = proto.Field(
+        proto.INT64,
+        number=378021355,
+        optional=True,
+    )
+    max_fixed_path_bandwidth_gbps: int = proto.Field(
+        proto.INT64,
+        number=346138080,
         optional=True,
     )
 
@@ -74223,6 +77921,79 @@ class InterconnectsGetMacsecConfigResponse(proto.Message):
     )
 
 
+class InterconnectsSetNameRequest(proto.Message):
+    r"""Request to rename an interconnect.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        current_name (str):
+            The current name of the interconnect.
+            The name must be 1-63 characters long, and
+            comply with RFC1035.
+
+            This field is a member of `oneof`_ ``_current_name``.
+        name (str):
+            The new name of the interconnect.
+            The name must be 1-63 characters long, and
+            comply with RFC1035.
+
+            This field is a member of `oneof`_ ``_name``.
+    """
+
+    current_name: str = proto.Field(
+        proto.STRING,
+        number=394983825,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+
+
+class Interval(proto.Message):
+    r"""Represents a time interval, encoded as a Timestamp start
+    (inclusive) and a Timestamp end (exclusive).
+
+    The start must be less than or equal to the end.
+    When the start equals the end, the interval is empty (matches no
+    time). When both start and end are unspecified, the interval
+    matches any time.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        end_time (str):
+            Optional. Exclusive end of the interval.
+
+            If specified, a Timestamp matching this interval
+            will have to be before the end.
+
+            This field is a member of `oneof`_ ``_end_time``.
+        start_time (str):
+            Optional. Inclusive start of the interval.
+
+            If specified, a Timestamp matching this interval
+            will have to be the same or after the start.
+
+            This field is a member of `oneof`_ ``_start_time``.
+    """
+
+    end_time: str = proto.Field(
+        proto.STRING,
+        number=114938801,
+        optional=True,
+    )
+    start_time: str = proto.Field(
+        proto.STRING,
+        number=37467274,
+        optional=True,
+    )
+
+
 class InvalidateCacheUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.InvalidateCache. See the method
     description for details.
@@ -74977,6 +78748,312 @@ class LicensesListResponse(proto.Message):
     )
 
 
+class ListAcceleratorInterconnectMemberInstancesRequest(proto.Message):
+    r"""A request message for
+    AcceleratorInterconnectMemberInstances.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_interconnect (str):
+            Name of the parent AcceleratorInterconnect.
+            The name should conform to RFC1035 or be a
+            resource ID.
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for the request.
+        zone (str):
+            Zone where the AcceleratorInterconnect is
+            located. Zone name should conform to RFC1035.
+    """
+
+    accelerator_interconnect: str = proto.Field(
+        proto.STRING,
+        number=313143778,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class ListAcceleratorInterconnectsRequest(proto.Message):
+    r"""A request message for AcceleratorInterconnects.List. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        zone (str):
+            The name of thezone where the
+            accelerator interconnect is located. Zone name
+            should conform to RFC1035.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class ListAcceleratorTypesRequest(proto.Message):
     r"""A request message for AcceleratorTypes.List. See the method
     description for details.
@@ -75090,17 +79167,6 @@ class ListAcceleratorTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -75128,11 +79194,6 @@ class ListAcceleratorTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -75255,17 +79316,6 @@ class ListAddressesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -75295,11 +79345,6 @@ class ListAddressesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -75474,17 +79519,6 @@ class ListAutoscalersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone for this request.
     """
@@ -75512,11 +79546,6 @@ class ListAutoscalersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -75640,17 +79669,6 @@ class ListAvailableFeaturesRegionSslPoliciesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -75680,11 +79698,6 @@ class ListAvailableFeaturesRegionSslPoliciesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -75801,17 +79814,6 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -75837,11 +79839,6 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -75958,17 +79955,6 @@ class ListBackendBucketsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -75994,11 +79980,6 @@ class ListBackendBucketsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -76115,17 +80096,6 @@ class ListBackendServicesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -76151,11 +80121,6 @@ class ListBackendServicesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -76296,17 +80261,6 @@ class ListBgpRoutesRoutersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         route_type (str):
             (Required) limit results to this type of
             route (either LEARNED or ADVERTISED)
@@ -76408,11 +80362,6 @@ class ListBgpRoutesRoutersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     route_type: str = proto.Field(
         proto.STRING,
@@ -76538,17 +80487,6 @@ class ListCrossSiteNetworksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -76574,11 +80512,6 @@ class ListCrossSiteNetworksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -76695,17 +80628,6 @@ class ListDiskTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -76733,11 +80655,6 @@ class ListDiskTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -76858,17 +80775,6 @@ class ListDisksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -76896,11 +80802,6 @@ class ListDisksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -77021,17 +80922,6 @@ class ListDisksStoragePoolsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         storage_pool (str):
             Name of the storage pool to list disks of.
         zone (str):
@@ -77061,11 +80951,6 @@ class ListDisksStoragePoolsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     storage_pool: str = proto.Field(
         proto.STRING,
@@ -77195,17 +81080,6 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of thezone where the managed
             instance group is located.
@@ -77239,11 +81113,6 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -77372,17 +81241,6 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
             This should conform to RFC1035.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -77416,11 +81274,6 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -77537,17 +81390,6 @@ class ListExternalVpnGatewaysRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -77573,11 +81415,6 @@ class ListExternalVpnGatewaysRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -77699,17 +81536,6 @@ class ListFirewallPoliciesRequest(proto.Message):
             organization.
 
             This field is a member of `oneof`_ ``_parent_id``.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -77735,11 +81561,6 @@ class ListFirewallPoliciesRequest(proto.Message):
     parent_id: str = proto.Field(
         proto.STRING,
         number=459714768,
-        optional=True,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
         optional=True,
     )
 
@@ -77857,17 +81678,6 @@ class ListFirewallsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -77893,11 +81703,6 @@ class ListFirewallsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -78016,17 +81821,6 @@ class ListForwardingRulesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -78056,11 +81850,6 @@ class ListForwardingRulesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -78177,17 +81966,6 @@ class ListFutureReservationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone for this request. Name
             should conform to RFC1035.
@@ -78216,11 +81994,6 @@ class ListFutureReservationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -78341,17 +82114,6 @@ class ListGlobalAddressesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -78377,11 +82139,6 @@ class ListGlobalAddressesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -78498,17 +82255,6 @@ class ListGlobalForwardingRulesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -78534,11 +82280,6 @@ class ListGlobalForwardingRulesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -78655,17 +82396,6 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -78691,11 +82421,6 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -78812,17 +82537,6 @@ class ListGlobalOperationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -78848,11 +82562,6 @@ class ListGlobalOperationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -78971,17 +82680,6 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
             Parent ID for this request.
 
             This field is a member of `oneof`_ ``_parent_id``.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -79007,11 +82705,6 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
     parent_id: str = proto.Field(
         proto.STRING,
         number=459714768,
-        optional=True,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
         optional=True,
     )
 
@@ -79129,17 +82822,6 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -79165,11 +82847,6 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -79286,17 +82963,6 @@ class ListGlobalVmExtensionPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -79323,10 +82989,152 @@ class ListGlobalVmExtensionPoliciesRequest(proto.Message):
         proto.STRING,
         number=227560217,
     )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
+
+
+class ListHaControllersRequest(proto.Message):
+    r"""A request message for HaControllers.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
         optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
     )
 
 
@@ -79443,17 +83251,6 @@ class ListHealthChecksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -79480,10 +83277,313 @@ class ListHealthChecksRequest(proto.Message):
         proto.STRING,
         number=227560217,
     )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
+
+
+class ListHostsRequest(proto.Message):
+    r"""A request message for Hosts.List. See the method description
+    for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        association (str):
+            The parent resource association for the Host. This field
+            specifies the hierarchical context (e.g., reservation,
+            block, sub-block) when accessing the host. For example,
+            reservations/reservation_name,
+            reservations/reservation_name/reservationBlocks/reservation_block_name
+            or
+            reservations/reservation_name/reservationBlocks/reservation_block_name/reservationSubBlocks/reservation_sub_block_name.
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            The project ID for this request.
+        zone (str):
+            The name of the zone for this request,
+            formatted as RFC1035.
+    """
+
+    association: str = proto.Field(
+        proto.STRING,
+        number=449371265,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
         optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class ListImageViewsRequest(proto.Message):
+    r"""A request message for ImageViews.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Required. Project ID for this request.
+        region (str):
+            Required. Name of the region for this
+            request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
     )
 
 
@@ -79600,17 +83700,6 @@ class ListImagesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -79636,11 +83725,6 @@ class ListImagesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -79761,17 +83845,6 @@ class ListInstanceGroupManagerResizeRequestsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of thezone where the managed
             instance group is located. The name should
@@ -79805,11 +83878,6 @@ class ListInstanceGroupManagerResizeRequestsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -79930,17 +83998,6 @@ class ListInstanceGroupManagersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of thezone where the managed
             instance group is located.
@@ -79969,11 +84026,6 @@ class ListInstanceGroupManagersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -80094,17 +84146,6 @@ class ListInstanceGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of thezone
             where the instance group is located.
@@ -80133,11 +84174,6 @@ class ListInstanceGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -80258,17 +84294,6 @@ class ListInstanceTemplatesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -80294,11 +84319,6 @@ class ListInstanceTemplatesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -80420,17 +84440,6 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone
             where the instance group is located.
@@ -80468,11 +84477,6 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -80600,17 +84604,6 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
             Name of the region scoping this request.
         region_instance_groups_list_instances_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupsListInstancesRequest):
             The body resource for this request
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -80649,11 +84642,6 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
         proto.MESSAGE,
         number=48239828,
         message="RegionInstanceGroupsListInstancesRequest",
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -80770,17 +84758,6 @@ class ListInstancesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -80808,11 +84785,6 @@ class ListInstancesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -81022,17 +84994,6 @@ class ListInstantSnapshotGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -81060,11 +85021,6 @@ class ListInstantSnapshotGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -81185,17 +85141,6 @@ class ListInstantSnapshotsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -81223,11 +85168,6 @@ class ListInstantSnapshotsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -81348,17 +85288,6 @@ class ListInterconnectAttachmentGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -81384,11 +85313,6 @@ class ListInterconnectAttachmentGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -81507,17 +85431,6 @@ class ListInterconnectAttachmentsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -81547,11 +85460,6 @@ class ListInterconnectAttachmentsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -81668,17 +85576,6 @@ class ListInterconnectGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -81704,11 +85601,6 @@ class ListInterconnectGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -81825,17 +85717,6 @@ class ListInterconnectLocationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -81861,11 +85742,6 @@ class ListInterconnectLocationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -81982,17 +85858,6 @@ class ListInterconnectRemoteLocationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -82018,11 +85883,6 @@ class ListInterconnectRemoteLocationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -82139,17 +85999,6 @@ class ListInterconnectsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -82175,11 +86024,6 @@ class ListInterconnectsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -82296,17 +86140,6 @@ class ListLicensesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -82332,11 +86165,6 @@ class ListLicensesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -82453,17 +86281,6 @@ class ListMachineImagesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -82489,11 +86306,6 @@ class ListMachineImagesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -82610,17 +86422,6 @@ class ListMachineTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -82648,11 +86449,6 @@ class ListMachineTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -82776,17 +86572,6 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of thezone where the managed
             instance group is located.
@@ -82819,11 +86604,6 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -82949,17 +86729,6 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -82994,10 +86763,146 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
         proto.STRING,
         number=138946292,
     )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
+
+
+class ListManagedRulesetsRequest(proto.Message):
+    r"""A request message for ManagedRulesets.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
         optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
     )
 
 
@@ -83116,17 +87021,6 @@ class ListNamedSetsRoutersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         router (str):
             Name or id of the resource for this request.
             Name should conform to RFC1035.
@@ -83159,11 +87053,6 @@ class ListNamedSetsRoutersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     router: str = proto.Field(
         proto.STRING,
@@ -83286,17 +87175,6 @@ class ListNetworkAttachmentsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region of this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -83326,11 +87204,6 @@ class ListNetworkAttachmentsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -83447,17 +87320,6 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of thezone
             where the network endpoint group is located. It
@@ -83487,11 +87349,6 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -83618,17 +87475,6 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -83658,11 +87504,6 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -83787,17 +87628,6 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone where
             the network endpoint group is located. It should
@@ -83836,11 +87666,6 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -83971,17 +87796,6 @@ class ListNetworkEndpointsRegionNetworkEndpointGroupsRequest(proto.Message):
             The name of theregion
             where the network endpoint group is located. It
             should comply with RFC1035.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -84015,11 +87829,6 @@ class ListNetworkEndpointsRegionNetworkEndpointGroupsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -84136,17 +87945,6 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -84172,11 +87970,6 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -84293,17 +88086,6 @@ class ListNetworkProfilesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -84329,11 +88111,6 @@ class ListNetworkProfilesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -84450,17 +88227,6 @@ class ListNetworksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -84486,11 +88252,6 @@ class ListNetworksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -84607,17 +88368,6 @@ class ListNodeGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -84645,11 +88395,6 @@ class ListNodeGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -84772,17 +88517,6 @@ class ListNodeTemplatesRequest(proto.Message):
             Project ID for this request.
         region (str):
             The name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -84812,11 +88546,6 @@ class ListNodeTemplatesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -84933,17 +88662,6 @@ class ListNodeTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -84971,11 +88689,6 @@ class ListNodeTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -85099,17 +88812,6 @@ class ListNodesNodeGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -85141,11 +88843,6 @@ class ListNodesNodeGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -85268,17 +88965,6 @@ class ListOrganizationSecurityPoliciesRequest(proto.Message):
             Parent ID for this request.
 
             This field is a member of `oneof`_ ``_parent_id``.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -85304,11 +88990,6 @@ class ListOrganizationSecurityPoliciesRequest(proto.Message):
     parent_id: str = proto.Field(
         proto.STRING,
         number=459714768,
-        optional=True,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
         optional=True,
     )
 
@@ -85428,17 +89109,6 @@ class ListPacketMirroringsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -85468,11 +89138,6 @@ class ListPacketMirroringsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -85608,17 +89273,6 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
             dynamic routes in the region.
 
             This field is a member of `oneof`_ ``_region``.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     class Direction(proto.Enum):
@@ -85679,11 +89333,6 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-        optional=True,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
         optional=True,
     )
 
@@ -85805,17 +89454,6 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of thezone
             where the managed instance group is located.
@@ -85849,11 +89487,6 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -85981,17 +89614,6 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
         region (str):
             Name of the region scoping this request,
             should conform to RFC1035.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -86025,11 +89647,6 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -86149,17 +89766,6 @@ class ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest(proto.M
             Parent ID for this request.
 
             This field is a member of `oneof`_ ``_parent_id``.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -86185,11 +89791,6 @@ class ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest(proto.M
     parent_id: str = proto.Field(
         proto.STRING,
         number=459714768,
-        optional=True,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
         optional=True,
     )
 
@@ -86308,17 +89909,6 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -86344,11 +89934,6 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -86465,17 +90050,6 @@ class ListPreviewFeaturesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -86501,11 +90075,6 @@ class ListPreviewFeaturesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -86622,17 +90191,6 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -86658,11 +90216,6 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -86781,17 +90334,6 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region of this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -86821,11 +90363,6 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -86946,17 +90483,6 @@ class ListReferrersInstancesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -86988,11 +90514,6 @@ class ListReferrersInstancesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -87115,17 +90636,6 @@ class ListRegionAutoscalersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -87155,11 +90665,6 @@ class ListRegionAutoscalersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -87278,17 +90783,6 @@ class ListRegionBackendBucketsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region of this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -87318,11 +90812,6 @@ class ListRegionBackendBucketsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -87441,17 +90930,6 @@ class ListRegionBackendServicesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -87481,11 +90959,6 @@ class ListRegionBackendServicesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -87604,17 +91077,6 @@ class ListRegionCommitmentsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -87644,11 +91106,6 @@ class ListRegionCommitmentsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -87767,17 +91224,6 @@ class ListRegionCompositeHealthChecksRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -87807,11 +91253,6 @@ class ListRegionCompositeHealthChecksRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -87930,17 +91371,6 @@ class ListRegionDiskTypesRequest(proto.Message):
             Project ID for this request.
         region (str):
             The name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -87970,11 +91400,6 @@ class ListRegionDiskTypesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -88093,17 +91518,6 @@ class ListRegionDisksRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -88133,11 +91547,6 @@ class ListRegionDisksRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -88256,17 +91665,6 @@ class ListRegionHealthAggregationPoliciesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -88296,11 +91694,6 @@ class ListRegionHealthAggregationPoliciesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -88419,17 +91812,6 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -88459,11 +91841,6 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -88582,17 +91959,6 @@ class ListRegionHealthChecksRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -88622,11 +91988,6 @@ class ListRegionHealthChecksRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -88745,17 +92106,6 @@ class ListRegionHealthSourcesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -88785,11 +92135,6 @@ class ListRegionHealthSourcesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -88914,17 +92259,6 @@ class ListRegionInstanceGroupManagerResizeRequestsRequest(proto.Message):
             Name of the region
             scoping this request. Name should conform to
             RFC1035.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -88958,11 +92292,6 @@ class ListRegionInstanceGroupManagerResizeRequestsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -89081,17 +92410,6 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -89121,11 +92439,6 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -89244,17 +92557,6 @@ class ListRegionInstanceGroupsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -89284,11 +92586,6 @@ class ListRegionInstanceGroupsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -89407,17 +92704,6 @@ class ListRegionInstanceTemplatesRequest(proto.Message):
             Project ID for this request.
         region (str):
             The name of the regions for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -89447,11 +92733,6 @@ class ListRegionInstanceTemplatesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -89570,17 +92851,6 @@ class ListRegionInstantSnapshotGroupsRequest(proto.Message):
             Project ID for this request.
         region (str):
             The name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -89610,11 +92880,6 @@ class ListRegionInstantSnapshotGroupsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -89733,17 +92998,6 @@ class ListRegionInstantSnapshotsRequest(proto.Message):
             Project ID for this request.
         region (str):
             The name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -89773,11 +93027,6 @@ class ListRegionInstantSnapshotsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -89898,17 +93147,6 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
             The name of theregion
             where the network endpoint group is located. It
             should comply with RFC1035.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -89938,11 +93176,6 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -90061,17 +93294,6 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -90101,11 +93323,6 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -90224,17 +93441,6 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -90264,11 +93470,6 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -90387,17 +93588,6 @@ class ListRegionOperationsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -90427,11 +93617,6 @@ class ListRegionOperationsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -90550,17 +93735,6 @@ class ListRegionSecurityPoliciesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -90590,11 +93764,6 @@ class ListRegionSecurityPoliciesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -90713,17 +93882,6 @@ class ListRegionSnapshotsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -90753,11 +93911,6 @@ class ListRegionSnapshotsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -90876,17 +94029,6 @@ class ListRegionSslCertificatesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -90916,11 +94058,6 @@ class ListRegionSslCertificatesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -91039,17 +94176,6 @@ class ListRegionSslPoliciesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -91079,11 +94205,6 @@ class ListRegionSslPoliciesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -91202,17 +94323,6 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -91242,11 +94352,6 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -91365,17 +94470,6 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -91405,11 +94499,6 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -91528,17 +94617,6 @@ class ListRegionTargetTcpProxiesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -91568,11 +94646,6 @@ class ListRegionTargetTcpProxiesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -91691,17 +94764,6 @@ class ListRegionUrlMapsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -91731,11 +94793,6 @@ class ListRegionUrlMapsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -91854,17 +94911,6 @@ class ListRegionZonesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -91894,11 +94940,6 @@ class ListRegionZonesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -92015,17 +95056,6 @@ class ListRegionsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -92052,10 +95082,146 @@ class ListRegionsRequest(proto.Message):
         proto.STRING,
         number=227560217,
     )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
+
+
+class ListReliabilityRisksRequest(proto.Message):
+    r"""A request message for ReliabilityRisks.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
+
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
+
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
         optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
     )
 
 
@@ -92176,17 +95342,6 @@ class ListReservationBlocksRequest(proto.Message):
             The name of the reservation.
             Name should conform to RFC1035 or be a resource
             ID.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone for this request. Zone name
             should conform to RFC1035.
@@ -92219,11 +95374,6 @@ class ListReservationBlocksRequest(proto.Message):
     reservation: str = proto.Field(
         proto.STRING,
         number=47530956,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -92348,17 +95498,6 @@ class ListReservationSlotsRequest(proto.Message):
             reservations/{reservation_name}/reservationBlocks/{reservation_block_name}/reservationSubBlocks/{reservation_sub_block_name}
         project (str):
             The project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request,
             formatted as RFC1035.
@@ -92391,11 +95530,6 @@ class ListReservationSlotsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -92520,17 +95654,6 @@ class ListReservationSubBlocksRequest(proto.Message):
             reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone for this request. Zone name
             should conform to RFC1035.
@@ -92563,11 +95686,6 @@ class ListReservationSubBlocksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -92688,17 +95806,6 @@ class ListReservationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone for this request.
     """
@@ -92726,11 +95833,6 @@ class ListReservationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -92853,17 +95955,6 @@ class ListResourcePoliciesRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -92893,11 +95984,6 @@ class ListResourcePoliciesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -93014,17 +96100,6 @@ class ListRolloutPlansRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -93050,11 +96125,6 @@ class ListRolloutPlansRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -93171,17 +96241,6 @@ class ListRolloutsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -93207,11 +96266,6 @@ class ListRolloutsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -93330,17 +96384,6 @@ class ListRoutePoliciesRoutersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         router (str):
             Name or id of the resource for this request.
             Name should conform to RFC1035.
@@ -93373,11 +96416,6 @@ class ListRoutePoliciesRoutersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     router: str = proto.Field(
         proto.STRING,
@@ -93500,17 +96538,6 @@ class ListRoutersRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -93540,11 +96567,6 @@ class ListRoutersRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -93661,17 +96683,6 @@ class ListRoutesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -93697,11 +96708,6 @@ class ListRoutesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -93818,17 +96824,6 @@ class ListSecurityPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -93854,11 +96849,6 @@ class ListSecurityPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -93977,17 +96967,6 @@ class ListServiceAttachmentsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region of this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -94017,11 +96996,6 @@ class ListServiceAttachmentsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -94138,17 +97112,6 @@ class ListSnapshotsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -94174,11 +97137,6 @@ class ListSnapshotsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -94295,17 +97253,6 @@ class ListSslCertificatesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -94331,11 +97278,6 @@ class ListSslCertificatesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -94452,17 +97394,6 @@ class ListSslPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -94488,11 +97419,6 @@ class ListSslPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -94609,17 +97535,6 @@ class ListStoragePoolTypesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -94647,11 +97562,6 @@ class ListStoragePoolTypesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -94772,17 +97682,6 @@ class ListStoragePoolsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             The name of the zone for this request.
     """
@@ -94810,11 +97709,6 @@ class ListStoragePoolsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -94937,17 +97831,6 @@ class ListSubnetworksRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         views (str):
             Defines the extra views returned back in the subnetwork
             resource. Supported values:
@@ -95012,11 +97895,6 @@ class ListSubnetworksRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     views: str = proto.Field(
         proto.STRING,
@@ -95138,17 +98016,6 @@ class ListTargetGrpcProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -95174,11 +98041,6 @@ class ListTargetGrpcProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -95295,17 +98157,6 @@ class ListTargetHttpProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -95331,11 +98182,6 @@ class ListTargetHttpProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -95452,17 +98298,6 @@ class ListTargetHttpsProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -95488,11 +98323,6 @@ class ListTargetHttpsProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -95609,17 +98439,6 @@ class ListTargetInstancesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone scoping this request.
     """
@@ -95647,11 +98466,6 @@ class ListTargetInstancesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -95774,17 +98588,6 @@ class ListTargetPoolsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region scoping this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -95814,11 +98617,6 @@ class ListTargetPoolsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -95935,17 +98733,6 @@ class ListTargetSslProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -95971,11 +98758,6 @@ class ListTargetSslProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -96092,17 +98874,6 @@ class ListTargetTcpProxiesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -96128,11 +98899,6 @@ class ListTargetTcpProxiesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -96251,17 +99017,6 @@ class ListTargetVpnGatewaysRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -96291,11 +99046,6 @@ class ListTargetVpnGatewaysRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -96412,17 +99162,6 @@ class ListUrlMapsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -96448,11 +99187,6 @@ class ListUrlMapsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -96569,17 +99303,6 @@ class ListUsableBackendBucketsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -96605,11 +99328,6 @@ class ListUsableBackendBucketsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -96726,17 +99444,6 @@ class ListUsableBackendServicesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -96762,11 +99469,6 @@ class ListUsableBackendServicesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -96887,17 +99589,6 @@ class ListUsableRegionBackendBucketsRequest(proto.Message):
             Name of the region scoping this request.
             It must be a string that meets the requirements
             in RFC1035.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -96927,11 +99618,6 @@ class ListUsableRegionBackendBucketsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -97052,17 +99738,6 @@ class ListUsableRegionBackendServicesRequest(proto.Message):
             Name of the region scoping this request.
             It must be a string that meets the requirements
             in RFC1035.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -97092,11 +99767,6 @@ class ListUsableRegionBackendServicesRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -97213,17 +99883,6 @@ class ListUsableSubnetworksRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         service_project (str):
             The project id or project number in which the subnetwork is
             intended to be used. Only applied for Shared VPC. See
@@ -97256,11 +99915,6 @@ class ListUsableSubnetworksRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     service_project: str = proto.Field(
         proto.STRING,
@@ -97384,17 +100038,6 @@ class ListVpnGatewaysRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -97424,11 +100067,6 @@ class ListVpnGatewaysRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -97547,17 +100185,6 @@ class ListVpnTunnelsRequest(proto.Message):
             Project ID for this request.
         region (str):
             Name of the region for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -97587,11 +100214,6 @@ class ListVpnTunnelsRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -97710,17 +100332,6 @@ class ListWireGroupsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     cross_site_network: str = proto.Field(
@@ -97750,11 +100361,6 @@ class ListWireGroupsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -97873,17 +100479,6 @@ class ListXpnHostsProjectsRequest(proto.Message):
             Project ID for this request.
         projects_list_xpn_hosts_request_resource (google.cloud.compute_v1.types.ProjectsListXpnHostsRequest):
             The body resource for this request
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -97916,11 +100511,6 @@ class ListXpnHostsProjectsRequest(proto.Message):
             number=238266391,
             message="ProjectsListXpnHostsRequest",
         )
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -98037,17 +100627,6 @@ class ListZoneOperationsRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone for request.
     """
@@ -98075,11 +100654,6 @@ class ListZoneOperationsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -98200,17 +100774,6 @@ class ListZoneVmExtensionPoliciesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
             Name of the zone for this request.
     """
@@ -98238,11 +100801,6 @@ class ListZoneVmExtensionPoliciesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -98363,17 +100921,6 @@ class ListZonesRequest(proto.Message):
             This field is a member of `oneof`_ ``_page_token``.
         project (str):
             Project ID for this request.
-        return_partial_success (bool):
-            Opt-in for partial success behavior which
-            provides partial results in case of failure. The
-            default value is false.
-
-            For example, when partial success behavior is
-            enabled, aggregatedList for a single zone scope
-            either returns all resources in the zone or no
-            resources, with an error code.
-
-            This field is a member of `oneof`_ ``_return_partial_success``.
     """
 
     filter: str = proto.Field(
@@ -98399,11 +100946,6 @@ class ListZonesRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
-    )
-    return_partial_success: bool = proto.Field(
-        proto.BOOL,
-        number=517198390,
-        optional=True,
     )
 
 
@@ -99548,6 +102090,15 @@ class ManagedInstance(proto.Message):
             programmed stop scheduled.
 
             This field is a member of `oneof`_ ``_shutdown_details``.
+        target_status (str):
+            Output only. The eventual status of the
+            instance. The instance group manager will not be
+            identified as stable till each managed instance
+            reaches its targetStatus.
+            Check the TargetStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_target_status``.
         version (google.cloud.compute_v1.types.ManagedInstanceVersion):
             Output only. [Output Only] Intended version of this
             instance.
@@ -99663,9 +102214,7 @@ class ManagedInstance(proto.Message):
 
     class InstanceStatus(proto.Enum):
         r"""Output only. [Output Only] The status of the instance. This field is
-        empty when the instance does not exist. Additional supported values
-        which may be not listed in the enum directly due to technical
-        reasons: STOPPING SUSPENDING
+        empty when the instance does not exist.
 
         Values:
             UNDEFINED_INSTANCE_STATUS (0):
@@ -99679,6 +102228,8 @@ class ManagedInstance(proto.Message):
                 For Flex Start provisioning instance is
                 waiting for available capacity from Dynamic
                 Workload Scheduler (DWS).
+            PENDING_STOP (362509770):
+                The instance is gracefully shutting down.
             PROVISIONING (290896621):
                 Resources are being allocated for the
                 instance.
@@ -99692,11 +102243,12 @@ class ManagedInstance(proto.Message):
             STOPPED (444276141):
                 The instance has stopped successfully.
             STOPPING (350791796):
-                No description available.
+                The instance is currently stopping (either
+                being deleted or killed).
             SUSPENDED (51223995):
                 The instance has suspended.
             SUSPENDING (514206246):
-                No description available.
+                The instance is suspending.
             TERMINATED (250018339):
                 The instance has stopped (either by explicit
                 action or underlying failure).
@@ -99705,6 +102257,7 @@ class ManagedInstance(proto.Message):
         UNDEFINED_INSTANCE_STATUS = 0
         DEPROVISIONING = 428935662
         PENDING = 35394935
+        PENDING_STOP = 362509770
         PROVISIONING = 290896621
         REPAIRING = 413483285
         RUNNING = 121282975
@@ -99714,6 +102267,37 @@ class ManagedInstance(proto.Message):
         SUSPENDED = 51223995
         SUSPENDING = 514206246
         TERMINATED = 250018339
+
+    class TargetStatus(proto.Enum):
+        r"""Output only. The eventual status of the instance. The
+        instance group manager will not be identified as stable till
+        each managed instance reaches its targetStatus.
+        Additional supported values which may be not listed in the enum
+        directly due to technical reasons:
+
+        RUNNING
+        STOPPED
+        SUSPENDED
+
+        Values:
+            UNDEFINED_TARGET_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ABANDONED (81797556):
+                The managed instance will eventually be
+                ABANDONED, i.e. dissociated from the managed
+                instance group.
+            DELETED (120962041):
+                The managed instance will eventually be
+                DELETED.
+            INVALID (530283991):
+                Only present to map the STATUS_INVALID value.
+        """
+
+        UNDEFINED_TARGET_STATUS = 0
+        ABANDONED = 81797556
+        DELETED = 120962041
+        INVALID = 530283991
 
     current_action: str = proto.Field(
         proto.STRING,
@@ -99782,6 +102366,11 @@ class ManagedInstance(proto.Message):
         number=15198553,
         optional=True,
         message="ManagedInstanceShutdownDetails",
+    )
+    target_status: str = proto.Field(
+        proto.STRING,
+        number=307799648,
+        optional=True,
     )
     version: "ManagedInstanceVersion" = proto.Field(
         proto.MESSAGE,
@@ -99872,6 +102461,13 @@ class ManagedInstanceLastAttempt(proto.Message):
             last attempt to create or delete the instance.
 
             This field is a member of `oneof`_ ``_errors``.
+        timestamp (str):
+            Output only. Show timestamp only if there is
+            an error. The field value should match
+            corresponding timestamp in listErrors.RFC3339
+            text format.
+
+            This field is a member of `oneof`_ ``_timestamp``.
     """
 
     errors: "ManagedInstanceLastAttemptErrors" = proto.Field(
@@ -99879,6 +102475,11 @@ class ManagedInstanceLastAttempt(proto.Message):
         number=315977579,
         optional=True,
         message="ManagedInstanceLastAttemptErrors",
+    )
+    timestamp: str = proto.Field(
+        proto.STRING,
+        number=55126294,
+        optional=True,
     )
 
 
@@ -99905,16 +102506,33 @@ class ManagedInstancePropertiesFromFlexibilityPolicy(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        disks (MutableSequence[google.cloud.compute_v1.types.AttachedDisk]):
+            List of disks to be attached to the instance.
         machine_type (str):
             Output only. The machine type to be used for
             this instance.
 
             This field is a member of `oneof`_ ``_machine_type``.
+        min_cpu_platform (str):
+            Name of the minimum CPU platform to be used
+            by this instance. e.g. 'Intel Ice Lake'.
+
+            This field is a member of `oneof`_ ``_min_cpu_platform``.
     """
 
+    disks: MutableSequence["AttachedDisk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=95594102,
+        message="AttachedDisk",
+    )
     machine_type: str = proto.Field(
         proto.STRING,
         number=227711026,
+        optional=True,
+    )
+    min_cpu_platform: str = proto.Field(
+        proto.STRING,
+        number=242912759,
         optional=True,
     )
 
@@ -100010,6 +102628,150 @@ class ManagedInstanceVersion(proto.Message):
         proto.STRING,
         number=3373707,
         optional=True,
+    )
+
+
+class ManagedRuleset(proto.Message):
+    r"""Represents a ManagedRuleset resource.
+
+    Managed internally by Cloud Armor CLH for Managed Rules
+    features. Customers can only view these resources to modify
+    their Security Policies. For more information, see
+    https://cloud.google.com/armor/docs/.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        change_log (str):
+            Output only. [Output Only] The change log for this managed
+            ruleset.
+
+            This field is a member of `oneof`_ ``_change_log``.
+        creation_timestamp (str):
+            Output only. [Output Only] Creation timestamp in RFC3339
+            text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            [Output Only] An optional description of this resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        id (int):
+            Output only. [Output Only] The unique identifier for the
+            resource. This identifier is defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        name (str):
+            Name of the resource. Generated internally when the resource
+            is created. The name must be 1-63 characters long, and
+            comply withRFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        rule_ids (MutableSequence[str]):
+            Output only. [Output Only] The list of managed rule IDs that
+            are included in this managed ruleset.
+        ruleset_id (str):
+            Output only. [Output Only] The managed ruleset identifier
+            that can be configured in Security Policy rules.
+
+            This field is a member of `oneof`_ ``_ruleset_id``.
+        self_link (str):
+            Output only. [Output Only] Server-defined URL for the
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+    """
+
+    change_log: str = proto.Field(
+        proto.STRING,
+        number=15896117,
+        optional=True,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    rule_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=226918133,
+    )
+    ruleset_id: str = proto.Field(
+        proto.STRING,
+        number=131214356,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+
+
+class ManagedRulesetList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.ManagedRuleset]):
+            The list of managed rulesets.
+        next_page_token (str):
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        warning (google.cloud.compute_v1.types.Warning):
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["ManagedRuleset"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="ManagedRuleset",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
     )
 
 
@@ -100197,6 +102959,51 @@ class MetadataFilterLabelMatch(proto.Message):
     )
 
 
+class Money(proto.Message):
+    r"""Represents an amount of money with its currency type.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        currency_code (str):
+            The three-letter currency code defined in ISO
+            4217.
+
+            This field is a member of `oneof`_ ``_currency_code``.
+        nanos (int):
+            Number of nano (10^-9) units of the amount. The value must
+            be between -999,999,999 and +999,999,999 inclusive. If
+            ``units`` is positive, ``nanos`` must be positive or zero.
+            If ``units`` is zero, ``nanos`` can be positive, zero, or
+            negative. If ``units`` is negative, ``nanos`` must be
+            negative or zero. For example $-1.75 is represented as
+            ``units``\ =-1 and ``nanos``\ =-750,000,000.
+
+            This field is a member of `oneof`_ ``_nanos``.
+        units (int):
+            The whole units of the amount. For example if
+            ``currencyCode`` is ``"USD"``, then 1 unit is one US dollar.
+
+            This field is a member of `oneof`_ ``_units``.
+    """
+
+    currency_code: str = proto.Field(
+        proto.STRING,
+        number=34986331,
+        optional=True,
+    )
+    nanos: int = proto.Field(
+        proto.INT32,
+        number=104586303,
+        optional=True,
+    )
+    units: int = proto.Field(
+        proto.INT64,
+        number=111433583,
+        optional=True,
+    )
+
+
 class MoveAddressRequest(proto.Message):
     r"""A request message for Addresses.Move. See the method
     description for details.
@@ -100329,6 +103136,8 @@ class MoveFirewallPolicyRequest(proto.Message):
             be "folders/[FOLDER_ID]" if the parent is a folder or
             "organizations/[ORGANIZATION_ID]" if the parent is an
             organization.
+
+            This field is a member of `oneof`_ ``_parent_id``.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -100360,6 +103169,7 @@ class MoveFirewallPolicyRequest(proto.Message):
     parent_id: str = proto.Field(
         proto.STRING,
         number=459714768,
+        optional=True,
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -101601,6 +104411,11 @@ class NetworkEdgeSecurityService(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        params (google.cloud.compute_v1.types.NetworkEdgeSecurityServiceParams):
+            Input only. [Input Only] Additional params passed with the
+            request, but not persisted as part of resource payload.
+
+            This field is a member of `oneof`_ ``_params``.
         region (str):
             Output only. [Output Only] URL of the region where the
             resource resides. You must specify this field as part of the
@@ -101655,6 +104470,12 @@ class NetworkEdgeSecurityService(proto.Message):
         proto.STRING,
         number=3373707,
         optional=True,
+    )
+    params: "NetworkEdgeSecurityServiceParams" = proto.Field(
+        proto.MESSAGE,
+        number=78313862,
+        optional=True,
+        message="NetworkEdgeSecurityServiceParams",
     )
     region: str = proto.Field(
         proto.STRING,
@@ -101769,6 +104590,37 @@ class NetworkEdgeSecurityServiceAggregatedList(proto.Message):
         number=50704284,
         optional=True,
         message="Warning",
+    )
+
+
+class NetworkEdgeSecurityServiceParams(proto.Message):
+    r"""Additional network edge security service parameters.
+
+    Attributes:
+        resource_manager_tags (MutableMapping[str, str]):
+            Tag keys/values directly bound to this resource. Tag keys
+            and values have the same definition as resource manager
+            tags. The field is allowed for INSERT only. The keys/values
+            to set on the resource should be specified in either ID { :
+            } or Namespaced format { : }. For example the following are
+            valid inputs:
+
+            - {"tagKeys/333" : "tagValues/444", "tagKeys/123" :
+              "tagValues/456"}
+            - {"123/environment" : "production", "345/abc" : "xyz"}
+              Note:
+            - Invalid combinations of ID & namespaced format is not
+              supported. For instance: {"123/environment" :
+              "tagValues/444"} is invalid.
+            - Inconsistent format is not supported. For instance:
+              {"tagKeys/333" : "tagValues/444", "123/env" : "prod"} is
+              invalid.
+    """
+
+    resource_manager_tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=377671164,
     )
 
 
@@ -102075,6 +104927,11 @@ class NetworkEndpointGroup(proto.Message):
             GCE_VM_IP (401880793):
                 The network endpoint is represented by an IP
                 address.
+            GCE_VM_IP_DEDICATED_BACKEND (321618974):
+                The network endpoint for targeting a specific
+                network interface of a VM instance in
+                configurations with multiple network interfaces
+                on the same network.
             GCE_VM_IP_PORT (501838375):
                 The network endpoint is represented by IP
                 address and port pair.
@@ -102103,6 +104960,7 @@ class NetworkEndpointGroup(proto.Message):
 
         UNDEFINED_NETWORK_ENDPOINT_TYPE = 0
         GCE_VM_IP = 401880793
+        GCE_VM_IP_DEDICATED_BACKEND = 321618974
         GCE_VM_IP_PORT = 501838375
         GCE_VM_IP_PORTMAP = 22819253
         INTERNET_FQDN_PORT = 404154477
@@ -103175,14 +106033,11 @@ class NetworkInterface(proto.Message):
             INTERNAL (279295677):
                 This network interface can have internal
                 IPv6.
-            UNSPECIFIED_IPV6_ACCESS_TYPE (313080613):
-                No description available.
         """
 
         UNDEFINED_IPV6_ACCESS_TYPE = 0
         EXTERNAL = 35607499
         INTERNAL = 279295677
-        UNSPECIFIED_IPV6_ACCESS_TYPE = 313080613
 
     class NicType(proto.Enum):
         r"""The type of vNIC to be used on this interface. This may be
@@ -103235,15 +106090,12 @@ class NetworkInterface(proto.Message):
             IPV6_ONLY (79632100):
                 The network interface will only be assigned
                 IPv6 addresses.
-            UNSPECIFIED_STACK_TYPE (298084569):
-                No description available.
         """
 
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
         IPV4_ONLY = 22373798
         IPV6_ONLY = 79632100
-        UNSPECIFIED_STACK_TYPE = 298084569
 
     access_configs: MutableSequence["AccessConfig"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -104078,9 +106930,6 @@ class NetworkProfile(proto.Message):
             resource with the resource id.
 
             This field is a member of `oneof`_ ``_self_link_with_id``.
-        zone (str):
-
-            This field is a member of `oneof`_ ``_zone``.
     """
 
     creation_timestamp: str = proto.Field(
@@ -104134,11 +106983,6 @@ class NetworkProfile(proto.Message):
     self_link_with_id: str = proto.Field(
         proto.STRING,
         number=44520962,
-        optional=True,
-    )
-    zone: str = proto.Field(
-        proto.STRING,
-        number=3744684,
         optional=True,
     )
 
@@ -104418,8 +107262,7 @@ class NetworkProfileNetworkFeatures(proto.Message):
     """
 
     class AddressPurposes(proto.Enum):
-        r"""Additional supported values which may be not listed in the enum
-        directly due to technical reasons: PRIVATE_SERVICE_CONNECT
+        r"""
 
         Values:
             UNDEFINED_ADDRESS_PURPOSES (0):
@@ -104440,12 +107283,15 @@ class NetworkProfileNetworkFeatures(proto.Message):
                 attachment is created with the reserved IP
                 address range, when creating a new VPN gateway,
                 its interface IP address is allocated from the
-                associated VLAN attachment’s IP address range.
+                associated VLAN attachment's IP address range.
             NAT_AUTO (163666477):
                 External IP automatically reserved for Cloud
                 NAT.
             PRIVATE_SERVICE_CONNECT (48134724):
-                No description available.
+                A private network IP address that can be used
+                to configure Private Service Connect. This
+                purpose can be specified only forGLOBAL
+                addresses of Type INTERNAL
             SERVERLESS (270492508):
                 A regional internal IP address range reserved
                 for Serverless.
@@ -105626,9 +108472,7 @@ class NetworkRoutingConfig(proto.Message):
     class BgpInterRegionCost(proto.Enum):
         r"""Allows to define a preferred approach for handling inter-region cost
         in the selection process when using the STANDARD BGP best path
-        selection algorithm. Can be DEFAULT orADD_COST_TO_MED. Additional
-        supported values which may be not listed in the enum directly due to
-        technical reasons: ADD_COST_TO_MED DEFAULT
+        selection algorithm. Can be DEFAULT orADD_COST_TO_MED.
 
         Values:
             UNDEFINED_BGP_INTER_REGION_COST (0):
@@ -108126,6 +110970,11 @@ class Operation(proto.Message):
             the operation, this field will be populated.
 
             This field is a member of `oneof`_ ``_error``.
+        get_health_operation_metadata (google.cloud.compute_v1.types.GetHealthOperationMetadata):
+            Output only. Metadata for GetHealth
+            operations.
+
+            This field is a member of `oneof`_ ``_get_health_operation_metadata``.
         get_version_operation_metadata (google.cloud.compute_v1.types.GetVersionOperationMetadata):
 
             This field is a member of `oneof`_ ``_get_version_operation_metadata``.
@@ -108154,6 +111003,11 @@ class Operation(proto.Message):
         instances_bulk_insert_operation_metadata (google.cloud.compute_v1.types.InstancesBulkInsertOperationMetadata):
 
             This field is a member of `oneof`_ ``_instances_bulk_insert_operation_metadata``.
+        instances_troubleshoot_operation_metadata (google.cloud.compute_v1.types.InstancesTroubleshootOperationMetadata):
+            Output only. [Output Only] Operation metadata for
+            instances.troubleshoot.
+
+            This field is a member of `oneof`_ ``_instances_troubleshoot_operation_metadata``.
         kind (str):
             Output only. [Output Only] Type of the resource. Always
             ``compute#operation`` for Operation resources.
@@ -108290,6 +111144,12 @@ class Operation(proto.Message):
         optional=True,
         message="Error",
     )
+    get_health_operation_metadata: "GetHealthOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=303911457,
+        optional=True,
+        message="GetHealthOperationMetadata",
+    )
     get_version_operation_metadata: "GetVersionOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=173230167,
@@ -108323,6 +111183,12 @@ class Operation(proto.Message):
             optional=True,
             message="InstancesBulkInsertOperationMetadata",
         )
+    )
+    instances_troubleshoot_operation_metadata: "InstancesTroubleshootOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=264693341,
+        optional=True,
+        message="InstancesTroubleshootOperationMetadata",
     )
     kind: str = proto.Field(
         proto.STRING,
@@ -109557,6 +112423,311 @@ class PacketMirroringsScopedList(proto.Message):
     )
 
 
+class PartitionFormability(proto.Message):
+    r"""Formability of a partition.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_topology (str):
+            Topological shape (e.g., "4x4x4").
+
+            This field is a member of `oneof`_ ``_accelerator_topology``.
+        parent (str):
+            Partition ID of a partition that is a direct
+            parent in the tree hierarchy. In case the
+            partition represents a full cube, it doesn't
+            have a parent field.
+
+            This field is a member of `oneof`_ ``_parent``.
+        partition_id (str):
+            Identifier for this topological block.
+
+            This field is a member of `oneof`_ ``_partition_id``.
+        status (google.cloud.compute_v1.types.PartitionFormabilityStatus):
+            Output only. Defines the status of the
+            partition.
+
+            This field is a member of `oneof`_ ``_status``.
+        subblock (str):
+            The URL of the capacity subblock.
+
+            This field is a member of `oneof`_ ``_subblock``.
+    """
+
+    accelerator_topology: str = proto.Field(
+        proto.STRING,
+        number=389323203,
+        optional=True,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=78317738,
+        optional=True,
+    )
+    partition_id: str = proto.Field(
+        proto.STRING,
+        number=222396048,
+        optional=True,
+    )
+    status: "PartitionFormabilityStatus" = proto.Field(
+        proto.MESSAGE,
+        number=181260274,
+        optional=True,
+        message="PartitionFormabilityStatus",
+    )
+    subblock: str = proto.Field(
+        proto.STRING,
+        number=70446669,
+        optional=True,
+    )
+
+
+class PartitionFormabilityStatus(proto.Message):
+    r"""Status of a partition formability.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_interconnect (str):
+            URL of the AcceleratorInterconnect utilizing
+            this partition.
+
+            This field is a member of `oneof`_ ``_accelerator_interconnect``.
+        error (google.cloud.compute_v1.types.Error):
+            Detailed error status if the subblock has
+            wrong or no provisioning. When set, only
+            subblock and error are populated.
+
+            This field is a member of `oneof`_ ``_error``.
+        infrastructure_health (str):
+            Physical health of the underlying
+            infrastructure. Check the InfrastructureHealth
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_infrastructure_health``.
+        instance (str):
+            URL of an instance provisioned in a
+            single-host partitionID at the lowest level of
+            the partition tree. Empty if the instance is
+            missing.
+
+            This field is a member of `oneof`_ ``_instance``.
+        instance_state (str):
+            State of the instances within this partition.
+            Check the InstanceState enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_instance_state``.
+        state (str):
+            Current formability state.
+            Check the State enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_state``.
+        usage_state (str):
+            Usage state indicating if the partition is
+            occupied. Check the UsageState enum for the list
+            of possible values.
+
+            This field is a member of `oneof`_ ``_usage_state``.
+    """
+
+    class InfrastructureHealth(proto.Enum):
+        r"""Physical health of the underlying infrastructure.
+
+        Values:
+            UNDEFINED_INFRASTRUCTURE_HEALTH (0):
+                A value indicating that the enum field is not
+                set.
+            DEGRADED (396890926):
+                The underlying infrastructure has issues that
+                degrade performance but allow placement.
+            HEALTHY (439801213):
+                The underlying infrastructure is healthy.
+            INFRASTRUCTURE_HEALTH_UNSPECIFIED (307824080):
+                Unspecified infrastructure health.
+            UNHEALTHY (462118084):
+                The underlying infrastructure has issues that
+                prevent placement.
+        """
+
+        UNDEFINED_INFRASTRUCTURE_HEALTH = 0
+        DEGRADED = 396890926
+        HEALTHY = 439801213
+        INFRASTRUCTURE_HEALTH_UNSPECIFIED = 307824080
+        UNHEALTHY = 462118084
+
+    class InstanceState(proto.Enum):
+        r"""State of the instances within this partition. Additional supported
+        values which may be not listed in the enum directly due to technical
+        reasons: NOT_READY
+
+        Values:
+            UNDEFINED_INSTANCE_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            INSTANCE_STATE_UNSPECIFIED (360741663):
+                Unspecified instance state.
+            RUNNING (121282975):
+                A sufficient number of instances are
+                provisioned and they are in the required status.
+        """
+
+        UNDEFINED_INSTANCE_STATE = 0
+        INSTANCE_STATE_UNSPECIFIED = 360741663
+        RUNNING = 121282975
+
+    class State(proto.Enum):
+        r"""Current formability state. Additional supported values which may be
+        not listed in the enum directly due to technical reasons: NOT_READY
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            READY (77848963):
+                An AcceleratorInterconnect resource can be
+                deployed immediately and will achieve full
+                performance.
+            READY_DEGRADED (231433834):
+                An AcceleratorInterconnect resource can be
+                deployed immediately but will achieve degraded
+                performance.
+            STATE_UNSPECIFIED (470755401):
+                Unspecified partition formability state.
+        """
+
+        UNDEFINED_STATE = 0
+        READY = 77848963
+        READY_DEGRADED = 231433834
+        STATE_UNSPECIFIED = 470755401
+
+    class UsageState(proto.Enum):
+        r"""Usage state indicating if the partition is occupied.
+
+        Values:
+            UNDEFINED_USAGE_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            FREE (2166380):
+                Capacity is unallocated and available for
+                interconnect formation.
+            IN_USE (17393485):
+                Capacity is currently part of an
+                AcceleratorInterconnect.
+            USAGE_STATE_UNSPECIFIED (229284107):
+                Unspecified usage state.
+        """
+
+        UNDEFINED_USAGE_STATE = 0
+        FREE = 2166380
+        IN_USE = 17393485
+        USAGE_STATE_UNSPECIFIED = 229284107
+
+    accelerator_interconnect: str = proto.Field(
+        proto.STRING,
+        number=313143778,
+        optional=True,
+    )
+    error: "Error" = proto.Field(
+        proto.MESSAGE,
+        number=96784904,
+        optional=True,
+        message="Error",
+    )
+    infrastructure_health: str = proto.Field(
+        proto.STRING,
+        number=300936312,
+        optional=True,
+    )
+    instance: str = proto.Field(
+        proto.STRING,
+        number=18257045,
+        optional=True,
+    )
+    instance_state: str = proto.Field(
+        proto.STRING,
+        number=92223591,
+        optional=True,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=109757585,
+        optional=True,
+    )
+    usage_state: str = proto.Field(
+        proto.STRING,
+        number=176629875,
+        optional=True,
+    )
+
+
+class PatchAssociationRegionNetworkFirewallPolicyRequest(proto.Message):
+    r"""A request message for
+    RegionNetworkFirewallPolicies.PatchAssociation. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        firewall_policy_association_resource (google.cloud.compute_v1.types.FirewallPolicyAssociation):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be
+            a valid UUID with the exception that zero UUID
+            is not supported
+            (00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    firewall_policy: str = proto.Field(
+        proto.STRING,
+        number=498173265,
+    )
+    firewall_policy_association_resource: "FirewallPolicyAssociation" = proto.Field(
+        proto.MESSAGE,
+        number=259546170,
+        message="FirewallPolicyAssociation",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class PatchAutoscalerRequest(proto.Message):
     r"""A request message for Autoscalers.Patch. See the method
     description for details.
@@ -110047,6 +113218,49 @@ class PatchGlobalForwardingRuleRequest(proto.Message):
     )
 
 
+class PatchGlobalFrontendSettingRequest(proto.Message):
+    r"""A request message for GlobalFrontendSettingsService.Patch.
+    See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        global_frontend_settings_resource (google.cloud.compute_v1.types.GlobalFrontendSettings):
+            The body resource for this request
+        project (str):
+            Required. Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+
+            This field is a member of `oneof`_ ``_request_id``.
+        update_mask (str):
+            Field mask to support patch. E.g., "type".
+
+            This field is a member of `oneof`_ ``_update_mask``.
+    """
+
+    global_frontend_settings_resource: "GlobalFrontendSettings" = proto.Field(
+        proto.MESSAGE,
+        number=233377241,
+        message="GlobalFrontendSettings",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
+    )
+
+
 class PatchGlobalPublicDelegatedPrefixeRequest(proto.Message):
     r"""A request message for GlobalPublicDelegatedPrefixes.Patch.
     See the method description for details.
@@ -110102,6 +113316,66 @@ class PatchGlobalPublicDelegatedPrefixeRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=37109963,
+        optional=True,
+    )
+
+
+class PatchHaControllerRequest(proto.Message):
+    r"""A request message for HaControllers.Patch. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        ha_controller (str):
+            ID of the HaController resource to update.
+        ha_controller_resource (google.cloud.compute_v1.types.HaController):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            This field is a member of `oneof`_ ``_request_id``.
+        update_mask (str):
+            update_mask indicates fields to be updated as part of this
+            request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+    """
+
+    ha_controller: str = proto.Field(
+        proto.STRING,
+        number=375850658,
+    )
+    ha_controller_resource: "HaController" = proto.Field(
+        proto.MESSAGE,
+        number=229262603,
+        message="HaController",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
         optional=True,
     )
 
@@ -114734,9 +118008,6 @@ class Policy(proto.Message):
             the conditions in the version ``3`` policy are lost.
 
             This field is a member of `oneof`_ ``_etag``.
-        iam_owned (bool):
-
-            This field is a member of `oneof`_ ``_iam_owned``.
         version (int):
             Specifies the format of the policy.
 
@@ -114783,11 +118054,6 @@ class Policy(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=3123477,
-        optional=True,
-    )
-    iam_owned: bool = proto.Field(
-        proto.BOOL,
-        number=450566203,
         optional=True,
     )
     version: int = proto.Field(
@@ -115514,8 +118780,6 @@ class Project(proto.Message):
             requests to Compute Engine.
 
             This field is a member of `oneof`_ ``_name``.
-        quotas (MutableSequence[google.cloud.compute_v1.types.Quota]):
-            [Output Only] Quotas assigned to this project.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
 
@@ -115687,11 +118951,6 @@ class Project(proto.Message):
         number=3373707,
         optional=True,
     )
-    quotas: MutableSequence["Quota"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=125341947,
-        message="Quota",
-    )
     self_link: str = proto.Field(
         proto.STRING,
         number=456214797,
@@ -115712,6 +118971,35 @@ class Project(proto.Message):
         proto.STRING,
         number=228419265,
         optional=True,
+    )
+
+
+class ProjectView(proto.Message):
+    r"""Represents a ProjectView resource.
+
+    A ProjectView resource contains read-only project data which is
+    available globally.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (google.cloud.compute_v1.types.Project):
+            The project data. The returned Project data does not contain
+            regional or zonal quota usage data. Global quota limits are
+            present. For accurate, real-time quota usage numbers, query
+            the global
+            `projects.get <https://cloud.google.com/compute/docs/reference/rest/v1/projects/get>`__
+            endpoint.
+
+            This field is a member of `oneof`_ ``_project``.
+    """
+
+    project: "Project" = proto.Field(
+        proto.MESSAGE,
+        number=227560217,
+        optional=True,
+        message="Project",
     )
 
 
@@ -117157,554 +120445,215 @@ class PublicDelegatedPrefixesScopedList(proto.Message):
     )
 
 
-class Quota(proto.Message):
-    r"""A quotas entry.
+class QueryFormabilityAcceleratorInterconnectsRequest(proto.Message):
+    r"""A request message for
+    AcceleratorInterconnects.QueryFormability. See the method
+    description for details.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        limit (float):
-            [Output Only] Quota limit for this metric.
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request.
 
-            This field is a member of `oneof`_ ``_limit``.
-        metric (str):
-            [Output Only] Name of the quota metric. Check the Metric
-            enum for the list of possible values.
+            If you want to use AIP-160, your expression must specify the
+            field name, an operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The operator must be either ``=``, ``!=``, ``>``,
+            ``<``, ``<=``, ``>=`` or ``:``.
 
-            This field is a member of `oneof`_ ``_metric``.
-        owner (str):
-            [Output Only] Owning resource. This is the resource on which
-            this quota is applied.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
 
-            This field is a member of `oneof`_ ``_owner``.
-        usage (float):
-            [Output Only] Current usage of this metric.
+            The ``:*`` comparison can be used to test whether a key has
+            been defined. For example, to find all objects with
+            ``owner`` label use:
 
-            This field is a member of `oneof`_ ``_usage``.
+            ::
+
+               labels.owner:*
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based onresource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (scheduling.automaticRestart = true)
+               (cpuPlatform = "Intel Skylake")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (cpuPlatform = "Intel Skylake") OR
+               (cpuPlatform = "Intel Broadwell") AND
+               (scheduling.automaticRestart = true)
+
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")``
+
+            The literal value is interpreted as a regular expression
+            using GoogleRE2 library syntax. The literal value must match
+            the entire field.
+
+            For example, to filter for instances that do not end with
+            name "instance", you would use ``name ne .*instance``.
+
+            You cannot combine constraints on multiple fields using
+            regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        query_formability_request_resource (google.cloud.compute_v1.types.QueryFormabilityRequest):
+            The body resource for this request
+        zone (str):
+            The name of thezone where the
+            request is located. Zone name should conform to
+            RFC1035.
     """
 
-    class Metric(proto.Enum):
-        r"""[Output Only] Name of the quota metric.
-
-        Values:
-            UNDEFINED_METRIC (0):
-                A value indicating that the enum field is not
-                set.
-            A2_CPUS (153206585):
-                No description available.
-            AFFINITY_GROUPS (108303563):
-                No description available.
-            AUTOSCALERS (471248988):
-                No description available.
-            BACKEND_BUCKETS (137626846):
-                No description available.
-            BACKEND_SERVICES (269623753):
-                No description available.
-            C2D_CPUS (508182517):
-                No description available.
-            C2_CPUS (317601211):
-                No description available.
-            C3_CPUS (346230362):
-                No description available.
-            COMMITMENTS (456141790):
-                No description available.
-            COMMITTED_A2_CPUS (59330902):
-                No description available.
-            COMMITTED_C2D_CPUS (282390904):
-                No description available.
-            COMMITTED_C2_CPUS (223725528):
-                No description available.
-            COMMITTED_C3_CPUS (252354679):
-                No description available.
-            COMMITTED_CPUS (292394702):
-                No description available.
-            COMMITTED_E2_CPUS (388120154):
-                No description available.
-            COMMITTED_LICENSES (357606869):
-                No description available.
-            COMMITTED_LOCAL_SSD_TOTAL_GB (308393480):
-                No description available.
-            COMMITTED_M3_CPUS (585985):
-                No description available.
-            COMMITTED_MEMORY_OPTIMIZED_CPUS (489057886):
-                No description available.
-            COMMITTED_N2A_CPUS (40064304):
-                No description available.
-            COMMITTED_N2D_CPUS (125951757):
-                No description available.
-            COMMITTED_N2_CPUS (322589603):
-                No description available.
-            COMMITTED_NVIDIA_A100_80GB_GPUS (464326565):
-                No description available.
-            COMMITTED_NVIDIA_A100_GPUS (375799445):
-                No description available.
-            COMMITTED_NVIDIA_H100_GPUS (71649180):
-                No description available.
-            COMMITTED_NVIDIA_K80_GPUS (3857188):
-                No description available.
-            COMMITTED_NVIDIA_L4_GPUS (19163645):
-                No description available.
-            COMMITTED_NVIDIA_P100_GPUS (107528100):
-                No description available.
-            COMMITTED_NVIDIA_P4_GPUS (347952897):
-                No description available.
-            COMMITTED_NVIDIA_T4_GPUS (139871237):
-                No description available.
-            COMMITTED_NVIDIA_V100_GPUS (219562):
-                No description available.
-            COMMITTED_T2A_CPUS (296378986):
-                No description available.
-            COMMITTED_T2D_CPUS (382266439):
-                No description available.
-            COMMITTED_Z3_CPUS (263844686):
-                No description available.
-            CPUS (2075595):
-                Guest CPUs
-            CPUS_ALL_REGIONS (470911149):
-                No description available.
-            DISKS_TOTAL_GB (353520543):
-                No description available.
-            E2_CPUS (481995837):
-                No description available.
-            EXTERNAL_MANAGED_FORWARDING_RULES (150790089):
-                No description available.
-            EXTERNAL_NETWORK_LB_FORWARDING_RULES (374298265):
-                No description available.
-            EXTERNAL_PROTOCOL_FORWARDING_RULES (63478888):
-                No description available.
-            EXTERNAL_VPN_GATEWAYS (272457134):
-                No description available.
-            FIREWALLS (374485843):
-                No description available.
-            FORWARDING_RULES (432668949):
-                No description available.
-            GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES (164566753):
-                No description available.
-            GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES (327611949):
-                No description available.
-            GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES (400256169):
-                No description available.
-            GLOBAL_INTERNAL_ADDRESSES (42738332):
-                No description available.
-            GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES (256608303):
-                No description available.
-            GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES (323514196):
-                No description available.
-            GPUS_ALL_REGIONS (39387177):
-                No description available.
-            HDB_TOTAL_GB (319316271):
-                No description available.
-            HDB_TOTAL_IOPS (309720317):
-                No description available.
-            HDB_TOTAL_THROUGHPUT (20981374):
-                No description available.
-            HEALTH_CHECKS (289347502):
-                No description available.
-            IMAGES (15562360):
-                No description available.
-            INSTANCES (131337822):
-                No description available.
-            INSTANCE_GROUPS (355919038):
-                No description available.
-            INSTANCE_GROUP_MANAGERS (101798192):
-                No description available.
-            INSTANCE_TEMPLATES (226188271):
-                No description available.
-            INTERCONNECTS (415204741):
-                No description available.
-            INTERCONNECT_ATTACHMENTS_PER_REGION (159968086):
-                No description available.
-            INTERCONNECT_ATTACHMENTS_TOTAL_MBPS (425090419):
-                No description available.
-            INTERCONNECT_TOTAL_GBPS (285341866):
-                No description available.
-            INTERNAL_ADDRESSES (197899392):
-                No description available.
-            INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES (266433668):
-                No description available.
-            IN_PLACE_SNAPSHOTS (151359133):
-                No description available.
-            IN_USE_ADDRESSES (402125072):
-                No description available.
-            IN_USE_BACKUP_SCHEDULES (32786705):
-                No description available.
-            IN_USE_SNAPSHOT_SCHEDULES (462104083):
-                No description available.
-            LOCAL_SSD_TOTAL_GB (330878021):
-                No description available.
-            M1_CPUS (37203366):
-                No description available.
-            M2_CPUS (65832517):
-                No description available.
-            M3_CPUS (94461668):
-                No description available.
-            MACHINE_IMAGES (446986640):
-                No description available.
-            N2A_CPUS (265855917):
-                No description available.
-            N2D_CPUS (351743370):
-                No description available.
-            N2_CPUS (416465286):
-                No description available.
-            NETWORKS (485481477):
-                No description available.
-            NETWORK_ATTACHMENTS (149028575):
-                No description available.
-            NETWORK_ENDPOINT_GROUPS (102144909):
-                No description available.
-            NETWORK_FIREWALL_POLICIES (101117374):
-                No description available.
-            NET_LB_SECURITY_POLICIES_PER_REGION (157892269):
-                No description available.
-            NET_LB_SECURITY_POLICY_RULES_PER_REGION (356090931):
-                No description available.
-            NET_LB_SECURITY_POLICY_RULE_ATTRIBUTES_PER_REGION (311243888):
-                No description available.
-            NODE_GROUPS (24624817):
-                No description available.
-            NODE_TEMPLATES (474896668):
-                No description available.
-            NVIDIA_A100_80GB_GPUS (286389320):
-                No description available.
-            NVIDIA_A100_GPUS (504872978):
-                No description available.
-            NVIDIA_K80_GPUS (163886599):
-                No description available.
-            NVIDIA_L4_GPUS (491923130):
-                No description available.
-            NVIDIA_P100_GPUS (236601633):
-                No description available.
-            NVIDIA_P100_VWS_GPUS (213970574):
-                No description available.
-            NVIDIA_P4_GPUS (283841470):
-                No description available.
-            NVIDIA_P4_VWS_GPUS (528296619):
-                No description available.
-            NVIDIA_T4_GPUS (75759810):
-                No description available.
-            NVIDIA_T4_VWS_GPUS (319813039):
-                No description available.
-            NVIDIA_V100_GPUS (129293095):
-                No description available.
-            PACKET_MIRRORINGS (15578407):
-                No description available.
-            PD_EXTREME_TOTAL_PROVISIONED_IOPS (69593965):
-                No description available.
-            PREEMPTIBLE_CPUS (251184841):
-                No description available.
-            PREEMPTIBLE_LOCAL_SSD_GB (260819336):
-                No description available.
-            PREEMPTIBLE_NVIDIA_A100_80GB_GPUS (151942410):
-                No description available.
-            PREEMPTIBLE_NVIDIA_A100_GPUS (68832784):
-                No description available.
-            PREEMPTIBLE_NVIDIA_H100_GPUS (301553431):
-                No description available.
-            PREEMPTIBLE_NVIDIA_K80_GPUS (374960201):
-                No description available.
-            PREEMPTIBLE_NVIDIA_L4_GPUS (100408376):
-                No description available.
-            PREEMPTIBLE_NVIDIA_P100_GPUS (337432351):
-                No description available.
-            PREEMPTIBLE_NVIDIA_P100_VWS_GPUS (313544076):
-                No description available.
-            PREEMPTIBLE_NVIDIA_P4_GPUS (429197628):
-                No description available.
-            PREEMPTIBLE_NVIDIA_P4_VWS_GPUS (252981545):
-                No description available.
-            PREEMPTIBLE_NVIDIA_T4_GPUS (221115968):
-                No description available.
-            PREEMPTIBLE_NVIDIA_T4_VWS_GPUS (44497965):
-                No description available.
-            PREEMPTIBLE_NVIDIA_V100_GPUS (230123813):
-                No description available.
-            PREEMPTIBLE_TPU_LITE_DEVICE_V5 (174262523):
-                No description available.
-            PREEMPTIBLE_TPU_LITE_PODSLICE_V5 (112281796):
-                No description available.
-            PREEMPTIBLE_TPU_PODSLICE_V4 (425541132):
-                No description available.
-            PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK (231164291):
-                No description available.
-            PSC_INTERNAL_LB_FORWARDING_RULES (169005435):
-                No description available.
-            PUBLIC_ADVERTISED_PREFIXES (471371980):
-                No description available.
-            PUBLIC_DELEGATED_PREFIXES (532465974):
-                No description available.
-            REGIONAL_AUTOSCALERS (29363772):
-                No description available.
-            REGIONAL_EXTERNAL_MANAGED_BACKEND_SERVICES (4240989):
-                No description available.
-            REGIONAL_EXTERNAL_NETWORK_LB_BACKEND_SERVICES (409564525):
-                No description available.
-            REGIONAL_INSTANCE_GROUP_MANAGERS (37543696):
-                No description available.
-            REGIONAL_INTERNAL_LB_BACKEND_SERVICES (137983760):
-                No description available.
-            REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES (96282539):
-                No description available.
-            REGIONAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES (483162968):
-                No description available.
-            RESERVATIONS (32644647):
-                No description available.
-            RESOURCE_POLICIES (83955297):
-                No description available.
-            ROUTERS (493018666):
-                No description available.
-            ROUTES (275680074):
-                No description available.
-            SECURITY_POLICIES (189518703):
-                No description available.
-            SECURITY_POLICIES_PER_REGION (249041734):
-                No description available.
-            SECURITY_POLICY_ADVANCED_RULES_PER_REGION (371815341):
-                No description available.
-            SECURITY_POLICY_CEVAL_RULES (470815689):
-                No description available.
-            SECURITY_POLICY_RULES (203549225):
-                No description available.
-            SECURITY_POLICY_RULES_PER_REGION (126510156):
-                No description available.
-            SERVICE_ATTACHMENTS (471521510):
-                No description available.
-            SNAPSHOTS (343405327):
-                The total number of snapshots allowed for a
-                single project.
-            SSD_TOTAL_GB (161732561):
-                No description available.
-            SSL_CERTIFICATES (378372399):
-                No description available.
-            SSL_POLICIES (523254339):
-                No description available.
-            STATIC_ADDRESSES (93624049):
-                No description available.
-            STATIC_BYOIP_ADDRESSES (275809649):
-                No description available.
-            STATIC_EXTERNAL_IPV6_ADDRESS_RANGES (472346774):
-                No description available.
-            SUBNETWORKS (421330469):
-                No description available.
-            T2A_CPUS (522170599):
-                No description available.
-            T2D_CPUS (71187140):
-                No description available.
-            TARGET_HTTPS_PROXIES (219522506):
-                No description available.
-            TARGET_HTTP_PROXIES (164117155):
-                No description available.
-            TARGET_INSTANCES (284519728):
-                No description available.
-            TARGET_POOLS (348261257):
-                No description available.
-            TARGET_SSL_PROXIES (159216235):
-                No description available.
-            TARGET_TCP_PROXIES (182243136):
-                No description available.
-            TARGET_VPN_GATEWAYS (75029928):
-                No description available.
-            TPU_LITE_DEVICE_V5 (449577597):
-                No description available.
-            TPU_LITE_PODSLICE_V5 (12708294):
-                No description available.
-            TPU_PODSLICE_V4 (214467530):
-                No description available.
-            URL_MAPS (378660743):
-                No description available.
-            VARIABLE_IPV6_PUBLIC_DELEGATED_PREFIXES (128400161):
-                No description available.
-            VPN_GATEWAYS (35620282):
-                No description available.
-            VPN_TUNNELS (104327296):
-                No description available.
-            XPN_SERVICE_PROJECTS (95191981):
-                No description available.
-        """
-
-        UNDEFINED_METRIC = 0
-        A2_CPUS = 153206585
-        AFFINITY_GROUPS = 108303563
-        AUTOSCALERS = 471248988
-        BACKEND_BUCKETS = 137626846
-        BACKEND_SERVICES = 269623753
-        C2D_CPUS = 508182517
-        C2_CPUS = 317601211
-        C3_CPUS = 346230362
-        COMMITMENTS = 456141790
-        COMMITTED_A2_CPUS = 59330902
-        COMMITTED_C2D_CPUS = 282390904
-        COMMITTED_C2_CPUS = 223725528
-        COMMITTED_C3_CPUS = 252354679
-        COMMITTED_CPUS = 292394702
-        COMMITTED_E2_CPUS = 388120154
-        COMMITTED_LICENSES = 357606869
-        COMMITTED_LOCAL_SSD_TOTAL_GB = 308393480
-        COMMITTED_M3_CPUS = 585985
-        COMMITTED_MEMORY_OPTIMIZED_CPUS = 489057886
-        COMMITTED_N2A_CPUS = 40064304
-        COMMITTED_N2D_CPUS = 125951757
-        COMMITTED_N2_CPUS = 322589603
-        COMMITTED_NVIDIA_A100_80GB_GPUS = 464326565
-        COMMITTED_NVIDIA_A100_GPUS = 375799445
-        COMMITTED_NVIDIA_H100_GPUS = 71649180
-        COMMITTED_NVIDIA_K80_GPUS = 3857188
-        COMMITTED_NVIDIA_L4_GPUS = 19163645
-        COMMITTED_NVIDIA_P100_GPUS = 107528100
-        COMMITTED_NVIDIA_P4_GPUS = 347952897
-        COMMITTED_NVIDIA_T4_GPUS = 139871237
-        COMMITTED_NVIDIA_V100_GPUS = 219562
-        COMMITTED_T2A_CPUS = 296378986
-        COMMITTED_T2D_CPUS = 382266439
-        COMMITTED_Z3_CPUS = 263844686
-        CPUS = 2075595
-        CPUS_ALL_REGIONS = 470911149
-        DISKS_TOTAL_GB = 353520543
-        E2_CPUS = 481995837
-        EXTERNAL_MANAGED_FORWARDING_RULES = 150790089
-        EXTERNAL_NETWORK_LB_FORWARDING_RULES = 374298265
-        EXTERNAL_PROTOCOL_FORWARDING_RULES = 63478888
-        EXTERNAL_VPN_GATEWAYS = 272457134
-        FIREWALLS = 374485843
-        FORWARDING_RULES = 432668949
-        GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES = 164566753
-        GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES = 327611949
-        GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES = 400256169
-        GLOBAL_INTERNAL_ADDRESSES = 42738332
-        GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES = 256608303
-        GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES = 323514196
-        GPUS_ALL_REGIONS = 39387177
-        HDB_TOTAL_GB = 319316271
-        HDB_TOTAL_IOPS = 309720317
-        HDB_TOTAL_THROUGHPUT = 20981374
-        HEALTH_CHECKS = 289347502
-        IMAGES = 15562360
-        INSTANCES = 131337822
-        INSTANCE_GROUPS = 355919038
-        INSTANCE_GROUP_MANAGERS = 101798192
-        INSTANCE_TEMPLATES = 226188271
-        INTERCONNECTS = 415204741
-        INTERCONNECT_ATTACHMENTS_PER_REGION = 159968086
-        INTERCONNECT_ATTACHMENTS_TOTAL_MBPS = 425090419
-        INTERCONNECT_TOTAL_GBPS = 285341866
-        INTERNAL_ADDRESSES = 197899392
-        INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES = 266433668
-        IN_PLACE_SNAPSHOTS = 151359133
-        IN_USE_ADDRESSES = 402125072
-        IN_USE_BACKUP_SCHEDULES = 32786705
-        IN_USE_SNAPSHOT_SCHEDULES = 462104083
-        LOCAL_SSD_TOTAL_GB = 330878021
-        M1_CPUS = 37203366
-        M2_CPUS = 65832517
-        M3_CPUS = 94461668
-        MACHINE_IMAGES = 446986640
-        N2A_CPUS = 265855917
-        N2D_CPUS = 351743370
-        N2_CPUS = 416465286
-        NETWORKS = 485481477
-        NETWORK_ATTACHMENTS = 149028575
-        NETWORK_ENDPOINT_GROUPS = 102144909
-        NETWORK_FIREWALL_POLICIES = 101117374
-        NET_LB_SECURITY_POLICIES_PER_REGION = 157892269
-        NET_LB_SECURITY_POLICY_RULES_PER_REGION = 356090931
-        NET_LB_SECURITY_POLICY_RULE_ATTRIBUTES_PER_REGION = 311243888
-        NODE_GROUPS = 24624817
-        NODE_TEMPLATES = 474896668
-        NVIDIA_A100_80GB_GPUS = 286389320
-        NVIDIA_A100_GPUS = 504872978
-        NVIDIA_K80_GPUS = 163886599
-        NVIDIA_L4_GPUS = 491923130
-        NVIDIA_P100_GPUS = 236601633
-        NVIDIA_P100_VWS_GPUS = 213970574
-        NVIDIA_P4_GPUS = 283841470
-        NVIDIA_P4_VWS_GPUS = 528296619
-        NVIDIA_T4_GPUS = 75759810
-        NVIDIA_T4_VWS_GPUS = 319813039
-        NVIDIA_V100_GPUS = 129293095
-        PACKET_MIRRORINGS = 15578407
-        PD_EXTREME_TOTAL_PROVISIONED_IOPS = 69593965
-        PREEMPTIBLE_CPUS = 251184841
-        PREEMPTIBLE_LOCAL_SSD_GB = 260819336
-        PREEMPTIBLE_NVIDIA_A100_80GB_GPUS = 151942410
-        PREEMPTIBLE_NVIDIA_A100_GPUS = 68832784
-        PREEMPTIBLE_NVIDIA_H100_GPUS = 301553431
-        PREEMPTIBLE_NVIDIA_K80_GPUS = 374960201
-        PREEMPTIBLE_NVIDIA_L4_GPUS = 100408376
-        PREEMPTIBLE_NVIDIA_P100_GPUS = 337432351
-        PREEMPTIBLE_NVIDIA_P100_VWS_GPUS = 313544076
-        PREEMPTIBLE_NVIDIA_P4_GPUS = 429197628
-        PREEMPTIBLE_NVIDIA_P4_VWS_GPUS = 252981545
-        PREEMPTIBLE_NVIDIA_T4_GPUS = 221115968
-        PREEMPTIBLE_NVIDIA_T4_VWS_GPUS = 44497965
-        PREEMPTIBLE_NVIDIA_V100_GPUS = 230123813
-        PREEMPTIBLE_TPU_LITE_DEVICE_V5 = 174262523
-        PREEMPTIBLE_TPU_LITE_PODSLICE_V5 = 112281796
-        PREEMPTIBLE_TPU_PODSLICE_V4 = 425541132
-        PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK = 231164291
-        PSC_INTERNAL_LB_FORWARDING_RULES = 169005435
-        PUBLIC_ADVERTISED_PREFIXES = 471371980
-        PUBLIC_DELEGATED_PREFIXES = 532465974
-        REGIONAL_AUTOSCALERS = 29363772
-        REGIONAL_EXTERNAL_MANAGED_BACKEND_SERVICES = 4240989
-        REGIONAL_EXTERNAL_NETWORK_LB_BACKEND_SERVICES = 409564525
-        REGIONAL_INSTANCE_GROUP_MANAGERS = 37543696
-        REGIONAL_INTERNAL_LB_BACKEND_SERVICES = 137983760
-        REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES = 96282539
-        REGIONAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES = 483162968
-        RESERVATIONS = 32644647
-        RESOURCE_POLICIES = 83955297
-        ROUTERS = 493018666
-        ROUTES = 275680074
-        SECURITY_POLICIES = 189518703
-        SECURITY_POLICIES_PER_REGION = 249041734
-        SECURITY_POLICY_ADVANCED_RULES_PER_REGION = 371815341
-        SECURITY_POLICY_CEVAL_RULES = 470815689
-        SECURITY_POLICY_RULES = 203549225
-        SECURITY_POLICY_RULES_PER_REGION = 126510156
-        SERVICE_ATTACHMENTS = 471521510
-        SNAPSHOTS = 343405327
-        SSD_TOTAL_GB = 161732561
-        SSL_CERTIFICATES = 378372399
-        SSL_POLICIES = 523254339
-        STATIC_ADDRESSES = 93624049
-        STATIC_BYOIP_ADDRESSES = 275809649
-        STATIC_EXTERNAL_IPV6_ADDRESS_RANGES = 472346774
-        SUBNETWORKS = 421330469
-        T2A_CPUS = 522170599
-        T2D_CPUS = 71187140
-        TARGET_HTTPS_PROXIES = 219522506
-        TARGET_HTTP_PROXIES = 164117155
-        TARGET_INSTANCES = 284519728
-        TARGET_POOLS = 348261257
-        TARGET_SSL_PROXIES = 159216235
-        TARGET_TCP_PROXIES = 182243136
-        TARGET_VPN_GATEWAYS = 75029928
-        TPU_LITE_DEVICE_V5 = 449577597
-        TPU_LITE_PODSLICE_V5 = 12708294
-        TPU_PODSLICE_V4 = 214467530
-        URL_MAPS = 378660743
-        VARIABLE_IPV6_PUBLIC_DELEGATED_PREFIXES = 128400161
-        VPN_GATEWAYS = 35620282
-        VPN_TUNNELS = 104327296
-        XPN_SERVICE_PROJECTS = 95191981
-
-    limit: float = proto.Field(
-        proto.DOUBLE,
-        number=102976443,
-        optional=True,
-    )
-    metric: str = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
-        number=533067184,
+        number=336120696,
         optional=True,
     )
-    owner: str = proto.Field(
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
         proto.STRING,
-        number=106164915,
+        number=160562920,
         optional=True,
     )
-    usage: float = proto.Field(
-        proto.DOUBLE,
-        number=111574433,
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    query_formability_request_resource: "QueryFormabilityRequest" = proto.Field(
+        proto.MESSAGE,
+        number=224043790,
+        message="QueryFormabilityRequest",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class QueryFormabilityRequest(proto.Message):
+    r"""Query formability of a given set of reservation subblocks.
+
+    Attributes:
+        subblocks (MutableSequence[str]):
+            Explicit list of fully qualified reservation
+            subblock resource URLs. Both full and relative
+            URIs are supported.
+    """
+
+    subblocks: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=36363206,
+    )
+
+
+class QueryFormabilityResponse(proto.Message):
+    r"""Response message for
+    AcceleratorInterconnects.QueryFormability.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        items (MutableSequence[google.cloud.compute_v1.types.PartitionFormability]):
+            Flattened collection of hierarchical
+            partitions and their formability across all
+            requested subblocks.
+        next_page_token (str):
+            This token allows you to get the next page of
+            results for list requests. If the number of
+            results is larger thanmaxResults, use the
+            nextPageToken as a value for the query parameter
+            pageToken in the next list request. Subsequent
+            list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    items: MutableSequence["PartitionFormability"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="PartitionFormability",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
         optional=True,
     )
 
@@ -117817,7 +120766,7 @@ class QuotaStatusWarning(proto.Message):
             [Output Only] Metadata about this warning in key: value
             format. For example:
 
-            "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+            "data": [ { "key": "scope", "value": "zones/us-east1-d" }]
         message (str):
             [Output Only] A human-readable description of the warning
             code.
@@ -118261,6 +121210,60 @@ class Reference(proto.Message):
     )
 
 
+class RegexRewrite(proto.Message):
+    r"""The spec for modifying the path using a regular expression.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        path_pattern (str):
+            Required. The regular expression used to match against the
+            URL path. It uses RE2 syntax with the following constraints:
+
+            ::
+
+                 - Any single character operators
+                 - Groups are allowed to have only submatch operator inside
+                 - Groups are allowed only without any char repetition, e.g.
+                 .*
+                 - Any char repetition, e.g. .*, is
+                 only allowed to be used in a single regex together with:
+
+
+                        - Empty string operators
+                        - Other repetitions
+                        - Ranges
+                        - Repetitions of ranges
+
+
+                 - Ranges are only allowed to have:
+
+
+                        - Character range
+                        - Digits range
+                        - Symbols listed in characters allowed for ranges
+
+            This field is a member of `oneof`_ ``_path_pattern``.
+        path_substitution (str):
+            Required. Required when path pattern is
+            specified. Used to rewrite matching parts of the
+            path.
+
+            This field is a member of `oneof`_ ``_path_substitution``.
+    """
+
+    path_pattern: str = proto.Field(
+        proto.STRING,
+        number=316473718,
+        optional=True,
+    )
+    path_substitution: str = proto.Field(
+        proto.STRING,
+        number=268020951,
+        optional=True,
+    )
+
+
 class Region(proto.Message):
     r"""Represents a Region resource.
 
@@ -118305,8 +121308,6 @@ class Region(proto.Message):
             only if fetching of the ``quotas`` field fails.
 
             This field is a member of `oneof`_ ``_quota_status_warning``.
-        quotas (MutableSequence[google.cloud.compute_v1.types.Quota]):
-            [Output Only] Quotas assigned to this region.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
 
@@ -118378,11 +121379,6 @@ class Region(proto.Message):
         number=302941430,
         optional=True,
         message="QuotaStatusWarning",
-    )
-    quotas: MutableSequence["Quota"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=125341947,
-        message="Quota",
     )
     self_link: str = proto.Field(
         proto.STRING,
@@ -120032,6 +123028,189 @@ class RegionUrlMapsValidateRequest(proto.Message):
     )
 
 
+class ReliabilityRisk(proto.Message):
+    r"""Represents a ReliabilityRisk resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        creation_timestamp (str):
+            Output only. [Output Only] Creation timestamp in RFC3339
+            text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional textual description of the
+            resource; provided when the resource is created.
+
+            This field is a member of `oneof`_ ``_description``.
+        details (google.cloud.compute_v1.types.RiskDetails):
+            [Output Only] Details of the reliability risk resource
+
+            This field is a member of `oneof`_ ``_details``.
+        id (int):
+            [Output Only] The unique identifier for the resource. This
+            identifier is defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        kind (str):
+            Output only. [Output Only] Type of resource. Always
+            compute#reliabilityRisk for reliability risks.
+
+            This field is a member of `oneof`_ ``_kind``.
+        name (str):
+            Name of the resource. The name must be 1-63
+            characters long and comply with RFC1035.
+
+            This field is a member of `oneof`_ ``_name``.
+        recommendation (google.cloud.compute_v1.types.RiskRecommendation):
+            The recommendation to mitigate the risk.
+
+            This field is a member of `oneof`_ ``_recommendation``.
+        self_link (str):
+            Output only. [Output Only] Server-defined URL for the
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            Output only. [Output Only] Server-defined URL for this
+            resource with the resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+    """
+
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    details: "RiskDetails" = proto.Field(
+        proto.MESSAGE,
+        number=483979842,
+        optional=True,
+        message="RiskDetails",
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    recommendation: "RiskRecommendation" = proto.Field(
+        proto.MESSAGE,
+        number=45105081,
+        optional=True,
+        message="RiskRecommendation",
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+
+
+class ReliabilityRisksListResponse(proto.Message):
+    r"""Response message for the List method of
+    ReliabilityRisksService.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+            [Output Only] An ETag of the resource.
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.ReliabilityRisk]):
+            A list of ReliabilityRisk resources.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger thanmaxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            Output only. [Output Only] Server-defined URL for this
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            Output only. [Output Only] Unreachable resources.
+            end_interface: MixerListResponseWithEtagBuilder
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["ReliabilityRisk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="ReliabilityRisk",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
 class RemoveAssociationFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.RemoveAssociation. See
     the method description for details.
@@ -121457,6 +124636,14 @@ class Reservation(proto.Message):
             with Google Cloud managed services.
 
             This field is a member of `oneof`_ ``_reservation_sharing_policy``.
+        resource_metadata (google.cloud.compute_v1.types.ResourceMetadata):
+            Output only. [Output Only] Contains standard resource
+            metadata for an Allocation resource. It is populated for
+            each instance of the Allocation resource, and includes the
+            api_version the instance was retrieved through, and its
+            canonical resource_type name.
+
+            This field is a member of `oneof`_ ``_resource_metadata``.
         resource_policies (MutableMapping[str, str]):
             Resource policies to be added to this
             reservation. The key is defined by user, and the
@@ -121533,6 +124720,8 @@ class Reservation(proto.Message):
             UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE (0):
                 A value indicating that the enum field is not
                 set.
+            CONFIDENTIAL_COMPUTE_TYPE_BMSAI (103738250):
+                Bare Metal Secure AI.
             CONFIDENTIAL_COMPUTE_TYPE_TDX (301241954):
                 Intel Trust Domain Extensions.
             CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED (42227601):
@@ -121540,6 +124729,7 @@ class Reservation(proto.Message):
         """
 
         UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE = 0
+        CONFIDENTIAL_COMPUTE_TYPE_BMSAI = 103738250
         CONFIDENTIAL_COMPUTE_TYPE_TDX = 301241954
         CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED = 42227601
 
@@ -121769,6 +124959,12 @@ class Reservation(proto.Message):
         number=205970120,
         optional=True,
         message="AllocationReservationSharingPolicy",
+    )
+    resource_metadata: "ResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=99063872,
+        optional=True,
+        message="ResourceMetadata",
     )
     resource_policies: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -122035,6 +125231,11 @@ class ReservationBlock(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        block_status (google.cloud.compute_v1.types.ReservationBlockBlockStatus):
+            Output only. [Output Only] Resource status for the
+            reservation block.
+
+            This field is a member of `oneof`_ ``_block_status``.
         count (int):
             Output only. [Output Only] The number of resources that are
             allocated in this reservation block.
@@ -122071,6 +125272,12 @@ class ReservationBlock(proto.Message):
             Alwayscompute#reservationBlock for reservation blocks.
 
             This field is a member of `oneof`_ ``_kind``.
+        machine_count (int):
+            Output only. [Output Only] The number of machines in the
+            reservation block. Only populated for families where machine
+            to host ratio is not 1:1 such as TPU8i.
+
+            This field is a member of `oneof`_ ``_machine_count``.
         name (str):
             Output only. [Output Only] The name of this reservation
             block generated by Google Compute Engine. The name must be
@@ -122147,6 +125354,12 @@ class ReservationBlock(proto.Message):
         INVALID = 530283991
         READY = 77848963
 
+    block_status: "ReservationBlockBlockStatus" = proto.Field(
+        proto.MESSAGE,
+        number=472334308,
+        optional=True,
+        message="ReservationBlockBlockStatus",
+    )
     count: int = proto.Field(
         proto.INT32,
         number=94851343,
@@ -122181,6 +125394,11 @@ class ReservationBlock(proto.Message):
     kind: str = proto.Field(
         proto.STRING,
         number=3292052,
+        optional=True,
+    )
+    machine_count: int = proto.Field(
+        proto.INT32,
+        number=63727383,
         optional=True,
     )
     name: str = proto.Field(
@@ -122229,6 +125447,81 @@ class ReservationBlock(proto.Message):
         proto.STRING,
         number=3744684,
         optional=True,
+    )
+
+
+class ReservationBlockBlockDetailedHealthInfo(proto.Message):
+    r"""Detailed health information for the reservation block.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        critical_sub_block_count (int):
+            Output only. The number of subBlocks that are
+            critical. Critical subBlocks are completely
+            unhealthy and cannot be used.
+
+            This field is a member of `oneof`_ ``_critical_sub_block_count``.
+        degraded_sub_block_count (int):
+            Output only. The number of subBlocks that are
+            degraded. Degraded subBlocks are within SLO and
+            can be used with some performance degradation.
+
+            This field is a member of `oneof`_ ``_degraded_sub_block_count``.
+        healthy_sub_block_count (int):
+            Output only. The number of subBlocks that are
+            healthy. Healthy subBlocks are within SLO and
+            can be used without performance degradation.
+
+            This field is a member of `oneof`_ ``_healthy_sub_block_count``.
+        unhealthy_sub_block_count (int):
+            Output only. The number of subBlocks that are
+            unhealthy. Unhealthy subBlocks cannot be used in
+            full.
+
+            This field is a member of `oneof`_ ``_unhealthy_sub_block_count``.
+    """
+
+    critical_sub_block_count: int = proto.Field(
+        proto.INT32,
+        number=209290942,
+        optional=True,
+    )
+    degraded_sub_block_count: int = proto.Field(
+        proto.INT32,
+        number=458044493,
+        optional=True,
+    )
+    healthy_sub_block_count: int = proto.Field(
+        proto.INT32,
+        number=5348540,
+        optional=True,
+    )
+    unhealthy_sub_block_count: int = proto.Field(
+        proto.INT32,
+        number=319828483,
+        optional=True,
+    )
+
+
+class ReservationBlockBlockStatus(proto.Message):
+    r"""[Output Only] Status for the reservation block.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        block_detailed_health_info (google.cloud.compute_v1.types.ReservationBlockBlockDetailedHealthInfo):
+            Output only. Detailed health information for
+            the reservation block.
+
+            This field is a member of `oneof`_ ``_block_detailed_health_info``.
+    """
+
+    block_detailed_health_info: "ReservationBlockBlockDetailedHealthInfo" = proto.Field(
+        proto.MESSAGE,
+        number=369360916,
+        optional=True,
+        message="ReservationBlockBlockDetailedHealthInfo",
     )
 
 
@@ -122382,6 +125675,12 @@ class ReservationBlockPhysicalTopologyInstancePhysicalHostTopology(proto.Message
             Host hash for a given instance
 
             This field is a member of `oneof`_ ``_host``.
+        machine (str):
+            Machine hash for a given instance. Only
+            populated for families where machine-to-host
+            ratio is not 1:1 such as TPU8i.
+
+            This field is a member of `oneof`_ ``_machine``.
         sub_block (str):
             Sub block hash for a given instance
 
@@ -122391,6 +125690,11 @@ class ReservationBlockPhysicalTopologyInstancePhysicalHostTopology(proto.Message
     host: str = proto.Field(
         proto.STRING,
         number=3208616,
+        optional=True,
+    )
+    machine: str = proto.Field(
+        proto.STRING,
+        number=288441415,
         optional=True,
     )
     sub_block: str = proto.Field(
@@ -123009,6 +126313,12 @@ class ReservationSubBlock(proto.Message):
             Alwayscompute#reservationSubBlock for reservation subBlocks.
 
             This field is a member of `oneof`_ ``_kind``.
+        machine_count (int):
+            Output only. [Output Only] The number of machines in the
+            reservation subBlock. Only populated for families where
+            machine to host ratio is not 1:1 such as TPU8i.
+
+            This field is a member of `oneof`_ ``_machine_count``.
         name (str):
             Output only. [Output Only] The name of this reservation
             subBlock generated by Google Compute Engine. The name must
@@ -123042,6 +126352,11 @@ class ReservationSubBlock(proto.Message):
             values.
 
             This field is a member of `oneof`_ ``_status``.
+        sub_block_status (google.cloud.compute_v1.types.ReservationSubBlockSubBlockStatus):
+            Output only. [Output Only] Resource status for the
+            reservation subBlock.
+
+            This field is a member of `oneof`_ ``_sub_block_status``.
         zone (str):
             Output only. [Output Only] Zone in which the reservation
             subBlock resides.
@@ -123117,6 +126432,11 @@ class ReservationSubBlock(proto.Message):
         number=3292052,
         optional=True,
     )
+    machine_count: int = proto.Field(
+        proto.INT32,
+        number=63727383,
+        optional=True,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
@@ -123148,6 +126468,12 @@ class ReservationSubBlock(proto.Message):
         proto.STRING,
         number=181260274,
         optional=True,
+    )
+    sub_block_status: "ReservationSubBlockSubBlockStatus" = proto.Field(
+        proto.MESSAGE,
+        number=461116291,
+        optional=True,
+        message="ReservationSubBlockSubBlockStatus",
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -123274,6 +126600,104 @@ class ReservationSubBlockPhysicalTopology(proto.Message):
         proto.STRING,
         number=478033358,
         optional=True,
+    )
+
+
+class ReservationSubBlockSubBlockDetailedHealthInfo(proto.Message):
+    r"""Detailed health information for the reservation subBlock.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        detailed_health_status (str):
+            Output only. The detailed health status of
+            the reservation subBlock. Check the
+            DetailedHealthStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_detailed_health_status``.
+        healthy_host_count (int):
+            Output only. The number of healthy hosts in
+            the reservation subBlock.
+
+            This field is a member of `oneof`_ ``_healthy_host_count``.
+        unhealthy_host_count (int):
+            Output only. The number of unhealthy hosts in
+            the reservation subBlock. Unhealthy hosts cannot
+            be used in full.
+
+            This field is a member of `oneof`_ ``_unhealthy_host_count``.
+    """
+
+    class DetailedHealthStatus(proto.Enum):
+        r"""Output only. The detailed health status of the reservation
+        subBlock.
+
+        Values:
+            UNDEFINED_DETAILED_HEALTH_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DETAILED_HEALTH_STATUS_CRITICAL (218729944):
+                The reservation subBlock is completely
+                unhealthy and cannot be used.
+            DETAILED_HEALTH_STATUS_DEGRADED (28326247):
+                The reservation subBlock is within SLO and
+                can be used with some performance degradation.
+            DETAILED_HEALTH_STATUS_HEALTHY (98862116):
+                The reservation subBlock is healthy.
+            DETAILED_HEALTH_STATUS_UNHEALTHY (310902187):
+                The reservation subBlock is unhealthy. This
+                can be caused by host failures, or network
+                infrastructure failures.
+            DETAILED_HEALTH_STATUS_UNSPECIFIED (163455550):
+                The health status of the reservation subBlock
+                is unspecified.
+        """
+
+        UNDEFINED_DETAILED_HEALTH_STATUS = 0
+        DETAILED_HEALTH_STATUS_CRITICAL = 218729944
+        DETAILED_HEALTH_STATUS_DEGRADED = 28326247
+        DETAILED_HEALTH_STATUS_HEALTHY = 98862116
+        DETAILED_HEALTH_STATUS_UNHEALTHY = 310902187
+        DETAILED_HEALTH_STATUS_UNSPECIFIED = 163455550
+
+    detailed_health_status: str = proto.Field(
+        proto.STRING,
+        number=255319526,
+        optional=True,
+    )
+    healthy_host_count: int = proto.Field(
+        proto.INT32,
+        number=40739738,
+        optional=True,
+    )
+    unhealthy_host_count: int = proto.Field(
+        proto.INT32,
+        number=513449459,
+        optional=True,
+    )
+
+
+class ReservationSubBlockSubBlockStatus(proto.Message):
+    r"""[Output Only] Status for the reservation subBlock.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        sub_block_detailed_health_info (google.cloud.compute_v1.types.ReservationSubBlockSubBlockDetailedHealthInfo):
+            Output only. Detailed health information for
+            the reservation subBlock.
+
+            This field is a member of `oneof`_ ``_sub_block_detailed_health_info``.
+    """
+
+    sub_block_detailed_health_info: "ReservationSubBlockSubBlockDetailedHealthInfo" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=439521651,
+            optional=True,
+            message="ReservationSubBlockSubBlockDetailedHealthInfo",
+        )
     )
 
 
@@ -123517,6 +126941,15 @@ class ReservationSubBlocksReportFaultyRequestFaultReason(proto.Message):
                 No description available.
             GPU_ERROR (198817909):
                 The subBlock experienced a GPU error.
+            NVSWITCH_FAULT_CONTROLLER_ERROR (250941637):
+                The subBlock experienced an NVSwitch
+                controller error.
+            NVSWITCH_FAULT_DEGRADED_BANDWIDTH (202741248):
+                The subBlock experienced NVSwitch degraded
+                bandwidth.
+            NVSWITCH_FAULT_SWITCH_ERROR (287636061):
+                The subBlock experienced an NVSwitch switch
+                error.
             PERFORMANCE (135701520):
                 The subBlock experienced performance issues.
             SILENT_DATA_CORRUPTION (111360678):
@@ -123529,6 +126962,9 @@ class ReservationSubBlocksReportFaultyRequestFaultReason(proto.Message):
         UNDEFINED_BEHAVIOR = 0
         FAULT_BEHAVIOR_UNSPECIFIED = 447660743
         GPU_ERROR = 198817909
+        NVSWITCH_FAULT_CONTROLLER_ERROR = 250941637
+        NVSWITCH_FAULT_DEGRADED_BANDWIDTH = 202741248
+        NVSWITCH_FAULT_SWITCH_ERROR = 287636061
         PERFORMANCE = 135701520
         SILENT_DATA_CORRUPTION = 111360678
         SWITCH_FAILURE = 254909279
@@ -123734,9 +127170,42 @@ class ResetInstanceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
+        reset_mode (str):
+            Mode of reset operation. Defaults to HARD_RESET if not
+            provided. Check the ResetMode enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_reset_mode``.
         zone (str):
             The name of the zone for this request.
     """
+
+    class ResetMode(proto.Enum):
+        r"""Mode of reset operation. Defaults to HARD_RESET if not provided.
+
+        Values:
+            UNDEFINED_RESET_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            HARD_RESET (336635099):
+                Performs a hard reset on the instance. This
+                immediately restarts the instance without
+                gracefully shutting down the guest operating
+                system.
+            POWER_CYCLE (80319724):
+                Performs a machine-level power cycle.
+            RESET_MODE_UNSPECIFIED (159298443):
+                Default value. Defaults to HARD_RESET.
+            SOFT_RESET (516697306):
+                Sends a graceful reset command to the guest operating system
+                (e.g., equivalent to running ``sudo reboot``).
+        """
+
+        UNDEFINED_RESET_MODE = 0
+        HARD_RESET = 336635099
+        POWER_CYCLE = 80319724
+        RESET_MODE_UNSPECIFIED = 159298443
+        SOFT_RESET = 516697306
 
     instance: str = proto.Field(
         proto.STRING,
@@ -123749,6 +127218,11 @@ class ResetInstanceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=37109963,
+        optional=True,
+    )
+    reset_mode: str = proto.Field(
+        proto.STRING,
+        number=470863507,
         optional=True,
     )
     zone: str = proto.Field(
@@ -124202,6 +127676,40 @@ class ResourceGroupReference(proto.Message):
     group: str = proto.Field(
         proto.STRING,
         number=98629247,
+        optional=True,
+    )
+
+
+class ResourceMetadata(proto.Message):
+    r"""Standardized resource metadata common to all compute
+    resources.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        api_version (str):
+            The version of the API interface that this resource was
+            retrieved through. For example, ``"2025-01-01"`` or
+            ``"2025-01-01-preview"``.
+
+            This field is a member of `oneof`_ ``_api_version``.
+        resource_type (str):
+            The canonical resource type name in the format of a resource
+            type as defined by `AIP-123 <https://google.aip.dev/123>`__.
+            For example, ``"compute.googleapis.com/Instance"``.
+
+            This field is a member of `oneof`_ ``_resource_type``.
+    """
+
+    api_version: str = proto.Field(
+        proto.STRING,
+        number=476021683,
+        optional=True,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=442752203,
         optional=True,
     )
 
@@ -125390,6 +128898,11 @@ class ResourceStatus(proto.Message):
         scheduling (google.cloud.compute_v1.types.ResourceStatusScheduling):
 
             This field is a member of `oneof`_ ``_scheduling``.
+        shutdown_details (google.cloud.compute_v1.types.ResourceStatusShutdownDetails):
+            Output only. [Output Only] Details about the instance
+            stopping state.
+
+            This field is a member of `oneof`_ ``_shutdown_details``.
         upcoming_maintenance (google.cloud.compute_v1.types.UpcomingMaintenance):
 
             This field is a member of `oneof`_ ``_upcoming_maintenance``.
@@ -125427,6 +128940,12 @@ class ResourceStatus(proto.Message):
         number=386688404,
         optional=True,
         message="ResourceStatusScheduling",
+    )
+    shutdown_details: "ResourceStatusShutdownDetails" = proto.Field(
+        proto.MESSAGE,
+        number=15198553,
+        optional=True,
+        message="ResourceStatusShutdownDetails",
     )
     upcoming_maintenance: "UpcomingMaintenance" = proto.Field(
         proto.MESSAGE,
@@ -125636,11 +129155,31 @@ class ResourceStatusReservationConsumptionInfo(proto.Message):
             reservation that this instance is consuming from.
 
             This field is a member of `oneof`_ ``_consumed_reservation``.
+        consumed_reservation_block (str):
+            Output only. [Output Only] The full resource name of the
+            reservation block that this instance is consuming from.
+
+            This field is a member of `oneof`_ ``_consumed_reservation_block``.
+        consumed_reservation_sub_block (str):
+            Output only. [Output Only] The full resource name of the
+            reservation sub-block that this instance is consuming from.
+
+            This field is a member of `oneof`_ ``_consumed_reservation_sub_block``.
     """
 
     consumed_reservation: str = proto.Field(
         proto.STRING,
         number=318474741,
+        optional=True,
+    )
+    consumed_reservation_block: str = proto.Field(
+        proto.STRING,
+        number=142321091,
+        optional=True,
+    )
+    consumed_reservation_sub_block: str = proto.Field(
+        proto.STRING,
+        number=461540356,
         optional=True,
     )
 
@@ -125659,11 +129198,121 @@ class ResourceStatusScheduling(proto.Message):
             attached to the instance.
 
             This field is a member of `oneof`_ ``_availability_domain``.
+        graceful_shutdown_timestamp (str):
+            Output only. Specifies the timestamp, when
+            the instance will start graceful shutdown
+            process, in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_graceful_shutdown_timestamp``.
+        termination_timestamp (str):
+            Time in future when the instance will be
+            terminated inRFC3339 text format.
+
+            This field is a member of `oneof`_ ``_termination_timestamp``.
     """
 
     availability_domain: int = proto.Field(
         proto.INT32,
         number=252514344,
+        optional=True,
+    )
+    graceful_shutdown_timestamp: str = proto.Field(
+        proto.STRING,
+        number=403022375,
+        optional=True,
+    )
+    termination_timestamp: str = proto.Field(
+        proto.STRING,
+        number=364180891,
+        optional=True,
+    )
+
+
+class ResourceStatusShutdownDetails(proto.Message):
+    r"""Specifies if the instance is in ``PENDING_STOP`` state or there is a
+    programmed stop scheduled.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        max_duration (google.cloud.compute_v1.types.Duration):
+            The duration for graceful shutdown. Only applicable when
+            ``stop_state=PENDING_STOP``.
+
+            This field is a member of `oneof`_ ``_max_duration``.
+        request_timestamp (str):
+            Past timestamp indicating the beginning of current
+            ``stopState`` in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_request_timestamp``.
+        stop_state (str):
+            Current stopping state of the instance.
+            Check the StopState enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_stop_state``.
+        target_state (str):
+            Target instance state.
+            Check the TargetState enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_target_state``.
+    """
+
+    class StopState(proto.Enum):
+        r"""Current stopping state of the instance.
+
+        Values:
+            UNDEFINED_STOP_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            PENDING_STOP (362509770):
+                The instance is gracefully shutting down.
+            STOPPING (350791796):
+                The instance is stopping.
+        """
+
+        UNDEFINED_STOP_STATE = 0
+        PENDING_STOP = 362509770
+        STOPPING = 350791796
+
+    class TargetState(proto.Enum):
+        r"""Target instance state.
+
+        Values:
+            UNDEFINED_TARGET_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            DELETED (120962041):
+                The instance will be deleted.
+            STOPPED (444276141):
+                The instance will be stopped.
+        """
+
+        UNDEFINED_TARGET_STATE = 0
+        DELETED = 120962041
+        STOPPED = 444276141
+
+    max_duration: "Duration" = proto.Field(
+        proto.MESSAGE,
+        number=39954959,
+        optional=True,
+        message="Duration",
+    )
+    request_timestamp: str = proto.Field(
+        proto.STRING,
+        number=521301862,
+        optional=True,
+    )
+    stop_state: str = proto.Field(
+        proto.STRING,
+        number=67347988,
+        optional=True,
+    )
+    target_state: str = proto.Field(
+        proto.STRING,
+        number=338978915,
         optional=True,
     )
 
@@ -125916,6 +129565,192 @@ class ResumeRolloutRequest(proto.Message):
     rollout: str = proto.Field(
         proto.STRING,
         number=303366577,
+    )
+
+
+class RiskDetails(proto.Message):
+    r"""Detailed insights and metrics about a detected reliability
+    risk.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        duration (str):
+            The duration of the risk since it was
+            detected.
+
+            This field is a member of `oneof`_ ``_duration``.
+        global_dns_insight (google.cloud.compute_v1.types.RiskDetailsGlobalDnsInsight):
+            Insight details for global DNS risk.
+
+            This field is a member of `oneof`_ ``_global_dns_insight``.
+        last_update_timestamp (str):
+            The last time the risk was updated.
+
+            This field is a member of `oneof`_ ``_last_update_timestamp``.
+        severity (str):
+            The severity of the risk.
+            Check the Severity enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_severity``.
+        type_ (str):
+            The type of risk.
+            Check the Type enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Severity(proto.Enum):
+        r"""The severity of the risk.
+
+        Values:
+            UNDEFINED_SEVERITY (0):
+                A value indicating that the enum field is not
+                set.
+            CRITICAL (50423711):
+                Critical severity.
+            HIGH (2217378):
+                High severity.
+            LOW (75572):
+                Low severity.
+            MEDIUM (122782581):
+                Medium severity.
+            SEVERITY_UNSPECIFIED (304082133):
+                No severity specified. The default value.
+        """
+
+        UNDEFINED_SEVERITY = 0
+        CRITICAL = 50423711
+        HIGH = 2217378
+        LOW = 75572
+        MEDIUM = 122782581
+        SEVERITY_UNSPECIFIED = 304082133
+
+    class Type(proto.Enum):
+        r"""The type of risk.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            GLOBAL_DNS (164472429):
+                Risk type related to global DNS.
+            RISK_TYPE_UNSPECIFIED (71308546):
+                Default value. This value is unused.
+        """
+
+        UNDEFINED_TYPE = 0
+        GLOBAL_DNS = 164472429
+        RISK_TYPE_UNSPECIFIED = 71308546
+
+    duration: str = proto.Field(
+        proto.STRING,
+        number=155471252,
+        optional=True,
+    )
+    global_dns_insight: "RiskDetailsGlobalDnsInsight" = proto.Field(
+        proto.MESSAGE,
+        number=514929638,
+        optional=True,
+        message="RiskDetailsGlobalDnsInsight",
+    )
+    last_update_timestamp: str = proto.Field(
+        proto.STRING,
+        number=12338089,
+        optional=True,
+    )
+    severity: str = proto.Field(
+        proto.STRING,
+        number=404558589,
+        optional=True,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3575610,
+        optional=True,
+    )
+
+
+class RiskDetailsGlobalDnsInsight(proto.Message):
+    r"""Detailed insights for a global DNS reliability risk.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project_default_is_global_dns (bool):
+            Indicates whether the project's default DNS
+            setting is global DNS.
+
+            This field is a member of `oneof`_ ``_project_default_is_global_dns``.
+        query_observation_window (str):
+            The observation window for the query counts.
+
+            This field is a member of `oneof`_ ``_query_observation_window``.
+        risky_query_count (int):
+            The number of queries that are risky. This is always less
+            than or equal to total_query_count.
+
+            This field is a member of `oneof`_ ``_risky_query_count``.
+        total_query_count (int):
+            The total number of queries in the
+            observation window.
+
+            This field is a member of `oneof`_ ``_total_query_count``.
+    """
+
+    project_default_is_global_dns: bool = proto.Field(
+        proto.BOOL,
+        number=366337694,
+        optional=True,
+    )
+    query_observation_window: str = proto.Field(
+        proto.STRING,
+        number=511008826,
+        optional=True,
+    )
+    risky_query_count: int = proto.Field(
+        proto.INT64,
+        number=351692195,
+        optional=True,
+    )
+    total_query_count: int = proto.Field(
+        proto.INT64,
+        number=171936349,
+        optional=True,
+    )
+
+
+class RiskRecommendation(proto.Message):
+    r"""Recommendation for mitigating a reliability risk, including a
+    reference URL.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        content (str):
+            Mitigation guide for the risk.
+
+            This field is a member of `oneof`_ ``_content``.
+        reference_url (str):
+            URL referencing a more detailed mitigation
+            guide.
+
+            This field is a member of `oneof`_ ``_reference_url``.
+    """
+
+    content: str = proto.Field(
+        proto.STRING,
+        number=414659705,
+        optional=True,
+    )
+    reference_url: str = proto.Field(
+        proto.STRING,
+        number=527537787,
+        optional=True,
     )
 
 
@@ -129719,10 +133554,15 @@ class RouterNatRule(proto.Message):
 
             ``destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'``
 
-            The following example is a valid match expression for
+            The following examples are valid match expressions for
             private NAT:
 
+            (NAT 44)
             ``nexthop.hub == '//networkconnectivity.googleapis.com/projects/my-project/locations/global/hubs/hub-1'``
+
+            ``nexthop.is_hybrid``
+
+            (NAT 64) ``isIPv6(source.ip)``
 
             This field is a member of `oneof`_ ``_match``.
         rule_number (int):
@@ -130002,6 +133842,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
         bfd_status (google.cloud.compute_v1.types.BfdStatus):
 
             This field is a member of `oneof`_ ``_bfd_status``.
+        depreferenced (bool):
+            Output only. [Output Only] Indicates whether the BGP peer is
+            in a depreferenced state.
+
+            This field is a member of `oneof`_ ``_depreferenced``.
         enable_ipv4 (bool):
             Output only. Enable IPv4 traffic over BGP
             Peer. It is enabled by default if the
@@ -130164,6 +134009,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
         number=395631729,
         optional=True,
         message="BfdStatus",
+    )
+    depreferenced: bool = proto.Field(
+        proto.BOOL,
+        number=182429640,
+        optional=True,
     )
     enable_ipv4: bool = proto.Field(
         proto.BOOL,
@@ -131429,6 +135279,15 @@ class Scheduling(proto.Message):
             attached to the instance.
 
             This field is a member of `oneof`_ ``_availability_domain``.
+        expose_host_topology (bool):
+            This optional flag exposes the hashed
+            physical host ID in the ResourceStatus resource
+            of the VM.
+
+            This field is a member of `oneof`_ ``_expose_host_topology``.
+        graceful_shutdown (google.cloud.compute_v1.types.SchedulingGracefulShutdown):
+
+            This field is a member of `oneof`_ ``_graceful_shutdown``.
         host_error_timeout_seconds (int):
             Specify the time in seconds for host error detection, the
             value must be within the range of [90, 330] with the
@@ -131498,6 +135357,14 @@ class Scheduling(proto.Message):
             instance states.
 
             This field is a member of `oneof`_ ``_preemptible``.
+        preemption_notice_duration (google.cloud.compute_v1.types.Duration):
+            Specifies the Metadata Service preemption
+            notice duration before the GCE ACPI G2 Soft Off
+            signal is triggered for Spot VMs only. If not
+            specified, there will be no wait before the G2
+            Soft Off signal is triggered.
+
+            This field is a member of `oneof`_ ``_preemption_notice_duration``.
         provisioning_model (str):
             Specifies the provisioning model of the
             instance. Check the ProvisioningModel enum for
@@ -131607,6 +135474,17 @@ class Scheduling(proto.Message):
         number=252514344,
         optional=True,
     )
+    expose_host_topology: bool = proto.Field(
+        proto.BOOL,
+        number=428530155,
+        optional=True,
+    )
+    graceful_shutdown: "SchedulingGracefulShutdown" = proto.Field(
+        proto.MESSAGE,
+        number=226325136,
+        optional=True,
+        message="SchedulingGracefulShutdown",
+    )
     host_error_timeout_seconds: int = proto.Field(
         proto.INT32,
         number=408317459,
@@ -131660,6 +135538,12 @@ class Scheduling(proto.Message):
         number=324203169,
         optional=True,
     )
+    preemption_notice_duration: "Duration" = proto.Field(
+        proto.MESSAGE,
+        number=486176437,
+        optional=True,
+        message="Duration",
+    )
     provisioning_model: str = proto.Field(
         proto.STRING,
         number=494423,
@@ -131674,6 +135558,38 @@ class Scheduling(proto.Message):
         proto.STRING,
         number=428082984,
         optional=True,
+    )
+
+
+class SchedulingGracefulShutdown(proto.Message):
+    r"""The configuration for gracefully shutting down the instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            Opts-in for graceful shutdown.
+
+            This field is a member of `oneof`_ ``_enabled``.
+        max_duration (google.cloud.compute_v1.types.Duration):
+            The time allotted for the instance to
+            gracefully shut down. If the graceful shutdown
+            isn't complete after this time, then the
+            instance transitions to the STOPPING state.
+
+            This field is a member of `oneof`_ ``_max_duration``.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1018689,
+        optional=True,
+    )
+    max_duration: "Duration" = proto.Field(
+        proto.MESSAGE,
+        number=39954959,
+        optional=True,
+        message="Duration",
     )
 
 
@@ -132042,6 +135958,11 @@ class SecurityPolicy(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        params (google.cloud.compute_v1.types.SecurityPolicyParams):
+            Input only. [Input Only] Additional params passed with the
+            request, but not persisted as part of resource payload.
+
+            This field is a member of `oneof`_ ``_params``.
         parent (str):
             Output only. [Output Only] The parent of the security
             policy.
@@ -132232,6 +136153,12 @@ class SecurityPolicy(proto.Message):
         proto.STRING,
         number=3373707,
         optional=True,
+    )
+    params: "SecurityPolicyParams" = proto.Field(
+        proto.MESSAGE,
+        number=78313862,
+        optional=True,
+        message="SecurityPolicyParams",
     )
     parent: str = proto.Field(
         proto.STRING,
@@ -132891,6 +136818,37 @@ class SecurityPolicyList(proto.Message):
     )
 
 
+class SecurityPolicyParams(proto.Message):
+    r"""Additional security policy parameters.
+
+    Attributes:
+        resource_manager_tags (MutableMapping[str, str]):
+            Tag keys/values directly bound to this resource. Tag keys
+            and values have the same definition as resource manager
+            tags. The field is allowed for INSERT only. The keys/values
+            to set on the resource should be specified in either ID { :
+            } or Namespaced format { : }. For example the following are
+            valid inputs:
+
+            - {"tagKeys/333" : "tagValues/444", "tagKeys/123" :
+              "tagValues/456"}
+            - {"123/environment" : "production", "345/abc" : "xyz"}
+              Note:
+            - Invalid combinations of ID & namespaced format is not
+              supported. For instance: {"123/environment" :
+              "tagValues/444"} is invalid.
+            - Inconsistent format is not supported. For instance:
+              {"tagKeys/333" : "tagValues/444", "123/env" : "prod"} is
+              invalid.
+    """
+
+    resource_manager_tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=377671164,
+    )
+
+
 class SecurityPolicyRecaptchaOptionsConfig(proto.Message):
     r"""
 
@@ -133467,6 +137425,10 @@ class SecurityPolicyRulePreconfiguredWafConfigExclusion(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        request_bodies_to_exclude (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams]):
+            A list of request body fields to be excluded
+            from inspection during preconfigured WAF
+            evaluation.
         request_cookies_to_exclude (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams]):
             A list of request cookie names whose value
             will be excluded from inspection during
@@ -133499,6 +137461,13 @@ class SecurityPolicyRulePreconfiguredWafConfigExclusion(proto.Message):
             This field is a member of `oneof`_ ``_target_rule_set``.
     """
 
+    request_bodies_to_exclude: MutableSequence[
+        "SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=60453445,
+        message="SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams",
+    )
     request_cookies_to_exclude: MutableSequence[
         "SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams"
     ] = proto.RepeatedField(
@@ -133665,13 +137634,16 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
                which is resolved based on "userIpRequestHeaders" configured with the
                security policy. If there is no "userIpRequestHeaders" configuration or
                an IP address cannot be resolved from it, the key type defaults toIP.
+               - ASN: The autonomous system number of the originating
+               client. If not available, the key type defaults toALL.
+               - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+               client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+               key type defaults to ALL.
 
-            - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-              connects using HTTPS, HTTP/2 or HTTP/3. If not available,
-              the key type defaults to ALL. For "fairshare" action, this
-              value is limited to ALL i.e. a single rate limit threshold
-              is enforced for all the requests matching the rule. Check
-              the EnforceOnKey enum for the list of possible values.
+            For "fairshare" action, this value is limited to ALL i.e. a
+            single rate limit threshold is enforced for all the requests
+            matching the rule. Check the EnforceOnKey enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_enforce_on_key``.
         enforce_on_key_configs (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig]):
@@ -133752,18 +137724,23 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
            which is resolved based on "userIpRequestHeaders" configured with the
            security policy. If there is no "userIpRequestHeaders" configuration or
            an IP address cannot be resolved from it, the key type defaults toIP.
+           - ASN: The autonomous system number of the originating
+           client. If not available, the key type defaults toALL.
+           - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+           client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+           key type defaults to ALL.
 
-        - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-          connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key
-          type defaults to ALL. For "fairshare" action, this value is
-          limited to ALL i.e. a single rate limit threshold is enforced for
-          all the requests matching the rule.
+        For "fairshare" action, this value is limited to ALL i.e. a single
+        rate limit threshold is enforced for all the requests matching the
+        rule.
 
         Values:
             UNDEFINED_ENFORCE_ON_KEY (0):
                 A value indicating that the enum field is not
                 set.
             ALL (64897):
+                No description available.
+            ASN (65116):
                 No description available.
             HTTP_COOKIE (494981627):
                 No description available.
@@ -133789,6 +137766,7 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
 
         UNDEFINED_ENFORCE_ON_KEY = 0
         ALL = 64897
+        ASN = 65116
         HTTP_COOKIE = 494981627
         HTTP_HEADER = 91597348
         HTTP_PATH = 311503228
@@ -133904,11 +137882,14 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
                which is resolved based on "userIpRequestHeaders" configured with the
                security policy. If there is no "userIpRequestHeaders" configuration
                or an IP address cannot be resolved from it, the key type defaults toIP.
+               - ASN: The autonomous system number of the originating
+               client. If not available, the key type defaults toALL.
+               - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+               client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+               key type defaults to ALL.
 
-            - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-              connects using HTTPS, HTTP/2 or HTTP/3. If not available,
-              the key type defaults to ALL. Check the EnforceOnKeyType
-              enum for the list of possible values.
+            Check the EnforceOnKeyType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_enforce_on_key_type``.
     """
@@ -133952,16 +137933,19 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
            which is resolved based on "userIpRequestHeaders" configured with the
            security policy. If there is no "userIpRequestHeaders" configuration
            or an IP address cannot be resolved from it, the key type defaults toIP.
-
-        - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-          connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key
-          type defaults to ALL.
+           - ASN: The autonomous system number of the originating
+           client. If not available, the key type defaults toALL.
+           - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+           client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+           key type defaults to ALL.
 
         Values:
             UNDEFINED_ENFORCE_ON_KEY_TYPE (0):
                 A value indicating that the enum field is not
                 set.
             ALL (64897):
+                No description available.
+            ASN (65116):
                 No description available.
             HTTP_COOKIE (494981627):
                 No description available.
@@ -133987,6 +137971,7 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
 
         UNDEFINED_ENFORCE_ON_KEY_TYPE = 0
         ALL = 64897
+        ASN = 65116
         HTTP_COOKIE = 494981627
         HTTP_HEADER = 91597348
         HTTP_PATH = 311503228
@@ -138517,6 +142502,66 @@ class SetNameInstanceRequest(proto.Message):
     )
 
 
+class SetNameInterconnectRequest(proto.Message):
+    r"""A request message for Interconnects.SetName. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        interconnect (str):
+            Name of the interconnect to update.
+        interconnects_set_name_request_resource (google.cloud.compute_v1.types.InterconnectsSetNameRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be
+            a valid UUID with the exception that zero UUID
+            is not supported
+            (00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    interconnect: str = proto.Field(
+        proto.STRING,
+        number=224601230,
+    )
+    interconnects_set_name_request_resource: "InterconnectsSetNameRequest" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=316267707,
+            message="InterconnectsSetNameRequest",
+        )
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class SetNamedPortsInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.SetNamedPorts. See the
     method description for details.
@@ -142513,6 +146558,18 @@ class SslCertificateSelfManagedSslCertificate(proto.Message):
             must include at least one intermediate cert.
 
             This field is a member of `oneof`_ ``_certificate``.
+        encrypted_pem_private_key (str):
+            A value read into memory from a write-only
+            private key file whose contents have been
+            encrypted using the appropriate HPKE key
+            distributed by Google. The underlying plaintext
+            MUST be a PEM format private key. For security,
+            only insert requests include this field. Exactly
+            one of privateKey or encryptedPemPrivateKey
+            MUST be specified when creating a self-managed
+            certificate.
+
+            This field is a member of `oneof`_ ``_encrypted_pem_private_key``.
         private_key (str):
             A write-only private key in PEM format. Only
             insert requests will include this field.
@@ -142523,6 +146580,11 @@ class SslCertificateSelfManagedSslCertificate(proto.Message):
     certificate: str = proto.Field(
         proto.STRING,
         number=341787031,
+        optional=True,
+    )
+    encrypted_pem_private_key: str = proto.Field(
+        proto.STRING,
+        number=344730753,
         optional=True,
     )
     private_key: str = proto.Field(
@@ -143917,6 +147979,10 @@ class StopInstanceRequest(proto.Message):
             This field is a member of `oneof`_ ``_discard_local_ssd``.
         instance (str):
             Name of the instance resource to stop.
+        no_graceful_shutdown (bool):
+            If set to true, Graceful Shutdown is skipped.
+
+            This field is a member of `oneof`_ ``_no_graceful_shutdown``.
         project (str):
             Project ID for this request.
         request_id (str):
@@ -143953,6 +148019,11 @@ class StopInstanceRequest(proto.Message):
     instance: str = proto.Field(
         proto.STRING,
         number=18257045,
+    )
+    no_graceful_shutdown: bool = proto.Field(
+        proto.BOOL,
+        number=336255890,
+        optional=True,
     )
     project: str = proto.Field(
         proto.STRING,
@@ -144145,8 +148216,8 @@ class StoragePool(proto.Message):
 
             This field is a member of `oneof`_ ``_description``.
         exapool_provisioned_capacity_gb (google.cloud.compute_v1.types.StoragePoolExapoolProvisionedCapacityGb):
-            Output only. [Output Only] Provisioned capacities for each
-            SKU for this Exapool in GiB
+            Provisioned capacities for each SKU for this
+            Exapool in GiB
 
             This field is a member of `oneof`_ ``_exapool_provisioned_capacity_gb``.
         id (int):
@@ -144234,6 +148305,10 @@ class StoragePool(proto.Message):
             resource's resource id.
 
             This field is a member of `oneof`_ ``_self_link_with_id``.
+        share_settings (google.cloud.compute_v1.types.StoragePoolShareSettings):
+            Share settings for the storage pool.
+
+            This field is a member of `oneof`_ ``_share_settings``.
         state (str):
             Output only. [Output Only] The status of storage pool
             creation.
@@ -144422,6 +148497,12 @@ class StoragePool(proto.Message):
         proto.STRING,
         number=44520962,
         optional=True,
+    )
+    share_settings: "StoragePoolShareSettings" = proto.Field(
+        proto.MESSAGE,
+        number=266668163,
+        optional=True,
+        message="StoragePoolShareSettings",
     )
     state: str = proto.Field(
         proto.STRING,
@@ -145068,6 +149149,44 @@ class StoragePoolResourceStatus(proto.Message):
     total_provisioned_disk_throughput: int = proto.Field(
         proto.INT64,
         number=447677830,
+        optional=True,
+    )
+
+
+class StoragePoolShareSettings(proto.Message):
+    r"""Share settings for the storage pool.
+
+    Attributes:
+        project_map (MutableMapping[str, google.cloud.compute_v1.types.StoragePoolShareSettingsProjectConfig]):
+            A map of project id and project config.
+    """
+
+    project_map: MutableMapping[str, "StoragePoolShareSettingsProjectConfig"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=134212406,
+            message="StoragePoolShareSettingsProjectConfig",
+        )
+    )
+
+
+class StoragePoolShareSettingsProjectConfig(proto.Message):
+    r"""Config for each project in the share settings.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project_id (str):
+            The project ID, should be same as the key of
+            this project config in the parent map.
+
+            This field is a member of `oneof`_ ``_project_id``.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=177513473,
         optional=True,
     )
 
@@ -145763,14 +149882,11 @@ class Subnetwork(proto.Message):
                 VMs on this subnet will be assigned IPv6
                 addresses that are only accessible over the VPC
                 network.
-            UNSPECIFIED_IPV6_ACCESS_TYPE (313080613):
-                No description available.
         """
 
         UNDEFINED_IPV6_ACCESS_TYPE = 0
         EXTERNAL = 35607499
         INTERNAL = 279295677
-        UNSPECIFIED_IPV6_ACCESS_TYPE = 313080613
 
     class Ipv6GceEndpoint(proto.Enum):
         r"""Output only. [Output Only] Possible endpoints of this subnetwork. It
@@ -145881,6 +149997,17 @@ class Subnetwork(proto.Message):
             ARP_ALL_RANGES (445655380):
                 All ranges assigned to the VM NIC will
                 respond to ARP.
+            ARP_BROADCAST_PRIMARY_RANGE (123887458):
+                VMs will receive an ARP response from a VM
+                instance owning the target IP address within the
+                subnetwork's primary CIDR range, if such a VM
+                instance exists and is running.
+            ARP_BROADCAST_PRIMARY_RANGE_WITH_LEARNING (425592922):
+                Combines ARP_BROADCAST_PRIMARY_RANGE with MAC learning.
+                Enables cache mapping between IP addresses and custom MAC
+                addresses of instances and use of it to set the correct
+                destination MAC address. If this option is chosen, the
+                subnetwork must have /24 or a smaller CIDR range.
             ARP_PRIMARY_RANGE (120210048):
                 Only the primary range of the VM NIC will
                 respond to ARP.
@@ -145888,6 +150015,8 @@ class Subnetwork(proto.Message):
 
         UNDEFINED_RESOLVE_SUBNET_MASK = 0
         ARP_ALL_RANGES = 445655380
+        ARP_BROADCAST_PRIMARY_RANGE = 123887458
+        ARP_BROADCAST_PRIMARY_RANGE_WITH_LEARNING = 425592922
         ARP_PRIMARY_RANGE = 120210048
 
     class Role(proto.Enum):
@@ -145936,15 +150065,12 @@ class Subnetwork(proto.Message):
             IPV6_ONLY (79632100):
                 New VMs in this subnet will only  be assigned
                 IPv6 addresses.
-            UNSPECIFIED_STACK_TYPE (298084569):
-                No description available.
         """
 
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
         IPV4_ONLY = 22373798
         IPV6_ONLY = 79632100
-        UNSPECIFIED_STACK_TYPE = 298084569
 
     class State(proto.Enum):
         r"""Output only. [Output Only] The state of the subnetwork, which can be
@@ -148984,7 +153110,7 @@ class TargetPool(proto.Message):
             The server-defined URL for the resource. This field is
             applicable only when the containing target pool is serving a
             forwarding rule as the primary pool, and its failoverRatio
-            field is properly set to a value between [0, 1].backupPool
+            field is properly set to a value between [0, 1]. backupPool
             and failoverRatio together define the fallback behavior of
             the primary target pool: if the ratio of the healthy
             instances in the primary pool is at or belowfailoverRatio,
@@ -156227,6 +160353,13 @@ class UrlRewrite(proto.Message):
             be specified.
 
             This field is a member of `oneof`_ ``_path_template_rewrite``.
+        regex_rewrite (google.cloud.compute_v1.types.RegexRewrite):
+            The regex rewrite to be applied to the URL.
+            Only one ofpathPrefixRewrite,
+            pathTemplateRewrite, orregexRewrite may be
+            specified.
+
+            This field is a member of `oneof`_ ``_regex_rewrite``.
     """
 
     host_rewrite: str = proto.Field(
@@ -156243,6 +160376,12 @@ class UrlRewrite(proto.Message):
         proto.STRING,
         number=423409569,
         optional=True,
+    )
+    regex_rewrite: "RegexRewrite" = proto.Field(
+        proto.MESSAGE,
+        number=380801428,
+        optional=True,
+        message="RegexRewrite",
     )
 
 
@@ -159103,7 +163242,7 @@ class WaitZoneOperationRequest(proto.Message):
 
 
 class Warning(proto.Message):
-    r"""Informational warning message.
+    r"""
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -159119,7 +163258,7 @@ class Warning(proto.Message):
             [Output Only] Metadata about this warning in key: value
             format. For example:
 
-            "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+            "data": [ { "key": "scope", "value": "zones/us-east1-d" }]
         message (str):
             [Output Only] A human-readable description of the warning
             code.
@@ -159293,7 +163432,7 @@ class Warnings(proto.Message):
             [Output Only] Metadata about this warning in key: value
             format. For example:
 
-            "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+            "data": [ { "key": "scope", "value": "zones/us-east1-d" }]
         message (str):
             [Output Only] A human-readable description of the warning
             code.
@@ -160016,6 +164155,12 @@ class WireProperties(proto.Message):
             values.
 
             This field is a member of `oneof`_ ``_fault_response``.
+        flow_management (str):
+            The flow management configuration for the
+            wire. Check the FlowManagement enum for the list
+            of possible values.
+
+            This field is a member of `oneof`_ ``_flow_management``.
     """
 
     class BandwidthAllocation(proto.Enum):
@@ -160079,6 +164224,26 @@ class WireProperties(proto.Message):
         DISABLE_PORT = 287086488
         NONE = 2402104
 
+    class FlowManagement(proto.Enum):
+        r"""The flow management configuration for the wire.
+
+        Values:
+            UNDEFINED_FLOW_MANAGEMENT (0):
+                A value indicating that the enum field is not
+                set.
+            DYNAMIC_PATH (243852357):
+                The wire uses dynamic paths.
+            FIXED_PATH (74947120):
+                The wire uses fixed paths.
+            FLOW_MANAGEMENT_UNSPECIFIED (122554188):
+                No description available.
+        """
+
+        UNDEFINED_FLOW_MANAGEMENT = 0
+        DYNAMIC_PATH = 243852357
+        FIXED_PATH = 74947120
+        FLOW_MANAGEMENT_UNSPECIFIED = 122554188
+
     bandwidth_allocation: str = proto.Field(
         proto.STRING,
         number=90651950,
@@ -160092,6 +164257,11 @@ class WireProperties(proto.Message):
     fault_response: str = proto.Field(
         proto.STRING,
         number=353587646,
+        optional=True,
+    )
+    flow_management: str = proto.Field(
+        proto.STRING,
+        number=183886836,
         optional=True,
     )
 

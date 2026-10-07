@@ -29,9 +29,11 @@ from .age_range import (
 from .audience import (
     AudienceMember,
     CompositeData,
+    GoogleUserIdData,
     IpData,
     MobileData,
     PairData,
+    PartnerProvidedIdData,
     PpidData,
     UserIdData,
 )
@@ -86,8 +88,14 @@ from .ingestion_service import (
     IngestAudienceMembersResponse,
     IngestEventsRequest,
     IngestEventsResponse,
+    IngestUsersRequest,
+    IngestUsersResponse,
+    RemoveAllAudienceMembersRequest,
+    RemoveAllAudienceMembersResponse,
     RemoveAudienceMembersRequest,
     RemoveAudienceMembersResponse,
+    RemoveUsersRequest,
+    RemoveUsersResponse,
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
@@ -115,10 +123,12 @@ from .partner_link_service import (
 from .processing_errors import (
     ErrorCount,
     ErrorInfo,
+    FieldWarning,
     ProcessingErrorReason,
     ProcessingWarningReason,
     WarningCount,
     WarningInfo,
+    WarningReason,
 )
 from .request_status_per_destination import (
     RequestStatusPerDestination,
@@ -126,6 +136,9 @@ from .request_status_per_destination import (
 from .terms_of_service import (
     TermsOfService,
     TermsOfServiceStatus,
+)
+from .user import (
+    User,
 )
 from .user_data import (
     AddressInfo,
@@ -215,9 +228,11 @@ __all__ = (
     "AgeRange",
     "AudienceMember",
     "CompositeData",
+    "GoogleUserIdData",
     "IpData",
     "MobileData",
     "PairData",
+    "PartnerProvidedIdData",
     "PpidData",
     "UserIdData",
     "CartData",
@@ -249,8 +264,14 @@ __all__ = (
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
     "IngestEventsResponse",
+    "IngestUsersRequest",
+    "IngestUsersResponse",
+    "RemoveAllAudienceMembersRequest",
+    "RemoveAllAudienceMembersResponse",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
+    "RemoveUsersRequest",
+    "RemoveUsersResponse",
     "RetrieveRequestStatusRequest",
     "RetrieveRequestStatusResponse",
     "Encoding",
@@ -269,13 +290,16 @@ __all__ = (
     "FeatureSet",
     "ErrorCount",
     "ErrorInfo",
+    "FieldWarning",
     "WarningCount",
     "WarningInfo",
     "ProcessingErrorReason",
     "ProcessingWarningReason",
+    "WarningReason",
     "RequestStatusPerDestination",
     "TermsOfService",
     "TermsOfServiceStatus",
+    "User",
     "AddressInfo",
     "UserData",
     "UserIdentifier",

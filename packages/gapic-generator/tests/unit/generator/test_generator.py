@@ -263,6 +263,80 @@ def test_get_response_ignores_unwanted_transports_and_clients():
             }
 
 
+def test_get_response_resumable_upload_generates_async_client_and_rest_asyncio():
+    # Verify that REST transport files (rest.py, rest_base.py, rest_asyncio.py)
+    # are generated when a service has a resumable upload method and grpc
+    # transport is enabled, even if rest_async_io_enabled is False, while
+    # async_client.py and rest_asyncio.py are not generated for rest-only
+    # without rest_async_io_enabled.
+    generator_obj = make_generator()
+    with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as list_templates:
+        list_templates.return_value = [
+            "foo/%service/transports/grpc.py.j2",
+            "foo/%service/transports/grpc_asyncio.py.j2",
+            "foo/%service/transports/rest.py.j2",
+            "foo/%service/transports/rest_asyncio.py.j2",
+            "foo/%service/transports/rest_base.py.j2",
+            "foo/%service/transports/__init__.py.j2",
+            "foo/%service/transports/base.py.j2",
+            "foo/%service/async_client.py.j2",
+            "foo/%service/client.py.j2",
+        ]
+
+        with mock.patch.object(jinja2.Environment, "get_template") as get_template:
+            get_template.return_value = jinja2.Template("Service: {{ service.name }}")
+            api_schema = make_api(
+                make_proto(
+                    descriptor_pb2.FileDescriptorProto(
+                        name="resumable.proto",
+                        package="foo.v1",
+                        message_type=[
+                            descriptor_pb2.DescriptorProto(name="UploadMediaRequest"),
+                            descriptor_pb2.DescriptorProto(name="UploadMediaResponse"),
+                        ],
+                        service=[
+                            descriptor_pb2.ServiceDescriptorProto(
+                                name="ResumableUploadService",
+                                method=[
+                                    descriptor_pb2.MethodDescriptorProto(
+                                        name="UploadMedia",
+                                        input_type=".foo.v1.UploadMediaRequest",
+                                        output_type=".foo.v1.UploadMediaResponse",
+                                    ),
+                                ],
+                            ),
+                        ],
+                    ),
+                )
+            )
+
+            cgr = generator_obj.get_response(
+                api_schema=api_schema, opts=Options.build("transport=rest")
+            )
+            assert {i.name for i in cgr.file} == {
+                "foo/resumable_upload_service/transports/rest.py",
+                "foo/resumable_upload_service/transports/rest_base.py",
+                "foo/resumable_upload_service/transports/__init__.py",
+                "foo/resumable_upload_service/transports/base.py",
+                "foo/resumable_upload_service/client.py",
+            }
+
+            cgr_grpc = generator_obj.get_response(
+                api_schema=api_schema, opts=Options.build("transport=grpc")
+            )
+            assert {i.name for i in cgr_grpc.file} == {
+                "foo/resumable_upload_service/transports/grpc.py",
+                "foo/resumable_upload_service/transports/grpc_asyncio.py",
+                "foo/resumable_upload_service/transports/rest.py",
+                "foo/resumable_upload_service/transports/rest_asyncio.py",
+                "foo/resumable_upload_service/transports/rest_base.py",
+                "foo/resumable_upload_service/transports/__init__.py",
+                "foo/resumable_upload_service/transports/base.py",
+                "foo/resumable_upload_service/async_client.py",
+                "foo/resumable_upload_service/client.py",
+            }
+
+
 def test_get_response_enumerates_services():
     generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as list_templates:

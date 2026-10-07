@@ -1,5 +1,6 @@
 import asyncio
 import inspect
+import os
 import time
 
 from google.api_core.exceptions import Aborted
@@ -75,6 +76,7 @@ def _create_spanner_omni_transport(
     client_certificate,
     client_key,
     interceptors=None,
+    credentials=None,
 ):
     """Creates a Spanner Omni transport in async mode.
 
@@ -87,6 +89,8 @@ def _create_spanner_omni_transport(
         client_certificate (str): Path to the client certificate file for mTLS.
         client_key (str): Path to the client key file for mTLS.
         interceptors (list): Optional list of interceptors to add to the channel.
+        credentials (google.auth.credentials.Credentials, optional): Credentials
+            to use for authentication.
 
     Returns:
         object: An instance of the transport class created by `transport_factory`.
@@ -98,8 +102,25 @@ def _create_spanner_omni_transport(
     from google.auth.credentials import AnonymousCredentials
 
     channel = None
+    all_interceptors = list(interceptors) if interceptors is not None else []
+    if credentials is not None:
+        if hasattr(credentials, "create_async_auth_interceptors"):
+            all_interceptors.extend(credentials.create_async_auth_interceptors())
+        elif hasattr(credentials, "create_async_auth_interceptor"):
+            res = credentials.create_async_auth_interceptor()
+            if isinstance(res, (list, tuple)):
+                all_interceptors.extend(res)
+            else:
+                all_interceptors.append(res)
+        elif hasattr(credentials, "create_auth_interceptor"):
+            res = credentials.create_auth_interceptor(is_async=True)
+            if isinstance(res, (list, tuple)):
+                all_interceptors.extend(res)
+            else:
+                all_interceptors.append(res)
+
     if use_plain_text:
-        channel = grpc.aio.insecure_channel(target=host, interceptors=interceptors)
+        channel = grpc.aio.insecure_channel(target=host, interceptors=all_interceptors)
     elif ca_certificate:
         with open(ca_certificate, "rb") as f:
             ca_cert = f.read()
@@ -119,12 +140,17 @@ def _create_spanner_omni_transport(
             )
         else:
             ssl_creds = grpc.ssl_channel_credentials(root_certificates=ca_cert)
-        channel = grpc.aio.secure_channel(host, ssl_creds, interceptors=interceptors)
+        channel = grpc.aio.secure_channel(
+            host, ssl_creds, interceptors=all_interceptors
+        )
     else:
         raise ValueError(
             "TLS/mTLS connection requires ca_certificate to be set for Spanner Omni"
         )
-    return transport_factory(channel=channel, credentials=AnonymousCredentials())
+    actual_credentials = (
+        credentials if credentials is not None else AnonymousCredentials()
+    )
+    return transport_factory(channel=channel, credentials=actual_credentials)
 
 
 def _create_experimental_host_transport(
@@ -153,3 +179,44 @@ def _create_experimental_host_transport(
         client_key,
         interceptors=interceptors,
     )
+
+
+_PENDING_DRAIN_TASKS = set()
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(after_in_child=_PENDING_DRAIN_TASKS.clear)
+
+
+def _drain_stream(iterator):
+    """Drain an async stream iterator to EOF in the background.
+
+    Called when PartialResultSet.last is True to allow the caller to return immediately
+    while consuming trailing gRPC metadata so the stream terminates cleanly with status OK.
+    """
+    if iterator is None:
+        return
+
+    async def _drain():
+        try:
+            async for _ in iterator:
+                pass
+        except asyncio.CancelledError:
+            if hasattr(iterator, "cancel"):
+                try:
+                    iterator.cancel()
+                except Exception:
+                    pass
+            raise
+        except Exception:
+            pass
+
+    try:
+        task = asyncio.create_task(_drain())
+        _PENDING_DRAIN_TASKS.add(task)
+        task.add_done_callback(_PENDING_DRAIN_TASKS.discard)
+    except RuntimeError:
+        # Event loop may be closed or not running.
+        if hasattr(iterator, "cancel"):
+            try:
+                iterator.cancel()
+            except Exception:
+                pass

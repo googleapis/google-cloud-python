@@ -184,6 +184,12 @@ class AdUnit(proto.Message):
             defaulted to true.
 
             This field is a member of `oneof`_ ``_effective_adsense_enabled``.
+        refresh_rate_type (google.ads.admanager_v1.types.RefreshRateTypeEnum.RefreshRateType):
+            Optional. Non-empty default. Defines the type of refresh
+            rate control for this ad unit. This field defaults to
+            ``DISABLED``.
+
+            This field is a member of `oneof`_ ``_refresh_rate_type``.
     """
 
     name: str = proto.Field(
@@ -319,6 +325,12 @@ class AdUnit(proto.Message):
         number=27,
         optional=True,
     )
+    refresh_rate_type: ad_unit_enums.RefreshRateTypeEnum.RefreshRateType = proto.Field(
+        proto.ENUM,
+        number=78,
+        optional=True,
+        enum=ad_unit_enums.RefreshRateTypeEnum.RefreshRateType,
+    )
 
 
 class AdUnitSize(proto.Message):
@@ -340,7 +352,7 @@ class AdUnitSize(proto.Message):
         companions (MutableSequence[google.ads.admanager_v1.types.Size]):
             The companions for this ad unit size. Companions are only
             valid if the environment is
-            [VIDEO_PLAYER][google.ads.admanager.v1.EnvironmentTypeEnum.EnvironmentType].
+            [VIDEO_PLAYER][google.ads.admanager.v1.EnvironmentTypeEnum.EnvironmentType.VIDEO_PLAYER].
     """
 
     size: gaa_size.Size = proto.Field(
