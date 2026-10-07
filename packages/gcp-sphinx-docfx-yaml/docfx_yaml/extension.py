@@ -30,7 +30,7 @@ import shutil
 from collections import defaultdict
 from collections.abc import Mapping, MutableSet, Sequence
 from functools import partial
-from itertools import zip_longest
+from itertools import chain, zip_longest
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -1937,7 +1937,11 @@ def find_uid_to_convert(
         None if current word does not contain any reference `uid`, or the `uid`
           that should be converted.
     """
-    for uid in known_uids:
+    # All Python UIDs are dotted paths (e.g. `pkg.module.Symbol`), so skip
+    # plain words and sentence-ending periods before scanning `known_uids`.
+    if "." not in current_word.strip("."):
+        return None
+    for uid in chain(known_uids, hard_coded_references or ()):
         # Do not convert references to itself or containing partial
         # references. This could result in `storage.types.ReadSession` being
         # prematurely converted to
@@ -2014,7 +2018,6 @@ def convert_cross_references(
         "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse": iam_policy_link
         + "#L120-L131",
     }
-    known_uids.extend(hard_coded_references.keys())
 
     # Used to keep track of current position to avoid converting if needed.
     example_index = len(content)
