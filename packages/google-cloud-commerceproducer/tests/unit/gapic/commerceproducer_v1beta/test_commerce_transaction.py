@@ -1667,6 +1667,7 @@ def test_get_service(request_type, transport: str = "grpc"):
         call.return_value = service.Service(
             name="name_value",
             title="title_value",
+            product_type=service.Service.ProductType.SOFTWARE_AS_A_SERVICE,
         )
         response = client.get_service(request)
 
@@ -1680,6 +1681,7 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
     assert response.title == "title_value"
+    assert response.product_type == service.Service.ProductType.SOFTWARE_AS_A_SERVICE
 
 
 def test_get_service_non_empty_request_with_auto_populated_field():
@@ -1813,6 +1815,7 @@ async def test_get_service_async(request_type, transport: str = "grpc_asyncio"):
             service.Service(
                 name="name_value",
                 title="title_value",
+                product_type=service.Service.ProductType.SOFTWARE_AS_A_SERVICE,
             )
         )
         response = await client.get_service(request)
@@ -1827,6 +1830,7 @@ async def test_get_service_async(request_type, transport: str = "grpc_asyncio"):
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
     assert response.title == "title_value"
+    assert response.product_type == service.Service.ProductType.SOFTWARE_AS_A_SERVICE
 
 
 def test_get_service_field_headers():
@@ -14188,6 +14192,7 @@ async def test_get_service_empty_call_grpc_asyncio():
             service.Service(
                 name="name_value",
                 title="title_value",
+                product_type=service.Service.ProductType.SOFTWARE_AS_A_SERVICE,
             )
         )
         await client.get_service(request=None)
@@ -14945,6 +14950,7 @@ def test_get_service_rest_call_success(request_type):
         return_value = service.Service(
             name="name_value",
             title="title_value",
+            product_type=service.Service.ProductType.SOFTWARE_AS_A_SERVICE,
         )
 
         # Wrap the value into a proper Response obj
@@ -14963,6 +14969,7 @@ def test_get_service_rest_call_success(request_type):
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
     assert response.title == "title_value"
+    assert response.product_type == service.Service.ProductType.SOFTWARE_AS_A_SERVICE
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

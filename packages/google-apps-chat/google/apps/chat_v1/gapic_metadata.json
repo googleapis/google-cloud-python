@@ -30,6 +30,11 @@
                 "create_message"
               ]
             },
+            "CreateMessagePin": {
+              "methods": [
+                "create_message_pin"
+              ]
+            },
             "CreateReaction": {
               "methods": [
                 "create_reaction"
@@ -58,6 +63,11 @@
             "DeleteMessage": {
               "methods": [
                 "delete_message"
+              ]
+            },
+            "DeleteMessagePin": {
+              "methods": [
+                "delete_message_pin"
               ]
             },
             "DeleteReaction": {
@@ -143,6 +153,11 @@
             "ListMemberships": {
               "methods": [
                 "list_memberships"
+              ]
+            },
+            "ListMessagePins": {
+              "methods": [
+                "list_message_pins"
               ]
             },
             "ListMessages": {
@@ -280,6 +295,11 @@
                 "create_message"
               ]
             },
+            "CreateMessagePin": {
+              "methods": [
+                "create_message_pin"
+              ]
+            },
             "CreateReaction": {
               "methods": [
                 "create_reaction"
@@ -308,6 +328,11 @@
             "DeleteMessage": {
               "methods": [
                 "delete_message"
+              ]
+            },
+            "DeleteMessagePin": {
+              "methods": [
+                "delete_message_pin"
               ]
             },
             "DeleteReaction": {
@@ -393,6 +418,11 @@
             "ListMemberships": {
               "methods": [
                 "list_memberships"
+              ]
+            },
+            "ListMessagePins": {
+              "methods": [
+                "list_message_pins"
               ]
             },
             "ListMessages": {
@@ -530,6 +560,11 @@
                 "create_message"
               ]
             },
+            "CreateMessagePin": {
+              "methods": [
+                "create_message_pin"
+              ]
+            },
             "CreateReaction": {
               "methods": [
                 "create_reaction"
@@ -558,6 +593,11 @@
             "DeleteMessage": {
               "methods": [
                 "delete_message"
+              ]
+            },
+            "DeleteMessagePin": {
+              "methods": [
+                "delete_message_pin"
               ]
             },
             "DeleteReaction": {
@@ -643,6 +683,11 @@
             "ListMemberships": {
               "methods": [
                 "list_memberships"
+              ]
+            },
+            "ListMessagePins": {
+              "methods": [
+                "list_message_pins"
               ]
             },
             "ListMessages": {

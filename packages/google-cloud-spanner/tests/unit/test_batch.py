@@ -345,12 +345,25 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         batch.insert(TABLE_NAME, COLUMNS, VALUES)
 
         # Assertion: Ensure that calling batch.commit() raises Aborted
-        with self.assertRaises(Aborted) as context:
-            batch.commit(timeout_secs=1.0, default_retry_delay=0)
+        delay_call_count = 0
+
+        def fake_delay(exc, *args, **kwargs):
+            nonlocal delay_call_count
+            delay_call_count += 1
+            if delay_call_count >= 2:
+                raise exc
+
+        with mock.patch(
+            "google.cloud.spanner_v1._helpers._delay_until_retry",
+            side_effect=fake_delay,
+        ):
+            with self.assertRaises(Aborted) as context:
+                batch.commit(timeout_secs=1.0, default_retry_delay=0)
 
         # Verify exception includes request_id attribute
         self.assertIn("409 Transaction was aborted", str(context.exception))
         self.assertTrue(hasattr(context.exception, "request_id"))
+        self.assertEqual(delay_call_count, 2)
         self.assertGreater(
             api.commit.call_count, 1, "commit should be called more than once"
         )

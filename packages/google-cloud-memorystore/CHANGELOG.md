@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-memorystore/#history
 
+## [0.5.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.5.4...google-cloud-memorystore-v0.5.5) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [0.5.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.5.3...google-cloud-memorystore-v0.5.4) (2026-08-06)
 
 

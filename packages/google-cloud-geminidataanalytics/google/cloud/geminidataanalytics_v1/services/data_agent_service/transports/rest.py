@@ -138,6 +138,22 @@ class DataAgentServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_retrieve_agent_ops_observability(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_retrieve_agent_ops_observability(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_set_agent_ops_observability(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_agent_ops_observability(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -525,6 +541,107 @@ class DataAgentServiceRestInterceptor:
         `post_list_data_agents` interceptor. The (possibly modified) response returned by
         `post_list_data_agents` will be passed to
         `post_list_data_agents_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_retrieve_agent_ops_observability(
+        self,
+        request: data_agent_service.RetrieveAgentOpsObservabilityRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_agent_service.RetrieveAgentOpsObservabilityRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for retrieve_agent_ops_observability
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataAgentService server.
+        """
+        return request, metadata
+
+    def post_retrieve_agent_ops_observability(
+        self, response: data_agent_service.RetrieveAgentOpsObservabilityResponse
+    ) -> data_agent_service.RetrieveAgentOpsObservabilityResponse:
+        """Post-rpc interceptor for retrieve_agent_ops_observability
+
+        DEPRECATED. Please use the `post_retrieve_agent_ops_observability_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DataAgentService server but before
+        it is returned to user code. This `post_retrieve_agent_ops_observability` interceptor runs
+        before the `post_retrieve_agent_ops_observability_with_metadata` interceptor.
+        """
+        return response
+
+    def post_retrieve_agent_ops_observability_with_metadata(
+        self,
+        response: data_agent_service.RetrieveAgentOpsObservabilityResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_agent_service.RetrieveAgentOpsObservabilityResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for retrieve_agent_ops_observability
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataAgentService server but before it is returned to user code.
+
+        We recommend only using this `post_retrieve_agent_ops_observability_with_metadata`
+        interceptor in new development instead of the `post_retrieve_agent_ops_observability` interceptor.
+        When both interceptors are used, this `post_retrieve_agent_ops_observability_with_metadata` interceptor runs after the
+        `post_retrieve_agent_ops_observability` interceptor. The (possibly modified) response returned by
+        `post_retrieve_agent_ops_observability` will be passed to
+        `post_retrieve_agent_ops_observability_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_set_agent_ops_observability(
+        self,
+        request: data_agent_service.SetAgentOpsObservabilityRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_agent_service.SetAgentOpsObservabilityRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for set_agent_ops_observability
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataAgentService server.
+        """
+        return request, metadata
+
+    def post_set_agent_ops_observability(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for set_agent_ops_observability
+
+        DEPRECATED. Please use the `post_set_agent_ops_observability_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DataAgentService server but before
+        it is returned to user code. This `post_set_agent_ops_observability` interceptor runs
+        before the `post_set_agent_ops_observability_with_metadata` interceptor.
+        """
+        return response
+
+    def post_set_agent_ops_observability_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_agent_ops_observability
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataAgentService server but before it is returned to user code.
+
+        We recommend only using this `post_set_agent_ops_observability_with_metadata`
+        interceptor in new development instead of the `post_set_agent_ops_observability` interceptor.
+        When both interceptors are used, this `post_set_agent_ops_observability_with_metadata` interceptor runs after the
+        `post_set_agent_ops_observability` interceptor. The (possibly modified) response returned by
+        `post_set_agent_ops_observability` will be passed to
+        `post_set_agent_ops_observability_with_metadata`.
         """
         return response, metadata
 
@@ -2195,6 +2312,312 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
+    class _RetrieveAgentOpsObservability(
+        _BaseDataAgentServiceRestTransport._BaseRetrieveAgentOpsObservability,
+        DataAgentServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataAgentServiceRestTransport.RetrieveAgentOpsObservability")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: data_agent_service.RetrieveAgentOpsObservabilityRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> data_agent_service.RetrieveAgentOpsObservabilityResponse:
+            r"""Call the retrieve agent ops
+            observability method over HTTP.
+
+                Args:
+                    request (~.data_agent_service.RetrieveAgentOpsObservabilityRequest):
+                        The request object. Request for
+                    RetrieveAgentOpsObservability.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.data_agent_service.RetrieveAgentOpsObservabilityResponse:
+                        Response for
+                    RetrieveAgentOpsObservability.
+
+            """
+
+            http_options = _BaseDataAgentServiceRestTransport._BaseRetrieveAgentOpsObservability._get_http_options()
+            request, metadata = self._interceptor.pre_retrieve_agent_ops_observability(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataAgentServiceRestTransport._BaseRetrieveAgentOpsObservability,
+                    "_BaseRetrieveAgentOpsObservability__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.geminidataanalytics_v1.DataAgentServiceClient.RetrieveAgentOpsObservability",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1.DataAgentService",
+                        "rpcName": "RetrieveAgentOpsObservability",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataAgentServiceRestTransport._RetrieveAgentOpsObservability._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = data_agent_service.RetrieveAgentOpsObservabilityResponse()
+            pb_resp = data_agent_service.RetrieveAgentOpsObservabilityResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_retrieve_agent_ops_observability(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_retrieve_agent_ops_observability_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = data_agent_service.RetrieveAgentOpsObservabilityResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.geminidataanalytics_v1.DataAgentServiceClient.retrieve_agent_ops_observability",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1.DataAgentService",
+                        "rpcName": "RetrieveAgentOpsObservability",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _SetAgentOpsObservability(
+        _BaseDataAgentServiceRestTransport._BaseSetAgentOpsObservability,
+        DataAgentServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataAgentServiceRestTransport.SetAgentOpsObservability")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: data_agent_service.SetAgentOpsObservabilityRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the set agent ops
+            observability method over HTTP.
+
+                Args:
+                    request (~.data_agent_service.SetAgentOpsObservabilityRequest):
+                        The request object. Request for SetAgentOpsObservability.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = _BaseDataAgentServiceRestTransport._BaseSetAgentOpsObservability._get_http_options()
+            request, metadata = self._interceptor.pre_set_agent_ops_observability(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataAgentServiceRestTransport._BaseSetAgentOpsObservability,
+                    "_BaseSetAgentOpsObservability__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.geminidataanalytics_v1.DataAgentServiceClient.SetAgentOpsObservability",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1.DataAgentService",
+                        "rpcName": "SetAgentOpsObservability",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                DataAgentServiceRestTransport._SetAgentOpsObservability._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_set_agent_ops_observability(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_agent_ops_observability_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.geminidataanalytics_v1.DataAgentServiceClient.set_agent_ops_observability",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1.DataAgentService",
+                        "rpcName": "SetAgentOpsObservability",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _SetIamPolicy(
         _BaseDataAgentServiceRestTransport._BaseSetIamPolicy, DataAgentServiceRestStub
     ):
@@ -2793,6 +3216,31 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataAgents(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def retrieve_agent_ops_observability(
+        self,
+    ) -> Callable[
+        [data_agent_service.RetrieveAgentOpsObservabilityRequest],
+        data_agent_service.RetrieveAgentOpsObservabilityResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RetrieveAgentOpsObservability(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def set_agent_ops_observability(
+        self,
+    ) -> Callable[
+        [data_agent_service.SetAgentOpsObservabilityRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetAgentOpsObservability(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_iam_policy(

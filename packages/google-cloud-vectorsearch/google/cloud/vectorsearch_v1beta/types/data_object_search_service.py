@@ -155,14 +155,25 @@ class SearchHint(proto.Message):
         class DenseScannParams(proto.Message):
             r"""Parameters for dense ScaNN.
 
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
             Attributes:
                 search_leaves_pct (int):
                     Optional. Dense ANN param overrides to control recall and
                     latency. The percentage of leaves to search, in the range
-                    [0, 100].
+                    [0, 100]. Not supported for ``STORAGE_OPTIMIZED`` indexes.
+                    Cannot be set together with ``target_recall``.
                 initial_candidate_count (int):
-                    Optional. The number of initial candidates.
-                    Must be a positive integer (> 0).
+                    Optional. The number of initial candidates. Must be a
+                    positive integer (> 0). Not supported for
+                    ``STORAGE_OPTIMIZED`` indexes. Cannot be set together with
+                    ``target_recall``.
+                target_recall (float):
+                    Optional. The target recall for the search. Must be a double
+                    in the range [0, 1]. While the search aims to achieve this
+                    level of recall, it is not guaranteed.
+
+                    This field is a member of `oneof`_ ``_target_recall``.
             """
 
             search_leaves_pct: int = proto.Field(
@@ -172,6 +183,11 @@ class SearchHint(proto.Message):
             initial_candidate_count: int = proto.Field(
                 proto.INT32,
                 number=2,
+            )
+            target_recall: float = proto.Field(
+                proto.DOUBLE,
+                number=3,
+                optional=True,
             )
 
         dense_scann_params: "SearchHint.IndexHint.DenseScannParams" = proto.Field(
@@ -792,7 +808,129 @@ class SearchResult(proto.Message):
             score returned by BatchSearchDataObjects.
 
             This field is a member of `oneof`_ ``_distance``.
+        search_result_metadata (google.cloud.vectorsearch_v1beta.types.SearchResult.SearchResultMetadata):
+            Output only. Quality signals for this result. Only populated
+            when
+            [BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled][google.cloud.vectorsearch.v1beta.BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled]
+            is ``true``.
     """
+
+    class SearchResultMetadata(proto.Message):
+        r"""Quality signals describing how this result was retrieved, combined
+        and re-ranked. Only populated when
+        [BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled][google.cloud.vectorsearch.v1beta.BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled]
+        is ``true``.
+
+        Attributes:
+            search_distances (MutableSequence[google.cloud.vectorsearch_v1beta.types.SearchResult.SearchResultMetadata.SearchDistance]):
+                Output only. The per-search distances for
+                this data object, one entry per batch search
+                that returned it.
+            rrf_ranker_result (google.cloud.vectorsearch_v1beta.types.SearchResult.SearchResultMetadata.RrfRankerResult):
+                Output only. The RRF combination signals for
+                this data object. Only set when the request
+                combines results using RRF.
+            vertex_ranker_result (google.cloud.vectorsearch_v1beta.types.SearchResult.SearchResultMetadata.VertexRankerResult):
+                Output only. The Vertex re-ranking signals
+                for this data object. Only set when the request
+                re-ranks results using the Vertex ranker.
+        """
+
+        class SearchDistance(proto.Message):
+            r"""The rank and distance of this data object within a single
+            search of the batch.
+
+            Attributes:
+                search_index (int):
+                    Output only. The index of the search in the
+                    [BatchSearchDataObjectsRequest.searches][google.cloud.vectorsearch.v1beta.BatchSearchDataObjectsRequest.searches]
+                    this distance corresponds to.
+                rank (int):
+                    Output only. The order of this data object in
+                    the search's result list, starting at 1 for the
+                    top (best-ranked) result.
+                distance (float):
+                    Output only. The similarity distance of this
+                    data object for the search.
+            """
+
+            search_index: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            rank: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+            distance: float = proto.Field(
+                proto.DOUBLE,
+                number=3,
+            )
+
+        class RrfRankerResult(proto.Message):
+            r"""The rank and score assigned by the Reciprocal Rank Fusion
+            ranker when combining the results of the batch searches.
+
+            Attributes:
+                rank (int):
+                    Output only. The rank of this data object
+                    after RRF combination.
+                score (float):
+                    Output only. The score of this data object
+                    after RRF combination.
+            """
+
+            rank: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            score: float = proto.Field(
+                proto.DOUBLE,
+                number=2,
+            )
+
+        class VertexRankerResult(proto.Message):
+            r"""The rank and score assigned by the Vertex re-ranker.
+
+            Attributes:
+                rank (int):
+                    Output only. The rank of this data object
+                    after Vertex re-ranking.
+                score (float):
+                    Output only. The score of this data object
+                    after Vertex re-ranking.
+            """
+
+            rank: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            score: float = proto.Field(
+                proto.DOUBLE,
+                number=2,
+            )
+
+        search_distances: MutableSequence[
+            "SearchResult.SearchResultMetadata.SearchDistance"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SearchResult.SearchResultMetadata.SearchDistance",
+        )
+        rrf_ranker_result: "SearchResult.SearchResultMetadata.RrfRankerResult" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResult.SearchResultMetadata.RrfRankerResult",
+            )
+        )
+        vertex_ranker_result: "SearchResult.SearchResultMetadata.VertexRankerResult" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="SearchResult.SearchResultMetadata.VertexRankerResult",
+            )
+        )
 
     data_object: gcv_data_object.DataObject = proto.Field(
         proto.MESSAGE,
@@ -803,6 +941,11 @@ class SearchResult(proto.Message):
         proto.DOUBLE,
         number=2,
         optional=True,
+    )
+    search_result_metadata: SearchResultMetadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=SearchResultMetadata,
     )
 
 
@@ -1051,6 +1194,9 @@ class BatchSearchDataObjectsRequest(proto.Message):
         combine (google.cloud.vectorsearch_v1beta.types.BatchSearchDataObjectsRequest.CombineResultsOptions):
             Optional. Options for combining the results
             of the batch search operations.
+        metadata_options (google.cloud.vectorsearch_v1beta.types.BatchSearchDataObjectsRequest.BatchSearchMetadataOptions):
+            Optional. Options controlling which metadata
+            is included in the search results.
     """
 
     class CombineResultsOptions(proto.Message):
@@ -1084,6 +1230,22 @@ class BatchSearchDataObjectsRequest(proto.Message):
             number=3,
         )
 
+    class BatchSearchMetadataOptions(proto.Message):
+        r"""Options controlling which metadata is included in the search
+        results.
+
+        Attributes:
+            search_signals_enabled (bool):
+                Optional. If ``true``, per-result quality signals are
+                returned in
+                [SearchResult.search_result_metadata][google.cloud.vectorsearch.v1beta.SearchResult.search_result_metadata].
+        """
+
+        search_signals_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     parent: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1097,6 +1259,11 @@ class BatchSearchDataObjectsRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message=CombineResultsOptions,
+    )
+    metadata_options: BatchSearchMetadataOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=BatchSearchMetadataOptions,
     )
 
 
