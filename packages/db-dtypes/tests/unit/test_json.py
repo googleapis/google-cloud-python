@@ -254,7 +254,19 @@ def test_cast_pointwise_result():
     import unittest.mock
 
     with unittest.mock.patch.object(
-        arr, "_from_sequence", side_effect=TypeError("cannot cast")
+        db_dtypes.JSONArray,
+        "_from_sequence",
+        side_effect=TypeError("cannot cast"),
     ):
         fallback = arr._cast_pointwise_result(["val"])
         assert fallback is not None
+
+        # Fallback to numpy array when super() has no _cast_pointwise_result
+        with unittest.mock.patch.object(
+            pd.arrays.ArrowExtensionArray,
+            "_cast_pointwise_result",
+            None,
+            create=True,
+        ):
+            fallback_np = arr._cast_pointwise_result(["val"])
+            assert isinstance(fallback_np, np.ndarray)
