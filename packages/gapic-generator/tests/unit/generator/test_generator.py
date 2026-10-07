@@ -926,6 +926,7 @@ def test_routing_headers_client_streaming(
     client_streaming: bool,
     server_streaming: bool,
 ):
+    """Verify routing metadata is omitted for client-streaming RPCs and included otherwise."""
     ads_templates_dir = os.path.abspath(
         os.path.join(
             os.path.dirname(__file__), "..", "..", "..", "gapic", "ads-templates"
