@@ -2277,6 +2277,8 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
     # Used to disambiguate entry names
     yaml_map = {}
 
+    known_uids = sorted(app.env.docfx_uid_names.keys(), reverse=True)
+
     # Order matters here, we need modules before lower level classes,
     # so that we can make sure to inject the TOC properly
     for data_set in (
@@ -2433,7 +2435,6 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
                 #   google.cloud.aiplatform.AutoMLForecastingTrainingJob
 
                 current_object_name = obj["fullName"]
-                known_uids = sorted(app.env.docfx_uid_names.keys(), reverse=True)
                 # Currently we only need to look in summary, syntax and
                 # attributes for cross references.
                 search_cross_references(obj, current_object_name, known_uids)
