@@ -251,10 +251,16 @@ def test_documentsnapshot_generic_typing():
     from typing import get_args, get_origin
 
     from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+    from google.cloud.firestore_v1.base_document import (
+        BaseDocumentReference,
+        DocRefType,
+    )
     from google.cloud.firestore_v1.document import (
         DocumentReference,
         DocumentSnapshot,
     )
+
+    assert DocRefType.__bound__ is BaseDocumentReference
 
     sync_snapshot_type = DocumentSnapshot[DocumentReference]
     assert get_origin(sync_snapshot_type) is DocumentSnapshot

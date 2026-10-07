@@ -43,9 +43,6 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.types import Document, firestore, write
 
 
-DocRefType = TypeVar("DocRefType", bound="BaseDocumentReference")
-
-
 class BaseDocumentReference(object):
     """A reference to a document in a Firestore database.
 
@@ -362,6 +359,9 @@ class BaseDocumentReference(object):
 
     def on_snapshot(self, callback):
         raise NotImplementedError
+
+
+DocRefType = TypeVar("DocRefType", bound=BaseDocumentReference)
 
 
 class DocumentSnapshot(Generic[DocRefType]):
