@@ -3451,9 +3451,15 @@
       "extra-files": [
         "google/devicesandservices/health/gapic_version.py",
         "google/devicesandservices/health_v4/gapic_version.py",
+        "google/devicesandservices/health_v4beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.devicesandservices.health.v4.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.devicesandservices.health.v4beta.json",
           "type": "json"
         }
       ]
