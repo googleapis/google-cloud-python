@@ -32,6 +32,10 @@ def pytest_configure():
     with open(os.path.join(pytest.data_dir, "public_cert.pem"), "rb") as fh:
         pytest.public_cert_bytes = fh.read()
 
+    _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH = os.path.join(
+        pytest.data_dir, "nonexistent_gke_credential_bundle.pem"
+    )
+
 
 @pytest.fixture(autouse=True)
 def clean_cert_config_env(monkeypatch, tmp_path):

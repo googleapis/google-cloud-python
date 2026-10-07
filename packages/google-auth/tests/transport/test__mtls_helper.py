@@ -791,7 +791,10 @@ class TestGetWorkloadCertAndKey(object):
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {"cert_configs": {"workload": workload}}
 
-        with pytest.raises(exceptions.ClientCertError):
+        with pytest.raises(
+            exceptions.ClientCertError,
+            match='Workload certificate configuration is missing "cert_path" or "key_path"',
+        ):
             _mtls_helper._get_workload_cert_and_key("")
 
 
@@ -2067,9 +2070,12 @@ class TestIsMtlsEndpoint(object):
 
 
 class TestReadCredentialBundleFile(object):
-    def test_single_cert_and_key(self, tmpdir):
+    @pytest.mark.parametrize("key_index", [0, 1])
+    def test_single_cert_and_key(self, tmpdir, key_index):
         bundle_file = tmpdir.join("x509.credential-bundle.private-key.pem")
-        bundle_file.write_binary(pytest.public_cert_bytes + pytest.private_key_bytes)
+        blocks = [pytest.public_cert_bytes]
+        blocks.insert(key_index, pytest.private_key_bytes)
+        bundle_file.write_binary(b"".join(blocks))
 
         with mock.patch("builtins.open", wraps=open) as mock_open:
             cert_bytes, key_bytes = _mtls_helper._read_credential_bundle_file(
@@ -2078,24 +2084,22 @@ class TestReadCredentialBundleFile(object):
         mock_open.assert_called_once_with(str(bundle_file), "rb")
         assert cert_bytes == pytest.public_cert_bytes
         assert key_bytes == pytest.private_key_bytes
-        assert b"PRIVATE KEY" not in cert_bytes
 
-    def test_multi_cert_chain_and_key(self, tmpdir):
+    @pytest.mark.parametrize("key_index", [0, 1, 2])
+    def test_multi_cert_chain_and_key(self, tmpdir, key_index):
         bundle_file = tmpdir.join("x509.credential-bundle.private-key.pem")
-        bundle_content = (
-            pytest.public_cert_bytes.rstrip(b"\n")
-            + b"  \n"
-            + pytest.private_key_bytes
-            + pytest.public_cert_bytes
-        )
-        bundle_file.write_binary(bundle_content)
+        blocks = [
+            pytest.public_cert_bytes.rstrip(b"\n") + b"  \n",
+            pytest.public_cert_bytes,
+        ]
+        blocks.insert(key_index, pytest.private_key_bytes)
+        bundle_file.write_binary(b"".join(blocks))
 
         cert_bytes, key_bytes = _mtls_helper._read_credential_bundle_file(
             str(bundle_file)
         )
         assert cert_bytes == pytest.public_cert_bytes + pytest.public_cert_bytes
         assert key_bytes == pytest.private_key_bytes
-        assert b"PRIVATE KEY" not in cert_bytes
 
     def test_missing_cert_raises_error(self, tmpdir):
         bundle_file = tmpdir.join("key_only.pem")
@@ -2275,11 +2279,3 @@ class TestGkeCredentialBundleDiscovery(object):
         assert _mtls_helper._get_workload_cert_and_key() == (None, None)
         assert _mtls_helper.check_use_client_cert() is False
         mock_is_ready.assert_not_called()
-
-    @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path",
-        return_value=None,
-        autospec=True,
-    )
-    def test_get_workload_cert_and_key_paths_none(self, mock_get_config_path):
-        assert _mtls_helper._get_workload_cert_and_key_paths(None) == (None, None)

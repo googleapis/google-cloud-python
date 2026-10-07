@@ -277,11 +277,14 @@ def fetch_id_token_credentials(audience, request=None, bind_id_token=None):
             endpoint. If ``True``, requests a bound token whenever a valid
             agentic certificate is available and token binding is not disabled
             via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back to an
-            unbound token otherwise. If ``False``, always requests an unbound
-            token. If ``None`` (default), token binding is determined
-            automatically by the library. Set ``True`` or ``False`` explicitly
-            if your application requires a specific behavior. Has no effect
-            when credentials are loaded from ``GOOGLE_APPLICATION_CREDENTIALS``.
+            unbound token otherwise (or raising
+            :class:`~google.auth.exceptions.RefreshError` if a configured
+            certificate is not found after retries). If ``False``, always
+            requests an unbound token. If ``None`` (default), token binding is
+            determined automatically by the library. Set ``True`` or ``False``
+            explicitly if your application requires a specific behavior. Has no
+            effect when credentials are loaded from
+            ``GOOGLE_APPLICATION_CREDENTIALS``.
 
     Returns:
         google.auth.credentials.Credentials: The ID token credentials.
@@ -392,11 +395,14 @@ def fetch_id_token(request, audience, bind_id_token=None):
             endpoint. If ``True``, requests a bound token whenever a valid
             agentic certificate is available and token binding is not disabled
             via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back to an
-            unbound token otherwise. If ``False``, always requests an unbound
-            token. If ``None`` (default), token binding is determined
-            automatically by the library. Set ``True`` or ``False`` explicitly
-            if your application requires a specific behavior. Has no effect
-            when credentials are loaded from ``GOOGLE_APPLICATION_CREDENTIALS``.
+            unbound token otherwise (or raising
+            :class:`~google.auth.exceptions.RefreshError` if a configured
+            certificate is not found after retries). If ``False``, always
+            requests an unbound token. If ``None`` (default), token binding is
+            determined automatically by the library. Set ``True`` or ``False``
+            explicitly if your application requires a specific behavior. Has no
+            effect when credentials are loaded from
+            ``GOOGLE_APPLICATION_CREDENTIALS``.
 
     Returns:
         str: The ID token.

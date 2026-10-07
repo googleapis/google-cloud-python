@@ -95,15 +95,11 @@ class TestCredentials(object):
         assert not self.credentials._universe_domain_cached
 
     @mock.patch(
-        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
-        return_value=(None, None),
-    )
-    @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
-    def test_refresh_success(self, get, utcnow, mock_get_agent_cert):
+    def test_refresh_success(self, get, utcnow):
         get.side_effect = [
             {
                 # First request is for sevice account info.
@@ -136,10 +132,6 @@ class TestCredentials(object):
         assert self.credentials.valid
 
     @mock.patch(
-        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
-        return_value=(None, None),
-    )
-    @mock.patch(
         "google.auth.metrics.token_request_access_token_mds",
         return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
@@ -148,9 +140,7 @@ class TestCredentials(object):
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
-    def test_refresh_success_with_scopes(
-        self, get, utcnow, mock_metrics_header_value, mock_get_agent_cert
-    ):
+    def test_refresh_success_with_scopes(self, get, utcnow, mock_metrics_header_value):
         get.side_effect = [
             {
                 # First request is for sevice account info.
@@ -211,12 +201,8 @@ class TestCredentials(object):
 
         assert excinfo.match(r"http error")
 
-    @mock.patch(
-        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
-        return_value=(None, None),
-    )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
-    def test_before_request_refreshes(self, get, mock_get_agent_cert):
+    def test_before_request_refreshes(self, get):
         get.side_effect = [
             {
                 # First request is for sevice account info.
@@ -1437,10 +1423,6 @@ class TestIDTokenCredentials(object):
         assert signature == b"signature"
 
     @mock.patch(
-        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
-        return_value=(None, None),
-    )
-    @mock.patch(
         "google.auth.metrics.token_request_id_token_mds",
         return_value=ID_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
@@ -1449,11 +1431,7 @@ class TestIDTokenCredentials(object):
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_get_id_token_from_metadata(
-        self,
-        get,
-        get_service_account_info,
-        mock_metrics_header_value,
-        mock_get_agent_cert,
+        self, get, get_service_account_info, mock_metrics_header_value
     ):
         get.return_value = SAMPLE_ID_TOKEN
         get_service_account_info.return_value = {
@@ -1529,6 +1507,40 @@ class TestIDTokenCredentials(object):
         assert cred._signer is None
         assert cred._token_uri is None
         assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
+
+    @mock.patch(
+        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
+        return_value=(None, None),
+    )
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    def test_id_token_missing_bind_id_token_attribute(
+        self, get, get_service_account_info, mock_get_agent_cert
+    ):
+        get.return_value = SAMPLE_ID_TOKEN
+        get_service_account_info.return_value = {
+            "email": "foo@project.iam.gserviceaccount.com"
+        }
+
+        cred = credentials.IDTokenCredentials(
+            mock.Mock(),
+            "audience",
+            use_metadata_identity_endpoint=True,
+        )
+        # Simulate credentials pickled with an older version without _bind_id_token.
+        del cred._bind_id_token
+
+        cred_with_audience = cred.with_target_audience("new_audience")
+        assert cred_with_audience._bind_id_token is None
+
+        cred_with_quota = cred.with_quota_project("project-foo")
+        assert cred_with_quota._bind_id_token is None
+
+        cred.refresh(request=mock.Mock())
+        assert cred.token == SAMPLE_ID_TOKEN
+        mock_get_agent_cert.assert_called_once()
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True

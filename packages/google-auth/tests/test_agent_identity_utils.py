@@ -859,9 +859,10 @@ class TestAgentIdentityUtils:
         assert isinstance(cert, x509.Certificate)
         assert cert_bytes == NON_AGENT_IDENTITY_CERT_BYTES
 
+    @pytest.mark.parametrize("key_index", [0, 1, 2])
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
     def test_get_agent_identity_certificate_and_bytes_combined_bundle(
-        self, mock_get_path, tmpdir
+        self, mock_get_path, tmpdir, key_index
     ):
         non_utf8_bag_attrs = b"Bag Attributes\n    friendlyName: \xff\xfe\n"
         private_key_pem = (
@@ -869,15 +870,13 @@ class TestAgentIdentityUtils:
             b"MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3\n"
             b"-----END PRIVATE KEY-----\n"
         )
-        combined_bundle = (
-            non_utf8_bag_attrs
-            + AGENT_IDENTITY_CERT_BYTES.rstrip(b"\n")
-            + b"   \n"
-            + private_key_pem
-            + NON_AGENT_IDENTITY_CERT_BYTES
-        )
+        blocks = [
+            AGENT_IDENTITY_CERT_BYTES.rstrip(b"\n") + b"   \n",
+            NON_AGENT_IDENTITY_CERT_BYTES,
+        ]
+        blocks.insert(key_index, private_key_pem)
         cert_file = tmpdir.join("credentialbundle.pem")
-        cert_file.write_binary(combined_bundle)
+        cert_file.write_binary(non_utf8_bag_attrs + b"".join(blocks))
         mock_get_path.return_value = str(cert_file)
 
         (
@@ -889,7 +888,6 @@ class TestAgentIdentityUtils:
         assert isinstance(cert, x509.Certificate)
         assert _agent_identity_utils._is_agent_identity_certificate(cert)
         assert cert_bytes == expected_certs
-        assert b"PRIVATE KEY" not in cert_bytes
         assert cert_bytes.decode("utf-8") == expected_certs.decode("utf-8")
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")

@@ -687,17 +687,11 @@ def test_get_universe_domain_other_error():
 
 
 @mock.patch(
-    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
-    return_value=(None, None),
-)
-@mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
     return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
 )
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test_get_service_account_token(
-    utcnow, mock_metrics_header_value, mock_get_agent_cert
-):
+def test_get_service_account_token(utcnow, mock_metrics_header_value):
     ttl = 500
     request = make_request(
         json.dumps({"access_token": "token", "expires_in": ttl}),
@@ -720,17 +714,11 @@ def test_get_service_account_token(
 
 
 @mock.patch(
-    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
-    return_value=(None, None),
-)
-@mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
     return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
 )
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test_get_service_account_token_with_scopes_list(
-    utcnow, mock_metrics_header_value, mock_get_agent_cert
-):
+def test_get_service_account_token_with_scopes_list(utcnow, mock_metrics_header_value):
     ttl = 500
     request = make_request(
         json.dumps({"access_token": "token", "expires_in": ttl}),
@@ -756,16 +744,12 @@ def test_get_service_account_token_with_scopes_list(
 
 
 @mock.patch(
-    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
-    return_value=(None, None),
-)
-@mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
     return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
 )
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
 def test_get_service_account_token_with_scopes_string(
-    utcnow, mock_metrics_header_value, mock_get_agent_cert
+    utcnow, mock_metrics_header_value
 ):
     ttl = 500
     request = make_request(

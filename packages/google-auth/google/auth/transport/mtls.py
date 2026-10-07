@@ -47,7 +47,7 @@ def has_default_client_cert_source(include_context_aware=True):
             cert_path,
             key_path,
             config_file_path,
-        ) = _mtls_helper._resolve_workload_cert_and_key_paths(
+        ) = _mtls_helper._get_workload_cert_and_key_paths(
             None, include_context_aware=include_context_aware
         )
     except (exceptions.ClientCertError, OSError):
@@ -56,7 +56,7 @@ def has_default_client_cert_source(include_context_aware=True):
 
     if cert_path is not None and key_path is not None:
         return True
-    if _mtls_helper._has_gke_credential_bundle(config_file_path):
+    if _mtls_helper._should_use_gke_credential_bundle(config_file_path):
         return True
     if (
         include_context_aware

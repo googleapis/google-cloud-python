@@ -378,8 +378,8 @@ def _has_explicit_cert_config_env():
     )
 
 
-def _has_gke_credential_bundle(config_file_path=None):
-    """Returns True if GKE workload credential bundle should be used as fallback."""
+def _should_use_gke_credential_bundle(config_file_path=None):
+    """Returns True if no certificate config is present and the GKE credential bundle file is present."""
     if config_file_path is not None or _has_explicit_cert_config_env():
         return False
     try:
@@ -415,12 +415,12 @@ def _get_workload_cert_and_key(
         the certificate or key information.
     """
 
-    cert_path, key_path, config_file_path = _resolve_workload_cert_and_key_paths(
+    cert_path, key_path, config_file_path = _get_workload_cert_and_key_paths(
         certificate_config_path, include_context_aware
     )
 
     if cert_path is None and key_path is None:
-        if certificate_config_path is None and _has_gke_credential_bundle(
+        if certificate_config_path is None and _should_use_gke_credential_bundle(
             config_file_path
         ):
             return _read_credential_bundle_file(_GKE_CREDENTIAL_BUNDLE_PATH)
@@ -483,7 +483,7 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
     return certificate_config_path
 
 
-def _resolve_workload_cert_and_key_paths(config_path=None, include_context_aware=True):
+def _get_workload_cert_and_key_paths(config_path=None, include_context_aware=True):
     absolute_path = _get_cert_config_path(config_path, include_context_aware)
     if absolute_path is None:
         return None, None, None
@@ -552,13 +552,6 @@ def _resolve_workload_cert_and_key_paths(config_path=None, include_context_aware
     key_path = workload["key_path"]
 
     return cert_path, key_path, absolute_path
-
-
-def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
-    cert_path, key_path, _ = _resolve_workload_cert_and_key_paths(
-        config_path, include_context_aware
-    )
-    return cert_path, key_path
 
 
 def _read_credential_bundle_file(bundle_path):
@@ -885,7 +878,7 @@ def check_use_client_cert():
         )
         return False
 
-    return _has_gke_credential_bundle(cert_path)
+    return _should_use_gke_credential_bundle(cert_path)
 
 
 def check_parameters_for_unauthorized_response(cached_cert):

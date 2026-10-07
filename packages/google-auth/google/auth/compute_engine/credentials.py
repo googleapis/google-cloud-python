@@ -373,9 +373,11 @@ class IDTokenCredentials(
                 If ``True``, requests a bound token whenever a valid agentic
                 certificate is available and token binding is not disabled via
                 ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back to an
-                unbound token otherwise. If ``False``, always requests an
-                unbound token. If ``None`` (default), token binding is
-                determined automatically by the library. Set ``True`` or
+                unbound token otherwise (or raising
+                :class:`~google.auth.exceptions.RefreshError` if a configured
+                certificate is not found after retries). If ``False``, always
+                requests an unbound token. If ``None`` (default), token binding
+                is determined automatically by the library. Set ``True`` or
                 ``False`` explicitly if your application requires a specific
                 behavior.
 
@@ -556,10 +558,8 @@ class IDTokenCredentials(
         try:
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
-            bind_id_token = getattr(self, "_bind_id_token", None)
-            if bind_id_token is not None:
-                bind_token = bind_id_token
-            else:
+            bind_token = getattr(self, "_bind_id_token", None)
+            if bind_token is None:
                 # Temporary gate: keep default ID tokens unbound when
                 # GOOGLE_API_CERTIFICATE_CONFIG is set (Cloud Run).
                 bind_token = not os.environ.get(

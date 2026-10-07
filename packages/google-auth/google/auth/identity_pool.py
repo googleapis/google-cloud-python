@@ -404,9 +404,10 @@ class Credentials(external_account.Credentials):
                 'The credential is not configured to use mtls requests. The credential should include a "certificate" section in the credential source.'
             )
         else:
-            return _mtls_helper._get_workload_cert_and_key_paths(
+            cert_path, key_path, _ = _mtls_helper._get_workload_cert_and_key_paths(
                 self._certificate_config_location
             )
+            return cert_path, key_path
 
     def _get_cert_bytes(self):
         cert_path, _ = self._get_mtls_cert_and_key_paths()
