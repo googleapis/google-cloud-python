@@ -119,6 +119,18 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
     def _from_factorized(self, unique, original):
         return self.__class__(unique)
 
+    def _cast_pointwise_result(self, values):
+        """Cast results of pointwise operations (e.g. Series.map or loc expansion)
+        back to this ExtensionArray type if values match our dtype.
+
+        Required override for pandas 3.1.0:
+        https://pandas.pydata.org/pandas-docs/stable/dev/whatsnew/v3.1.0.html
+        """
+        try:
+            return type(self)._from_scalars(values, dtype=self.dtype)
+        except (ValueError, TypeError, AttributeError):
+            return super()._cast_pointwise_result(values)
+
     def isna(self):
         return pandas.isna(self._ndarray)
 
