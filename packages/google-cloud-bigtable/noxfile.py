@@ -387,6 +387,37 @@ def system_default(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+def samples(session):
+    """Run the sample test suite."""
+    req_files = [
+        str(p.relative_to(CURRENT_DIRECTORY))
+        for p in sorted(CURRENT_DIRECTORY.glob("samples/**/requirements.txt"))
+        if "beam" not in p.parts
+    ]
+    req_args = [arg for req_file in req_files for arg in ("-r", req_file)]
+    session.install("-e", ".")
+    session.install(
+        "google-cloud-testutils",
+        "mock",
+        "pytest",
+        "pytest-asyncio",
+        *req_args,
+    )
+    session.install("-e", ".", "--no-deps")
+
+    has_target = any(not arg.startswith("-") for arg in session.posargs)
+    target_paths = [] if has_target else [os.path.join("samples")]
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=samples_{session.python}_sponge_log.xml",
+        "--ignore=samples/legacy_client/beam",
+        *target_paths,
+        *session.posargs,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
 
