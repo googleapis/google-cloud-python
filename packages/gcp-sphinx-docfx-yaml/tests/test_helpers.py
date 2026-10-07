@@ -411,6 +411,10 @@ google.cloud.pubsub_v1.message.Message
         result = extension.is_valid_python_code(invalid_syntax)
         self.assertFalse(result)
 
+    def test_docfx_html_builder(self):
+        self.assertIsNone(extension.DocFXHTMLBuilder.write(None))
+        self.assertIsNone(extension.DocFXHTMLBuilder.finish(None))
+
 
 if __name__ == "__main__":
     unittest.main()

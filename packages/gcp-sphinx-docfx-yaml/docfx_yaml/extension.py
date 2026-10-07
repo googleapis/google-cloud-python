@@ -47,6 +47,7 @@ import subprocess
 
 import sphinx.application
 from docuploader import shell
+from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
 from sphinx.ext.napoleon import Config, GoogleDocstring, _process_docstring
 from sphinx.util import ensuredir
@@ -182,6 +183,16 @@ def _grab_repo_metadata() -> Mapping[str, str] | None:
         return json_content
     except Exception:
         return None
+
+
+class DocFXHTMLBuilder(StandaloneHTMLBuilder):
+    """HTML builder subclass that skips rendering unused HTML pages during DocFX builds."""
+
+    def write(self, *args: Any, **kwargs: Any) -> None:
+        pass
+
+    def finish(self) -> None:
+        pass
 
 
 def build_init(app: sphinx.application.Sphinx) -> None:
@@ -2690,6 +2701,7 @@ def setup(app: sphinx.application.Sphinx) -> None:
     app.add_directive("remarks", RemarksDirective)
     app.add_directive("todo", TodoDirective)
 
+    app.add_builder(DocFXHTMLBuilder, override=True)
     app.connect("builder-inited", build_init)
     app.connect("autodoc-process-docstring", process_docstring)
     app.connect("autodoc-process-signature", process_signature)
