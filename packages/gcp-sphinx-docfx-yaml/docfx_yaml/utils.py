@@ -70,6 +70,8 @@ def transform_node(app: Sphinx, node: nodes.Node) -> str:
     Returns:
         str: The transformed node as a string.
     """
+    if node.parent is not None:
+        node = node.deepcopy()
     destination = StringOutput(encoding="utf-8")
     doc = new_document(b"<partial node>")
     doc.append(node)

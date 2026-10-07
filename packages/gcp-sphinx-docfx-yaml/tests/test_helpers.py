@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+import unittest.mock
 
 from parameterized import parameterized
 from yaml import Loader, load
@@ -414,6 +415,11 @@ google.cloud.pubsub_v1.message.Message
     def test_docfx_html_builder(self):
         self.assertIsNone(extension.DocFXHTMLBuilder.write(None))
         self.assertIsNone(extension.DocFXHTMLBuilder.finish(None))
+
+    def test_missing_reference_skips_markdown_builder(self):
+        app = unittest.mock.MagicMock()
+        app.builder.name = "markdown"
+        self.assertIsNone(extension.missing_reference(app, None, None, None))
 
 
 if __name__ == "__main__":

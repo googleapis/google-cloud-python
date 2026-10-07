@@ -208,9 +208,6 @@ def build_init(app: sphinx.application.Sphinx) -> None:
     else:
         print("Successfully retrieved repository metadata.")
         app.env.library_shortname = repo_metadata["name"]
-    print("Running sphinx-build with Markdown first...")
-    markdown_utils.run_sphinx_markdown(app)
-    print("Completed running sphinx-build with Markdown files.")
 
     """
     Set up environment data
@@ -2281,6 +2278,7 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
     ensuredir(normalized_outdir)
 
     # Add markdown pages to the configured output directory.
+    markdown_utils.run_sphinx_markdown(app)
     markdown_utils.move_markdown_pages(app, normalized_outdir)
 
     pkg_toc_yaml = []
@@ -2658,6 +2656,8 @@ def missing_reference(
     Returns:
         Any: The new node.
     """
+    if getattr(app.builder, "name", None) == "markdown":
+        return None
     reftarget = ""
     refdoc = ""
     reftype = ""
