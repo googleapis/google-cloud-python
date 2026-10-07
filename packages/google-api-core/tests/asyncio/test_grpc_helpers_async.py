@@ -832,3 +832,28 @@ def test_apply_channel_interceptors_fallback_unary_unary_appendable():
     result = grpc_helpers_async.apply_channel_interceptors(channel, [interceptor])
     assert result is channel
     mock_append.append.assert_called_once_with(interceptor)
+
+
+def test_apply_channel_interceptors_otel_prepended_in_order():
+    """Proves that interceptors with _is_otel_interceptor=True are prepended in order."""
+    existing_interceptor = mock.Mock()
+    otel_interceptor1 = mock.Mock(spec=["intercept_unary_unary"])
+    otel_interceptor1._is_otel_interceptor = True
+    otel_interceptor2 = mock.Mock(spec=["intercept_unary_unary"])
+    otel_interceptor2._is_otel_interceptor = True
+    regular_interceptor = mock.Mock(spec=["intercept_unary_unary"])
+
+    channel = mock.Mock()
+    channel._unary_unary_interceptors = [existing_interceptor]
+
+    result = grpc_helpers_async.apply_channel_interceptors(
+        channel, [regular_interceptor, otel_interceptor1, otel_interceptor2]
+    )
+    assert result is channel
+    # OTel interceptors should be inserted at index 0 in order, regular interceptor appended
+    assert channel._unary_unary_interceptors == [
+        otel_interceptor1,
+        otel_interceptor2,
+        existing_interceptor,
+        regular_interceptor,
+    ]

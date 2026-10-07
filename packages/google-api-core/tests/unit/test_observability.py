@@ -192,9 +192,9 @@ def test_get_otel_interceptor_enabled(monkeypatch):
 
     result = interceptor(mock_raw_channel)
     assert result is mock_wrapped_channel
-    mock_otel_grpc.intercept_channel.assert_called_once_with(
-        mock_raw_channel, mock_interceptor
-    )
+    assert mock_otel_grpc.intercept_channel.call_count == 1
+    chan_arg, interceptor_arg = mock_otel_grpc.intercept_channel.call_args[0]
+    assert interceptor_arg is mock_interceptor
 
 
 def test_get_otel_interceptor_with_apply_channel_interceptors(monkeypatch):
@@ -231,9 +231,9 @@ def test_get_otel_interceptor_with_apply_channel_interceptors(monkeypatch):
         mock_raw_channel, interceptors=[otel_interceptor]
     )
     assert result is mock_wrapped_channel
-    mock_otel_grpc.intercept_channel.assert_called_once_with(
-        mock_raw_channel, mock_interceptor
-    )
+    assert mock_otel_grpc.intercept_channel.call_count == 1
+    chan_arg, interceptor_arg = mock_otel_grpc.intercept_channel.call_args[0]
+    assert interceptor_arg is mock_interceptor
 
 
 def test_get_otel_async_interceptor_disabled(monkeypatch):
@@ -274,7 +274,10 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     )
 
     result = _observability.get_otel_async_interceptor(client_options=options)
-    assert result is mock_async_interceptors
+    assert mock_async_interceptors[0] in result
+    assert any(
+        isinstance(i, _observability._AsyncSuppressingClientInterceptor) for i in result
+    )
     mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
         request_hook=mock.ANY,
@@ -1302,3 +1305,103 @@ def test_trace_http_request_initialization_fails_open(monkeypatch):
             assert isinstance(ctx, _observability._TraceContext)
             assert ctx._span is None
             ctx.record_response(mock.Mock())
+
+
+def test_sync_suppressing_interceptor_invocations():
+    """Proves that _SuppressingClientInterceptor wraps all 4 RPC forms in suppress_instrumentation."""
+    suppressor = _observability._SuppressingClientInterceptor()
+    assert getattr(suppressor, "_is_otel_interceptor", False) is True
+
+    with mock.patch(
+        "google.api_core._observability._suppress_instrumentation"
+    ) as mock_suppress:
+        # unary_unary
+        mock_continuation = mock.Mock(return_value="resp_uu")
+        res = suppressor.intercept_unary_unary(mock_continuation, "details", "req")
+        assert res == "resp_uu"
+        mock_continuation.assert_called_once_with("details", "req")
+        mock_suppress.assert_called_once()
+
+        mock_suppress.reset_mock()
+        # unary_stream
+        mock_continuation = mock.Mock(return_value="resp_us")
+        res = suppressor.intercept_unary_stream(mock_continuation, "details", "req")
+        assert res == "resp_us"
+        mock_continuation.assert_called_once_with("details", "req")
+        mock_suppress.assert_called_once()
+
+        mock_suppress.reset_mock()
+        # stream_unary
+        mock_continuation = mock.Mock(return_value="resp_su")
+        res = suppressor.intercept_stream_unary(mock_continuation, "details", "iter")
+        assert res == "resp_su"
+        mock_continuation.assert_called_once_with("details", "iter")
+        mock_suppress.assert_called_once()
+
+        mock_suppress.reset_mock()
+        # stream_stream
+        mock_continuation = mock.Mock(return_value="resp_ss")
+        res = suppressor.intercept_stream_stream(mock_continuation, "details", "iter")
+        assert res == "resp_ss"
+        mock_continuation.assert_called_once_with("details", "iter")
+        mock_suppress.assert_called_once()
+
+
+def test_async_suppressing_interceptor_invocations():
+    """Proves that _AsyncSuppressingClientInterceptor wraps all 4 async RPC forms in suppress_instrumentation."""
+    import asyncio
+
+    suppressor = _observability._AsyncSuppressingClientInterceptor()
+    assert getattr(suppressor, "_is_otel_interceptor", False) is True
+
+    async def _run_checks():
+        with mock.patch(
+            "google.api_core._observability._suppress_instrumentation"
+        ) as mock_suppress:
+            # unary_unary
+            async def mock_continuation_uu(details, req):
+                return "async_resp_uu"
+
+            res = await suppressor.intercept_unary_unary(
+                mock_continuation_uu, "details", "req"
+            )
+            assert res == "async_resp_uu"
+            mock_suppress.assert_called_once()
+
+            mock_suppress.reset_mock()
+
+            # unary_stream
+            async def mock_continuation_us(details, req):
+                return "async_resp_us"
+
+            res = await suppressor.intercept_unary_stream(
+                mock_continuation_us, "details", "req"
+            )
+            assert res == "async_resp_us"
+            mock_suppress.assert_called_once()
+
+            mock_suppress.reset_mock()
+
+            # stream_unary
+            async def mock_continuation_su(details, req_iter):
+                return "async_resp_su"
+
+            res = await suppressor.intercept_stream_unary(
+                mock_continuation_su, "details", "iter"
+            )
+            assert res == "async_resp_su"
+            mock_suppress.assert_called_once()
+
+            mock_suppress.reset_mock()
+
+            # stream_stream
+            async def mock_continuation_ss(details, req_iter):
+                return "async_resp_ss"
+
+            res = await suppressor.intercept_stream_stream(
+                mock_continuation_ss, "details", "iter"
+            )
+            assert res == "async_resp_ss"
+            mock_suppress.assert_called_once()
+
+    asyncio.run(_run_checks())

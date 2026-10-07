@@ -50,7 +50,7 @@ from google import showcase
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials
-from google.showcase import EchoClient
+from google.showcase import EchoAsyncClient, EchoClient
 
 try:
     from .conftest import construct_client
@@ -233,3 +233,124 @@ def test_env_var_opt_in(otel_echo_client):
     assert len(spans) == 2
     for span in spans:
         assert span.name == "google.showcase.v1beta1.Echo/Echo"
+
+
+def test_auto_instrumentation_suppression_sync(span_exporter):
+    """Verifies that upstream gRPC client auto-instrumentation spans are suppressed in sync calls.
+
+    When users enable global GrpcInstrumentorClient().instrument(), upstream injects a
+    generic interceptor into channel creation. This test verifies that our downstream
+    suppression interceptor prevents the duplicate, bare-bones upstream span from being
+    emitted while preserving the full Google Cloud SDK T4 span.
+    """
+    try:
+        from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient
+    except ImportError:
+        pytest.skip("opentelemetry-instrumentation-grpc is not installed")
+
+    exporter, provider = span_exporter
+    instrumentor = GrpcInstrumentorClient()
+    instrumentor.instrument(tracer_provider=provider)
+    try:
+        options = ClientOptions(
+            api_endpoint="localhost:7469",
+            tracer_provider=provider,
+        )
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+        ):
+            channel = grpc.insecure_channel("localhost:7469")
+            transport = EchoClient.get_transport_class("grpc")(
+                channel=channel,
+                client_options=options,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
+            client = EchoClient(transport=transport, client_options=options)
+            response = client.echo(
+                showcase.EchoRequest(content="suppress sync duplicate")
+            )
+            assert response.content == "suppress sync duplicate"
+
+            spans = exporter.get_finished_spans()
+            assert len(spans) == 2
+
+            root_spans = [s for s in spans if s.parent is None]
+            child_spans = [s for s in spans if s.parent is not None]
+            assert len(root_spans) == 1
+            assert len(child_spans) == 1
+
+            root_span = root_spans[0]
+            child_span = child_spans[0]
+
+            assert root_span.name == "google.showcase.v1beta1.Echo/Echo"
+            assert child_span.name == "google.showcase.v1beta1.Echo/Echo"
+            assert child_span.parent.span_id == root_span.context.span_id
+
+            assert child_span.attributes.get("rpc.system.name") == "grpc"
+            assert child_span.attributes.get("server.address") == "localhost"
+            assert child_span.attributes.get("server.port") == 7469
+            assert child_span.attributes.get("url.domain") == "googleapis.com"
+            assert child_span.attributes.get("rpc.response.status_code") == "OK"
+    finally:
+        instrumentor.uninstrument()
+
+
+@pytest.mark.asyncio
+async def test_auto_instrumentation_suppression_async(span_exporter):
+    """Verifies that upstream gRPC client auto-instrumentation spans are suppressed in async calls.
+
+    When users enable global GrpcAioInstrumentorClient().instrument(), upstream injects a
+    generic interceptor into aio channel creation. This test verifies that our downstream
+    suppression interceptor prevents the duplicate, bare-bones upstream span from being
+    emitted while preserving the full Google Cloud SDK T4 span.
+    """
+    try:
+        from opentelemetry.instrumentation.grpc import GrpcAioInstrumentorClient
+    except ImportError:
+        pytest.skip("opentelemetry-instrumentation-grpc is not installed")
+
+    exporter, provider = span_exporter
+    instrumentor = GrpcAioInstrumentorClient()
+    instrumentor.instrument(tracer_provider=provider)
+    try:
+        options = ClientOptions(
+            api_endpoint="localhost:7469",
+            tracer_provider=provider,
+        )
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+        ):
+            channel = grpc.aio.insecure_channel("localhost:7469")
+            transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
+                channel=channel,
+                client_options=options,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
+            client = EchoAsyncClient(transport=transport, client_options=options)
+            response = await client.echo(
+                showcase.EchoRequest(content="suppress async duplicate")
+            )
+            assert response.content == "suppress async duplicate"
+
+            spans = exporter.get_finished_spans()
+            assert len(spans) == 2
+
+            root_spans = [s for s in spans if s.parent is None]
+            child_spans = [s for s in spans if s.parent is not None]
+            assert len(root_spans) == 1
+            assert len(child_spans) == 1
+
+            root_span = root_spans[0]
+            child_span = child_spans[0]
+
+            assert root_span.name == "google.showcase.v1beta1.Echo/Echo"
+            assert child_span.name == "google.showcase.v1beta1.Echo/Echo"
+            assert child_span.parent.span_id == root_span.context.span_id
+
+            assert child_span.attributes.get("rpc.system.name") == "grpc"
+            assert child_span.attributes.get("server.address") == "localhost"
+            assert child_span.attributes.get("server.port") == 7469
+            assert child_span.attributes.get("url.domain") == "googleapis.com"
+            assert child_span.attributes.get("rpc.response.status_code") == "OK"
+    finally:
+        instrumentor.uninstrument()

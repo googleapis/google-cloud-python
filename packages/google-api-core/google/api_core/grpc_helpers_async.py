@@ -338,14 +338,26 @@ def apply_channel_interceptors(
         ("intercept_stream_unary", "_stream_unary_interceptors"),
         ("intercept_stream_stream", "_stream_stream_interceptors"),
     )
+    # Track insertion index per interceptor list for OpenTelemetry interceptors.
+    # OpenTelemetry interceptors and downstream suppressors are inserted at the
+    # beginning of the channel's interceptor pipeline in order, so that our
+    # Google SDK spans wrap outside and downstream generic auto-instrumentation
+    # (e.g. GrpcAioInstrumentorClient) is suppressed. Other interceptors are appended.
+    otel_insert_indices: dict[str, int] = {}
     for interceptor in interceptors:
+        is_otel = getattr(interceptor, "_is_otel_interceptor", False) is True
         matched = False
         for method_name, attr_name in mapping:
             if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
                 target_list = getattr(channel, attr_name)
                 if isinstance(target_list, list):
                     if interceptor not in target_list:
-                        target_list.append(interceptor)
+                        if is_otel:
+                            idx = otel_insert_indices.get(attr_name, 0)
+                            target_list.insert(idx, interceptor)
+                            otel_insert_indices[attr_name] = idx + 1
+                        else:
+                            target_list.append(interceptor)
                     matched = True
                 elif hasattr(target_list, "append"):
                     target_list.append(interceptor)
@@ -354,7 +366,12 @@ def apply_channel_interceptors(
             unary_interceptors = channel._unary_unary_interceptors
             if isinstance(unary_interceptors, list):
                 if interceptor not in unary_interceptors:
-                    unary_interceptors.append(interceptor)
+                    if is_otel:
+                        idx = otel_insert_indices.get("_unary_unary_interceptors", 0)
+                        unary_interceptors.insert(idx, interceptor)
+                        otel_insert_indices["_unary_unary_interceptors"] = idx + 1
+                    else:
+                        unary_interceptors.append(interceptor)
             elif hasattr(unary_interceptors, "append"):
                 unary_interceptors.append(interceptor)
 
