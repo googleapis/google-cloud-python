@@ -161,10 +161,17 @@ class MessagingTransport(abc.ABC):
             if kind:  # pragma: NO COVER
                 kwargs["kind"] = kind
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
+        # Fallback for older runtime versions of google-api-core:
+        # Strip tracing-only arguments (client_options, method_name, is_streaming).
+        # See _wrap_async_method for full historical generation details.
+        for k in ["client_options", "method_name", "is_streaming"]:  # pragma: NO COVER
             kwargs.pop(k, None)  # pragma: NO COVER
+
+        if _WRAP_METHOD_SUPPORTS_KIND and self.kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind  # pragma: NO COVER
+        else:  # pragma: NO COVER
+            kwargs.pop("kind", None)  # pragma: NO COVER
+
         return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
     def _wrap_async_method(self, func, *args, **kwargs):
@@ -186,10 +193,22 @@ class MessagingTransport(abc.ABC):
             if kind:  # pragma: NO COVER
                 kwargs["kind"] = kind
             return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
+        # Fallback for older runtime versions of google-api-core:
+        # 1. Strip tracing-only arguments (client_options, method_name, is_streaming)
+        #    which were added in the universal tracing release.
+        # 2. Preserve `kind` if supported by the installed google-api-core version.
+        #    - Modern versions (>= 2.36.0 or >= 2.29.0) accept `kind`.
+        #    - Ancient versions (< 2.29.0) do not accept `kind`.
+        #    This preserves the Generation 2 fix from PR #2111 where passing `kind`
+        #    is necessary to prevent REST transports from falling back to gRPC wrapping.
+        for k in ["client_options", "method_name", "is_streaming"]:  # pragma: NO COVER
             kwargs.pop(k, None)  # pragma: NO COVER
+
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and self.kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind  # pragma: NO COVER
+        else:  # pragma: NO COVER
+            kwargs.pop("kind", None)  # pragma: NO COVER
+
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
     def _prep_wrapped_messages(self, client_info):
