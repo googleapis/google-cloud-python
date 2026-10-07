@@ -1628,6 +1628,555 @@ async def test_list_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_redis_cluster.ListAclPoliciesRequest(),
+        {},
+    ],
+)
+def test_list_acl_policies(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListAclPoliciesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_acl_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListAclPoliciesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAclPoliciesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_acl_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.ListAclPoliciesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_acl_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPoliciesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_list_acl_policies_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_acl_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_acl_policies] = (
+            mock_rpc
+        )
+        request = {}
+        client.list_acl_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_acl_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policies_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_acl_policies
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_acl_policies
+        ] = mock_rpc
+
+        request = {}
+        await client.list_acl_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_acl_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListAclPoliciesRequest(),
+        {},
+    ],
+)
+async def test_list_acl_policies_async(request_type, transport: str = "grpc_asyncio"):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_acl_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListAclPoliciesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAclPoliciesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_acl_policies_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListAclPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.ListAclPoliciesResponse()
+        client.list_acl_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policies_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListAclPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPoliciesResponse()
+        )
+        await client.list_acl_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_acl_policies_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListAclPoliciesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_acl_policies(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_acl_policies_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_acl_policies(
+            cloud_redis_cluster.ListAclPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policies_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListAclPoliciesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPoliciesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_acl_policies(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policies_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_acl_policies(
+            cloud_redis_cluster.ListAclPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_acl_policies_pager(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_acl_policies(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_redis_cluster.AclPolicy) for i in results)
+
+
+def test_list_acl_policies_pages(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_acl_policies(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policies_async_pager():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_acl_policies(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, cloud_redis_cluster.AclPolicy) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policies_async_pages():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_acl_policies(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_redis_cluster.GetClusterRequest(),
         {},
     ],
@@ -1663,6 +2212,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
+            acl_policy="acl_policy_value",
         )
         response = client.get_cluster(request)
 
@@ -1700,6 +2250,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     )
     assert response.server_ca_pool == "server_ca_pool_value"
     assert response.rotate_server_certificate is True
+    assert response.acl_policy == "acl_policy_value"
 
 
 def test_get_cluster_non_empty_request_with_auto_populated_field():
@@ -1848,6 +2399,7 @@ async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
+                acl_policy="acl_policy_value",
             )
         )
         response = await client.get_cluster(request)
@@ -1886,6 +2438,7 @@ async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     )
     assert response.server_ca_pool == "server_ca_pool_value"
     assert response.rotate_server_certificate is True
+    assert response.acl_policy == "acl_policy_value"
 
 
 def test_get_cluster_field_headers():
@@ -2027,6 +2580,338 @@ async def test_get_cluster_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_cluster(
             cloud_redis_cluster.GetClusterRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetAclPolicyRequest(),
+        {},
+    ],
+)
+def test_get_acl_policy(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicy(
+            name="name_value",
+            state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+            etag="etag_value",
+        )
+        response = client.get_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicy)
+    assert response.name == "name_value"
+    assert response.state == cloud_redis_cluster.AclPolicy.State.ACTIVE
+    assert response.etag == "etag_value"
+
+
+def test_get_acl_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.GetAclPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_acl_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_acl_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_acl_policy] = mock_rpc
+        request = {}
+        client.get_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_acl_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_acl_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.get_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetAclPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_acl_policy_async(request_type, transport: str = "grpc_asyncio"):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy(
+                name="name_value",
+                state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicy)
+    assert response.name == "name_value"
+    assert response.state == cloud_redis_cluster.AclPolicy.State.ACTIVE
+    assert response.etag == "etag_value"
+
+
+def test_get_acl_policy_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetAclPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        call.return_value = cloud_redis_cluster.AclPolicy()
+        client.get_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetAclPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy()
+        )
+        await client.get_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_acl_policy_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_acl_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_acl_policy_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_acl_policy(
+            cloud_redis_cluster.GetAclPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_acl_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_acl_policy(
+            cloud_redis_cluster.GetAclPolicyRequest(),
             name="name_value",
         )
 
@@ -2392,6 +3277,356 @@ async def test_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_redis_cluster.UpdateAclPolicyRequest(),
+        {},
+    ],
+)
+def test_update_acl_policy(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.UpdateAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_acl_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.UpdateAclPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_acl_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.UpdateAclPolicyRequest()
+        assert args[0] == request_msg
+
+
+def test_update_acl_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_acl_policy] = (
+            mock_rpc
+        )
+        request = {}
+        client.update_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_acl_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_acl_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_acl_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.update_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.UpdateAclPolicyRequest(),
+        {},
+    ],
+)
+async def test_update_acl_policy_async(request_type, transport: str = "grpc_asyncio"):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.UpdateAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_acl_policy_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.UpdateAclPolicyRequest()
+
+    request.acl_policy.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "acl_policy.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_acl_policy_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.UpdateAclPolicyRequest()
+
+    request.acl_policy.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "acl_policy.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_acl_policy_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_acl_policy(
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].acl_policy
+        mock_val = cloud_redis_cluster.AclPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_acl_policy_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_acl_policy(
+            cloud_redis_cluster.UpdateAclPolicyRequest(),
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_acl_policy_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_acl_policy(
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].acl_policy
+        mock_val = cloud_redis_cluster.AclPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_acl_policy_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_acl_policy(
+            cloud_redis_cluster.UpdateAclPolicyRequest(),
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_redis_cluster.DeleteClusterRequest(),
         {},
     ],
@@ -2717,6 +3952,1265 @@ async def test_delete_cluster_flattened_error_async():
             cloud_redis_cluster.DeleteClusterRequest(),
             name="name_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.DeleteAclPolicyRequest(),
+        {},
+    ],
+)
+def test_delete_acl_policy(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.DeleteAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_acl_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.DeleteAclPolicyRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_acl_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.DeleteAclPolicyRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_delete_acl_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_acl_policy] = (
+            mock_rpc
+        )
+        request = {}
+        client.delete_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_acl_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_acl_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_acl_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.delete_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.DeleteAclPolicyRequest(),
+        {},
+    ],
+)
+async def test_delete_acl_policy_async(request_type, transport: str = "grpc_asyncio"):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.DeleteAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_acl_policy_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.DeleteAclPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_acl_policy_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.DeleteAclPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_acl_policy_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_acl_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_acl_policy_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_acl_policy(
+            cloud_redis_cluster.DeleteAclPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_acl_policy_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_acl_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_acl_policy_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_acl_policy(
+            cloud_redis_cluster.DeleteAclPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetAclPolicyRevisionRequest(),
+        {},
+    ],
+)
+def test_get_acl_policy_revision(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicyRevision(
+            name="name_value",
+            revision_number=1623,
+            attached_clusters=["attached_clusters_value"],
+        )
+        response = client.get_acl_policy_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicyRevision)
+    assert response.name == "name_value"
+    assert response.revision_number == 1623
+    assert response.attached_clusters == ["attached_clusters_value"]
+
+
+def test_get_acl_policy_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.GetAclPolicyRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_acl_policy_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRevisionRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_acl_policy_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_acl_policy_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_acl_policy_revision
+        ] = mock_rpc
+        request = {}
+        client.get_acl_policy_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_acl_policy_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_acl_policy_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_acl_policy_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.get_acl_policy_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_acl_policy_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetAclPolicyRevisionRequest(),
+        {},
+    ],
+)
+async def test_get_acl_policy_revision_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicyRevision(
+                name="name_value",
+                revision_number=1623,
+                attached_clusters=["attached_clusters_value"],
+            )
+        )
+        response = await client.get_acl_policy_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicyRevision)
+    assert response.name == "name_value"
+    assert response.revision_number == 1623
+    assert response.attached_clusters == ["attached_clusters_value"]
+
+
+def test_get_acl_policy_revision_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.AclPolicyRevision()
+        client.get_acl_policy_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_revision_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicyRevision()
+        )
+        await client.get_acl_policy_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_acl_policy_revision_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicyRevision()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_acl_policy_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_acl_policy_revision_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_acl_policy_revision(
+            cloud_redis_cluster.GetAclPolicyRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_revision_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicyRevision()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicyRevision()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_acl_policy_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_acl_policy_revision_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_acl_policy_revision(
+            cloud_redis_cluster.GetAclPolicyRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListAclPolicyRevisionsRequest(),
+        {},
+    ],
+)
+def test_list_acl_policy_revisions(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_acl_policy_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAclPolicyRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_acl_policy_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.ListAclPolicyRevisionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_acl_policy_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPolicyRevisionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_list_acl_policy_revisions_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_acl_policy_revisions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_acl_policy_revisions
+        ] = mock_rpc
+        request = {}
+        client.list_acl_policy_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_acl_policy_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policy_revisions_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_acl_policy_revisions
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_acl_policy_revisions
+        ] = mock_rpc
+
+        request = {}
+        await client.list_acl_policy_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_acl_policy_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListAclPolicyRevisionsRequest(),
+        {},
+    ],
+)
+async def test_list_acl_policy_revisions_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_acl_policy_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAclPolicyRevisionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_acl_policy_revisions_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+        client.list_acl_policy_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policy_revisions_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+        )
+        await client.list_acl_policy_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_acl_policy_revisions_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_acl_policy_revisions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_acl_policy_revisions_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_acl_policy_revisions(
+            cloud_redis_cluster.ListAclPolicyRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policy_revisions_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_acl_policy_revisions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policy_revisions_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_acl_policy_revisions(
+            cloud_redis_cluster.ListAclPolicyRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_acl_policy_revisions_pager(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_acl_policy_revisions(
+            request={}, retry=retry, timeout=timeout
+        )
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, cloud_redis_cluster.AclPolicyRevision) for i in results
+        )
+
+
+def test_list_acl_policy_revisions_pages(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_acl_policy_revisions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policy_revisions_async_pager():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_acl_policy_revisions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, cloud_redis_cluster.AclPolicyRevision) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_acl_policy_revisions_async_pages():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_acl_policy_revisions(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
@@ -3088,6 +5582,376 @@ async def test_create_cluster_flattened_error_async():
                 )
             ),
             cluster_id="cluster_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.CreateAclPolicyRequest(),
+        {},
+    ],
+)
+def test_create_acl_policy(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicy(
+            name="name_value",
+            state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+            etag="etag_value",
+        )
+        response = client.create_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.CreateAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicy)
+    assert response.name == "name_value"
+    assert response.state == cloud_redis_cluster.AclPolicy.State.ACTIVE
+    assert response.etag == "etag_value"
+
+
+def test_create_acl_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.CreateAclPolicyRequest(
+        parent="parent_value",
+        acl_policy_id="acl_policy_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_acl_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.CreateAclPolicyRequest(
+            parent="parent_value",
+            acl_policy_id="acl_policy_id_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_create_acl_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_acl_policy] = (
+            mock_rpc
+        )
+        request = {}
+        client.create_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_acl_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_acl_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_acl_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.create_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.CreateAclPolicyRequest(),
+        {},
+    ],
+)
+async def test_create_acl_policy_async(request_type, transport: str = "grpc_asyncio"):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy(
+                name="name_value",
+                state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+                etag="etag_value",
+            )
+        )
+        response = await client.create_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.CreateAclPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicy)
+    assert response.name == "name_value"
+    assert response.state == cloud_redis_cluster.AclPolicy.State.ACTIVE
+    assert response.etag == "etag_value"
+
+
+def test_create_acl_policy_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.CreateAclPolicyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.AclPolicy()
+        client.create_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_acl_policy_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.CreateAclPolicyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy()
+        )
+        await client.create_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_acl_policy_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_acl_policy(
+            parent="parent_value",
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            acl_policy_id="acl_policy_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].acl_policy
+        mock_val = cloud_redis_cluster.AclPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].acl_policy_id
+        mock_val = "acl_policy_id_value"
+        assert arg == mock_val
+
+
+def test_create_acl_policy_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_acl_policy(
+            cloud_redis_cluster.CreateAclPolicyRequest(),
+            parent="parent_value",
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            acl_policy_id="acl_policy_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_acl_policy_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.AclPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_acl_policy(
+            parent="parent_value",
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            acl_policy_id="acl_policy_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].acl_policy
+        mock_val = cloud_redis_cluster.AclPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].acl_policy_id
+        mock_val = "acl_policy_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_acl_policy_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_acl_policy(
+            cloud_redis_cluster.CreateAclPolicyRequest(),
+            parent="parent_value",
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            acl_policy_id="acl_policy_id_value",
         )
 
 
@@ -7105,6 +9969,251 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_list_acl_policies_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_acl_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_acl_policies] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.list_acl_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_acl_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_acl_policies_rest_required_fields(
+    request_type=cloud_redis_cluster.ListAclPoliciesRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseListAclPolicies,
+        "_BaseListAclPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "pageSize",
+            "pageToken",
+        )
+    )
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.ListAclPoliciesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.ListAclPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_acl_policies(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_acl_policies_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListAclPoliciesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListAclPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_acl_policies(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*}/aclPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_acl_policies_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_acl_policies(
+            cloud_redis_cluster.ListAclPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_acl_policies_rest_pager(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                acl_policies=[
+                    cloud_redis_cluster.AclPolicy(),
+                    cloud_redis_cluster.AclPolicy(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_redis_cluster.ListAclPoliciesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_acl_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_redis_cluster.AclPolicy) for i in results)
+
+        pages = list(client.list_acl_policies(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_get_cluster_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7270,6 +10379,177 @@ def test_get_cluster_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.get_cluster(
             cloud_redis_cluster.GetClusterRequest(),
+            name="name_value",
+        )
+
+
+def test_get_acl_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_acl_policy] = mock_rpc
+
+        request = {}
+        client.get_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_acl_policy_rest_required_fields(
+    request_type=cloud_redis_cluster.GetAclPolicyRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseGetAclPolicy,
+        "_BaseGetAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.AclPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.AclPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_acl_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_acl_policy_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.AclPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/aclPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.AclPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_acl_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/aclPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_acl_policy_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_acl_policy(
+            cloud_redis_cluster.GetAclPolicyRequest(),
             name="name_value",
         )
 
@@ -7458,6 +10738,186 @@ def test_update_cluster_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_update_acl_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_acl_policy] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.update_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_acl_policy_rest_required_fields(
+    request_type=cloud_redis_cluster.UpdateAclPolicyRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseUpdateAclPolicy,
+        "_BaseUpdateAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "requestId",
+            "updateMask",
+        )
+    )
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_acl_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_acl_policy_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "acl_policy": {
+                "name": "projects/sample1/locations/sample2/aclPolicies/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_acl_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{acl_policy.name=projects/*/locations/*/aclPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_acl_policy_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_acl_policy(
+            cloud_redis_cluster.UpdateAclPolicyRequest(),
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_delete_cluster_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7627,6 +11087,621 @@ def test_delete_cluster_rest_flattened_error(transport: str = "rest"):
             cloud_redis_cluster.DeleteClusterRequest(),
             name="name_value",
         )
+
+
+def test_delete_acl_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_acl_policy] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.delete_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_acl_policy_rest_required_fields(
+    request_type=cloud_redis_cluster.DeleteAclPolicyRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseDeleteAclPolicy,
+        "_BaseDeleteAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "etag",
+            "requestId",
+        )
+    )
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_acl_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_delete_acl_policy_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/aclPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_acl_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/aclPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_acl_policy_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_acl_policy(
+            cloud_redis_cluster.DeleteAclPolicyRequest(),
+            name="name_value",
+        )
+
+
+def test_get_acl_policy_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_acl_policy_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_acl_policy_revision
+        ] = mock_rpc
+
+        request = {}
+        client.get_acl_policy_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_acl_policy_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_acl_policy_revision_rest_required_fields(
+    request_type=cloud_redis_cluster.GetAclPolicyRevisionRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseGetAclPolicyRevision,
+        "_BaseGetAclPolicyRevision__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.AclPolicyRevision()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.AclPolicyRevision.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_acl_policy_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_acl_policy_revision_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.AclPolicyRevision()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/aclPolicies/sample3/revisions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.AclPolicyRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_acl_policy_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/aclPolicies/*/revisions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_acl_policy_revision_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_acl_policy_revision(
+            cloud_redis_cluster.GetAclPolicyRevisionRequest(),
+            name="name_value",
+        )
+
+
+def test_list_acl_policy_revisions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_acl_policy_revisions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_acl_policy_revisions
+        ] = mock_rpc
+
+        request = {}
+        client.list_acl_policy_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_acl_policy_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_acl_policy_revisions_rest_required_fields(
+    request_type=cloud_redis_cluster.ListAclPolicyRevisionsRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseListAclPolicyRevisions,
+        "_BaseListAclPolicyRevisions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "pageSize",
+            "pageToken",
+        )
+    )
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_acl_policy_revisions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_acl_policy_revisions_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/aclPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_acl_policy_revisions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/aclPolicies/*}/revisions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_acl_policy_revisions_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_acl_policy_revisions(
+            cloud_redis_cluster.ListAclPolicyRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_acl_policy_revisions_rest_pager(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                acl_policy_revisions=[
+                    cloud_redis_cluster.AclPolicyRevision(),
+                    cloud_redis_cluster.AclPolicyRevision(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/aclPolicies/sample3"
+        }
+
+        pager = client.list_acl_policy_revisions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, cloud_redis_cluster.AclPolicyRevision) for i in results
+        )
+
+        pages = list(client.list_acl_policy_revisions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_create_cluster_rest_use_cached_wrapped_rpc():
@@ -7828,6 +11903,203 @@ def test_create_cluster_rest_flattened_error(transport: str = "rest"):
                 )
             ),
             cluster_id="cluster_id_value",
+        )
+
+
+def test_create_acl_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_acl_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_acl_policy] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.create_acl_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_acl_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_acl_policy_rest_required_fields(
+    request_type=cloud_redis_cluster.CreateAclPolicyRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["acl_policy_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "aclPolicyId" not in jsonified_request
+
+    default_values = getattr(
+        transport_class._BaseCreateAclPolicy,
+        "_BaseCreateAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "aclPolicyId" in jsonified_request
+    assert jsonified_request["aclPolicyId"] == request_init["acl_policy_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["aclPolicyId"] = "acl_policy_id_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "aclPolicyId",
+            "requestId",
+        )
+    )
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "aclPolicyId" in jsonified_request
+    assert jsonified_request["aclPolicyId"] == "acl_policy_id_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.AclPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.AclPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_acl_policy(request)
+
+            expected_params = [
+                (
+                    "aclPolicyId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_create_acl_policy_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.AclPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            acl_policy_id="acl_policy_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.AclPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_acl_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*}/aclPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_acl_policy_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_acl_policy(
+            cloud_redis_cluster.CreateAclPolicyRequest(),
+            parent="parent_value",
+            acl_policy=cloud_redis_cluster.AclPolicy(name="name_value"),
+            acl_policy_id="acl_policy_id_value",
         )
 
 
@@ -9799,6 +14071,28 @@ def test_list_clusters_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_list_acl_policies_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.ListAclPoliciesResponse()
+        client.list_acl_policies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPoliciesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_cluster_empty_call_grpc():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9814,6 +14108,26 @@ def test_get_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_acl_policy_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        call.return_value = cloud_redis_cluster.AclPolicy()
+        client.get_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRequest()
         assert args[0] == request_msg
 
 
@@ -9839,6 +14153,28 @@ def test_update_cluster_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_update_acl_policy_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.UpdateAclPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_cluster_empty_call_grpc():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9859,6 +14195,72 @@ def test_delete_cluster_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_delete_acl_policy_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.DeleteAclPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_acl_policy_revision_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.AclPolicyRevision()
+        client.get_acl_policy_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_acl_policy_revisions_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+        client.list_acl_policy_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_cluster_empty_call_grpc():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9874,6 +14276,28 @@ def test_create_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.CreateClusterRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_acl_policy_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.AclPolicy()
+        client.create_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.CreateAclPolicyRequest()
         assert args[0] == request_msg
 
 
@@ -10131,6 +14555,35 @@ async def test_list_clusters_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_list_acl_policies_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPoliciesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_acl_policies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPoliciesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_get_cluster_empty_call_grpc_asyncio():
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10159,6 +14612,7 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
+                acl_policy="acl_policy_value",
             )
         )
         await client.get_cluster(request=None)
@@ -10167,6 +14621,34 @@ async def test_get_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_acl_policy_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy(
+                name="name_value",
+                state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+                etag="etag_value",
+            )
+        )
+        await client.get_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRequest()
         assert args[0] == request_msg
 
 
@@ -10197,6 +14679,32 @@ async def test_update_cluster_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_update_acl_policy_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.UpdateAclPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_delete_cluster_empty_call_grpc_asyncio():
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10221,6 +14729,91 @@ async def test_delete_cluster_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_delete_acl_policy_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.DeleteAclPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_acl_policy_revision_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicyRevision(
+                name="name_value",
+                revision_number=1623,
+                attached_clusters=["attached_clusters_value"],
+            )
+        )
+        await client.get_acl_policy_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_acl_policy_revisions_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_acl_policy_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_create_cluster_empty_call_grpc_asyncio():
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10239,6 +14832,36 @@ async def test_create_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.CreateClusterRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_acl_policy_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.AclPolicy(
+                name="name_value",
+                state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+                etag="etag_value",
+            )
+        )
+        await client.create_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.CreateAclPolicyRequest()
         assert args[0] == request_msg
 
 
@@ -10665,6 +15288,144 @@ def test_list_clusters_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_list_acl_policies_rest_bad_request(
+    request_type=cloud_redis_cluster.ListAclPoliciesRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_acl_policies(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListAclPoliciesRequest,
+        dict,
+    ],
+)
+def test_list_acl_policies_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListAclPoliciesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListAclPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_acl_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAclPoliciesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_acl_policies_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_list_acl_policies"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_list_acl_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_list_acl_policies"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = cloud_redis_cluster.ListAclPoliciesRequest.pb(
+            cloud_redis_cluster.ListAclPoliciesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.ListAclPoliciesResponse.to_json(
+            cloud_redis_cluster.ListAclPoliciesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.ListAclPoliciesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.ListAclPoliciesResponse()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.ListAclPoliciesResponse(),
+            metadata,
+        )
+
+        client.list_acl_policies(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_cluster_rest_bad_request(
     request_type=cloud_redis_cluster.GetClusterRequest,
 ):
@@ -10728,6 +15489,7 @@ def test_get_cluster_rest_call_success(request_type):
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
+            acl_policy="acl_policy_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -10770,6 +15532,7 @@ def test_get_cluster_rest_call_success(request_type):
     )
     assert response.server_ca_pool == "server_ca_pool_value"
     assert response.rotate_server_certificate is True
+    assert response.acl_policy == "acl_policy_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10827,6 +15590,143 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = cloud_redis_cluster.Cluster(), metadata
 
         client.get_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_acl_policy_rest_bad_request(
+    request_type=cloud_redis_cluster.GetAclPolicyRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_acl_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetAclPolicyRequest,
+        dict,
+    ],
+)
+def test_get_acl_policy_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.AclPolicy(
+            name="name_value",
+            state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.AclPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_acl_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicy)
+    assert response.name == "name_value"
+    assert response.state == cloud_redis_cluster.AclPolicy.State.ACTIVE
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_acl_policy_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_get_acl_policy"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_acl_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_get_acl_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = cloud_redis_cluster.GetAclPolicyRequest.pb(
+            cloud_redis_cluster.GetAclPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.AclPolicy.to_json(
+            cloud_redis_cluster.AclPolicy()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.GetAclPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.AclPolicy()
+        post_with_metadata.return_value = cloud_redis_cluster.AclPolicy(), metadata
+
+        client.get_acl_policy(
             request,
             metadata=[
                 ("key", "val"),
@@ -10986,6 +15886,20 @@ def test_update_cluster_rest_call_success(request_type):
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
+        "acl_policy": "acl_policy_value",
+        "acl_policy_info": {
+            "applied_acl_policy": "applied_acl_policy_value",
+            "applied_acl_policy_revision": "applied_acl_policy_revision_value",
+            "applied_acl_policy_revision_number": 3603,
+            "acl_policy_revision_statuses": [
+                {
+                    "acl_policy_revision": "acl_policy_revision_value",
+                    "acl_policy_revision_number": 2773,
+                    "state": 1,
+                    "error_message": "error_message_value",
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11140,6 +16054,224 @@ def test_update_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_update_acl_policy_rest_bad_request(
+    request_type=cloud_redis_cluster.UpdateAclPolicyRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "acl_policy": {"name": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_acl_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.UpdateAclPolicyRequest,
+        dict,
+    ],
+)
+def test_update_acl_policy_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "acl_policy": {"name": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    }
+    request_init["acl_policy"] = {
+        "name": "projects/sample1/locations/sample2/aclPolicies/sample3",
+        "rules": [{"username": "username_value", "rule": "rule_value"}],
+        "state": 1,
+        "etag": "etag_value",
+        "cluster_acl_policy_attachments": [
+            {
+                "cluster": "cluster_value",
+                "acl_policy_revision_statuses": [
+                    {
+                        "acl_policy_revision": "acl_policy_revision_value",
+                        "acl_policy_revision_number": 2773,
+                        "state": 1,
+                        "error_message": "error_message_value",
+                    }
+                ],
+            }
+        ],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis_cluster.UpdateAclPolicyRequest.meta.fields["acl_policy"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["acl_policy"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["acl_policy"][field])):
+                    del request_init["acl_policy"][field][i][subfield]
+            else:
+                del request_init["acl_policy"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_acl_policy(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_acl_policy_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_update_acl_policy"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_update_acl_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_update_acl_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = cloud_redis_cluster.UpdateAclPolicyRequest.pb(
+            cloud_redis_cluster.UpdateAclPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.UpdateAclPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.update_acl_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_delete_cluster_rest_bad_request(
     request_type=cloud_redis_cluster.DeleteClusterRequest,
 ):
@@ -11254,6 +16386,417 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_acl_policy_rest_bad_request(
+    request_type=cloud_redis_cluster.DeleteAclPolicyRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_acl_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.DeleteAclPolicyRequest,
+        dict,
+    ],
+)
+def test_delete_acl_policy_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_acl_policy(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_acl_policy_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_delete_acl_policy"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_delete_acl_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_delete_acl_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = cloud_redis_cluster.DeleteAclPolicyRequest.pb(
+            cloud_redis_cluster.DeleteAclPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.DeleteAclPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.delete_acl_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_acl_policy_revision_rest_bad_request(
+    request_type=cloud_redis_cluster.GetAclPolicyRevisionRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/aclPolicies/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_acl_policy_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetAclPolicyRevisionRequest,
+        dict,
+    ],
+)
+def test_get_acl_policy_revision_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/aclPolicies/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.AclPolicyRevision(
+            name="name_value",
+            revision_number=1623,
+            attached_clusters=["attached_clusters_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.AclPolicyRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_acl_policy_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicyRevision)
+    assert response.name == "name_value"
+    assert response.revision_number == 1623
+    assert response.attached_clusters == ["attached_clusters_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_acl_policy_revision_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_get_acl_policy_revision"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_acl_policy_revision_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_get_acl_policy_revision"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = cloud_redis_cluster.GetAclPolicyRevisionRequest.pb(
+            cloud_redis_cluster.GetAclPolicyRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.AclPolicyRevision.to_json(
+            cloud_redis_cluster.AclPolicyRevision()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.AclPolicyRevision()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.AclPolicyRevision(),
+            metadata,
+        )
+
+        client.get_acl_policy_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_acl_policy_revisions_rest_bad_request(
+    request_type=cloud_redis_cluster.ListAclPolicyRevisionsRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_acl_policy_revisions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListAclPolicyRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_acl_policy_revisions_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/aclPolicies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_acl_policy_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAclPolicyRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_acl_policy_revisions_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_list_acl_policy_revisions",
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_list_acl_policy_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_list_acl_policy_revisions"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = cloud_redis_cluster.ListAclPolicyRevisionsRequest.pb(
+            cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse.to_json(
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.ListAclPolicyRevisionsResponse(),
+            metadata,
+        )
+
+        client.list_acl_policy_revisions(
             request,
             metadata=[
                 ("key", "val"),
@@ -11409,6 +16952,20 @@ def test_create_cluster_rest_call_success(request_type):
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
+        "acl_policy": "acl_policy_value",
+        "acl_policy_info": {
+            "applied_acl_policy": "applied_acl_policy_value",
+            "applied_acl_policy_revision": "applied_acl_policy_revision_value",
+            "applied_acl_policy_revision_number": 3603,
+            "acl_policy_revision_statuses": [
+                {
+                    "acl_policy_revision": "acl_policy_revision_value",
+                    "acl_policy_revision_number": 2773,
+                    "state": 1,
+                    "error_message": "error_message_value",
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11551,6 +17108,231 @@ def test_create_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_create_acl_policy_rest_bad_request(
+    request_type=cloud_redis_cluster.CreateAclPolicyRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_acl_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.CreateAclPolicyRequest,
+        dict,
+    ],
+)
+def test_create_acl_policy_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["acl_policy"] = {
+        "name": "name_value",
+        "rules": [{"username": "username_value", "rule": "rule_value"}],
+        "state": 1,
+        "etag": "etag_value",
+        "cluster_acl_policy_attachments": [
+            {
+                "cluster": "cluster_value",
+                "acl_policy_revision_statuses": [
+                    {
+                        "acl_policy_revision": "acl_policy_revision_value",
+                        "acl_policy_revision_number": 2773,
+                        "state": 1,
+                        "error_message": "error_message_value",
+                    }
+                ],
+            }
+        ],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis_cluster.CreateAclPolicyRequest.meta.fields["acl_policy"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["acl_policy"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["acl_policy"][field])):
+                    del request_init["acl_policy"][field][i][subfield]
+            else:
+                del request_init["acl_policy"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.AclPolicy(
+            name="name_value",
+            state=cloud_redis_cluster.AclPolicy.State.ACTIVE,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.AclPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_acl_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.AclPolicy)
+    assert response.name == "name_value"
+    assert response.state == cloud_redis_cluster.AclPolicy.State.ACTIVE
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_acl_policy_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_create_acl_policy"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_create_acl_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_create_acl_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = cloud_redis_cluster.CreateAclPolicyRequest.pb(
+            cloud_redis_cluster.CreateAclPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.AclPolicy.to_json(
+            cloud_redis_cluster.AclPolicy()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.CreateAclPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.AclPolicy()
+        post_with_metadata.return_value = cloud_redis_cluster.AclPolicy(), metadata
+
+        client.create_acl_policy(
             request,
             metadata=[
                 ("key", "val"),
@@ -13349,6 +19131,27 @@ def test_list_clusters_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_list_acl_policies_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policies), "__call__"
+    ) as call:
+        client.list_acl_policies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPoliciesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_cluster_empty_call_rest():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13363,6 +19166,25 @@ def test_get_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_acl_policy_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_acl_policy), "__call__") as call:
+        client.get_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRequest()
         assert args[0] == request_msg
 
 
@@ -13387,6 +19209,27 @@ def test_update_cluster_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_update_acl_policy_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_acl_policy), "__call__"
+    ) as call:
+        client.update_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.UpdateAclPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_cluster_empty_call_rest():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13406,6 +19249,69 @@ def test_delete_cluster_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_delete_acl_policy_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_acl_policy), "__call__"
+    ) as call:
+        client.delete_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.DeleteAclPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_acl_policy_revision_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_acl_policy_revision), "__call__"
+    ) as call:
+        client.get_acl_policy_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetAclPolicyRevisionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_acl_policy_revisions_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_acl_policy_revisions), "__call__"
+    ) as call:
+        client.list_acl_policy_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListAclPolicyRevisionsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_cluster_empty_call_rest():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13420,6 +19326,27 @@ def test_create_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.CreateClusterRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_acl_policy_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_acl_policy), "__call__"
+    ) as call:
+        client.create_acl_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.CreateAclPolicyRequest()
         assert args[0] == request_msg
 
 
@@ -13674,10 +19601,17 @@ def test_cloud_redis_cluster_base_transport():
     # raise NotImplementedError.
     methods = (
         "list_clusters",
+        "list_acl_policies",
         "get_cluster",
+        "get_acl_policy",
         "update_cluster",
+        "update_acl_policy",
         "delete_cluster",
+        "delete_acl_policy",
+        "get_acl_policy_revision",
+        "list_acl_policy_revisions",
         "create_cluster",
+        "create_acl_policy",
         "get_cluster_certificate_authority",
         "get_shared_regional_certificate_authority",
         "reschedule_cluster_maintenance",
@@ -13969,17 +19903,38 @@ def test_cloud_redis_cluster_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_clusters._session
     session2 = client2.transport.list_clusters._session
     assert session1 != session2
+    session1 = client1.transport.list_acl_policies._session
+    session2 = client2.transport.list_acl_policies._session
+    assert session1 != session2
     session1 = client1.transport.get_cluster._session
     session2 = client2.transport.get_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.get_acl_policy._session
+    session2 = client2.transport.get_acl_policy._session
     assert session1 != session2
     session1 = client1.transport.update_cluster._session
     session2 = client2.transport.update_cluster._session
     assert session1 != session2
+    session1 = client1.transport.update_acl_policy._session
+    session2 = client2.transport.update_acl_policy._session
+    assert session1 != session2
     session1 = client1.transport.delete_cluster._session
     session2 = client2.transport.delete_cluster._session
     assert session1 != session2
+    session1 = client1.transport.delete_acl_policy._session
+    session2 = client2.transport.delete_acl_policy._session
+    assert session1 != session2
+    session1 = client1.transport.get_acl_policy_revision._session
+    session2 = client2.transport.get_acl_policy_revision._session
+    assert session1 != session2
+    session1 = client1.transport.list_acl_policy_revisions._session
+    session2 = client2.transport.list_acl_policy_revisions._session
+    assert session1 != session2
     session1 = client1.transport.create_cluster._session
     session2 = client2.transport.create_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.create_acl_policy._session
+    session2 = client2.transport.create_acl_policy._session
     assert session1 != session2
     session1 = client1.transport.get_cluster_certificate_authority._session
     session2 = client2.transport.get_cluster_certificate_authority._session
@@ -14174,11 +20129,70 @@ def test_cloud_redis_cluster_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_backup_path():
+def test_acl_policy_path():
     project = "squid"
     location = "clam"
-    backup_collection = "whelk"
-    backup = "octopus"
+    acl_policy = "whelk"
+    expected = (
+        "projects/{project}/locations/{location}/aclPolicies/{acl_policy}".format(
+            project=project,
+            location=location,
+            acl_policy=acl_policy,
+        )
+    )
+    actual = CloudRedisClusterClient.acl_policy_path(project, location, acl_policy)
+    assert expected == actual
+
+
+def test_parse_acl_policy_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "acl_policy": "nudibranch",
+    }
+    path = CloudRedisClusterClient.acl_policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_acl_policy_path(path)
+    assert expected == actual
+
+
+def test_acl_policy_revision_path():
+    project = "cuttlefish"
+    location = "mussel"
+    acl_policy = "winkle"
+    revision = "nautilus"
+    expected = "projects/{project}/locations/{location}/aclPolicies/{acl_policy}/revisions/{revision}".format(
+        project=project,
+        location=location,
+        acl_policy=acl_policy,
+        revision=revision,
+    )
+    actual = CloudRedisClusterClient.acl_policy_revision_path(
+        project, location, acl_policy, revision
+    )
+    assert expected == actual
+
+
+def test_parse_acl_policy_revision_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "acl_policy": "squid",
+        "revision": "clam",
+    }
+    path = CloudRedisClusterClient.acl_policy_revision_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_acl_policy_revision_path(path)
+    assert expected == actual
+
+
+def test_backup_path():
+    project = "whelk"
+    location = "octopus"
+    backup_collection = "oyster"
+    backup = "nudibranch"
     expected = "projects/{project}/locations/{location}/backupCollections/{backup_collection}/backups/{backup}".format(
         project=project,
         location=location,
@@ -14193,10 +20207,10 @@ def test_backup_path():
 
 def test_parse_backup_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "backup_collection": "cuttlefish",
-        "backup": "mussel",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "backup_collection": "winkle",
+        "backup": "nautilus",
     }
     path = CloudRedisClusterClient.backup_path(**expected)
 
@@ -14206,9 +20220,9 @@ def test_parse_backup_path():
 
 
 def test_backup_collection_path():
-    project = "winkle"
-    location = "nautilus"
-    backup_collection = "scallop"
+    project = "scallop"
+    location = "abalone"
+    backup_collection = "squid"
     expected = "projects/{project}/locations/{location}/backupCollections/{backup_collection}".format(
         project=project,
         location=location,
@@ -14222,9 +20236,9 @@ def test_backup_collection_path():
 
 def test_parse_backup_collection_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "backup_collection": "clam",
+        "project": "clam",
+        "location": "whelk",
+        "backup_collection": "octopus",
     }
     path = CloudRedisClusterClient.backup_collection_path(**expected)
 
@@ -14234,9 +20248,9 @@ def test_parse_backup_collection_path():
 
 
 def test_ca_pool_path():
-    project = "whelk"
-    location = "octopus"
-    ca_pool = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    ca_pool = "cuttlefish"
     expected = "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
         project=project,
         location=location,
@@ -14248,9 +20262,9 @@ def test_ca_pool_path():
 
 def test_parse_ca_pool_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "ca_pool": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "ca_pool": "nautilus",
     }
     path = CloudRedisClusterClient.ca_pool_path(**expected)
 
@@ -14260,9 +20274,9 @@ def test_parse_ca_pool_path():
 
 
 def test_certificate_authority_path():
-    project = "winkle"
-    location = "nautilus"
-    cluster = "scallop"
+    project = "scallop"
+    location = "abalone"
+    cluster = "squid"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority".format(
         project=project,
         location=location,
@@ -14276,9 +20290,9 @@ def test_certificate_authority_path():
 
 def test_parse_certificate_authority_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "cluster": "clam",
+        "project": "clam",
+        "location": "whelk",
+        "cluster": "octopus",
     }
     path = CloudRedisClusterClient.certificate_authority_path(**expected)
 
@@ -14288,9 +20302,9 @@ def test_parse_certificate_authority_path():
 
 
 def test_cluster_path():
-    project = "whelk"
-    location = "octopus"
-    cluster = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    cluster = "cuttlefish"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
         project=project,
         location=location,
@@ -14302,9 +20316,9 @@ def test_cluster_path():
 
 def test_parse_cluster_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "cluster": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "cluster": "nautilus",
     }
     path = CloudRedisClusterClient.cluster_path(**expected)
 
@@ -14314,10 +20328,10 @@ def test_parse_cluster_path():
 
 
 def test_crypto_key_path():
-    project = "winkle"
-    location = "nautilus"
-    key_ring = "scallop"
-    crypto_key = "abalone"
+    project = "scallop"
+    location = "abalone"
+    key_ring = "squid"
+    crypto_key = "clam"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
         project=project,
         location=location,
@@ -14332,10 +20346,10 @@ def test_crypto_key_path():
 
 def test_parse_crypto_key_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "key_ring": "whelk",
-        "crypto_key": "octopus",
+        "project": "whelk",
+        "location": "octopus",
+        "key_ring": "oyster",
+        "crypto_key": "nudibranch",
     }
     path = CloudRedisClusterClient.crypto_key_path(**expected)
 
@@ -14345,11 +20359,11 @@ def test_parse_crypto_key_path():
 
 
 def test_crypto_key_version_path():
-    project = "oyster"
-    location = "nudibranch"
-    key_ring = "cuttlefish"
-    crypto_key = "mussel"
-    crypto_key_version = "winkle"
+    project = "cuttlefish"
+    location = "mussel"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    crypto_key_version = "scallop"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
         project=project,
         location=location,
@@ -14365,11 +20379,11 @@ def test_crypto_key_version_path():
 
 def test_parse_crypto_key_version_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "key_ring": "abalone",
-        "crypto_key": "squid",
-        "crypto_key_version": "clam",
+        "project": "abalone",
+        "location": "squid",
+        "key_ring": "clam",
+        "crypto_key": "whelk",
+        "crypto_key_version": "octopus",
     }
     path = CloudRedisClusterClient.crypto_key_version_path(**expected)
 
@@ -14379,9 +20393,9 @@ def test_parse_crypto_key_version_path():
 
 
 def test_forwarding_rule_path():
-    project = "whelk"
-    region = "octopus"
-    forwarding_rule = "oyster"
+    project = "oyster"
+    region = "nudibranch"
+    forwarding_rule = "cuttlefish"
     expected = (
         "projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}".format(
             project=project,
@@ -14397,9 +20411,9 @@ def test_forwarding_rule_path():
 
 def test_parse_forwarding_rule_path():
     expected = {
-        "project": "nudibranch",
-        "region": "cuttlefish",
-        "forwarding_rule": "mussel",
+        "project": "mussel",
+        "region": "winkle",
+        "forwarding_rule": "nautilus",
     }
     path = CloudRedisClusterClient.forwarding_rule_path(**expected)
 
@@ -14409,8 +20423,8 @@ def test_parse_forwarding_rule_path():
 
 
 def test_network_path():
-    project = "winkle"
-    network = "nautilus"
+    project = "scallop"
+    network = "abalone"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -14421,8 +20435,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "scallop",
-        "network": "abalone",
+        "project": "squid",
+        "network": "clam",
     }
     path = CloudRedisClusterClient.network_path(**expected)
 
@@ -14432,9 +20446,9 @@ def test_parse_network_path():
 
 
 def test_service_attachment_path():
-    project = "squid"
-    region = "clam"
-    service_attachment = "whelk"
+    project = "whelk"
+    region = "octopus"
+    service_attachment = "oyster"
     expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
         project=project,
         region=region,
@@ -14448,9 +20462,9 @@ def test_service_attachment_path():
 
 def test_parse_service_attachment_path():
     expected = {
-        "project": "octopus",
-        "region": "oyster",
-        "service_attachment": "nudibranch",
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "service_attachment": "mussel",
     }
     path = CloudRedisClusterClient.service_attachment_path(**expected)
 
@@ -14460,8 +20474,8 @@ def test_parse_service_attachment_path():
 
 
 def test_shared_regional_certificate_authority_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}/sharedRegionalCertificateAuthority".format(
         project=project,
         location=location,
@@ -14474,8 +20488,8 @@ def test_shared_regional_certificate_authority_path():
 
 def test_parse_shared_regional_certificate_authority_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = CloudRedisClusterClient.shared_regional_certificate_authority_path(
         **expected
@@ -14489,7 +20503,7 @@ def test_parse_shared_regional_certificate_authority_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -14499,7 +20513,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "clam",
     }
     path = CloudRedisClusterClient.common_billing_account_path(**expected)
 
@@ -14509,7 +20523,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -14519,7 +20533,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "octopus",
     }
     path = CloudRedisClusterClient.common_folder_path(**expected)
 
@@ -14529,7 +20543,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -14539,7 +20553,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nudibranch",
     }
     path = CloudRedisClusterClient.common_organization_path(**expected)
 
@@ -14549,7 +20563,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -14559,7 +20573,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "mussel",
     }
     path = CloudRedisClusterClient.common_project_path(**expected)
 
@@ -14569,8 +20583,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -14581,8 +20595,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = CloudRedisClusterClient.common_location_path(**expected)
 

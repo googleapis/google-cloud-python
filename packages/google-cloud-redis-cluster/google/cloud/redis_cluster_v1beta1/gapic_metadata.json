@@ -15,9 +15,19 @@
                 "backup_cluster"
               ]
             },
+            "CreateAclPolicy": {
+              "methods": [
+                "create_acl_policy"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
+              ]
+            },
+            "DeleteAclPolicy": {
+              "methods": [
+                "delete_acl_policy"
               ]
             },
             "DeleteBackup": {
@@ -33,6 +43,16 @@
             "ExportBackup": {
               "methods": [
                 "export_backup"
+              ]
+            },
+            "GetAclPolicy": {
+              "methods": [
+                "get_acl_policy"
+              ]
+            },
+            "GetAclPolicyRevision": {
+              "methods": [
+                "get_acl_policy_revision"
               ]
             },
             "GetBackup": {
@@ -60,6 +80,16 @@
                 "get_shared_regional_certificate_authority"
               ]
             },
+            "ListAclPolicies": {
+              "methods": [
+                "list_acl_policies"
+              ]
+            },
+            "ListAclPolicyRevisions": {
+              "methods": [
+                "list_acl_policy_revisions"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -78,6 +108,11 @@
             "RescheduleClusterMaintenance": {
               "methods": [
                 "reschedule_cluster_maintenance"
+              ]
+            },
+            "UpdateAclPolicy": {
+              "methods": [
+                "update_acl_policy"
               ]
             },
             "UpdateCluster": {
@@ -95,9 +130,19 @@
                 "backup_cluster"
               ]
             },
+            "CreateAclPolicy": {
+              "methods": [
+                "create_acl_policy"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
+              ]
+            },
+            "DeleteAclPolicy": {
+              "methods": [
+                "delete_acl_policy"
               ]
             },
             "DeleteBackup": {
@@ -113,6 +158,16 @@
             "ExportBackup": {
               "methods": [
                 "export_backup"
+              ]
+            },
+            "GetAclPolicy": {
+              "methods": [
+                "get_acl_policy"
+              ]
+            },
+            "GetAclPolicyRevision": {
+              "methods": [
+                "get_acl_policy_revision"
               ]
             },
             "GetBackup": {
@@ -140,6 +195,16 @@
                 "get_shared_regional_certificate_authority"
               ]
             },
+            "ListAclPolicies": {
+              "methods": [
+                "list_acl_policies"
+              ]
+            },
+            "ListAclPolicyRevisions": {
+              "methods": [
+                "list_acl_policy_revisions"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -158,6 +223,11 @@
             "RescheduleClusterMaintenance": {
               "methods": [
                 "reschedule_cluster_maintenance"
+              ]
+            },
+            "UpdateAclPolicy": {
+              "methods": [
+                "update_acl_policy"
               ]
             },
             "UpdateCluster": {
@@ -175,9 +245,19 @@
                 "backup_cluster"
               ]
             },
+            "CreateAclPolicy": {
+              "methods": [
+                "create_acl_policy"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
+              ]
+            },
+            "DeleteAclPolicy": {
+              "methods": [
+                "delete_acl_policy"
               ]
             },
             "DeleteBackup": {
@@ -193,6 +273,16 @@
             "ExportBackup": {
               "methods": [
                 "export_backup"
+              ]
+            },
+            "GetAclPolicy": {
+              "methods": [
+                "get_acl_policy"
+              ]
+            },
+            "GetAclPolicyRevision": {
+              "methods": [
+                "get_acl_policy_revision"
               ]
             },
             "GetBackup": {
@@ -220,6 +310,16 @@
                 "get_shared_regional_certificate_authority"
               ]
             },
+            "ListAclPolicies": {
+              "methods": [
+                "list_acl_policies"
+              ]
+            },
+            "ListAclPolicyRevisions": {
+              "methods": [
+                "list_acl_policy_revisions"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -238,6 +338,11 @@
             "RescheduleClusterMaintenance": {
               "methods": [
                 "reschedule_cluster_maintenance"
+              ]
+            },
+            "UpdateAclPolicy": {
+              "methods": [
+                "update_acl_policy"
               ]
             },
             "UpdateCluster": {
