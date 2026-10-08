@@ -191,16 +191,9 @@ _LOGGER = logging.getLogger(__name__)
 _UNSET: Any = object()
 
 
-class _AcceleratorUnverified(Exception):
-    """Raised internally when the daemon's identity cannot be verified against
-    the client's locally resolved principal or effective scopes (either side
-    unknown), signalling that the caller should fall back to the native client
-    rather than route."""
-
-
 class _AcceleratorIdentityError(RuntimeError):
-    """Raised when the daemon resolved a different principal or scope than this
-    client did — a confirmed identity flip, not a transient startup failure."""
+    """Raised when the daemon's identity cannot be confirmed or does not match
+    this client's — signals the caller to fall back to the native client."""
 
 
 def _normalize_scopes(scopes: Any) -> frozenset[str]:
@@ -1441,16 +1434,6 @@ class _DataApiTargetAsync(abc.ABC):
             # principal. Verify before routing any RPC through it.
             self._verify_daemon_identity(server)
             self._accelerator_client = AcceleratorClientType(server.uds_path)
-        except _AcceleratorUnverified:
-            server.close()
-            warnings.warn(
-                "Accelerator disabled: could not verify that the daemon "
-                "resolves the same identity as this client; using the native "
-                "client instead.",
-                RuntimeWarning,
-                stacklevel=2,
-            )
-            return
         except BaseException:
             server.close()
             raise
@@ -1472,22 +1455,25 @@ class _DataApiTargetAsync(abc.ABC):
         """Confirm the daemon resolved the same identity this client did.
 
         Compares the principal *and* the effective auth scopes the daemon wrote
-        to ``identity.json`` against the client's own — the daemon mints tokens
-        for its effective scope, so a scope drift is as much an identity flip as
-        a principal drift. If either side of either check is unknown, raise
-        ``_AcceleratorUnverified`` (caller falls back to native). If both are
-        known but differ, raise ``_AcceleratorIdentityError`` — this is the
-        identity flip we are guarding against.
+        to ``identity.json`` against the client's own. Raises
+        ``_AcceleratorIdentityError`` if the identity cannot be verified (either
+        side unknown) or if a mismatch is detected, so the caller falls back to
+        the native client.
         """
         try:
             identity = server.read_identity()
-        except Exception:
-            raise _AcceleratorUnverified()
+        except Exception as exc:
+            raise _AcceleratorIdentityError(
+                f"Could not read daemon identity: {exc}"
+            ) from exc
 
         daemon_principal = identity.get("principal") or None
         own_principal = self.client._resolve_principal()
         if own_principal is None or daemon_principal is None:
-            raise _AcceleratorUnverified()
+            raise _AcceleratorIdentityError(
+                "Could not verify daemon identity: principal is unknown on "
+                f"{'this client' if own_principal is None else 'the daemon'} side"
+            )
         if own_principal != daemon_principal:
             raise _AcceleratorIdentityError(
                 "Accelerator identity mismatch: this client resolved "
@@ -1499,7 +1485,10 @@ class _DataApiTargetAsync(abc.ABC):
         daemon_scopes = _normalize_scopes(identity.get("scopes"))
         own_scopes = _normalize_scopes(self.client._accelerator_scopes)
         if not own_scopes or not daemon_scopes:
-            raise _AcceleratorUnverified()
+            raise _AcceleratorIdentityError(
+                "Could not verify daemon identity: effective scopes are unknown on "
+                f"{'this client' if not own_scopes else 'the daemon'} side"
+            )
         if own_scopes != daemon_scopes:
             raise _AcceleratorIdentityError(
                 "Accelerator scope mismatch: this client forwarded "

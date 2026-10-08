@@ -14,6 +14,7 @@
 
 import json
 import os
+import unittest.mock
 
 import pytest
 
@@ -25,11 +26,15 @@ from google.cloud.bigtable.data._accelerator._daemon import (
 
 
 def _make_daemon(tmp_path, **kwargs):
-    # Create an empty file so the explicit binary_path passes validation, but we
-    # never actually spawn it (Popen is monkeypatched in each test).
+    # Patch _resolve_binary_path so the constructor doesn't require the bundled
+    # binary; tests that call start() monkeypatch Popen separately.
     fake_binary = tmp_path / "fake-binary"
     fake_binary.touch()
-    return AcceleratorDaemon(binary_path=str(fake_binary), **kwargs)
+    with unittest.mock.patch(
+        "google.cloud.bigtable.data._accelerator._daemon._resolve_binary_path",
+        return_value=str(fake_binary),
+    ):
+        return AcceleratorDaemon(**kwargs)
 
 
 class TestExtraEnv:

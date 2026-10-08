@@ -25,7 +25,6 @@ from google.auth import compute_engine
 from google.cloud.bigtable.data._async.client import (
     BigtableDataClientAsync,
     _AcceleratorIdentityError,
-    _AcceleratorUnverified,
     _DataApiTargetAsync,
 )
 
@@ -206,7 +205,7 @@ class TestVerifyDaemonIdentity:
         )
         for exc in (RuntimeError("no identity.json"), ValueError("bad json")):
             server = _FakeServer(None, read_raises=exc)
-            with pytest.raises(_AcceleratorUnverified):
+            with pytest.raises(_AcceleratorIdentityError):
                 _DataApiTargetAsync._verify_daemon_identity(table, server)
 
     def test_mismatch_raises(self):
@@ -217,15 +216,15 @@ class TestVerifyDaemonIdentity:
             )
 
     def test_client_unknown_falls_back(self):
-        with pytest.raises(_AcceleratorUnverified):
+        with pytest.raises(_AcceleratorIdentityError):
             _verify(None, "svc@proj.iam.gserviceaccount.com")
 
     def test_daemon_unknown_falls_back(self):
-        with pytest.raises(_AcceleratorUnverified):
+        with pytest.raises(_AcceleratorIdentityError):
             _verify("svc@proj.iam.gserviceaccount.com", None)
 
     def test_daemon_missing_principal_falls_back(self):
-        with pytest.raises(_AcceleratorUnverified):
+        with pytest.raises(_AcceleratorIdentityError):
             _verify("svc@proj.iam.gserviceaccount.com", None, missing=True)
 
     def test_scope_match_ignores_order_and_dupes(self):
@@ -249,7 +248,7 @@ class TestVerifyDaemonIdentity:
 
     def test_daemon_missing_scopes_falls_back(self):
         # Older daemon that resolves a principal but writes no scopes.
-        with pytest.raises(_AcceleratorUnverified):
+        with pytest.raises(_AcceleratorIdentityError):
             _verify(
                 "svc@proj.iam.gserviceaccount.com",
                 "svc@proj.iam.gserviceaccount.com",
@@ -257,7 +256,7 @@ class TestVerifyDaemonIdentity:
             )
 
     def test_client_missing_scopes_falls_back(self):
-        with pytest.raises(_AcceleratorUnverified):
+        with pytest.raises(_AcceleratorIdentityError):
             _verify(
                 "svc@proj.iam.gserviceaccount.com",
                 "svc@proj.iam.gserviceaccount.com",
