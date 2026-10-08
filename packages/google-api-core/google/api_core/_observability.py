@@ -247,19 +247,17 @@ try:
         UnaryUnaryClientInterceptor as _SyncUnaryUnaryClientInterceptor,
     )
 except ImportError:  # pragma: NO COVER
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    # mypy: Fallback dummy classes when optional grpc is not installed.
+    # Four distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
     class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
         pass
 
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
     class _SyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
         pass
 
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
     class _SyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
         pass
 
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
     class _SyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
         pass
 
@@ -278,19 +276,17 @@ try:
         UnaryUnaryClientInterceptor as _AsyncUnaryUnaryClientInterceptor,
     )
 except ImportError:  # pragma: NO COVER
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    # mypy: Fallback dummy classes when optional grpc is not installed.
+    # Four distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
     class _AsyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
         pass
 
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
     class _AsyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
         pass
 
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
     class _AsyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
         pass
 
-    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
     class _AsyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
         pass
 
