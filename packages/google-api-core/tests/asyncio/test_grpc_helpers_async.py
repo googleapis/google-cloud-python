@@ -857,3 +857,29 @@ def test_apply_channel_interceptors_otel_prepended_in_order():
         existing_interceptor,
         regular_interceptor,
     ]
+
+
+def test_apply_channel_interceptors_fallback_otel_prepended_in_order():
+    """Proves that un-matched fallback interceptors with _is_otel_interceptor=True are prepended in order."""
+
+    class FallbackOtelInterceptor:
+        _is_otel_interceptor = True
+
+    existing_interceptor = mock.Mock()
+    otel1 = FallbackOtelInterceptor()
+    otel2 = FallbackOtelInterceptor()
+    regular = mock.Mock(spec=[])
+
+    channel = mock.Mock(spec=["_unary_unary_interceptors"])
+    channel._unary_unary_interceptors = [existing_interceptor]
+
+    result = grpc_helpers_async.apply_channel_interceptors(
+        channel, [regular, otel1, otel2]
+    )
+    assert result is channel
+    assert channel._unary_unary_interceptors == [
+        otel1,
+        otel2,
+        existing_interceptor,
+        regular,
+    ]
