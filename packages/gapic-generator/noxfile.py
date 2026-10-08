@@ -982,7 +982,7 @@ def format(session):
 def google_ads_library(session):
     """Generate and install the Google Ads GAPIC library for live system tests."""
     session.install("-e", ".")
-    session.install("grpcio-tools", "pyYAML")
+    session.install("grpcio-tools", "pyYAML", "pypandoc-binary==1.16.2")
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         googleapis_dir = path.join(tmp_dir, "googleapis")
