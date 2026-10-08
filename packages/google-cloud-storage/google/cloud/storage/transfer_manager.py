@@ -1465,9 +1465,10 @@ class _LazyClient:
         if cached_client:
             return cached_client
         else:
-            if len(args) >= 8:
+            if len(args) > 6:
                 kwargs.setdefault("enable_metrics", args[6])
-                kwargs.setdefault("enable_debug_metrics", args[7])
+                if len(args) > 7:
+                    kwargs.setdefault("enable_debug_metrics", args[7])
                 args = args[:6]
             cached_client = Client(*args, **kwargs)
             _cached_clients[id] = cached_client

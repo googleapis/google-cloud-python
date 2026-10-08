@@ -1425,6 +1425,15 @@ def test__reduce_client():
             enable_debug_metrics=True,
         )
 
+        # Verify compatibility when only enable_metrics is present (len(args) == 7 after id)
+        fake_cache.clear()
+        mock_client_cls.reset_mock()
+        replicated_client(*args[:-1])
+        mock_client_cls.assert_called_once_with(
+            *args[1:7],
+            enable_metrics=True,
+        )
+
 
 def test__call_method_on_maybe_pickled_blob():
     blob = mock.Mock(spec=Blob)
