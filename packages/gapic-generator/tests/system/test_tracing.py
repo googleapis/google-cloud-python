@@ -52,7 +52,7 @@ from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoAsyncClient, EchoClient
 
-try:x
+try:
     from .conftest import construct_client
 except (ImportError, ValueError):
     from conftest import construct_client

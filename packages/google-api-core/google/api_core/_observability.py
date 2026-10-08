@@ -18,11 +18,19 @@
 
 from __future__ import annotations
 
+import contextlib
 import urllib.parse
 from typing import TYPE_CHECKING, Any, Callable, Sequence
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
+
+try:
+    from opentelemetry.instrumentation.utils import (
+        suppress_instrumentation as _suppress_instrumentation,
+    )
+except ImportError:
+    _suppress_instrumentation = contextlib.nullcontext
 
 if TYPE_CHECKING:
     # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
@@ -223,18 +231,6 @@ def _get_tracer_provider(
     return None
 
 
-def _suppress_instrumentation() -> Any:
-    """Helper that returns OpenTelemetry's suppress_instrumentation context manager if available."""
-    try:
-        from opentelemetry.instrumentation.utils import suppress_instrumentation
-
-        return suppress_instrumentation()
-    except ImportError:
-        import contextlib
-
-        return contextlib.nullcontext()
-
-
 try:
     # flake8: 'grpc' is imported under TYPE_CHECKING for static type annotations; imported here conditionally for runtime interceptor base classes
     import grpc  # noqa: F811
@@ -360,10 +356,8 @@ def get_otel_interceptor(
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
         try:
-            import grpc
-
             chan = grpc.intercept_channel(channel, suppressor)
-        except (ImportError, AttributeError):
+        except (NameError, AttributeError):
             chan = channel
         return otel_grpc.intercept_channel(chan, interceptor)
 
