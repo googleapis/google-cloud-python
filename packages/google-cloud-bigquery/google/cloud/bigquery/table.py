@@ -2166,7 +2166,7 @@ class RowIterator(HTTPIterator):
         # and do not alter the original, so if the user iterates the results
         # again, start_index is preserved.
         params_copy = copy.copy(params)
-        if self._next_token in params and "startIndex" in params:
+        if self.next_page_token is not None and "startIndex" in params:
             del params_copy["startIndex"]
 
         return self.api_request(
