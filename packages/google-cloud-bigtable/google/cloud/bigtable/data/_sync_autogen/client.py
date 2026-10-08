@@ -149,6 +149,11 @@ class _AcceleratorUnverified(Exception):
     rather than route."""
 
 
+class _AcceleratorIdentityError(RuntimeError):
+    """Raised when the daemon resolved a different principal or scope than this
+    client did — a confirmed identity flip, not a transient startup failure."""
+
+
 def _normalize_scopes(scopes: Any) -> frozenset[str]:
     """Normalize a scope value to a comparable, order-insensitive set.
 
@@ -343,14 +348,15 @@ class BigtableDataClient(ClientWithProject):
                 )
 
     def _resolve_principal(self) -> str | None:
-        """Resolve this client's identity to a principal, using only local
-        signals — never a token-introspection or other external network call.
+        """Resolve this client's identity to a principal.
 
         Returns the service-account email for the credential types that carry
-        one (SA key, impersonated, workload identity, and Compute Engine after a
-        metadata-server refresh). Returns ``None`` for identities that expose no
-        stable local principal (e.g. plain gcloud user ADC), which the caller
-        treats as unverifiable and routes to the native client.
+        one (SA key, impersonated, workload identity, and Compute Engine).
+        For Compute Engine credentials whose email is still "default", performs
+        a single link-local metadata-server call to resolve the actual identity.
+        Returns ``None`` for identities that expose no stable local principal
+        (e.g. plain gcloud user ADC), which the caller treats as unverifiable
+        and falls back to the native client.
 
         Cached: resolution runs at most once per client."""
         cached = getattr(self, "_cached_principal", _UNSET)
@@ -1094,6 +1100,16 @@ class _DataApiTarget(abc.ABC):
             return
         try:
             self._start_accelerator()
+        except _AcceleratorIdentityError as exc:
+            if explicit:
+                raise
+            warnings.warn(
+                f"Accelerator disabled: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            self._accelerator_daemon = None
+            self._accelerator_client = None
         except Exception as exc:
             if explicit:
                 raise
@@ -1168,15 +1184,15 @@ class _DataApiTarget(abc.ABC):
         for its effective scope, so a scope drift is as much an identity flip as
         a principal drift. If either side of either check is unknown, raise
         ``_AcceleratorUnverified`` (caller falls back to native). If both are
-        known but differ, raise ``RuntimeError`` and refuse to route — this is
-        the identity flip we are guarding against."""
+        known but differ, raise ``_AcceleratorIdentityError`` — this is the
+        identity flip we are guarding against."""
         identity = server.read_identity()
         daemon_principal = identity.get("principal") or None
         own_principal = self.client._resolve_principal()
         if own_principal is None or daemon_principal is None:
             raise _AcceleratorUnverified()
         if own_principal != daemon_principal:
-            raise RuntimeError(
+            raise _AcceleratorIdentityError(
                 f"Accelerator identity mismatch: this client resolved {own_principal!r} but the daemon resolved {daemon_principal!r}; refusing to route RPCs through the accelerator."
             )
         daemon_scopes = _normalize_scopes(identity.get("scopes"))
@@ -1184,7 +1200,7 @@ class _DataApiTarget(abc.ABC):
         if not own_scopes or not daemon_scopes:
             raise _AcceleratorUnverified()
         if own_scopes != daemon_scopes:
-            raise RuntimeError(
+            raise _AcceleratorIdentityError(
                 f"Accelerator scope mismatch: this client forwarded {sorted(own_scopes)!r} but the daemon resolved {sorted(daemon_scopes)!r}; refusing to route RPCs through the accelerator."
             )
 

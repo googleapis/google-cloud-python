@@ -24,6 +24,7 @@ from google.auth import compute_engine
 
 from google.cloud.bigtable.data._async.client import (
     BigtableDataClientAsync,
+    _AcceleratorIdentityError,
     _AcceleratorUnverified,
     _DataApiTargetAsync,
 )
@@ -192,7 +193,7 @@ class TestVerifyDaemonIdentity:
         _verify("svc@proj.iam.gserviceaccount.com", "svc@proj.iam.gserviceaccount.com")
 
     def test_mismatch_raises(self):
-        with pytest.raises(RuntimeError, match="identity mismatch"):
+        with pytest.raises(_AcceleratorIdentityError, match="identity mismatch"):
             _verify(
                 "svc-a@proj.iam.gserviceaccount.com",
                 "svc-b@proj.iam.gserviceaccount.com",
@@ -221,7 +222,7 @@ class TestVerifyDaemonIdentity:
 
     def test_scope_mismatch_raises(self):
         # Principals match but the daemon resolved a different effective scope.
-        with pytest.raises(RuntimeError, match="scope mismatch"):
+        with pytest.raises(_AcceleratorIdentityError, match="scope mismatch"):
             _verify(
                 "svc@proj.iam.gserviceaccount.com",
                 "svc@proj.iam.gserviceaccount.com",

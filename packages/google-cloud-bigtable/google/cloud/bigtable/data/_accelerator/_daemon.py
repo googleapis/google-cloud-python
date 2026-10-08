@@ -260,6 +260,10 @@ class AcceleratorDaemon:
                 f"Accelerator daemon did not write {_IDENTITY_FILENAME}; "
                 "cannot verify its identity"
             ) from exc
+        except (OSError, ValueError) as exc:
+            raise RuntimeError(
+                f"Failed to read {_IDENTITY_FILENAME}: {exc}"
+            ) from exc
         finally:
             try:
                 os.unlink(path)
