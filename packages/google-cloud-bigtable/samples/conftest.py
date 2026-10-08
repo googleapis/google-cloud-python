@@ -18,6 +18,7 @@ import signal
 import uuid
 from typing import Optional
 
+import pytest
 from google.api_core import exceptions, retry
 
 from google.cloud import bigtable_admin
@@ -65,11 +66,13 @@ def pytest_configure(config) -> None:
     ):
         return
 
-    if os.environ.get("BIGTABLE_INSTANCE"):
-        return
-
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     if not project_id:
+        raise pytest.UsageError(
+            "GOOGLE_CLOUD_PROJECT environment variable must be set to run sample tests."
+        )
+
+    if os.environ.get("BIGTABLE_INSTANCE"):
         return
 
     clear_stale_instances(
