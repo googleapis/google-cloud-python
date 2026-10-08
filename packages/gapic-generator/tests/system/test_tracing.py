@@ -248,6 +248,9 @@ def test_auto_instrumentation_suppression_sync(span_exporter):
     except ImportError:
         pytest.skip("opentelemetry-instrumentation-grpc is not installed")
 
+    if not hasattr(_observability, "_AsyncSuppressingClientInterceptor"):
+        pytest.skip("Installed google-api-core lacks auto-instrumentation suppression")
+
     exporter, provider = span_exporter
     instrumentor = GrpcInstrumentorClient()
     instrumentor.instrument(tracer_provider=provider)
@@ -308,6 +311,9 @@ async def test_auto_instrumentation_suppression_async(span_exporter):
         from opentelemetry.instrumentation.grpc import GrpcAioInstrumentorClient
     except ImportError:
         pytest.skip("opentelemetry-instrumentation-grpc is not installed")
+
+    if not hasattr(_observability, "_AsyncSuppressingClientInterceptor"):
+        pytest.skip("Installed google-api-core lacks auto-instrumentation suppression")
 
     exporter, provider = span_exporter
     instrumentor = GrpcAioInstrumentorClient()

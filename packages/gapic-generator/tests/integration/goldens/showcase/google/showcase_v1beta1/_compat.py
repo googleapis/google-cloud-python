@@ -77,7 +77,8 @@ else:  # pragma: NO COVER
 
         record_http_error = record_error
 
-    def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:
+    # mypy: google-api-core < v3.x.0 lacks trace_http_request, pragma ignores the fallback function redefinition.
+    def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:  # type: ignore[misc]
         return _FallbackTraceContext()
 
 # The `kind` parameter in gapic_v1.method_async.wrap_method was introduced in
