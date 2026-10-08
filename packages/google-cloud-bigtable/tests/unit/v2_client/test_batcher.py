@@ -329,3 +329,98 @@ class _AtexitMock:
 
     def unregister(self, func):
         self._functions.remove(func)
+
+
+def test_mutations_batcher_close_idempotent(_setup_batcher):
+    table, operation_mock = _setup_batcher
+    mutation_batcher = MutationsBatcher(table=table)
+    row = DirectRow(row_key=b"row_key")
+    row.set_cell("cf1", b"c1", b"1")
+    mutation_batcher.mutate(row)
+
+    mutation_batcher.close()
+    mutation_batcher.close()
+
+    operation_mock.assert_called_once()
+
+
+def test_mutations_batcher_threading_atexit_flushes_before_shutdown(
+    _setup_batcher, recwarn
+):
+    from google.cloud.bigtable.data import _helpers
+
+    table, operation_mock = _setup_batcher
+    saved_callbacks = list(_helpers._THREADING_ATEXIT_CALLBACKS)
+    try:
+        _helpers._THREADING_ATEXIT_CALLBACKS.clear()
+        mutation_batcher = MutationsBatcher(table=table)
+
+        row1 = DirectRow(row_key=b"row_key_1")
+        row1.set_cell("cf1", b"c1", b"1")
+        mutation_batcher.mutate(row1)
+        mutation_batcher.flush()
+        assert operation_mock.call_count == 1
+
+        row2 = DirectRow(row_key=b"row_key_2")
+        row2.set_cell("cf1", b"c1", b"2")
+        mutation_batcher.mutate(row2)
+        assert operation_mock.call_count == 1
+
+        # Simulate threading._shutdown() running our registered callbacks
+        # in LIFO order: legacy batcher.close() must run before the underlying
+        # data batcher's _on_exit(), flushing row2 without a UserWarning.
+        _helpers._run_threading_atexit_callbacks()
+
+        assert operation_mock.call_count == 2
+        assert len(recwarn) == 0
+        assert mutation_batcher._closed is True
+
+        # Subsequent close() (e.g. from atexit) is a no-op
+        mutation_batcher.close()
+        assert operation_mock.call_count == 2
+    finally:
+        _helpers._THREADING_ATEXIT_CALLBACKS[:] = saved_callbacks
+
+
+def test_unclosed_resources_do_not_hang_on_exit(tmp_path):
+    import os
+    import subprocess
+    import sys
+
+    script = tmp_path / "unclosed_exit.py"
+    script.write_text(
+        """\
+from google.auth.credentials import AnonymousCredentials
+from google.cloud import bigtable
+from google.cloud.bigtable.data import BigtableDataClient
+
+# 1. Unclosed sync BigtableDataClient with background channel refresh
+data_client = BigtableDataClient(
+    project="project-id",
+    credentials=AnonymousCredentials(),
+)
+
+# 2. Unclosed sync data MutationsBatcher
+table = data_client.get_table("instance-id", "table-id")
+data_batcher = table.mutations_batcher()
+
+# 3. Unclosed legacy MutationsBatcher
+legacy_client = bigtable.Client(
+    project="project-id",
+    credentials=AnonymousCredentials(),
+)
+legacy_table = legacy_client.instance("instance-id").table("table-id")
+legacy_batcher = legacy_table.mutations_batcher()
+"""
+    )
+    env = os.environ.copy()
+    env["GOOGLE_API_USE_CLIENT_CERTIFICATE"] = "false"
+    env["PYTHONPATH"] = os.pathsep.join(sys.path)
+    result = subprocess.run(
+        [sys.executable, str(script)],
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=15,
+    )
+    assert result.returncode == 0, result.stderr

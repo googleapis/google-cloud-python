@@ -491,3 +491,56 @@ class TestTrackedBackoffGenerator:
         generator.set_next(88)
         assert next(generator) == 88
         assert next(generator) == 1
+
+
+class TestThreadingAtexit:
+    def test_register_unregister_and_run_lifo(self):
+        calls = []
+
+        class Dummy:
+            def __init__(self, name):
+                self.name = name
+
+            def cb(self):
+                calls.append(self.name)
+
+        d1 = Dummy("first")
+        d2 = Dummy("second")
+        d3 = Dummy("third")
+
+        saved_callbacks = list(_helpers._THREADING_ATEXIT_CALLBACKS)
+        try:
+            _helpers._THREADING_ATEXIT_CALLBACKS.clear()
+            _helpers._register_threading_atexit(d1.cb)
+            _helpers._register_threading_atexit(d2.cb)
+            _helpers._register_threading_atexit(d3.cb)
+
+            # Unregistering d2 removes it; unregistering again is a no-op
+            _helpers._unregister_threading_atexit(d2.cb)
+            _helpers._unregister_threading_atexit(d2.cb)
+
+            _helpers._run_threading_atexit_callbacks()
+            assert calls == ["third", "first"]
+            assert len(_helpers._THREADING_ATEXIT_CALLBACKS) == 0
+        finally:
+            _helpers._THREADING_ATEXIT_CALLBACKS[:] = saved_callbacks
+
+    def test_gc_skips_dead_weak_method(self):
+        import gc
+
+        class Dummy:
+            def cb(self):  # pragma: NO COVER
+                pass
+
+        saved_callbacks = list(_helpers._THREADING_ATEXIT_CALLBACKS)
+        try:
+            _helpers._THREADING_ATEXIT_CALLBACKS.clear()
+            d = Dummy()
+            _helpers._register_threading_atexit(d.cb)
+            assert len(_helpers._THREADING_ATEXIT_CALLBACKS) == 1
+            del d
+            gc.collect()
+            _helpers._run_threading_atexit_callbacks()
+            assert len(_helpers._THREADING_ATEXIT_CALLBACKS) == 0
+        finally:
+            _helpers._THREADING_ATEXIT_CALLBACKS[:] = saved_callbacks

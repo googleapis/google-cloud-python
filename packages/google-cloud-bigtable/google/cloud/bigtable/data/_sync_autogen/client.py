@@ -54,7 +54,9 @@ from google.cloud.bigtable.data._helpers import (
     _get_error_type,
     _get_retryable_errors,
     _get_timeouts,
+    _register_threading_atexit,
     _retry_exception_factory,
+    _unregister_threading_atexit,
     _validate_timeouts,
     _WarmedInstanceKey,
 )
@@ -204,6 +206,7 @@ class BigtableDataClient(ClientWithProject):
                 f"The configured universe domain ({self.universe_domain}) does not match the universe domain found in the credentials ({self._credentials.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
             )
         self._is_closed = CrossSync._Sync_Impl.Event()
+        _register_threading_atexit(self._is_closed.set)
         self._disable_background_refresh = bool(
             kwargs.get("_disable_background_refresh", False)
         )
@@ -315,6 +318,7 @@ class BigtableDataClient(ClientWithProject):
     def close(self, timeout: float | None = 2.0):
         """Cancel all background tasks"""
         self._is_closed.set()
+        _unregister_threading_atexit(self._is_closed.set)
         if self._channel_refresh_task is not None:
             self._channel_refresh_task.cancel()
             CrossSync._Sync_Impl.wait([self._channel_refresh_task], timeout=timeout)

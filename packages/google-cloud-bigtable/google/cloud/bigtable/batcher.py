@@ -20,6 +20,10 @@ import queue
 
 from google.api_core import exceptions as core_exceptions
 
+from google.cloud.bigtable.data._helpers import (
+    _register_threading_atexit,
+    _unregister_threading_atexit,
+)
 from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
 from google.cloud.bigtable.data.mutations import RowMutationEntry
 
@@ -110,8 +114,10 @@ class MutationsBatcher(object):
             "flow_control_max_bytes": MAX_OUTSTANDING_BYTES,
         }
         self._user_batch_completed_callback = batch_completed_callback
+        self._closed = False
         self._init_batcher()
         atexit.register(self.close)
+        _register_threading_atexit(self.close)
         self._exceptions: queue.Queue = queue.Queue()
 
     @property
@@ -204,7 +210,9 @@ class MutationsBatcher(object):
             * :exc:`~batcher.MutationsBatchError` if there's any error in the mutations.
         """
         self._close_batcher()
+        _unregister_threading_atexit(self.close)
         self._init_batcher()
+        _register_threading_atexit(self.close)
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         """Clean up resources. Flush and shutdown the ThreadPoolExecutor."""
@@ -217,8 +225,12 @@ class MutationsBatcher(object):
         :raises:
             * :exc:`~batcher.MutationsBatchError` if there's any error in the mutations.
         """
+        if self._closed:
+            return
+        self._closed = True
         self._close_batcher()
         atexit.unregister(self.close)
+        _unregister_threading_atexit(self.close)
         if self._exceptions.qsize() > 0:
             exc = list(self._exceptions.queue)
             raise MutationsBatchError("Errors in batch mutations.", exc=exc)

@@ -17,11 +17,15 @@ Helper functions used in various places in the library.
 
 from __future__ import annotations
 
+import concurrent.futures.thread  # noqa: F401 - imported before threading._register_atexit
 import enum
+import threading
 import time
+import weakref
 from collections import namedtuple
 from typing import (
     TYPE_CHECKING,
+    Any,
     Callable,
     List,
     Optional,
@@ -425,3 +429,43 @@ class TrackedBackoffGenerator:
         if attempt_idx < 0:
             raise IndexError("received negative attempt number")
         return self.history[attempt_idx]
+
+
+_THREADING_ATEXIT_CALLBACKS: list[weakref.WeakMethod[Callable[[], Any]]] = []
+
+
+def _register_threading_atexit(cb: Callable[[], Any]) -> None:
+    """
+    Register a bound method to run during threading._shutdown() before
+    concurrent.futures.thread._python_exit joins executor threads.
+    """
+    _THREADING_ATEXIT_CALLBACKS.append(weakref.WeakMethod(cb))
+
+
+def _unregister_threading_atexit(cb: Callable[[], Any]) -> None:
+    """
+    Unregister a bound method from _THREADING_ATEXIT_CALLBACKS.
+    """
+    try:
+        _THREADING_ATEXIT_CALLBACKS.remove(weakref.WeakMethod(cb))
+    except ValueError:
+        pass
+
+
+def _run_threading_atexit_callbacks() -> None:
+    """
+    Execute registered threading atexit callbacks in LIFO order.
+    """
+    while _THREADING_ATEXIT_CALLBACKS:
+        wm = _THREADING_ATEXIT_CALLBACKS.pop()
+        cb = wm()
+        if cb is not None:  # pragma: NO BRANCH
+            try:
+                cb()
+            except Exception:  # pragma: NO COVER
+                import traceback
+
+                traceback.print_exc()
+
+
+threading._register_atexit(_run_threading_atexit_callbacks)  # type: ignore[attr-defined]

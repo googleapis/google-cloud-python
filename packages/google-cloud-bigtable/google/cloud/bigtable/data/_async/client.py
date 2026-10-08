@@ -60,7 +60,9 @@ from google.cloud.bigtable.data._helpers import (
     _get_error_type,
     _get_retryable_errors,
     _get_timeouts,
+    _register_threading_atexit,
     _retry_exception_factory,
+    _unregister_threading_atexit,
     _validate_timeouts,
     _WarmedInstanceKey,
 )
@@ -277,6 +279,7 @@ class BigtableDataClientAsync(ClientWithProject):
                 "is the default."
             )
         self._is_closed = CrossSync.Event()
+        _register_threading_atexit(self._is_closed.set)
         # Private argument, for internal use only
         self._disable_background_refresh = bool(
             kwargs.get("_disable_background_refresh", False)
@@ -428,6 +431,7 @@ class BigtableDataClientAsync(ClientWithProject):
         Cancel all background tasks
         """
         self._is_closed.set()
+        _unregister_threading_atexit(self._is_closed.set)
         if self._channel_refresh_task is not None:
             self._channel_refresh_task.cancel()
             await CrossSync.wait([self._channel_refresh_task], timeout=timeout)

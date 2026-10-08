@@ -1185,6 +1185,8 @@ class TestMutationsBatcherAsync:
             # calling without mutations is noop
             instance._on_exit()
             assert len(recwarn) == 0
+            assert instance._closed.is_set() is True
+            instance._closed.clear()
             # calling with existing mutations should raise warning
             num_left = 4
             instance._staged_entries = [mock.Mock()] * num_left
@@ -1193,8 +1195,8 @@ class TestMutationsBatcherAsync:
                 assert len(w) == 1
                 assert "unflushed mutations" in str(w[0].message).lower()
                 assert str(num_left) in str(w[0].message)
+            assert instance._closed.is_set() is True
             # calling while closed is noop
-            instance._closed.set()
             instance._on_exit()
             assert len(recwarn) == 0
             # reset staged mutations for cleanup

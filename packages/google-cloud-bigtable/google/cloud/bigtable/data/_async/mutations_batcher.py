@@ -31,6 +31,8 @@ from google.cloud.bigtable.data._helpers import (
     _get_retryable_errors,
     _get_statuses_from_mutations_exception_group,
     _get_timeouts,
+    _register_threading_atexit,
+    _unregister_threading_atexit,
 )
 from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
 from google.cloud.bigtable.data.exceptions import (
@@ -306,6 +308,7 @@ class MutationsBatcherAsync:
         ) = None
         # clean up on program exit
         atexit.register(self._on_exit)
+        _register_threading_atexit(self._on_exit)
 
     @CrossSync.convert
     async def _timer_routine(self, interval: float | None) -> None:
@@ -555,6 +558,7 @@ class MutationsBatcherAsync:
                 self._sync_rpc_executor.shutdown(wait=True)
         await CrossSync.wait([*self._flush_jobs, self._flush_timer])
         atexit.unregister(self._on_exit)
+        _unregister_threading_atexit(self._on_exit)
         # raise unreported exceptions
         self._raise_exceptions()
 
@@ -567,6 +571,7 @@ class MutationsBatcherAsync:
                 f"MutationsBatcher for target {self._target!r} was not closed. "
                 f"{len(self._staged_entries)} Unflushed mutations will not be sent to the server."
             )
+        self._closed.set()
 
     @staticmethod
     @CrossSync.convert
