@@ -22,9 +22,9 @@ import setuptools
 name = "sqlalchemy-spanner"
 description = "SQLAlchemy dialect integrated into Cloud Spanner database"
 dependencies = [
-    "sqlalchemy>=1.1.13",
+    "sqlalchemy>=1.1.13,<3.0.0",
     "google-cloud-spanner>=3.55.0",
-    "alembic",
+    "alembic>=1.0.0,<2.0.0",
 ]
 extras = {
     "tracing": [
