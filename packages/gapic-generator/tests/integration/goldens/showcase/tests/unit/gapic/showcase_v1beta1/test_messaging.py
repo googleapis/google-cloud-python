@@ -11787,3 +11787,129 @@ def test_api_key_credentials(client_class, transport_class):
                 always_use_jwt_access=True,
                 api_audience=None,
             )
+
+
+def test_messaging_base_transport_wrap_method_modern():
+    """Test wrap_method with modern google-api-core (supports tracing)."""
+    # 1. Concrete transport: passes client_options=None and kind="grpc"
+    transport = transports.MessagingGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_method(func)
+        assert mock_wrap.call_args.kwargs["kind"] == "grpc"
+        assert "client_options" in mock_wrap.call_args.kwargs
+
+    # 2. Base transport: kind raises NotImplementedError and is cleanly omitted
+    base_transport = transports.MessagingTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        base_transport._wrap_method(func)
+        assert "kind" not in mock_wrap.call_args.kwargs
+        assert "client_options" in mock_wrap.call_args.kwargs
+
+
+def test_messaging_base_transport_wrap_method_fallbacks(monkeypatch):
+    """Test wrap_method defensive fallbacks with older google-api-core versions."""
+    transport = transports.MessagingGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_TRACING", False)
+
+    # Era 1: Ancient google-api-core (< 2.29.0: can be removed once google-api-core < 2.29.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_KIND", False)
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    # Era 2: Intermediate google-api-core (>= 2.29.0, < 2.36.0: can be removed once google-api-core < 2.36.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_KIND", True)
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert kwargs.get("kind") == "grpc"
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+
+def test_messaging_base_transport_wrap_async_method_modern():
+    """Test _wrap_async_method with modern google-api-core (supports tracing)."""
+    # 1. Concrete transport: passes client_options=None and kind="grpc_asyncio"
+    transport = transports.MessagingGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_async_method(func)
+        assert mock_wrap.call_args.kwargs["kind"] == "grpc_asyncio"
+        assert "client_options" in mock_wrap.call_args.kwargs
+
+    # 2. Base transport: kind raises NotImplementedError and is cleanly omitted
+    base_transport = transports.MessagingTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        base_transport._wrap_async_method(func)
+        assert "kind" not in mock_wrap.call_args.kwargs
+        assert "client_options" in mock_wrap.call_args.kwargs
+
+
+def test_messaging_base_transport_wrap_async_method_fallbacks(monkeypatch):
+    """Test _wrap_async_method defensive fallbacks with older google-api-core versions."""
+    transport = transports.MessagingGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_TRACING", False)
+
+    # Era 1: Ancient google-api-core (< 2.29.0: can be removed once google-api-core < 2.29.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_KIND", False)
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    # Era 2: Intermediate google-api-core (>= 2.29.0, < 2.36.0: can be removed once google-api-core < 2.36.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_KIND", True)
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert kwargs.get("kind") == "grpc_asyncio"
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
