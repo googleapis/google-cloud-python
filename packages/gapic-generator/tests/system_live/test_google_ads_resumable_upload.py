@@ -162,7 +162,7 @@ def _load_impersonated_credentials() -> impersonated_credentials.Credentials:
     """
     target_principal = os.environ.get("GOOGLE_ADS_TARGET_SERVICE_ACCOUNT", "")
     if not target_principal:
-        pytest.skip("GOOGLE_ADS_TARGET_SERVICE_ACCOUNT is not set.")
+        pytest.fail("GOOGLE_ADS_TARGET_SERVICE_ACCOUNT is not set.")
     source_creds = _load_source_credentials()
     return impersonated_credentials.Credentials(
         source_credentials=source_creds,
@@ -182,7 +182,7 @@ def _google_ads_metadata() -> Sequence[Tuple[str, str]]:
     developer_token = os.environ.get("GOOGLE_ADS_DEVELOPER_TOKEN", "")
     login_customer_id = os.environ.get("GOOGLE_ADS_LOGIN_CUSTOMER_ID", "")
     if not developer_token or not login_customer_id:
-        pytest.skip(
+        pytest.fail(
             "GOOGLE_ADS_DEVELOPER_TOKEN and GOOGLE_ADS_LOGIN_CUSTOMER_ID are required."
         )
     return (
@@ -203,7 +203,7 @@ def _google_ads_customer_id() -> str:
         os.environ.get("GOOGLE_ADS_LOGIN_CUSTOMER_ID", ""),
     )
     if not customer_id:
-        pytest.skip("GOOGLE_ADS_CUSTOMER_ID is required.")
+        pytest.fail("GOOGLE_ADS_CUSTOMER_ID is required.")
     return customer_id
 
 
@@ -217,7 +217,7 @@ def _open_upload_file() -> Tuple[io.BufferedReader, int]:
     raw_path = os.environ.get("GOOGLE_ADS_VIDEO_PATH", "~/Downloads/video.mp4")
     expanded = Path(os.path.expanduser(raw_path)).resolve()
     if not expanded.is_file():
-        pytest.skip(f"Test media file not found at {expanded}")
+        pytest.fail(f"Test media file not found at {expanded}")
     f = open(expanded, "rb")
     return f, expanded.stat().st_size
 
