@@ -31,7 +31,6 @@ To run the live Google Ads acceptance suite:
 
 from datetime import datetime, timedelta, timezone
 import io
-import logging
 import os
 from pathlib import Path
 import re
@@ -353,33 +352,6 @@ class TestGoogleAdsLiveAcceptance:
             monkeypatch: Pytest `MonkeyPatch` fixture for setting environment variables.
         """
         monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-
-    @pytest.fixture(autouse=True)
-    def _capture_diagnostic_trace(self, request):
-        """Capture debug log output during each test and persist diagnostic traces to `/tmp`.
-
-        Args:
-            request: Pytest `FixtureRequest` object providing the current test node name.
-        """
-        log_buffer = io.StringIO()
-        handler = logging.StreamHandler(log_buffer)
-        handler.setLevel(logging.DEBUG)
-        handler.setFormatter(
-            logging.Formatter("[%(asctime)s] %(levelname)s: %(message)s")
-        )
-        root_logger = logging.getLogger()
-        prev_level = root_logger.level
-        root_logger.setLevel(logging.DEBUG)
-        root_logger.addHandler(handler)
-        yield
-        root_logger.removeHandler(handler)
-        root_logger.setLevel(prev_level)
-        contents = log_buffer.getvalue()
-        if contents:
-            safe_name = re.sub(r"[^a-zA-Z0-9_-]+", "_", request.node.name)
-            ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-            log_path = Path(f"/tmp/googleads_acceptance_{safe_name}_{ts}.log")
-            log_path.write_text(contents, encoding="utf-8")
 
     def test_adc_source_credentials_are_service_account(self):
         """Verify ADC source credentials load as a service account matching configuration."""

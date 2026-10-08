@@ -39,9 +39,3 @@ From `packages/gapic-generator`, run the [`system`](../../noxfile.py) `nox` sess
 cd packages/gapic-generator
 nox -s system-3.14
 ```
-
-### Diagnostic Logs
-During execution, debug logs for each test case are captured automatically under:
-```text
-/tmp/googleads_acceptance_<test_name>_<timestamp>.log
-```
