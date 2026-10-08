@@ -82,6 +82,7 @@ class AcceleratorDaemon:
         self,
         cli_flags: Sequence[str] = (),
         *,
+        binary_path: str | None = None,
         startup_timeout: float = _DEFAULT_STARTUP_TIMEOUT,
         extra_env: Mapping[str, str] | None = None,
     ):
@@ -90,13 +91,15 @@ class AcceleratorDaemon:
         Args:
             cli_flags: extra arguments appended after ``--uds-path`` when
                 spawning the daemon (e.g. ``--project``/``--instance``).
+            binary_path: explicit path to the accelerator binary; overrides the
+                default wheel-relative resolution (primarily for testing).
             startup_timeout: seconds ``start()`` waits for the daemon's UDS to
                 become connectable before raising.
 
         Raises:
             FileNotFoundError: the bundled binary is not present in this wheel.
         """
-        self._binary_path = _resolve_binary_path()
+        self._binary_path = binary_path if binary_path is not None else _resolve_binary_path()
         self._cli_flags = list(cli_flags)
         self._startup_timeout = startup_timeout
         # Extra environment for the subprocess, merged over the inherited env.

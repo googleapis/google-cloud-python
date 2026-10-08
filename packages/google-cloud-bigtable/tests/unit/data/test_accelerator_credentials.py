@@ -158,12 +158,15 @@ _SCOPES = ["https://www.googleapis.com/auth/bigtable.data"]
 
 
 class _FakeServer:
-    def __init__(self, principal, scopes=_SCOPES, missing=False):
+    def __init__(self, principal, scopes=_SCOPES, missing=False, read_raises=None):
         self._principal = principal
         self._scopes = scopes
         self._missing = missing
+        self._read_raises = read_raises
 
     def read_identity(self):
+        if self._read_raises is not None:
+            raise self._read_raises
         if self._missing:
             return {}
         return {"principal": self._principal, "scopes": self._scopes}
@@ -191,6 +194,20 @@ class TestVerifyDaemonIdentity:
     def test_match_proceeds(self):
         # Matching principal and scopes: returns without raising.
         _verify("svc@proj.iam.gserviceaccount.com", "svc@proj.iam.gserviceaccount.com")
+
+    def test_read_identity_error_falls_back(self):
+        # Any exception from read_identity (e.g. older daemon with no identity.json,
+        # or a corrupt file) should fall back rather than crash.
+        table = SimpleNamespace(
+            client=SimpleNamespace(
+                _resolve_principal=lambda: "svc@proj.iam.gserviceaccount.com",
+                _accelerator_scopes=_SCOPES,
+            )
+        )
+        for exc in (RuntimeError("no identity.json"), ValueError("bad json")):
+            server = _FakeServer(None, read_raises=exc)
+            with pytest.raises(_AcceleratorUnverified):
+                _DataApiTargetAsync._verify_daemon_identity(table, server)
 
     def test_mismatch_raises(self):
         with pytest.raises(_AcceleratorIdentityError, match="identity mismatch"):

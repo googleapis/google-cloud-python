@@ -1479,7 +1479,10 @@ class _DataApiTargetAsync(abc.ABC):
         known but differ, raise ``_AcceleratorIdentityError`` — this is the
         identity flip we are guarding against.
         """
-        identity = server.read_identity()
+        try:
+            identity = server.read_identity()
+        except Exception:
+            raise _AcceleratorUnverified()
 
         daemon_principal = identity.get("principal") or None
         own_principal = self.client._resolve_principal()

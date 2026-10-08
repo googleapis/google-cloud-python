@@ -167,7 +167,6 @@ def _normalize_scopes(scopes: Any) -> frozenset[str]:
     if isinstance(scopes, str):
         scopes = scopes.replace(",", " ").split()
     return frozenset((s for s in scopes if s))
->>>>>>> 5e43c858d6b (feat(bigtable): verify daemon identity before routing accelerated RPCs)
 
 
 @CrossSync._Sync_Impl.add_mapping_decorator("DataClient")
@@ -1186,7 +1185,10 @@ class _DataApiTarget(abc.ABC):
         ``_AcceleratorUnverified`` (caller falls back to native). If both are
         known but differ, raise ``_AcceleratorIdentityError`` — this is the
         identity flip we are guarding against."""
-        identity = server.read_identity()
+        try:
+            identity = server.read_identity()
+        except Exception:
+            raise _AcceleratorUnverified()
         daemon_principal = identity.get("principal") or None
         own_principal = self.client._resolve_principal()
         if own_principal is None or daemon_principal is None:
