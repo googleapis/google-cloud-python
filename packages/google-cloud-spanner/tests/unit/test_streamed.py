@@ -1448,6 +1448,434 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._merge_values([self._make_value(1)])
         self.assertEqual(streamed._rows, [])
 
+    def test_consume_next_non_chunked_zero_copy_repeated_container(self):
+        from google.cloud.spanner_v1 import (
+            PartialResultSet,
+            ResultSetMetadata,
+            TypeCode,
+        )
+
+        fields = [self._make_scalar_field("id", TypeCode.INT64)]
+        metadata = self._make_result_set_metadata(fields)
+
+        partial_result_set_pb = PartialResultSet.pb()()
+        partial_result_set_pb.metadata.CopyFrom(ResultSetMetadata.pb(metadata))
+        partial_result_set_pb.values.add().string_value = "42"
+        partial_result_set_pb.last = True
+        partial_result_set = PartialResultSet.wrap(partial_result_set_pb)
+
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        found = list(streamed)
+        self.assertEqual(found, [[42]])
+
+    def test_single_chunk_point_select_multi_column_fast_path(self):
+        from google.protobuf.struct_pb2 import NULL_VALUE, Value
+
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+            self._make_scalar_field("nullable_col", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        value_id = self._make_value(1)
+        value_name = self._make_value("Alice")
+        value_null = Value(null_value=NULL_VALUE)
+
+        partial_result_set = self._make_partial_result_set(
+            [value_id, value_name, value_null], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        found = list(streamed)
+        self.assertEqual(found, [[1, "Alice", None]])
+
+    def test_single_chunk_point_select_lazy_decode_fast_path(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        value_id = self._make_value(1)
+        value_name = self._make_value("Alice")
+
+        partial_result_set = self._make_partial_result_set(
+            [value_id, value_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator, lazy_decode=True)
+        found = list(streamed)
+        self.assertEqual(len(found), 1)
+        self.assertEqual(found[0], [value_id, value_name])
+        self.assertEqual(streamed.decode_row(found[0]), [1, "Alice"])
+
+    def test_single_chunk_multi_row_fast_path(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        row1_id = self._make_value(1)
+        row1_name = self._make_value("Alice")
+        row2_id = self._make_value(2)
+        row2_name = self._make_value("Bob")
+
+        partial_result_set = self._make_partial_result_set(
+            [row1_id, row1_name, row2_id, row2_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        found = list(streamed)
+        self.assertEqual(found, [[1, "Alice"], [2, "Bob"]])
+
+    def test_single_chunk_zero_rows(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+
+        partial_result_set = self._make_partial_result_set(
+            [], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        found = list(streamed)
+        self.assertEqual(found, [])
+
+    def test_single_chunk_one_or_none_single_row(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        value_id = self._make_value(1)
+        value_name = self._make_value("Alice")
+
+        partial_result_set = self._make_partial_result_set(
+            [value_id, value_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        row = streamed.one_or_none()
+        self.assertEqual(row, [1, "Alice"])
+        self.assertTrue(streamed._done)
+
+    def test_single_chunk_one_or_none_zero_rows(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+
+        partial_result_set = self._make_partial_result_set(
+            [], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        row = streamed.one_or_none()
+        self.assertIsNone(row)
+        self.assertTrue(streamed._done)
+
+    def test_single_chunk_one_or_none_multiple_rows(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        row1_id = self._make_value(1)
+        row1_name = self._make_value("Alice")
+        row2_id = self._make_value(2)
+        row2_name = self._make_value("Bob")
+
+        partial_result_set = self._make_partial_result_set(
+            [row1_id, row1_name, row2_id, row2_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with self.assertRaises(ValueError):
+            streamed.one_or_none()
+
+    def test_single_chunk_one_single_row(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        value_id = self._make_value(42)
+        value_name = self._make_value("Answer")
+
+        partial_result_set = self._make_partial_result_set(
+            [value_id, value_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        row = streamed.one()
+        self.assertEqual(row, [42, "Answer"])
+
+    def test_single_chunk_multi_row_lazy_decode_fast_path(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        row1_id = self._make_value(1)
+        row1_name = self._make_value("Alice")
+        row2_id = self._make_value(2)
+        row2_name = self._make_value("Bob")
+
+        partial_result_set = self._make_partial_result_set(
+            [row1_id, row1_name, row2_id, row2_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator, lazy_decode=True)
+        found = list(streamed)
+        self.assertEqual(len(found), 2)
+        self.assertEqual(found[0], [row1_id, row1_name])
+        self.assertEqual(found[1], [row2_id, row2_name])
+        self.assertEqual(streamed.decode_row(found[0]), [1, "Alice"])
+        self.assertEqual(streamed.decode_row(found[1]), [2, "Bob"])
+
+    def test_single_chunk_single_column_lazy_decode(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("id", TypeCode.INT64)]
+        metadata = self._make_result_set_metadata(fields)
+        row1_id = self._make_value(1)
+        row2_id = self._make_value(2)
+
+        partial_result_set = self._make_partial_result_set(
+            [row1_id, row2_id], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator, lazy_decode=True)
+        found = list(streamed)
+        self.assertEqual(len(found), 2)
+        self.assertEqual(found[0], [row1_id])
+        self.assertEqual(found[1], [row2_id])
+        self.assertEqual(streamed.decode_row(found[0]), [1])
+        self.assertEqual(streamed.decode_row(found[1]), [2])
+
+    def test_multi_chunk_one_or_none_single_row(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("id", TypeCode.INT64)]
+        metadata = self._make_result_set_metadata(fields)
+        value_id = self._make_value(42)
+
+        chunk1 = self._make_partial_result_set(
+            [value_id], metadata=metadata, last=False
+        )
+        chunk2 = self._make_partial_result_set([], last=True)
+        iterator = _MockCancellableIterator(chunk1, chunk2)
+        streamed = self._make_one(iterator)
+        row = streamed.one_or_none()
+        self.assertEqual(row, [42])
+        self.assertTrue(streamed._done)
+
+    def test_multi_chunk_one_or_none_zero_rows(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("id", TypeCode.INT64)]
+        metadata = self._make_result_set_metadata(fields)
+
+        chunk1 = self._make_partial_result_set([], metadata=metadata, last=False)
+        chunk2 = self._make_partial_result_set([], last=True)
+        iterator = _MockCancellableIterator(chunk1, chunk2)
+        streamed = self._make_one(iterator)
+        row = streamed.one_or_none()
+        self.assertIsNone(row)
+        self.assertTrue(streamed._done)
+
+    def test_multi_chunk_one_or_none_multiple_rows(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("id", TypeCode.INT64)]
+        metadata = self._make_result_set_metadata(fields)
+        value1 = self._make_value(1)
+        value2 = self._make_value(2)
+
+        chunk1 = self._make_partial_result_set([value1], metadata=metadata, last=False)
+        chunk2 = self._make_partial_result_set([value2], last=True)
+        iterator = _MockCancellableIterator(chunk1, chunk2)
+        streamed = self._make_one(iterator)
+        with self.assertRaises(ValueError):
+            streamed.one_or_none()
+
+    def test_streamed_reiteration_after_done(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("id", TypeCode.INT64)]
+        metadata = self._make_result_set_metadata(fields)
+        value = self._make_value(1)
+
+        partial_result_set = self._make_partial_result_set(
+            [value], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        first_pass = list(streamed)
+        self.assertEqual(first_pass, [[1]])
+        second_pass = list(streamed)
+        self.assertEqual(second_pass, [])
+
+    def test_single_chunk_one_single_row_null_value(self):
+        from google.protobuf.struct_pb2 import NULL_VALUE, Value
+
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("id", TypeCode.INT64)]
+        metadata = self._make_result_set_metadata(fields)
+        value_null = Value(null_value=NULL_VALUE)
+
+        partial_result_set = self._make_partial_result_set(
+            [value_null], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        row = streamed.one()
+        self.assertEqual(row, [None])
+
+    def test_single_chunk_single_row_lazy_decode_fast_path(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        value_id = self._make_value(1)
+        value_name = self._make_value("Alice")
+
+        partial_result_set = self._make_partial_result_set(
+            [value_id, value_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator, lazy_decode=True)
+        found = list(streamed)
+        self.assertEqual(len(found), 1)
+        self.assertEqual(found[0], [value_id, value_name])
+        self.assertEqual(streamed.decode_row(found[0]), [1, "Alice"])
+
+    def test_single_chunk_to_dict_list_multi_row(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        row1_id = self._make_value(1)
+        row1_name = self._make_value("Alice")
+        row2_id = self._make_value(2)
+        row2_name = self._make_value("Bob")
+
+        partial_result_set = self._make_partial_result_set(
+            [row1_id, row1_name, row2_id, row2_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        found = streamed.to_dict_list()
+        self.assertEqual(found, [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}])
+
+    def test_single_chunk_to_dict_list_empty(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+
+        partial_result_set = self._make_partial_result_set(
+            [], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        found = streamed.to_dict_list()
+        self.assertEqual(found, [])
+
+    def test_stats_property(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        self.assertIsNone(streamed.stats)
+        streamed._stats = "fake_stats"
+        self.assertEqual(streamed.stats, "fake_stats")
+
+    def test_decode_row_type_error(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        with self.assertRaises(TypeError):
+            streamed.decode_row(123)
+
+    def test_decode_column_type_error(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        with self.assertRaises(TypeError):
+            streamed.decode_column(123, 0)
+
+    def test_decode_column_success(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        value_id = self._make_value(42)
+        value_name = self._make_value("Answer")
+
+        partial_result_set = self._make_partial_result_set(
+            [value_id, value_name], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator, lazy_decode=True)
+        rows = list(streamed)
+        self.assertEqual(streamed.decode_column(rows[0], 0), 42)
+        self.assertEqual(streamed.decode_column(rows[0], 1), "Answer")
+
+    def test_decoders_not_started(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        with self.assertRaises(ValueError):
+            _ = streamed._decoders
+
+    def test_merge_struct_null_last(self):
+        from google.protobuf.struct_pb2 import ListValue, Value
+
+        from google.cloud.spanner_v1.streamed import _merge_struct
+        from google.cloud.spanner_v1.types.type import Type, TypeCode
+
+        type_ = Type(
+            code=TypeCode.STRUCT,
+            struct_type={"fields": [{"type_": {"code": TypeCode.STRING}}]},
+        )
+        lhs = Value(list_value=ListValue(values=[Value(null_value=0)]))
+        rhs = Value(list_value=ListValue(values=[Value(string_value="v1")]))
+
+        res = _merge_struct(lhs, rhs, type_)
+        self.assertEqual(len(res.list_value.values), 2)
+        self.assertTrue(res.list_value.values[0].HasField("null_value"))
+        self.assertEqual(res.list_value.values[1].string_value, "v1")
+
 
 class _MockCancellableIterator(object):
     cancel_calls = 0
