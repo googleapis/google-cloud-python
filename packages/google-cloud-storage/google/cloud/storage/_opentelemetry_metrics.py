@@ -103,23 +103,21 @@ def is_metrics_enabled(enable_metrics: Optional[bool] = None) -> bool:
     return _parse_bool_env(ENABLE_OTEL_METRICS_ENV_VAR, _DEFAULT_ENABLE_METRICS)
 
 
-def is_advanced_metrics_enabled(
-    enable_advanced_metrics: Optional[bool] = None,
+def is_debug_metrics_enabled(
+    enable_debug_metrics: Optional[bool] = None,
 ) -> bool:
     """Evaluates whether high-frequency debug metrics should be recorded.
 
     Args:
-        enable_advanced_metrics: Optional boolean configured on the client
+        enable_debug_metrics: Optional boolean configured on the client
             instance. Takes precedence over the environment variable if
             specified.
 
     Returns:
-        bool: True if advanced metrics recording is enabled, False otherwise.
+        bool: True if debug metrics recording is enabled, False otherwise.
     """
-    if enable_advanced_metrics is not None and not isinstance(
-        enable_advanced_metrics, bool
-    ):
-        raise TypeError("enable_advanced_metrics must be a boolean or None.")
+    if enable_debug_metrics is not None and not isinstance(enable_debug_metrics, bool):
+        raise TypeError("enable_debug_metrics must be a boolean or None.")
 
     if not HAS_OPENTELEMETRY_METRICS:
         return False
@@ -127,8 +125,8 @@ def is_advanced_metrics_enabled(
     if not _ENABLE_METRICS_DEV_GATE:
         return False
 
-    if enable_advanced_metrics is not None:
-        return enable_advanced_metrics
+    if enable_debug_metrics is not None:
+        return enable_debug_metrics
 
     return _parse_bool_env(
         ENABLE_OTEL_DEBUG_METRICS_ENV_VAR, _DEFAULT_ENABLE_DEBUG_METRICS
@@ -153,7 +151,7 @@ def get_common_attributes() -> Dict[str, Any]:
 
 def get_meter(
     enable_metrics: Optional[bool] = None,
-    enable_advanced_metrics: Optional[bool] = None,
+    enable_debug_metrics: Optional[bool] = None,
     meter_provider: Optional[Any] = None,
 ) -> Optional[Any]:
     """Returns the OpenTelemetry Meter for Google Cloud Storage.
@@ -161,18 +159,18 @@ def get_meter(
     Args:
         enable_metrics: Optional boolean configured on the client instance for
             standard metrics.
-        enable_advanced_metrics: Optional boolean configured on the client
-            instance for advanced debug metrics.
+        enable_debug_metrics: Optional boolean configured on the client
+            instance for debug metrics.
         meter_provider: Optional custom OpenTelemetry MeterProvider instance.
             Defaults to the global MeterProvider if None.
 
     Returns:
-        Optional[Any]: The OpenTelemetry Meter instance if standard or advanced
+        Optional[Any]: The OpenTelemetry Meter instance if standard or debug
             metrics are enabled, or None otherwise.
     """
     if not (
         is_metrics_enabled(enable_metrics)
-        or is_advanced_metrics_enabled(enable_advanced_metrics)
+        or is_debug_metrics_enabled(enable_debug_metrics)
     ):
         return None
     return metrics.get_meter(
