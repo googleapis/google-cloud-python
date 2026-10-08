@@ -94,6 +94,7 @@ run_package_test() {
         NOX_FILE="noxfile.py"
       fi
       ;;
+    *)
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
       NOX_FILE="noxfile.py"
