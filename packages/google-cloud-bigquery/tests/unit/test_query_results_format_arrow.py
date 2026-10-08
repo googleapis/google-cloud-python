@@ -725,6 +725,73 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             mock_client._ensure_bqstorage_client.assert_not_called()
             user_bqstorage._transport.close.assert_not_called()
 
+    def test_query_jobs_query_arrow_max_results_short_circuits_single_rpc(self):
+        pyarrow = pytest.importorskip("pyarrow")
+        schema = pyarrow.schema([("num", pyarrow.int64())])
+        batch = pyarrow.record_batch([pyarrow.array([1, 2], type=pyarrow.int64())], schema=schema)
+
+        client = mock.MagicMock()
+        client._connection = mock.MagicMock()
+        client._call_api.return_value = {
+            "jobComplete": True,
+            "jobReference": {"projectId": "p", "jobId": "j1", "location": "us"},
+            "totalRows": "5000",
+            "pageToken": "next-page-token",
+            "arrowSchema": {
+                "serializedSchema": base64.b64encode(schema.serialize().to_pybytes()).decode("ascii")
+            },
+            "arrowRecordBatch": {
+                "serializedRecordBatch": base64.b64encode(batch.serialize().to_pybytes()).decode("ascii"),
+                "rowCount": "2",
+            },
+        }
+
+        row_iterator = _job_helpers.query_and_wait(
+            client,
+            query="SELECT num FROM table",
+            project="p",
+            location="us",
+            job_config=None,
+            retry=None,
+            job_retry=None,
+            max_results=2,
+            query_results_format="ARROW",
+        )
+
+        # Single REST RPC: _call_api called once (no extra jobs.get via _wait_or_cancel)
+        client._call_api.assert_called_once()
+        result_table = row_iterator.to_arrow()
+        self.assertEqual(result_table.num_rows, 2)
+        self.assertEqual(result_table.column("num").to_pylist(), [1, 2])
+        client._ensure_bqstorage_client.assert_not_called()
+
+    def test_to_arrow_zero_rows_preserves_server_arrow_schema(self):
+        pyarrow = pytest.importorskip("pyarrow")
+        schema = pyarrow.schema([("num", pyarrow.int64())])
+
+        mock_client = mock.MagicMock()
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            max_results=0,
+            total_rows=10,
+            query_results_format="ARROW",
+            first_page_response={
+                "jobComplete": True,
+                "totalRows": "10",
+                "arrowSchema": {
+                    "serializedSchema": base64.b64encode(schema.serialize().to_pybytes()).decode("ascii")
+                },
+            },
+        )
+
+        result_table = iterator.to_arrow()
+        self.assertEqual(result_table.num_rows, 0)
+        self.assertEqual(result_table.schema.names, ["num"])
+        mock_client._ensure_bqstorage_client.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

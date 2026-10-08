@@ -596,6 +596,14 @@ def query_and_wait(
         )
         page_token = query_results.page_token
         more_pages = page_token is not None
+        if (
+            query_results.complete
+            and max_results is not None
+            and query_results_format == enums.QueryResultsFormat.ARROW.value
+        ):
+            row_count = int(response.get("arrowRecordBatch", {}).get("rowCount", 0))
+            if row_count >= max_results:
+                more_pages = False
 
         if more_pages or not query_results.complete:
             # TODO(swast): Avoid a call to jobs.get in some cases (few

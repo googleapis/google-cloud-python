@@ -1980,6 +1980,7 @@ class RowIterator(HTTPIterator):
         self._job_started = started
         self._job_ended = ended
         self._query_results_format = query_results_format
+        self._arrow_schema: Optional["pyarrow.Schema"] = None
 
     @property
     @_disallow_when_arrow
@@ -2363,6 +2364,9 @@ class RowIterator(HTTPIterator):
         timeout: Optional[float],
     ) -> Iterator["pyarrow.RecordBatch"]:
         """Stream remaining Arrow record batches using BigQuery Storage Read API gRPC."""
+        remaining = (
+            self.max_results - offset if self.max_results is not None else None
+        )
         location = self._location or (self.client.location if self.client else None)
         stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
         reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
@@ -2375,6 +2379,7 @@ class RowIterator(HTTPIterator):
                 pa_schema = pyarrow.ipc.read_schema(
                     pyarrow.py_buffer(response.arrow_schema.serialized_schema)
                 )
+                self._arrow_schema = pa_schema
             if (
                 response.arrow_record_batch
                 and response.arrow_record_batch.serialized_record_batch
@@ -2386,6 +2391,11 @@ class RowIterator(HTTPIterator):
                     ),
                     pa_schema,
                 )
+                if remaining is not None:
+                    if batch.num_rows >= remaining:
+                        yield batch.slice(0, remaining)
+                        return
+                    remaining -= batch.num_rows
                 yield batch
 
     def _download_arrow_from_job_id(
@@ -2419,8 +2429,19 @@ class RowIterator(HTTPIterator):
         offset, total_rows, job_complete, pa_schema, initial_batch = (
             self._parse_inline_arrow_first_page(first_page)
         )
+        if pa_schema is not None:
+            self._arrow_schema = pa_schema
 
-        more_pages_needed = not job_complete or offset < total_rows
+        if self.max_results is not None and initial_batch is not None:
+            if initial_batch.num_rows > self.max_results:
+                initial_batch = initial_batch.slice(0, self.max_results)
+                offset = initial_batch.num_rows
+
+        if self.max_results is not None and offset >= self.max_results:
+            more_pages_needed = False
+        else:
+            more_pages_needed = not job_complete or offset < total_rows
+
         owns_bqstorage_client = False
         if more_pages_needed and bqstorage_client is None:
             if self.client is None:
@@ -2564,6 +2585,11 @@ class RowIterator(HTTPIterator):
             or self._query_results_format == QueryResultsFormat.ARROW.value
         ):
             return pyarrow.Table.from_batches(record_batches)
+        elif (
+            self._query_results_format == QueryResultsFormat.ARROW.value
+            and self._arrow_schema is not None
+        ):
+            return pyarrow.Table.from_batches(record_batches, schema=self._arrow_schema)
         else:
             # No records (not record_batches), use schema based on BigQuery schema
             # **or**

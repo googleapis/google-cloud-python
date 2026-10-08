@@ -312,12 +312,69 @@ def test_query_arrow_multi_page(bigquery_client):
     assert table.column_names == ["num"]
 
 
-def test_query_arrow_zero_rows_to_arrow_iterable(bigquery_client):
-    """System test for 0-row query results with QueryResultsFormat.ARROW via to_arrow_iterable()."""
+@pytest.mark.parametrize("force_job_insert", [False, True])
+def test_query_arrow_zero_rows(bigquery_client, force_job_insert):
+    """System test for 0-row query results preserving schema across Arrow/DataFrame methods."""
+    job_config = (
+        bigquery.QueryJobConfig(priority=bigquery.QueryPriority.INTERACTIVE)
+        if force_job_insert
+        else None
+    )
     results = bigquery_client.query_and_wait(
-        "SELECT 1 AS num FROM UNNEST(GENERATE_ARRAY(1, 10)) AS x WHERE x > 100",
+        "SELECT 1 AS num, 'abc' AS label FROM UNNEST(GENERATE_ARRAY(1, 10)) AS x WHERE x > 100",
+        job_config=job_config,
         query_results_format=enums.QueryResultsFormat.ARROW,
     )
     assert results.total_rows == 0
-    batches = list(results.to_arrow_iterable())
-    assert batches == []
+    assert list(results.to_arrow_iterable()) == []
+
+    table = results.to_arrow()
+    assert len(table) == 0
+    assert table.column_names == ["num", "label"]
+    assert table.schema.field("num").type == pyarrow.int64()
+    assert table.schema.field("label").type == pyarrow.string()
+
+    df = results.to_dataframe()
+    assert df.shape == (0, 2)
+    assert list(df.columns) == ["num", "label"]
+
+
+@pytest.mark.parametrize(
+    ("max_results", "page_size", "force_job_insert", "expected_rows"),
+    [
+        (100, None, False, 100),      # 1. Fits on Page 1 (no page_size)
+        (1200, 500, False, 1200),     # 2. Spans Page 1 (REST) + Page 2+ (gRPC)
+        (100, 500, False, 100),       # 3. max_results < page_size
+        (10000, None, False, 5000),   # 4. max_results > total_rows (single-page)
+        (10000, 500, False, 5000),    # 5. max_results > total_rows (multi-page)
+        (0, None, False, 0),          # 6. max_results = 0 (schema only / 0 rows)
+        (1200, 500, True, 1200),      # 7. jobs.insert fallback path + max_results
+    ],
+)
+def test_query_arrow_max_results(
+    bigquery_client, max_results, page_size, force_job_insert, expected_rows
+):
+    """System test verifying max_results across Page 1, Page 2+, edge bounds, and jobs.insert."""
+    query_str = "SELECT num FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num ORDER BY num"
+    job_config = (
+        bigquery.QueryJobConfig(priority=bigquery.QueryPriority.INTERACTIVE)
+        if force_job_insert
+        else None
+    )
+    results = bigquery_client.query_and_wait(
+        query_str,
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        max_results=max_results,
+        page_size=page_size,
+    )
+
+    if expected_rows == 0:
+        table = results.to_arrow()
+    else:
+        batches = list(results.to_arrow_iterable())
+        table = pyarrow.Table.from_batches(batches)
+
+    assert len(table) == expected_rows
+    assert table.column_names == ["num"]
+    assert table.column("num").to_pylist() == list(range(1, expected_rows + 1))
