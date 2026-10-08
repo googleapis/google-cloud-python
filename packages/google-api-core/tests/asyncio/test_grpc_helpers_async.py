@@ -860,7 +860,17 @@ def test_apply_channel_interceptors_otel_prepended_in_order():
 
 
 def test_apply_channel_interceptors_fallback_otel_prepended_in_order():
-    """Proves that un-matched fallback interceptors with _is_otel_interceptor=True are prepended in order."""
+    """Proves that fallback interceptors with _is_otel_interceptor=True are prepended in order.
+
+    Standard gRPC interceptors implement canonical methods such as
+    `intercept_unary_unary` or `intercept_stream_stream`. When an interceptor
+    does not define any of the 4 standard methods, `apply_channel_interceptors`
+    falls back to attaching it directly to `channel._unary_unary_interceptors`.
+
+    This test verifies that if such a non-standard fallback interceptor is flagged
+    with `_is_otel_interceptor = True`, it is prepended at index 0 in pipeline order
+    rather than appended to the end.
+    """
 
     class FallbackOtelInterceptor:
         _is_otel_interceptor = True

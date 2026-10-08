@@ -346,34 +346,28 @@ def apply_channel_interceptors(
     otel_insert_indices: dict[str, int] = {}
     for interceptor in interceptors:
         is_otel = getattr(interceptor, "_is_otel_interceptor", False) is True
-        matched = False
-        for method_name, attr_name in mapping:
-            if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
-                target_list = getattr(channel, attr_name)
-                if isinstance(target_list, list):
-                    if interceptor not in target_list:
-                        if is_otel:
-                            idx = otel_insert_indices.get(attr_name, 0)
-                            target_list.insert(idx, interceptor)
-                            otel_insert_indices[attr_name] = idx + 1
-                        else:
-                            target_list.append(interceptor)
-                    matched = True
-                elif hasattr(target_list, "append"):
+
+        targets = [
+            attr_name
+            for method_name, attr_name in mapping
+            if hasattr(interceptor, method_name) and hasattr(channel, attr_name)
+        ]
+        if not targets and hasattr(channel, "_unary_unary_interceptors"):
+            targets = ["_unary_unary_interceptors"]
+
+        for attr_name in targets:
+            target_list = getattr(channel, attr_name)
+            if isinstance(target_list, list):
+                if interceptor in target_list:
+                    continue
+                if is_otel:
+                    idx = otel_insert_indices.get(attr_name, 0)
+                    target_list.insert(idx, interceptor)
+                    otel_insert_indices[attr_name] = idx + 1
+                else:
                     target_list.append(interceptor)
-                    matched = True
-        if not matched and hasattr(channel, "_unary_unary_interceptors"):
-            unary_interceptors = channel._unary_unary_interceptors
-            if isinstance(unary_interceptors, list):
-                if interceptor not in unary_interceptors:
-                    if is_otel:
-                        idx = otel_insert_indices.get("_unary_unary_interceptors", 0)
-                        unary_interceptors.insert(idx, interceptor)
-                        otel_insert_indices["_unary_unary_interceptors"] = idx + 1
-                    else:
-                        unary_interceptors.append(interceptor)
-            elif hasattr(unary_interceptors, "append"):
-                unary_interceptors.append(interceptor)
+            elif hasattr(target_list, "append"):
+                target_list.append(interceptor)
 
     return channel
 

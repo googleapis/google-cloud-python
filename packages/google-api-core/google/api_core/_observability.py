@@ -247,6 +247,9 @@ try:
         UnaryUnaryClientInterceptor as _SyncUnaryUnaryClientInterceptor,
     )
 except ImportError:  # pragma: NO COVER
+    # mypy: Fallback sentinel when optional grpc is not installed in the environment.
+    grpc = None  # type: ignore[assignment]
+
     # mypy: Fallback dummy classes when optional grpc is not installed.
     # Four distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
     class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
@@ -399,11 +402,12 @@ def get_otel_interceptor(
     suppressor = _SuppressingClientInterceptor()
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
-        try:
-            chan = grpc.intercept_channel(channel, suppressor)
-        except (NameError, AttributeError):
-            chan = channel
-        return otel_grpc.intercept_channel(chan, interceptor)
+        if grpc is not None:
+            try:
+                channel = grpc.intercept_channel(channel, suppressor)
+            except (AttributeError, TypeError):
+                pass
+        return otel_grpc.intercept_channel(channel, interceptor)
 
     otel_interceptor._is_otel_interceptor = True  # type: ignore[attr-defined]
     return otel_interceptor
