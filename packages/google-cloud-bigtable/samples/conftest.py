@@ -17,11 +17,14 @@ import os
 import signal
 import uuid
 from typing import Optional
+from unittest import mock
 
 import pytest
 from google.api_core import exceptions, retry
 
 from google.cloud import bigtable_admin
+from google.cloud.bigtable.data._async import client as async_client
+from google.cloud.bigtable.data._sync_autogen import client as sync_client
 from tests.system.utils import clear_stale_instances
 
 _CREATED_INSTANCE_NAME: Optional[str] = None
@@ -60,6 +63,13 @@ def _sigterm_handler(signum, frame) -> None:
 def pytest_configure(config) -> None:
     """Creates a temporary Bigtable instance if BIGTABLE_INSTANCE is not set."""
     global _CREATED_INSTANCE_NAME
+
+    # Disable client-side metrics export during sample tests to avoid
+    # per-snippet MetricServiceClient initialization and background export threads.
+    async_client.BigtableMetricsExporter = mock.MagicMock
+    async_client.GoogleCloudMetricsHandler = mock.MagicMock
+    sync_client.BigtableMetricsExporter = mock.MagicMock
+    sync_client.GoogleCloudMetricsHandler = mock.MagicMock
 
     if getattr(config.option, "help", False) or getattr(
         config.option, "collectonly", False
