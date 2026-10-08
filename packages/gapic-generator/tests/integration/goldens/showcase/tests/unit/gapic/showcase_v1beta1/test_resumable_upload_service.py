@@ -4482,23 +4482,24 @@ def test_api_key_credentials(client_class, transport_class):
             )
 
 
-def test_resumable_upload_service_base_transport_wrap_method_modern():
+def test_resumable_upload_service_base_transport_wrap_method_modern(monkeypatch):
     """Test wrap_method with modern google-api-core (supports tracing)."""
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_TRACING", True)
     # 1. Concrete transport: passes client_options=None and kind="grpc"
-    transport = transports.ResumableUploadServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
     with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        transport = transports.ResumableUploadServiceGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
         func = mock.MagicMock()
         transport._wrap_method(func)
         assert mock_wrap.call_args.kwargs["kind"] == "grpc"
         assert "client_options" in mock_wrap.call_args.kwargs
 
     # 2. Base transport: kind raises NotImplementedError and is cleanly omitted
-    base_transport = transports.ResumableUploadServiceTransport(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
     with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        base_transport = transports.ResumableUploadServiceTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
         func = mock.MagicMock()
         base_transport._wrap_method(func)
         assert "kind" not in mock_wrap.call_args.kwargs
@@ -4507,10 +4508,11 @@ def test_resumable_upload_service_base_transport_wrap_method_modern():
 
 def test_resumable_upload_service_base_transport_wrap_method_fallbacks(monkeypatch):
     """Test wrap_method defensive fallbacks with older google-api-core versions."""
-    transport = transports.ResumableUploadServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
     monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_TRACING", False)
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method"):
+        transport = transports.ResumableUploadServiceGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
 
     # Era 1: Ancient google-api-core (< 2.29.0: can be removed once google-api-core < 2.29.0 is no longer supported)
     monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_KIND", False)
@@ -4545,23 +4547,24 @@ def test_resumable_upload_service_base_transport_wrap_method_fallbacks(monkeypat
         assert "is_streaming" not in kwargs
 
 
-def test_resumable_upload_service_base_transport_wrap_async_method_modern():
+def test_resumable_upload_service_base_transport_wrap_async_method_modern(monkeypatch):
     """Test _wrap_async_method with modern google-api-core (supports tracing)."""
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_TRACING", True)
     # 1. Concrete transport: passes client_options=None and kind="grpc_asyncio"
-    transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
     with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
         func = mock.MagicMock()
         transport._wrap_async_method(func)
         assert mock_wrap.call_args.kwargs["kind"] == "grpc_asyncio"
         assert "client_options" in mock_wrap.call_args.kwargs
 
     # 2. Base transport: kind raises NotImplementedError and is cleanly omitted
-    base_transport = transports.ResumableUploadServiceTransport(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
     with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        base_transport = transports.ResumableUploadServiceTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
         func = mock.MagicMock()
         base_transport._wrap_async_method(func)
         assert "kind" not in mock_wrap.call_args.kwargs
@@ -4570,10 +4573,11 @@ def test_resumable_upload_service_base_transport_wrap_async_method_modern():
 
 def test_resumable_upload_service_base_transport_wrap_async_method_fallbacks(monkeypatch):
     """Test _wrap_async_method defensive fallbacks with older google-api-core versions."""
-    transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
     monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_TRACING", False)
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method"):
+        transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
 
     # Era 1: Ancient google-api-core (< 2.29.0: can be removed once google-api-core < 2.29.0 is no longer supported)
     monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_KIND", False)
