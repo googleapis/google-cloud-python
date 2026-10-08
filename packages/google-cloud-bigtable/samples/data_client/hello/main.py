@@ -26,26 +26,26 @@ Prerequisites:
 
 import argparse
 
-# [START bigtable_hw_imports_data_client]
+# [START bigtable_hw_imports]
 from google.cloud import bigtable
 from google.cloud.bigtable.data import row_filters
 
+# [END bigtable_hw_imports]
 from ...utils import wait_for_table
-
-# [END bigtable_hw_imports_data_client]
 
 # use to ignore warnings
 row_filters
 
 
 def main(project_id, instance_id, table_id):
-    # [START bigtable_hw_connect_data_client]
+    # [START bigtable_hw_connect]
     client = bigtable.data.BigtableDataClient(project=project_id)
     table = client.get_table(instance_id, table_id)
-    # [END bigtable_hw_connect_data_client]
+    # [END bigtable_hw_connect]
 
-    # [START bigtable_hw_create_table_data_client]
+    # [START bigtable_hw_create_table]
     from google.api_core.exceptions import AlreadyExists
+
     from google.cloud import bigtable_admin
 
     # the data client only supports the data API. Table creation is an admin operation
@@ -70,53 +70,66 @@ def main(project_id, instance_id, table_id):
         )
     except AlreadyExists:
         print("Table {} already exists.".format(table_id))
-    # [END bigtable_hw_create_table_data_client]
+    # [END bigtable_hw_create_table]
 
     try:
         # let table creation complete
         wait_for_table(table)
-        # [START bigtable_hw_write_rows_data_client]
+        # [START bigtable_hw_write_rows]
         print("Writing some greetings to the table.")
         greetings = [b"Hello World!", b"Hello Cloud Bigtable!", b"Hello Python!"]
         mutations = []
         column = b"greeting"
         for i, value in enumerate(greetings):
+            # Note: This example uses sequential numeric IDs for simplicity,
+            # but this can result in poor performance in a production
+            # application.  Since rows are stored in sorted order by key,
+            # sequential keys can result in poor distribution of operations
+            # across nodes.
+            #
+            # We recommend that you use bytestrings directly for row keys
+            # where possible, rather than encoding strings.
+            #
+            # For more information about how to design a Bigtable schema for
+            # the best performance, see the documentation:
+            #
+            #     https://cloud.google.com/bigtable/docs/schema-design
             row_key = f"greeting{i}".encode()
             row_mutation = bigtable.data.RowMutationEntry(
                 row_key, bigtable.data.SetCell(column_family_id, column, value)
             )
             mutations.append(row_mutation)
         table.bulk_mutate_rows(mutations)
-        # [END bigtable_hw_write_rows_data_client]
+        # [END bigtable_hw_write_rows]
 
-        # [START bigtable_hw_create_filter_data_client]
+        # [START bigtable_hw_create_filter]
         # Create a filter to only retrieve the most recent version of the cell
         # for each column across entire row.
         row_filter = bigtable.data.row_filters.CellsColumnLimitFilter(1)
-        # [END bigtable_hw_create_filter_data_client]
+        # [END bigtable_hw_create_filter]
 
-        # [START bigtable_hw_get_with_filter_data_client]
-        # [START bigtable_hw_get_by_key_data_client]
+        # [START bigtable_hw_get_with_filter]
+        # [START bigtable_hw_get_by_key]
         print("Getting a single greeting by row key.")
         key = "greeting0".encode()
 
         row = table.read_row(key, row_filter=row_filter)
         cell = row.cells[0]
         print(cell.value.decode("utf-8"))
-        # [END bigtable_hw_get_by_key_data_client]
-        # [END bigtable_hw_get_with_filter_data_client]
+        # [END bigtable_hw_get_by_key]
+        # [END bigtable_hw_get_with_filter]
 
-        # [START bigtable_hw_scan_with_filter_data_client]
-        # [START bigtable_hw_scan_all_data_client]
+        # [START bigtable_hw_scan_with_filter]
+        # [START bigtable_hw_scan_all]
         print("Scanning for all greetings:")
         query = bigtable.data.ReadRowsQuery(row_filter=row_filter)
-        for row in table.read_rows(query):
+        for row in table.read_rows_stream(query):
             cell = row.cells[0]
             print(cell.value.decode("utf-8"))
-        # [END bigtable_hw_scan_all_data_client]
-        # [END bigtable_hw_scan_with_filter_data_client]
+        # [END bigtable_hw_scan_all]
+        # [END bigtable_hw_scan_with_filter]
     finally:
-        # [START bigtable_hw_delete_table_data_client]
+        # [START bigtable_hw_delete_table]
         from google.cloud import bigtable_admin
 
         # the data client only supports the data API. Table deletion is an admin operation
@@ -126,8 +139,9 @@ def main(project_id, instance_id, table_id):
 
         print("Deleting the {} table.".format(table_id))
         admin_client.delete_table(name=table_path)
+        table.close()
         client.close()
-        # [END bigtable_hw_delete_table_data_client]
+        # [END bigtable_hw_delete_table]
 
 
 if __name__ == "__main__":

@@ -31,9 +31,8 @@ import asyncio
 from google.cloud import bigtable
 from google.cloud.bigtable.data import row_filters
 
-from ...utils import wait_for_table
-
 # [END bigtable_async_hw_imports]
+from ...utils import wait_for_table
 
 # use to ignore warnings
 row_filters
@@ -47,6 +46,7 @@ async def main(project_id, instance_id, table_id):
 
     # [START bigtable_async_hw_create_table]
     from google.api_core.exceptions import AlreadyExists
+
     from google.cloud import bigtable_admin
 
     # the async client only supports the data API. Table creation is an admin operation
@@ -140,6 +140,7 @@ async def main(project_id, instance_id, table_id):
 
         print("Deleting the {} table.".format(table_id))
         await admin_client.delete_table(name=table_path)
+        await table.close()
         await client.close()
         # [END bigtable_async_hw_delete_table]
 

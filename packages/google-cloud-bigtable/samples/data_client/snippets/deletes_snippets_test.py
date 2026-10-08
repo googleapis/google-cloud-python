@@ -257,3 +257,13 @@ def test_streaming_and_batching(capsys, table_id):
 def test_check_and_mutate(capsys, table_id):
     deletes_snippets.check_and_mutate(PROJECT, BIGTABLE_INSTANCE, table_id)
     assert_output_match(capsys, "")
+
+
+def test_drop_row_range(capsys, table_id):
+    deletes_snippets.drop_row_range(PROJECT, BIGTABLE_INSTANCE, table_id)
+    assert_output_match(capsys, "")
+
+
+def test_delete_column_family(capsys, table_id):
+    deletes_snippets.delete_column_family(PROJECT, BIGTABLE_INSTANCE, table_id)
+    assert_output_match(capsys, "")

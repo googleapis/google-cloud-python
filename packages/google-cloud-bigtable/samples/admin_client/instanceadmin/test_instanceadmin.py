@@ -14,6 +14,9 @@
 import os
 import uuid
 
+import backoff
+from google.api_core import exceptions
+
 from .instanceadmin import (
     add_cluster,
     delete_cluster,
@@ -28,20 +31,24 @@ NEW_CLUSTER_ID = f"cluster-add-{str(uuid.uuid4())[:8]}"
 
 
 def test_instance_operations(capsys):
-    run_instance_operations(PROJECT, INSTANCE_ID, CLUSTER_ID)
-    out, _ = capsys.readouterr()
-    assert f"Created instance: {INSTANCE_ID}" in out
-    assert "Listing instances:" in out
-    assert "Listing clusters..." in out
+    try:
+        run_instance_operations(PROJECT, INSTANCE_ID, CLUSTER_ID)
+        out, _ = capsys.readouterr()
+        assert f"Created instance: {INSTANCE_ID}" in out
+        assert "Listing instances:" in out
+        assert "Listing clusters..." in out
 
-    add_cluster(PROJECT, INSTANCE_ID, NEW_CLUSTER_ID)
-    out, _ = capsys.readouterr()
-    assert f"Cluster created: {NEW_CLUSTER_ID}" in out
+        backoff_503 = backoff.on_exception(backoff.expo, exceptions.ServiceUnavailable)
+        backoff_503(add_cluster)(PROJECT, INSTANCE_ID, NEW_CLUSTER_ID)
+        out, _ = capsys.readouterr()
+        assert f"Cluster created: {NEW_CLUSTER_ID}" in out
 
-    delete_cluster(PROJECT, INSTANCE_ID, NEW_CLUSTER_ID)
-    out, _ = capsys.readouterr()
-    assert f"Cluster deleted: {NEW_CLUSTER_ID}" in out
+        delete_cluster(PROJECT, INSTANCE_ID, NEW_CLUSTER_ID)
+        out, _ = capsys.readouterr()
+        assert f"Cluster deleted: {NEW_CLUSTER_ID}" in out
 
-    delete_instance(PROJECT, INSTANCE_ID)
-    out, _ = capsys.readouterr()
-    assert f"Deleted instance: {INSTANCE_ID}" in out
+        delete_instance(PROJECT, INSTANCE_ID)
+        out, _ = capsys.readouterr()
+        assert f"Deleted instance: {INSTANCE_ID}" in out
+    finally:
+        delete_instance(PROJECT, INSTANCE_ID)

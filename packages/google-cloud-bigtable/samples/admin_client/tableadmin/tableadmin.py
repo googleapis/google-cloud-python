@@ -43,8 +43,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_list_tables]
 
         # [START bigtable_create_family_gc_max_age]
-        from google.cloud import bigtable_admin
         from google.protobuf import duration_pb2
+
+        from google.cloud import bigtable_admin
 
         client = bigtable_admin.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
@@ -86,8 +87,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_create_family_gc_max_versions]
 
         # [START bigtable_create_family_gc_union]
-        from google.cloud import bigtable_admin
         from google.protobuf import duration_pb2
+
+        from google.cloud import bigtable_admin
 
         client = bigtable_admin.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
@@ -116,8 +118,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_create_family_gc_union]
 
         # [START bigtable_create_family_gc_intersection]
-        from google.cloud import bigtable_admin
         from google.protobuf import duration_pb2
+
+        from google.cloud import bigtable_admin
 
         client = bigtable_admin.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
@@ -146,8 +149,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_create_family_gc_intersection]
 
         # [START bigtable_create_family_gc_nested]
-        from google.cloud import bigtable_admin
         from google.protobuf import duration_pb2
+
+        from google.cloud import bigtable_admin
 
         client = bigtable_admin.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)

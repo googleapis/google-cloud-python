@@ -93,6 +93,10 @@ def test_read_row_range(table):
     data_snippets.read_row_range(table)
 
 
+def test_read_row_ranges(table):
+    data_snippets.read_row_ranges(table)
+
+
 def test_read_with_prefix(table):
     data_snippets.read_with_prefix(table)
 

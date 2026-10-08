@@ -26,6 +26,7 @@ import argparse
 def run_instance_operations(project_id, instance_id, cluster_id):
     # [START bigtable_check_instance_exists]
     from google.api_core.exceptions import NotFound
+
     from google.cloud import bigtable_admin
 
     client = bigtable_admin.BigtableInstanceAdminClient()
@@ -40,6 +41,7 @@ def run_instance_operations(project_id, instance_id, cluster_id):
 
     # [START bigtable_create_prod_instance]
     from google.api_core.exceptions import NotFound
+
     from google.cloud import bigtable_admin
 
     client = bigtable_admin.BigtableInstanceAdminClient()
@@ -111,6 +113,7 @@ def run_instance_operations(project_id, instance_id, cluster_id):
 def delete_instance(project_id, instance_id):
     # [START bigtable_delete_instance]
     from google.api_core.exceptions import NotFound
+
     from google.cloud import bigtable_admin
 
     client = bigtable_admin.BigtableInstanceAdminClient()
@@ -128,6 +131,7 @@ def delete_instance(project_id, instance_id):
 def add_cluster(project_id, instance_id, cluster_id):
     # [START bigtable_create_cluster]
     from google.api_core.exceptions import NotFound
+
     from google.cloud import bigtable_admin
 
     client = bigtable_admin.BigtableInstanceAdminClient()
@@ -171,6 +175,7 @@ def delete_cluster(project_id, instance_id, cluster_id):
     """
     # [START bigtable_delete_cluster]
     from google.api_core.exceptions import NotFound
+
     from google.cloud import bigtable_admin
 
     client = bigtable_admin.BigtableInstanceAdminClient()

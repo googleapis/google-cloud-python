@@ -12,7 +12,7 @@
 # limitations under the License.
 
 
-# [START bigtable_filters_limit_row_sample_data_client]
+# [START bigtable_filters_limit_row_sample]
 def filter_limit_row_sample(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -28,8 +28,8 @@ def filter_limit_row_sample(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_row_sample_data_client]
-# [START bigtable_filters_limit_row_regex_data_client]
+# [END bigtable_filters_limit_row_sample]
+# [START bigtable_filters_limit_row_regex]
 def filter_limit_row_regex(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -47,8 +47,8 @@ def filter_limit_row_regex(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_row_regex_data_client]
-# [START bigtable_filters_limit_cells_per_col_data_client]
+# [END bigtable_filters_limit_row_regex]
+# [START bigtable_filters_limit_cells_per_col]
 def filter_limit_cells_per_col(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -64,8 +64,8 @@ def filter_limit_cells_per_col(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_cells_per_col_data_client]
-# [START bigtable_filters_limit_cells_per_row_data_client]
+# [END bigtable_filters_limit_cells_per_col]
+# [START bigtable_filters_limit_cells_per_row]
 def filter_limit_cells_per_row(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -81,8 +81,8 @@ def filter_limit_cells_per_row(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_cells_per_row_data_client]
-# [START bigtable_filters_limit_cells_per_row_offset_data_client]
+# [END bigtable_filters_limit_cells_per_row]
+# [START bigtable_filters_limit_cells_per_row_offset]
 def filter_limit_cells_per_row_offset(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -98,8 +98,8 @@ def filter_limit_cells_per_row_offset(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_cells_per_row_offset_data_client]
-# [START bigtable_filters_limit_col_family_regex_data_client]
+# [END bigtable_filters_limit_cells_per_row_offset]
+# [START bigtable_filters_limit_col_family_regex]
 def filter_limit_col_family_regex(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -117,8 +117,8 @@ def filter_limit_col_family_regex(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_col_family_regex_data_client]
-# [START bigtable_filters_limit_col_qualifier_regex_data_client]
+# [END bigtable_filters_limit_col_family_regex]
+# [START bigtable_filters_limit_col_qualifier_regex]
 def filter_limit_col_qualifier_regex(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -138,8 +138,8 @@ def filter_limit_col_qualifier_regex(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_col_qualifier_regex_data_client]
-# [START bigtable_filters_limit_col_range_data_client]
+# [END bigtable_filters_limit_col_qualifier_regex]
+# [START bigtable_filters_limit_col_range]
 def filter_limit_col_range(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -159,8 +159,8 @@ def filter_limit_col_range(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_col_range_data_client]
-# [START bigtable_filters_limit_value_range_data_client]
+# [END bigtable_filters_limit_col_range]
+# [START bigtable_filters_limit_value_range]
 def filter_limit_value_range(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -178,8 +178,8 @@ def filter_limit_value_range(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_value_range_data_client]
-# [START bigtable_filters_limit_value_regex_data_client]
+# [END bigtable_filters_limit_value_range]
+# [START bigtable_filters_limit_value_regex]
 
 
 def filter_limit_value_regex(project_id, instance_id, table_id):
@@ -199,8 +199,8 @@ def filter_limit_value_regex(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_value_regex_data_client]
-# [START bigtable_filters_limit_timestamp_range_data_client]
+# [END bigtable_filters_limit_value_regex]
+# [START bigtable_filters_limit_timestamp_range]
 def filter_limit_timestamp_range(project_id, instance_id, table_id):
     import datetime
 
@@ -220,8 +220,8 @@ def filter_limit_timestamp_range(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_timestamp_range_data_client]
-# [START bigtable_filters_limit_block_all_data_client]
+# [END bigtable_filters_limit_timestamp_range]
+# [START bigtable_filters_limit_block_all]
 def filter_limit_block_all(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -237,8 +237,8 @@ def filter_limit_block_all(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_block_all_data_client]
-# [START bigtable_filters_limit_pass_all_data_client]
+# [END bigtable_filters_limit_block_all]
+# [START bigtable_filters_limit_pass_all]
 def filter_limit_pass_all(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -254,8 +254,8 @@ def filter_limit_pass_all(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_limit_pass_all_data_client]
-# [START bigtable_filters_modify_strip_value_data_client]
+# [END bigtable_filters_limit_pass_all]
+# [START bigtable_filters_modify_strip_value]
 def filter_modify_strip_value(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -271,8 +271,8 @@ def filter_modify_strip_value(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_modify_strip_value_data_client]
-# [START bigtable_filters_modify_apply_label_data_client]
+# [END bigtable_filters_modify_strip_value]
+# [START bigtable_filters_modify_apply_label]
 def filter_modify_apply_label(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -288,8 +288,8 @@ def filter_modify_apply_label(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_modify_apply_label_data_client]
-# [START bigtable_filters_composing_chain_data_client]
+# [END bigtable_filters_modify_apply_label]
+# [START bigtable_filters_composing_chain]
 def filter_composing_chain(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -312,8 +312,8 @@ def filter_composing_chain(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_composing_chain_data_client]
-# [START bigtable_filters_composing_interleave_data_client]
+# [END bigtable_filters_composing_chain]
+# [START bigtable_filters_composing_interleave]
 def filter_composing_interleave(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -336,8 +336,8 @@ def filter_composing_interleave(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_composing_interleave_data_client]
-# [START bigtable_filters_composing_condition_data_client]
+# [END bigtable_filters_composing_interleave]
+# [START bigtable_filters_composing_condition]
 def filter_composing_condition(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -364,9 +364,10 @@ def filter_composing_condition(project_id, instance_id, table_id):
                 print_row(row)
 
 
-# [END bigtable_filters_composing_condition_data_client]
+# [END bigtable_filters_composing_condition]
 
 
+# [START bigtable_filters_print]
 def print_row(row):
     from google.cloud._helpers import _datetime_from_microseconds
 
@@ -387,3 +388,6 @@ def print_row(row):
             )
         )
     print("")
+
+
+# [END bigtable_filters_print]

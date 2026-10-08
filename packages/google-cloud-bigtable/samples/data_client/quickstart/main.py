@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START bigtable_quickstart_data_client]
+# [START bigtable_quickstart]
 import argparse
 
 from google.cloud.bigtable.data import BigtableDataClient
@@ -34,6 +34,7 @@ def main(project_id="project-id", instance_id="instance-id", table_id="my-table"
     column_id = b"c1"
     value = row.get_cells(column_family_id, column_id)[0].value.decode("utf-8")
 
+    table.close()
     client.close()
 
     print("Row key: {}\nData: {}".format(row_key, value))
@@ -54,4 +55,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     main(args.project_id, args.instance_id, args.table)
 
-# [END bigtable_quickstart_data_client]
+# [END bigtable_quickstart]

@@ -44,11 +44,12 @@ class create_table_cm:
         return self._table
 
     def __exit__(self, *args):
-        if self._table.exists():
+        admin_client = bigtable_admin.BigtableTableAdminClient()
+        try:
             if self._verbose:
                 print(f"deleting table: {self._table.table_id}")
-            delete_retry(self._table.delete())
-        else:
+            delete_retry(admin_client.delete_table)(name=self._table.name)
+        except exceptions.NotFound:
             if self._verbose:
                 print(f"table {self._table.table_id} not found")
 
@@ -57,12 +58,18 @@ def create_table(project, instance_id, table_id, column_families={}):
     """
     Creates a new table, and blocks until it reaches a ready state
     """
+    admin_client = bigtable_admin.BigtableTableAdminClient()
+    instance_path = admin_client.instance_path(project, instance_id)
+    table_path = admin_client.table_path(project, instance_id, table_id)
+
+    try:
+        admin_client.delete_table(name=table_path)
+    except exceptions.NotFound:
+        pass
+
     client = bigtable.Client(project=project, admin=True)
     instance = client.instance(instance_id)
-
     table = instance.table(table_id)
-    if table.exists():
-        table.delete()
 
     # convert column families to pb if needed
     pb_families = {
@@ -72,16 +79,15 @@ def create_table(project, instance_id, table_id, column_families={}):
         for (id, rule) in column_families.items()
     }
 
-    # create table using gapic layer
-    instance._client.table_admin_client.create_table(
+    admin_client.create_table(
         request={
-            "parent": instance.name,
+            "parent": instance_path,
             "table_id": table_id,
             "table": {"column_families": pb_families},
         }
     )
 
-    wait_for_table(table)
+    wait_for_table(table_path)
 
     return table
 
@@ -108,5 +114,8 @@ def wait_for_table(table):
         table_path = table.table_name if hasattr(table, "table_name") else str(table)
         admin_client = bigtable_admin.BigtableTableAdminClient()
         admin_client.get_table(
-            name=table_path, view=bigtable_admin.Table.View.NAME_ONLY
+            request={
+                "name": table_path,
+                "view": bigtable_admin.Table.View.NAME_ONLY,
+            }
         )

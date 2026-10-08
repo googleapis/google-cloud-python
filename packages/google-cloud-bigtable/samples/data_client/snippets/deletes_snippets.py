@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-# [START bigtable_delete_from_column_data_client]
+# [START bigtable_delete_from_column]
 def delete_from_column(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -33,10 +33,10 @@ def delete_from_column(project_id, instance_id, table_id):
     client.close()
 
 
-# [END bigtable_delete_from_column_data_client]
+# [END bigtable_delete_from_column]
 
 
-# [START bigtable_delete_from_column_family_data_client]
+# [START bigtable_delete_from_column_family]
 def delete_from_column_family(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import BigtableDataClient, DeleteAllFromFamily
 
@@ -49,10 +49,10 @@ def delete_from_column_family(project_id, instance_id, table_id):
     client.close()
 
 
-# [END bigtable_delete_from_column_family_data_client]
+# [END bigtable_delete_from_column_family]
 
 
-# [START bigtable_delete_from_row_data_client]
+# [START bigtable_delete_from_row]
 def delete_from_row(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import BigtableDataClient, DeleteAllFromRow
 
@@ -65,10 +65,10 @@ def delete_from_row(project_id, instance_id, table_id):
     client.close()
 
 
-# [END bigtable_delete_from_row_data_client]
+# [END bigtable_delete_from_row]
 
 
-# [START bigtable_streaming_and_batching_data_client]
+# [START bigtable_streaming_and_batching]
 def streaming_and_batching(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -81,7 +81,7 @@ def streaming_and_batching(project_id, instance_id, table_id):
     table = client.get_table(instance_id, table_id)
 
     with table.mutations_batcher() as batcher:
-        for row in table.read_rows(ReadRowsQuery(limit=10)):
+        for row in table.read_rows_stream(ReadRowsQuery(limit=10)):
             batcher.append(
                 RowMutationEntry(
                     row.row_key,
@@ -95,10 +95,10 @@ def streaming_and_batching(project_id, instance_id, table_id):
     client.close()
 
 
-# [END bigtable_streaming_and_batching_data_client]
+# [END bigtable_streaming_and_batching]
 
 
-# [START bigtable_check_and_mutate_data_client]
+# [START bigtable_check_and_mutate]
 def check_and_mutate(project_id, instance_id, table_id):
     from google.cloud.bigtable.data import (
         BigtableDataClient,
@@ -121,4 +121,39 @@ def check_and_mutate(project_id, instance_id, table_id):
     client.close()
 
 
-# [END bigtable_check_and_mutate_data_client]
+# [END bigtable_check_and_mutate]
+
+
+# [START bigtable_drop_row_range]
+def drop_row_range(project_id, instance_id, table_id):
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableTableAdminClient()
+    table_path = client.table_path(project_id, instance_id, table_id)
+    row_key_prefix = b"phone#4c410523"
+    client.drop_row_range(
+        request={
+            "name": table_path,
+            "row_key_prefix": row_key_prefix,
+        },
+        timeout=200,
+    )
+
+
+# [END bigtable_drop_row_range]
+
+
+# [START bigtable_delete_column_family]
+def delete_column_family(project_id, instance_id, table_id):
+    from google.cloud import bigtable_admin
+
+    client = bigtable_admin.BigtableTableAdminClient()
+    table_path = client.table_path(project_id, instance_id, table_id)
+    column_family_id = "stats_summary"
+    modification = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        id=column_family_id, drop=True
+    )
+    client.modify_column_families(name=table_path, modifications=[modification])
+
+
+# [END bigtable_delete_column_family]
