@@ -737,14 +737,6 @@ def test_create_channel(grpc_secure_channel):
     credentials.with_scopes.assert_called_once_with(scopes, default_scopes=None)
 
 
-@pytest.mark.asyncio
-async def test_fake_stream_unary_call():
-    fake_call = grpc_helpers_async.FakeStreamUnaryCall()
-    await fake_call.wait_for_connection()
-    response = await fake_call
-    assert fake_call.response == response
-
-
 @mock.patch("grpc.ssl_channel_credentials")
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch(
@@ -1016,3 +1008,11 @@ def test_create_channel_async_interconnect_gated_by_attempt_direct_path(
         compute_creds,
         compression=None,
     )
+
+
+@pytest.mark.asyncio
+async def test_fake_stream_unary_call():
+    fake_call = grpc_helpers_async.FakeStreamUnaryCall()
+    await fake_call.wait_for_connection()
+    response = await fake_call
+    assert fake_call.response == response
