@@ -22,6 +22,7 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core.client_options import ClientOptions
 {% if service.has_resumable_upload_methods %}
 import urllib.parse
 from google.api_core import resumable_transfer
@@ -40,7 +41,7 @@ from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import transcode_request
+from {{package_path}}._compat import transcode_request, trace_http_request
 
 import google.protobuf
 
@@ -97,6 +98,7 @@ class Async{{service.name}}RestStub:
     _session: AsyncAuthorizedSession
     _host: str
     _interceptor: Async{{service.name}}RestInterceptor
+    _client_options: Optional[ClientOptions] = None
 
 class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     """Asynchronous REST backend transport for {{ service.name }}.
@@ -116,6 +118,8 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
             interceptor: Optional[Async{{ service.name }}RestInterceptor] = None,
+            client_options: Optional[ClientOptions] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -143,6 +147,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 "http" can be specified.
             interceptor (Optional[Async{{ service.name }}RestInterceptor]): Interceptor used
                 to manipulate requests, request metadata, and responses.
+            client_options (Optional[google.api_core.client_options.ClientOptions]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         super().__init__(
@@ -151,7 +158,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info=client_info,
             always_use_jwt_access=False,
             url_scheme=url_scheme,
-            api_audience=None
+            api_audience=None,
+            client_options=client_options,
+            **kwargs,
         )
         {# Note: Type for creds is ignored because of incorrect type hint for creds in the client layer.
          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2177): Remove `# type: ignore` once
@@ -159,7 +168,6 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         #}
         self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._interceptor = interceptor or Async{{ service.name }}RestInterceptor()
-        self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
         {% if service.has_lro and rest_async_io_enabled %}
         self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
@@ -167,8 +175,6 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
 
     {{ shared_macros.prep_wrapped_messages_async_method(api, service, is_rest_asyncio=True)|indent(4) }}
-
-    {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
     {% for method in service.methods.values()|sort(attribute="name") if rest_async_io_enabled or method.is_resumable_upload %}
     class {{ method.name|make_private }}(_Base{{ service.name }}RestTransport._Base{{method.name}}, Async{{service.name}}RestStub):
@@ -286,7 +292,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
             {% endif %}{# method.void #}
             {% endif %}{# method.is_resumable_upload #}
-         
+
          {% else %}
                 raise NotImplementedError(
                     "Method {{ method.name }} is not available over REST transport"
@@ -352,11 +358,11 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% else %}
             {{method.output.ident}}]:
             {% endif %}
-        return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor, getattr(self, "_client_options", None))  # type: ignore
 
     {% endfor %}
     {% if rest_async_io_enabled %}
-    {% for name, sig in api.mixin_api_signatures.items() %} 
+    {% for name, sig in api.mixin_api_signatures.items() %}
     {{ shared_macros.generate_mixin_call_method(service, api, name, sig, is_async=True) | indent(4) }}
     {% endfor %}
     {% endif %}

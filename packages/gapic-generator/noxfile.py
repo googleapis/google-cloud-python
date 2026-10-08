@@ -278,6 +278,13 @@ def showcase_library(
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
 
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
+    # Warnings emitted from google-api-core starting in 2.28
+    # appear to cause issues when running protoc.
+    # The specific failure is `Plugin output is unparseable`
+    if session.python == "3.10":
+        session.install("google-api-core<2.28")
+
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
@@ -450,6 +457,11 @@ def showcase(
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -496,6 +508,11 @@ def showcase_w_rest_async(
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -590,6 +607,8 @@ def run_showcase_unit_tests(
         "pytest-cov",
         "pytest-xdist",
         "pytest-asyncio",
+        "opentelemetry-api",
+        "opentelemetry-sdk",
     )
     # Freeze and print python environment package versions
     session.run("python", "-m", "pip", "freeze")
