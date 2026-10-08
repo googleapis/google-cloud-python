@@ -45,6 +45,7 @@ from google.auth import credentials as ga_credentials
 from google.auth import impersonated_credentials
 import google.auth.transport.requests
 from google.oauth2 import service_account
+from google.api_core import exceptions as core_exceptions
 from google.api_core.resumable_transfer import (
     ProgressState,
     ResumableUploadConfig,
@@ -222,13 +223,72 @@ def _open_upload_file() -> Tuple[io.BufferedReader, int]:
     return f, expanded.stat().st_size
 
 
+def _try_remove_upload(
+    client: YouTubeVideoUploadServiceClient,
+    customer_id: str,
+    resource_name: str,
+    metadata: Sequence[Tuple[str, str]],
+) -> None:
+    """Attempt best-effort removal of a newly uploaded YouTube video resource.
+
+    Immediately after upload completion (`ProgressState.FINALIZED`), the video
+    remains in `UPLOADED` state while YouTube processes the media stream, during
+    which `RemoveYouTubeVideoUpload` returns `INVALID_ARGUMENT` (`NOT_FOUND`).
+    Any upload still processing at teardown is removed by `_cleanup_stale_test_videos`
+    once processed and older than `STALE_UPLOAD_MAX_AGE`.
+
+    Args:
+        client: Synchronous `YouTubeVideoUploadServiceClient` instance.
+        customer_id: Google Ads customer ID owning the upload resource.
+        resource_name: Resource name (`customers/{id}/youTubeVideoUploads/{id}`).
+        metadata: Request metadata headers (`developer-token`, `login-customer-id`).
+    """
+    try:
+        client.remove_you_tube_video_upload(
+            request={
+                "customer_id": customer_id,
+                "resource_names": [resource_name],
+            },
+            metadata=metadata,
+        )
+    except core_exceptions.GoogleAPICallError:
+        pass
+
+
+async def _async_try_remove_upload(
+    client: YouTubeVideoUploadServiceAsyncClient,
+    customer_id: str,
+    resource_name: str,
+    metadata: Sequence[Tuple[str, str]],
+) -> None:
+    """Attempt best-effort async removal of a newly uploaded YouTube video resource.
+
+    Args:
+        client: Asynchronous `YouTubeVideoUploadServiceAsyncClient` instance.
+        customer_id: Google Ads customer ID owning the upload resource.
+        resource_name: Resource name (`customers/{id}/youTubeVideoUploads/{id}`).
+        metadata: Request metadata headers (`developer-token`, `login-customer-id`).
+    """
+    try:
+        await client.remove_you_tube_video_upload(
+            request={
+                "customer_id": customer_id,
+                "resource_names": [resource_name],
+            },
+            metadata=metadata,
+        )
+    except core_exceptions.GoogleAPICallError:
+        pass
+
+
 @pytest.fixture(scope="session", autouse=True)
 def _cleanup_stale_test_videos():
-    """Query existing YouTube video uploads and remove prefixed test resources older than 2 hours.
+    """Query processed YouTube video uploads and remove test resources older than 2 hours.
 
-    Queries `you_tube_video_upload` via `googleAds:search`, inspects video titles
-    via YouTube oEmbed to identify test resources created with `VIDEO_TITLE_PREFIX`,
-    and deletes any resource whose embedded timestamp exceeds `STALE_UPLOAD_MAX_AGE`.
+    Queries `you_tube_video_upload` resources in `PROCESSED` state via
+    `googleAds:search`, inspects video titles via YouTube oEmbed to identify
+    test resources created with `VIDEO_TITLE_PREFIX`, and removes any resource
+    whose embedded timestamp exceeds `STALE_UPLOAD_MAX_AGE`.
     """
     creds = _load_impersonated_credentials()
     customer_id = _google_ads_customer_id()
@@ -252,7 +312,8 @@ def _cleanup_stale_test_videos():
             "query": (
                 "SELECT you_tube_video_upload.resource_name, "
                 "you_tube_video_upload.video_id "
-                "FROM you_tube_video_upload"
+                "FROM you_tube_video_upload "
+                "WHERE you_tube_video_upload.state = 'PROCESSED'"
             )
         },
         timeout=30,
@@ -277,13 +338,8 @@ def _cleanup_stale_test_videos():
 
     if stale_resource_names:
         client = YouTubeVideoUploadServiceClient(credentials=creds)
-        client.remove_you_tube_video_upload(
-            request={
-                "customer_id": customer_id,
-                "resource_names": stale_resource_names,
-            },
-            metadata=metadata,
-        )
+        for resource_name in stale_resource_names:
+            _try_remove_upload(client, customer_id, resource_name, metadata)
 
 
 class TestGoogleAdsLiveAcceptance:
@@ -395,12 +451,8 @@ class TestGoogleAdsLiveAcceptance:
         finally:
             stream.close()
             if response is not None and response.resource_name:
-                client.remove_you_tube_video_upload(
-                    request={
-                        "customer_id": customer_id,
-                        "resource_names": [response.resource_name],
-                    },
-                    metadata=metadata,
+                _try_remove_upload(
+                    client, customer_id, response.resource_name, metadata
                 )
 
     @pytest.mark.parametrize("transport", ["grpc", "rest"])
@@ -481,12 +533,8 @@ class TestGoogleAdsLiveAcceptance:
         finally:
             stream.close()
             if response is not None and response.resource_name:
-                client.remove_you_tube_video_upload(
-                    request={
-                        "customer_id": customer_id,
-                        "resource_names": [response.resource_name],
-                    },
-                    metadata=metadata,
+                _try_remove_upload(
+                    client, customer_id, response.resource_name, metadata
                 )
 
     if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
@@ -506,7 +554,7 @@ class TestGoogleAdsLiveAcceptance:
                 and "rest_asyncio"
                 not in YouTubeVideoUploadServiceClient._transport_registry
             ):
-                pytest.skip(
+                pytest.fail(
                     "rest_asyncio transport is not registered when rest_async_io_enabled is False."
                 )
             client = YouTubeVideoUploadServiceAsyncClient(
@@ -548,12 +596,8 @@ class TestGoogleAdsLiveAcceptance:
             finally:
                 stream.close()
                 if response is not None and response.resource_name:
-                    await client.remove_you_tube_video_upload(
-                        request={
-                            "customer_id": customer_id,
-                            "resource_names": [response.resource_name],
-                        },
-                        metadata=metadata,
+                    await _async_try_remove_upload(
+                        client, customer_id, response.resource_name, metadata
                     )
 
         @pytest.mark.asyncio
@@ -569,7 +613,7 @@ class TestGoogleAdsLiveAcceptance:
                 and "rest_asyncio"
                 not in YouTubeVideoUploadServiceClient._transport_registry
             ):
-                pytest.skip(
+                pytest.fail(
                     "rest_asyncio transport is not registered when rest_async_io_enabled is False."
                 )
             client = YouTubeVideoUploadServiceAsyncClient(
@@ -643,10 +687,6 @@ class TestGoogleAdsLiveAcceptance:
             finally:
                 stream.close()
                 if response is not None and response.resource_name:
-                    await client.remove_you_tube_video_upload(
-                        request={
-                            "customer_id": customer_id,
-                            "resource_names": [response.resource_name],
-                        },
-                        metadata=metadata,
+                    await _async_try_remove_upload(
+                        client, customer_id, response.resource_name, metadata
                     )
