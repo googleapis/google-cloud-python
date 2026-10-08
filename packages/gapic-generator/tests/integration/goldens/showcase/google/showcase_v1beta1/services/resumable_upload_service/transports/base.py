@@ -162,8 +162,10 @@ class ResumableUploadServiceTransport(abc.ABC):
                 kwargs["kind"] = kind
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
         # Fallback for older runtime versions of google-api-core:
-        # Strip tracing-only arguments (client_options, method_name, is_streaming).
-        # See _wrap_async_method for full historical generation details.
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
         for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
 
@@ -194,13 +196,10 @@ class ResumableUploadServiceTransport(abc.ABC):
                 kwargs["kind"] = kind
             return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
         # Fallback for older runtime versions of google-api-core:
-        # 1. Strip tracing-only arguments (client_options, method_name, is_streaming)
-        #    which were added in the universal tracing release.
-        # 2. Preserve `kind` if supported by the installed google-api-core version.
-        #    - Modern versions (>= 2.36.0 or >= 2.29.0) accept `kind`.
-        #    - Ancient versions (< 2.29.0) do not accept `kind`.
-        #    This preserves the Generation 2 fix from PR #2111 where passing `kind`
-        #    is necessary to prevent REST transports from falling back to gRPC wrapping.
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
         for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
 
