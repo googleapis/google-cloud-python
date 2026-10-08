@@ -242,6 +242,28 @@ class TestTransaction(OpenTelemetryBase):
         return_value="global",
     )
     @CrossSync.pytest
+    async def test_rollback_w_grpc_error(self, mock_region):
+        from google.api_core.exceptions import Unknown
+
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        err = Unknown("grpc error")
+        database.spanner_api.rollback.side_effect = err
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = TRANSACTION_ID
+
+        with pytest.raises(Unknown):
+            await transaction.rollback()
+
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
+        self.assertEqual(getattr(err, "request_id", None), req_id)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    @CrossSync.pytest
     async def test_rollback_ok(self, mock_region):
         from google.protobuf.empty_pb2 import Empty
 
@@ -279,6 +301,47 @@ class TestTransaction(OpenTelemetryBase):
                 database, x_goog_spanner_request_id=req_id
             ),
         )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._async._helpers.asyncio.sleep",
+        new_callable=mock.AsyncMock,
+    )
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    @CrossSync.pytest
+    async def test_rollback_w_retry(self, mock_region, mock_sleep):
+        from google.api_core.exceptions import InternalServerError
+        from google.protobuf.empty_pb2 import Empty
+
+        empty_pb = Empty()
+        database = _Database()
+        metadata_calls = []
+
+        async def mock_rollback(session=None, transaction_id=None, metadata=None):
+            metadata_calls.append(metadata)
+            if len(metadata_calls) == 1:
+                raise InternalServerError("RST_STREAM")
+            return empty_pb
+
+        api = database.spanner_api = _FauxSpannerAPI()
+        api.rollback = mock_rollback
+
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = TRANSACTION_ID
+
+        await transaction.rollback()
+
+        self.assertTrue(transaction.rolled_back)
+        self.assertEqual(len(metadata_calls), 2)
+
+        req_id_1 = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
+        req_id_2 = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.2"
+
+        self.assertIn(("x-goog-spanner-request-id", req_id_1), metadata_calls[0])
+        self.assertIn(("x-goog-spanner-request-id", req_id_2), metadata_calls[1])
 
     @CrossSync.pytest
     async def test_commit_not_begun(self):
@@ -799,6 +862,7 @@ class TestTransaction(OpenTelemetryBase):
         timeout=gapic_v1.method.DEFAULT,
         begin=True,
         use_multiplexed=False,
+        transaction_tag=TRANSACTION_TAG,
     ):
         from google.protobuf.struct_pb2 import Struct
 
@@ -832,16 +896,11 @@ class TestTransaction(OpenTelemetryBase):
 
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction.transaction_tag = TRANSACTION_TAG
+        transaction.transaction_tag = transaction_tag
         transaction._execute_sql_request_count = count
 
         if begin:
             transaction._transaction_id = TRANSACTION_ID
-
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
 
         row_count = await transaction.execute_update(
             DML_QUERY_WITH_PARAM,
@@ -873,9 +932,13 @@ class TestTransaction(OpenTelemetryBase):
             expected_query_options = _merge_query_options(
                 expected_query_options, query_options
             )
-        expected_request_options = RequestOptions(request_options)
-        if request_options.request_tag:
-            expected_request_options.request_tag = request_options.request_tag
+        if request_options is not None:
+            expected_request_options = RequestOptions(request_options)
+            expected_request_options.transaction_tag = transaction_tag
+        elif transaction_tag is not None:
+            expected_request_options = RequestOptions(transaction_tag=transaction_tag)
+        else:
+            expected_request_options = None
 
         expected_request = ExecuteSqlRequest(
             session=self.SESSION_NAME,
@@ -903,10 +966,17 @@ class TestTransaction(OpenTelemetryBase):
         )
 
         expected_attributes = self._build_span_attributes(
-            database, **{"db.statement": DML_QUERY_WITH_PARAM}
+            database,
+            x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+            **{"db.statement": DML_QUERY_WITH_PARAM},
         )
-        if request_options.request_tag:
-            expected_attributes["request.tag"] = request_options.request_tag
+        request_tag = (
+            request_options.get("request_tag")
+            if isinstance(request_options, dict)
+            else getattr(request_options, "request_tag", None)
+        )
+        if request_tag:
+            expected_attributes["request.tag"] = request_tag
         self.assertSpanAttributes(
             "CloudSpanner.Transaction.execute_update", attributes=expected_attributes
         )
@@ -1049,6 +1119,16 @@ class TestTransaction(OpenTelemetryBase):
         return_value="global",
     )
     @CrossSync.pytest
+    async def test_execute_update_wo_request_options_and_transaction_tag(
+        self, mock_region
+    ):
+        await self._execute_update_helper(transaction_tag=None)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    @CrossSync.pytest
     async def test_execute_update_w_precommit_token(self, mock_region):
         await self._execute_update_helper(use_multiplexed=True)
 
@@ -1108,6 +1188,7 @@ class TestTransaction(OpenTelemetryBase):
         timeout=gapic_v1.method.DEFAULT,
         begin=True,
         use_multiplexed=False,
+        transaction_tag=TRANSACTION_TAG,
     ):
         from google.protobuf.struct_pb2 import Struct
         from google.rpc.status_pb2 import Status
@@ -1172,16 +1253,11 @@ class TestTransaction(OpenTelemetryBase):
 
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction.transaction_tag = TRANSACTION_TAG
+        transaction.transaction_tag = transaction_tag
         transaction._execute_sql_request_count = count
 
         if begin:
             transaction._transaction_id = TRANSACTION_ID
-
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
 
         status, row_counts = await transaction.batch_update(
             dml_statements,
@@ -1217,8 +1293,13 @@ class TestTransaction(OpenTelemetryBase):
             ExecuteBatchDmlRequest.Statement(sql=update_dml),
             ExecuteBatchDmlRequest.Statement(sql=delete_dml),
         ]
-        expected_request_options = request_options
-        expected_request_options.transaction_tag = TRANSACTION_TAG
+        if request_options is not None:
+            expected_request_options = RequestOptions(request_options)
+            expected_request_options.transaction_tag = transaction_tag
+        elif transaction_tag is not None:
+            expected_request_options = RequestOptions(transaction_tag=transaction_tag)
+        else:
+            expected_request_options = None
 
         expected_request = ExecuteBatchDmlRequest(
             session=self.SESSION_NAME,
@@ -1254,6 +1335,16 @@ class TestTransaction(OpenTelemetryBase):
     @CrossSync.pytest
     async def test_batch_update_wo_begin(self, mock_region):
         await self._batch_update_helper(begin=False)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    @CrossSync.pytest
+    async def test_batch_update_wo_request_options_and_transaction_tag(
+        self, mock_region
+    ):
+        await self._batch_update_helper(transaction_tag=None)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -1604,15 +1695,15 @@ class _FauxSpannerAPI(object):
     def __init__(self, **kwargs):
         self.__dict__.update(**kwargs)
 
-    def begin_transaction(self, session=None, options=None, metadata=None):
+    async def begin_transaction(self, session=None, options=None, metadata=None):
         self._begun = (session, options, metadata)
         return self._begin_transaction_response
 
-    def rollback(self, session=None, transaction_id=None, metadata=None):
+    async def rollback(self, session=None, transaction_id=None, metadata=None):
         self._rolled_back = (session, transaction_id, metadata)
         return self._rollback_response
 
-    def commit(
+    async def commit(
         self,
         request=None,
         metadata=None,
