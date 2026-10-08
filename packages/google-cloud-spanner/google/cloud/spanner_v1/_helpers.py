@@ -269,6 +269,8 @@ def _as_raw_pb(value, message_type):
     :rtype: :class:`~google.protobuf.message.Message` or None
     :returns: the raw protobuf message, or ``value`` unchanged.
     """
+    if value is None:
+        return None
     if isinstance(value, proto.Message):
         return type(value).pb(value)
     if isinstance(value, dict):
