@@ -73,6 +73,7 @@ def streaming_and_batching(project_id, instance_id, table_id):
         row.delete_cell(column_family_id="cell_plan", column="data_plan_01gb")
 
     batcher.mutate_rows(rows)
+    batcher.close()
 
 
 # [END bigtable_streaming_and_batching]

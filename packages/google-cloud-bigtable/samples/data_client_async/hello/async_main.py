@@ -129,6 +129,8 @@ async def main(project_id, instance_id, table_id):
         # use admin client to create the table
         print("Deleting the {} table.".format(table_id))
         admin_table.delete()
+        await table.close()
+        await client.close()
         # [END bigtable_async_hw_delete_table]
 
 
