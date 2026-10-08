@@ -1038,12 +1038,24 @@ def test_apply_channel_interceptors_invalid_type_raises():
 @pytest.mark.parametrize(
     "env_value,attempt_interconnect,expected_result",
     [
-        ("true", False, True),
-        ("TRUE", False, True),
+        ("false", True, True),
+        ("FALSE", True, True),
+        ("0", True, True),
+        ("true", False, False),
+        ("TRUE", False, False),
+        ("1", False, False),
+        ("true", None, True),
+        ("TRUE", None, True),
         (" True ", None, True),
-        ("false", True, False),
-        ("FALSE", True, False),
+        ("1", None, True),
+        ("yes", None, True),
+        ("on", None, True),
+        ("false", None, False),
+        ("FALSE", None, False),
         (" False ", None, False),
+        ("0", None, False),
+        ("no", None, False),
+        ("off", None, False),
         (None, True, True),
         (None, False, False),
         (None, None, False),
@@ -1062,7 +1074,7 @@ def test__resolve_direct_path_interconnect(
     )
 
 
-@pytest.mark.parametrize("invalid_env_value", ["invalid", "1", "0", "   ", ""])
+@pytest.mark.parametrize("invalid_env_value", ["invalid", "   ", ""])
 def test__resolve_direct_path_interconnect_invalid_raises(
     monkeypatch, invalid_env_value
 ):
@@ -1071,7 +1083,33 @@ def test__resolve_direct_path_interconnect_invalid_raises(
         ValueError,
         match=f"Invalid value for {grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV}",
     ):
-        grpc_helpers._resolve_direct_path_interconnect(False)
+        grpc_helpers._resolve_direct_path_interconnect(None)
+
+
+@pytest.mark.parametrize(
+    "target,expected_host",
+    [
+        ("storage-direct.googleapis.com:443", "storage-direct.googleapis.com"),
+        ("dns:///storage-direct.googleapis.com:443", "storage-direct.googleapis.com"),
+        (
+            "https://storage-direct.googleapis.com:443/v1",
+            "storage-direct.googleapis.com",
+        ),
+        (
+            "http://storage-direct.googleapis.com:443/v1",
+            "storage-direct.googleapis.com",
+        ),
+        (
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+            "storage-direct.googleapis.com",
+        ),
+        ("[::1]:8080", "::1"),
+        ("[invalid_ipv6", "[invalid_ipv6"),
+        ("", ""),
+    ],
+)
+def test__extract_target_host(target, expected_host):
+    assert grpc_helpers._extract_target_host(target) == expected_host
 
 
 @pytest.mark.parametrize(

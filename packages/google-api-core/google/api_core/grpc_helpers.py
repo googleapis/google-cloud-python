@@ -17,6 +17,7 @@
 import collections
 import functools
 import os
+import urllib.parse
 import warnings
 from typing import (
     Callable,
@@ -36,38 +37,57 @@ import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.protobuf
 import grpc
-
 from google.api_core import exceptions, general_helpers
+from google.api_core._feature_gating_helpers import _strtobool
 
 _DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT"
 
 
 def _resolve_direct_path_interconnect(
-    attempt_direct_path_xds_over_interconnect: Optional[bool],
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = None,
 ) -> bool:
-    """Resolves whether DirectPath over Interconnect is enabled."""
+    """Resolves whether DirectPath over Interconnect is enabled.
+
+    Args:
+        attempt_direct_path_xds_over_interconnect (Optional[bool]): Programmatic
+            override. If specified, this value takes precedence over environment
+            variables. If None, falls back to the environment variable.
+
+    Returns:
+        bool: True if DirectPath over Interconnect is enabled, False otherwise.
+
+    Raises:
+        ValueError: If the environment variable contains an invalid boolean value.
+    """
+    if attempt_direct_path_xds_over_interconnect is not None:
+        return attempt_direct_path_xds_over_interconnect
+
     env_val = os.environ.get(_DIRECT_PATH_INTERCONNECT_ENV)
     if env_val is not None:
-        env_val_clean = env_val.strip().lower()
-        if env_val_clean == "true":
-            return True
-        elif env_val_clean == "false":
-            return False
-        else:
+        try:
+            val = _strtobool(env_val)
+        except ValueError:
+            val = None
+        if val is None:
             raise ValueError(
-                f"Invalid value for {_DIRECT_PATH_INTERCONNECT_ENV}: {env_val}"
+                f"Invalid value for {_DIRECT_PATH_INTERCONNECT_ENV}: {env_val!r}"
             )
-    return bool(attempt_direct_path_xds_over_interconnect)
+        return val
+
+    return False
 
 
 def _extract_target_host(target: str) -> str:
     """Extracts the host from a target URI or address."""
-    clean_host = target
+    stripped_target = target
     for prefix in ("google-c2p:///", "dns:///", "https://", "http://"):
-        if clean_host.startswith(prefix):
-            clean_host = clean_host[len(prefix) :]
+        if target.startswith(prefix):
+            stripped_target = target.removeprefix(prefix)
             break
-    return clean_host.split("?", 1)[0].split("/", 1)[0].split(":", 1)[0]
+    try:
+        return urllib.parse.urlsplit(f"//{stripped_target}").hostname or target
+    except ValueError:
+        return target
 
 
 def _extract_direct_path_authority(target: str) -> Optional[str]:
@@ -75,7 +95,7 @@ def _extract_direct_path_authority(target: str) -> Optional[str]:
     clean_host = _extract_target_host(target)
     suffix = "-direct.googleapis.com"
     if clean_host.endswith(suffix):
-        service_prefix = clean_host[: -len(suffix)]
+        service_prefix = clean_host.removesuffix(suffix)
         if service_prefix:
             return f"{service_prefix}.googleapis.com"
     return None
@@ -366,7 +386,7 @@ def _setup_direct_path_and_credentials(
     default_scopes=None,
     default_host=None,
     attempt_direct_path: Optional[bool] = False,
-    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = None,
     **kwargs,
 ):
     """Configures credentials, options, and target for DirectPath and Interconnect.
@@ -390,7 +410,10 @@ def _setup_direct_path_and_credentials(
         attempt_direct_path (Optional[bool]): If set, Direct Path will be attempted.
         attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
             DirectPath over Cloud Interconnect will be attempted using standard
-            TLS credentials and ``?force-xds`` C2P target resolution.
+            TLS credentials and ``?force-xds`` C2P target resolution. If None
+            (default), the setting is resolved from the
+            ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT``
+            environment variable.
         kwargs: Additional key-word args passed to the channel creation function.
 
     Returns:
@@ -403,9 +426,7 @@ def _setup_direct_path_and_credentials(
         ValueError: If `ssl_credentials` is set and `attempt_direct_path` is
             set to `True` without `attempt_direct_path_xds_over_interconnect`.
     """
-    if attempt_direct_path_xds_over_interconnect:
-        use_dp_interconnect = _resolve_direct_path_interconnect(True)
-    elif attempt_direct_path:
+    if attempt_direct_path or attempt_direct_path_xds_over_interconnect is not None:
         use_dp_interconnect = _resolve_direct_path_interconnect(
             attempt_direct_path_xds_over_interconnect
         )
@@ -451,8 +472,13 @@ def _setup_direct_path_and_credentials(
         )
     elif not target.startswith("google-c2p:///"):
         clean_host = _extract_target_host(target)
-        if clean_host.endswith("-direct.googleapis.com"):
-            target = target.replace("-direct.googleapis.com", ".googleapis.com")
+        if clean_host.endswith("-direct.googleapis.com") and len(clean_host) > len(
+            "-direct.googleapis.com"
+        ):
+            new_host = (
+                clean_host.removesuffix("-direct.googleapis.com") + ".googleapis.com"
+            )
+            target = target.replace(clean_host, new_host, 1)
 
     return target, composite_credentials, kwargs
 
@@ -468,7 +494,7 @@ def create_channel(
     default_host=None,
     compression=None,
     attempt_direct_path: Optional[bool] = False,
-    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = None,
     **kwargs,
 ):
     """Create a secure channel with credentials.
@@ -521,7 +547,10 @@ def create_channel(
               result in `ValueError` as this combination  is not yet supported.
         attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
             DirectPath over Cloud Interconnect will be attempted using standard
-            TLS credentials and ``?force-xds`` C2P target resolution.
+            TLS credentials and ``?force-xds`` C2P target resolution. If None
+            (default), the setting is resolved from the
+            ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT``
+            environment variable.
 
         kwargs: Additional key-word args passed to
             :func:`grpc.secure_channel`.
@@ -580,7 +609,7 @@ def _modify_target_for_direct_path(
     # will be used instead.
     for scheme_prefix in ("dns:///", "https://", "http://"):
         if target.startswith(scheme_prefix):
-            target = target[len(scheme_prefix) :]
+            target = target.removeprefix(scheme_prefix)
             break
 
     direct_path_separator = ":///"

@@ -219,7 +219,7 @@ def create_channel(
     default_host=None,
     compression=None,
     attempt_direct_path: Optional[bool] = False,
-    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = None,
     **kwargs,
 ):
     """Create an AsyncIO secure channel with credentials.
@@ -273,7 +273,10 @@ def create_channel(
               result in `ValueError` as this combination  is not yet supported.
         attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
             DirectPath over Cloud Interconnect will be attempted using standard
-            TLS credentials and ``?force-xds`` C2P target resolution.
+            TLS credentials and ``?force-xds`` C2P target resolution. If None
+            (default), the setting is resolved from the
+            ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT``
+            environment variable.
 
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
