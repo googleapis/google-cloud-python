@@ -234,30 +234,73 @@ def _get_tracer_provider(
 try:
     # flake8: 'grpc' is imported under TYPE_CHECKING for static type annotations; imported here conditionally for runtime interceptor base classes
     import grpc  # noqa: F811
-
-    _GRPC_INTERCEPTOR_BASE = (
-        grpc.UnaryUnaryClientInterceptor,
-        grpc.UnaryStreamClientInterceptor,
-        grpc.StreamUnaryClientInterceptor,
-        grpc.StreamStreamClientInterceptor,
+    from grpc import (
+        StreamStreamClientInterceptor as _SyncStreamStreamClientInterceptor,
+    )
+    from grpc import (
+        StreamUnaryClientInterceptor as _SyncStreamUnaryClientInterceptor,
+    )
+    from grpc import (
+        UnaryStreamClientInterceptor as _SyncUnaryStreamClientInterceptor,
+    )
+    from grpc import (
+        UnaryUnaryClientInterceptor as _SyncUnaryUnaryClientInterceptor,
     )
 except ImportError:  # pragma: NO COVER
-    _GRPC_INTERCEPTOR_BASE = (object,)  # type: ignore[assignment]
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _SyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _SyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _SyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
+
 
 try:
-    import grpc.aio
-
-    _ASYNC_GRPC_INTERCEPTOR_BASE = (
-        grpc.aio.UnaryUnaryClientInterceptor,
-        grpc.aio.UnaryStreamClientInterceptor,
-        grpc.aio.StreamUnaryClientInterceptor,
-        grpc.aio.StreamStreamClientInterceptor,
+    from grpc.aio import (
+        StreamStreamClientInterceptor as _AsyncStreamStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        StreamUnaryClientInterceptor as _AsyncStreamUnaryClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryStreamClientInterceptor as _AsyncUnaryStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryUnaryClientInterceptor as _AsyncUnaryUnaryClientInterceptor,
     )
 except ImportError:  # pragma: NO COVER
-    _ASYNC_GRPC_INTERCEPTOR_BASE = (object,)  # type: ignore[assignment]
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _AsyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _AsyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _AsyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    # mypy: Fallback dummy classes when optional grpc is not installed, preventing duplicate base class errors
+    class _AsyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
 
 
-class _SuppressingClientInterceptor(*_GRPC_INTERCEPTOR_BASE):
+class _SuppressingClientInterceptor(
+    _SyncUnaryUnaryClientInterceptor,
+    _SyncUnaryStreamClientInterceptor,
+    _SyncStreamUnaryClientInterceptor,
+    _SyncStreamStreamClientInterceptor,
+):
     """Client interceptor that suppresses redundant downstream generic auto-instrumentation spans.
 
     When users enable global OpenTelemetry gRPC auto-instrumentation (e.g. GrpcInstrumentorClient),
@@ -295,7 +338,12 @@ class _SuppressingClientInterceptor(*_GRPC_INTERCEPTOR_BASE):
             return continuation(client_call_details, request_iterator)
 
 
-class _AsyncSuppressingClientInterceptor(*_ASYNC_GRPC_INTERCEPTOR_BASE):
+class _AsyncSuppressingClientInterceptor(
+    _AsyncUnaryUnaryClientInterceptor,
+    _AsyncUnaryStreamClientInterceptor,
+    _AsyncStreamUnaryClientInterceptor,
+    _AsyncStreamStreamClientInterceptor,
+):
     """AsyncIO client interceptor that suppresses redundant downstream generic auto-instrumentation spans."""
 
     def __init__(self) -> None:
