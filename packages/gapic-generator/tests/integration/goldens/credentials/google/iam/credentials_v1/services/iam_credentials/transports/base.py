@@ -164,8 +164,13 @@ class IAMCredentialsTransport(abc.ABC):
         for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
 
-        if _WRAP_METHOD_SUPPORTS_KIND and self.kind:
-            kwargs["kind"] = self.kind
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
         else:
             kwargs.pop("kind", None)
 
@@ -198,8 +203,13 @@ class IAMCredentialsTransport(abc.ABC):
         for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
 
-        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and self.kind:
-            kwargs["kind"] = self.kind
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
         else:
             kwargs.pop("kind", None)
 

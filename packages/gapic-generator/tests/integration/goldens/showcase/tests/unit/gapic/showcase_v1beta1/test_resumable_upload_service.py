@@ -4482,8 +4482,7 @@ def test_api_key_credentials(client_class, transport_class):
             )
 
 
-def test_resumable_upload_service_base_transport_wrap_method_modern(monkeypatch):
-    """Test wrap_method with modern google-api-core (supports tracing)."""
+def test_resumable_upload_service_base_transport_wrap_method_modern_api_core(monkeypatch):
     monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_TRACING", True)
     # 1. Concrete transport: passes client_options=None and kind="grpc"
     with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
@@ -4506,8 +4505,7 @@ def test_resumable_upload_service_base_transport_wrap_method_modern(monkeypatch)
         assert "client_options" in mock_wrap.call_args.kwargs
 
 
-def test_resumable_upload_service_base_transport_wrap_method_fallbacks(monkeypatch):
-    """Test wrap_method defensive fallbacks with older google-api-core versions."""
+def test_resumable_upload_service_base_transport_wrap_method_older_api_core_fallbacks(monkeypatch):
     monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_TRACING", False)
     with mock.patch.object(transports.base.gapic_v1.method, "wrap_method"):
         transport = transports.ResumableUploadServiceGrpcTransport(
@@ -4519,6 +4517,23 @@ def test_resumable_upload_service_base_transport_wrap_method_fallbacks(monkeypat
     with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
         func = mock.MagicMock()
         transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        base_transport = transports.ResumableUploadServiceTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_method(
             func,
             client_options="fake_options",
             method_name="fake_method",
@@ -4546,9 +4561,25 @@ def test_resumable_upload_service_base_transport_wrap_method_fallbacks(monkeypat
         assert "method_name" not in kwargs
         assert "is_streaming" not in kwargs
 
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        base_transport = transports.ResumableUploadServiceTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
 
-def test_resumable_upload_service_base_transport_wrap_async_method_modern(monkeypatch):
-    """Test _wrap_async_method with modern google-api-core (supports tracing)."""
+
+def test_resumable_upload_service_base_transport_wrap_async_method_modern_api_core(monkeypatch):
     monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_TRACING", True)
     # 1. Concrete transport: passes client_options=None and kind="grpc_asyncio"
     with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
@@ -4571,8 +4602,7 @@ def test_resumable_upload_service_base_transport_wrap_async_method_modern(monkey
         assert "client_options" in mock_wrap.call_args.kwargs
 
 
-def test_resumable_upload_service_base_transport_wrap_async_method_fallbacks(monkeypatch):
-    """Test _wrap_async_method defensive fallbacks with older google-api-core versions."""
+def test_resumable_upload_service_base_transport_wrap_async_method_older_api_core_fallbacks(monkeypatch):
     monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_TRACING", False)
     with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method"):
         transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
@@ -4584,6 +4614,23 @@ def test_resumable_upload_service_base_transport_wrap_async_method_fallbacks(mon
     with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
         func = mock.MagicMock()
         transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        base_transport = transports.ResumableUploadServiceTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_async_method(
             func,
             client_options="fake_options",
             method_name="fake_method",
@@ -4607,6 +4654,23 @@ def test_resumable_upload_service_base_transport_wrap_async_method_fallbacks(mon
         )
         kwargs = mock_wrap.call_args.kwargs
         assert kwargs.get("kind") == "grpc_asyncio"
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        base_transport = transports.ResumableUploadServiceTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
         assert "client_options" not in kwargs
         assert "method_name" not in kwargs
         assert "is_streaming" not in kwargs
