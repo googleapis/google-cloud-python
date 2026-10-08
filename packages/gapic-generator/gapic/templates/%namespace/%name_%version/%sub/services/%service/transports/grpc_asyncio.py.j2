@@ -435,6 +435,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                                 host=transport._host,
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
+                                client_options=getattr(transport, "_client_options", None),
                             )
                         return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _AsyncRestStub()

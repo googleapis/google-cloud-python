@@ -426,6 +426,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
                                 client_cert_source_for_mtls=transport._client_cert_source_for_mtls,
+                                client_options=getattr(transport, "_client_options", None),
                             )
                         return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _RestStub()
