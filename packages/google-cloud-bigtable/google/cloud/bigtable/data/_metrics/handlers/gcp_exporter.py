@@ -18,6 +18,7 @@ import logging
 import time
 from collections import defaultdict
 
+import google.auth.credentials
 from google.api.distribution_pb2 import Distribution
 from google.api.metric_pb2 import Metric as GMetric
 from google.api.metric_pb2 import MetricDescriptor
@@ -116,6 +117,53 @@ def _partition_attributes(
     return resource_labels, metric_labels
 
 
+# scope required to call CreateServiceTimeSeries
+_MONITORING_WRITE_SCOPE = "https://www.googleapis.com/auth/monitoring.write"
+# any one of these scopes is sufficient to write metrics to Cloud Monitoring
+_MONITORING_SCOPES = frozenset(
+    {
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/monitoring",
+        _MONITORING_WRITE_SCOPE,
+    }
+)
+
+
+def _get_monitoring_credentials(
+    credentials: google.auth.credentials.Credentials | None,
+) -> google.auth.credentials.Credentials | None:
+    """
+    Return credentials that are able to authenticate against Cloud Monitoring.
+
+    The metrics exporter shares the credentials of the Bigtable client it belongs to.
+    If those credentials are already pinned to a fixed set of scopes that doesn't
+    cover Cloud Monitoring (for example, credentials created by the legacy
+    ``google.cloud.bigtable.Client``, which only requests Bigtable scopes),
+    ``MetricServiceClient`` can't add its own default scopes to them, and every
+    export would be rejected as UNAUTHENTICATED. In that case, a copy of the
+    credentials scoped to ``monitoring.write`` is returned instead. The original
+    credentials object (and the scopes used for Bigtable traffic) are left untouched.
+
+    Credentials that don't support scoping (e.g. end-user credentials), or that still
+    accept default scopes, are returned unchanged.
+
+    Args:
+        credentials: the credentials used by the Bigtable client, or None to use
+            application default credentials
+    Returns:
+        credentials suitable for the Cloud Monitoring client
+    """
+    if credentials is None:
+        return None
+    if (
+        isinstance(credentials, google.auth.credentials.Scoped)
+        and not credentials.requires_scopes
+        and not _MONITORING_SCOPES.intersection(credentials.scopes or ())
+    ):
+        return credentials.with_scopes([_MONITORING_WRITE_SCOPE])
+    return credentials
+
+
 class GoogleCloudMetricsHandler(OpenTelemetryMetricsHandler):
     """
     Maintains an internal set of OpenTelemetry metrics for the Bigtable client library,
@@ -168,6 +216,12 @@ class BigtableMetricsExporter(MetricExporter):
 
     def __init__(self, *client_args, **client_kwargs):
         super().__init__()
+        if client_kwargs.get("credentials") is not None:
+            # the exporter shares the Bigtable client's credentials. Make sure
+            # they are able to authenticate against Cloud Monitoring
+            client_kwargs["credentials"] = _get_monitoring_credentials(
+                client_kwargs["credentials"]
+            )
         self.client = MetricServiceClient(*client_args, **client_kwargs)
         self.prefix = "bigtable.googleapis.com/internal/client"
         # set after a non-retryable authentication/authorization failure.
