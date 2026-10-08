@@ -32,6 +32,7 @@ from google.cloud.spanner_v1._helpers import (
     _get_retry_delay,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
+    _resource_info_from_database,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import (
     add_span_event,
@@ -94,11 +95,7 @@ class Session(object):
     @property
     def _resource_info(self):
         """Resource information for metrics labels."""
-        return {
-            "project": self._database._instance._client.project,
-            "instance": self._database._instance.instance_id,
-            "database": self._database.database_id,
-        }
+        return _resource_info_from_database(self._database)
 
     def __lt__(self, other):
         return self._session_id < other._session_id
@@ -352,7 +349,10 @@ class Session(object):
         metadata = _metadata_with_prefix(database.name)
         nth_request = database._next_nth_request
 
-        with trace_call("CloudSpanner.Session.ping", self) as span:
+        with (
+            trace_call("CloudSpanner.Session.ping", self) as span,
+            MetricsCapture(self._resource_info),
+        ):
             call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )

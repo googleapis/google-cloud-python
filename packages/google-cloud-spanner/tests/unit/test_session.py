@@ -675,6 +675,43 @@ class TestSession(OpenTelemetryBase):
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
+    def test_ping_invokes_metrics_capture(self, mock_region):
+        gax_api = self._make_spanner_api()
+        gax_api.execute_sql.return_value = "1"
+        database = self._make_database()
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        with mock.patch(
+            "google.cloud.spanner_v1.session.MetricsCapture"
+        ) as mock_capture:
+            session.ping()
+            mock_capture.assert_called_once_with(session._resource_info)
+
+    def test_resource_info_fallback_when_database_lacks_resource_info(self):
+        database = mock.Mock(spec=["_instance", "database_id"])
+        database.database_id = "test-db"
+        instance = mock.Mock(spec=["_client", "instance_id"])
+        instance.instance_id = "test-inst"
+        client = mock.Mock(spec=["project"])
+        client.project = "test-proj"
+        instance._client = client
+        database._instance = instance
+
+        session = self._make_one(database)
+        self.assertEqual(
+            session._resource_info,
+            {"project": "test-proj", "instance": "test-inst", "database": "test-db"},
+        )
+
+        session._database = None
+        self.assertIsNone(session._resource_info)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
     def test_ping_miss(self, mock_region):
         gax_api = self._make_spanner_api()
         gax_api.execute_sql.side_effect = NotFound("testing")

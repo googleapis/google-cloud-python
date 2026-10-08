@@ -69,16 +69,6 @@ class _BatchBase(_SessionWrapper):
         self.commit_stats: Optional[CommitResponse.CommitStats] = None
         self._client_context = _validate_client_context(client_context)
 
-    @property
-    def _resource_info(self):
-        """Resource information for metrics labels."""
-        database = self._session._database
-        return {
-            "project": database._instance._client.project,
-            "instance": database._instance.instance_id,
-            "database": database.database_id,
-        }
-
     def insert(self, table, columns, values):
         """Insert one or more new table rows.
 
@@ -351,16 +341,6 @@ class MutationGroups(_SessionWrapper):
         self._mutation_groups: List[MutationGroup] = []
         self.committed: bool = False
         self._client_context = _validate_client_context(client_context)
-
-    @property
-    def _resource_info(self):
-        """Resource information for metrics labels."""
-        database = self._session._database
-        return {
-            "project": database._instance._client.project,
-            "instance": database._instance.instance_id,
-            "database": database.database_id,
-        }
 
     def group(self):
         """Returns a new `MutationGroup` to which mutations can be added."""
