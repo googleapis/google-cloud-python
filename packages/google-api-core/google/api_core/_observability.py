@@ -405,7 +405,8 @@ def get_otel_interceptor(
         if grpc is not None:
             try:
                 channel = grpc.intercept_channel(channel, suppressor)
-            except (AttributeError, TypeError):
+            except (AttributeError, TypeError):  # pragma: NO COVER
+                # Fallback if grpc lacks intercept_channel or custom channel type rejects it.
                 pass
         return otel_grpc.intercept_channel(channel, interceptor)
 
