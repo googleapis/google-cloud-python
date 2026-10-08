@@ -328,18 +328,19 @@ def system_emulated(session):
         os.killpg(os.getpgid(p.pid), signal.SIGKILL)
 
 
-# Run the system/emulator tests
+# Run the system/emulator/samples tests
 @nox.session(py="3.12")
 @nox.parametrize(
     "test_type",
-    ["system_default", "system_emulated"],
+    ["system_default", "system_emulated", "samples"],
 )
 def system(session, test_type):
-    """Run the system/emulator tests."""
-    # system and emulator tests
+    """Run the system/emulator/samples tests."""
+    # system, emulator, and sample tests
     test_map = {
         "system_default": system_default,
         "system_emulated": system_emulated,
+        "samples": samples,
     }
     test_map[test_type](session)
 
