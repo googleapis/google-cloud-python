@@ -14,8 +14,6 @@
 
 """User-friendly container for Google Cloud Bigtable RowSet"""
 
-from google.cloud._helpers import _to_bytes
-
 from google.cloud.bigtable.data.read_rows_query import (
     ReadRowsQuery,
 )
@@ -131,18 +129,6 @@ class RowSet(object):
         self.add_row_range_from_keys(
             row_key_prefix.encode("utf-8"), end_key.encode("utf-8")
         )
-
-    def _update_message_request(self, message):
-        """Add row keys and row range to given request message
-
-        :type message: class:`data_messages_v2_pb2.ReadRowsRequest`
-        :param message: The ``ReadRowsRequest`` protobuf
-        """
-        for each in self._read_rows_query.row_keys:
-            message.rows.row_keys._pb.append(_to_bytes(each))
-
-        for each in self._read_rows_query.row_ranges:
-            message.rows.row_ranges.append(each._to_pb())
 
 
 class RowRange(_MappableAttributesMixin, BaseRowRange):

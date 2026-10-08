@@ -88,6 +88,11 @@
                 "calendar_mode"
               ]
             },
+            "CalendarModeExtension": {
+              "methods": [
+                "calendar_mode_extension"
+              ]
+            },
             "Capacity": {
               "methods": [
                 "capacity"
@@ -1232,6 +1237,11 @@
               "methods": [
                 "get"
               ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
             }
           }
         }
@@ -2261,6 +2271,11 @@
             "SetLabels": {
               "methods": [
                 "set_labels"
+              ]
+            },
+            "SetName": {
+              "methods": [
+                "set_name"
               ]
             },
             "TestIamPermissions": {
@@ -4882,6 +4897,11 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -4900,6 +4920,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "TestIamPermissions": {
@@ -5943,6 +5968,11 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -5961,6 +5991,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "TestIamPermissions": {

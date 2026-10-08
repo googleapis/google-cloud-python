@@ -50,6 +50,7 @@ from .types.adb_service import (
 from .types.service import (
     AndroidDevice,
     CancelDeviceSessionRequest,
+    ClientInfo,
     CreateDeviceSessionRequest,
     DeviceSession,
     GetDeviceSessionRequest,
@@ -63,6 +64,7 @@ __all__ = (
     "AdbMessage",
     "AndroidDevice",
     "CancelDeviceSessionRequest",
+    "ClientInfo",
     "Close",
     "CreateDeviceSessionRequest",
     "DeviceMessage",

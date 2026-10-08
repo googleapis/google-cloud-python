@@ -373,6 +373,22 @@ class _BaseBigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             ]
             return http_options
 
+    class _BaseGetMemoryLayer:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/instances/*/clusters/*/memoryLayer}",
+                },
+            ]
+            return http_options
+
     class _BaseListAppProfiles:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -465,6 +481,22 @@ class _BaseBigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{parent=projects/*/instances/*}/materializedViews",
+                },
+            ]
+            return http_options
+
+    class _BaseListMemoryLayers:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/instances/*/clusters/*}/memoryLayers",
                 },
             ]
             return http_options
@@ -642,6 +674,23 @@ class _BaseBigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                     "method": "patch",
                     "uri": "/v2/{materialized_view.name=projects/*/instances/*/materializedViews/*}",
                     "body": "materialized_view",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateMemoryLayer:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{memory_layer.name=projects/*/instances/*/clusters/*/memoryLayer}",
+                    "body": "memory_layer",
                 },
             ]
             return http_options

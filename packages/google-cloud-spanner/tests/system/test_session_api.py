@@ -754,11 +754,6 @@ def test_transaction_read_and_insert_then_rollback(
                     ),
                 },
                 {
-                    "name": "CloudSpanner.Session.run_in_transaction",
-                    "status": ot_helpers.StatusCode.ERROR,
-                    "attributes": _make_attributes(db_name),
-                },
-                {
                     "name": "CloudSpanner.Database.run_in_transaction",
                     "status": ot_helpers.StatusCode.ERROR,
                     "attributes": _make_attributes(db_name),
@@ -835,13 +830,6 @@ def test_transaction_read_and_insert_then_rollback(
                     "attributes": _make_attributes(
                         db_name, x_goog_spanner_request_id=_build_request_id()
                     ),
-                }
-            )
-            expected_span_properties.append(
-                {
-                    "name": "CloudSpanner.Session.run_in_transaction",
-                    "status": ot_helpers.StatusCode.ERROR,
-                    "attributes": _make_attributes(db_name),
                 }
             )
             expected_span_properties.append(
@@ -1428,12 +1416,11 @@ def test_transaction_batch_update_w_parent_span(
         else "CloudSpanner.CreateSession",
         "CloudSpanner.Batch.commit",
         "Test Span",
-        "CloudSpanner.Session.run_in_transaction",
         "CloudSpanner.DMLTransaction",
         "CloudSpanner.Transaction.commit",
     ]
 
-    prefix_len = 4
+    prefix_len = 3
     assert got_span_names[:prefix_len] == expected_span_names[:prefix_len]
     remaining = got_span_names[prefix_len:]
     assert len(remaining) >= 2
@@ -1448,9 +1435,7 @@ def test_transaction_batch_update_w_parent_span(
     # |------CloudSpanner.CreateSession--------
     #
     # |---Test Span----------------------------|
-    #  |>--Session.run_in_transaction----------|
     #     |---------DMLTransaction-------|
-    #
     #               |>----Transaction.commit---|
 
     # CreateSession should have a trace of its own, with no children
@@ -1467,17 +1452,10 @@ def test_transaction_batch_update_w_parent_span(
             assert span.context.trace_id == parent_span.context.trace_id
             assert span.parent.span_id == parent_span.context.span_id
 
-    # [CreateSession --> Batch] should have their own trace.
-    session_run_in_txn_span = span_list[3]
-    children_of_test_span = [session_run_in_txn_span]
+    dml_txn_span = span_list[3]
+    batch_commit_txn_span = span_list[4]
+    children_of_test_span = [dml_txn_span, batch_commit_txn_span]
     assert_parent_and_children(test_span, children_of_test_span)
-
-    dml_txn_span = span_list[4]
-    batch_commit_txn_span = span_list[5]
-    children_of_session_run_in_txn_span = [dml_txn_span, batch_commit_txn_span]
-    assert_parent_and_children(
-        session_run_in_txn_span, children_of_session_run_in_txn_span
-    )
 
 
 def test_execute_partitioned_dml(

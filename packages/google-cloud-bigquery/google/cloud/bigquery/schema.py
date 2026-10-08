@@ -15,15 +15,13 @@
 """Schemas for BigQuery tables / queries."""
 
 from __future__ import annotations
+
 import enum
 import typing
-from typing import Any, cast, Dict, Iterable, Optional, Union, Sequence
+from typing import Any, Dict, Iterable, Optional, Sequence, Union, cast
 
-from google.cloud.bigquery import _helpers
-from google.cloud.bigquery import standard_sql
-from google.cloud.bigquery import enums
+from google.cloud.bigquery import _helpers, enums, standard_sql
 from google.cloud.bigquery.enums import StandardSqlTypeNames
-
 
 _STRUCT_TYPES = ("RECORD", "STRUCT")
 
@@ -108,6 +106,43 @@ class FieldElementType(object):
             Dict[str, str]: Field element type represented as an API resource.
         """
         return self._properties
+
+    def _key(self):
+        """A tuple key that uniquely describes this FieldElementType.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            Tuple: The contents of this :class:`~google.cloud.bigquery.schema.FieldElementType`.
+        """
+        return (self.element_type,)
+
+    def __eq__(self, other):
+        if not isinstance(other, FieldElementType):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(element_type={self.element_type!r})"
+
+
+class _SchemaFieldKey(typing.NamedTuple):
+    name: str
+    field_type: str
+    mode: str
+    default_value_expression: Optional[str]
+    description: Optional[str]
+    fields: tuple
+    policy_tags: Optional[tuple[str, ...]]
+    timestamp_precision: Optional[int]
+    rounding_mode: Optional[str]
+    foreign_type_definition: Optional[str]
 
 
 class SchemaField(object):
@@ -436,6 +471,9 @@ class SchemaField(object):
                     field_type = f"{field_type}({self.precision}, {self.scale})"
                 else:
                     field_type = f"{field_type}({self.precision})"
+        elif field_type == "RANGE":
+            if self.range_element_type is not None:
+                field_type = f"{field_type}<{self.range_element_type.element_type}>"
 
         policy_tags = (
             None if self.policy_tags is None else tuple(sorted(self.policy_tags.names))
@@ -443,16 +481,24 @@ class SchemaField(object):
 
         timestamp_precision = self._properties.get("timestampPrecision")
 
-        return (
-            self.name,
-            field_type,
+        rounding_mode = (
+            self.rounding_mode.value
+            if isinstance(self.rounding_mode, enums.RoundingMode)
+            else self.rounding_mode
+        )
+
+        return _SchemaFieldKey(
+            name=self.name,
+            field_type=field_type,
             # Mode is always str, if not given it defaults to a str value
-            self.mode.upper(),  # pytype: disable=attribute-error
-            self.default_value_expression,
-            self.description,
-            self.fields,
-            policy_tags,
-            timestamp_precision,
+            mode=self.mode.upper(),  # pytype: disable=attribute-error
+            default_value_expression=self.default_value_expression,
+            description=self.description,
+            fields=self.fields,
+            policy_tags=policy_tags,
+            timestamp_precision=timestamp_precision,
+            rounding_mode=rounding_mode,
+            foreign_type_definition=self.foreign_type_definition,
         )
 
     def to_standard_sql(self) -> standard_sql.StandardSqlField:
@@ -503,9 +549,11 @@ class SchemaField(object):
         return hash(self._key())
 
     def __repr__(self):
-        *initial_tags, policy_tags, timestamp_precision_tag = self._key()
-        policy_tags_inst = None if policy_tags is None else PolicyTagList(policy_tags)
-        adjusted_key = (*initial_tags, policy_tags_inst, timestamp_precision_tag)
+        key = self._key()
+        policy_tags_inst = (
+            None if key.policy_tags is None else PolicyTagList(key.policy_tags)
+        )
+        adjusted_key = tuple(key._replace(policy_tags=policy_tags_inst))
         return f"{self.__class__.__name__}{adjusted_key}"
 
 

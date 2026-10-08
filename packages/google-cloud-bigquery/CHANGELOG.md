@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.46.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.0...google-cloud-bigquery-v3.46.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* **bigquery:** account for range element type, rounding mode, and foreign type in SchemaField equality ([#18540](https://github.com/googleapis/google-cloud-python/issues/18540)) ([053dbc9](https://github.com/googleapis/google-cloud-python/commit/053dbc9872ad3f26e10c311ff801b1a85faf1c32))
+
+## [3.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.2...google-cloud-bigquery-v3.46.0) (2026-10-01)
+
+
+### Features
+
+* **bigquery:** Declare Python 3.15 support ([#18525](https://github.com/googleapis/google-cloud-python/issues/18525)) ([6ed8447](https://github.com/googleapis/google-cloud-python/commit/6ed844782d453f1d1ebd3f70f8f0484254ff15b1))
+
+
+### Bug Fixes
+
+* repair broken and stale repository URLs in package metadata ([#18498](https://github.com/googleapis/google-cloud-python/issues/18498)) ([54dbd12](https://github.com/googleapis/google-cloud-python/commit/54dbd12056abcfc007b5b76006751c3b11bea99f)), refs [#18497](https://github.com/googleapis/google-cloud-python/issues/18497)
+
+## [3.45.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.1...google-cloud-bigquery-v3.45.2) (2026-09-17)
+
+
+### Bug Fixes
+
+* disambiguate google-cloud-bigquery `to_dataframe` usage from `pandas-gbq` in ua. ([#18369](https://github.com/googleapis/google-cloud-python/issues/18369)) ([0d7d59c](https://github.com/googleapis/google-cloud-python/commit/0d7d59c771ce1b0084cb8c18e4713f37dc73821d))
+
 ## [3.45.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.0...google-cloud-bigquery-v3.45.1) (2026-09-14)
 
 

@@ -1502,6 +1502,8 @@ class TestDbApi:
             ca_certificate=_helpers.CA_CERTIFICATE,
             client_certificate=_helpers.CLIENT_CERTIFICATE,
             client_key=_helpers.CLIENT_KEY,
+            username=_helpers.SPANNER_OMNI_USER,
+            password=_helpers.SPANNER_OMNI_PASSWORD,
         )
         assert (
             conn.instance._client._client_info.user_agent

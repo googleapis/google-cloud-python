@@ -49,14 +49,7 @@ CORE_PACKAGES = {
 }
 
 # Packages temporarily excluded from CI test execution.
-# NOTE: 'sqlalchemy-bigquery' is temporarily excluded to allow testing in this PR
-# to complete due to an upstream packaging issue in sqlalchemy (duplicate normalized
-# extra name 'mssql-pymssql' under strict uv PEP 621 parsing in sqlalchemy==2.1.0rc2,
-# pulled via global UV_PRERELEASE=allow). Awaiting team feedback on a long-term
-# solution (e.g. package migration out of the monorepo or adjusting workflow settings).
-EXCLUDED_PACKAGES = {
-    "sqlalchemy-bigquery",
-}
+EXCLUDED_PACKAGES = set()
 
 
 def get_package_directories():
@@ -148,8 +141,9 @@ def get_packages_to_test():
     build_type = os.environ.get("BUILD_TYPE", "presubmit")
     target_branch = os.environ.get("TARGET_BRANCH", "main")
     test_all_packages = os.environ.get("TEST_ALL_PACKAGES", "false").lower() == "true"
+    handwritten_only = os.environ.get("HANDWRITTEN_ONLY", "false").lower() == "true"
 
-    all_packages = get_packages()
+    all_packages = get_packages(handwritten_only=handwritten_only)
 
     if test_all_packages:
         return all_packages
@@ -227,7 +221,8 @@ def group_packages(packages_map):
 
     # Dynamically determine target weight to balance across max shards.
     max_shards = int(os.environ.get("MAX_SHARDS", 16))
-    target_weight = max(10, math.ceil(total_weight / max_shards))
+    min_shard_weight = int(os.environ.get("MIN_SHARD_WEIGHT", 10))
+    target_weight = max(min_shard_weight, math.ceil(total_weight / max_shards))
 
     shards_list = []
     current_shard_items = []

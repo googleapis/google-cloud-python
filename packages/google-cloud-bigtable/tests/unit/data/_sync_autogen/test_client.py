@@ -1263,18 +1263,19 @@ class TestTable:
         client.close()
 
     @pytest.mark.parametrize(
-        "fn_name,fn_args,is_stream,extra_retryables",
+        "fn_name,fn_args,is_read_rows_fn,is_stream,extra_retryables",
         [
-            ("read_rows_stream", (ReadRowsQuery(),), True, ()),
-            ("read_rows", (ReadRowsQuery(),), True, ()),
-            ("read_row", (b"row_key",), True, ()),
-            ("read_rows_sharded", ([ReadRowsQuery()],), True, ()),
-            ("row_exists", (b"row_key",), True, ()),
-            ("sample_row_keys", (), False, ()),
-            ("mutate_row", (b"row_key", [DeleteAllFromRow()]), False, ()),
+            ("read_rows_stream", (ReadRowsQuery(),), True, True, ()),
+            ("read_rows", (ReadRowsQuery(),), True, True, ()),
+            ("read_row", (b"row_key",), True, True, ()),
+            ("read_rows_sharded", ([ReadRowsQuery()],), True, True, ()),
+            ("row_exists", (b"row_key",), True, True, ()),
+            ("sample_row_keys", (), False, False, ()),
+            ("mutate_row", (b"row_key", [DeleteAllFromRow()]), False, False, ()),
             (
                 "bulk_mutate_rows",
                 ([mutations.RowMutationEntry(b"key", [DeleteAllFromRow()])],),
+                False,
                 False,
                 (_MutateRowsIncomplete,),
             ),
@@ -1310,6 +1311,7 @@ class TestTable:
         expected_retryables,
         fn_name,
         fn_args,
+        is_read_rows_fn,
         is_stream,
         extra_retryables,
     ):
@@ -1319,6 +1321,11 @@ class TestTable:
         if is_stream:
             retry_fn += "_stream"
         retry_fn = f"CrossSync._Sync_Impl.{retry_fn}"
+        subpackage = "_sync_autogen"
+        if is_read_rows_fn:
+            predicate_builder = f"google.cloud.bigtable.data.{subpackage}._read_rows._rst_stream_aware_predicate"
+        else:
+            predicate_builder = "google.api_core.retry.if_exception_type"
         with mock.patch(
             f"google.cloud.bigtable.data._cross_sync.{retry_fn}"
         ) as retry_fn_mock:
@@ -1326,9 +1333,7 @@ class TestTable:
                 table = client.get_table("instance-id", "table-id")
                 expected_predicate = expected_retryables.__contains__
                 retry_fn_mock.side_effect = RuntimeError("stop early")
-                with mock.patch(
-                    "google.api_core.retry.if_exception_type"
-                ) as predicate_builder_mock:
+                with mock.patch(predicate_builder) as predicate_builder_mock:
                     predicate_builder_mock.return_value = expected_predicate
                     with pytest.raises(Exception):
                         test_fn = table.__getattribute__(fn_name)

@@ -56,6 +56,13 @@ from google.cloud.compute_v1._compat import (
 )
 
 try:
+    from google.api_core import version_header
+
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
+
+try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
@@ -112,7 +119,7 @@ class InstanceGroupsClientMeta(type):
 
 
 class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
-    """The InstanceGroups API."""
+    """The InstanceGroups API.    This class implements API version 2026-09-01."""
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "compute.googleapis.com"
@@ -711,6 +718,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -866,6 +878,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1004,6 +1021,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1154,6 +1176,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1291,6 +1318,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 )
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1477,6 +1509,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1610,6 +1647,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1742,6 +1784,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 )
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1899,6 +1946,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 )
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2070,6 +2122,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 )
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2243,6 +2300,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -2403,6 +2465,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 )
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2584,6 +2651,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -2738,6 +2810,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 )
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2911,6 +2988,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 )
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()

@@ -29,6 +29,7 @@ from .ad_break_service import (
 )
 from .ad_review_center_ad_enums import (
     AdReviewCenterAdStatusEnum,
+    ArcCreativeFormatEnum,
     ManualAdReviewCenterAdStatusEnum,
 )
 from .ad_review_center_ad_messages import (
@@ -38,8 +39,12 @@ from .ad_review_center_ad_service import (
     BatchAdReviewCenterAdsOperationMetadata,
     BatchAllowAdReviewCenterAdsRequest,
     BatchAllowAdReviewCenterAdsResponse,
+    BatchApplyAdReviewCenterCustomLabelsRequest,
+    BatchApplyAdReviewCenterCustomLabelsResponse,
     BatchBlockAdReviewCenterAdsRequest,
     BatchBlockAdReviewCenterAdsResponse,
+    FetchAdReviewCenterCustomLabelsRequest,
+    FetchAdReviewCenterCustomLabelsResponse,
     SearchAdReviewCenterAdsRequest,
     SearchAdReviewCenterAdsResponse,
 )
@@ -160,6 +165,12 @@ from .application_service import (
 from .applied_label import (
     AppliedLabel,
 )
+from .asset_enums import (
+    AssetImageDensityEnum,
+)
+from .asset_messages import (
+    Asset,
+)
 from .audience_segment_enums import (
     AudienceSegmentApprovalStatusEnum,
     AudienceSegmentLicenseTypeEnum,
@@ -182,10 +193,13 @@ from .audience_segment_service import (
     BatchPopulateAudienceSegmentsResponse,
     BatchRejectAudienceSegmentsRequest,
     BatchRejectAudienceSegmentsResponse,
+    BatchUpdateAudienceSegmentsRequest,
+    BatchUpdateAudienceSegmentsResponse,
     CreateAudienceSegmentRequest,
     GetAudienceSegmentRequest,
     ListAudienceSegmentsRequest,
     ListAudienceSegmentsResponse,
+    UpdateAudienceSegmentRequest,
 )
 from .bandwidth_group_messages import (
     BandwidthGroup,
@@ -396,12 +410,56 @@ from .content_service import (
 from .conversion_event_enum import (
     ConversionEventEnum,
 )
+from .creative_asset import (
+    ClickTag,
+    CreativeAsset,
+)
+from .creative_enums import (
+    CreativeDestinationUrlTypeEnum,
+    CreativeLockedOrientationEnum,
+    CreativeSslOverrideEnum,
+    CreativeSslScanResultEnum,
+    VastAdIdTypeEnum,
+)
 from .creative_messages import (
+    AdExchangeCreativeDetails,
+    AdSenseCreativeDetails,
+    AspectRatioImageCreativeDetails,
+    AudioCreativeDetails,
+    AudioRedirectCreativeDetails,
+    BuyerPlacementConfig,
+    ClickTrackingCreativeDetails,
     Creative,
+    CustomCreativeDetails,
+    Html5CreativeDetails,
+    ImageCreativeDetails,
+    ImageOverlayCreativeDetails,
+    ImageRedirectCreativeDetails,
+    ImageRedirectOverlayCreativeDetails,
+    InternalRedirectCreativeDetails,
+    LegacyDfpCreativeDetails,
+    ProgrammaticCreativeDetails,
+    RichMediaStudioCreativeDetails,
+    SetTopBoxCreativeDetails,
+    TemplateCreativeDetails,
+    ThirdPartyCreativeDetails,
+    VastInfo,
+    VastRedirectCreativeDetails,
+    VideoCreativeDetails,
+    VideoRedirectCreativeDetails,
 )
 from .creative_placeholder import (
     CreativePlaceholder,
     CreativePlaceholderCompanion,
+)
+from .creative_service import (
+    BatchActivateCreativesRequest,
+    BatchActivateCreativesResponse,
+    BatchDeactivateCreativesRequest,
+    BatchDeactivateCreativesResponse,
+    GetCreativeRequest,
+    ListCreativesRequest,
+    ListCreativesResponse,
 )
 from .creative_set_messages import (
     CreativeSet,
@@ -432,6 +490,9 @@ from .creative_template_service import (
 from .creative_template_variable_url_type_enum import (
     CreativeTemplateVariableUrlTypeEnum,
 )
+from .creative_third_party_data_declaration_status_enum import (
+    CreativeThirdPartyDataDeclarationStatusEnum,
+)
 from .creative_wrapper_enums import (
     CreativeWrapperOrderingEnum,
     CreativeWrapperStatusEnum,
@@ -454,6 +515,9 @@ from .creative_wrapper_service import (
     ListCreativeWrappersRequest,
     ListCreativeWrappersResponse,
     UpdateCreativeWrapperRequest,
+)
+from .custom_creative_asset import (
+    CustomCreativeAsset,
 )
 from .custom_field_enums import (
     CustomFieldDataTypeEnum,
@@ -586,6 +650,30 @@ from .dai_encoding_profile_service import (
     ListDaiEncodingProfilesResponse,
     UpdateDaiEncodingProfileRequest,
 )
+from .dai_session_enums import (
+    AdBreakFindingTypeEnum,
+    AdRequestFindingTypeEnum,
+    AdResponseTypeEnum,
+    BreakTypeEnum,
+    CreativeFindingTypeEnum,
+    CreativeIdTypeEnum,
+    PodFindingTypeEnum,
+    PrefetchStageTypeEnum,
+    ReportingTypeEnum,
+    SessionFindingSeverityEnum,
+    SlateFindingTypeEnum,
+    StitchingTypeEnum,
+    TrackingPingFindingTypeEnum,
+)
+from .dai_session_messages import (
+    DaiSession,
+)
+from .dai_session_service import (
+    GetDaiSessionRequest,
+)
+from .date_range import (
+    DateRange,
+)
 from .deal_buyer_permission_type_enum import (
     DealBuyerPermissionTypeEnum,
 )
@@ -654,6 +742,38 @@ from .exchange_syndication_product_enum import (
 from .exclusion_scope_enum import (
     ExclusionScopeEnum,
 )
+from .forecast_messages import (
+    AlternativeUnitTypeForecast,
+    AvailabilityForecast,
+    AvailabilityForecastOptions,
+    ContendingLineItem,
+    DeliveryForecast,
+    DeliveryForecastOptions,
+    DeliveryForecastResult,
+    ExistingLineItemList,
+    ForecastBreakdown,
+    ForecastBreakdownEntry,
+    ForecastBreakdownOptions,
+    ForecastBreakdownTarget,
+    GrpDemographicBreakdown,
+    LineItemDeliveryForecast,
+    TargetingCriteriaBreakdown,
+    TimeSeries,
+)
+from .forecast_service import (
+    RunAvailabilityForecastRequest,
+    RunAvailabilityForecastResponse,
+    RunDeliveryForecastRequest,
+    RunDeliveryForecastResponse,
+    RunTrafficDataRequest,
+    RunTrafficDataResponse,
+)
+from .forecasting_enums import (
+    ForecastingGrpAgeEnum,
+    ForecastingGrpGenderEnum,
+    ForecastingGrpUnitEnum,
+    ForecastingTargetingDimensionEnum,
+)
 from .frequency_cap import (
     FrequencyCap,
 )
@@ -705,6 +825,18 @@ from .label_service import (
 from .line_item_allowed_format_enum import (
     LineItemAllowedFormatEnum,
 )
+from .line_item_creative_association_enums import (
+    LineItemCreativeAssociationStatusEnum,
+)
+from .line_item_creative_association_messages import (
+    LineItemCreativeAssociation,
+    LineItemCreativeAssociationStats,
+)
+from .line_item_creative_association_service import (
+    GetLineItemCreativeAssociationRequest,
+    ListLineItemCreativeAssociationsRequest,
+    ListLineItemCreativeAssociationsResponse,
+)
 from .line_item_deal_info import (
     LineItemDealInfo,
 )
@@ -724,12 +856,45 @@ from .line_item_messages import (
     LineItem,
 )
 from .line_item_service import (
+    BatchActivateLineItemsRequest,
+    BatchActivateLineItemsResponse,
+    BatchArchiveLineItemsRequest,
+    BatchArchiveLineItemsResponse,
+    BatchCreateLineItemsRequest,
+    BatchCreateLineItemsResponse,
+    BatchDeleteLineItemsRequest,
+    BatchPauseLineItemsRequest,
+    BatchPauseLineItemsResponse,
+    BatchReleaseLineItemsRequest,
+    BatchReleaseLineItemsResponse,
+    BatchReserveAndOverbookLineItemsRequest,
+    BatchReserveAndOverbookLineItemsResponse,
+    BatchReserveLineItemsRequest,
+    BatchReserveLineItemsResponse,
+    BatchResumeAndOverbookLineItemsRequest,
+    BatchResumeAndOverbookLineItemsResponse,
+    BatchResumeLineItemsRequest,
+    BatchResumeLineItemsResponse,
+    BatchUnarchiveLineItemsRequest,
+    BatchUnarchiveLineItemsResponse,
+    BatchUpdateLineItemsRequest,
+    BatchUpdateLineItemsResponse,
+    CreateLineItemRequest,
     GetLineItemRequest,
     ListLineItemsRequest,
     ListLineItemsResponse,
+    UpdateLineItemRequest,
 )
 from .line_item_stats import (
     LineItemStats,
+)
+from .line_item_template_messages import (
+    LineItemTemplate,
+)
+from .line_item_template_service import (
+    GetLineItemTemplateRequest,
+    ListLineItemTemplatesRequest,
+    ListLineItemTemplatesResponse,
 )
 from .linked_device_enums import (
     LinkedDeviceVisibilityEnum,
@@ -1048,6 +1213,18 @@ from .rich_media_ads_company_service import (
     ListRichMediaAdsCompaniesRequest,
     ListRichMediaAdsCompaniesResponse,
 )
+from .rich_media_studio_child_asset_type_enum import (
+    RichMediaStudioChildAssetTypeEnum,
+)
+from .rich_media_studio_creative_billing_attribute_enum import (
+    RichMediaStudioCreativeBillingAttributeEnum,
+)
+from .rich_media_studio_creative_format_enum import (
+    RichMediaStudioCreativeFormatEnum,
+)
+from .rich_media_studio_messages import (
+    RichMediaStudioChildAssetProperty,
+)
 from .role_enums import (
     RoleStatusEnum,
 )
@@ -1235,7 +1412,22 @@ from .user_messages import (
     User,
 )
 from .user_service import (
+    BatchActivateUsersRequest,
+    BatchActivateUsersResponse,
+    BatchCreateUsersRequest,
+    BatchCreateUsersResponse,
+    BatchDeactivateUsersRequest,
+    BatchDeactivateUsersResponse,
+    BatchUpdateUsersRequest,
+    BatchUpdateUsersResponse,
+    CreateUserRequest,
     GetUserRequest,
+    ListUsersRequest,
+    ListUsersResponse,
+    UpdateUserRequest,
+)
+from .vast_redirect_type_enum import (
+    VastRedirectTypeEnum,
 )
 from .video_position_enum import (
     VideoPositionEnum,
@@ -1277,13 +1469,18 @@ __all__ = (
     "ListAdBreaksResponse",
     "UpdateAdBreakRequest",
     "AdReviewCenterAdStatusEnum",
+    "ArcCreativeFormatEnum",
     "ManualAdReviewCenterAdStatusEnum",
     "AdReviewCenterAd",
     "BatchAdReviewCenterAdsOperationMetadata",
     "BatchAllowAdReviewCenterAdsRequest",
     "BatchAllowAdReviewCenterAdsResponse",
+    "BatchApplyAdReviewCenterCustomLabelsRequest",
+    "BatchApplyAdReviewCenterCustomLabelsResponse",
     "BatchBlockAdReviewCenterAdsRequest",
     "BatchBlockAdReviewCenterAdsResponse",
+    "FetchAdReviewCenterCustomLabelsRequest",
+    "FetchAdReviewCenterCustomLabelsResponse",
     "SearchAdReviewCenterAdsRequest",
     "SearchAdReviewCenterAdsResponse",
     "AdRuleFrequencyCapBehaviorEnum",
@@ -1365,6 +1562,8 @@ __all__ = (
     "ListApplicationsResponse",
     "UpdateApplicationRequest",
     "AppliedLabel",
+    "AssetImageDensityEnum",
+    "Asset",
     "AudienceSegmentApprovalStatusEnum",
     "AudienceSegmentLicenseTypeEnum",
     "AudienceSegmentStatusEnum",
@@ -1382,10 +1581,13 @@ __all__ = (
     "BatchPopulateAudienceSegmentsResponse",
     "BatchRejectAudienceSegmentsRequest",
     "BatchRejectAudienceSegmentsResponse",
+    "BatchUpdateAudienceSegmentsRequest",
+    "BatchUpdateAudienceSegmentsResponse",
     "CreateAudienceSegmentRequest",
     "GetAudienceSegmentRequest",
     "ListAudienceSegmentsRequest",
     "ListAudienceSegmentsResponse",
+    "UpdateAudienceSegmentRequest",
     "BandwidthGroup",
     "GetBandwidthGroupRequest",
     "ListBandwidthGroupsRequest",
@@ -1517,9 +1719,47 @@ __all__ = (
     "ListContentRequest",
     "ListContentResponse",
     "ConversionEventEnum",
+    "ClickTag",
+    "CreativeAsset",
+    "CreativeDestinationUrlTypeEnum",
+    "CreativeLockedOrientationEnum",
+    "CreativeSslOverrideEnum",
+    "CreativeSslScanResultEnum",
+    "VastAdIdTypeEnum",
+    "AdExchangeCreativeDetails",
+    "AdSenseCreativeDetails",
+    "AspectRatioImageCreativeDetails",
+    "AudioCreativeDetails",
+    "AudioRedirectCreativeDetails",
+    "BuyerPlacementConfig",
+    "ClickTrackingCreativeDetails",
     "Creative",
+    "CustomCreativeDetails",
+    "Html5CreativeDetails",
+    "ImageCreativeDetails",
+    "ImageOverlayCreativeDetails",
+    "ImageRedirectCreativeDetails",
+    "ImageRedirectOverlayCreativeDetails",
+    "InternalRedirectCreativeDetails",
+    "LegacyDfpCreativeDetails",
+    "ProgrammaticCreativeDetails",
+    "RichMediaStudioCreativeDetails",
+    "SetTopBoxCreativeDetails",
+    "TemplateCreativeDetails",
+    "ThirdPartyCreativeDetails",
+    "VastInfo",
+    "VastRedirectCreativeDetails",
+    "VideoCreativeDetails",
+    "VideoRedirectCreativeDetails",
     "CreativePlaceholder",
     "CreativePlaceholderCompanion",
+    "BatchActivateCreativesRequest",
+    "BatchActivateCreativesResponse",
+    "BatchDeactivateCreativesRequest",
+    "BatchDeactivateCreativesResponse",
+    "GetCreativeRequest",
+    "ListCreativesRequest",
+    "ListCreativesResponse",
     "CreativeSet",
     "CreateCreativeSetRequest",
     "GetCreativeSetRequest",
@@ -1535,6 +1775,7 @@ __all__ = (
     "ListCreativeTemplatesRequest",
     "ListCreativeTemplatesResponse",
     "CreativeTemplateVariableUrlTypeEnum",
+    "CreativeThirdPartyDataDeclarationStatusEnum",
     "CreativeWrapperOrderingEnum",
     "CreativeWrapperStatusEnum",
     "CreativeWrapperTypeEnum",
@@ -1552,6 +1793,7 @@ __all__ = (
     "ListCreativeWrappersRequest",
     "ListCreativeWrappersResponse",
     "UpdateCreativeWrapperRequest",
+    "CustomCreativeAsset",
     "CustomFieldDataTypeEnum",
     "CustomFieldEntityTypeEnum",
     "CustomFieldStatusEnum",
@@ -1647,6 +1889,22 @@ __all__ = (
     "ListDaiEncodingProfilesRequest",
     "ListDaiEncodingProfilesResponse",
     "UpdateDaiEncodingProfileRequest",
+    "AdBreakFindingTypeEnum",
+    "AdRequestFindingTypeEnum",
+    "AdResponseTypeEnum",
+    "BreakTypeEnum",
+    "CreativeFindingTypeEnum",
+    "CreativeIdTypeEnum",
+    "PodFindingTypeEnum",
+    "PrefetchStageTypeEnum",
+    "ReportingTypeEnum",
+    "SessionFindingSeverityEnum",
+    "SlateFindingTypeEnum",
+    "StitchingTypeEnum",
+    "TrackingPingFindingTypeEnum",
+    "DaiSession",
+    "GetDaiSessionRequest",
+    "DateRange",
     "DealBuyerPermissionTypeEnum",
     "DealPriorityTierEnum",
     "CompanionDeliveryOptionEnum",
@@ -1681,6 +1939,32 @@ __all__ = (
     "EnvironmentTypeEnum",
     "ExchangeSyndicationProductEnum",
     "ExclusionScopeEnum",
+    "AlternativeUnitTypeForecast",
+    "AvailabilityForecast",
+    "AvailabilityForecastOptions",
+    "ContendingLineItem",
+    "DeliveryForecast",
+    "DeliveryForecastOptions",
+    "DeliveryForecastResult",
+    "ExistingLineItemList",
+    "ForecastBreakdown",
+    "ForecastBreakdownEntry",
+    "ForecastBreakdownOptions",
+    "ForecastBreakdownTarget",
+    "GrpDemographicBreakdown",
+    "LineItemDeliveryForecast",
+    "TargetingCriteriaBreakdown",
+    "TimeSeries",
+    "RunAvailabilityForecastRequest",
+    "RunAvailabilityForecastResponse",
+    "RunDeliveryForecastRequest",
+    "RunDeliveryForecastResponse",
+    "RunTrafficDataRequest",
+    "RunTrafficDataResponse",
+    "ForecastingGrpAgeEnum",
+    "ForecastingGrpGenderEnum",
+    "ForecastingGrpUnitEnum",
+    "ForecastingTargetingDimensionEnum",
     "FrequencyCap",
     "GeoTarget",
     "GetGeoTargetRequest",
@@ -1708,6 +1992,12 @@ __all__ = (
     "ListLabelsResponse",
     "UpdateLabelRequest",
     "LineItemAllowedFormatEnum",
+    "LineItemCreativeAssociationStatusEnum",
+    "LineItemCreativeAssociation",
+    "LineItemCreativeAssociationStats",
+    "GetLineItemCreativeAssociationRequest",
+    "ListLineItemCreativeAssociationsRequest",
+    "ListLineItemCreativeAssociationsResponse",
     "LineItemDealInfo",
     "LineItemDeliveryForecastSourceEnum",
     "LineItemDiscount",
@@ -1716,10 +2006,39 @@ __all__ = (
     "LineItemReservationStatusEnum",
     "LineItemTypeEnum",
     "LineItem",
+    "BatchActivateLineItemsRequest",
+    "BatchActivateLineItemsResponse",
+    "BatchArchiveLineItemsRequest",
+    "BatchArchiveLineItemsResponse",
+    "BatchCreateLineItemsRequest",
+    "BatchCreateLineItemsResponse",
+    "BatchDeleteLineItemsRequest",
+    "BatchPauseLineItemsRequest",
+    "BatchPauseLineItemsResponse",
+    "BatchReleaseLineItemsRequest",
+    "BatchReleaseLineItemsResponse",
+    "BatchReserveAndOverbookLineItemsRequest",
+    "BatchReserveAndOverbookLineItemsResponse",
+    "BatchReserveLineItemsRequest",
+    "BatchReserveLineItemsResponse",
+    "BatchResumeAndOverbookLineItemsRequest",
+    "BatchResumeAndOverbookLineItemsResponse",
+    "BatchResumeLineItemsRequest",
+    "BatchResumeLineItemsResponse",
+    "BatchUnarchiveLineItemsRequest",
+    "BatchUnarchiveLineItemsResponse",
+    "BatchUpdateLineItemsRequest",
+    "BatchUpdateLineItemsResponse",
+    "CreateLineItemRequest",
     "GetLineItemRequest",
     "ListLineItemsRequest",
     "ListLineItemsResponse",
+    "UpdateLineItemRequest",
     "LineItemStats",
+    "LineItemTemplate",
+    "GetLineItemTemplateRequest",
+    "ListLineItemTemplatesRequest",
+    "ListLineItemTemplatesResponse",
     "LinkedDeviceVisibilityEnum",
     "LinkedDevice",
     "GetLinkedDeviceRequest",
@@ -1929,6 +2248,10 @@ __all__ = (
     "GetRichMediaAdsCompanyRequest",
     "ListRichMediaAdsCompaniesRequest",
     "ListRichMediaAdsCompaniesResponse",
+    "RichMediaStudioChildAssetTypeEnum",
+    "RichMediaStudioCreativeBillingAttributeEnum",
+    "RichMediaStudioCreativeFormatEnum",
+    "RichMediaStudioChildAssetProperty",
     "RoleStatusEnum",
     "Role",
     "GetRoleRequest",
@@ -2049,7 +2372,20 @@ __all__ = (
     "ThirdPartyMeasurementSettings",
     "TimeUnitEnum",
     "User",
+    "BatchActivateUsersRequest",
+    "BatchActivateUsersResponse",
+    "BatchCreateUsersRequest",
+    "BatchCreateUsersResponse",
+    "BatchDeactivateUsersRequest",
+    "BatchDeactivateUsersResponse",
+    "BatchUpdateUsersRequest",
+    "BatchUpdateUsersResponse",
+    "CreateUserRequest",
     "GetUserRequest",
+    "ListUsersRequest",
+    "ListUsersResponse",
+    "UpdateUserRequest",
+    "VastRedirectTypeEnum",
     "VideoPositionEnum",
     "VideoTrackingUrl",
     "VideoTranscodeStatusEnum",

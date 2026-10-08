@@ -246,6 +246,28 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def ekm_connection_path(
+        project: str,
+        location: str,
+        ekm_connection: str,
+    ) -> str:
+        """Returns a fully-qualified ekm_connection string."""
+        return "projects/{project}/locations/{location}/ekmConnections/{ekm_connection}".format(
+            project=project,
+            location=location,
+            ekm_connection=ekm_connection,
+        )
+
+    @staticmethod
+    def parse_ekm_connection_path(path: str) -> Dict[str, str]:
+        """Parses a ekm_connection path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/ekmConnections/(?P<ekm_connection>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def import_job_path(
         project: str,
         location: str,

@@ -513,6 +513,7 @@ class Database(object):
                         client._ca_certificate,
                         client._client_certificate,
                         client._client_key,
+                        credentials=client.credentials,
                     )
                 else:
                     transport = _create_spanner_omni_transport_sync(
@@ -522,6 +523,7 @@ class Database(object):
                         client._ca_certificate,
                         client._client_certificate,
                         client._client_key,
+                        credentials=client.credentials,
                     )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,
