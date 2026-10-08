@@ -23,6 +23,7 @@ from google.api.metric_pb2 import Metric as GMetric
 from google.api.metric_pb2 import MetricDescriptor
 from google.api.monitored_resource_pb2 import MonitoredResource
 from google.api_core import gapic_v1
+from google.api_core.exceptions import PermissionDenied, Unauthenticated
 from google.cloud.monitoring_v3 import (
     CreateTimeSeriesRequest,
     MetricServiceClient,
@@ -169,6 +170,10 @@ class BigtableMetricsExporter(MetricExporter):
         super().__init__()
         self.client = MetricServiceClient(*client_args, **client_kwargs)
         self.prefix = "bigtable.googleapis.com/internal/client"
+        # set after a non-retryable authentication/authorization failure.
+        # Once disabled, exports are skipped instead of failing (and logging)
+        # on every export interval
+        self._disabled = False
 
     def export(
         self, metrics_data: MetricsData, timeout_millis: float = 10_000, **kwargs
@@ -177,6 +182,8 @@ class BigtableMetricsExporter(MetricExporter):
         Write a set of metrics to Cloud Monitoring.
         This method is called by the OpenTelemetry SDK
         """
+        if self._disabled:
+            return MetricExportResult.FAILURE
         deadline = time.monotonic() + (timeout_millis / 1000)
         metric_kind = MetricDescriptor.MetricKind.CUMULATIVE
         series_by_project: dict[str, list[TimeSeries]] = defaultdict(list)
@@ -231,6 +238,23 @@ class BigtableMetricsExporter(MetricExporter):
                 )
                 self._batch_write(project_id, series_list, deadline)
             return MetricExportResult.SUCCESS
+        except (Unauthenticated, PermissionDenied) as e:
+            # authentication/authorization failures won't resolve on their own.
+            # Stop exporting instead of failing again on every export interval
+            self._disabled = True
+            _LOGGER.warning(
+                "Bigtable client-side metrics could not be exported to Cloud "
+                "Monitoring for project(s) %s: %s. Client-side metrics are now "
+                "disabled for this client; Bigtable data operations are not "
+                "affected. To publish client-side metrics, make sure the Cloud "
+                "Monitoring API is enabled and the client's credentials are "
+                "allowed to write metrics to the project "
+                "(e.g. roles/monitoring.metricWriter).",
+                ", ".join(series_by_project),
+                e,
+            )
+            _LOGGER.debug("Client-side metrics export failure details:", exc_info=True)
+            return MetricExportResult.FAILURE
         except Exception as e:
             _LOGGER.warning(
                 "Failed to export metrics to Cloud Monitoring: %s", e, exc_info=True
