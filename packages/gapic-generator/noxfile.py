@@ -278,6 +278,13 @@ def showcase_library(
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
 
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
+    # Warnings emitted from google-api-core starting in 2.28
+    # appear to cause issues when running protoc.
+    # The specific failure is `Plugin output is unparseable`
+    if session.python == "3.10":
+        session.install("google-api-core<2.28")
+
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
@@ -450,6 +457,11 @@ def showcase(
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -496,6 +508,11 @@ def showcase_w_rest_async(
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -590,6 +607,8 @@ def run_showcase_unit_tests(
         "pytest-cov",
         "pytest-xdist",
         "pytest-asyncio",
+        "opentelemetry-api",
+        "opentelemetry-sdk",
     )
     # Freeze and print python environment package versions
     session.run("python", "-m", "pip", "freeze")
@@ -959,12 +978,120 @@ def format(session):
     )
 
 
+@contextmanager
+def google_ads_library(session):
+    """Generate and install the Google Ads GAPIC library for live system tests."""
+    session.install("-e", ".")
+    session.install("grpcio-tools", "pyYAML", "pypandoc-binary==1.16.2")
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        googleapis_dir = path.join(tmp_dir, "googleapis")
+        sdk_dir = path.join(tmp_dir, "sdk")
+        os.makedirs(sdk_dir, exist_ok=True)
+
+        session.run(
+            "git",
+            "clone",
+            "--depth",
+            "1",
+            "--filter=blob:none",
+            "--sparse",
+            "https://github.com/googleapis/googleapis.git",
+            googleapis_dir,
+            external=True,
+            silent=True,
+        )
+        session.run(
+            "git",
+            "-C",
+            googleapis_dir,
+            "sparse-checkout",
+            "set",
+            "google/ads/googleads/v23",
+            "google/api",
+            "google/rpc",
+            "google/longrunning",
+            "google/type",
+            external=True,
+            silent=True,
+        )
+
+        src_yaml = path.join(
+            googleapis_dir, "google", "ads", "googleads", "v23", "googleads_v23.yaml"
+        )
+        dst_yaml = path.join(sdk_dir, "googleads_v23.yaml")
+        shutil.copyfile(src_yaml, dst_yaml)
+        session.run(
+            "python",
+            "-c",
+            (
+                "import yaml; "
+                f"p = {dst_yaml!r}; "
+                "data = yaml.safe_load(open(p, encoding='utf-8')); "
+                "data['apis'] = [{'name': 'google.ads.googleads.v23.services.YouTubeVideoUploadService'}]; "
+                "data.setdefault('publishing', {})['library_settings'] = ["
+                "{'version': 'google.ads.googleads.v23', "
+                "'python_settings': {'experimental_features': {'rest_async_io_enabled': True}}}"
+                "]; "
+                "yaml.safe_dump(data, open(p, 'w', encoding='utf-8'), default_flow_style=False, sort_keys=False)"
+            ),
+        )
+
+        ads_protos = (
+            "google/ads/googleads/v23/services/youtube_video_upload_service.proto",
+            "google/ads/googleads/v23/resources/youtube_video_upload.proto",
+            "google/ads/googleads/v23/enums/youtube_video_privacy.proto",
+        )
+        desc_path = path.join(sdk_dir, "googleads.desc")
+        session.run(
+            "python",
+            "-m",
+            "grpc_tools.protoc",
+            "--experimental_allow_proto3_optional",
+            f"--proto_path={googleapis_dir}",
+            "--include_imports",
+            "--include_source_info",
+            f"-o{desc_path}",
+            *(path.join(googleapis_dir, p) for p in ads_protos),
+            external=True,
+        )
+
+        retry_config = path.join(
+            googleapis_dir,
+            "google",
+            "ads",
+            "googleads",
+            "v23",
+            "googleads_grpc_service_config.json",
+        )
+        session.run(
+            "python",
+            "-m",
+            "grpc_tools.protoc",
+            "--experimental_allow_proto3_optional",
+            f"--descriptor_set_in={desc_path}",
+            (
+                "--python_gapic_opt="
+                f"transport=grpc+rest,autogen-snippets=False,service-yaml={dst_yaml},retry-config={retry_config}"
+            ),
+            f"--python_gapic_out={sdk_dir}",
+            *ads_protos,
+            external=True,
+        )
+
+        session.install("-e", f"{sdk_dir}[async_rest]")
+        yield sdk_dir
+
+
 @nox.session(python=ALL_PYTHON)
 def system(session):
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16190):
-    # Implement system test session.
-    """Run the system test suite (skipped for migration)."""
-    session.skip(f"system session is not yet implemented for gapic-generator-python.")
+    """Run the system test suite."""
+    with google_ads_library(session):
+        session.install("pytest", "pytest-asyncio")
+        session.run(
+            "py.test",
+            *(session.posargs or ["-vv", path.join("tests", "system_live")]),
+        )
 
 
 @nox.session(python=NEWEST_PYTHON)
