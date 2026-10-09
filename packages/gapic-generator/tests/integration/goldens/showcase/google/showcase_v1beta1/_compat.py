@@ -81,6 +81,15 @@ else:  # pragma: NO COVER
     def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:  # type: ignore[misc]
         return _FallbackTraceContext()
 
+# OpenTelemetry gRPC auto-instrumentation suppression was introduced in
+# google-api-core 2.43.0+ to prevent redundant wire spans when OpenTelemetry
+# instrumentation is active alongside Google Cloud SDK tracing.
+# TODO(observability): Remove once setup.py.j2 enforces google-api-core >= 2.43.0.
+HAS_AUTO_INSTRUMENTATION_SUPPRESSION = (
+    _observability is not None
+    and hasattr(_observability, "_AsyncSuppressingClientInterceptor")
+)
+
 # The `kind` parameter in gapic_v1.method_async.wrap_method was introduced in
 # google-api-core 2.29.0 (PR #688) alongside _DEFAULT_ASYNC_TRANSPORT_KIND to prevent
 # async REST callables from being wrapped with gRPC error handlers.
