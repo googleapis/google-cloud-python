@@ -41,6 +41,10 @@ DEFAULT = _MethodDefault._DEFAULT_VALUE
 """Sentinel value indicating that a retry, timeout, or compression argument was unspecified,
 so the default should be used."""
 
+_TRANSPORT_KIND_GRPC = "grpc"
+_TRANSPORT_KIND_REST = "rest"
+_DEFAULT_TRANSPORT_KIND = _TRANSPORT_KIND_GRPC
+
 
 def _is_not_none_or_false(value):
     return value is not None and value is not False
@@ -122,7 +126,7 @@ def _extract_rpc_identity(
     return method_str, service, method
 
 
-def _extract_status_code(exc: Optional[Exception]) -> str:
+def _extract_status_code(exc: Optional[BaseException]) -> str:
     """Extract canonical status code name string from an exception.
 
     Status code name strings are resolved by inspecting the following locations:
@@ -132,7 +136,7 @@ def _extract_status_code(exc: Optional[Exception]) -> str:
     * Fallback: Defaults to the exception class name for standard Python errors.
 
     Args:
-        exc (Optional[Exception]): The exception to extract the status code name from.
+        exc (Optional[BaseException]): The exception to extract the status code name from.
 
     Returns:
         str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE") or class name.
@@ -166,7 +170,7 @@ def _extract_status_code(exc: Optional[Exception]) -> str:
     return target.__class__.__name__
 
 
-def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
+def _extract_error_attributes(exc: Optional[BaseException]) -> dict[str, Any]:
     """Extract gcp.errors.* and error.type attributes from an exception.
 
     Error details and ErrorInfo structures are resolved by inspecting the following locations:
@@ -176,7 +180,7 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     * Unified attribute extraction: Extracts domain, reason, and metadata from ErrorInfo or exception attributes.
 
     Args:
-        exc (Optional[Exception]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
+        exc (Optional[BaseException]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
 
     Returns:
         dict[str, Any]: Extracted error attributes (e.g. gcp.errors.domain, error.type, gcp.errors.metadata.*).
@@ -228,9 +232,10 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
 
     # 5. Extract human-readable error description for cross-language PRD parity
     message = getattr(target_exc, "message", None)
-    if not message and hasattr(target_exc, "details") and callable(target_exc.details):
-        message = target_exc.details()
-    if not message and isinstance(target_exc, Exception):
+    if not message and hasattr(target_exc, "details"):
+        details = target_exc.details
+        message = details() if callable(details) else details
+    if not message and isinstance(target_exc, BaseException):
         message = str(target_exc)
     if message:
         attrs["status.message"] = str(message)
@@ -271,6 +276,8 @@ class _GapicCallable(object):
             Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
     """
 
+    _SUPPORTED_TRACING_KINDS = (_TRANSPORT_KIND_GRPC, _TRANSPORT_KIND_REST)
+
     def __init__(
         self,
         target,
@@ -282,7 +289,7 @@ class _GapicCallable(object):
         method_name=None,
         is_streaming=False,
         client_info=None,
-        kind="grpc",
+        kind=_DEFAULT_TRANSPORT_KIND,
     ):
         self._target = target
         self._retry = retry
@@ -301,11 +308,11 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Configure the OpenTelemetry span factory once at initialization.
-        # For now, method tracing is gated to non-streaming gRPC calls where an explicit method_name is provided.
+        # For now, method tracing is gated to non-streaming calls where an explicit method_name is provided.
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind in ("grpc", "rest")
+            and kind in self._SUPPORTED_TRACING_KINDS
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -323,9 +330,8 @@ class _GapicCallable(object):
                     tracer = trace.get_tracer("google.api_core")
 
                 span_name, _, _ = _extract_rpc_identity(method_name)
-                is_rest = kind in ("rest", "rest_asyncio")
                 span_attributes = {
-                    "rpc.system.name": "http" if is_rest else "grpc",
+                    "rpc.system.name": "http" if kind.startswith("rest") else "grpc",
                     "rpc.method": span_name,
                 }
                 self._start_span_fn = functools.partial(
@@ -338,11 +344,7 @@ class _GapicCallable(object):
                 # Gracefully disable tracing if OpenTelemetry or custom provider fails
                 self._start_span_fn = None
 
-    def __call__(
-        self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
-    ):
-        """Invoke the low-level RPC with retry, timeout, compression, and metadata."""
-
+    def _prepare_call(self, timeout, retry, compression, kwargs):
         if retry is DEFAULT:
             retry = self._retry
 
@@ -376,22 +378,26 @@ class _GapicCallable(object):
         if compression is not None:
             kwargs["compression"] = compression
 
+        return wrapped_func
+
+    @contextlib.contextmanager
+    def _trace_span(self):
         span_cm = contextlib.nullcontext()
         if self._start_span_fn is not None:
             try:
                 span_cm = self._start_span_fn()
-            except (
-                Exception
-            ):  # Fail-open: proceed without span if tracing initialization fails
+            except Exception:
+                # Fail-open: proceed without span if tracing initialization fails
                 span_cm = contextlib.nullcontext()
 
         with span_cm as span:
             try:
-                result = wrapped_func(*args, **kwargs)
+                yield
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute("rpc.response.status_code", "OK")
-                return result
-            except Exception as exc:
+            except (KeyboardInterrupt, SystemExit, GeneratorExit):
+                raise
+            except BaseException as exc:
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute(
                         "rpc.response.status_code", _extract_status_code(exc)
@@ -399,6 +405,14 @@ class _GapicCallable(object):
                     for k, v in _extract_error_attributes(exc).items():
                         span.set_attribute(k, v)
                 raise
+
+    def __call__(
+        self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
+    ):
+        """Invoke the low-level RPC with retry, timeout, compression, and metadata."""
+        wrapped_func = self._prepare_call(timeout, retry, compression, kwargs)
+        with self._trace_span():
+            return wrapped_func(*args, **kwargs)
 
 
 def wrap_method(
@@ -412,7 +426,7 @@ def wrap_method(
     client_options=None,
     method_name=None,
     is_streaming=False,
-    kind="grpc",
+    kind=_DEFAULT_TRANSPORT_KIND,
 ):
     """Wrap an RPC method with common behavior.
 

@@ -539,6 +539,30 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
     )
 
 
+@pytest.mark.parametrize("interrupt_exc", [KeyboardInterrupt, SystemExit])
+def test_wrap_method_otel_tracing_interrupt_bypasses_error_attributes(
+    mock_otel, interrupt_exc
+):
+    """Proves that process-level interrupts are re-raised without polluting span error attributes."""
+    mock_target = mock.Mock(side_effect=interrupt_exc())
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    with pytest.raises(interrupt_exc):
+        wrapped()
+
+    # The span should NOT record error attributes for process-level interruptions
+    for call in mock_otel.span.set_attribute.call_args_list:
+        attr_name = call[0][0]
+        assert attr_name not in (
+            "rpc.response.status_code",
+            "error.type",
+            "status.message",
+        )
+
+
 @pytest.mark.parametrize(
     "exc,expected_status",
     [
@@ -909,6 +933,20 @@ def test_extract_error_attributes_variations():
     exc_empty_msg = ValueError("")
     assert _extract_error_attributes(exc_empty_msg) == {
         "error.type": "ValueError",
+    }
+
+    # 11. status.message extraction from BaseException subclasses (e.g. asyncio.CancelledError)
+    import asyncio
+
+    exc_cancelled_with_msg = asyncio.CancelledError("async task cancelled")
+    assert _extract_error_attributes(exc_cancelled_with_msg) == {
+        "error.type": "CancelledError",
+        "status.message": "async task cancelled",
+    }
+
+    exc_cancelled_empty = asyncio.CancelledError()
+    assert _extract_error_attributes(exc_cancelled_empty) == {
+        "error.type": "CancelledError",
     }
 
 

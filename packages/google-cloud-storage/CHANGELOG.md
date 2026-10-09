@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.16.0...google-cloud-storage-v3.17.0) (2026-10-08)
+
+
+### Features
+
+* **storage:** add OpenTelemetry metrics gating and configuration module ([#18407](https://github.com/googleapis/google-cloud-python/issues/18407)) ([654e768](https://github.com/googleapis/google-cloud-python/commit/654e7682083e920ab28db8d65f4e896decaf8a69))
+
 ## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.15.1...google-cloud-storage-v3.16.0) (2026-10-01)
 
 
