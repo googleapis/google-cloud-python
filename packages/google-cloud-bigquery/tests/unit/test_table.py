@@ -3705,7 +3705,9 @@ class TestRowIterator(unittest.TestCase):
             "arrowRecordBatch": {"serializedRecordBatch": "b64_batch_1"},
         }
 
-        row_iterator = self._make_one(client=mock_client, api_request=mock.Mock(), path="/foo", schema=[])
+        row_iterator = self._make_one(
+            client=mock_client, api_request=mock.Mock(), path="/foo", schema=[]
+        )
         row_iterator._first_page_response = first_page
         row_iterator._job_id = "test-job-id"
         row_iterator._project = "test-project"
@@ -3714,8 +3716,11 @@ class TestRowIterator(unittest.TestCase):
         batch_1 = mock.Mock()
         batch_1.num_rows = 3
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow, \
-             mock.patch("base64.b64decode", side_effect=lambda x: x.encode("utf-8")):
+        with mock.patch(
+            "google.cloud.bigquery.table.pyarrow"
+        ) as mock_pyarrow, mock.patch(
+            "base64.b64decode", side_effect=lambda x: x.encode("utf-8")
+        ):
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "mock_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = batch_1

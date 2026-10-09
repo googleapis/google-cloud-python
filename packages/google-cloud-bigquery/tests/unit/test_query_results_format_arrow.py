@@ -81,9 +81,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         call_args = client._call_api.call_args
         self.assertIn("arrowSerializationOptions", call_args.kwargs["data"])
         self.assertEqual(
-            call_args.kwargs["data"]["arrowSerializationOptions"][
-                "bufferCompression"
-            ],
+            call_args.kwargs["data"]["arrowSerializationOptions"]["bufferCompression"],
             "LZ4_FRAME",
         )
 
@@ -551,9 +549,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         call_args = client._call_api.call_args
         self.assertEqual(call_args.kwargs["data"]["queryResultsFormat"], "ARROW")
         self.assertEqual(
-            call_args.kwargs["data"]["arrowSerializationOptions"][
-                "bufferCompression"
-            ],
+            call_args.kwargs["data"]["arrowSerializationOptions"]["bufferCompression"],
             "LZ4_FRAME",
         )
 
@@ -728,7 +724,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_query_jobs_query_arrow_max_results_short_circuits_single_rpc(self):
         pyarrow = pytest.importorskip("pyarrow")
         schema = pyarrow.schema([("num", pyarrow.int64())])
-        batch = pyarrow.record_batch([pyarrow.array([1, 2], type=pyarrow.int64())], schema=schema)
+        batch = pyarrow.record_batch(
+            [pyarrow.array([1, 2], type=pyarrow.int64())], schema=schema
+        )
 
         client = mock.MagicMock()
         client._connection = mock.MagicMock()
@@ -738,10 +736,14 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             "totalRows": "5000",
             "pageToken": "next-page-token",
             "arrowSchema": {
-                "serializedSchema": base64.b64encode(schema.serialize().to_pybytes()).decode("ascii")
+                "serializedSchema": base64.b64encode(
+                    schema.serialize().to_pybytes()
+                ).decode("ascii")
             },
             "arrowRecordBatch": {
-                "serializedRecordBatch": base64.b64encode(batch.serialize().to_pybytes()).decode("ascii"),
+                "serializedRecordBatch": base64.b64encode(
+                    batch.serialize().to_pybytes()
+                ).decode("ascii"),
                 "rowCount": "2",
             },
         }
@@ -782,7 +784,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
                 "jobComplete": True,
                 "totalRows": "10",
                 "arrowSchema": {
-                    "serializedSchema": base64.b64encode(schema.serialize().to_pybytes()).decode("ascii")
+                    "serializedSchema": base64.b64encode(
+                        schema.serialize().to_pybytes()
+                    ).decode("ascii")
                 },
             },
         )

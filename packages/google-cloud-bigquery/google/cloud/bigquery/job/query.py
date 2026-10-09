@@ -1853,7 +1853,10 @@ class QueryJob(_AsyncJob):
         # maxResults=0. In that case, we're missing rows and there's no next
         # page token.
         first_page_response = self._query_results._properties
-        if "rows" not in first_page_response and "arrowRecordBatch" not in first_page_response:
+        if (
+            "rows" not in first_page_response
+            and "arrowRecordBatch" not in first_page_response
+        ):
             first_page_response = None
 
         rows = self._client._list_rows_from_query_results(

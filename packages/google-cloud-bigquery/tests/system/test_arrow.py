@@ -342,13 +342,13 @@ def test_query_arrow_zero_rows(bigquery_client, force_job_insert):
 @pytest.mark.parametrize(
     ("max_results", "page_size", "force_job_insert", "expected_rows"),
     [
-        (100, None, False, 100),      # 1. Fits on Page 1 (no page_size)
-        (1200, 500, False, 1200),     # 2. Spans Page 1 (REST) + Page 2+ (gRPC)
-        (100, 500, False, 100),       # 3. max_results < page_size
-        (10000, None, False, 5000),   # 4. max_results > total_rows (single-page)
-        (10000, 500, False, 5000),    # 5. max_results > total_rows (multi-page)
-        (0, None, False, 0),          # 6. max_results = 0 (schema only / 0 rows)
-        (1200, 500, True, 1200),      # 7. jobs.insert fallback path + max_results
+        (100, None, False, 100),  # 1. Fits on Page 1 (no page_size)
+        (1200, 500, False, 1200),  # 2. Spans Page 1 (REST) + Page 2+ (gRPC)
+        (100, 500, False, 100),  # 3. max_results < page_size
+        (10000, None, False, 5000),  # 4. max_results > total_rows (single-page)
+        (10000, 500, False, 5000),  # 5. max_results > total_rows (multi-page)
+        (0, None, False, 0),  # 6. max_results = 0 (schema only / 0 rows)
+        (1200, 500, True, 1200),  # 7. jobs.insert fallback path + max_results
     ],
 )
 def test_query_arrow_max_results(

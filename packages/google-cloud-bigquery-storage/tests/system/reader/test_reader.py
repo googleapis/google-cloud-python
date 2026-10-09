@@ -539,8 +539,7 @@ def test_read_rows_to_dataframe_with_wide_table(client_and_types, project_id):
 
 
 def test_read_rows_arrow_serialization_options(credentials, project_id):
-    from google.cloud import bigquery
-    from google.cloud import bigquery_storage_v1
+    from google.cloud import bigquery, bigquery_storage_v1
 
     bq_client = bigquery.Client(project=project_id, credentials=credentials)
     job = bq_client.query(

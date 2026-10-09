@@ -1866,7 +1866,6 @@ class _NoopProgressBarQueue(object):
         """Don't actually do anything with the item."""
 
 
-
 class RowIterator(HTTPIterator):
     """A class for iterating through HTTP/JSON API row list responses.
 
@@ -1988,6 +1987,7 @@ class RowIterator(HTTPIterator):
         self._query_results_format = query_results_format
         self._compression_codec = compression_codec
         self._arrow_schema: Optional["pyarrow.Schema"] = None
+        self._use_read_session: bool = False
 
     @property
     @_disallow_when_arrow
@@ -2340,7 +2340,9 @@ class RowIterator(HTTPIterator):
 
     def _parse_inline_arrow_first_page(
         self, first_page: Optional[Dict[str, Any]]
-    ) -> Tuple[int, int, bool, Optional["pyarrow.Schema"], Optional["pyarrow.RecordBatch"]]:
+    ) -> Tuple[
+        int, int, bool, Optional["pyarrow.Schema"], Optional["pyarrow.RecordBatch"]
+    ]:
         """Extract inline Arrow schema and record batch from first_page JSON response."""
         offset = 0
         job_complete = False
@@ -2353,7 +2355,9 @@ class RowIterator(HTTPIterator):
             if job_complete:
                 total_rows = int(first_page.get("totalRows", 0))
 
-            pa_schema = self._parse_arrow_schema_from_json(first_page.get("arrowSchema"))
+            pa_schema = self._parse_arrow_schema_from_json(
+                first_page.get("arrowSchema")
+            )
             batch = self._parse_arrow_record_batch_from_json(
                 first_page.get("arrowRecordBatch"), pa_schema
             )
@@ -2371,9 +2375,7 @@ class RowIterator(HTTPIterator):
         timeout: Optional[float],
     ) -> Iterator["pyarrow.RecordBatch"]:
         """Stream remaining Arrow record batches using BigQuery Storage Read API gRPC."""
-        remaining = (
-            self.max_results - offset if self.max_results is not None else None
-        )
+        remaining = self.max_results - offset if self.max_results is not None else None
         use_read_session = (
             getattr(self, "_use_read_session", False) and self._table is not None
         )
@@ -2382,7 +2384,7 @@ class RowIterator(HTTPIterator):
                 f"projects/{self._table.project}/datasets/"
                 f"{self._table.dataset_id}/tables/{self._table.table_id}"
             )
-            read_session: Dict[str, Any] = {
+            read_session: Any = {
                 "table": table_ref,
                 "data_format": "ARROW",
             }
@@ -2414,13 +2416,16 @@ class RowIterator(HTTPIterator):
             stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
         read_kwargs: Dict[str, Any] = {"offset": offset, "timeout": timeout}
         if self._compression_codec is not None and not use_read_session:
+            compressed_kwargs: Dict[str, Any] = {
+                "arrow_serialization_options": {
+                    "buffer_compression": self._compression_codec
+                },
+                **read_kwargs,
+            }
             try:
                 reader = bqstorage_client.read_rows(
                     stream_name,
-                    arrow_serialization_options={
-                        "buffer_compression": self._compression_codec
-                    },
-                    **read_kwargs,
+                    **compressed_kwargs,
                 )
             except TypeError:
                 warnings.warn(
@@ -2486,9 +2491,13 @@ class RowIterator(HTTPIterator):
         if self._first_page_response:
             self._first_page_response = None
 
-        offset, total_rows, job_complete, pa_schema, initial_batch = (
-            self._parse_inline_arrow_first_page(first_page)
-        )
+        (
+            offset,
+            total_rows,
+            job_complete,
+            pa_schema,
+            initial_batch,
+        ) = self._parse_inline_arrow_first_page(first_page)
         if pa_schema is not None:
             self._arrow_schema = pa_schema
 
@@ -2524,6 +2533,7 @@ class RowIterator(HTTPIterator):
             if not more_pages_needed:
                 return
 
+            assert bqstorage_client is not None
             project = self._project or (self.client.project if self.client else None)
             yield from self._stream_arrow_via_bqstorage(
                 bqstorage_client, project, offset, pa_schema, timeout
