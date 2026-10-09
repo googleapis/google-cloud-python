@@ -21,7 +21,6 @@ import copy
 import functools
 import logging
 import re
-import threading
 from typing import Optional
 
 import google.auth.credentials
@@ -66,6 +65,7 @@ from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.pool import BurstyPool
+from google.cloud.spanner_v1.request_id_header import REQ_CHANNEL_ID
 from google.cloud.spanner_v1.services.spanner.client import (
     SpannerClient as SpannerClient,
 )
@@ -150,8 +150,6 @@ class Database(object):
                               statements in 'ddl_statements' above."""
 
     _spanner_api: SpannerClient = None
-    __transport_lock = threading.Lock()
-    __transports_to_channel_id = dict()
 
     def __init__(
         self,
@@ -199,7 +197,7 @@ class Database(object):
             self._directed_read_options = None
             self.default_transaction_options = None
         self._proto_descriptors = proto_descriptors
-        self._channel_id = 0
+        self._channel_id = REQ_CHANNEL_ID
         if pool is None:
             pool = BurstyPool(database_role=database_role)
         self._pool = pool
@@ -465,13 +463,6 @@ class Database(object):
                 client_info=client_info,
                 client_options=client_options,
             )
-            with self.__transport_lock:
-                transport = self._spanner_api.transport
-                channel_id = self.__transports_to_channel_id.get(transport, None)
-                if channel_id is None:
-                    channel_id = len(self.__transports_to_channel_id) + 1
-                    self.__transports_to_channel_id[transport] = channel_id
-                self._channel_id = channel_id
         return self._spanner_api
 
     def metadata_with_request_id(

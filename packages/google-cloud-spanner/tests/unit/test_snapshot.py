@@ -1375,7 +1375,8 @@ class Test_SnapshotBase(OpenTelemetryBase):
                     req_id,
                 ),
             ],
-            retry=retry,
+            # Retries are handled by _restart_on_unavailable, not the GAPIC call.
+            retry=None,
             timeout=timeout,
         )
         expected_attributes = dict(
@@ -1740,7 +1741,8 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 ),
             ],
             timeout=timeout,
-            retry=retry,
+            # Retries are handled by _restart_on_unavailable, not the GAPIC call.
+            retry=None,
         )
 
         self.assertEqual(derived._execute_sql_request_count, sql_count + 1)
