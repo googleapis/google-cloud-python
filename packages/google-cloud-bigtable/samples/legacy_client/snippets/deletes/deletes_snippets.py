@@ -66,14 +66,13 @@ def streaming_and_batching(project_id, instance_id, table_id):
     client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
-    batcher = table.mutations_batcher(flush_count=2)
-    rows = table.read_rows()
-    for row in rows:
-        row = table.direct_row(row.row_key)
-        row.delete_cell(column_family_id="cell_plan", column="data_plan_01gb")
-
-    batcher.mutate_rows(rows)
-    batcher.close()
+    with table.mutations_batcher(flush_count=2) as batcher:
+        for row in table.read_rows():
+            direct_row = table.direct_row(row.row_key)
+            direct_row.delete_cell(
+                column_family_id="cell_plan", column="data_plan_01gb"
+            )
+            batcher.mutate(direct_row)
 
 
 # [END bigtable_streaming_and_batching]
