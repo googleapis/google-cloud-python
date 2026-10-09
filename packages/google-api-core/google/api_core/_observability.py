@@ -232,7 +232,7 @@ def _get_tracer_provider(
 
 
 try:
-    # flake8: 'grpc' is imported under TYPE_CHECKING for static type annotations; imported here conditionally for runtime interceptor base classes
+    # flake8: `grpc` imported conditionally for runtime interceptor base classes
     import grpc  # noqa: F811
     from grpc import (
         StreamStreamClientInterceptor as _SyncStreamStreamClientInterceptor,
