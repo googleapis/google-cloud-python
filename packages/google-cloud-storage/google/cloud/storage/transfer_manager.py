@@ -1383,6 +1383,8 @@ def _reduce_client(cl):
     client_info = cl._initial_client_info
     client_options = cl._initial_client_options
     extra_headers = getattr(cl, "_extra_headers", {})
+    enable_metrics = getattr(cl, "_enable_metrics", None)
+    enable_debug_metrics = getattr(cl, "_enable_debug_metrics", None)
 
     return _LazyClient, (
         client_object_id,
@@ -1392,6 +1394,8 @@ def _reduce_client(cl):
         client_info,
         client_options,
         extra_headers,
+        enable_metrics,
+        enable_debug_metrics,
     )
 
 
@@ -1461,6 +1465,11 @@ class _LazyClient:
         if cached_client:
             return cached_client
         else:
+            if len(args) > 6:
+                kwargs.setdefault("enable_metrics", args[6])
+                if len(args) > 7:
+                    kwargs.setdefault("enable_debug_metrics", args[7])
+                args = args[:6]
             cached_client = Client(*args, **kwargs)
             _cached_clients[id] = cached_client
             return cached_client

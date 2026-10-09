@@ -17,6 +17,7 @@
 from google.cloud.client import ClientWithProject
 
 from google.cloud import _storage_v2 as storage_v2
+from google.cloud.storage import _opentelemetry_metrics
 
 _marker = object()
 
@@ -58,6 +59,19 @@ class GrpcClient(ClientWithProject):
         This provides a direct, unproxied connection to GCS for lower latency
         and higher throughput, and is highly recommended when running on Google
         Cloud infrastructure. Defaults to ``True``.
+
+    :type enable_metrics: bool or None
+    :param enable_metrics:
+        (Optional, Experimental) Whether to enable OpenTelemetry metrics. If
+        None, falls back to the GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS
+        environment variable, or False if unset.
+
+    :type enable_debug_metrics: bool or None
+    :param enable_debug_metrics:
+        (Optional, Experimental) Whether to enable debug OpenTelemetry
+        metrics. If None, falls back to the
+        GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS environment variable, or False
+        if unset.
     """
 
     def __init__(
@@ -69,8 +83,13 @@ class GrpcClient(ClientWithProject):
         *,
         api_key=None,
         attempt_direct_path=True,
+        enable_metrics=None,
+        enable_debug_metrics=None,
     ):
         super(GrpcClient, self).__init__(project=project, credentials=credentials)
+
+        self._enable_metrics = enable_metrics
+        self._enable_debug_metrics = enable_debug_metrics
 
         if isinstance(client_options, dict):
             if api_key:
@@ -85,6 +104,18 @@ class GrpcClient(ClientWithProject):
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
+        )
+
+    @property
+    def metrics_enabled(self) -> bool:
+        """Returns True if metrics recording is active for this client."""
+        return _opentelemetry_metrics.is_metrics_enabled(self._enable_metrics)
+
+    @property
+    def debug_metrics_enabled(self) -> bool:
+        """Returns True if debug metrics recording is active for this client."""
+        return _opentelemetry_metrics.is_debug_metrics_enabled(
+            self._enable_debug_metrics
         )
 
     def _create_gapic_client(

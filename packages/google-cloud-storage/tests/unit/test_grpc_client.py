@@ -197,3 +197,43 @@ class TestGrpcClient(unittest.TestCase):
             client_info=None,
             client_options=expected_options,
         )
+
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud._storage_v2.StorageClient")
+    def test_metrics_properties(self, mock_storage_client, mock_base_client):
+        from google.cloud.storage import _opentelemetry_metrics
+
+        mock_creds = _make_credentials()
+        mock_base_client.return_value._credentials = mock_creds
+
+        client = grpc_client.GrpcClient(
+            project="test-project",
+            credentials=mock_creds,
+            enable_metrics=True,
+            enable_debug_metrics=True,
+        )
+
+        with mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=True,
+        ):
+            self.assertTrue(client.metrics_enabled)
+            self.assertTrue(client.debug_metrics_enabled)
+
+            client._enable_metrics = False
+            self.assertFalse(client.metrics_enabled)
+            self.assertTrue(client.debug_metrics_enabled)
+
+            client._enable_debug_metrics = False
+            self.assertFalse(client.debug_metrics_enabled)
+
+        with mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=False,
+        ):
+            client._enable_metrics = True
+            client._enable_debug_metrics = True
+            self.assertFalse(client.metrics_enabled)
+            self.assertFalse(client.debug_metrics_enabled)
