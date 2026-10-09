@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import importlib
+import uuid
 from contextlib import contextmanager
 from unittest.mock import MagicMock
 
@@ -57,11 +58,33 @@ pytest.register_assert_rewrite("sqlalchemy.testing.assertions")
 from sqlalchemy.testing.plugin.pytestplugin import *  # noqa: E402, F401, F403
 
 
+def _commit_ddl(connection):
+    """Flush and commit buffered DDL in Spanner DBAPI or underlying connections."""
+    dbapi_conn = getattr(connection, "connection", connection)
+    commit_fn = getattr(dbapi_conn, "commit", None)
+    if callable(commit_fn):
+        commit_fn()
+
+
 @pytest.fixture
 def literal_round_trip_spanner(metadata, connection):
-    # for literal, we test the literal render in an INSERT
-    # into a typed column.  we can then SELECT it back as its
-    # official type;
+    """Test literal SQL rendering in INSERT and SELECT with full table isolation.
+
+    In SQLAlchemy, literal rendering tests verify that Python data types (such as
+    Strings with special escape characters, Decimals, or Booleans) are correctly
+    rendered directly into raw SQL text (e.g., 'SELECT ... WHERE x = 15.7563')
+    without syntax corruption or parameter escaping failures.
+
+    To ensure test isolation in Cloud Spanner, this fixture:
+    1. Generates a unique table name per invocation using the column type and
+       UUID entropy.
+    2. Explicitly commits table creation DDL so Spanner creates the table
+       immediately.
+    3. Executes the insert and select assertions.
+    4. Guarantees in a finally block that the table is dropped, DDL is committed,
+       and the table reference is evicted from metadata so subsequent tests and
+       class teardowns do not collide.
+    """
 
     def run(
         type_,
@@ -71,44 +94,52 @@ def literal_round_trip_spanner(metadata, connection):
         compare=None,
         support_whereclause=True,
     ):
-        t = Table("t_literal_round_trip_spanner", metadata, Column("x", type_))
+        table_name = f"t_lit_{type_.__class__.__name__.lower()}_{uuid.uuid4().hex[:6]}"
+        t = Table(table_name, metadata, Column("x", type_))
         t.create(connection)
+        _commit_ddl(connection)
 
-        for value in input_:
-            ins = t.insert().values(x=literal(value, type_))
-            connection.execute(ins)
+        try:
+            for value in input_:
+                ins = t.insert().values(x=literal(value, type_))
+                connection.execute(ins)
+            _commit_ddl(connection)
 
-        if support_whereclause:
-            if compare:
-                stmt = t.select().where(
-                    t.c.x
-                    == literal(
-                        compare,
-                        type_,
-                    ),
-                    t.c.x
-                    == literal(
-                        input_[0],
-                        type_,
-                    ),
-                )
-            else:
-                stmt = t.select().where(
-                    t.c.x
-                    == literal(
-                        compare if compare is not None else input_[0],
-                        type_,
+            if support_whereclause:
+                if compare:
+                    stmt = t.select().where(
+                        t.c.x
+                        == literal(
+                            compare,
+                            type_,
+                        ),
+                        t.c.x
+                        == literal(
+                            input_[0],
+                            type_,
+                        ),
                     )
-                )
-        else:
-            stmt = t.select()
+                else:
+                    stmt = t.select().where(
+                        t.c.x
+                        == literal(
+                            compare if compare is not None else input_[0],
+                            type_,
+                        )
+                    )
+            else:
+                stmt = t.select()
 
-        rows = connection.execute(stmt).all()
-        assert rows, "No rows returned"
-        for row in rows:
-            value = row[0]
-            if filter_ is not None:
-                value = filter_(value)
-            assert value in output
+            rows = connection.execute(stmt).all()
+            assert rows, "No rows returned"
+            for row in rows:
+                value = row[0]
+                if filter_ is not None:
+                    value = filter_(value)
+                assert value in output
+        finally:
+            t.drop(connection, checkfirst=True)
+            _commit_ddl(connection)
+            metadata.remove(t)
 
     return run
