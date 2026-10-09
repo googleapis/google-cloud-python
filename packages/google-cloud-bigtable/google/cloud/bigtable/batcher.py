@@ -204,6 +204,7 @@ class MutationsBatcher(object):
             * :exc:`~batcher.MutationsBatchError` if there's any error in the mutations.
         """
         self._close_batcher()
+        # Set atexit registration after internal batcher.
         atexit.unregister(self.close)
         self._init_batcher()
         atexit.register(self.close)
