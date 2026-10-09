@@ -263,6 +263,36 @@ def test_get_otel_async_interceptor_enabled(monkeypatch, mock_otel_grpc):
     mock_span.set_attribute.assert_any_call("url.domain", "googleapis.com")
 
 
+def test_get_otel_async_interceptor_single_return(monkeypatch, mock_otel_grpc):
+    """Verifies that a single interceptor returned by upstream OTel is safely wrapped into a list."""
+    # Step 1: Opt-in to experimental SDK tracing via environment variable.
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    # Step 2: Configure the mock OpenTelemetry gRPC instrumentation fixture.
+    # While upstream normally returns a sequence (list or tuple), third-party
+    # instrumentation or older versions may return a lone interceptor object.
+    # We simulate this edge case by returning a single mock interceptor.
+    single_interceptor = mock.Mock(name="single_otel_interceptor")
+    mock_otel_grpc.aio_client_interceptors.return_value = single_interceptor
+
+    # Step 3: Call get_otel_async_interceptor with standard ClientOptions.
+    options = ClientOptions()
+    result = _observability.get_otel_async_interceptor(client_options=options)
+
+    # Step 4: Validate list normalization and downstream suppression interceptor injection.
+    # The result must be a 2-item list:
+    #   [0]: The single upstream interceptor wrapped in a list.
+    #   [1]: Our internal _AsyncSuppressingClientInterceptor appended to prevent redundant wire spans.
+    assert isinstance(result, list)
+    assert len(result) == 2
+    assert result[0] is single_interceptor
+    assert isinstance(result[1], _observability._AsyncSuppressingClientInterceptor)
+
+    # Step 5: Verify the internal flag marking that channel transports use to avoid duplicate wrapping.
+    assert getattr(result[0], "_is_otel_interceptor", False) is True
+    assert getattr(result[1], "_is_otel_interceptor", False) is True
+
+
 @pytest.mark.parametrize(
     "client_options,expected_attrs",
     [

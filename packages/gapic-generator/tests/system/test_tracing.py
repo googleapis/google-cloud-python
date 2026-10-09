@@ -51,6 +51,9 @@ from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoAsyncClient, EchoClient
+from google.showcase_v1beta1._compat import (
+    HAS_AUTO_INSTRUMENTATION_SUPPRESSION,
+)
 
 try:
     from .conftest import construct_client
@@ -235,6 +238,10 @@ def test_env_var_opt_in(otel_echo_client):
         assert span.name == "google.showcase.v1beta1.Echo/Echo"
 
 
+@pytest.mark.skipif(
+    not HAS_AUTO_INSTRUMENTATION_SUPPRESSION,
+    reason="Installed google-api-core lacks auto-instrumentation suppression",
+)
 def test_auto_instrumentation_suppression_sync(span_exporter):
     """Verifies that upstream gRPC client auto-instrumentation spans are suppressed in sync calls.
 
@@ -243,16 +250,10 @@ def test_auto_instrumentation_suppression_sync(span_exporter):
     suppression interceptor prevents the duplicate, bare-bones upstream span from being
     emitted while preserving the full Google Cloud SDK T4 span.
     """
-    try:
-        from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient
-    except ImportError:
-        pytest.skip("opentelemetry-instrumentation-grpc is not installed")
-
-    if not hasattr(_observability, "_AsyncSuppressingClientInterceptor"):
-        pytest.skip("Installed google-api-core lacks auto-instrumentation suppression")
+    grpc_instrumentation = pytest.importorskip("opentelemetry.instrumentation.grpc")
 
     exporter, provider = span_exporter
-    instrumentor = GrpcInstrumentorClient()
+    instrumentor = grpc_instrumentation.GrpcInstrumentorClient()
     instrumentor.instrument(tracer_provider=provider)
     try:
         options = ClientOptions(
@@ -299,6 +300,10 @@ def test_auto_instrumentation_suppression_sync(span_exporter):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skipif(
+    not HAS_AUTO_INSTRUMENTATION_SUPPRESSION,
+    reason="Installed google-api-core lacks auto-instrumentation suppression",
+)
 async def test_auto_instrumentation_suppression_async(span_exporter):
     """Verifies that upstream gRPC client auto-instrumentation spans are suppressed in async calls.
 
@@ -307,16 +312,10 @@ async def test_auto_instrumentation_suppression_async(span_exporter):
     suppression interceptor prevents the duplicate, bare-bones upstream span from being
     emitted while preserving the full Google Cloud SDK T4 span.
     """
-    try:
-        from opentelemetry.instrumentation.grpc import GrpcAioInstrumentorClient
-    except ImportError:
-        pytest.skip("opentelemetry-instrumentation-grpc is not installed")
-
-    if not hasattr(_observability, "_AsyncSuppressingClientInterceptor"):
-        pytest.skip("Installed google-api-core lacks auto-instrumentation suppression")
+    grpc_instrumentation = pytest.importorskip("opentelemetry.instrumentation.grpc")
 
     exporter, provider = span_exporter
-    instrumentor = GrpcAioInstrumentorClient()
+    instrumentor = grpc_instrumentation.GrpcAioInstrumentorClient()
     instrumentor.instrument(tracer_provider=provider)
     try:
         options = ClientOptions(
