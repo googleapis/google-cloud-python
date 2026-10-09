@@ -792,6 +792,126 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         self.assertEqual(result_table.schema.names, ["num"])
         mock_client._ensure_bqstorage_client.assert_not_called()
 
+    def test_stream_arrow_via_bqstorage_forwards_arrow_serialization_options(self):
+        mock_client = mock.MagicMock()
+        mock_bqstorage = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_bqstorage.read_rows.return_value = []
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-comp",
+            query_results_format="ARROW",
+            compression_codec="LZ4_FRAME",
+        )
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow"):
+            batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
+            self.assertEqual(batches, [])
+            expected_stream = (
+                "projects/test-proj/locations/US/jobs/test-job-comp/streams/_default"
+            )
+            mock_bqstorage.read_rows.assert_called_once_with(
+                expected_stream,
+                arrow_serialization_options={"buffer_compression": "LZ4_FRAME"},
+                offset=0,
+                timeout=5.0,
+            )
+
+    def test_stream_arrow_via_bqstorage_legacy_client_fallback(self):
+        from google.auth import credentials as auth_credentials
+        from google.cloud import bigquery_storage
+
+        mock_client = mock.MagicMock()
+        legacy_bqstorage = bigquery_storage.BigQueryReadClient(
+            credentials=mock.MagicMock(spec=auth_credentials.Credentials)
+        )
+        legacy_bqstorage.read_rows = mock.MagicMock(
+            side_effect=TypeError(
+                "read_rows() got an unexpected keyword argument 'arrow_serialization_options'"
+            )
+        )
+        mock_client._ensure_bqstorage_client.return_value = legacy_bqstorage
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-legacy",
+            query_results_format="ARROW",
+            compression_codec="ZSTD",
+        )
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow"), mock.patch(
+            "google.cloud.bigquery_storage_v1.services.big_query_read.client.BigQueryReadClient.read_rows",
+            return_value=iter([]),
+        ) as mock_gapic_read_rows:
+            batches = list(
+                iterator._download_arrow_from_job_id(
+                    bqstorage_client=legacy_bqstorage, timeout=5.0
+                )
+            )
+            self.assertEqual(batches, [])
+            expected_stream = (
+                "projects/test-proj/locations/US/jobs/test-job-legacy/streams/_default"
+            )
+            mock_gapic_read_rows.assert_called_once_with(
+                legacy_bqstorage,
+                request={
+                    "read_stream": expected_stream,
+                    "offset": 0,
+                    "arrow_serialization_options": {"buffer_compression": "ZSTD"},
+                },
+                timeout=5.0,
+            )
+
+    def test_download_arrow_from_job_id_cached_query_with_page_token_reads_stream(self):
+        mock_client = mock.MagicMock()
+        mock_bqstorage = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_bqstorage.read_rows.return_value = []
+
+        raw_schema_bytes = b"schema_bytes_cached"
+        b64_schema = base64.b64encode(raw_schema_bytes).decode("ascii")
+        first_page_response = {
+            "jobComplete": True,
+            "totalRows": "0",
+            "pageToken": "cached-stream-page-token",
+            "arrowSchema": {"serializedSchema": b64_schema},
+            "arrowRecordBatch": {},
+        }
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-cached",
+            query_results_format="ARROW",
+            first_page_response=first_page_response,
+        )
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+            mock_pyarrow.py_buffer = lambda x: x
+            mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
+            batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
+            self.assertEqual(batches, [])
+            mock_bqstorage.read_rows.assert_called_once_with(
+                "projects/test-proj/locations/US/jobs/test-job-cached/streams/_default",
+                offset=0,
+                timeout=5.0,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

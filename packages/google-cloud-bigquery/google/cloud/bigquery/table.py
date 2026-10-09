@@ -1945,6 +1945,7 @@ class RowIterator(HTTPIterator):
         started: Optional[datetime.datetime] = None,
         ended: Optional[datetime.datetime] = None,
         query_results_format: Optional[str] = None,
+        compression_codec: Optional[str] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1980,6 +1981,7 @@ class RowIterator(HTTPIterator):
         self._job_started = started
         self._job_ended = ended
         self._query_results_format = query_results_format
+        self._compression_codec = compression_codec
         self._arrow_schema: Optional["pyarrow.Schema"] = None
 
     @property
@@ -2369,7 +2371,31 @@ class RowIterator(HTTPIterator):
         )
         location = self._location or (self.client.location if self.client else None)
         stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
-        reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
+        read_kwargs: Dict[str, Any] = {"offset": offset, "timeout": timeout}
+        if self._compression_codec is not None:
+            arrow_options = {"buffer_compression": self._compression_codec}
+            try:
+                reader = bqstorage_client.read_rows(
+                    stream_name,
+                    arrow_serialization_options=arrow_options,
+                    **read_kwargs,
+                )
+            except TypeError:
+                from google.cloud.bigquery_storage_v1.services.big_query_read import (
+                    BigQueryReadClient as GapicBigQueryReadClient,
+                )
+
+                reader = GapicBigQueryReadClient.read_rows(
+                    bqstorage_client,
+                    request={
+                        "read_stream": stream_name,
+                        "offset": offset,
+                        "arrow_serialization_options": arrow_options,
+                    },
+                    timeout=timeout,
+                )
+        else:
+            reader = bqstorage_client.read_rows(stream_name, **read_kwargs)
         for response in reader:
             if (
                 response.arrow_schema
@@ -2440,7 +2466,11 @@ class RowIterator(HTTPIterator):
         if self.max_results is not None and offset >= self.max_results:
             more_pages_needed = False
         else:
-            more_pages_needed = not job_complete or offset < total_rows
+            more_pages_needed = (
+                bool(first_page and first_page.get("pageToken"))
+                or not job_complete
+                or offset < total_rows
+            )
 
         owns_bqstorage_client = False
         if more_pages_needed and bqstorage_client is None:

@@ -537,6 +537,7 @@ def query_and_wait(
             page_size=page_size,
             max_results=max_results,
             query_results_format=query_results_format,
+            compression_codec=compression_codec,
             callback=callback,
         )
 
@@ -618,6 +619,7 @@ def query_and_wait(
                 page_size=page_size,
                 max_results=max_results,
                 query_results_format=query_results_format,
+                compression_codec=compression_codec,
                 callback=callback,
             )
 
@@ -658,6 +660,7 @@ def query_and_wait(
             started=query_results.started,
             ended=query_results.ended,
             query_results_format=query_results_format,
+            compression_codec=compression_codec,
         )
 
     if job_retry is not None:
@@ -715,6 +718,7 @@ def _wait_or_cancel(
     max_results: Optional[int],
     *,
     query_results_format: Optional[str] = None,
+    compression_codec: Optional[str] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Wait for a job to complete and return the results.
@@ -760,6 +764,7 @@ def _wait_or_cancel(
                 )
             )
         query_results._query_results_format = query_results_format
+        query_results._compression_codec = compression_codec
         return query_results
     except Exception:
         # Attempt to cancel the job since we can't return the results.

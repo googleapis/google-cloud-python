@@ -378,3 +378,76 @@ def test_query_arrow_max_results(
     assert len(table) == expected_rows
     assert table.column_names == ["num"]
     assert table.column("num").to_pylist() == list(range(1, expected_rows + 1))
+
+
+@pytest.mark.parametrize(
+    ("codec", "force_job_insert"),
+    [
+        (enums.QueryResultsCompressionCodec.LZ4_FRAME, False),
+        (enums.QueryResultsCompressionCodec.ZSTD, False),
+        (enums.QueryResultsCompressionCodec.LZ4_FRAME, True),
+    ],
+)
+def test_query_arrow_multi_page_compression_codec(
+    bigquery_client, codec, force_job_insert
+):
+    """System test verifying ReadRows compresses wire bytes with compression_codec on Page 2+ and jobs.insert."""
+    from unittest import mock
+    from google.cloud.bigquery_storage_v1.services.big_query_read import (
+        BigQueryReadClient as GapicBigQueryReadClient,
+    )
+
+    query_str = "SELECT REPEAT('abc123_', 50) AS payload FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num"
+    job_config = (
+        bigquery.QueryJobConfig(priority=bigquery.QueryPriority.INTERACTIVE)
+        if force_job_insert
+        else None
+    )
+
+    def _measure_stream_wire_bytes(results):
+        wire_bytes = 0
+        orig_gapic_read_rows = GapicBigQueryReadClient.read_rows
+
+        def spy_gapic_read_rows(self, *args, **kwargs):
+            stream = orig_gapic_read_rows(self, *args, **kwargs)
+            for resp in stream:
+                if (
+                    resp.arrow_record_batch
+                    and resp.arrow_record_batch.serialized_record_batch
+                ):
+                    nonlocal wire_bytes
+                    wire_bytes += len(resp.arrow_record_batch.serialized_record_batch)
+                yield resp
+
+        with mock.patch.object(
+            GapicBigQueryReadClient, "read_rows", spy_gapic_read_rows
+        ):
+            table = results.to_arrow()
+        return table, wire_bytes
+
+    uncompressed_results = bigquery_client.query_and_wait(
+        query_str,
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        page_size=500,
+    )
+    uncompressed_table, uncompressed_wire_bytes = _measure_stream_wire_bytes(
+        uncompressed_results
+    )
+
+    compressed_results = bigquery_client.query_and_wait(
+        query_str,
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        compression_codec=codec,
+        page_size=500,
+    )
+    compressed_table, compressed_wire_bytes = _measure_stream_wire_bytes(
+        compressed_results
+    )
+
+    assert uncompressed_wire_bytes > 0
+    assert compressed_wire_bytes > 0
+    assert compressed_wire_bytes < uncompressed_wire_bytes
+    assert compressed_table.equals(uncompressed_table)
+    assert len(compressed_table) == 5000
