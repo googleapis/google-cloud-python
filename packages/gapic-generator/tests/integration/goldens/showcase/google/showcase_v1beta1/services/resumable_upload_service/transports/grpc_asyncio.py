@@ -412,6 +412,7 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                                 host=transport._host,
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
+                                client_options=getattr(transport, "_client_options", None),
                             )
                         return transport._rest_transport.upload_media(*args, **kwargs)
                 self._stubs['upload_media'] = _AsyncRestStub()

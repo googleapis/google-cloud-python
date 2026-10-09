@@ -31,8 +31,9 @@ import asyncio
 from google.cloud import bigtable
 from google.cloud.bigtable.data import row_filters
 
-# [END bigtable_async_hw_imports]
 from ...utils import wait_for_table
+
+# [END bigtable_async_hw_imports]
 
 # use to ignore warnings
 row_filters
@@ -140,8 +141,7 @@ async def main(project_id, instance_id, table_id):
 
         print("Deleting the {} table.".format(table_id))
         await admin_client.delete_table(name=table_path)
-        await table.close()
-        await client.close()
+        await admin_client.close()
         # [END bigtable_async_hw_delete_table]
 
 

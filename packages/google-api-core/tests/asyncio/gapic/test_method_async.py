@@ -350,11 +350,14 @@ async def test_wrap_method_async_otel_tracing_skips_span(
     """Proves that under various gating conditions, no async Tier 3 span is created."""
     mock_target = mock.AsyncMock(return_value="success")
     mock_trace = mock.Mock()
+    from google.api_core import _observability
 
     with (
-        mock.patch(
-            "google.api_core._observability.is_otel_capabilities_enabled",
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
             return_value=capabilities_enabled,
+            autospec=True,
         ),
         mock.patch.dict(
             "sys.modules",
@@ -371,8 +374,18 @@ async def test_wrap_method_async_otel_tracing_skips_span(
     mock_trace.get_tracer.assert_not_called()
 
 
+@pytest.mark.parametrize(
+    "kind,expected_rpc_system",
+    [
+        ("grpc_asyncio", "grpc"),
+        ("rest_asyncio", "http"),
+    ],
+    ids=["grpc_asyncio", "rest_asyncio"],
+)
 @pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
+async def test_wrap_method_async_otel_tracing_enabled_success(
+    mock_otel, kind, expected_rpc_system
+):
     """Proves that when OpenTelemetry tracing is enabled and method_name is passed, a T3 client span is started and awaited."""
     mock_target = mock.AsyncMock(return_value="async_success")
 
@@ -380,7 +393,7 @@ async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
         mock_target,
         default_timeout=60,
         method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="grpc_asyncio",
+        kind=kind,
     )
     result = await wrapped()
 
@@ -389,32 +402,7 @@ async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
         attributes={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        },
-    )
-    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
-
-
-@pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_enabled_rest_asyncio(mock_otel):
-    """Proves that when kind is 'rest_asyncio', a T3 client span is started."""
-    mock_target = mock.AsyncMock(return_value="rest_success")
-
-    wrapped = gapic_v1.method_async.wrap_method(
-        mock_target,
-        default_timeout=60,
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="rest_asyncio",
-    )
-    result = await wrapped()
-
-    assert result == "rest_success"
-    mock_otel.tracer.start_as_current_span.assert_called_once_with(
-        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
-        attributes={
-            "rpc.system.name": "http",
+            "rpc.system.name": expected_rpc_system,
             "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         },
     )
@@ -447,37 +435,31 @@ async def test_wrap_method_async_otel_tracing_coroutine_duration(mock_otel):
 
 
 @pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_custom_client_options(mock_otel):
+@pytest.mark.parametrize(
+    "options_builder",
+    [
+        pytest.param(
+            lambda p: client_options_lib.ClientOptions(tracer_provider=p),
+            id="client_options_object",
+        ),
+        pytest.param(
+            lambda p: {"tracer_provider": p},
+            id="client_options_dict",
+        ),
+    ],
+)
+async def test_wrap_method_async_otel_tracing_client_options(
+    mock_otel, options_builder
+):
     """Proves that providing client_options with a custom tracer_provider uses that provider."""
     mock_target = mock.AsyncMock(return_value="success")
 
     mock_provider = mock.Mock()
     mock_provider.get_tracer.return_value = mock_otel.tracer
 
-    client_options = client_options_lib.ClientOptions(tracer_provider=mock_provider)
-
     wrapped = gapic_v1.method_async.wrap_method(
         mock_target,
-        client_options=client_options,
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-    )
-    result = await wrapped()
-
-    assert result == "success"
-    mock_provider.get_tracer.assert_called_once_with("google.api_core")
-
-
-@pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_dict_client_options(mock_otel):
-    """Proves that providing a dict with tracer_provider uses that provider."""
-    mock_target = mock.AsyncMock(return_value="success")
-
-    mock_provider = mock.Mock()
-    mock_provider.get_tracer.return_value = mock_otel.tracer
-
-    wrapped = gapic_v1.method_async.wrap_method(
-        mock_target,
-        client_options={"tracer_provider": mock_provider},
+        client_options=options_builder(mock_provider),
         method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
     )
     result = await wrapped()
@@ -503,6 +485,31 @@ async def test_wrap_method_async_otel_tracing_enabled_error(mock_otel):
     mock_otel.span.set_attribute.assert_any_call(
         "rpc.response.status_code", "NOT_FOUND"
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("interrupt_exc", [KeyboardInterrupt, SystemExit])
+async def test_wrap_method_async_otel_tracing_interrupt_bypasses_error_attributes(
+    mock_otel, interrupt_exc
+):
+    """Proves that process-level interrupts in async calls are re-raised without polluting span error attributes."""
+    mock_target = mock.AsyncMock(side_effect=interrupt_exc())
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(interrupt_exc):
+        await wrapped()
+
+    for call in mock_otel.span.set_attribute.call_args_list:
+        attr_name = call[0][0]
+        assert attr_name not in (
+            "rpc.response.status_code",
+            "error.type",
+            "status.message",
+        )
 
 
 @pytest.mark.asyncio
