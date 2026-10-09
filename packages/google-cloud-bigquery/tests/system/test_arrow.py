@@ -399,9 +399,12 @@ def test_query_arrow_multi_page_compression_codec(
 
     query_str = "SELECT REPEAT('abc123_', 50) AS payload FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num"
     job_config = (
-        bigquery.QueryJobConfig(priority=bigquery.QueryPriority.INTERACTIVE)
+        bigquery.QueryJobConfig(
+            priority=bigquery.QueryPriority.INTERACTIVE,
+            use_query_cache=False,
+        )
         if force_job_insert
-        else None
+        else bigquery.QueryJobConfig(use_query_cache=False)
     )
 
     def _measure_stream_wire_bytes(results):
@@ -451,3 +454,23 @@ def test_query_arrow_multi_page_compression_codec(
     assert compressed_wire_bytes < uncompressed_wire_bytes
     assert compressed_table.equals(uncompressed_table)
     assert len(compressed_table) == 5000
+
+
+def test_query_arrow_cached_multi_page(bigquery_client):
+    """System test verifying cached multi-page Arrow queries read full results."""
+    query_str = "SELECT REPEAT('cached_', 20) AS payload FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num"
+
+    first_table = bigquery_client.query_and_wait(
+        query_str,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        page_size=500,
+    ).to_arrow()
+    cached_table = bigquery_client.query_and_wait(
+        query_str,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        page_size=500,
+    ).to_arrow()
+
+    assert len(first_table) == 5000
+    assert len(cached_table) == 5000
+    assert cached_table.equals(first_table)
