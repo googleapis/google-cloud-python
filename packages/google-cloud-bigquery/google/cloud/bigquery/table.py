@@ -1917,6 +1917,11 @@ class RowIterator(HTTPIterator):
             If representing query results, the start time of the associated query.
         ended (Optional[datetime.datetime]):
             If representing query results, the end time of the associated query.
+        query_results_format (Optional[str]):
+            Format for query results (e.g. ``ARROW``).
+        compression_codec (Optional[str]):
+            Compression codec for serialized Arrow record batches (e.g.
+            ``LZ4_FRAME`` or ``ZSTD``).
     """
 
     def __init__(
