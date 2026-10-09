@@ -143,32 +143,32 @@ async def write_aggregate(table):
     async def write_aggregate(project_id, instance_id, table_id):
         """Increments a value in a Bigtable table using AddToCell mutation."""
         async with BigtableDataClientAsync(project=project_id) as client:
-            table = client.get_table(instance_id, table_id)
-            row_key = "unique_device_ids_1"
-            try:
-                async with table.mutations_batcher() as batcher:
-                    # The AddToCell mutation increments the value of a cell.
-                    # The `counters` family must be set up to be an aggregate
-                    # family with an int64 input type.
-                    reading = AddToCell(
-                        family="counters",
-                        qualifier="odometer",
-                        value=32304,
-                        # Convert nanoseconds to microseconds
-                        timestamp_micros=time.time_ns() // 1000,
-                    )
-                    await batcher.append(
-                        RowMutationEntry(row_key.encode("utf-8"), [reading])
-                    )
-            except MutationsExceptionGroup as e:
-                # MutationsExceptionGroup contains a FailedMutationEntryError for
-                # each mutation that failed.
-                for sub_exception in e.exceptions:
-                    failed_entry: RowMutationEntry = sub_exception.entry
-                    cause: Exception = sub_exception.__cause__
-                    print(
-                        f"Failed mutation for row {failed_entry.row_key!r} with error: {cause!r}"
-                    )
+            async with client.get_table(instance_id, table_id) as table:
+                row_key = "unique_device_ids_1"
+                try:
+                    async with table.mutations_batcher() as batcher:
+                        # The AddToCell mutation increments the value of a cell.
+                        # The `counters` family must be set up to be an aggregate
+                        # family with an int64 input type.
+                        reading = AddToCell(
+                            family="counters",
+                            qualifier="odometer",
+                            value=32304,
+                            # Convert nanoseconds to microseconds
+                            timestamp_micros=time.time_ns() // 1000,
+                        )
+                        await batcher.append(
+                            RowMutationEntry(row_key.encode("utf-8"), [reading])
+                        )
+                except MutationsExceptionGroup as e:
+                    # MutationsExceptionGroup contains a FailedMutationEntryError for
+                    # each mutation that failed.
+                    for sub_exception in e.exceptions:
+                        failed_entry: RowMutationEntry = sub_exception.entry
+                        cause: Exception = sub_exception.__cause__
+                        print(
+                            f"Failed mutation for row {failed_entry.row_key!r} with error: {cause!r}"
+                        )
 
     # [END bigtable_async_write_aggregate]
     await write_aggregate(table.client.project, table.instance_id, table.table_id)

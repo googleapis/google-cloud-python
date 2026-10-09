@@ -31,7 +31,7 @@ import asyncio
 from google.cloud import bigtable
 from google.cloud.bigtable.data import row_filters
 
-from ..utils import wait_for_table
+from ...utils import wait_for_table
 
 # [END bigtable_async_hw_imports]
 
@@ -129,6 +129,8 @@ async def main(project_id, instance_id, table_id):
         # use admin client to create the table
         print("Deleting the {} table.".format(table_id))
         admin_table.delete()
+        await table.close()
+        await client.close()
         # [END bigtable_async_hw_delete_table]
 
 
