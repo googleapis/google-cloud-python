@@ -2373,27 +2373,20 @@ class RowIterator(HTTPIterator):
         stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
         read_kwargs: Dict[str, Any] = {"offset": offset, "timeout": timeout}
         if self._compression_codec is not None:
-            arrow_options = {"buffer_compression": self._compression_codec}
             try:
                 reader = bqstorage_client.read_rows(
                     stream_name,
-                    arrow_serialization_options=arrow_options,
+                    arrow_serialization_options={
+                        "buffer_compression": self._compression_codec
+                    },
                     **read_kwargs,
                 )
             except TypeError:
-                from google.cloud.bigquery_storage_v1.services.big_query_read import (
-                    BigQueryReadClient as GapicBigQueryReadClient,
+                warnings.warn(
+                    "Upgrade google-cloud-bigquery-storage to compress multi-page Arrow streams.",
+                    UserWarning,
                 )
-
-                reader = GapicBigQueryReadClient.read_rows(
-                    bqstorage_client,
-                    request={
-                        "read_stream": stream_name,
-                        "offset": offset,
-                        "arrow_serialization_options": arrow_options,
-                    },
-                    timeout=timeout,
-                )
+                reader = bqstorage_client.read_rows(stream_name, **read_kwargs)
         else:
             reader = bqstorage_client.read_rows(stream_name, **read_kwargs)
         for response in reader:

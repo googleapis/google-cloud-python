@@ -824,18 +824,14 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             )
 
     def test_stream_arrow_via_bqstorage_legacy_client_fallback(self):
-        from google.auth import credentials as auth_credentials
-        from google.cloud import bigquery_storage
-
         mock_client = mock.MagicMock()
-        legacy_bqstorage = bigquery_storage.BigQueryReadClient(
-            credentials=mock.MagicMock(spec=auth_credentials.Credentials)
-        )
-        legacy_bqstorage.read_rows = mock.MagicMock(
-            side_effect=TypeError(
+        legacy_bqstorage = mock.MagicMock()
+        legacy_bqstorage.read_rows.side_effect = [
+            TypeError(
                 "read_rows() got an unexpected keyword argument 'arrow_serialization_options'"
-            )
-        )
+            ),
+            iter([]),
+        ]
         mock_client._ensure_bqstorage_client.return_value = legacy_bqstorage
 
         iterator = RowIterator(
@@ -850,10 +846,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             compression_codec="ZSTD",
         )
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow"), mock.patch(
-            "google.cloud.bigquery_storage_v1.services.big_query_read.client.BigQueryReadClient.read_rows",
-            return_value=iter([]),
-        ) as mock_gapic_read_rows:
+        with mock.patch("google.cloud.bigquery.table.pyarrow"), self.assertWarns(
+            UserWarning
+        ):
             batches = list(
                 iterator._download_arrow_from_job_id(
                     bqstorage_client=legacy_bqstorage, timeout=5.0
@@ -863,14 +858,21 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             expected_stream = (
                 "projects/test-proj/locations/US/jobs/test-job-legacy/streams/_default"
             )
-            mock_gapic_read_rows.assert_called_once_with(
-                legacy_bqstorage,
-                request={
-                    "read_stream": expected_stream,
-                    "offset": 0,
-                    "arrow_serialization_options": {"buffer_compression": "ZSTD"},
-                },
-                timeout=5.0,
+            self.assertEqual(
+                legacy_bqstorage.read_rows.call_args_list,
+                [
+                    mock.call(
+                        expected_stream,
+                        arrow_serialization_options={"buffer_compression": "ZSTD"},
+                        offset=0,
+                        timeout=5.0,
+                    ),
+                    mock.call(
+                        expected_stream,
+                        offset=0,
+                        timeout=5.0,
+                    ),
+                ],
             )
 
     def test_download_arrow_from_job_id_cached_query_with_page_token_reads_stream(self):
