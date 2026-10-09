@@ -30,7 +30,7 @@ pyasn1-modules==0.4.2
 pycparser==2.23
 pyparsing==3.2.5
 python-dateutil==2.9.0.post0
-pytz==2025.2
+pytz==2026.5
 PyYAML==6.0.3
 requests==2.33.0
 rsa==4.9.1

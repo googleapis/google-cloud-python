@@ -287,8 +287,8 @@ class MutationsBatcherAsync:
             if not CrossSync.is_async
             else None
         )
-        self._flush_timer = CrossSync.create_task(
-            self._timer_routine, flush_interval, sync_executor=self._sync_flush_executor
+        self._flush_timer = CrossSync.create_daemon_task(
+            self._timer_routine, flush_interval
         )
         self._flush_jobs: set[CrossSync.Future[None]] = set()
         # MutationExceptionGroup reports number of successful entries along with failures
@@ -392,18 +392,25 @@ class MutationsBatcherAsync:
                 CrossSync.Future[list[FailedMutationEntryError]], list[RowMutationEntry]
             ]
         ] = []
+        found_exceptions: list[FailedMutationEntryError] = []
         async for batch, metric in self._flow_control.add_to_flow_with_metrics(
             new_entries, self._target.client._metrics
         ):
-            batch_task = CrossSync.create_task(
-                self._execute_mutate_rows,
-                batch,
-                metric,
-                sync_executor=self._sync_rpc_executor,
-            )
-            in_process_requests.append((batch_task, batch))
+            try:
+                batch_task = CrossSync.create_task(
+                    self._execute_mutate_rows,
+                    batch,
+                    metric,
+                    sync_executor=self._sync_rpc_executor,
+                )
+                in_process_requests.append((batch_task, batch))
+            except RuntimeError:
+                # Executor is already shut down (e.g. during atexit); flush synchronously.
+                found_exceptions.extend(await self._execute_mutate_rows(batch, metric))
         # wait for all inflight requests to complete
-        found_exceptions = await self._wait_for_batch_results(*in_process_requests)
+        found_exceptions.extend(
+            await self._wait_for_batch_results(*in_process_requests)
+        )
         # update exception data to reflect any new errors
         self._entries_processed_since_last_raise += len(new_entries)
         self._add_exceptions(found_exceptions)
@@ -545,7 +552,12 @@ class MutationsBatcherAsync:
         """
         self._closed.set()
         self._flush_timer.cancel()
-        self._schedule_flush()
+        entries = self._staged_entries
+        try:
+            self._schedule_flush()
+        except RuntimeError:
+            # Executor is already shut down (e.g. during atexit); flush synchronously.
+            await self._flush_internal(entries)
         # shut down executors
         if self._sync_flush_executor:
             with self._sync_flush_executor:
