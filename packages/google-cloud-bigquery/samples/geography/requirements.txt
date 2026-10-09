@@ -22,7 +22,7 @@ idna==3.15
 munch==4.0.0
 mypy-extensions==1.1.0
 packaging==25.0
-pandas==2.3.3
+pandas==3.0.6
 proto-plus==1.26.1
 pyarrow==26.0.0
 pyasn1==0.6.4
