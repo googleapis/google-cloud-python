@@ -396,7 +396,6 @@ def samples(session):
         if "beam" not in p.parts
     ]
     req_args = [arg for req_file in req_files for arg in ("-r", req_file)]
-    session.install("-e", ".")
     session.install(
         "google-cloud-testutils",
         "mock",
@@ -404,7 +403,10 @@ def samples(session):
         "pytest-asyncio",
         *req_args,
     )
-    session.install("-e", ".", "--no-deps")
+    # Install the library from this checkout last so the samples exercise the
+    # code at HEAD rather than a released version. The samples' requirements.txt
+    # files intentionally leave google-cloud-bigtable unpinned for this reason.
+    session.install("-e", ".")
 
     has_target = any(not arg.startswith("-") for arg in session.posargs)
     target_paths = [] if has_target else [os.path.join("samples")]
