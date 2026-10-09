@@ -330,13 +330,7 @@ class CrossSync(metaclass=MappingMeta):
             """
             if not sync_executor:
                 raise ValueError("sync_executor is required for sync version")
-            try:
-                return sync_executor.submit(fn, *fn_args, **fn_kwargs)
-            except RuntimeError:
-                # Interpreter is shutting down (e.g. during atexit); fall back to a daemon thread
-                return CrossSync._Sync_Impl.create_daemon_task(
-                    fn, *fn_args, task_name=task_name, **fn_kwargs
-                )
+            return sync_executor.submit(fn, *fn_args, **fn_kwargs)
 
         @staticmethod
         def create_daemon_task(
