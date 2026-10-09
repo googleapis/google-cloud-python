@@ -340,17 +340,21 @@ class MutationsBatcher:
                 list[RowMutationEntry],
             ]
         ] = []
+        found_exceptions: list[FailedMutationEntryError] = []
         for batch, metric in self._flow_control.add_to_flow_with_metrics(
             new_entries, self._target.client._metrics
         ):
-            batch_task = CrossSync._Sync_Impl.create_task(
-                self._execute_mutate_rows,
-                batch,
-                metric,
-                sync_executor=self._sync_rpc_executor,
-            )
-            in_process_requests.append((batch_task, batch))
-        found_exceptions = self._wait_for_batch_results(*in_process_requests)
+            try:
+                batch_task = CrossSync._Sync_Impl.create_task(
+                    self._execute_mutate_rows,
+                    batch,
+                    metric,
+                    sync_executor=self._sync_rpc_executor,
+                )
+                in_process_requests.append((batch_task, batch))
+            except RuntimeError:
+                found_exceptions.extend(self._execute_mutate_rows(batch, metric))
+        found_exceptions.extend(self._wait_for_batch_results(*in_process_requests))
         self._entries_processed_since_last_raise += len(new_entries)
         self._add_exceptions(found_exceptions)
 
@@ -462,7 +466,11 @@ class MutationsBatcher:
         """Flush queue and clean up resources"""
         self._closed.set()
         self._flush_timer.cancel()
-        self._schedule_flush()
+        entries = self._staged_entries
+        try:
+            self._schedule_flush()
+        except RuntimeError:
+            self._flush_internal(entries)
         if self._sync_flush_executor:
             with self._sync_flush_executor:
                 self._sync_flush_executor.shutdown(wait=True)

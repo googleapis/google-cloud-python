@@ -450,27 +450,18 @@ class TestCrossSync:
             cs_sync.create_task(lambda: None)
         assert "sync_executor is required" in str(e.value)
 
-    def test_create_task_executor_shutdown_fallback(self, cs_sync):
-        """
-        If sync_executor.submit raises RuntimeError (e.g. during interpreter shutdown),
-        create_task should fall back to create_daemon_task
-        """
-        executor = mock.Mock()
-        executor.submit.side_effect = RuntimeError(
-            "cannot schedule new futures after interpreter shutdown"
-        )
-        result = cs_sync.create_task(lambda x: x * 2, 21, sync_executor=executor)
-        assert result.result(timeout=5) == 42
-
     def test_create_daemon_task(self, cs_sync):
         """
         create_daemon_task should run on a daemon thread and return a Future
         """
         result = cs_sync.create_daemon_task(
-            lambda x, y: x + y, 2, y=3, task_name="test-daemon"
+            lambda x, y: (x + y, threading.current_thread().daemon),
+            2,
+            y=3,
+            task_name="test-daemon",
         )
         assert isinstance(result, cs_sync.Task)
-        assert result.result(timeout=5) == 5
+        assert result.result(timeout=5) == (5, True)
 
     def test_create_daemon_task_exception(self, cs_sync):
         """

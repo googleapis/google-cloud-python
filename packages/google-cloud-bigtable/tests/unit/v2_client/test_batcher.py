@@ -359,9 +359,10 @@ def test_mutations_batcher_atexit_flushes_after_explicit_flush(_setup_batcher, r
         mutation_batcher.mutate(row2)
         assert operation_mock.call_count == 1
 
-        # Simulate atexit running registered callbacks in LIFO (reversed) order:
-        # legacy batcher.close() runs before the underlying data batcher's
-        # _on_exit(), flushing row2 without a UserWarning.
+        # Simulate interpreter shutdown: ThreadPoolExecutors are shut down by
+        # threading._shutdown() before atexit callbacks run in LIFO order.
+        mutation_batcher._batcher._sync_flush_executor.shutdown(wait=True)
+        mutation_batcher._batcher._sync_rpc_executor.shutdown(wait=True)
         for cb in list(reversed(registered_callbacks)):
             if cb in registered_callbacks:
                 cb()
