@@ -34,8 +34,6 @@ from google.cloud.bigtable.data._helpers import (
     _get_retryable_errors,
     _get_statuses_from_mutations_exception_group,
     _get_timeouts,
-    _register_threading_atexit,
-    _unregister_threading_atexit,
 )
 from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
 from google.cloud.bigtable.data.exceptions import (
@@ -256,8 +254,8 @@ class MutationsBatcher:
             if not CrossSync._Sync_Impl.is_async
             else None
         )
-        self._flush_timer = CrossSync._Sync_Impl.create_task(
-            self._timer_routine, flush_interval, sync_executor=self._sync_flush_executor
+        self._flush_timer = CrossSync._Sync_Impl.create_daemon_task(
+            self._timer_routine, flush_interval
         )
         self._flush_jobs: set[CrossSync._Sync_Impl.Future[None]] = set()
         self._entries_processed_since_last_raise: int = 0
@@ -271,7 +269,6 @@ class MutationsBatcher:
             Callable[[list[status_pb2.Status]], Any] | None
         ) = None
         atexit.register(self._on_exit)
-        _register_threading_atexit(self._on_exit)
 
     def _timer_routine(self, interval: float | None) -> None:
         """Set up a background task to flush the batcher every interval seconds
@@ -474,7 +471,6 @@ class MutationsBatcher:
                 self._sync_rpc_executor.shutdown(wait=True)
         CrossSync._Sync_Impl.wait([*self._flush_jobs, self._flush_timer])
         atexit.unregister(self._on_exit)
-        _unregister_threading_atexit(self._on_exit)
         self._raise_exceptions()
 
     def _on_exit(self):
@@ -483,7 +479,6 @@ class MutationsBatcher:
             warnings.warn(
                 f"MutationsBatcher for target {self._target!r} was not closed. {len(self._staged_entries)} Unflushed mutations will not be sent to the server."
             )
-        self._closed.set()
 
     @staticmethod
     def _wait_for_batch_results(

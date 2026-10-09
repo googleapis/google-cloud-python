@@ -1047,8 +1047,6 @@ class TestMutationsBatcher:
         with self._make_one() as instance:
             instance._on_exit()
             assert len(recwarn) == 0
-            assert instance._closed.is_set() is True
-            instance._closed.clear()
             num_left = 4
             instance._staged_entries = [mock.Mock()] * num_left
             with pytest.warns(UserWarning) as w:
@@ -1056,7 +1054,7 @@ class TestMutationsBatcher:
                 assert len(w) == 1
                 assert "unflushed mutations" in str(w[0].message).lower()
                 assert str(num_left) in str(w[0].message)
-            assert instance._closed.is_set() is True
+            instance._closed.set()
             instance._on_exit()
             assert len(recwarn) == 0
             instance._staged_entries = []

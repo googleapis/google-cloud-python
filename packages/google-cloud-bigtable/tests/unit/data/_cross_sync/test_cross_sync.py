@@ -450,6 +450,54 @@ class TestCrossSync:
             cs_sync.create_task(lambda: None)
         assert "sync_executor is required" in str(e.value)
 
+    def test_create_task_executor_shutdown_fallback(self, cs_sync):
+        """
+        If sync_executor.submit raises RuntimeError (e.g. during interpreter shutdown),
+        create_task should fall back to create_daemon_task
+        """
+        executor = mock.Mock()
+        executor.submit.side_effect = RuntimeError(
+            "cannot schedule new futures after interpreter shutdown"
+        )
+        result = cs_sync.create_task(lambda x: x * 2, 21, sync_executor=executor)
+        assert result.result(timeout=5) == 42
+
+    def test_create_daemon_task(self, cs_sync):
+        """
+        create_daemon_task should run on a daemon thread and return a Future
+        """
+        result = cs_sync.create_daemon_task(
+            lambda x, y: x + y, 2, y=3, task_name="test-daemon"
+        )
+        assert isinstance(result, cs_sync.Task)
+        assert result.result(timeout=5) == 5
+
+    def test_create_daemon_task_exception(self, cs_sync):
+        """
+        create_daemon_task should propagate exceptions onto the returned Future
+        """
+
+        def fail():
+            raise ValueError("boom")
+
+        result = cs_sync.create_daemon_task(fail)
+        with pytest.raises(ValueError, match="boom"):
+            result.result(timeout=5)
+
+    @pytest.mark.asyncio
+    async def test_create_daemon_task_async(self, cs_async):
+        """
+        Async create_daemon_task should create an asyncio.Task
+        """
+
+        async def coro_fn(x, y):
+            return x + y
+
+        result = cs_async.create_daemon_task(coro_fn, 2, y=3, task_name="async-daemon")
+        assert isinstance(result, asyncio.Task)
+        assert result.get_name() == "async-daemon"
+        assert await result == 5
+
     @pytest.mark.asyncio
     async def test_create_task_async(self, cs_async):
         """
