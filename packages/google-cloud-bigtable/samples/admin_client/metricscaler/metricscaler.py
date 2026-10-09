@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Sample that demonstrates how to use Stackdriver Monitoring metrics to
+"""Sample that demonstrates how to use Cloud Monitoring metrics to
 programmatically scale a Google Cloud Bigtable cluster."""
 
 import argparse
@@ -21,9 +21,9 @@ import os
 import time
 
 from google.cloud.monitoring_v3 import query
+from google.protobuf import field_mask_pb2
 
-from google.cloud import bigtable, monitoring_v3
-from google.cloud.bigtable import enums
+from google.cloud import bigtable_admin, monitoring_v3
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
@@ -38,7 +38,7 @@ def get_cpu_load(bigtable_instance, bigtable_cluster):
     Returns:
           float: The most recent Cloud Bigtable CPU usage metric
     """
-    # [START bigtable_cpu_legacy]
+    # [START bigtable_cpu]
     client = monitoring_v3.MetricServiceClient()
     cpu_query = query.Query(
         client,
@@ -51,7 +51,7 @@ def get_cpu_load(bigtable_instance, bigtable_cluster):
     )
     cpu = next(cpu_query.iter())
     return cpu.points[0].value.double_value
-    # [END bigtable_cpu_legacy]
+    # [END bigtable_cpu]
 
 
 def get_storage_utilization(bigtable_instance, bigtable_cluster):
@@ -60,7 +60,7 @@ def get_storage_utilization(bigtable_instance, bigtable_cluster):
     Returns:
           float: The most recent Cloud Bigtable storage utilization metric
     """
-    # [START bigtable_metric_scaler_storage_utilization_legacy]
+    # [START bigtable_metric_scaler_storage_utilization]
     client = monitoring_v3.MetricServiceClient()
     utilization_query = query.Query(
         client,
@@ -73,7 +73,7 @@ def get_storage_utilization(bigtable_instance, bigtable_cluster):
     )
     utilization = next(utilization_query.iter())
     return utilization.points[0].value.double_value
-    # [END bigtable_metric_scaler_storage_utilization_legacy]
+    # [END bigtable_metric_scaler_storage_utilization]
 
 
 def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
@@ -92,7 +92,7 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
 
     # The minimum number of nodes to use. The default minimum is 3. If you have
     # a lot of data, the rule of thumb is to not go below 2.5 TB per node for
-    # SSD lusters, and 8 TB for HDD. The
+    # SSD clusters, and 8 TB for HDD. The
     # "bigtable.googleapis.com/disk/bytes_used" metric is useful in figuring
     # out the minimum number of nodes.
     min_node_count = 1
@@ -105,24 +105,29 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
     # The number of nodes to change the cluster by.
     size_change_step = 3
 
-    # [START bigtable_scale_legacy]
-    bigtable_client = bigtable.Client(admin=True)
-    instance = bigtable_client.instance(bigtable_instance)
-    instance.reload()
+    # [START bigtable_scale]
+    bigtable_client = bigtable_admin.BigtableInstanceAdminClient()
+    instance_name = bigtable_client.instance_path(PROJECT, bigtable_instance)
+    instance = bigtable_client.get_instance(name=instance_name)
 
-    if instance.type_ == enums.Instance.Type.DEVELOPMENT:
+    if instance.type_ == bigtable_admin.Instance.Type.DEVELOPMENT:
         raise ValueError("Development instances cannot be scaled.")
 
-    cluster = instance.cluster(bigtable_cluster)
-    cluster.reload()
+    cluster_name = bigtable_client.cluster_path(
+        PROJECT, bigtable_instance, bigtable_cluster
+    )
+    cluster = bigtable_client.get_cluster(name=cluster_name)
 
     current_node_count = cluster.serve_nodes
+    update_mask = field_mask_pb2.FieldMask(paths=["serve_nodes"])
 
     if scale_up:
         if current_node_count < max_node_count:
             new_node_count = min(current_node_count + size_change_step, max_node_count)
             cluster.serve_nodes = new_node_count
-            operation = cluster.update()
+            operation = bigtable_client.partial_update_cluster(
+                cluster=cluster, update_mask=update_mask
+            )
             response = operation.result(480)
             logger.info(
                 "Scaled up from {} to {} nodes for {}.".format(
@@ -133,14 +138,16 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
         if current_node_count > min_node_count:
             new_node_count = max(current_node_count - size_change_step, min_node_count)
             cluster.serve_nodes = new_node_count
-            operation = cluster.update()
+            operation = bigtable_client.partial_update_cluster(
+                cluster=cluster, update_mask=update_mask
+            )
             response = operation.result(480)
             logger.info(
                 "Scaled down from {} to {} nodes for {}.".format(
                     current_node_count, new_node_count, response.name
                 )
             )
-    # [END bigtable_scale_legacy]
+    # [END bigtable_scale]
 
 
 def main(

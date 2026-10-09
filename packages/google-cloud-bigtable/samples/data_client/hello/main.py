@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 2016 Google Inc.
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Demonstrates how to connect to Cloud Bigtable and run some basic operations.
+"""Demonstrates how to connect to Cloud Bigtable and run some basic operations with the sync data APIs
 
 Prerequisites:
 
@@ -26,53 +26,59 @@ Prerequisites:
 
 import argparse
 
-# [START bigtable_hw_imports_legacy]
-from datetime import datetime, timezone
-
+# [START bigtable_hw_imports]
 from google.cloud import bigtable
-from google.cloud.bigtable import column_family, row_filters
+from google.cloud.bigtable.data import row_filters
 
+# [END bigtable_hw_imports]
 from ...utils import wait_for_table
 
-# [END bigtable_hw_imports_legacy]
-
-# use to avoid warnings
+# use to ignore warnings
 row_filters
-column_family
 
 
 def main(project_id, instance_id, table_id):
-    # [START bigtable_hw_connect_legacy]
-    # The client must be created with admin=True because it will create a
-    # table.
-    client = bigtable.Client(project=project_id, admin=True)
-    instance = client.instance(instance_id)
-    # [END bigtable_hw_connect_legacy]
+    # [START bigtable_hw_connect]
+    client = bigtable.data.BigtableDataClient(project=project_id)
+    table = client.get_table(instance_id, table_id)
+    # [END bigtable_hw_connect]
 
-    # [START bigtable_hw_create_table_legacy]
+    # [START bigtable_hw_create_table]
+    from google.api_core.exceptions import AlreadyExists
+
+    from google.cloud import bigtable_admin
+
+    # the data client only supports the data API. Table creation is an admin operation
+    # use admin client to create the table
     print("Creating the {} table.".format(table_id))
-    table = instance.table(table_id)
+    admin_client = bigtable_admin.BigtableTableAdminClient()
+    instance_path = admin_client.instance_path(project_id, instance_id)
 
     print("Creating column family cf1 with Max Version GC rule...")
     # Create a column family with GC policy : most recent N versions
     # Define the GC policy to retain only the most recent 2 versions
-    max_versions_rule = bigtable.column_family.MaxVersionsGCRule(2)
-    column_family_id = b"cf1"
-    column_families = {column_family_id: max_versions_rule}
-    if not table.exists():
-        table.create(column_families=column_families)
-    else:
+    max_versions_rule = bigtable_admin.GcRule(max_num_versions=2)
+    column_family_id = "cf1"
+    column_families = {
+        column_family_id: bigtable_admin.ColumnFamily(gc_rule=max_versions_rule)
+    }
+    try:
+        admin_client.create_table(
+            parent=instance_path,
+            table_id=table_id,
+            table=bigtable_admin.Table(column_families=column_families),
+        )
+    except AlreadyExists:
         print("Table {} already exists.".format(table_id))
-    # [END bigtable_hw_create_table_legacy]
+    # [END bigtable_hw_create_table]
 
     try:
         # let table creation complete
         wait_for_table(table)
-
-        # [START bigtable_hw_write_rows_legacy]
+        # [START bigtable_hw_write_rows]
         print("Writing some greetings to the table.")
         greetings = [b"Hello World!", b"Hello Cloud Bigtable!", b"Hello Python!"]
-        rows = []
+        mutations = []
         column = b"greeting"
         for i, value in enumerate(greetings):
             # Note: This example uses sequential numeric IDs for simplicity,
@@ -89,51 +95,53 @@ def main(project_id, instance_id, table_id):
             #
             #     https://cloud.google.com/bigtable/docs/schema-design
             row_key = f"greeting{i}".encode()
-            row = table.direct_row(row_key)
-            row.set_cell(
-                column_family_id,
-                column,
-                value,
-                timestamp=datetime.now(timezone.utc),
+            row_mutation = bigtable.data.RowMutationEntry(
+                row_key, bigtable.data.SetCell(column_family_id, column, value)
             )
-            rows.append(row)
-        table.mutate_rows(rows)
-        # [END bigtable_hw_write_rows_legacy]
+            mutations.append(row_mutation)
+        table.bulk_mutate_rows(mutations)
+        # [END bigtable_hw_write_rows]
 
-        # [START bigtable_hw_create_filter_legacy]
+        # [START bigtable_hw_create_filter]
         # Create a filter to only retrieve the most recent version of the cell
         # for each column across entire row.
-        row_filter = bigtable.row_filters.CellsColumnLimitFilter(1)
-        # [END bigtable_hw_create_filter_legacy]
+        row_filter = bigtable.data.row_filters.CellsColumnLimitFilter(1)
+        # [END bigtable_hw_create_filter]
 
-        # [START bigtable_hw_get_with_filter_legacy]
-        # [START bigtable_hw_get_by_key_legacy]
+        # [START bigtable_hw_get_with_filter]
+        # [START bigtable_hw_get_by_key]
         print("Getting a single greeting by row key.")
-        key = b"greeting0"
+        key = "greeting0".encode()
 
-        row = table.read_row(key, row_filter)
-        cell = row.cells[column_family_id.decode("utf-8")][column][0]
+        row = table.read_row(key, row_filter=row_filter)
+        cell = row.cells[0]
         print(cell.value.decode("utf-8"))
-        # [END bigtable_hw_get_by_key_legacy]
-        # [END bigtable_hw_get_with_filter_legacy]
+        # [END bigtable_hw_get_by_key]
+        # [END bigtable_hw_get_with_filter]
 
-        # [START bigtable_hw_scan_with_filter_legacy]
-        # [START bigtable_hw_scan_all_legacy]
+        # [START bigtable_hw_scan_with_filter]
+        # [START bigtable_hw_scan_all]
         print("Scanning for all greetings:")
-        partial_rows = table.read_rows(filter_=row_filter)
-
-        for row in partial_rows:
-            column_family_id_str = column_family_id.decode("utf-8")
-            cell = row.cells[column_family_id_str][column][0]
+        query = bigtable.data.ReadRowsQuery(row_filter=row_filter)
+        for row in table.read_rows_stream(query):
+            cell = row.cells[0]
             print(cell.value.decode("utf-8"))
-        # [END bigtable_hw_scan_all_legacy]
-        # [END bigtable_hw_scan_with_filter_legacy]
-
+        # [END bigtable_hw_scan_all]
+        # [END bigtable_hw_scan_with_filter]
     finally:
-        # [START bigtable_hw_delete_table_legacy]
+        # [START bigtable_hw_delete_table]
+        from google.cloud import bigtable_admin
+
+        # the data client only supports the data API. Table deletion is an admin operation
+        # use admin client to delete the table
+        admin_client = bigtable_admin.BigtableTableAdminClient()
+        table_path = admin_client.table_path(project_id, instance_id, table_id)
+
         print("Deleting the {} table.".format(table_id))
-        table.delete()
-        # [END bigtable_hw_delete_table_legacy]
+        admin_client.delete_table(name=table_path)
+        table.close()
+        client.close()
+        # [END bigtable_hw_delete_table]
 
 
 if __name__ == "__main__":
