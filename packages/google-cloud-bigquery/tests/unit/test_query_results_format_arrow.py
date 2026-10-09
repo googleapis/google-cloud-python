@@ -914,6 +914,72 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
                 timeout=5.0,
             )
 
+    def test_download_arrow_from_job_id_explicit_destination_uses_create_read_session(
+        self,
+    ):
+        from google.cloud.bigquery.table import TableReference
+
+        mock_client = mock.MagicMock()
+        mock_bqstorage = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+
+        mock_stream = mock.MagicMock()
+        mock_stream.name = "projects/test-proj/locations/US/sessions/s1/streams/0"
+        mock_session = mock.MagicMock()
+        mock_session.arrow_schema.serialized_schema = b"session_schema_bytes"
+        mock_session.streams = [mock_stream]
+        mock_bqstorage.create_read_session.return_value = mock_session
+
+        mock_resp = mock.MagicMock()
+        mock_resp.arrow_schema = None
+        mock_resp.arrow_record_batch.serialized_record_batch = b"batch_bytes"
+        mock_bqstorage.read_rows.return_value = [mock_resp]
+
+        dest_table = TableReference.from_string("test-proj.dest_ds.dest_tbl")
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            table=dest_table,
+            project="test-proj",
+            location="US",
+            job_id="test-job-dest",
+            query_results_format="ARROW",
+            compression_codec="LZ4_FRAME",
+        )
+        iterator._use_read_session = True
+
+        mock_batch = mock.MagicMock()
+        mock_batch.num_rows = 3
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+            mock_pyarrow.py_buffer = lambda x: x
+            mock_pyarrow.ipc.read_schema.return_value = "session_schema"
+            mock_pyarrow.ipc.read_record_batch.return_value = mock_batch
+
+            batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
+            self.assertEqual(batches, [mock_batch])
+            self.assertEqual(iterator._arrow_schema, "session_schema")
+            mock_bqstorage.create_read_session.assert_called_once_with(
+                parent="projects/test-proj",
+                read_session={
+                    "table": "projects/test-proj/datasets/dest_ds/tables/dest_tbl",
+                    "data_format": "ARROW",
+                    "read_options": {
+                        "arrow_serialization_options": {
+                            "buffer_compression": "LZ4_FRAME"
+                        }
+                    },
+                },
+                max_stream_count=1,
+            )
+            mock_bqstorage.read_rows.assert_called_once_with(
+                "projects/test-proj/locations/US/sessions/s1/streams/0",
+                offset=0,
+                timeout=5.0,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

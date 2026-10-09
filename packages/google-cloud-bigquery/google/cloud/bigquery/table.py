@@ -2374,10 +2374,46 @@ class RowIterator(HTTPIterator):
         remaining = (
             self.max_results - offset if self.max_results is not None else None
         )
-        location = self._location or (self.client.location if self.client else None)
-        stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
+        use_read_session = (
+            getattr(self, "_use_read_session", False) and self._table is not None
+        )
+        if use_read_session:
+            table_ref = (
+                f"projects/{self._table.project}/datasets/"
+                f"{self._table.dataset_id}/tables/{self._table.table_id}"
+            )
+            read_session: Dict[str, Any] = {
+                "table": table_ref,
+                "data_format": "ARROW",
+            }
+            if self._compression_codec is not None:
+                read_session["read_options"] = {
+                    "arrow_serialization_options": {
+                        "buffer_compression": self._compression_codec
+                    }
+                }
+            session = bqstorage_client.create_read_session(
+                parent=f"projects/{project}",
+                read_session=read_session,
+                max_stream_count=1,
+            )
+            if (
+                session.arrow_schema
+                and session.arrow_schema.serialized_schema
+                and pa_schema is None
+            ):
+                pa_schema = pyarrow.ipc.read_schema(
+                    pyarrow.py_buffer(session.arrow_schema.serialized_schema)
+                )
+                self._arrow_schema = pa_schema
+            if not session.streams:
+                return
+            stream_name = session.streams[0].name
+        else:
+            location = self._location or (self.client.location if self.client else None)
+            stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
         read_kwargs: Dict[str, Any] = {"offset": offset, "timeout": timeout}
-        if self._compression_codec is not None:
+        if self._compression_codec is not None and not use_read_session:
             try:
                 reader = bqstorage_client.read_rows(
                     stream_name,

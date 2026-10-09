@@ -517,7 +517,7 @@ def query_and_wait(
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
     if not _supported_by_jobs_query(request_body):
-        return _wait_or_cancel(
+        rows = _wait_or_cancel(
             query_jobs_insert(
                 client=client,
                 query=query,
@@ -540,6 +540,9 @@ def query_and_wait(
             compression_codec=compression_codec,
             callback=callback,
         )
+        if "destinationTable" in request_body:
+            rows._use_read_session = True
+        return rows
 
     path = _to_query_path(project)
 

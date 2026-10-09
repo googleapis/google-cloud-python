@@ -474,3 +474,44 @@ def test_query_arrow_cached_multi_page(bigquery_client):
     assert len(first_table) == 5000
     assert len(cached_table) == 5000
     assert cached_table.equals(first_table)
+
+
+def test_query_arrow_explicit_destination_table(
+    dataset_client, dataset_id, test_table_name
+):
+    """System test verifying explicit destination tables on QueryJobConfig read via CreateReadSession."""
+    dest_table = dataset_client.dataset(dataset_id).table(test_table_name)
+    job_config = bigquery.QueryJobConfig(
+        destination=dest_table,
+        write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+    )
+
+    # 1. Full + max_results read with LZ4_FRAME compression on explicit destination table
+    results = dataset_client.query_and_wait(
+        "SELECT num, CONCAT('row_', CAST(num AS STRING)) AS label "
+        "FROM UNNEST(GENERATE_ARRAY(1, 2000)) AS num ORDER BY num",
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        compression_codec=enums.QueryResultsCompressionCodec.LZ4_FRAME,
+        max_results=1200,
+    )
+    table = pyarrow.Table.from_batches(results.to_arrow_iterable())
+    assert len(table) == 1200
+    assert table.column_names == ["num", "label"]
+    assert table.column("num").to_pylist() == list(range(1, 1201))
+
+    # 2. Zero-row explicit destination table preserves pyarrow.Schema
+    empty_dest_table = dataset_client.dataset(dataset_id).table(
+        f"{test_table_name}_empty"
+    )
+    empty_results = dataset_client.query_and_wait(
+        "SELECT 1 AS num, 'abc' AS label FROM UNNEST(GENERATE_ARRAY(1, 5)) AS x WHERE x > 100",
+        job_config=bigquery.QueryJobConfig(destination=empty_dest_table),
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    assert empty_results.total_rows == 0
+    empty_table = empty_results.to_arrow()
+    assert len(empty_table) == 0
+    assert empty_table.column_names == ["num", "label"]
+    assert empty_table.schema.field("num").type == pyarrow.int64()
+    assert empty_table.schema.field("label").type == pyarrow.string()
