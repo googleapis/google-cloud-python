@@ -21,7 +21,7 @@ def delete_from_column(project_id, instance_id, table_id):
     client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
-    row = table.row("phone#4c410523#20190501")
+    row = table.direct_row("phone#4c410523#20190501")
     row.delete_cell(column_family_id="cell_plan", column="data_plan_01gb")
     row.commit()
 
@@ -36,7 +36,7 @@ def delete_from_column_family(project_id, instance_id, table_id):
     client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
-    row = table.row("phone#4c410523#20190501")
+    row = table.direct_row("phone#4c410523#20190501")
     row.delete_cells(column_family_id="cell_plan", columns=row.ALL_COLUMNS)
     row.commit()
 
@@ -51,7 +51,7 @@ def delete_from_row(project_id, instance_id, table_id):
     client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
-    row = table.row("phone#4c410523#20190501")
+    row = table.direct_row("phone#4c410523#20190501")
     row.delete()
     row.commit()
 
@@ -69,7 +69,7 @@ def streaming_and_batching(project_id, instance_id, table_id):
     batcher = table.mutations_batcher(flush_count=2)
     rows = table.read_rows()
     for row in rows:
-        row = table.row(row.row_key)
+        row = table.direct_row(row.row_key)
         row.delete_cell(column_family_id="cell_plan", column="data_plan_01gb")
 
     batcher.mutate_rows(rows)
@@ -86,7 +86,7 @@ def check_and_mutate(project_id, instance_id, table_id):
     client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
-    row = table.row("phone#4c410523#20190501")
+    row = table.direct_row("phone#4c410523#20190501")
     row.delete_cell(column_family_id="cell_plan", column="data_plan_01gb")
     row.delete_cell(column_family_id="cell_plan", column="data_plan_05gb")
     row.commit()
