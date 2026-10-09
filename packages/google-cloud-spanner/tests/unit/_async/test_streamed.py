@@ -2468,6 +2468,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         )
         self.assertIsNone(streamed._pending_chunk)
 
+    @CrossSync.pytest
     async def test_consume_next_non_chunked_zero_copy_repeated_container(self):
         from google.cloud.spanner_v1 import (
             PartialResultSet,
@@ -2893,6 +2894,32 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         rows = [row async for row in streamed]
         self.assertEqual(streamed.decode_column(rows[0], 0), 42)
         self.assertEqual(streamed.decode_column(rows[0], 1), "Answer")
+
+    @CrossSync.pytest
+    async def test_decoders_not_started(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        with self.assertRaises(ValueError):
+            _ = streamed._decoders
+
+    @CrossSync.pytest
+    async def test_merge_struct_null_last(self):
+        from google.protobuf.struct_pb2 import ListValue, Value
+
+        from google.cloud.spanner_v1._async.streamed import _merge_struct
+        from google.cloud.spanner_v1.types.type import Type, TypeCode
+
+        type_ = Type(
+            code=TypeCode.STRUCT,
+            struct_type={"fields": [{"type_": {"code": TypeCode.STRING}}]},
+        )
+        lhs = Value(list_value=ListValue(values=[Value(null_value=0)]))
+        rhs = Value(list_value=ListValue(values=[Value(string_value="v1")]))
+
+        res = _merge_struct(lhs, rhs, type_)
+        self.assertEqual(len(res.list_value.values), 2)
+        self.assertTrue(res.list_value.values[0].HasField("null_value"))
+        self.assertEqual(res.list_value.values[1].string_value, "v1")
 
 
 class _MockCancellableIterator(object):
