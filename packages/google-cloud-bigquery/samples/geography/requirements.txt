@@ -27,7 +27,7 @@ proto-plus==1.26.1
 pyarrow==26.0.0
 pyasn1==0.6.4
 pyasn1-modules==0.4.2
-pycparser==2.23
+pycparser==3.11
 pyparsing==3.2.5
 python-dateutil==2.9.0.post0
 pytz==2026.5
