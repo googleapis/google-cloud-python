@@ -29,10 +29,21 @@ try:
     import grpc  # type: ignore
 
     import google.auth.transport.grpc
+    from google.auth.transport import mtls_interceptor
 
     HAS_GRPC = True
 except ImportError:  # pragma: NO COVER
     HAS_GRPC = False
+
+
+def unwrap(ch):
+    """Returns the innermost channel behind any interceptor/refreshing wrappers."""
+    if isinstance(ch, mock.Mock) or isinstance(ch, mock.MagicMock):
+        return ch
+    if hasattr(ch, "_channel"):
+        return unwrap(ch._channel)
+    return ch
+
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 METADATA_PATH = os.path.join(DATA_DIR, "context_aware_metadata.json")
@@ -226,7 +237,7 @@ class TestSecureAuthorizedChannel(object):
             composite_channel_credentials.return_value,
             options=mock.sentinel.options,
         )
-        assert channel == secure_channel.return_value
+        assert unwrap(channel) == secure_channel.return_value
 
     @mock.patch("google.auth.transport.grpc.SslCredentials", autospec=True)
     def test_secure_authorized_channel_adc_without_client_cert_env(
@@ -272,7 +283,7 @@ class TestSecureAuthorizedChannel(object):
             composite_channel_credentials.return_value,
             options=mock.sentinel.options,
         )
-        assert channel == secure_channel.return_value
+        assert unwrap(channel) == secure_channel.return_value
 
     def test_secure_authorized_channel_explicit_ssl(
         self,
@@ -423,6 +434,189 @@ class TestSecureAuthorizedChannel(object):
         composite_channel_credentials.assert_called_once_with(
             ssl_channel_credentials.return_value, metadata_call_credentials.return_value
         )
+
+    def test_secure_authorized_channel_callback_wraps_for_cert_rotation(
+        self,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        credentials = mock.Mock()
+        request = mock.Mock()
+        target = "example.com:443"
+        client_cert_callback = mock.Mock(
+            return_value=(PUBLIC_CERT_BYTES, PRIVATE_KEY_BYTES)
+        )
+
+        with (
+            mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ),
+            mock.patch("grpc.intercept_channel", autospec=True) as intercept_channel,
+        ):
+            channel = google.auth.transport.grpc.secure_authorized_channel(
+                credentials,
+                request,
+                target,
+                client_cert_callback=client_cert_callback,
+                options=mock.sentinel.options,
+            )
+
+        assert channel is intercept_channel.return_value
+        wrapper, interceptor = intercept_channel.call_args[0]
+        assert isinstance(wrapper, mtls_interceptor.MTLSRefreshingChannel)
+        assert isinstance(interceptor, mtls_interceptor.CertRotationInterceptor)
+        assert interceptor._wrapper is wrapper
+        assert wrapper._channel is secure_channel.return_value
+        assert wrapper._cached_cert == PUBLIC_CERT_BYTES
+        assert wrapper._target == target
+
+        # The partial rebuilds the channel with the same arguments, marked as a
+        # recreation so it is not wrapped again.
+        create_channel_fn = wrapper._create_channel_fn
+        assert (
+            create_channel_fn.func
+            is google.auth.transport.grpc.secure_authorized_channel
+        )
+        assert create_channel_fn.keywords == {
+            "credentials": credentials,
+            "request": request,
+            "target": target,
+            "_is_recreation": True,
+            "options": mock.sentinel.options,
+        }
+
+    @mock.patch("google.auth.transport.grpc.SslCredentials", autospec=True)
+    def test_secure_authorized_channel_adc_wraps_for_cert_rotation(
+        self,
+        ssl_credentials_adc_method,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        ssl_credentials_adc_method.return_value._cached_cert = PUBLIC_CERT_BYTES
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            channel = google.auth.transport.grpc.secure_authorized_channel(
+                mock.Mock(), mock.Mock(), "example.com:443"
+            )
+
+        refreshing = channel._channel
+        assert isinstance(refreshing, mtls_interceptor.MTLSRefreshingChannel)
+        assert refreshing._cached_cert == PUBLIC_CERT_BYTES
+        assert unwrap(channel) is secure_channel.return_value
+
+    @mock.patch("google.auth.transport.grpc.SslCredentials", autospec=True)
+    def test_secure_authorized_channel_adc_without_cert_is_not_wrapped(
+        self,
+        ssl_credentials_adc_method,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        # ADC enabled but no client cert was found (one-way TLS fallback).
+        ssl_credentials_adc_method.return_value._cached_cert = None
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            channel = google.auth.transport.grpc.secure_authorized_channel(
+                mock.Mock(), mock.Mock(), "example.com:443"
+            )
+
+        assert channel is secure_channel.return_value
+
+    def test_secure_authorized_channel_explicit_ssl_is_not_wrapped(
+        self,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        channel = google.auth.transport.grpc.secure_authorized_channel(
+            mock.Mock(), mock.Mock(), "example.com:443", ssl_credentials=mock.Mock()
+        )
+        assert channel is secure_channel.return_value
+
+    def test_secure_authorized_channel_recreation_is_not_wrapped(
+        self,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        client_cert_callback = mock.Mock(
+            return_value=(PUBLIC_CERT_BYTES, PRIVATE_KEY_BYTES)
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            channel = google.auth.transport.grpc.secure_authorized_channel(
+                mock.Mock(),
+                mock.Mock(),
+                "example.com:443",
+                client_cert_callback=client_cert_callback,
+                _is_recreation=True,
+                options=mock.sentinel.options,
+            )
+
+        assert channel is secure_channel.return_value
+        # The private flag is consumed, not forwarded to grpc.secure_channel.
+        secure_channel.assert_called_once_with(
+            "example.com:443",
+            composite_channel_credentials.return_value,
+            options=mock.sentinel.options,
+        )
+
+    def test_secure_authorized_channel_refresh_builds_unwrapped_channel(
+        self,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        initial_channel = mock.Mock(name="initial")
+        refreshed_channel = mock.Mock(name="refreshed")
+        secure_channel.side_effect = [initial_channel, refreshed_channel]
+        client_cert_callback = mock.Mock(
+            return_value=(PUBLIC_CERT_BYTES, PRIVATE_KEY_BYTES)
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            channel = google.auth.transport.grpc.secure_authorized_channel(
+                mock.Mock(),
+                mock.Mock(),
+                "example.com:443",
+                client_cert_callback=client_cert_callback,
+            )
+            refreshing = channel._channel
+            refreshing.refresh_logic(
+                1, call_cert_bytes=b"new-cert", call_key_bytes=b"new-key"
+            )
+
+        assert refreshing._channel is refreshed_channel
+        assert refreshing._cached_cert == b"new-cert"
+        # The refreshed channel uses the new cert and does not call back into the
+        # original client_cert_callback.
+        client_cert_callback.assert_called_once()
+        ssl_channel_credentials.assert_called_with(
+            certificate_chain=b"new-cert", private_key=b"new-key"
+        )
+        initial_channel.close.assert_not_called()
 
 
 @mock.patch("grpc.ssl_channel_credentials", autospec=True)

@@ -910,10 +910,21 @@ def check_parameters_for_unauthorized_response(cached_cert):
 
 
 def call_client_cert_callback():
-    """Calls the client cert callback and returns the certificate and key."""
+    """Calls the client cert callback and returns the certificate and key.
+
+    If the cert provider returns a passphrase-protected private key, it is
+    decrypted before being returned, so callers always receive an unencrypted
+    PEM key that can be passed directly to TLS libraries (e.g. gRPC).
+
+    Returns:
+        Tuple[bytes, bytes]: The client certificate and (unencrypted) private
+            key bytes in PEM format.
+    """
     _, cert_bytes, key_bytes, passphrase = get_client_ssl_credentials(
         generate_encrypted_key=True
     )
+    if passphrase is not None:
+        key_bytes = decrypt_private_key(key_bytes, passphrase)
     return cert_bytes, key_bytes
 
 

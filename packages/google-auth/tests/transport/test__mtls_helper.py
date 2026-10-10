@@ -1332,7 +1332,7 @@ class TestMtlsHelper:
             True,
             b"cert_bytes",
             b"key_bytes",
-            b"passphrase",
+            None,
         )
 
         cert, key = _mtls_helper.call_client_cert_callback()
@@ -1342,6 +1342,41 @@ class TestMtlsHelper:
         mock_get_client_ssl_credentials.assert_called_once_with(
             generate_encrypted_key=True
         )
+
+    @mock.patch("google.auth.transport._mtls_helper.get_client_ssl_credentials")
+    def test_call_client_cert_callback_decrypts_encrypted_key(
+        self, mock_get_client_ssl_credentials
+    ):
+        mock_get_client_ssl_credentials.return_value = (
+            True,
+            b"cert_bytes",
+            ENCRYPTED_EC_PRIVATE_KEY,
+            PASSPHRASE_VALUE,
+        )
+
+        cert, key = _mtls_helper.call_client_cert_callback()
+
+        assert cert == b"cert_bytes"
+        assert key == _mtls_helper.decrypt_private_key(
+            ENCRYPTED_EC_PRIVATE_KEY, PASSPHRASE_VALUE
+        )
+        assert b"ENCRYPTED" not in key
+        # The returned key must be loadable without a password.
+        serialization.load_pem_private_key(key, password=None)
+
+    @mock.patch("google.auth.transport._mtls_helper.get_client_ssl_credentials")
+    def test_call_client_cert_callback_wrong_passphrase(
+        self, mock_get_client_ssl_credentials
+    ):
+        mock_get_client_ssl_credentials.return_value = (
+            True,
+            b"cert_bytes",
+            ENCRYPTED_EC_PRIVATE_KEY,
+            b"wrong_password",
+        )
+
+        with pytest.raises(ValueError):
+            _mtls_helper.call_client_cert_callback()
 
 
 class TestSecureCertKeyPaths(object):
