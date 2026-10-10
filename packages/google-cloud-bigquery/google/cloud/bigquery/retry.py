@@ -40,11 +40,6 @@ _UNSTRUCTURED_RETRYABLE_TYPES = (
 
 _DEFAULT_RETRY_DEADLINE = 10.0 * 60.0  # 10 minutes
 
-# Exceptions that are subclasses of types in _UNSTRUCTURED_RETRYABLE_TYPES
-# but should not be retried because they typically indicate persistent
-# configuration or security issues.
-_UNSTRUCTURED_NON_RETRYABLE_TYPES = (requests.exceptions.SSLError,)
-
 # Ambiguous errors (e.g. internalError, backendError, rateLimitExceeded) retry
 # until the full `_DEFAULT_RETRY_DEADLINE`. This is because the
 # `jobs.getQueryResults` REST API translates a job failure into an HTTP error.
@@ -69,13 +64,9 @@ _DEFAULT_JOB_DEADLINE = 2.0 * (2.0 * _DEFAULT_RETRY_DEADLINE)
 def _should_retry(exc):
     """Predicate for determining when to retry.
 
-    We retry if the 'reason' is in _RETRYABLE_REASONS or if the exception
-    is an instance of one of the _UNSTRUCTURED_RETRYABLE_TYPES, unless it
-    is explicitly excluded by being in _UNSTRUCTURED_NON_RETRYABLE_TYPES.
+    We retry if and only if the 'reason' is in _RETRYABLE_REASONS or is
+    in _UNSTRUCTURED_RETRYABLE_TYPES.
     """
-    if isinstance(exc, _UNSTRUCTURED_NON_RETRYABLE_TYPES):
-        return False
-
     try:
         reason = exc.errors[0]["reason"]
     except (AttributeError, IndexError, TypeError, KeyError):
@@ -96,6 +87,23 @@ To modify the default retry behavior, call a ``with_XXX`` method
 on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
 pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
 """
+
+
+def _should_retry_insert_rows(exc):
+    """Predicate for determining when to retry streaming inserts (insertAll).
+
+    Unlike standard API calls, tabledata.insertAll failures due to schema
+    mismatches often manifest as an SSLError because the server abruptly terminates
+    the connection. These errors will not resolve on retry and should fail
+    immediately with descriptive guidance.
+    """
+    if isinstance(exc, requests.exceptions.SSLError):
+        return False
+    return _should_retry(exc)
+
+
+DEFAULT_INSERT_ROWS_RETRY = DEFAULT_RETRY.with_predicate(_should_retry_insert_rows)
+"""The default retry object for streaming inserts (insert_rows_json / insert_rows)."""
 
 
 def _should_retry_get_job_conflict(exc):
