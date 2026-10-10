@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.43.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.43.0...gapic-generator-v1.43.1) (2026-10-10)
+
+
+### Bug Fixes
+
+* **gapic-generator:** do not emit empty routing metadata on client-streaming RPCs ([#18591](https://github.com/googleapis/google-cloud-python/issues/18591)) ([bbdd643](https://github.com/googleapis/google-cloud-python/commit/bbdd643b91665b749da3fe3d5b39d2450caec2c2))
+
 ## [1.43.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.42.0...gapic-generator-v1.43.0) (2026-10-08)
 
 
