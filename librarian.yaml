@@ -2677,6 +2677,6 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
-    version: 1.20.1
+    version: 1.20.2
     python:
       library_type: INTEGRATION
