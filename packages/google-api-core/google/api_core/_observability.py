@@ -18,11 +18,19 @@
 
 from __future__ import annotations
 
+import contextlib
 import urllib.parse
 from typing import TYPE_CHECKING, Any, Callable, Sequence
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
+
+try:
+    from opentelemetry.instrumentation.utils import (
+        suppress_instrumentation as _suppress_instrumentation,
+    )
+except ImportError:
+    _suppress_instrumentation = contextlib.nullcontext
 
 if TYPE_CHECKING:
     # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
@@ -223,6 +231,148 @@ def _get_tracer_provider(
     return None
 
 
+try:
+    # flake8: `grpc` imported conditionally for runtime interceptor base classes
+    import grpc  # noqa: F811
+    from grpc import (
+        StreamStreamClientInterceptor as _SyncStreamStreamClientInterceptor,
+    )
+    from grpc import (
+        StreamUnaryClientInterceptor as _SyncStreamUnaryClientInterceptor,
+    )
+    from grpc import (
+        UnaryStreamClientInterceptor as _SyncUnaryStreamClientInterceptor,
+    )
+    from grpc import (
+        UnaryUnaryClientInterceptor as _SyncUnaryUnaryClientInterceptor,
+    )
+except ImportError:  # pragma: NO COVER
+    # mypy: Fallback sentinel when optional grpc is not installed in the environment.
+    grpc = None  # type: ignore[assignment]
+
+    # mypy: Fallback dummy classes when optional grpc is not installed.
+    # Four distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
+    class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    class _SyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    class _SyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    class _SyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+
+try:
+    from grpc.aio import (
+        StreamStreamClientInterceptor as _AsyncStreamStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        StreamUnaryClientInterceptor as _AsyncStreamUnaryClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryStreamClientInterceptor as _AsyncUnaryStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryUnaryClientInterceptor as _AsyncUnaryUnaryClientInterceptor,
+    )
+except ImportError:  # pragma: NO COVER
+    # mypy: Fallback dummy classes when optional grpc is not installed.
+    # Four distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
+    class _AsyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    class _AsyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    class _AsyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+    class _AsyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        pass
+
+
+class _SuppressingClientInterceptor(
+    _SyncUnaryUnaryClientInterceptor,
+    _SyncUnaryStreamClientInterceptor,
+    _SyncStreamUnaryClientInterceptor,
+    _SyncStreamStreamClientInterceptor,
+):
+    """Client interceptor that suppresses redundant downstream generic auto-instrumentation spans.
+
+    When users enable global OpenTelemetry gRPC auto-instrumentation (e.g. GrpcInstrumentorClient),
+    the underlying channel is wrapped with generic interceptors that emit bare-bones spans.
+    This interceptor wraps downstream calls in OpenTelemetry's native `suppress_instrumentation`
+    context manager so that our feature-rich Google Cloud SDK T4 span is emitted while
+    redundant generic downstream spans are bypassed.
+    """
+
+    def __init__(self) -> None:
+        self._is_otel_interceptor = True
+
+    def intercept_unary_unary(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request)
+
+    def intercept_unary_stream(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request)
+
+    def intercept_stream_unary(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request_iterator)
+
+    def intercept_stream_stream(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request_iterator)
+
+
+class _AsyncSuppressingClientInterceptor(
+    _AsyncUnaryUnaryClientInterceptor,
+    _AsyncUnaryStreamClientInterceptor,
+    _AsyncStreamUnaryClientInterceptor,
+    _AsyncStreamStreamClientInterceptor,
+):
+    """AsyncIO client interceptor that suppresses redundant downstream generic auto-instrumentation spans."""
+
+    def __init__(self) -> None:
+        self._is_otel_interceptor = True
+
+    async def intercept_unary_unary(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request)
+
+    async def intercept_unary_stream(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request)
+
+    async def intercept_stream_unary(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request_iterator)
+
+    async def intercept_stream_stream(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request_iterator)
+
+
 def get_otel_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> Callable[[grpc.Channel], grpc.Channel] | None:
@@ -249,8 +399,15 @@ def get_otel_interceptor(
         request_hook=request_hook,
         response_hook=_grpc_client_response_hook,
     )
+    suppressor = _SuppressingClientInterceptor()
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
+        if grpc is not None:
+            try:
+                channel = grpc.intercept_channel(channel, suppressor)
+            except (AttributeError, TypeError):  # pragma: NO COVER
+                # Fallback if grpc lacks intercept_channel or custom channel type rejects it.
+                pass
         return otel_grpc.intercept_channel(channel, interceptor)
 
     otel_interceptor._is_otel_interceptor = True  # type: ignore[attr-defined]
@@ -279,11 +436,21 @@ def get_otel_async_interceptor(
     endpoint_attrs = _extract_endpoint_attributes(client_options)
     request_hook = _make_grpc_client_request_hook(endpoint_attrs)
 
-    return otel_grpc.aio_client_interceptors(
+    raw_interceptors = otel_grpc.aio_client_interceptors(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
         response_hook=_grpc_client_response_hook,
     )
+    interceptors = (
+        list(raw_interceptors)
+        if isinstance(raw_interceptors, (list, tuple))
+        else [raw_interceptors]
+    )
+    interceptors.append(_AsyncSuppressingClientInterceptor())
+    for interceptor in interceptors:
+        interceptor._is_otel_interceptor = True  # type: ignore[attr-defined]
+
+    return interceptors
 
 
 _TRACE_CONTEXT_PROPAGATOR: Any = None

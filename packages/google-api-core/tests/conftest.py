@@ -64,3 +64,22 @@ def mock_otel(monkeypatch):
             tracer=mock_tracer,
             span=mock_span,
         )
+
+
+@pytest.fixture
+def mock_otel_grpc(monkeypatch):
+    """Provides a mocked opentelemetry.instrumentation.grpc module environment.
+
+    Unlike `mock_otel` (which mocks `opentelemetry.trace` to test span generation
+    in client methods), this fixture simulates the installation of the gRPC
+    auto-instrumentation package (`opentelemetry.instrumentation.grpc`) in `sys.modules`.
+    This allows testing gRPC channel interceptor resolution and capability checks.
+    """
+    mock_otel = mock.Mock()
+    mock_grpc = mock_otel.instrumentation.grpc
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", mock_grpc)
+    return mock_grpc

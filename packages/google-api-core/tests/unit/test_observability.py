@@ -40,23 +40,11 @@ def test_is_otel_capabilities_enabled_otel_missing(monkeypatch):
     assert not _observability.is_otel_capabilities_enabled()
 
 
-def test_is_otel_capabilities_enabled_otel_installed(monkeypatch):
+def test_is_otel_capabilities_enabled_otel_installed(monkeypatch, mock_otel_grpc):
     """Proves that is_otel_capabilities_enabled returns True when tracing is enabled
     and OpenTelemetry gRPC instrumentation is installed.
     """
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-
-    mock_otel = mock.Mock()
-    mock_otel_grpc = mock_otel.instrumentation.grpc
-
-    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
-    )
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
-    )
-
     assert _observability.is_otel_capabilities_enabled()
 
 
@@ -74,23 +62,13 @@ def test_is_otel_capabilities_enabled_experimental_requires_env_var(monkeypatch)
         _observability.is_otel_capabilities_enabled(options)
 
 
-def test_is_otel_capabilities_enabled_experimental_enabled_with_config(monkeypatch):
+def test_is_otel_capabilities_enabled_experimental_enabled_with_config(
+    monkeypatch, mock_otel_grpc
+):
     """Proves that when GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED=true and tracer_provider
     is supplied via client_options, is_otel_capabilities_enabled returns True.
     """
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-
-    mock_otel = mock.Mock()
-    mock_otel_grpc = mock_otel.instrumentation.grpc
-
-    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
-    )
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
-    )
-
     options = ClientOptions(tracer_provider=mock.Mock())
     assert _observability.is_otel_capabilities_enabled(options)
 
@@ -135,22 +113,38 @@ def test_get_tracer_provider_dict_config():
     assert _observability._get_tracer_provider(options) is mock_tracer_provider
 
 
-def test_get_otel_interceptor_disabled(monkeypatch):
-    """Proves that get_otel_interceptor returns None when tracing is disabled."""
+@pytest.mark.parametrize(
+    "interceptor_getter",
+    [
+        _observability.get_otel_interceptor,
+        _observability.get_otel_async_interceptor,
+    ],
+    ids=["sync_interceptor", "async_interceptor"],
+)
+def test_get_otel_interceptor_disabled(monkeypatch, interceptor_getter):
+    """Proves that interceptor getters return None when tracing is disabled."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
-    assert _observability.get_otel_interceptor() is None
+    assert interceptor_getter() is None
 
 
-def test_get_otel_interceptor_otel_missing(monkeypatch):
-    """Proves that get_otel_interceptor returns None when OpenTelemetry gRPC
+@pytest.mark.parametrize(
+    "interceptor_getter",
+    [
+        _observability.get_otel_interceptor,
+        _observability.get_otel_async_interceptor,
+    ],
+    ids=["sync_interceptor", "async_interceptor"],
+)
+def test_get_otel_interceptor_otel_missing(monkeypatch, interceptor_getter):
+    """Proves that interceptor getters return None when OpenTelemetry gRPC
     instrumentation is not installed.
     """
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
-    assert _observability.get_otel_interceptor() is None
+    assert interceptor_getter() is None
 
 
-def test_get_otel_interceptor_enabled(monkeypatch):
+def test_get_otel_interceptor_enabled(monkeypatch, mock_otel_grpc):
     """Proves that get_otel_interceptor creates a synchronous OpenTelemetry client
     interceptor with the resolved tracer provider and returns a channel-intercepting callable.
     """
@@ -160,21 +154,10 @@ def test_get_otel_interceptor_enabled(monkeypatch):
 
     mock_raw_channel = mock.Mock(name="raw_channel")
     mock_wrapped_channel = mock.Mock(name="wrapped_channel")
-
-    mock_otel = mock.Mock()
-    mock_otel_grpc = mock_otel.instrumentation.grpc
     mock_interceptor = mock.Mock(name="otel_interceptor")
 
     mock_otel_grpc.client_interceptor.return_value = mock_interceptor
     mock_otel_grpc.intercept_channel.return_value = mock_wrapped_channel
-
-    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
-    )
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
-    )
 
     interceptor = _observability.get_otel_interceptor(client_options=options)
     assert callable(interceptor)
@@ -192,12 +175,14 @@ def test_get_otel_interceptor_enabled(monkeypatch):
 
     result = interceptor(mock_raw_channel)
     assert result is mock_wrapped_channel
-    mock_otel_grpc.intercept_channel.assert_called_once_with(
-        mock_raw_channel, mock_interceptor
-    )
+    assert mock_otel_grpc.intercept_channel.call_count == 1
+    chan_arg, interceptor_arg = mock_otel_grpc.intercept_channel.call_args[0]
+    assert interceptor_arg is mock_interceptor
 
 
-def test_get_otel_interceptor_with_apply_channel_interceptors(monkeypatch):
+def test_get_otel_interceptor_with_apply_channel_interceptors(
+    monkeypatch, mock_otel_grpc
+):
     """Proves that get_otel_interceptor integrates seamlessly into apply_channel_interceptors."""
     pytest.importorskip("grpc")
     from google.api_core import grpc_helpers
@@ -208,21 +193,10 @@ def test_get_otel_interceptor_with_apply_channel_interceptors(monkeypatch):
 
     mock_raw_channel = mock.Mock(name="raw_channel")
     mock_wrapped_channel = mock.Mock(name="wrapped_channel")
-
-    mock_otel = mock.Mock()
-    mock_otel_grpc = mock_otel.instrumentation.grpc
     mock_interceptor = mock.Mock(name="otel_interceptor")
 
     mock_otel_grpc.client_interceptor.return_value = mock_interceptor
     mock_otel_grpc.intercept_channel.return_value = mock_wrapped_channel
-
-    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
-    )
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
-    )
 
     otel_interceptor = _observability.get_otel_interceptor(client_options=options)
     assert callable(otel_interceptor)
@@ -231,27 +205,36 @@ def test_get_otel_interceptor_with_apply_channel_interceptors(monkeypatch):
         mock_raw_channel, interceptors=[otel_interceptor]
     )
     assert result is mock_wrapped_channel
-    mock_otel_grpc.intercept_channel.assert_called_once_with(
-        mock_raw_channel, mock_interceptor
-    )
+    assert mock_otel_grpc.intercept_channel.call_count == 1
+    chan_arg, interceptor_arg = mock_otel_grpc.intercept_channel.call_args[0]
+    assert interceptor_arg is mock_interceptor
 
 
-def test_get_otel_async_interceptor_disabled(monkeypatch):
-    """Proves that get_otel_async_interceptor returns None when tracing is disabled."""
-    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
-    assert _observability.get_otel_async_interceptor() is None
-
-
-def test_get_otel_async_interceptor_otel_missing(monkeypatch):
-    """Proves that get_otel_async_interceptor returns None when OpenTelemetry gRPC
-    instrumentation is not installed.
-    """
+@pytest.mark.parametrize("error_cls", [AttributeError, TypeError])
+def test_get_otel_interceptor_grpc_intercept_channel_fallback(
+    monkeypatch, mock_otel_grpc, error_cls
+):
+    """Proves that otel_interceptor falls back gracefully if grpc.intercept_channel raises AttributeError or TypeError."""
+    if _observability.grpc is None:
+        pytest.skip("grpc is not installed")
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
-    assert _observability.get_otel_async_interceptor() is None
+    options = ClientOptions()
+    mock_raw_channel = mock.Mock(name="raw_channel")
+    mock_wrapped_channel = mock.Mock(name="wrapped_channel")
+    mock_otel_grpc.client_interceptor.return_value = mock.Mock()
+    mock_otel_grpc.intercept_channel.return_value = mock_wrapped_channel
+
+    otel_interceptor = _observability.get_otel_interceptor(client_options=options)
+    with mock.patch.object(
+        _observability.grpc,
+        "intercept_channel",
+        side_effect=error_cls("Mock intercept error"),
+    ):
+        result = otel_interceptor(mock_raw_channel)
+        assert result is mock_wrapped_channel
 
 
-def test_get_otel_async_interceptor_enabled(monkeypatch):
+def test_get_otel_async_interceptor_enabled(monkeypatch, mock_otel_grpc):
     """Proves that get_otel_async_interceptor instantiates and returns asynchronous
     OpenTelemetry client interceptors with the resolved tracer provider.
     """
@@ -260,21 +243,13 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     options = ClientOptions(tracer_provider=mock_tracer_provider)
 
     mock_async_interceptors = [mock.Mock(name="otel_async_interceptor")]
-
-    mock_otel = mock.Mock()
-    mock_otel_grpc = mock_otel.instrumentation.grpc
     mock_otel_grpc.aio_client_interceptors.return_value = mock_async_interceptors
 
-    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
-    )
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
-    )
-
     result = _observability.get_otel_async_interceptor(client_options=options)
-    assert result is mock_async_interceptors
+    assert mock_async_interceptors[0] in result
+    assert any(
+        isinstance(i, _observability._AsyncSuppressingClientInterceptor) for i in result
+    )
     mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
         request_hook=mock.ANY,
@@ -286,6 +261,36 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     mock_span.is_recording.return_value = True
     req_hook(mock_span, None)
     mock_span.set_attribute.assert_any_call("url.domain", "googleapis.com")
+
+
+def test_get_otel_async_interceptor_single_return(monkeypatch, mock_otel_grpc):
+    """Verifies that a single interceptor returned by upstream OTel is safely wrapped into a list."""
+    # Step 1: Opt-in to experimental SDK tracing via environment variable.
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    # Step 2: Configure the mock OpenTelemetry gRPC instrumentation fixture.
+    # While upstream normally returns a sequence (list or tuple), third-party
+    # instrumentation or older versions may return a lone interceptor object.
+    # We simulate this edge case by returning a single mock interceptor.
+    single_interceptor = mock.Mock(name="single_otel_interceptor")
+    mock_otel_grpc.aio_client_interceptors.return_value = single_interceptor
+
+    # Step 3: Call get_otel_async_interceptor with standard ClientOptions.
+    options = ClientOptions()
+    result = _observability.get_otel_async_interceptor(client_options=options)
+
+    # Step 4: Validate list normalization and downstream suppression interceptor injection.
+    # The result must be a 2-item list:
+    #   [0]: The single upstream interceptor wrapped in a list.
+    #   [1]: Our internal _AsyncSuppressingClientInterceptor appended to prevent redundant wire spans.
+    assert isinstance(result, list)
+    assert len(result) == 2
+    assert result[0] is single_interceptor
+    assert isinstance(result[1], _observability._AsyncSuppressingClientInterceptor)
+
+    # Step 5: Verify the internal flag marking that channel transports use to avoid duplicate wrapping.
+    assert getattr(result[0], "_is_otel_interceptor", False) is True
+    assert getattr(result[1], "_is_otel_interceptor", False) is True
 
 
 @pytest.mark.parametrize(
@@ -1302,3 +1307,78 @@ def test_trace_http_request_initialization_fails_open(monkeypatch):
             assert isinstance(ctx, _observability._TraceContext)
             assert ctx._span is None
             ctx.record_response(mock.Mock())
+
+
+@pytest.mark.parametrize(
+    "method_name",
+    [
+        "intercept_unary_unary",
+        "intercept_unary_stream",
+        "intercept_stream_unary",
+        "intercept_stream_stream",
+    ],
+    ids=["unary_unary", "unary_stream", "stream_unary", "stream_stream"],
+)
+def test_sync_suppressing_interceptor_invocations(method_name):
+    """Verifies that _SuppressingClientInterceptor wraps downstream calls in suppress_instrumentation.
+
+    When global OpenTelemetry gRPC auto-instrumentation is enabled, it emits
+    generic, un-enriched attempt spans. We wrap downstream calls in
+    suppress_instrumentation so only our enriched Google Cloud SDK T4 span is emitted.
+    """
+    suppressor = _observability._SuppressingClientInterceptor()
+    assert getattr(suppressor, "_is_otel_interceptor", False) is True
+
+    with mock.patch(
+        "google.api_core._observability._suppress_instrumentation"
+    ) as mock_suppress:
+        mock_continuation = mock.Mock(return_value="expected_response")
+        interceptor_method = getattr(suppressor, method_name)
+        result = interceptor_method(
+            mock_continuation, "call_details", "request_or_iterator"
+        )
+
+        assert result == "expected_response"
+        mock_continuation.assert_called_once_with("call_details", "request_or_iterator")
+        mock_suppress.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "method_name",
+    [
+        "intercept_unary_unary",
+        "intercept_unary_stream",
+        "intercept_stream_unary",
+        "intercept_stream_stream",
+    ],
+    ids=["unary_unary", "unary_stream", "stream_unary", "stream_stream"],
+)
+def test_async_suppressing_interceptor_invocations(method_name):
+    """Verifies that _AsyncSuppressingClientInterceptor wraps downstream async calls in suppress_instrumentation.
+
+    When global OpenTelemetry gRPC auto-instrumentation is enabled, it emits
+    generic, un-enriched attempt spans. We wrap downstream async calls in
+    suppress_instrumentation so only our enriched Google Cloud SDK T4 span is emitted.
+    """
+    import asyncio
+
+    suppressor = _observability._AsyncSuppressingClientInterceptor()
+    assert getattr(suppressor, "_is_otel_interceptor", False) is True
+
+    async def _run_test():
+        with mock.patch(
+            "google.api_core._observability._suppress_instrumentation"
+        ) as mock_suppress:
+            mock_continuation = mock.AsyncMock(return_value="expected_response")
+            interceptor_method = getattr(suppressor, method_name)
+            result = await interceptor_method(
+                mock_continuation, "call_details", "request_or_iterator"
+            )
+
+            assert result == "expected_response"
+            mock_continuation.assert_called_once_with(
+                "call_details", "request_or_iterator"
+            )
+            mock_suppress.assert_called_once()
+
+    asyncio.run(_run_test())
