@@ -147,20 +147,34 @@ class IAMCredentialsTransport(abc.ABC):
         stripped for backward compatibility with older `google-api-core`
         versions.
         """
-        if _WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
+        if _WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
             try:
                 kind = self.kind
-            except NotImplementedError:  # pragma: NO COVER
+            except NotImplementedError:
                 kind = None
-            if kind:  # pragma: NO COVER
+            if kind:
                 kwargs["kind"] = kind
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
-            kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
     def _wrap_async_method(self, func, *args, **kwargs):
         """Wrap an async RPC method with common client-level features.
@@ -172,20 +186,34 @@ class IAMCredentialsTransport(abc.ABC):
         stripped for backward compatibility with older `google-api-core`
         versions.
         """
-        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
             try:
                 kind = self.kind
-            except NotImplementedError:  # pragma: NO COVER
+            except NotImplementedError:
                 kind = None
-            if kind:  # pragma: NO COVER
+            if kind:
                 kwargs["kind"] = kind
             return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
-            kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute and cache wrapped methods for RPC dispatch."""

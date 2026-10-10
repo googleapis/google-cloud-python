@@ -217,6 +217,208 @@ class TestFrontendMetricsIntegration(MockServerTestBase):
         finally:
             pass
 
+    def test_operation_metrics_no_duplicates(self):
+        add_select1_result()
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_tracer_factory.get_meter_provider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+        ):
+            client = Client(
+                project="p",
+                credentials=AnonymousCredentials(),
+                client_options=ClientOptions(
+                    api_endpoint="localhost:" + str(MockServerTestBase.port),
+                ),
+            )
+            instance = client.instance("test-instance")
+            database = instance.database(
+                "test-database",
+                pool=FixedSizePool(size=10),
+                enable_interceptors_in_tests=True,
+            )
+            database._interceptors.append(MetricsInterceptor())
+            database._spanner_api = None  # Force recreation with the new interceptor
+
+            with database.snapshot() as snapshot:
+                results = snapshot.execute_sql("select 1")
+                list(results)
+
+        metric_data = reader.get_metrics_data()
+        self.assertIsNotNone(metric_data)
+        metrics = {
+            metric.name: metric
+            for resource_metric in metric_data.resource_metrics
+            for scope_metric in resource_metric.scope_metrics
+            for metric in scope_metric.metrics
+        }
+
+        self.assertIn("operation_count", metrics)
+        self.assertIn("operation_latencies", metrics)
+
+        operation_count_metric = metrics["operation_count"]
+        streaming_points = [
+            point
+            for point in operation_count_metric.data.data_points
+            if point.attributes.get("method") == "Spanner.ExecuteStreamingSql"
+        ]
+        self.assertEqual(
+            len(streaming_points),
+            1,
+            f"Expected exactly 1 ExecuteStreamingSql data point, found {len(streaming_points)}",
+        )
+        self.assertEqual(streaming_points[0].value, 1)
+        self.assertEqual(streaming_points[0].attributes.get("project_id"), "p")
+        self.assertEqual(
+            streaming_points[0].attributes.get("instance_id"), "test-instance"
+        )
+        self.assertEqual(
+            streaming_points[0].attributes.get("database"), "test-database"
+        )
+
+        for point in operation_count_metric.data.data_points:
+            self.assertEqual(point.attributes.get("project_id"), "p")
+            self.assertEqual(point.attributes.get("instance_id"), "test-instance")
+            self.assertEqual(point.attributes.get("database"), "test-database")
+
+        operation_latencies_metric = metrics["operation_latencies"]
+        streaming_latency_points = [
+            point
+            for point in operation_latencies_metric.data.data_points
+            if point.attributes.get("method") == "Spanner.ExecuteStreamingSql"
+        ]
+        self.assertEqual(
+            len(streaming_latency_points),
+            1,
+            f"Expected exactly 1 ExecuteStreamingSql latency point, found {len(streaming_latency_points)}",
+        )
+        self.assertEqual(streaming_latency_points[0].count, 1)
+        self.assertEqual(streaming_latency_points[0].attributes.get("project_id"), "p")
+        self.assertEqual(
+            streaming_latency_points[0].attributes.get("instance_id"), "test-instance"
+        )
+        self.assertEqual(
+            streaming_latency_points[0].attributes.get("database"), "test-database"
+        )
+
+    def test_operation_metrics_disabled_no_metrics_exported(self):
+        add_select1_result()
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_tracer_factory.get_meter_provider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+        ):
+            SpannerMetricsTracerFactory(enabled=False)
+            try:
+                client = Client(
+                    project="p",
+                    credentials=AnonymousCredentials(),
+                    client_options=ClientOptions(
+                        api_endpoint="localhost:" + str(MockServerTestBase.port),
+                    ),
+                )
+                instance = client.instance("test-instance")
+                database = instance.database(
+                    "test-database",
+                    pool=FixedSizePool(size=10),
+                    enable_interceptors_in_tests=True,
+                )
+                database._interceptors.append(MetricsInterceptor())
+                database._spanner_api = None
+
+                with database.snapshot() as snapshot:
+                    results = snapshot.execute_sql("select 1")
+                    rows = list(results)
+                    self.assertEqual(len(rows), 1)
+            finally:
+                SpannerMetricsTracerFactory(enabled=True)
+
+        metric_data = reader.get_metrics_data()
+        if metric_data is not None:
+            metrics = {
+                metric.name: metric
+                for resource_metric in metric_data.resource_metrics
+                for scope_metric in resource_metric.scope_metrics
+                for metric in scope_metric.metrics
+            }
+            if "operation_count" in metrics:
+                self.assertEqual(len(metrics["operation_count"].data.data_points), 0)
+            if "operation_latencies" in metrics:
+                self.assertEqual(
+                    len(metrics["operation_latencies"].data.data_points), 0
+                )
+
+    def test_operation_metrics_completion_error_does_not_fail_query(self):
+        from google.cloud.spanner_v1.metrics.metrics_tracer import MetricsTracer
+
+        add_select1_result()
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_tracer_factory.get_meter_provider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch.object(
+                MetricsTracer,
+                "record_operation_completion",
+                side_effect=RuntimeError("telemetry export error"),
+            ),
+        ):
+            client = Client(
+                project="p",
+                credentials=AnonymousCredentials(),
+                client_options=ClientOptions(
+                    api_endpoint="localhost:" + str(MockServerTestBase.port),
+                ),
+            )
+            instance = client.instance("test-instance")
+            database = instance.database(
+                "test-database",
+                pool=FixedSizePool(size=10),
+                enable_interceptors_in_tests=True,
+            )
+            database._interceptors.append(MetricsInterceptor())
+            database._spanner_api = None
+
+            with database.snapshot() as snapshot:
+                results = snapshot.execute_sql("select 1")
+                rows = list(results)
+                self.assertEqual(len(rows), 1)
+
 
 class TestFrontendMetricsAsyncIntegration(AsyncMockServerTestBase):
     def setUp(self):
@@ -450,3 +652,254 @@ class TestFrontendMetricsAsyncIntegration(AsyncMockServerTestBase):
         ]
         self.assertTrue(len(streaming_points) > 0)
         self.assertGreaterEqual(streaming_points[0].value, 1)
+
+    async def test_async_operation_metrics_no_duplicates(self):
+        add_select1_result()
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_tracer_factory.get_meter_provider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+        ):
+            client = AsyncClient(
+                project="p",
+                credentials=AnonymousCredentials(),
+                client_options=ClientOptions(
+                    api_endpoint="localhost:" + str(AsyncMockServerTestBase.port),
+                ),
+            )
+            instance = client.instance("test-instance")
+            database = await instance.database(
+                "test-database",
+                pool=AsyncFixedSizePool(size=10),
+            )
+            async with grpc.aio.insecure_channel(
+                "localhost:" + str(AsyncMockServerTestBase.port),
+            ) as channel:
+                transport = SpannerGrpcAsyncIOTransport(
+                    channel=channel,
+                    metrics_interceptor=MetricsInterceptor(),
+                )
+                database._spanner_api = SpannerAsyncClient(
+                    client_info=client._client_info,
+                    transport=transport,
+                )
+
+                async with database.snapshot() as snapshot:
+                    results = await snapshot.execute_sql("select 1")
+                    async for _ in results:
+                        pass
+
+        metric_data = reader.get_metrics_data()
+        self.assertIsNotNone(metric_data)
+        metrics = {
+            metric.name: metric
+            for resource_metric in metric_data.resource_metrics
+            for scope_metric in resource_metric.scope_metrics
+            for metric in scope_metric.metrics
+        }
+
+        self.assertIn("operation_count", metrics)
+        self.assertIn("operation_latencies", metrics)
+
+        operation_count_metric = metrics["operation_count"]
+        streaming_points = [
+            point
+            for point in operation_count_metric.data.data_points
+            if point.attributes.get("method") == "Spanner.ExecuteStreamingSql"
+        ]
+        self.assertEqual(
+            len(streaming_points),
+            1,
+            f"Expected exactly 1 ExecuteStreamingSql data point, found {len(streaming_points)}",
+        )
+        self.assertEqual(streaming_points[0].value, 1)
+        self.assertEqual(streaming_points[0].attributes.get("project_id"), "p")
+        self.assertEqual(
+            streaming_points[0].attributes.get("instance_id"), "test-instance"
+        )
+        self.assertEqual(
+            streaming_points[0].attributes.get("database"), "test-database"
+        )
+
+        for point in operation_count_metric.data.data_points:
+            self.assertEqual(point.attributes.get("project_id"), "p")
+            self.assertEqual(point.attributes.get("instance_id"), "test-instance")
+            self.assertEqual(point.attributes.get("database"), "test-database")
+
+        operation_latencies_metric = metrics["operation_latencies"]
+        streaming_latency_points = [
+            point
+            for point in operation_latencies_metric.data.data_points
+            if point.attributes.get("method") == "Spanner.ExecuteStreamingSql"
+        ]
+        self.assertEqual(
+            len(streaming_latency_points),
+            1,
+            f"Expected exactly 1 ExecuteStreamingSql latency point, found {len(streaming_latency_points)}",
+        )
+        self.assertEqual(streaming_latency_points[0].count, 1)
+        self.assertEqual(streaming_latency_points[0].attributes.get("project_id"), "p")
+        self.assertEqual(
+            streaming_latency_points[0].attributes.get("instance_id"), "test-instance"
+        )
+        self.assertEqual(
+            streaming_latency_points[0].attributes.get("database"), "test-database"
+        )
+
+    async def test_async_operation_metrics_disabled_no_metrics_exported(self):
+        add_select1_result()
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_tracer_factory.get_meter_provider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+        ):
+            SpannerMetricsTracerFactory(enabled=False)
+            try:
+                client = AsyncClient(
+                    project="p",
+                    credentials=AnonymousCredentials(),
+                    client_options=ClientOptions(
+                        api_endpoint="localhost:" + str(AsyncMockServerTestBase.port),
+                    ),
+                )
+                instance = client.instance("test-instance")
+                database = await instance.database(
+                    "test-database",
+                    pool=AsyncFixedSizePool(size=10),
+                )
+                async with grpc.aio.insecure_channel(
+                    "localhost:" + str(AsyncMockServerTestBase.port),
+                ) as channel:
+                    transport = SpannerGrpcAsyncIOTransport(
+                        channel=channel,
+                        metrics_interceptor=MetricsInterceptor(),
+                    )
+                    database._spanner_api = SpannerAsyncClient(
+                        client_info=client._client_info,
+                        transport=transport,
+                    )
+
+                    async with database.snapshot() as snapshot:
+                        results = await snapshot.execute_sql("select 1")
+                        async for _ in results:
+                            pass
+            finally:
+                SpannerMetricsTracerFactory(enabled=True)
+
+        metric_data = reader.get_metrics_data()
+        if metric_data is not None:
+            metrics = {
+                metric.name: metric
+                for resource_metric in metric_data.resource_metrics
+                for scope_metric in resource_metric.scope_metrics
+                for metric in scope_metric.metrics
+            }
+            if "operation_count" in metrics:
+                self.assertEqual(len(metrics["operation_count"].data.data_points), 0)
+            if "operation_latencies" in metrics:
+                self.assertEqual(
+                    len(metrics["operation_latencies"].data.data_points), 0
+                )
+
+    async def test_async_operation_metrics_completion_error_does_not_fail_query(self):
+        from google.cloud.spanner_v1.metrics.metrics_tracer import MetricsTracer
+
+        add_select1_result()
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_tracer_factory.get_meter_provider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch.object(
+                MetricsTracer,
+                "record_operation_completion",
+                side_effect=RuntimeError("telemetry export error"),
+            ),
+        ):
+            client = AsyncClient(
+                project="p",
+                credentials=AnonymousCredentials(),
+                client_options=ClientOptions(
+                    api_endpoint="localhost:" + str(AsyncMockServerTestBase.port),
+                ),
+            )
+            instance = client.instance("test-instance")
+            database = await instance.database(
+                "test-database",
+                pool=AsyncFixedSizePool(size=10),
+            )
+            async with grpc.aio.insecure_channel(
+                "localhost:" + str(AsyncMockServerTestBase.port),
+            ) as channel:
+                transport = SpannerGrpcAsyncIOTransport(
+                    channel=channel,
+                    metrics_interceptor=MetricsInterceptor(),
+                )
+                database._spanner_api = SpannerAsyncClient(
+                    client_info=client._client_info,
+                    transport=transport,
+                )
+
+                async with database.snapshot() as snapshot:
+                    results = await snapshot.execute_sql("select 1")
+                    async for _ in results:
+                        pass

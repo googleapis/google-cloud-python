@@ -38,8 +38,16 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 import google.auth
 from google.auth import credentials as ga_credentials
-from google.showcase import EchoClient, IdentityClient, MessagingClient
 
+from google.showcase import EchoClient, IdentityClient, MessagingClient
+try:
+    from google.showcase import ResumableUploadServiceClient
+
+    HAS_RESUMABLE_UPLOAD_CLIENT = True
+except ImportError:
+    HAS_RESUMABLE_UPLOAD_CLIENT = False
+
+HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT = False
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
 
@@ -63,6 +71,16 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = True
     except:
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
+    try:
+        from google.showcase import ResumableUploadServiceAsyncClient
+        from google.showcase_v1beta1.services.resumable_upload_service.transports.rest_asyncio import (
+            AsyncResumableUploadServiceRestTransport,
+            AsyncResumableUploadServiceRestInterceptor,
+        )
+
+        HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT = True
+    except:
+        HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT = False
 
     _GRPC_VERSION = grpc.__version__
 
@@ -83,7 +101,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.fixture
     def event_loop():
-        return asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        return loop
 
     @pytest_asyncio.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_echo(use_mtls, request, event_loop):
@@ -296,6 +316,33 @@ class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
         return request, metadata
 
 
+if HAS_RESUMABLE_UPLOAD_CLIENT:
+    try:
+        from google.showcase_v1beta1.services.resumable_upload_service.transports import (
+            ResumableUploadServiceRestInterceptor,
+        )
+
+        class ResumableUploadMetadataClientRestInterceptor(
+            ResumableUploadServiceRestInterceptor
+        ):
+            request_metadata: Sequence[Tuple[str, str]] = []
+            response_metadata: Sequence[Tuple[str, str]] = []
+
+            def pre_upload_media(self, request, metadata):
+                self.request_metadata = metadata
+                return request, metadata
+
+            def post_upload_media_with_metadata(self, request, metadata):
+                self.response_metadata = metadata
+                return request, metadata
+
+        HAS_RESUMABLE_UPLOAD_INTERCEPTOR = True
+    except ImportError:
+        HAS_RESUMABLE_UPLOAD_INTERCEPTOR = False
+else:
+    HAS_RESUMABLE_UPLOAD_INTERCEPTOR = False
+
+
 if HAS_ASYNC_REST_ECHO_TRANSPORT:
 
     class EchoMetadataClientRestAsyncInterceptor(AsyncEchoRestInterceptor):
@@ -316,6 +363,19 @@ if HAS_ASYNC_REST_ECHO_TRANSPORT:
 
         async def post_expand_with_metadata(self, request, metadata):
             self.response_metadata = metadata
+            return request, metadata
+
+
+if HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT:
+
+    class ResumableUploadMetadataClientRestAsyncInterceptor(
+        AsyncResumableUploadServiceRestInterceptor
+    ):
+        request_metadata: Sequence[Tuple[str, str]] = []
+        response_metadata: Sequence[Tuple[str, str]] = []
+
+        async def pre_upload_media(self, request, metadata):
+            self.request_metadata = metadata
             return request, metadata
 
 
@@ -533,6 +593,144 @@ def intercepted_echo_rest_async():
     )
 
     return EchoAsyncClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_resumable_upload_rest(use_mtls, use_tls):
+    if not HAS_RESUMABLE_UPLOAD_CLIENT or not HAS_RESUMABLE_UPLOAD_INTERCEPTOR:
+        pytest.skip("ResumableUploadServiceClient not available.")
+
+    transport_name = "rest"
+    transport_cls = ResumableUploadServiceClient.get_transport_class(transport_name)
+    interceptor = ResumableUploadMetadataClientRestInterceptor()
+
+    url_scheme = "https" if (use_mtls or use_tls) else "http"
+    transport = transport_cls(
+        credentials=ga_credentials.AnonymousCredentials(),
+        host="localhost:7469",
+        url_scheme=url_scheme,
+        interceptor=interceptor,
+    )
+    if use_mtls or use_tls:
+        transport._session.verify = CERT_PATH
+        transport._session.mount("https://", HostNameIgnoringAdapter())
+    if use_mtls:
+        transport._session.cert = (CERT_PATH, KEY_PATH)
+
+    return ResumableUploadServiceClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_resumable_upload_rest_async():
+    if not HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT:
+        pytest.skip("Skipping test with async rest.")
+
+    interceptor = ResumableUploadMetadataClientRestAsyncInterceptor()
+
+    transport = AsyncResumableUploadServiceRestTransport(
+        credentials=async_anonymous_credentials(),
+        host="localhost:7469",
+        url_scheme="http",
+        interceptor=interceptor,
+    )
+
+    return ResumableUploadServiceAsyncClient(transport=transport), interceptor
+
+
+try:
+    from google.api_core.resumable_transfer import (
+        ResumableUploadConfig,
+        ResumableUploadSession,
+    )
+except ImportError:
+    ResumableUploadConfig = None
+    ResumableUploadSession = None
+
+
+def make_resumable_upload(
+    transport,
+    request_body,
+    stream,
+    upload_url,
+    size=None,
+    config=None,
+    **kwargs,
+):
+    content_type = kwargs.pop("content_type", "application/octet-stream")
+    response_type = kwargs.pop("response_type", None)
+    retry = kwargs.pop("retry", None)
+    timeout = kwargs.pop("timeout", None)
+
+    if config is None:
+        config = ResumableUploadConfig(**kwargs)
+    elif kwargs:
+        for k, v in kwargs.items():
+            if hasattr(config, k):
+                setattr(config, k, v)
+
+    # ``make_resumable_upload`` instantiates ``ResumableUploadSession`` directly
+    # rather than calling the generated GAPIC client method (``client.upload_media``).
+    # Unlike the generated GAPIC REST transport, ``ResumableUploadSession`` in
+    # ``google-api-core`` is payload-format agnostic and does not set
+    # ``Content-Type: application/json`` on the start request automatically.
+    headers = dict(config.start_headers or [])
+    if request_body and "Content-Type" not in headers:
+        headers["Content-Type"] = "application/json"
+        config.headers = headers
+
+    session = ResumableUploadSession(
+        upload_url=upload_url,
+        config=config,
+        content_type=content_type,
+        response_type=response_type,
+        transport=transport,
+    )
+    return session.upload(
+        stream=stream,
+        request_body=request_body,
+        content_type=content_type,
+        size=size,
+        transport=transport,
+        retry=retry,
+        timeout=timeout,
+    )
+
+
+def resume_resumable_upload(
+    transport,
+    upload_url,
+    stream,
+    size=None,
+    config=None,
+    **kwargs,
+):
+    content_type = kwargs.pop("content_type", None)
+    response_type = kwargs.pop("response_type", None)
+    retry = kwargs.pop("retry", None)
+    timeout = kwargs.pop("timeout", None)
+
+    if config is None:
+        config = ResumableUploadConfig(**kwargs)
+    elif kwargs:
+        for k, v in kwargs.items():
+            if hasattr(config, k):
+                setattr(config, k, v)
+
+    session = ResumableUploadSession(
+        upload_url=upload_url,
+        config=config,
+        transport=transport,
+        content_type=content_type,
+        response_type=response_type,
+    )
+    return session.resume(
+        upload_url=upload_url,
+        stream=stream,
+        size=size,
+        transport=transport,
+        retry=retry,
+        timeout=timeout,
+    )
 
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):

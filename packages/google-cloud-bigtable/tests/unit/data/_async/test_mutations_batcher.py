@@ -1160,6 +1160,22 @@ class TestMutationsBatcherAsync:
                     assert raise_mock.call_count == 1
 
     @CrossSync.pytest
+    async def test_close_executor_shutdown_fallback(self):
+        """If create_task raises RuntimeError during close (e.g. atexit), flush synchronously"""
+        async with self._make_one() as instance:
+            mutation = self._make_mutation(count=1, size=1)
+            instance._staged_entries = [mutation]
+            with mock.patch.object(
+                CrossSync, "create_task", side_effect=RuntimeError("shutdown")
+            ):
+                with mock.patch.object(
+                    instance, "_execute_mutate_rows", return_value=[]
+                ) as exec_mock:
+                    await instance.close()
+                    assert exec_mock.call_count == 1
+                    assert instance._staged_entries == []
+
+    @CrossSync.pytest
     async def test_close_w_exceptions(self):
         """Raise exceptions on close"""
         from google.cloud.bigtable.data import exceptions

@@ -17,192 +17,40 @@ This is used by gapic clients to provide common error mapping, retry, timeout,
 compression, pagination, and long-running operations to methods.
 """
 
-import asyncio
-import contextlib
 import functools
 import inspect
 
-from google.api_core import _observability, grpc_helpers_async
+from google.api_core import grpc_helpers_async
 from google.api_core.gapic_v1 import client_info
-from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
-
-# Retain _GapicCallable import for backward compatibility with external packages
 from google.api_core.gapic_v1.method import (  # noqa: F401
     DEFAULT,
     USE_DEFAULT_METADATA,
-    _apply_decorators,
-    _deduplicate_metadata_tokens,
-    _extract_error_attributes,
-    _extract_metrics_header,
-    _extract_rpc_identity,
-    _extract_status_code,
     _GapicCallable,
 )
-from google.api_core.timeout import TimeToDeadlineTimeout
 
-_DEFAULT_ASYNC_TRANSPORT_KIND = "grpc_asyncio"
+_TRANSPORT_KIND_GRPC_ASYNC = "grpc_asyncio"
+_TRANSPORT_KIND_REST_ASYNC = "rest_asyncio"
+_DEFAULT_ASYNC_TRANSPORT_KIND = _TRANSPORT_KIND_GRPC_ASYNC
 
 
-class _AsyncGapicCallable(object):
-    """Async callable object that wraps an async RPC method with retry, timeout, metadata, and tracing.
+class _AsyncGapicCallable(_GapicCallable):
+    """Async callable object that wraps an async RPC method with retry, timeout, metadata, and tracing."""
 
-    Args:
-        target (Callable): The low-level async RPC method.
-        retry (Optional[google.api_core.retry_async.AsyncRetry]): The default retry for the
-            callable. If ``None``, this callable will not retry by default.
-        timeout (Optional[Union[google.api_core.timeout.Timeout, float]]): The default timeout for the
-            callable. If ``None``, this callable will not specify a timeout argument to the
-            low-level RPC method.
-        compression (Optional[grpc.Compression]): The default compression for the callable.
-            If ``None``, this callable will not specify a compression argument to the low-level
-            RPC method.
-        metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata that is
-            provided to the RPC method on every invocation. This is merged with
-            any metadata specified during invocation. If ``None``, no
-            additional metadata will be passed to the RPC method.
-        client_options (Optional[google.api_core.client_options.ClientOptions]):
-            Client options used to configure client-level behavior, such as
-            custom OpenTelemetry tracer providers. Defaults to None.
-        method_name (Optional[str]): The optional explicit full RPC method name
-            (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
-        is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
-            Note: Streaming methods do not currently generate Tier 3 observability spans.
-        client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
-            Client information used for metadata headers. Defaults to None.
-        kind (str): The transport kind for the RPC method. Defaults to "grpc_asyncio".
-            Allowed values for OpenTelemetry method tracing are "grpc_asyncio" and "rest_asyncio".
-    """
-
-    def __init__(
-        self,
-        target,
-        retry,
-        timeout,
-        compression,
-        metadata=None,
-        client_options=None,
-        method_name=None,
-        is_streaming=False,
-        client_info=None,
-        kind=_DEFAULT_ASYNC_TRANSPORT_KIND,
-    ):
-        self._target = target
-        self._retry = retry
-        self._timeout = timeout
-        self._compression = compression
-
-        # Pre-extract the x-goog-api-client header from the initialized metadata.
-        self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
-        self._static_metadata = tuple(remaining)
-        if self._x_goog_api_client:
-            self._default_metadata = (
-                (METRICS_METADATA_KEY, self._x_goog_api_client),
-                *self._static_metadata,
-            )
-        else:
-            self._default_metadata = self._static_metadata
-
-        # Configure the OpenTelemetry span factory once at initialization.
-        self._start_span_fn = None
-        if (
-            not is_streaming
-            and kind in ("grpc_asyncio", "rest_asyncio")
-            and method_name is not None
-            and _observability.is_otel_capabilities_enabled(client_options)
-        ):
-            try:
-                from opentelemetry import trace
-
-                tracer_provider = None
-                if isinstance(client_options, dict):
-                    tracer_provider = client_options.get("tracer_provider")
-                elif client_options is not None:
-                    tracer_provider = getattr(client_options, "tracer_provider", None)
-                if tracer_provider is not None:
-                    tracer = tracer_provider.get_tracer("google.api_core")
-                else:
-                    tracer = trace.get_tracer("google.api_core")
-
-                span_name, _, _ = _extract_rpc_identity(method_name)
-                is_rest = kind in ("rest", "rest_asyncio")
-                span_attributes = {
-                    "rpc.system.name": "http" if is_rest else "grpc",
-                    "rpc.method": span_name,
-                }
-                self._start_span_fn = functools.partial(
-                    tracer.start_as_current_span,
-                    span_name,
-                    kind=trace.SpanKind.CLIENT,
-                    attributes=span_attributes,
-                )
-            except (ImportError, AttributeError, TypeError):
-                # Gracefully disable tracing if OpenTelemetry or custom provider fails
-                self._start_span_fn = None
+    _SUPPORTED_TRACING_KINDS = (
+        _TRANSPORT_KIND_GRPC_ASYNC,
+        _TRANSPORT_KIND_REST_ASYNC,
+    )
 
     async def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
     ):
         """Invoke the low-level async RPC with retry, timeout, compression, and metadata."""
-        if retry is DEFAULT:
-            retry = self._retry
-
-        if timeout is DEFAULT:
-            timeout = self._timeout
-
-        if compression is DEFAULT:
-            compression = self._compression
-
-        if isinstance(timeout, (int, float)):
-            timeout = TimeToDeadlineTimeout(timeout=timeout)
-
-        # Apply all applicable decorators.
-        wrapped_func = _apply_decorators(self._target, [retry, timeout])
-
-        if user_metadata := kwargs.get("metadata"):
-            # Add the user agent metadata to the call.
-            final_metadata = list(self._static_metadata)
-            user_x_goog, remaining = _extract_metrics_header(user_metadata)
-
-            merged_header = _deduplicate_metadata_tokens(
-                self._x_goog_api_client, user_x_goog
-            )
-            if merged_header:
-                final_metadata.append((METRICS_METADATA_KEY, merged_header))
-            final_metadata.extend(remaining)
-            kwargs["metadata"] = final_metadata
-        elif self._default_metadata:
-            kwargs["metadata"] = self._default_metadata
-
-        if compression is not None:
-            kwargs["compression"] = compression
-
-        span_cm = contextlib.nullcontext()
-        if self._start_span_fn is not None:
-            try:
-                span_cm = self._start_span_fn()
-            except (
-                Exception
-            ):  # Fail-open: proceed without span if tracing initialization fails
-                span_cm = contextlib.nullcontext()
-
-        with span_cm as span:
-            try:
-                res = wrapped_func(*args, **kwargs)
-                if inspect.isawaitable(res):
-                    result = await res
-                else:
-                    result = res
-                if span is not None and hasattr(span, "set_attribute"):
-                    span.set_attribute("rpc.response.status_code", "OK")
-                return result
-            except (Exception, asyncio.CancelledError) as exc:
-                if span is not None and hasattr(span, "set_attribute"):
-                    span.set_attribute(
-                        "rpc.response.status_code", _extract_status_code(exc)
-                    )
-                    for k, v in _extract_error_attributes(exc).items():
-                        span.set_attribute(k, v)
-                raise
+        wrapped_func = self._prepare_call(timeout, retry, compression, kwargs)
+        with self._trace_span():
+            res = wrapped_func(*args, **kwargs)
+            if inspect.isawaitable(res):
+                return await res
+            return res
 
 
 def wrap_method(
@@ -218,6 +66,33 @@ def wrap_method(
     is_streaming=False,
 ):
     """Wrap an async RPC method with common behavior.
+
+    Args:
+        func (Callable): The low-level async RPC method.
+        default_retry (Optional[google.api_core.retry_async.AsyncRetry]): The default
+            retry strategy. If ``None``, the method will not retry by default.
+        default_timeout (Optional[Union[google.api_core.timeout.Timeout, float]]): The
+            default timeout strategy. Can also be specified as an int or float. If
+            ``None``, the method will not have a timeout specified by default.
+        default_compression (Optional[grpc.Compression]): The default
+            grpc.Compression. If ``None``, the method will not have
+            compression specified by default.
+        client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
+            Client information used to create a user-agent string that's
+            passed as gRPC metadata to the method. If unspecified, then
+            a sane default will be used. If ``None``, then no user agent
+            metadata will be provided to the RPC method.
+        kind (str): The transport kind for the RPC method. Defaults to "grpc_asyncio".
+            Allowed values for OpenTelemetry method tracing are "grpc_asyncio" and "rest_asyncio".
+        client_options
+            (Optional[google.api_core.client_options.ClientOptions]):
+                Client options used to configure client-level behavior, such as
+                custom OpenTelemetry tracer providers. Defaults to None.
+        method_name (Optional[str]): Optional explicit full RPC method name
+            (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
+            Used to identify the RPC for observability.
+        is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
+            Streaming methods are currently gated and do not generate Tier 3 spans.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,

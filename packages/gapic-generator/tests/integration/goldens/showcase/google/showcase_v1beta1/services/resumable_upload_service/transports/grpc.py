@@ -398,6 +398,7 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
                                 client_cert_source_for_mtls=transport._client_cert_source_for_mtls,
+                                client_options=getattr(transport, "_client_options", None),
                             )
                         return transport._rest_transport.upload_media(*args, **kwargs)
                 self._stubs['upload_media'] = _RestStub()
