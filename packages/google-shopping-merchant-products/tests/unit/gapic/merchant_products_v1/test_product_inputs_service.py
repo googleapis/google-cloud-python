@@ -3007,6 +3007,7 @@ def test_insert_product_input_rest_call_success(request_type):
                 "credit_type": 1,
                 "annual_percentage_rate": 0.2311,
                 "total_amount": {},
+                "mileage_allowance": {"value": 541, "unit": 1},
             },
             "subscription_cost": {"period": 1, "period_length": 1380, "amount": {}},
             "loyalty_points": {
@@ -3167,6 +3168,8 @@ def test_insert_product_input_rest_call_success(request_type):
                     "certification_name": 1,
                     "certification_code": "certification_code_value",
                     "certification_value": "certification_value_value",
+                    "certification_document_link": "certification_document_link_value",
+                    "certification_label_link": "certification_label_link_value",
                 }
             ],
             "structured_title": {"digital_source_type": 1, "content": "content_value"},
@@ -3187,12 +3190,13 @@ def test_insert_product_input_rest_call_success(request_type):
                     "price": {},
                 }
             ],
+            "warranty": {"duration": 870, "mileage": {}, "duration_unit": 1},
             "vin": "vin_value",
             "model": "model_value",
             "trim": "trim_value",
             "body_style": 1,
             "year": 433,
-            "mileage": {"value": 541, "unit": 1},
+            "mileage": {},
             "electric_range": {},
             "fuel_consumption": {"value": 0.541, "unit": 1},
             "fuel_consumption_discharged_battery": {},
@@ -3207,7 +3211,21 @@ def test_insert_product_input_rest_call_success(request_type):
             "vehicle_price_type": 1,
             "vehicle_mandatory_inspection_included": True,
             "vehicle_expenses": {},
-            "warranty": {"duration": 870, "mileage": {}},
+            "returns": [
+                {
+                    "restocking_fee": {},
+                    "restocking_percentage_fee": 0.2629,
+                    "countries": ["countries_value1", "countries_value2"],
+                    "window_days": 1192,
+                    "window_type": 1,
+                    "item_conditions": [1],
+                    "methods": [1],
+                    "outcomes": [1],
+                    "shipping_fee": {},
+                    "shipping_fee_type": 1,
+                    "policy_url": "policy_url_value",
+                }
+            ],
             "display_address": {
                 "street_number": "street_number_value",
                 "street_name": "street_name_value",
@@ -3230,6 +3248,7 @@ def test_insert_product_input_rest_call_success(request_type):
             "specialty_housing_type": 1,
             "product_fee": [{"type_": 1, "amount": {}}],
             "short_title": "short_title_value",
+            "lease_term": {"type_": 1, "duration_value": 1506, "duration_unit": 1},
             "questions_and_answers": [
                 {"question": "question_value", "answer": "answer_value"}
             ],
@@ -3507,6 +3526,7 @@ def test_update_product_input_rest_call_success(request_type):
                 "credit_type": 1,
                 "annual_percentage_rate": 0.2311,
                 "total_amount": {},
+                "mileage_allowance": {"value": 541, "unit": 1},
             },
             "subscription_cost": {"period": 1, "period_length": 1380, "amount": {}},
             "loyalty_points": {
@@ -3667,6 +3687,8 @@ def test_update_product_input_rest_call_success(request_type):
                     "certification_name": 1,
                     "certification_code": "certification_code_value",
                     "certification_value": "certification_value_value",
+                    "certification_document_link": "certification_document_link_value",
+                    "certification_label_link": "certification_label_link_value",
                 }
             ],
             "structured_title": {"digital_source_type": 1, "content": "content_value"},
@@ -3687,12 +3709,13 @@ def test_update_product_input_rest_call_success(request_type):
                     "price": {},
                 }
             ],
+            "warranty": {"duration": 870, "mileage": {}, "duration_unit": 1},
             "vin": "vin_value",
             "model": "model_value",
             "trim": "trim_value",
             "body_style": 1,
             "year": 433,
-            "mileage": {"value": 541, "unit": 1},
+            "mileage": {},
             "electric_range": {},
             "fuel_consumption": {"value": 0.541, "unit": 1},
             "fuel_consumption_discharged_battery": {},
@@ -3707,7 +3730,21 @@ def test_update_product_input_rest_call_success(request_type):
             "vehicle_price_type": 1,
             "vehicle_mandatory_inspection_included": True,
             "vehicle_expenses": {},
-            "warranty": {"duration": 870, "mileage": {}},
+            "returns": [
+                {
+                    "restocking_fee": {},
+                    "restocking_percentage_fee": 0.2629,
+                    "countries": ["countries_value1", "countries_value2"],
+                    "window_days": 1192,
+                    "window_type": 1,
+                    "item_conditions": [1],
+                    "methods": [1],
+                    "outcomes": [1],
+                    "shipping_fee": {},
+                    "shipping_fee_type": 1,
+                    "policy_url": "policy_url_value",
+                }
+            ],
             "display_address": {
                 "street_number": "street_number_value",
                 "street_name": "street_name_value",
@@ -3730,6 +3767,7 @@ def test_update_product_input_rest_call_success(request_type):
             "specialty_housing_type": 1,
             "product_fee": [{"type_": 1, "amount": {}}],
             "short_title": "short_title_value",
+            "lease_term": {"type_": 1, "duration_value": 1506, "duration_unit": 1},
             "questions_and_answers": [
                 {"question": "question_value", "answer": "answer_value"}
             ],

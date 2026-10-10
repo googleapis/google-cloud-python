@@ -61,6 +61,14 @@ from google.cloud.compute_v1.services.region_instance_group_managers import (
 )
 from google.cloud.compute_v1.types import compute
 
+try:
+    from google.api_core import version_header
+
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
+
+
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
     "credential_type": "service account credentials",
@@ -173,6 +181,801 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_abandon_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.abandon_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.abandon_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_apply_updates_to_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.apply_updates_to_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.apply_updates_to_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_create_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.create_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.create_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_delete_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.delete), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.delete()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_delete_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.delete_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.delete_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_delete_per_instance_configs_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.delete_per_instance_configs), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.delete_per_instance_configs()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_get_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.get), "__call__") as call:
+            call.return_value = compute.InstanceGroupManager()
+            client.get()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_insert_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.insert), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.insert()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_list_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.list), "__call__") as call:
+            call.return_value = compute.RegionInstanceGroupManagerList()
+            client.list()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_list_errors_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.list_errors), "__call__") as call:
+            call.return_value = compute.RegionInstanceGroupManagersListErrorsResponse()
+            client.list_errors()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_list_managed_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.list_managed_instances), "__call__"
+        ) as call:
+            call.return_value = (
+                compute.RegionInstanceGroupManagersListInstancesResponse()
+            )
+            client.list_managed_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_list_per_instance_configs_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.list_per_instance_configs), "__call__"
+        ) as call:
+            call.return_value = (
+                compute.RegionInstanceGroupManagersListInstanceConfigsResp()
+            )
+            client.list_per_instance_configs()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_patch_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.patch), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.patch()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_patch_per_instance_configs_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.patch_per_instance_configs), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.patch_per_instance_configs()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_recreate_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.recreate_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.recreate_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_resize_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.resize), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.resize()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_resume_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.resume_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.resume_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_set_instance_template_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.set_instance_template), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.set_instance_template()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_set_target_pools_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.set_target_pools), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.set_target_pools()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_start_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.start_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.start_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_stop_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.stop_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.stop_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_suspend_instances_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.suspend_instances), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.suspend_instances()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_update_per_instance_configs_api_version_header(transport_name):
+    client = RegionInstanceGroupManagersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.update_per_instance_configs), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.update_per_instance_configs()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-10-01-preview",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
 
 
 @pytest.mark.parametrize(
@@ -3684,7 +4487,7 @@ def test_insert_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -3730,7 +4533,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -3881,7 +4684,7 @@ def test_insert_unary_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -3927,7 +4730,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -4008,7 +4811,6 @@ def test_list_rest_required_fields(
             "maxResults",
             "orderBy",
             "pageToken",
-            "returnPartialSuccess",
         )
     )
 
@@ -4262,7 +5064,6 @@ def test_list_errors_rest_required_fields(
             "maxResults",
             "orderBy",
             "pageToken",
-            "returnPartialSuccess",
         )
     )
 
@@ -4538,7 +5339,6 @@ def test_list_managed_instances_rest_required_fields(
             "maxResults",
             "orderBy",
             "pageToken",
-            "returnPartialSuccess",
         )
     )
 
@@ -4814,7 +5614,6 @@ def test_list_per_instance_configs_rest_required_fields(
             "maxResults",
             "orderBy",
             "pageToken",
-            "returnPartialSuccess",
         )
     )
 
@@ -5164,7 +5963,7 @@ def test_patch_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5211,7 +6010,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5371,7 +6170,7 @@ def test_patch_unary_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5418,7 +6217,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -11365,7 +12164,9 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["instance_group_manager_resource"] = {
-        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
+        "all_instances_config": {
+            "properties": {"expose_host_topology": True, "labels": {}, "metadata": {}}
+        },
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -12362,7 +13163,9 @@ def test_patch_rest_call_success(request_type):
         "instance_group_manager": "sample3",
     }
     request_init["instance_group_manager_resource"] = {
-        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
+        "all_instances_config": {
+            "properties": {"expose_host_topology": True, "labels": {}, "metadata": {}}
+        },
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],

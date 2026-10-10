@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-compute-v1beta/#history
 
+## [0.12.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.7...google-cloud-compute-v1beta-v0.12.8) (2026-10-08)
+
+
+### Features
+
+* update API sources and regenerate ([#18593](https://github.com/googleapis/google-cloud-python/issues/18593)) ([d0505e8](https://github.com/googleapis/google-cloud-python/commit/d0505e8bc7615f2c649d3e25ebc7e3ccca45f22b))
+
+## [0.12.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.6...google-cloud-compute-v1beta-v0.12.7) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+* update API sources and regenerate ([#18513](https://github.com/googleapis/google-cloud-python/issues/18513)) ([7d7adca](https://github.com/googleapis/google-cloud-python/commit/7d7adcaee688603077ea53abec678130045c20ed))
+
+## [0.12.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.5...google-cloud-compute-v1beta-v0.12.6) (2026-09-17)
+
+
+### Features
+
+* update API sources and regenerate ([#18396](https://github.com/googleapis/google-cloud-python/issues/18396)) ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+* update API sources and regenerate. ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+
+## [0.12.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.4...google-cloud-compute-v1beta-v0.12.5) (2026-09-14)
+
+
+### Features
+
+* update API sources and regenerate ([#18324](https://github.com/googleapis/google-cloud-python/issues/18324)) ([0766fb6](https://github.com/googleapis/google-cloud-python/commit/0766fb69c28973d5d51cffc490f195c60e8eee10))
+
 ## [0.12.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.3...google-cloud-compute-v1beta-v0.12.4) (2026-09-03)
 
 

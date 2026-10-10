@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from datetime import datetime, timedelta
-from threading import Lock
+from threading import Event, Lock, Thread
 from typing import Mapping
 
 import mock
 from google.api_core import gapic_v1
-from google.api_core.exceptions import Aborted, InternalServerError
+from google.api_core.exceptions import Aborted, InternalServerError, NotFound
 from google.api_core.retry import Retry
 
 from google.cloud.spanner_admin_database_v1 import Database
@@ -159,14 +159,15 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             request_id_manager=None if not session else session._database,
         )
 
-    def _make_item(self, value, resume_token=b"", metadata=None):
+    def _make_item(self, value, resume_token=b"", metadata=None, last=False):
         return mock.Mock(
             value=value,
             resume_token=resume_token,
             metadata=metadata,
             precommit_token=None,
+            last=last,
             _pb=None,
-            spec=["value", "resume_token", "metadata", "precommit_token"],
+            spec=["value", "resume_token", "metadata", "precommit_token", "last"],
         )
 
     def test_iteration_w_empty_raw(self):
@@ -211,6 +212,226 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             ],
         )
         self.assertNoSpans()
+
+    def test_restart_on_unavailable_last(self):
+        item_last = self._make_item(0, last=True)
+        trailing_item = self._make_item(1)
+
+        raw = _MockIterator(item_last, trailing_item)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        with mock.patch("google.cloud.spanner_v1.snapshot._drain_stream") as mock_drain:
+            resumable = self._call_fut(derived, restart, request, session=session)
+            items = list(resumable)
+
+            mock_drain.assert_called_once_with(raw)
+            self.assertEqual(len(items), 1)
+            self.assertEqual(items[0], item_last)
+
+    def test_restart_on_unavailable_finally_cancels_on_early_termination(self):
+        item = self._make_item(0, last=False)
+        raw = _MockIterator(item)
+        raw.cancel = mock.Mock()
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(derived, restart, request, session=session)
+        for received_item in resumable:
+            break
+        resumable.close()
+
+        raw.cancel.assert_called_once()
+
+    def test_restart_on_unavailable_item_without_last_attribute(self):
+        item = mock.Mock(
+            value=0,
+            resume_token=b"",
+            metadata=None,
+            precommit_token=None,
+            _pb=None,
+            spec=["value", "resume_token", "metadata", "precommit_token"],
+        )
+        raw = _MockIterator(item)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(derived, restart, request, session=session)
+        items = list(resumable)
+        self.assertEqual(items, [item])
+
+    def test_restart_on_unavailable_finally_handles_cancel_exception(self):
+        item = self._make_item(0, last=False)
+        raw = _MockIterator(item)
+        raw.cancel = mock.Mock(side_effect=RuntimeError("cancel failed"))
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(derived, restart, request, session=session)
+        for _ in resumable:
+            break
+        resumable.close()
+        raw.cancel.assert_called_once()
+
+    def test_restart_on_unavailable_last_does_not_cancel_iterator_in_finally(self):
+        item_last = self._make_item(0, last=True)
+        raw = _MockIterator(item_last)
+        raw.cancel = mock.Mock()
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        with mock.patch("google.cloud.spanner_v1.snapshot._drain_stream"):
+            resumable = self._call_fut(derived, restart, request, session=session)
+            list(resumable)
+
+        raw.cancel.assert_not_called()
+
+    def test_streamed_result_set_with_last(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        fields = [StructType.Field(name="greeting", type_=Type(code=TypeCode.STRING))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        item = PartialResultSet(metadata=metadata_pb, last=True)
+        item.values.append(Value(string_value="hello"))
+
+        raw = _MockIterator(item)
+        streamed_result_set = StreamedResultSet(raw)
+        rows = list(streamed_result_set)
+
+        self.assertEqual(rows, [["hello"]])
+        self.assertTrue(streamed_result_set._done)
+
+    def test_restart_on_unavailable_multi_chunk_with_last(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+            ResultSetStats,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        fields = [StructType.Field(name="greeting", type_=Type(code=TypeCode.STRING))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        stats_pb = ResultSetStats(row_count_exact=2)
+
+        chunk_one = PartialResultSet(
+            metadata=metadata_pb, last=False, resume_token=b"token_1"
+        )
+        chunk_one.values.append(Value(string_value="hello"))
+
+        chunk_two = PartialResultSet(last=True, stats=stats_pb)
+        chunk_two.values.append(Value(string_value="world"))
+
+        raw = _MockIterator(chunk_one, chunk_two)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        with mock.patch("google.cloud.spanner_v1.snapshot._drain_stream") as mock_drain:
+            resumable = self._call_fut(derived, restart, request, session=session)
+            streamed_result_set = StreamedResultSet(resumable)
+            rows = list(streamed_result_set)
+
+            mock_drain.assert_called_once_with(raw)
+            self.assertEqual(rows, [["hello"], ["world"]])
+            self.assertEqual(streamed_result_set.metadata, metadata_pb)
+            self.assertEqual(streamed_result_set.stats, stats_pb)
+            self.assertTrue(streamed_result_set._done)
+
+    def test_restart_on_unavailable_zero_rows_with_last(self):
+        from google.cloud.spanner_v1.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+            ResultSetStats,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        fields = [StructType.Field(name="greeting", type_=Type(code=TypeCode.STRING))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        stats_pb = ResultSetStats(row_count_exact=0)
+
+        chunk = PartialResultSet(metadata=metadata_pb, last=True, stats=stats_pb)
+
+        raw = _MockIterator(chunk)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        with mock.patch("google.cloud.spanner_v1.snapshot._drain_stream") as mock_drain:
+            resumable = self._call_fut(derived, restart, request, session=session)
+            streamed_result_set = StreamedResultSet(resumable)
+            rows = list(streamed_result_set)
+
+            mock_drain.assert_called_once_with(raw)
+            self.assertEqual(rows, [])
+            self.assertEqual(streamed_result_set.metadata, metadata_pb)
+            self.assertEqual(streamed_result_set.stats, stats_pb)
+            self.assertTrue(streamed_result_set._done)
+
+    def test_restart_on_unavailable_retry_before_last(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        chunk_one = self._make_item(0, resume_token=RESUME_TOKEN, last=False)
+        chunk_two = self._make_item(1, last=True)
+
+        stream_one = _MockIterator(
+            chunk_one, fail_after=True, error=ServiceUnavailable("transient")
+        )
+        stream_two = _MockIterator(chunk_two)
+        stream_two.cancel = mock.Mock()
+
+        restart = mock.Mock(side_effect=[stream_one, stream_two])
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        with mock.patch("google.cloud.spanner_v1.snapshot._drain_stream") as mock_drain:
+            resumable = self._call_fut(derived, restart, request, session=session)
+            items = list(resumable)
+
+            self.assertEqual(items, [chunk_one, chunk_two])
+            self.assertEqual(len(restart.mock_calls), 2)
+            self.assertEqual(request.resume_token, RESUME_TOKEN)
+            mock_drain.assert_called_once_with(stream_two)
+            stream_two.cancel.assert_not_called()
 
     def test_iteration_w_raw_w_resume_token(self):
         ITEMS = (
@@ -681,6 +902,389 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
                     ),
                 )
 
+    def test_restart_on_unavailable_metrics_tracer_lifecycle(self):
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+            SpannerMetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
+
+        mock_tracer = mock.Mock()
+
+        item = self._make_item(0)
+        raw = _MockIterator(item)
+        tracer_during_call = []
+
+        def restart(*args, **kwargs):
+            tracer_during_call.append(SpannerMetricsTracerFactory.get_current_tracer())
+            return raw
+
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resource_info = {"project": "p", "instance": "i", "database": "d"}
+
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ) as mock_create_tracer:
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                session=session,
+                transaction=derived,
+                request_id_manager=session._database,
+                resource_info=resource_info,
+            )
+
+            # Not started before iteration begins (lazy generator)
+            mock_tracer.record_operation_start.assert_not_called()
+
+            items = []
+            for it in resumable:
+                # During row iteration, ambient contextvar must NOT be contaminated
+                self.assertIsNone(SpannerMetricsTracerFactory.get_current_tracer())
+                items.append(it)
+
+            self.assertEqual(items, [item])
+            # Tracer factory was called with resource info
+            mock_create_tracer.assert_called_once_with(resource_info)
+            # Operation was started once
+            mock_tracer.record_operation_start.assert_called_once()
+            # Contextvar was active during RPC invocation
+            self.assertEqual(tracer_during_call, [mock_tracer])
+            # Operation completion recorded once
+            mock_tracer.record_operation_completion.assert_called_once()
+            # Context is clean after completion
+            self.assertIsNone(SpannerMetricsTracerFactory.get_current_tracer())
+
+    def test_restart_on_unavailable_metrics_tracer_spans_retries(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+            SpannerMetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
+
+        mock_tracer = mock.Mock()
+
+        FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+        SECOND = (self._make_item(2),)
+        before = _MockIterator(
+            *FIRST, fail_after=True, error=ServiceUnavailable("testing")
+        )
+        after = _MockIterator(*SECOND)
+        tracers_during_calls = []
+
+        def restart(*args, **kwargs):
+            tracers_during_calls.append(
+                SpannerMetricsTracerFactory.get_current_tracer()
+            )
+            if len(tracers_during_calls) == 1:
+                return before
+            return after
+
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resource_info = {"project": "p", "instance": "i", "database": "d"}
+
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                session=session,
+                transaction=derived,
+                request_id_manager=session._database,
+                resource_info=resource_info,
+            )
+
+            items = list(resumable)
+            self.assertEqual(items, list(FIRST + SECOND))
+            self.assertEqual(len(tracers_during_calls), 2)
+            # Both attempts used the same metrics tracer
+            self.assertEqual(tracers_during_calls, [mock_tracer, mock_tracer])
+            mock_tracer.record_operation_start.assert_called_once()
+            mock_tracer.record_operation_completion.assert_called_once()
+            self.assertIsNone(SpannerMetricsTracerFactory.get_current_tracer())
+
+    def test_restart_on_unavailable_early_break_no_context_error(self):
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+            SpannerMetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
+
+        mock_tracer = mock.Mock()
+
+        FIRST = (self._make_item(0), self._make_item(1))
+        raw = _MockIterator(*FIRST)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resource_info = {"project": "p", "instance": "i", "database": "d"}
+
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            resumable = _restart_on_unavailable(
+                restart,
+                request,
+                session=session,
+                transaction=derived,
+                request_id_manager=session._database,
+                resource_info=resource_info,
+            )
+
+            for it in resumable:
+                self.assertEqual(it, FIRST[0])
+                break
+            resumable.close()
+
+            mock_tracer.record_operation_completion.assert_called_once()
+            self.assertIsNone(SpannerMetricsTracerFactory.get_current_tracer())
+
+    def test_restart_on_unavailable_real_factory_early_break_no_context_error(self):
+        from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+            SpannerMetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
+
+        FIRST = (self._make_item(0), self._make_item(1))
+        raw = _MockIterator(*FIRST)
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resource_info = {"project": "p", "instance": "i", "database": "d"}
+
+        resumable = _restart_on_unavailable(
+            restart,
+            request,
+            session=session,
+            transaction=derived,
+            request_id_manager=session._database,
+            resource_info=resource_info,
+        )
+
+        for it in resumable:
+            self.assertEqual(it, FIRST[0])
+            break
+        resumable.close()
+
+        self.assertIsNone(SpannerMetricsTracerFactory.get_current_tracer())
+
+    def test_restart_on_unavailable_metrics_tracer_partial_resource_info_and_disabled(
+        self,
+    ):
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+            SpannerMetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
+
+        mock_tracer = mock.Mock()
+        item = self._make_item(0)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        # 1. resource_info is None
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            resumable = _restart_on_unavailable(
+                mock.Mock(return_value=_MockIterator(item)),
+                request,
+                session=session,
+                transaction=derived,
+                request_id_manager=session._database,
+                resource_info=None,
+            )
+            for it in resumable:
+                pass
+            mock_tracer.record_operation_start.assert_called_once()
+            mock_tracer.record_operation_completion.assert_called_once()
+
+        # 2. partial resource_info (only project, only instance, only database)
+        for partial_info in [{"project": "p"}, {"instance": "i"}, {"database": "d"}]:
+            mock_tracer.reset_mock()
+            with mock.patch.object(
+                MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+            ) as mock_create_tracer:
+                resumable = _restart_on_unavailable(
+                    mock.Mock(return_value=_MockIterator(item)),
+                    request,
+                    session=session,
+                    transaction=derived,
+                    request_id_manager=session._database,
+                    resource_info=partial_info,
+                )
+                for it in resumable:
+                    pass
+                mock_create_tracer.assert_called_once_with(partial_info)
+
+        # 3. metrics factory disabled
+        SpannerMetricsTracerFactory(enabled=False)
+        try:
+            with mock.patch.object(
+                MetricsTracerFactory, "create_metrics_tracer"
+            ) as mock_create:
+                resumable = _restart_on_unavailable(
+                    mock.Mock(return_value=_MockIterator(item)),
+                    request,
+                    session=session,
+                    transaction=derived,
+                    request_id_manager=session._database,
+                    resource_info={"project": "p"},
+                )
+                items = []
+                for it in resumable:
+                    items.append(it)
+                self.assertEqual(items, [item])
+                mock_create.assert_not_called()
+                self.assertIsNone(SpannerMetricsTracerFactory.get_current_tracer())
+        finally:
+            SpannerMetricsTracerFactory(enabled=True)
+
+        # 4. create_metrics_tracer returns None
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=None
+        ):
+            resumable = _restart_on_unavailable(
+                mock.Mock(return_value=_MockIterator(item)),
+                request,
+                session=session,
+                transaction=derived,
+                request_id_manager=session._database,
+                resource_info={"project": "p"},
+            )
+            items = []
+            for it in resumable:
+                items.append(it)
+            self.assertEqual(items, [item])
+            self.assertIsNone(SpannerMetricsTracerFactory.get_current_tracer())
+
+    def test_restart_on_unavailable_metrics_completion_error_handled(self):
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
+
+        mock_tracer = mock.Mock()
+        mock_tracer.record_operation_completion.side_effect = RuntimeError(
+            "metrics export failure"
+        )
+
+        item = mock.Mock(
+            value=0,
+            resume_token=b"",
+            metadata=None,
+            precommit_token=None,
+            last=False,
+            _pb=None,
+            spec=["value", "resume_token", "metadata", "precommit_token", "last"],
+        )
+        mock_iterator = _MockIterator(item)
+        mock_iterator.cancel = mock.Mock()
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            resumable = _restart_on_unavailable(
+                mock.Mock(return_value=mock_iterator),
+                request,
+                session=session,
+                transaction=derived,
+                request_id_manager=session._database,
+                resource_info={"project": "p"},
+            )
+            items = []
+            for it in resumable:
+                items.append(it)
+                break
+            resumable.close()
+
+            self.assertEqual(items, [item])
+            mock_tracer.record_operation_completion.assert_called_once()
+            mock_iterator.cancel.assert_called_once()
+
+    def test_restart_on_unavailable_metrics_completion_error_preserves_query_error(
+        self,
+    ):
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
+
+        mock_tracer = mock.Mock()
+        mock_tracer.record_operation_completion.side_effect = RuntimeError(
+            "metrics export failure"
+        )
+
+        item = mock.Mock(
+            value=0,
+            resume_token=b"",
+            metadata=None,
+            precommit_token=None,
+            last=False,
+            _pb=None,
+            spec=["value", "resume_token", "metadata", "precommit_token", "last"],
+        )
+        mock_iterator = _MockIterator(
+            item, fail_after=True, error=NotFound("table not found")
+        )
+        mock_iterator.cancel = mock.Mock()
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            resumable = _restart_on_unavailable(
+                mock.Mock(return_value=mock_iterator),
+                request,
+                session=session,
+                transaction=derived,
+                request_id_manager=session._database,
+                resource_info={"project": "p"},
+            )
+            with self.assertRaises(NotFound):
+                for _ in resumable:
+                    pass
+
+            mock_tracer.record_operation_completion.assert_called_once()
+            mock_iterator.cancel.assert_called_once()
+
 
 class Test_SnapshotBase(OpenTelemetryBase):
     def test_ctor(self):
@@ -695,11 +1299,89 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertFalse(derived._multi_use)
         self.assertEqual(derived._execute_sql_request_count, 0)
         self.assertEqual(derived._read_request_count, 0)
+        self.assertFalse(derived._begin_request_sent)
         self.assertIsNone(derived._transaction_id)
         self.assertIsNone(derived._precommit_token)
         self.assertIsInstance(derived._lock, type(Lock()))
+        self.assertFalse(derived._transaction_begin_event.is_set())
 
         self.assertNoSpans()
+
+    def test_resource_info_fallback_when_database_lacks_resource_info(self):
+        database = mock.Mock(spec=["_instance", "database_id"])
+        database.database_id = "test-db"
+        instance = mock.Mock(spec=["_client", "instance_id"])
+        instance.instance_id = "test-inst"
+        client = mock.Mock(spec=["project"])
+        client.project = "test-proj"
+        instance._client = client
+        database._instance = instance
+
+        session = mock.Mock()
+        session._database = database
+        derived = _build_snapshot_derived(session=session)
+        self.assertEqual(
+            derived._resource_info,
+            {"project": "test-proj", "instance": "test-inst", "database": "test-db"},
+        )
+
+        derived._session = None
+        self.assertIsNone(derived._resource_info)
+
+    def test__wait_for_transaction_begin_claims_inline_begin(self):
+        derived = _build_snapshot_derived(multi_use=True)
+
+        derived._wait_for_transaction_begin()
+
+        # The first request is the one that begins the transaction inline.
+        self.assertTrue(derived._begin_request_sent)
+
+    def test__wait_for_transaction_begin_wo_multi_use(self):
+        derived = _build_snapshot_derived(multi_use=False)
+        derived._read_request_count = 1
+
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            derived._wait_for_transaction_begin()
+
+    def test__wait_for_transaction_begin_waits_for_concurrent_begin(self):
+        """A concurrent request must wait for the in-flight inline begin.
+
+        Regression test: without the begin event, the second request observes
+        ``_transaction_id is None`` and wrongly raises "Transaction has not begun."
+        """
+
+        from google.cloud.spanner_v1 import Transaction as TransactionPB
+
+        derived = _build_snapshot_derived(multi_use=True)
+
+        # First request claims the inline begin, but has not completed yet, so
+        # no transaction id is available.
+        derived._wait_for_transaction_begin()
+
+        errors = []
+        released = Event()
+
+        def concurrent_request():
+            try:
+                derived._wait_for_transaction_begin()
+            except Exception as exc:  # pragma: no cover - only on regression
+                errors.append(exc)
+            finally:
+                released.set()
+
+        thread = Thread(target=concurrent_request, daemon=True)
+        thread.start()
+
+        # The concurrent request blocks while the transaction id is unknown.
+        self.assertFalse(released.wait(timeout=0.1))
+
+        # Completing the inline begin releases it.
+        derived._update_for_transaction_pb(TransactionPB(id=TXN_ID))
+        self.assertTrue(released.wait(timeout=10))
+
+        thread.join(timeout=10)
+        self.assertFalse(thread.is_alive())
+        self.assertEqual(errors, [])
 
     def test__build_transaction_selector_pb_single_use(self):
         derived = _build_snapshot_derived(multi_use=False)
@@ -806,11 +1488,12 @@ class Test_SnapshotBase(OpenTelemetryBase):
 
         self._execute_begin(derived)
 
+    @mock.patch("google.cloud.spanner_v1._helpers.time.sleep")
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
-    def test_begin_retry_for_internal_server_error(self, mock_region):
+    def test_begin_retry_for_internal_server_error(self, mock_region, mock_sleep):
         derived = _build_snapshot_derived(multi_use=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
@@ -820,6 +1503,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         ]
 
         self._execute_begin(derived, attempts=2)
+        mock_sleep.assert_called_once_with(2)
 
         expected_statuses = [
             (
@@ -830,11 +1514,12 @@ class Test_SnapshotBase(OpenTelemetryBase):
         actual_statuses = self.finished_spans_events_statuses()
         self.assertEqual(expected_statuses, actual_statuses)
 
+    @mock.patch("google.cloud.spanner_v1._helpers.time.sleep")
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
-    def test_begin_retry_for_aborted(self, mock_region):
+    def test_begin_retry_for_aborted(self, mock_region, mock_sleep):
         derived = _build_snapshot_derived(multi_use=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
@@ -844,6 +1529,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         ]
 
         self._execute_begin(derived, attempts=2)
+        mock_sleep.assert_called_once_with(2)
 
         expected_statuses = [
             (
@@ -1203,8 +1889,15 @@ class Test_SnapshotBase(OpenTelemetryBase):
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
+    @mock.patch(
+        "google.cloud.spanner_v1.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS", 0.01
+    )
     def test_read_w_multi_use_w_first_w_count_gt_0(self, mock_region):
-        with self.assertRaises(ValueError):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             self._execute_read(multi_use=True, first=True, count=1)
 
     @mock.patch(
@@ -1510,8 +2203,15 @@ class Test_SnapshotBase(OpenTelemetryBase):
     def test_execute_sql_w_multi_use_w_first(self, mock_region):
         self._execute_sql_helper(multi_use=True, first=True)
 
+    @mock.patch(
+        "google.cloud.spanner_v1.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS", 0.01
+    )
     def test_execute_sql_w_multi_use_w_first_w_count_gt_0(self):
-        with self.assertRaises(ValueError):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             self._execute_sql_helper(multi_use=True, first=True, count=1)
 
     @mock.patch(
@@ -1765,7 +2465,8 @@ class Test_SnapshotBase(OpenTelemetryBase):
             ),
         )
 
-    def test_partition_read_w_retry(self):
+    @mock.patch("google.cloud.spanner_v1._helpers.time.sleep")
+    def test_partition_read_w_retry(self, mock_sleep):
         from google.cloud.spanner_v1 import Partition, PartitionResponse, Transaction
         from google.cloud.spanner_v1.keyset import KeySet
 
@@ -1795,6 +2496,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
 
         self.assertEqual(api.partition_read.call_count, 2)
+        mock_sleep.assert_called_once_with(2)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",

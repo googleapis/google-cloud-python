@@ -219,6 +219,56 @@ class SqlInstancesServiceClient(metaclass=SqlInstancesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def crypto_key_version_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+        crypto_key_version: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key_version string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+            crypto_key_version=crypto_key_version,
+        )
+
+    @staticmethod
+    def parse_crypto_key_version_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def network_path(
         project: str,
         network: str,
@@ -234,6 +284,28 @@ class SqlInstancesServiceClient(metaclass=SqlInstancesServiceClientMeta):
         """Parses a network path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def network_attachment_path(
+        project: str,
+        region: str,
+        network_attachment: str,
+    ) -> str:
+        """Returns a fully-qualified network_attachment string."""
+        return "projects/{project}/regions/{region}/networkAttachments/{network_attachment}".format(
+            project=project,
+            region=region,
+            network_attachment=network_attachment,
+        )
+
+    @staticmethod
+    def parse_network_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a network_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/networkAttachments/(?P<network_attachment>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -1872,11 +1944,20 @@ class SqlInstancesServiceClient(metaclass=SqlInstancesServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
-        )
+        header_params: dict[str, str] = {}
+
+        if request.project:
+            header_params["project"] = request.project
+
+        routing_param_regex = re.compile("^(?P<region>.*)$")
+        regex_match = routing_param_regex.match(request.body.region)
+        if regex_match and regex_match.group("region"):
+            header_params["region"] = regex_match.group("region")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4281,7 +4362,7 @@ class SqlInstancesServiceClient(metaclass=SqlInstancesServiceClientMeta):
 
         Returns:
             google.cloud.sqladmin_v1beta4.types.SqlInstancesExecuteSqlResponse:
-                Execute SQL statements response.
+
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-area120-tables/#history
 
+## [0.15.1](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.15.0...google-area120-tables-v0.15.1) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.14.0...google-area120-tables-v0.15.0) (2026-06-02)
 
 

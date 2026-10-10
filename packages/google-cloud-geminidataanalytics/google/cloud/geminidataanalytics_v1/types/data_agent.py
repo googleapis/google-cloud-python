@@ -23,6 +23,7 @@ import proto  # type: ignore
 from google.cloud.geminidataanalytics_v1.types import (
     data_analytics_agent as gcg_data_analytics_agent,
 )
+from google.cloud.geminidataanalytics_v1.types import datasource
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1",
@@ -92,6 +93,67 @@ class DataAgent(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
 
             This field is a member of `oneof`_ ``_kms_key``.
+        bigquery_agent_analytics_enabled (bool):
+            Optional. Controls whether BigQuery Agent Analytics trace
+            logging is enabled for the agent.
+
+            BigQuery Agent Analytics is in Preview and is delivered to
+            enrolled projects only. In a project that is not enrolled
+            this field is accepted and stored, but no trace rows are
+            written and no error is returned.
+
+            Trace logging is additionally suppressed for the entire
+            turn, without error, when any table in the agent's
+            datasource carries row-level security, column-level security
+            or policy tags. It is also suppressed when that
+            determination cannot be made, for example when the caller
+            lacks permission to list a table's row access policies.
+
+            Trace rows are written only when this is ``true`` and
+            ``bigquery_agent_analytics_table`` is set. On a BigQuery
+            agent, enabling this without a table has no effect: no table
+            is created for the agent and no rows are written. On an
+            agent whose datasource is not BigQuery, ``CreateDataAgent``
+            rejects either field with ``INVALID_ARGUMENT``.
+
+            This setting is independent of the project-level BigQuery
+            Agent Analytics setting configured through
+            ``SetAgentOpsObservability``. An agent does not inherit that
+            setting.
+
+            This field is a member of `oneof`_ ``_bigquery_agent_analytics_enabled``.
+        bigquery_agent_analytics_table (google.cloud.geminidataanalytics_v1.types.BigQueryTableReference):
+            Optional. The BigQuery table that BigQuery Agent Analytics
+            trace rows are written to. Has no effect unless
+            ``bigquery_agent_analytics_enabled`` is ``true``. The
+            Preview enrollment described on that field applies here too.
+
+            The trace table is validated when it is set on
+            ``CreateDataAgent``, or when it is included in the
+            ``update_mask`` of an ``UpdateDataAgent`` call. The
+            following are rejected with ``INVALID_ARGUMENT``:
+
+            - The table must belong to the same project as the agent.
+            - The agent's datasource must be BigQuery. BigQuery Agent
+              Analytics is not supported for Looker, Looker Studio or
+              AlloyDB agents.
+
+            These are validated against the agent as sent in the
+            request. An agent that carries no datasource is not
+            validated, and an agent switched to a non-BigQuery
+            datasource is not re-validated; in the latter case no trace
+            rows are written.
+
+            The destination dataset must already exist and must grant
+            write access to the project's Gemini Data Analytics service
+            agent, whose address is
+            ``service-PROJECT_NUMBER@gcp-sa-geminidataanalytics.iam.gserviceaccount.com``
+            (that grant is not performed on your behalf). Without it the
+            agent answers normally and no trace rows are written.
+
+            Changing the table on an existing agent affects subsequent
+            turns only. Rows already written to the previous table are
+            left in place.
     """
 
     data_analytics_agent: gcg_data_analytics_agent.DataAnalyticsAgent = proto.Field(
@@ -141,6 +203,16 @@ class DataAgent(proto.Message):
         proto.STRING,
         number=14,
         optional=True,
+    )
+    bigquery_agent_analytics_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=18,
+        optional=True,
+    )
+    bigquery_agent_analytics_table: datasource.BigQueryTableReference = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=datasource.BigQueryTableReference,
     )
 
 

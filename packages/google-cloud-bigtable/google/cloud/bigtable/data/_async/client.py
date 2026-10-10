@@ -416,9 +416,8 @@ class BigtableDataClientAsync(ClientWithProject):
         ):
             # raise error if not in an event loop in async client
             CrossSync.verify_async_event_loop()
-            self._channel_refresh_task = CrossSync.create_task(
+            self._channel_refresh_task = CrossSync.create_daemon_task(
                 self._manage_channel,
-                sync_executor=self._executor,
                 task_name=f"{self.__class__.__name__} channel refresh",
             )
 

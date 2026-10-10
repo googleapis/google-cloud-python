@@ -19,7 +19,7 @@ import logging
 from typing import List
 
 import proto
-import pytest  # noqa: I202
+import pytest
 from google.protobuf import duration_pb2, timestamp_pb2
 from google.protobuf.json_format import MessageToJson
 

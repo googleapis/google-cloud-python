@@ -23,6 +23,7 @@ Services for Google Ads Admanager v1 API
     content_bundle_service
     content_label_service
     content_service
+    creative_service
     creative_set_service
     creative_template_service
     creative_wrapper_service
@@ -31,13 +32,17 @@ Services for Google Ads Admanager v1 API
     custom_targeting_value_service
     dai_authentication_key_service
     dai_encoding_profile_service
+    dai_session_service
     device_capability_service
     device_category_service
     device_manufacturer_service
     entity_signals_mapping_service
+    forecast_service
     geo_target_service
     label_service
+    line_item_creative_association_service
     line_item_service
+    line_item_template_service
     linked_device_service
     live_stream_service
     mcm_earnings_service

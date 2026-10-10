@@ -59,6 +59,14 @@ from google.cloud.compute_v1.services.network_profiles import (
 )
 from google.cloud.compute_v1.types import compute
 
+try:
+    from google.api_core import version_header
+
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
+
+
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
     "credential_type": "service account credentials",
@@ -165,6 +173,72 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_get_api_version_header(transport_name):
+    client = NetworkProfilesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.get), "__call__") as call:
+            call.return_value = compute.NetworkProfile()
+            client.get()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_list_api_version_header(transport_name):
+    client = NetworkProfilesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.list), "__call__") as call:
+            call.return_value = compute.NetworkProfilesListResponse()
+            client.list()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
 
 
 @pytest.mark.parametrize(
@@ -1153,7 +1227,6 @@ def test_list_rest_required_fields(request_type=compute.ListNetworkProfilesReque
             "maxResults",
             "orderBy",
             "pageToken",
-            "returnPartialSuccess",
         )
     )
 
@@ -1460,7 +1533,6 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             self_link="self_link_value",
             self_link_with_id="self_link_with_id_value",
-            zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -1484,7 +1556,6 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
     assert response.self_link_with_id == "self_link_with_id_value"
-    assert response.zone == "zone_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -20,7 +20,6 @@ import base64
 import copy
 import datetime
 import functools
-import logging
 import operator
 import typing
 import warnings
@@ -87,7 +86,6 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import bigquery_storage  # type: ignore
     from google.cloud.bigquery.dataset import DatasetReference
 
-_LOGGER = logging.getLogger(__name__)
 
 _NO_GEOPANDAS_ERROR = (
     "The geopandas library is not installed, please install "
@@ -2160,15 +2158,16 @@ class RowIterator(HTTPIterator):
 
         params = self._get_query_params()
 
-        # If the user has provided page_size and start_index, we need to pass
-        # start_index for the first page, but for all subsequent pages, we
-        # should not pass start_index. We make a shallow copy of params and do
-        # not alter the original, so if the user iterates the results again,
-        # start_index is preserved.
+        # If the user has provided start_index, we need to pass it for the
+        # first page, but once the server hands back a page token we should
+        # not pass start_index, because the server only allows one of them.
+        # This applies whether the pages come from page_size or from the
+        # server splitting a large result. We make a shallow copy of params
+        # and do not alter the original, so if the user iterates the results
+        # again, start_index is preserved.
         params_copy = copy.copy(params)
-        if self._page_size is not None:
-            if self.page_number and "startIndex" in params:
-                del params_copy["startIndex"]
+        if self.next_page_token is not None and "startIndex" in params:
+            del params_copy["startIndex"]
 
         return self.api_request(
             method=self._HTTP_METHOD, path=self.path, query_params=params_copy
@@ -2992,21 +2991,6 @@ class RowIterator(HTTPIterator):
         ):
             create_bqstorage_client = False
             bqstorage_client = None
-
-        if _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
-            try:
-                client_info = getattr(
-                    getattr(self.client, "_connection", None), "_client_info", None
-                )
-                if client_info:
-                    ua = getattr(client_info, "user_agent", None) or ""
-                    if "pandas-gbq" not in ua:
-                        version = (
-                            _versions_helpers.PANDAS_GBQ_VERSIONS.installed_version
-                        )
-                        client_info.user_agent = f"{ua} pandas-gbq/{version}".strip()
-            except Exception as exc:
-                _LOGGER.debug("Failed to update telemetry user-agent: %s", exc)
 
         with warnings.catch_warnings():
             warnings.filterwarnings(

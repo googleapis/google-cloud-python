@@ -20,7 +20,6 @@ from typing import Set
 from google.api_core.exceptions import (
     Aborted,
     DeadlineExceeded,
-    GoogleAPICallError,
     InternalServerError,
     NotFound,
     ServiceUnavailable,
@@ -38,26 +37,31 @@ from google.cloud.bigtable.batcher import (
     MutationsBatcher,
 )
 from google.cloud.bigtable.column_family import ColumnFamily, _gc_rule_from_pb
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
-from google.cloud.bigtable.data.exceptions import (
-    MutationsExceptionGroup,
-    RetryExceptionGroup,
+from google.cloud.bigtable.data._helpers import (
+    TABLE_DEFAULT,
+    _get_statuses_from_mutations_exception_group,
 )
+from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
 from google.cloud.bigtable.data.mutations import RowMutationEntry
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
-from google.cloud.bigtable.row import AppendRow, ConditionalRow, DirectRow
+from google.cloud.bigtable.row import (
+    AppendRow,
+    ConditionalRow,
+    DirectRow,
+    PartialRowData,
+)
 from google.cloud.bigtable.row_data import (
     DEFAULT_RETRY_READ_ROWS,
     PartialRowsData,
 )
-from google.cloud.bigtable.row_set import RowRange, RowSet
+from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
 from google.cloud.bigtable_admin_v2.types import (
     bigtable_table_admin as table_admin_messages_v2_pb2,
 )
 from google.cloud.bigtable_admin_v2.types import table as admin_messages_v2_pb2
-from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
@@ -573,18 +577,23 @@ class Table(object):
         :rtype: :class:`.PartialRowData`, :data:`NoneType <types.NoneType>`
         :returns: The contents of the row if any chunks were returned in
                   the response, otherwise :data:`None`.
-        :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
-                 chunk is never encountered.
         """
-        row_set = RowSet()
-        row_set.add_row_key(row_key)
-        result_iter = iter(
-            self.read_rows(filter_=filter_, row_set=row_set, retry=retry)
+        attempt_timeout = (
+            getattr(retry, "deadline", None)
+            or getattr(retry, "_deadline", None)
+            or TABLE_DEFAULT.READ_ROWS
         )
-        row = next(result_iter, None)
-        if next(result_iter, None) is not None:
-            raise ValueError("More than one row was returned.")
-        return row
+        row = self._table_impl.read_row(
+            row_key,
+            row_filter=filter_,
+            operation_timeout=TABLE_DEFAULT.READ_ROWS,
+            attempt_timeout=attempt_timeout,
+            retryable_errors=TABLE_DEFAULT.READ_ROWS,
+        )
+        if row is None:
+            return None
+
+        return PartialRowData._from_data_client_row(row)
 
     def read_rows(
         self,
@@ -645,18 +654,26 @@ class Table(object):
         :returns: A :class:`.PartialRowsData` a generator for consuming
                   the streamed results.
         """
-        request_pb = _create_row_request(
-            self.name,
+        attempt_timeout = (
+            getattr(retry, "deadline", None)
+            or getattr(retry, "_deadline", None)
+            or TABLE_DEFAULT.READ_ROWS
+        )
+        query = _create_row_request(
             start_key=start_key,
             end_key=end_key,
             filter_=filter_,
             limit=limit,
             end_inclusive=end_inclusive,
-            app_profile_id=self._app_profile_id,
             row_set=row_set,
         )
-        data_client = self._instance._client.table_data_client
-        return PartialRowsData(data_client.read_rows, request_pb, retry)
+        generator = self._table_impl.read_rows_stream(
+            query,
+            operation_timeout=TABLE_DEFAULT.READ_ROWS,
+            attempt_timeout=attempt_timeout,
+            retryable_errors=TABLE_DEFAULT.READ_ROWS,
+        )
+        return PartialRowsData._from_generator(generator)
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.
@@ -778,9 +795,6 @@ class Table(object):
                     % (row.row_key, row.table.name, self.name)
                 )
             mutation_entries.append(RowMutationEntry(row.row_key, row._get_mutations()))
-        return_statuses = [
-            status_pb2.Status(code=code_pb2.OK) for _ in range(len(mutation_entries))
-        ]  # By default, return status OKs for everything
 
         try:
             self._table_impl.bulk_mutate_rows(
@@ -790,41 +804,16 @@ class Table(object):
                 retryable_errors=retryable_errors,
             )
         except MutationsExceptionGroup as mut_exc_group:
-            # We exception handle as follows:
-            #
-            # 1. Each exception in the error group is a FailedMutationEntryError, and its
-            #    cause is either a singular exception or a RetryExceptionGroup consisting of
-            #    multiple exceptions.
-            #
-            # 2. In the case of a singular exception, if the error does not have a gRPC status
-            #    code, we return a status code of UNKNOWN.
-            #
-            # 3. In the case of a RetryExceptionGroup, we use terminal exception in the exception
-            #    group and process that.
-            for error in mut_exc_group.exceptions:
-                cause = error.__cause__
-                if isinstance(cause, RetryExceptionGroup):
-                    return_statuses[error.index] = self._get_status(
-                        cause.exceptions[-1]
-                    )
-                else:
-                    return_statuses[error.index] = self._get_status(cause)
+            return_statuses = _get_statuses_from_mutations_exception_group(
+                mut_exc_group, len(mutation_entries)
+            )
+        else:
+            return_statuses = [
+                status_pb2.Status(code=code_pb2.OK)
+                for _ in range(len(mutation_entries))
+            ]
 
         return return_statuses
-
-    @staticmethod
-    def _get_status(error):
-        if isinstance(error, GoogleAPICallError) and error.grpc_status_code is not None:
-            return status_pb2.Status(
-                code=error.grpc_status_code.value[0],
-                message=error.message,
-                details=error.details,
-            )
-
-        return status_pb2.Status(
-            code=code_pb2.UNKNOWN,
-            message=str(error),
-        )
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -1235,13 +1224,11 @@ class ClusterState(object):
 
 
 def _create_row_request(
-    table_name,
     start_key=None,
     end_key=None,
     filter_=None,
     limit=None,
     end_inclusive=False,
-    app_profile_id=None,
     row_set=None,
 ):
     """Creates a request to read rows in a table.
@@ -1272,36 +1259,32 @@ def _create_row_request(
     :param end_inclusive: (Optional) Whether the ``end_key`` should be
                   considered inclusive. The default is False (exclusive).
 
-    :type: app_profile_id: str
-    :param app_profile_id: (Optional) The unique name of the AppProfile.
-
     :type row_set: :class:`.RowSet`
     :param row_set: (Optional) The row set containing multiple row keys and
                     row_ranges.
 
-    :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
-    :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
+    :rtype: :class:`ReadRowsQuery`
+    :returns: The `ReadRowsQuery` query object corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
-             ``row_set`` and one of ``start_key`` or ``end_key`` are set
+             ``row_set`` and one of ``start_key`` or ``end_key`` are set, or if
+             ``end_key`` is not greater than ``start_key``
     """
-    request_kwargs = {"table_name": table_name}
     if (start_key is not None or end_key is not None) and row_set is not None:
         raise ValueError("Row range and row set cannot be set simultaneously")
 
-    if filter_ is not None:
-        request_kwargs["filter"] = filter_._to_pb()
-    if limit is not None:
-        request_kwargs["rows_limit"] = limit
-    if app_profile_id is not None:
-        request_kwargs["app_profile_id"] = app_profile_id
-
-    message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
+    query = ReadRowsQuery(
+        limit=limit,
+        row_filter=filter_,
+    )
 
     if start_key is not None or end_key is not None:
-        row_set = RowSet()
-        row_set.add_row_range(RowRange(start_key, end_key, end_inclusive=end_inclusive))
+        query.add_range(RowRange(start_key, end_key, end_inclusive=end_inclusive))
 
     if row_set is not None:
-        row_set._update_message_request(message)
+        for row_key in row_set.row_keys:
+            query.add_key(row_key)
 
-    return message
+        for row_range in row_set.row_ranges:
+            query.add_range(row_range)
+
+    return query
