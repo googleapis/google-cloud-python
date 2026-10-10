@@ -98,7 +98,7 @@ def blob_download_to_filename(client, _preconditions, **resources):
     blob = client.bucket(bucket.name).blob(file.name)
     with tempfile.NamedTemporaryFile() as temp_f:
         blob.download_to_filename(temp_f.name)
-        with open(temp_f.name, "r") as file_obj:
+        with open(temp_f.name) as file_obj:
             stored_contents = file_obj.read()
     assert stored_contents == data
 
@@ -109,7 +109,7 @@ def blob_download_to_filename_chunked(client, _preconditions, **resources):
     blob = client.bucket(bucket.name).blob(file.name, chunk_size=40 * 1024 * 1024)
     with tempfile.NamedTemporaryFile() as temp_f:
         blob.download_to_filename(temp_f.name)
-        with open(temp_f.name, "r") as file_obj:
+        with open(temp_f.name) as file_obj:
             stored_contents = file_obj.read()
     assert stored_contents == data
 
@@ -120,7 +120,7 @@ def blob_download_to_filename_range(client, _preconditions, **resources):
     blob = client.bucket(bucket.name).blob(file.name)
     with tempfile.NamedTemporaryFile() as temp_f:
         blob.download_to_filename(temp_f.name, start=1024, end=512 * 1024)
-        with open(temp_f.name, "r") as file_obj:
+        with open(temp_f.name) as file_obj:
             stored_contents = file_obj.read()
     assert stored_contents == data[1024 : 512 * 1024 + 1]
 
@@ -132,7 +132,7 @@ def client_download_blob_to_file(client, _preconditions, **resources):
     with tempfile.NamedTemporaryFile() as temp_f:
         with open(temp_f.name, "wb") as file_obj:
             client.download_blob_to_file(blob, file_obj)
-        with open(temp_f.name, "r") as to_read:
+        with open(temp_f.name) as to_read:
             stored_contents = to_read.read()
     assert stored_contents == data
 
@@ -957,9 +957,7 @@ def run_test_case(
 
     # Assert expected success for each scenario.
     assert expect_success == success_results, (
-        "Retry API call expected_success was {}, should be {}".format(
-            success_results, expect_success
-        )
+        f"Retry API call expected_success was {success_results}, should be {expect_success}"
     )
 
     # Verify that all instructions were used up during the test

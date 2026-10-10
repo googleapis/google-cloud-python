@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +17,6 @@ import pathlib
 import re
 import shutil
 import warnings
-from typing import Dict, List
 
 import nox
 
@@ -70,37 +68,37 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-cov",
     "pytest-asyncio",
 ]
-UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_DEPENDENCIES: List[str] = [
+UNIT_TEST_EXTERNAL_DEPENDENCIES: list[str] = []
+UNIT_TEST_LOCAL_DEPENDENCIES: list[str] = []
+UNIT_TEST_DEPENDENCIES: list[str] = [
     "brotli",
     "grpcio",
     "grpc-google-iam-v1",
     "opentelemetry-api",
     "opentelemetry-sdk",
 ]
-UNIT_TEST_EXTRAS: List[str] = []
-UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
+UNIT_TEST_EXTRAS: list[str] = []
+UNIT_TEST_EXTRAS_BY_PYTHON: dict[str, list[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
+SYSTEM_TEST_PYTHON_VERSIONS: list[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
     "google-cloud-testutils",
 ]
-SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_EXTRAS: List[str] = []
-SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_LOCAL_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_EXTRAS: list[str] = []
+SYSTEM_TEST_EXTRAS_BY_PYTHON: dict[str, list[str]] = {}
 
 nox.options.sessions = [
     "unit",
     "system",
     "cover",
     "lint",
-    "lint_setup_py",
-    "blacken",
+    "package",
+    "format",
     "docs",
 ]
 
@@ -134,7 +132,7 @@ def mypy(session):
 
 @nox.session
 def update_lower_bounds(session):
-    """Update lower bounds in constraints.txt to match setup.py"""
+    """Update lower bounds in constraints.txt to match project metadata"""
     session.install("google-cloud-testutils")
     session.install(".")
 
@@ -150,7 +148,7 @@ def update_lower_bounds(session):
 
 @nox.session
 def check_lower_bounds(session):
-    """Check lower bounds in setup.py are reflected in constraints file"""
+    """Check lower bounds in project metadata are reflected in constraints file"""
     session.install("google-cloud-testutils")
     session.install(".")
 
@@ -166,92 +164,51 @@ def check_lower_bounds(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
-    """Run linters.
-
-    Returns a failure if the linters find linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.install("flake8", RUFF_VERSION)
-
-    # 1. Check imports
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
-        *LINT_PATHS,
-    )
-
-    # 2. Check formatting
-    session.run(
-        "ruff",
-        "format",
-        "--check",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
-        *LINT_PATHS,
-    )
-
-    session.run("flake8", "google", "tests")
+    """Check code quality, imports, and formatting with Ruff."""
+    session.install(RUFF_VERSION)
+    session.run("ruff", "check", *LINT_PATHS)
+    session.run("ruff", "format", "--check", *LINT_PATHS)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log(
-        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
-    )
-
-    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
-    session.install(RUFF_VERSION)
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
-        *LINT_PATHS,
-    )
+    """Deprecated compatibility entry point for formatting."""
+    session.log("The 'blacken' session is deprecated; use 'nox -s format'.")
+    format(session)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
-    """
-    Run ruff to sort imports and format code.
-    """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    """Apply safe Ruff fixes and format code."""
+    # The GAPIC generator still emits these legacy configurations. Librarian
+    # runs this session after post-processing, so discard them in favor of
+    # pyproject.toml before tools can discover the obsolete settings.
+    for legacy_config in (".flake8", ".coveragerc"):
+        (CURRENT_DIRECTORY / legacy_config).unlink(missing_ok=True)
     session.install(RUFF_VERSION)
+    session.run("ruff", "check", "--fix", *LINT_PATHS)
+    session.run("ruff", "format", *LINT_PATHS)
 
-    # 2. Run Ruff to fix imports
-    # check --select I: Enables strict import sorting
-    # --fix: Applies the changes automatically
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
 
-    # 3. Run Ruff to format code
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
+def check_package(session):
+    """Build distributions and validate their metadata and README."""
+    session.install("build", "twine")
+    # A fresh output directory prevents stale distributions from passing checks.
+    dist_dir = pathlib.Path(session.create_tmp()) / "dist"
+    session.run("python", "-m", "build", "--outdir", str(dist_dir), ".")
+    session.run("twine", "check", "--strict", *map(str, sorted(dist_dir.iterdir())))
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def package(session):
+    """Build and validate the sdist and wheel."""
+    check_package(session)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
-    """Verify that setup.py is valid (including RST check)."""
-    session.install("setuptools", "docutils", "pygments")
-    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+    """Compatibility entry point for the repository's packaging checks."""
+    check_package(session)
 
 
 def install_unittest_dependencies(session, *constraints):
@@ -307,7 +264,7 @@ def unit(session, protobuf_implementation):
         "--cov=google",
         "--cov=tests/unit",
         "--cov-append",
-        "--cov-config=.coveragerc",
+        "--cov-config=pyproject.toml",
         "--cov-report=",
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
@@ -419,7 +376,7 @@ def system(session, test_type):
         "py.test",
         "--quiet",
         f"--junitxml=system_{session.python}_sponge_log.xml",
-        "--reruns={}".format(rerun_count),
+        f"--reruns={rerun_count}",
         os.path.join("tests", "system"),
         os.path.join("tests", "resumable_media", "system"),
         *session.posargs,
@@ -678,7 +635,6 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",

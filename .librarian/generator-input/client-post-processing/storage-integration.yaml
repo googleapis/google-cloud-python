@@ -518,7 +518,7 @@ replacements:
       ``google-resumable-media`` library without explicitly installing that library. So
       as not to break user applications following this pattern,
       ``google-resumable-media`` is still in the list of dependencies in this package's
-      setup.py file. Applications that do not import directly from
+      pyproject.toml file. Applications that do not import directly from
       ``google-resumable-media`` can safely disregard this dependency.
       This backwards compatibility feature **will be removed** in a future major
       version update. Please migrate to using the ``google.cloud.storage.exceptions``
@@ -570,70 +570,27 @@ replacements:
       .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
     count: 1
-  - paths: [
-      packages/google-cloud-storage/setup.py,
-    ]
-    before: |
-      dependencies = \[
-      [\s\S]*?extras = \{\}
+  - paths: [packages/google-cloud-storage/setup.py]
+    before: |-
+      \A(?=[\s\S]*setuptools\.setup\(\s*name=name,)[\s\S]*\Z
     after: |
-      dependencies = [
-          "google-auth >= 2.26.1, < 3.0.0",
-          "google-api-core >= 2.27.0, < 3.0.0",
-          "google-cloud-core >= 2.4.2, < 3.0.0",
-          # The dependency "google-resumable-media" is no longer used. However, the
-          # dependency is still included here to accommodate users who may be
-          # importing exception classes from the google-resumable-media without
-          # installing it explicitly. See the python-storage README for details on
-          # exceptions and importing. Users who are not importing
-          # google-resumable-media classes in their application can safely disregard
-          # this dependency.
-          "google-resumable-media >= 2.7.2, < 3.0.0",
-          "requests >= 2.22.0, < 3.0.0",
-          "google-crc32c >= 1.6.0, < 2.0.0",
-      ]
-      extras = {
-          # TODO: Make these extra dependencies as mandatory once gRPC out of
-          # experimental in this SDK. More info in b/465352227
-          "grpc": [
-              "google-api-core[grpc] >= 2.27.0, < 3.0.0",
-              "grpcio >= 1.59.0, < 2.0.0",
-              "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-              "grpcio-status >= 1.59.0, < 2.0.0",
-              "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-              "proto-plus >= 1.26.1, <2.0.0",
-              "protobuf >= 6.33.5, < 8.0.0",
-              "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
-          ],
-          "protobuf": ["protobuf >= 6.33.5, < 8.0.0"],
-          "tracing": [
-              "opentelemetry-api >= 1.1.0, < 2.0.0",
-          ],
-          "testing": [
-              "google-cloud-testutils",
-              "numpy",
-              "psutil",
-              "py-cpuinfo",
-              "pytest-benchmark",
-              "PyYAML",
-              "mock",
-              "pytest",
-              "pytest-cov",
-              "pytest-asyncio",
-              "pytest-rerunfailures",
-              "pytest-xdist",
-              "google-cloud-testutils",
-              "google-cloud-iam",
-              "google-cloud-pubsub",
-              "google-cloud-kms",
-              "brotli",
-              "coverage",
-              "pyopenssl",
-              "opentelemetry-sdk",
-              "flake8",
-              "black",
-          ],
-      }
+      # Copyright 2026 Google LLC
+      #
+      # Licensed under the Apache License, Version 2.0 (the "License");
+      # you may not use this file except in compliance with the License.
+      # You may obtain a copy of the License at
+      #
+      #     http://www.apache.org/licenses/LICENSE-2.0
+      #
+      # Unless required by applicable law or agreed to in writing, software
+      # distributed under the License is distributed on an "AS IS" BASIS,
+      # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      # See the License for the specific language governing permissions and
+      # limitations under the License.
+      #
+      import setuptools  # type: ignore
+
+      setuptools.setup()
     count: 1
   - paths: [
       packages/google-cloud-storage/testing/constraints-3.10.txt
@@ -777,7 +734,6 @@ replacements:
     ]
     before: "#\n$"
     after: |
-      import io
       import json
       import os
 
@@ -785,7 +741,7 @@ replacements:
       def _read_local_json(json_file):
           here = os.path.dirname(__file__)
           json_path = os.path.abspath(os.path.join(here, json_file))
-          with io.open(json_path, "r", encoding="utf-8-sig") as fileobj:
+          with open(json_path, encoding="utf-8-sig") as fileobj:
               return json.load(fileobj)
     count: 1
   - paths: [
@@ -833,4 +789,89 @@ replacements:
                   "Skipping 3.15 until compatible wheels are available for google-crc32c"
               )
           constraints_path = str(
+    count: 1
+
+  # Preserve the pyproject-based tooling after GAPIC regeneration.
+  - paths: [packages/google-cloud-storage/noxfile.py]
+    before: |-
+      @nox.session\(python=DEFAULT_PYTHON_VERSION\)\ndef lint\(session\):\n    """Run linters\.[\s\S]*?(?=\n\ndef install_unittest_dependencies\()
+    after: |
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def lint(session):
+          """Check code quality, imports, and formatting with Ruff."""
+          session.install(RUFF_VERSION)
+          session.run("ruff", "check", *LINT_PATHS)
+          session.run("ruff", "format", "--check", *LINT_PATHS)
+
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def blacken(session):
+          """Deprecated compatibility entry point for formatting."""
+          session.log("The 'blacken' session is deprecated; use 'nox -s format'.")
+          format(session)
+
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def format(session):
+          """Apply safe Ruff fixes and format code."""
+          # The GAPIC generator still emits these legacy configurations. Librarian
+          # runs this session after post-processing, so discard them in favor of
+          # pyproject.toml before tools can discover the obsolete settings.
+          for legacy_config in (".flake8", ".coveragerc"):
+              (CURRENT_DIRECTORY / legacy_config).unlink(missing_ok=True)
+          session.install(RUFF_VERSION)
+          session.run("ruff", "check", "--fix", *LINT_PATHS)
+          session.run("ruff", "format", *LINT_PATHS)
+
+
+      def check_package(session):
+          """Build distributions and validate their metadata and README."""
+          session.install("build", "twine")
+          # A fresh output directory prevents stale distributions from passing checks.
+          dist_dir = pathlib.Path(session.create_tmp()) / "dist"
+          session.run("python", "-m", "build", "--outdir", str(dist_dir), ".")
+          session.run("twine", "check", "--strict", *map(str, sorted(dist_dir.iterdir())))
+
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def package(session):
+          """Build and validate the sdist and wheel."""
+          check_package(session)
+
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def lint_setup_py(session):
+          """Compatibility entry point for the repository's packaging checks."""
+          check_package(session)
+    count: 1
+  - paths: [packages/google-cloud-storage/noxfile.py]
+    before: |-
+          "lint_setup_py",\n    "blacken",
+    after: |-
+          "package",
+          "format",
+    count: 1
+  - paths: [packages/google-cloud-storage/noxfile.py]
+    before: |-
+      to match setup\.py
+    after: |-
+      to match project metadata
+    count: 1
+  - paths: [packages/google-cloud-storage/noxfile.py]
+    before: |-
+      lower bounds in setup\.py
+    after: |-
+      lower bounds in project metadata
+    count: 1
+  - paths: [packages/google-cloud-storage/noxfile.py]
+    before: |-
+      --cov-config=\.coveragerc
+    after: |-
+      --cov-config=pyproject.toml
+    count: 1
+  - paths: [packages/google-cloud-storage/noxfile.py]
+    before: |-
+      @nox.session\(python=DEFAULT_PYTHON_VERSION\)\n@nox.session\(python=DEFAULT_PYTHON_VERSION\)\n
+    after: |
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
     count: 1

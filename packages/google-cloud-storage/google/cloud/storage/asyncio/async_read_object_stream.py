@@ -14,7 +14,6 @@
 
 import asyncio
 import logging
-from typing import List, Optional, Tuple
 
 from google.api_core.bidi_async import AsyncBidiRpc
 
@@ -56,8 +55,8 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         client: AsyncGrpcClient.grpc_client,
         bucket_name: str,
         object_name: str,
-        generation_number: Optional[int] = None,
-        read_handle: Optional[_storage_v2.BidiReadHandle] = None,
+        generation_number: int | None = None,
+        read_handle: _storage_v2.BidiReadHandle | None = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -72,7 +71,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             generation_number=generation_number,
         )
         self.client: AsyncGrpcClient.grpc_client = client
-        self.read_handle: Optional[_storage_v2.BidiReadHandle] = read_handle
+        self.read_handle: _storage_v2.BidiReadHandle | None = read_handle
 
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
@@ -80,14 +79,14 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             self.client._client._transport.bidi_read_object
         ]
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)
-        self.socket_like_rpc: Optional[AsyncBidiRpc] = None
+        self.socket_like_rpc: AsyncBidiRpc | None = None
         self._is_stream_open: bool = False
-        self.persisted_size: Optional[int] = None
+        self.persisted_size: int | None = None
         self.is_finalized: bool = False
-        self.full_obj_server_crc32c: Optional[int] = None
-        self.object_metadata: Optional[_storage_v2.Object] = None
+        self.full_obj_server_crc32c: int | None = None
+        self.object_metadata: _storage_v2.Object | None = None
 
-    async def open(self, metadata: Optional[List[Tuple[str, str]]] = None) -> None:
+    async def open(self, metadata: list[tuple[str, str]] | None = None) -> None:
         """Opens the bidi-gRPC connection to read from the object.
 
         This method sends an initial request to start the stream and receives

@@ -70,7 +70,7 @@ class GrpcClient(ClientWithProject):
         api_key=None,
         attempt_direct_path=True,
     ):
-        super(GrpcClient, self).__init__(project=project, credentials=credentials)
+        super().__init__(project=project, credentials=credentials)
 
         if isinstance(client_options, dict):
             if api_key:

@@ -473,7 +473,7 @@ def test_generate_signed_post_policy_v4(
         expiration=now + datetime.timedelta(hours=1),
         fields={"content-type": "text/plain"},
     )
-    with open(blob_name, "r") as f:
+    with open(blob_name) as f:
         files = {"file": (blob_name, f)}
         response = requests.post(policy["url"], data=policy["fields"], files=files)
 
@@ -526,7 +526,7 @@ def test_generate_signed_post_policy_v4_access_token_sa_email(
         service_account_email=service_account_email,
         access_token=response.access_token,
     )
-    with open(blob_name, "r") as f:
+    with open(blob_name) as f:
         files = {"file": (blob_name, f)}
         response = requests.post(policy["url"], data=policy["fields"], files=files)
 
@@ -566,7 +566,7 @@ def test_generate_signed_post_policy_v4_invalid_field(
         expiration=now + datetime.timedelta(hours=1),
         fields={"x-goog-random": "invalid_field", "content-type": "text/plain"},
     )
-    with open(blob_name, "r") as f:
+    with open(blob_name) as f:
         files = {"file": (blob_name, f)}
         response = requests.post(policy["url"], data=policy["fields"], files=files)
 

@@ -15,12 +15,7 @@
 import asyncio
 import sys
 from unittest import mock
-
-try:
-    from unittest.mock import AsyncMock
-except ImportError:  # pragma: NO COVER
-    from mock import AsyncMock  # type: ignore
-
+from unittest.mock import AsyncMock
 
 import pytest
 
@@ -30,14 +25,6 @@ except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import bidi_async, exceptions
-
-if sys.version_info < (3, 10):  # type: ignore[operator]
-
-    def aiter(obj):
-        return obj.__aiter__()
-
-    async def anext(obj):
-        return await obj.__anext__()
 
 
 @pytest.mark.asyncio

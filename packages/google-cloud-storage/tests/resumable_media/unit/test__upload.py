@@ -69,7 +69,7 @@ def filename():
         yield f.name
 
 
-class TestUploadBase(object):
+class TestUploadBase:
     def test_constructor_defaults(self):
         upload = _upload.UploadBase(SIMPLE_URL)
         assert upload.upload_url == SIMPLE_URL
@@ -148,7 +148,7 @@ class TestUploadBase(object):
         exc_info.match("virtual")
 
 
-class TestSimpleUpload(object):
+class TestSimpleUpload:
     def test__prepare_request_already_finished(self):
         upload = _upload.SimpleUpload(SIMPLE_URL)
         upload._finished = True
@@ -198,7 +198,7 @@ class TestSimpleUpload(object):
         exc_info.match("virtual")
 
 
-class TestMultipartUpload(object):
+class TestMultipartUpload:
     def test_constructor_defaults(self):
         upload = _upload.MultipartUpload(MULTIPART_URL)
         assert upload.upload_url == MULTIPART_URL
@@ -277,13 +277,9 @@ class TestMultipartUpload(object):
         preamble = b"--==3==\r\n" + JSON_TYPE_LINE + b"\r\n"
 
         if checksum == "md5" and expected_checksum:
-            metadata_payload = '{{"md5Hash": "{}"}}\r\n'.format(
-                expected_checksum
-            ).encode("utf8")
+            metadata_payload = f'{{"md5Hash": "{expected_checksum}"}}\r\n'.encode()
         elif checksum == "crc32c" and expected_checksum:
-            metadata_payload = '{{"crc32c": "{}"}}\r\n'.format(
-                expected_checksum
-            ).encode("utf8")
+            metadata_payload = f'{{"crc32c": "{expected_checksum}"}}\r\n'.encode()
         else:
             metadata_payload = b'{"Some": "Stuff"}\r\n'
         remainder = b"--==3==\r\ncontent-type: text/plain\r\n\r\nHi\r\n--==3==--"
@@ -346,7 +342,7 @@ class TestMultipartUpload(object):
         exc_info.match("virtual")
 
 
-class TestResumableUpload(object):
+class TestResumableUpload:
     def test_constructor(self):
         chunk_size = ONE_MB
         upload = _upload.ResumableUpload(RESUMABLE_URL, chunk_size)
@@ -474,7 +470,7 @@ class TestResumableUpload(object):
         data, headers = self._prepare_initiate_request_helper()
         expected_headers = {
             "content-type": JSON_TYPE,
-            "x-upload-content-length": "{:d}".format(len(data)),
+            "x-upload-content-length": f"{len(data):d}",
             "x-upload-content-type": BASIC_CONTENT,
         }
         assert headers == expected_headers
@@ -490,7 +486,7 @@ class TestResumableUpload(object):
             )
             expected_headers = {
                 "content-type": BASIC_CONTENT,
-                "x-upload-content-length": "{:d}".format(len(data)),
+                "x-upload-content-length": f"{len(data):d}",
             }
             assert headers == expected_headers
 
@@ -508,7 +504,7 @@ class TestResumableUpload(object):
             "caviar": "beluga",
             "content-type": JSON_TYPE,
             "top": "quark",
-            "x-upload-content-length": "{:d}".format(len(data)),
+            "x-upload-content-length": f"{len(data):d}",
             "x-upload-content-type": BASIC_CONTENT,
         }
         assert new_headers == expected_headers
@@ -519,7 +515,7 @@ class TestResumableUpload(object):
         assert len(data) == total_bytes
         expected_headers = {
             "content-type": "application/json; charset=UTF-8",
-            "x-upload-content-length": "{:d}".format(total_bytes),
+            "x-upload-content-length": f"{total_bytes:d}",
             "x-upload-content-type": BASIC_CONTENT,
         }
         assert headers == expected_headers
@@ -799,7 +795,7 @@ class TestResumableUpload(object):
         # Set the response body.
         bytes_sent = 158
         total_bytes = upload._bytes_uploaded + bytes_sent
-        response_body = '{{"size": "{:d}"}}'.format(total_bytes)
+        response_body = f'{{"size": "{total_bytes:d}"}}'
         response_body = response_body.encode("utf-8")
         response = mock.Mock(
             content=response_body,
@@ -1097,7 +1093,7 @@ class TestResumableUpload(object):
         assert upload.bytes_uploaded != 0
 
         end = 11
-        headers = {"range": "bytes=0-{:d}".format(end)}
+        headers = {"range": f"bytes=0-{end:d}"}
         response = _make_response(
             status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
@@ -1123,7 +1119,7 @@ def test_get_boundary(mock_rand):
     mock_rand.assert_called_once_with(sys.maxsize)
 
 
-class Test_construct_multipart_request(object):
+class Test_construct_multipart_request:
     @mock.patch(
         "google.cloud.storage._media._upload.get_boundary", return_value=b"==1=="
     )
@@ -1192,7 +1188,7 @@ def test_get_total_bytes():
     assert stream.tell() == curr_pos
 
 
-class Test_get_next_chunk(object):
+class Test_get_next_chunk:
     def test_exhausted_known_size(self):
         data = b"the end"
         stream = io.BytesIO(data)
@@ -1266,7 +1262,7 @@ class Test_get_next_chunk(object):
         assert stream.tell() == len(data)
 
 
-class Test_get_content_range(object):
+class Test_get_content_range:
     def test_known_size(self):
         result = _upload.get_content_range(5, 10, 40)
         assert result == "bytes 5-10/40"
