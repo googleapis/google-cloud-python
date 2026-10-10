@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.46.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.1...google-cloud-bigquery-v3.46.2) (2026-10-10)
+
+
+### Bug Fixes
+
+* **bigquery:** drop startIndex whenever a page token is sent ([#18603](https://github.com/googleapis/google-cloud-python/issues/18603)) ([fc6eae3](https://github.com/googleapis/google-cloud-python/commit/fc6eae3bbcea47d00f190d4bab51bef80e838a3a))
+
 ## [3.46.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.0...google-cloud-bigquery-v3.46.1) (2026-10-02)
 
 

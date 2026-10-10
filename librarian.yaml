@@ -92,11 +92,11 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.43.0
+    version: 1.43.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
-    version: 3.3.3
+    version: 3.4.0
     python:
       library_type: OTHER
   - name: google-ads-admanager
@@ -570,7 +570,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.46.1
+    version: 3.46.2
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -664,7 +664,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.50.0
+    version: 2.50.1
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2

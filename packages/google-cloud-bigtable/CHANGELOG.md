@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.50.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.50.0...google-cloud-bigtable-v2.50.1) (2026-10-10)
+
+
+### Bug Fixes
+
+* **bigtable:** avoid hang when batcher not closed on process exit ([#18610](https://github.com/googleapis/google-cloud-python/issues/18610)) ([7674c91](https://github.com/googleapis/google-cloud-python/commit/7674c91a81a984e01166f72a8895cb18c8a8216b))
+* **bigtable:** fix authentication scopes for metrics exporter ([#18609](https://github.com/googleapis/google-cloud-python/issues/18609)) ([722d34e](https://github.com/googleapis/google-cloud-python/commit/722d34e519dbb8305c4a48ac83790078f5ff9d57))
+
 ## [2.50.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.49.0...google-cloud-bigtable-v2.50.0) (2026-10-08)
 
 
