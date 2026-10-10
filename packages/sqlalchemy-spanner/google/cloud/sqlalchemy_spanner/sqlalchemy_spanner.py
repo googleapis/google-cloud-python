@@ -240,6 +240,10 @@ class SpannerExecutionContext(DefaultExecutionContext):
         if request_tag:
             self.cursor.request_tag = request_tag
 
+        timeout = self.execution_options.get("timeout")
+        if timeout is not None:
+            self.cursor.timeout = timeout
+
         ignore_transaction_warnings = self.execution_options.get(
             "ignore_transaction_warnings"
         )
