@@ -500,6 +500,9 @@ class TimestampPrecision(enum.Enum):
 class QueryResultsFormat(str, enum.Enum):
     """[Beta] Format for query results response."""
 
+    STRUCT_ENCODING = "STRUCT_ENCODING"
+    """Specifies JSON struct array format for query results."""
+
     ARROW = "ARROW"
     """Specifies Apache Arrow format for query results."""
 

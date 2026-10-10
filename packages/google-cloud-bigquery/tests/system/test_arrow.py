@@ -274,3 +274,244 @@ def test_query_and_wait_arrow_format_to_dataframe_iterable(bigquery_client):
     concat_df = pandas.concat(dfs, ignore_index=True)
     assert concat_df.columns.tolist() == ["num", "text"]
     assert concat_df.to_dict(orient="records") == [{"num": 200, "text": "python"}]
+
+
+def test_query_rest_arrow_format_config(bigquery_client):
+    """System test for setting QueryResultsFormat.ARROW on QueryJobConfig via query_and_wait()."""
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_results_format = enums.QueryResultsFormat.ARROW
+
+    assert job_config.query_results_format == enums.QueryResultsFormat.ARROW
+
+    results = bigquery_client.query_and_wait(
+        "SELECT 42 AS val, 'hello' AS msg", job_config=job_config
+    )
+
+    assert results.total_rows == 1
+    df = results.to_dataframe()
+    assert df.to_dict(orient="records") == [{"val": 42, "msg": "hello"}]
+
+
+def test_query_arrow_multi_page(bigquery_client):
+    """System test for multi-page query results (Page 1 REST + Page 2+ BQStorage gRPC)."""
+    # Generate 5,000 rows and cap initial REST jobs.query page at 1,000 rows
+    # so Page 1 (1,000 rows) comes via REST and Page 2+ (4,000 rows) streams via gRPC.
+    query_str = "SELECT num FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num"
+    results = bigquery_client.query_and_wait(
+        query_str,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        page_size=1000,
+    )
+
+    batches = list(results.to_arrow_iterable())
+    assert len(batches) >= 2
+    assert batches[0].num_rows == 1000
+    table = pyarrow.Table.from_batches(batches)
+    assert isinstance(table, pyarrow.Table)
+    assert len(table) == 5000
+    assert table.column_names == ["num"]
+
+
+@pytest.mark.parametrize("force_job_insert", [False, True])
+def test_query_arrow_zero_rows(bigquery_client, force_job_insert):
+    """System test for 0-row query results preserving schema across Arrow/DataFrame methods."""
+    job_config = (
+        bigquery.QueryJobConfig(priority=bigquery.QueryPriority.INTERACTIVE)
+        if force_job_insert
+        else None
+    )
+    results = bigquery_client.query_and_wait(
+        "SELECT 1 AS num, 'abc' AS label FROM UNNEST(GENERATE_ARRAY(1, 10)) AS x WHERE x > 100",
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    assert results.total_rows == 0
+    assert list(results.to_arrow_iterable()) == []
+
+    table = results.to_arrow()
+    assert len(table) == 0
+    assert table.column_names == ["num", "label"]
+    assert table.schema.field("num").type == pyarrow.int64()
+    assert table.schema.field("label").type == pyarrow.string()
+
+    df = results.to_dataframe()
+    assert df.shape == (0, 2)
+    assert list(df.columns) == ["num", "label"]
+
+
+@pytest.mark.parametrize(
+    ("max_results", "page_size", "force_job_insert", "expected_rows"),
+    [
+        (100, None, False, 100),  # 1. Fits on Page 1 (no page_size)
+        (1200, 500, False, 1200),  # 2. Spans Page 1 (REST) + Page 2+ (gRPC)
+        (100, 500, False, 100),  # 3. max_results < page_size
+        (10000, None, False, 5000),  # 4. max_results > total_rows (single-page)
+        (10000, 500, False, 5000),  # 5. max_results > total_rows (multi-page)
+        (0, None, False, 0),  # 6. max_results = 0 (schema only / 0 rows)
+        (1200, 500, True, 1200),  # 7. jobs.insert fallback path + max_results
+    ],
+)
+def test_query_arrow_max_results(
+    bigquery_client, max_results, page_size, force_job_insert, expected_rows
+):
+    """System test verifying max_results across Page 1, Page 2+, edge bounds, and jobs.insert."""
+    query_str = "SELECT num FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num ORDER BY num"
+    job_config = (
+        bigquery.QueryJobConfig(priority=bigquery.QueryPriority.INTERACTIVE)
+        if force_job_insert
+        else None
+    )
+    results = bigquery_client.query_and_wait(
+        query_str,
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        max_results=max_results,
+        page_size=page_size,
+    )
+
+    if expected_rows == 0:
+        table = results.to_arrow()
+    else:
+        batches = list(results.to_arrow_iterable())
+        table = pyarrow.Table.from_batches(batches)
+
+    assert len(table) == expected_rows
+    assert table.column_names == ["num"]
+    assert table.column("num").to_pylist() == list(range(1, expected_rows + 1))
+
+
+@pytest.mark.parametrize(
+    ("codec", "force_job_insert"),
+    [
+        (enums.QueryResultsCompressionCodec.LZ4_FRAME, False),
+        (enums.QueryResultsCompressionCodec.ZSTD, False),
+        (enums.QueryResultsCompressionCodec.LZ4_FRAME, True),
+    ],
+)
+def test_query_arrow_multi_page_compression_codec(
+    bigquery_client, codec, force_job_insert
+):
+    """System test verifying ReadRows compresses wire bytes with compression_codec on Page 2+ and jobs.insert."""
+    from unittest import mock
+    from google.cloud.bigquery_storage_v1.services.big_query_read import (
+        BigQueryReadClient as GapicBigQueryReadClient,
+    )
+
+    query_str = "SELECT REPEAT('abc123_', 50) AS payload FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num"
+    job_config = (
+        bigquery.QueryJobConfig(
+            priority=bigquery.QueryPriority.INTERACTIVE,
+            use_query_cache=False,
+        )
+        if force_job_insert
+        else bigquery.QueryJobConfig(use_query_cache=False)
+    )
+
+    def _measure_stream_wire_bytes(results):
+        wire_bytes = 0
+        orig_gapic_read_rows = GapicBigQueryReadClient.read_rows
+
+        def spy_gapic_read_rows(self, *args, **kwargs):
+            stream = orig_gapic_read_rows(self, *args, **kwargs)
+            for resp in stream:
+                if (
+                    resp.arrow_record_batch
+                    and resp.arrow_record_batch.serialized_record_batch
+                ):
+                    nonlocal wire_bytes
+                    wire_bytes += len(resp.arrow_record_batch.serialized_record_batch)
+                yield resp
+
+        with mock.patch.object(
+            GapicBigQueryReadClient, "read_rows", spy_gapic_read_rows
+        ):
+            table = results.to_arrow()
+        return table, wire_bytes
+
+    uncompressed_results = bigquery_client.query_and_wait(
+        query_str,
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        page_size=500,
+    )
+    uncompressed_table, uncompressed_wire_bytes = _measure_stream_wire_bytes(
+        uncompressed_results
+    )
+
+    compressed_results = bigquery_client.query_and_wait(
+        query_str,
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        compression_codec=codec,
+        page_size=500,
+    )
+    compressed_table, compressed_wire_bytes = _measure_stream_wire_bytes(
+        compressed_results
+    )
+
+    assert uncompressed_wire_bytes > 0
+    assert compressed_wire_bytes > 0
+    assert compressed_wire_bytes < uncompressed_wire_bytes
+    assert compressed_table.equals(uncompressed_table)
+    assert len(compressed_table) == 5000
+
+
+def test_query_arrow_cached_multi_page(bigquery_client):
+    """System test verifying cached multi-page Arrow queries read full results."""
+    query_str = "SELECT REPEAT('cached_', 20) AS payload FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num"
+
+    first_table = bigquery_client.query_and_wait(
+        query_str,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        page_size=500,
+    ).to_arrow()
+    cached_table = bigquery_client.query_and_wait(
+        query_str,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        page_size=500,
+    ).to_arrow()
+
+    assert len(first_table) == 5000
+    assert len(cached_table) == 5000
+    assert cached_table.equals(first_table)
+
+
+def test_query_arrow_explicit_destination_table(
+    dataset_client, dataset_id, test_table_name
+):
+    """System test verifying explicit destination tables on QueryJobConfig read via CreateReadSession."""
+    dest_table = dataset_client.dataset(dataset_id).table(test_table_name)
+    job_config = bigquery.QueryJobConfig(
+        destination=dest_table,
+        write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+    )
+
+    # 1. Full + max_results read with LZ4_FRAME compression on explicit destination table
+    results = dataset_client.query_and_wait(
+        "SELECT num, CONCAT('row_', CAST(num AS STRING)) AS label "
+        "FROM UNNEST(GENERATE_ARRAY(1, 2000)) AS num ORDER BY num",
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        compression_codec=enums.QueryResultsCompressionCodec.LZ4_FRAME,
+        max_results=1200,
+    )
+    table = pyarrow.Table.from_batches(results.to_arrow_iterable())
+    assert len(table) == 1200
+    assert table.column_names == ["num", "label"]
+    assert table.column("num").to_pylist() == list(range(1, 1201))
+
+    # 2. Zero-row explicit destination table preserves pyarrow.Schema
+    empty_dest_table = dataset_client.dataset(dataset_id).table(
+        f"{test_table_name}_empty"
+    )
+    empty_results = dataset_client.query_and_wait(
+        "SELECT 1 AS num, 'abc' AS label FROM UNNEST(GENERATE_ARRAY(1, 5)) AS x WHERE x > 100",
+        job_config=bigquery.QueryJobConfig(destination=empty_dest_table),
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    assert empty_results.total_rows == 0
+    empty_table = empty_results.to_arrow()
+    assert len(empty_table) == 0
+    assert empty_table.column_names == ["num", "label"]
+    assert empty_table.schema.field("num").type == pyarrow.int64()
+    assert empty_table.schema.field("label").type == pyarrow.string()

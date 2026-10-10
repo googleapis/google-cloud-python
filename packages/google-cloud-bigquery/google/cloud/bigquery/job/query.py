@@ -849,6 +849,15 @@ class QueryJobConfig(_JobConfig):
         new_value = None if value is None else value.to_api_repr()
         self._set_sub_prop("scriptOptions", new_value)
 
+    @property
+    def query_results_format(self) -> Optional[str]:
+        """google.cloud.bigquery.enums.QueryResultsFormat: Format options for query result payloads."""
+        return self._get_sub_prop("queryResultsFormat")
+
+    @query_results_format.setter
+    def query_results_format(self, value: Optional[str]):
+        self._set_sub_prop("queryResultsFormat", value)
+
     def to_api_repr(self) -> dict:
         """Build an API representation of the query job config.
 
@@ -1844,7 +1853,10 @@ class QueryJob(_AsyncJob):
         # maxResults=0. In that case, we're missing rows and there's no next
         # page token.
         first_page_response = self._query_results._properties
-        if "rows" not in first_page_response:
+        if (
+            "rows" not in first_page_response
+            and "arrowRecordBatch" not in first_page_response
+        ):
             first_page_response = None
 
         rows = self._client._list_rows_from_query_results(

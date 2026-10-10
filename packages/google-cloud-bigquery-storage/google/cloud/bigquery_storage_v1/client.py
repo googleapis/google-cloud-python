@@ -57,6 +57,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=(),
         retry_delay_callback=None,
+        arrow_serialization_options=None,
     ):
         """
         Reads rows from the table in the format prescribed by the read
@@ -124,6 +125,9 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
                 BigQueryReadClient will call retry_delay_callback with the delay
                 duration (in seconds) before it starts sleeping until the next
                 attempt.
+            arrow_serialization_options (Optional[Union[dict, ~google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions]]):
+                Options specific to Arrow serialization on job streams (e.g.
+                buffer compression or timestamp precision).
 
         Returns:
             ~google.cloud.bigquery_storage_v1.reader.ReadRowsStream:
@@ -144,6 +148,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
             offset,
             {"retry": retry, "timeout": timeout, "metadata": metadata},
             retry_delay_callback=retry_delay_callback,
+            arrow_serialization_options=arrow_serialization_options,
         )
         stream._reconnect()
         return stream

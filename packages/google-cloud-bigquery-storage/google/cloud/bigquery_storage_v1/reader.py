@@ -86,7 +86,13 @@ class ReadRowsStream(object):
     """
 
     def __init__(
-        self, client, name, offset, read_rows_kwargs, retry_delay_callback=None
+        self,
+        client,
+        name,
+        offset,
+        read_rows_kwargs,
+        retry_delay_callback=None,
+        arrow_serialization_options=None,
     ):
         """Construct a ReadRowsStream.
 
@@ -114,6 +120,9 @@ class ReadRowsStream(object):
                 ReadRowsStream will call retry_delay_callback with the delay
                 duration (in seconds) before it starts sleeping until the next
                 attempt.
+            arrow_serialization_options (Optional[Union[dict, ~google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions]]):
+                Options specific to Arrow serialization on job streams (e.g.
+                buffer compression or timestamp precision).
 
         Returns:
             Iterable[ \
@@ -129,6 +138,7 @@ class ReadRowsStream(object):
         self._offset = offset
         self._read_rows_kwargs = read_rows_kwargs
         self._retry_delay_callback = retry_delay_callback
+        self._arrow_serialization_options = arrow_serialization_options
         self._wrapped = None
 
     def __iter__(self):
@@ -174,11 +184,21 @@ class ReadRowsStream(object):
         """Reconnect to the ReadRows stream using the most recent offset."""
         while True:
             try:
-                self._wrapped = self._client.read_rows(
-                    read_stream=self._name,
-                    offset=self._offset,
-                    **self._read_rows_kwargs,
-                )
+                if self._arrow_serialization_options is not None:
+                    self._wrapped = self._client.read_rows(
+                        request={
+                            "read_stream": self._name,
+                            "offset": self._offset,
+                            "arrow_serialization_options": self._arrow_serialization_options,
+                        },
+                        **self._read_rows_kwargs,
+                    )
+                else:
+                    self._wrapped = self._client.read_rows(
+                        read_stream=self._name,
+                        offset=self._offset,
+                        **self._read_rows_kwargs,
+                    )
                 break
             except Exception as exc:
                 if not self._resource_exhausted_exception_is_retryable(exc):

@@ -536,3 +536,32 @@ def test_read_rows_to_dataframe_with_wide_table(client_and_types, project_id):
     some_rows = next(pages_iter)
 
     assert all(len(row["tract_geom"].as_py()) > 0 for row in some_rows)
+
+
+def test_read_rows_arrow_serialization_options(credentials, project_id):
+    from google.cloud import bigquery, bigquery_storage_v1
+
+    bq_client = bigquery.Client(project=project_id, credentials=credentials)
+    job = bq_client.query(
+        "SELECT REPEAT('A', 1000) AS repeated_str "
+        "FROM UNNEST(GENERATE_ARRAY(1, 2000)) AS x",
+        location="US",
+    )
+    job.result()
+
+    client = bigquery_storage_v1.BigQueryReadClient(credentials=credentials)
+    stream = f"projects/{project_id}/locations/US/jobs/{job.job_id}/streams/_default"
+
+    uncompressed_bytes = sum(
+        len(m.arrow_record_batch.serialized_record_batch)
+        for m in client.read_rows(stream)
+    )
+    compressed_bytes = sum(
+        len(m.arrow_record_batch.serialized_record_batch)
+        for m in client.read_rows(
+            stream,
+            arrow_serialization_options={"buffer_compression": "LZ4_FRAME"},
+        )
+    )
+
+    assert compressed_bytes < uncompressed_bytes

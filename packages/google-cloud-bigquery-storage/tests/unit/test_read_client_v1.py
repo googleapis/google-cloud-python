@@ -153,6 +153,76 @@ def test_read_rows(mock_transport, client_under_test):
     )
 
 
+def test_read_rows_with_arrow_serialization_options(mock_transport, client_under_test):
+    rpc_callable = mock.Mock()
+    mock_transport._wrapped_methods[mock_transport.read_rows] = rpc_callable
+    stream_name = "teststream"
+    offset = 10
+
+    client_under_test.read_rows(
+        stream_name,
+        offset=offset,
+        arrow_serialization_options={"buffer_compression": "LZ4_FRAME"},
+    )
+
+    expected_request = types.ReadRowsRequest(
+        read_stream=stream_name,
+        offset=offset,
+        arrow_serialization_options={"buffer_compression": "LZ4_FRAME"},
+    )
+    rpc_callable.assert_called_once_with(
+        expected_request, metadata=mock.ANY, retry=mock.ANY, timeout=mock.ANY
+    )
+
+
+def test_read_rows_reconnect_preserves_arrow_serialization_options(
+    mock_transport, client_under_test
+):
+    from google.api_core import exceptions as api_exceptions
+
+    def _first_stream():
+        yield types.ReadRowsResponse(row_count=5)
+        raise api_exceptions.ServiceUnavailable("transient disconnect")
+
+    rpc_callable = mock.Mock(
+        side_effect=[_first_stream(), iter([types.ReadRowsResponse(row_count=3)])]
+    )
+    mock_transport._wrapped_methods[mock_transport.read_rows] = rpc_callable
+    stream_name = "teststream"
+    arrow_options = {"buffer_compression": "ZSTD"}
+
+    stream = client_under_test.read_rows(
+        stream_name,
+        offset=10,
+        arrow_serialization_options=arrow_options,
+    )
+    responses = list(stream)
+
+    assert len(responses) == 2
+    assert rpc_callable.call_args_list == [
+        mock.call(
+            types.ReadRowsRequest(
+                read_stream=stream_name,
+                offset=10,
+                arrow_serialization_options=arrow_options,
+            ),
+            metadata=mock.ANY,
+            retry=mock.ANY,
+            timeout=mock.ANY,
+        ),
+        mock.call(
+            types.ReadRowsRequest(
+                read_stream=stream_name,
+                offset=15,
+                arrow_serialization_options=arrow_options,
+            ),
+            metadata=mock.ANY,
+            retry=mock.ANY,
+            timeout=mock.ANY,
+        ),
+    ]
+
+
 @pytest.mark.parametrize(
     "module_under_test",
     ["google.cloud.bigquery_storage_v1", "google.cloud.bigquery_storage_v1beta2"],

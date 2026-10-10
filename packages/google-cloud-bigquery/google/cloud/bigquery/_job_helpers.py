@@ -507,16 +507,17 @@ def query_and_wait(
     )
     if query_results_format is not None:
         request_body["queryResultsFormat"] = query_results_format
+    else:
+        query_results_format = request_body.get("queryResultsFormat")
     if compression_codec is not None:
-        request_body.setdefault("formatOptions", {})
-        request_body["formatOptions"]["arrowSerializationOptions"] = {
+        request_body["arrowSerializationOptions"] = {
             "bufferCompression": compression_codec
         }
 
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
     if not _supported_by_jobs_query(request_body):
-        return _wait_or_cancel(
+        rows = _wait_or_cancel(
             query_jobs_insert(
                 client=client,
                 query=query,
@@ -536,8 +537,12 @@ def query_and_wait(
             page_size=page_size,
             max_results=max_results,
             query_results_format=query_results_format,
+            compression_codec=compression_codec,
             callback=callback,
         )
+        if "destinationTable" in request_body:
+            rows._use_read_session = True
+        return rows
 
     path = _to_query_path(project)
 
@@ -595,6 +600,14 @@ def query_and_wait(
         )
         page_token = query_results.page_token
         more_pages = page_token is not None
+        if (
+            query_results.complete
+            and max_results is not None
+            and query_results_format == enums.QueryResultsFormat.ARROW.value
+        ):
+            row_count = int(response.get("arrowRecordBatch", {}).get("rowCount", 0))
+            if row_count >= max_results:
+                more_pages = False
 
         if more_pages or not query_results.complete:
             # TODO(swast): Avoid a call to jobs.get in some cases (few
@@ -609,6 +622,7 @@ def query_and_wait(
                 page_size=page_size,
                 max_results=max_results,
                 query_results_format=query_results_format,
+                compression_codec=compression_codec,
                 callback=callback,
             )
 
@@ -649,6 +663,7 @@ def query_and_wait(
             started=query_results.started,
             ended=query_results.ended,
             query_results_format=query_results_format,
+            compression_codec=compression_codec,
         )
 
     if job_retry is not None:
@@ -690,6 +705,7 @@ def _supported_by_jobs_query(request_body: Dict[str, Any]) -> bool:
         "reservation",
         "maxSlots",
         "queryResultsFormat",
+        "arrowSerializationOptions",
     }
 
     unsupported_keys = request_keys - keys_allowlist
@@ -705,6 +721,7 @@ def _wait_or_cancel(
     max_results: Optional[int],
     *,
     query_results_format: Optional[str] = None,
+    compression_codec: Optional[str] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Wait for a job to complete and return the results.
@@ -750,6 +767,7 @@ def _wait_or_cancel(
                 )
             )
         query_results._query_results_format = query_results_format
+        query_results._compression_codec = compression_codec
         return query_results
     except Exception:
         # Attempt to cancel the job since we can't return the results.
