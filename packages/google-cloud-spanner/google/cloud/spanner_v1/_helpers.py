@@ -742,6 +742,22 @@ _ARRAY_TYPE_CODE = int(TypeCode.ARRAY)
 _STRUCT_TYPE_CODE = int(TypeCode.STRUCT)
 
 
+def _resource_info_from_database(database):
+    """Resource information dictionary from database instance or fallback."""
+    if database is None:
+        return None
+    resource_info = getattr(database, "_resource_info", None)
+    if resource_info is not None:
+        return resource_info
+    instance = getattr(database, "_instance", None)
+    client = getattr(instance, "_client", None) if instance else None
+    return {
+        "project": getattr(client, "project", None),
+        "instance": getattr(instance, "instance_id", None),
+        "database": getattr(database, "database_id", None),
+    }
+
+
 class _SessionWrapper(object):
     """Base class for objects wrapping a session.
 
@@ -751,6 +767,13 @@ class _SessionWrapper(object):
 
     def __init__(self, session):
         self._session = session
+
+    @property
+    def _resource_info(self):
+        """Resource information for metrics labels."""
+        session = self._session
+        database = getattr(session, "_database", None) if session is not None else None
+        return _resource_info_from_database(database)
 
 
 def _append_routing_headers(metadata):
