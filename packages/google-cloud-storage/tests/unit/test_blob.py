@@ -2174,6 +2174,91 @@ class Test_Blob(unittest.TestCase):
             stream = blob._prep_and_do_download.mock_calls[0].args[0]
             self.assertEqual(stream.name, filename)
 
+    def test_download_to_filename_cleans_up_on_connection_error(self):
+        import requests.exceptions
+
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        with mock.patch.object(blob, "_prep_and_do_download"):
+            blob._prep_and_do_download.side_effect = requests.exceptions.ConnectionError(
+                "Network is unreachable"
+            )
+
+            filehandle, filename = tempfile.mkstemp()
+            os.close(filehandle)
+            self.assertTrue(os.path.exists(filename))
+
+            with self.assertRaises(requests.exceptions.ConnectionError):
+                blob.download_to_filename(filename)
+
+            self.assertFalse(os.path.exists(filename))
+
+    def test_download_to_filename_cleans_up_on_timeout(self):
+        import requests.exceptions
+
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        with mock.patch.object(blob, "_prep_and_do_download"):
+            blob._prep_and_do_download.side_effect = requests.exceptions.Timeout(
+                "Timeout of 120.0s exceeded"
+            )
+
+            filehandle, filename = tempfile.mkstemp()
+            os.close(filehandle)
+            self.assertTrue(os.path.exists(filename))
+
+            with self.assertRaises(requests.exceptions.Timeout):
+                blob.download_to_filename(filename)
+
+            self.assertFalse(os.path.exists(filename))
+
+    def test_download_to_filename_cleans_up_on_generic_exception(self):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        with mock.patch.object(blob, "_prep_and_do_download"):
+            blob._prep_and_do_download.side_effect = RuntimeError("unexpected failure")
+
+            filehandle, filename = tempfile.mkstemp()
+            os.close(filehandle)
+            self.assertTrue(os.path.exists(filename))
+
+            with self.assertRaises(RuntimeError):
+                blob.download_to_filename(filename)
+
+            self.assertFalse(os.path.exists(filename))
+
+    def test_download_to_filename_keeps_file_on_success(self):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        def _write_data(file_obj, **kwargs):
+            file_obj.write(b"hello world")
+
+        with mock.patch.object(
+            blob, "_prep_and_do_download", side_effect=_write_data
+        ):
+            filehandle, filename = tempfile.mkstemp()
+            os.close(filehandle)
+            try:
+                blob.download_to_filename(filename)
+                self.assertTrue(os.path.exists(filename))
+                with open(filename, "rb") as f:
+                    self.assertEqual(f.read(), b"hello world")
+            finally:
+                if os.path.exists(filename):
+                    os.remove(filename)
+
     def _download_as_bytes_helper(
         self, raw_download, timeout=None, single_shot_download=False, **extra_kwargs
     ):
