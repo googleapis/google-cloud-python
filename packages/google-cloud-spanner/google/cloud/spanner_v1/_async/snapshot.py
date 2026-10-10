@@ -45,6 +45,9 @@ from google.cloud.spanner_v1._helpers import (
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+    SpannerMetricsTracerFactory,
+)
 from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken
 from google.cloud.spanner_v1.types.mutation import Mutation
 from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSet
@@ -120,21 +123,25 @@ async def _restart_on_unavailable(
     current_request_id = None
     stream_finished = False
 
+    metrics_tracer = None
+    factory = SpannerMetricsTracerFactory()
+    if factory.enabled:
+        metrics_tracer = factory.create_metrics_tracer(resource_info)
+        if metrics_tracer:
+            metrics_tracer.record_operation_start()
+
     try:
         while True:
             try:
                 # Get results iterator.
                 if iterator is None:
-                    with (
-                        trace_call(
-                            trace_name,
-                            session,
-                            attributes,
-                            observability_options=observability_options,
-                            metadata=metadata,
-                        ) as span,
-                        MetricsCapture(resource_info),
-                    ):
+                    with trace_call(
+                        trace_name,
+                        session,
+                        attributes,
+                        observability_options=observability_options,
+                        metadata=metadata,
+                    ) as span:
                         (
                             call_metadata,
                             current_request_id,
@@ -144,11 +151,25 @@ async def _restart_on_unavailable(
                             metadata,
                             span,
                         )
-                        iterator = await CrossSync.run_if_async(
-                            method,
-                            request=request,
-                            metadata=call_metadata,
-                        )
+                        token = None
+                        if metrics_tracer is not None:
+                            token = SpannerMetricsTracerFactory.set_current_tracer(
+                                metrics_tracer
+                            )
+                        try:
+                            iterator = await CrossSync.run_if_async(
+                                method,
+                                request=request,
+                                metadata=call_metadata,
+                            )
+                        finally:
+                            if token is not None:
+                                try:
+                                    SpannerMetricsTracerFactory.reset_current_tracer(
+                                        token
+                                    )
+                                except ValueError:
+                                    pass
 
                 # Add items from iterator to buffer.
                 item: PartialResultSet
@@ -224,11 +245,18 @@ async def _restart_on_unavailable(
             if stream_finished:
                 break
     finally:
-        if iterator is not None and hasattr(iterator, "cancel"):
-            try:
-                iterator.cancel()
-            except Exception:
-                pass
+        try:
+            if metrics_tracer is not None:
+                try:
+                    metrics_tracer.record_operation_completion()
+                except Exception:
+                    pass
+        finally:
+            if iterator is not None and hasattr(iterator, "cancel"):
+                try:
+                    iterator.cancel()
+                except Exception:
+                    pass
 
 
 class _SnapshotBase(_SessionWrapper):
@@ -261,16 +289,6 @@ class _SnapshotBase(_SessionWrapper):
         # Event to coordinate concurrent requests beginning the transaction.
         # This is used to prevent the "Transaction has not begun" race condition.
         self._transaction_begin_event: CrossSync.Event = CrossSync.Event()
-
-    @property
-    def _resource_info(self):
-        """Resource information for metrics labels."""
-        database = self._session._database
-        return {
-            "project": database._instance._client.project,
-            "instance": database._instance.instance_id,
-            "database": database.database_id,
-        }
 
     @CrossSync.convert
     async def _wait_for_transaction_begin(self) -> None:
