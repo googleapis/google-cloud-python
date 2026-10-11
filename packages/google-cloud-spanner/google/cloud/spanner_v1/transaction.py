@@ -436,11 +436,10 @@ class Transaction(_SnapshotBase, _BatchBase):
             database._instance._client._client_context, self._client_context
         )
         request_options = _merge_request_options(request_options, client_context)
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
-        request_options.transaction_tag = self.transaction_tag
+        if request_options is not None:
+            request_options.transaction_tag = self.transaction_tag
+        elif self.transaction_tag is not None:
+            request_options = RequestOptions(transaction_tag=self.transaction_tag)
         trace_attributes = {"db.statement": dml, "request_options": request_options}
         is_inline_begin = False
         if self._transaction_id is None:
@@ -575,11 +574,10 @@ class Transaction(_SnapshotBase, _BatchBase):
             database._instance._client._client_context, self._client_context
         )
         request_options = _merge_request_options(request_options, client_context)
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
-        request_options.transaction_tag = self.transaction_tag
+        if request_options is not None:
+            request_options.transaction_tag = self.transaction_tag
+        elif self.transaction_tag is not None:
+            request_options = RequestOptions(transaction_tag=self.transaction_tag)
         trace_attributes = {
             "db.statement": ";".join([statement.sql for statement in parsed]),
             "request_options": request_options,
