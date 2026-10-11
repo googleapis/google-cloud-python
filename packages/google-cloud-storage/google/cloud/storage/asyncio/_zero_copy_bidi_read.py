@@ -25,7 +25,8 @@ parser, so callers never see a difference other than the type of ``content``.
 
 :func:`wrapped_rpc` builds the matching ``BidiReadObject`` callable for a
 transport; :class:`~google.cloud.storage.asyncio.async_read_object_stream._AsyncReadObjectStream`
-prefers it over the generated one whenever :func:`is_supported` holds.
+prefers it over the generated one whenever :func:`is_enabled` holds for the
+downloader's ``zero_copy`` argument.
 """
 
 import os
@@ -42,7 +43,8 @@ from google.cloud._storage_v2.services.storage.transports.grpc_asyncio import (
     StorageGrpcAsyncIOTransport,
 )
 
-# Opt-in switch. Accepted spellings match ``_opentelemetry_tracing._parse_bool_env``.
+# Process-wide default for downloaders created without an explicit ``zero_copy``
+# argument. Accepted spellings match ``_opentelemetry_tracing._parse_bool_env``.
 _ENV_VAR = "GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ"
 _ENABLED_VALUES = ("1", "true", "yes", "on")
 
@@ -307,17 +309,13 @@ def deserialize(buf):
 
 
 def is_supported():
-    """Whether the zero-copy parser may be used in this process.
+    """Whether the installed ``google_crc32c`` can hash ``memoryview`` inputs.
 
     The parser hands chunk payloads to the read path as ``memoryview`` objects
-    and checksum verification feeds them to ``google_crc32c``. Because
-    downstream sinks and releases of ``google-crc32c`` that only accept
-    ``bytes`` would fail on ``memoryview``, the zero-copy parser is enabled
-    only when ``GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ=1`` is set and
-    ``google_crc32c`` accepts ``memoryview`` inputs.
+    and checksum verification feeds them to ``google_crc32c``; releases that
+    only accept ``bytes`` would fail on them, so the parser is never used
+    without this capability.
     """
-    if os.environ.get(_ENV_VAR, "").strip().lower() not in _ENABLED_VALUES:
-        return False
     try:
         google_crc32c.value(memoryview(b"\0"))
     except Exception:
@@ -325,20 +323,35 @@ def is_supported():
     return True
 
 
+def is_enabled(zero_copy=None):
+    """Whether a stream should use the zero-copy parser.
+
+    ``zero_copy`` is the downloader's argument: ``True`` asks for the parser,
+    ``False`` keeps the generated one, ``None`` defers to the
+    ``GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ`` environment variable. Either
+    way the parser is used only when :func:`is_supported` holds.
+    """
+    if zero_copy is None:
+        zero_copy = os.environ.get(_ENV_VAR, "").strip().lower() in _ENABLED_VALUES
+    return bool(zero_copy) and is_supported()
+
+
 _rpcs = weakref.WeakKeyDictionary()
 
 
-def wrapped_rpc(transport):
+def wrapped_rpc(transport, zero_copy=None):
     """Return the zero-copy ``BidiReadObject`` callable for ``transport``.
 
     The callable is the generated transport's stub with :func:`deserialize`
     swapped in, wrapped exactly like ``transport._wrapped_methods`` entries
     (error mapping, no default retry or timeout, the client-info header).
-    Returns ``None`` when the zero-copy path is unsupported or ``transport`` is
-    not the generated grpc_asyncio transport, in which case callers should use
-    the generated wrapped method.
+    Returns ``None`` when :func:`is_enabled` is false for ``zero_copy`` or
+    ``transport`` is not the generated grpc_asyncio transport, in which case
+    callers should use the generated wrapped method.
     """
-    if not isinstance(transport, StorageGrpcAsyncIOTransport) or not is_supported():
+    if not isinstance(transport, StorageGrpcAsyncIOTransport) or not is_enabled(
+        zero_copy
+    ):
         return None
     rpc = _rpcs.get(transport)
     if rpc is None:
