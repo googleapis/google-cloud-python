@@ -332,9 +332,48 @@ def test_value_holds_gil_for_mutable_memory(_cext, factory):
     assert seen == [False]
 
 
+@pytest.mark.parametrize(
+    "factory",
+    [
+        pytest.param(lambda data: data, id="bytes"),
+        pytest.param(lambda data: memoryview(data), id="memoryview"),
+        pytest.param(lambda data: memoryview(data)[1:-1], id="slice"),
+    ],
+)
+def test_value_releases_gil_for_immutable_memory(_cext, factory):
+    # The counterpart of the test above: nothing can write to a bytes object,
+    # so hashing it (or a view into it) runs with the GIL released and the
+    # probe thread gets to run while value() is in progress.
+    data = factory(bytes(64 * 1024 * 1024))
+    go = threading.Event()
+    in_call = False
+    seen = []
+
+    def probe():
+        go.wait()
+        seen.append(in_call)
+
+    interval = sys.getswitchinterval()
+    sys.setswitchinterval(10)
+    try:
+        thread = threading.Thread(target=probe, daemon=True)
+        thread.start()
+        go.set()
+        in_call = True
+        _cext.value(data)
+        in_call = False
+        thread.join()
+    finally:
+        sys.setswitchinterval(interval)
+    assert seen == [True]
+
+
 def _fortran_order(data):
     np = pytest.importorskip("numpy")
-    return memoryview(np.frombuffer(data, np.uint8).reshape(2, -1, order="F"))
+    # Only reached when numpy is installed, which the unit session does not do.
+    return memoryview(  # pragma: NO COVER
+        np.frombuffer(data, np.uint8).reshape(2, -1, order="F")
+    )
 
 
 _NON_C_CONTIGUOUS = [
