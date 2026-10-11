@@ -41,9 +41,9 @@ def pstats_to_tree(pstats_file):
 
     sorted_funcs = sorted(all_funcs.items(), key=lambda x: x[1][3], reverse=True)
     total_time = ps.total_tt
-    min_cutoff = max(0.05, total_time * 0.008)
+    min_cutoff = max(0.00001, total_time * 0.001)
 
-    def build_node(func_tuple, visited, current_depth=0, max_depth=8):
+    def build_node(func_tuple, visited, current_depth=0, max_depth=10):
         file_name, line_no, func_name = func_tuple
         node_id = f"{file_name}:{line_no}({func_name})"
         cc, nc, tt, ct, callers = all_funcs.get(func_tuple, (1, 1, 0, 0, {}))
@@ -51,7 +51,7 @@ def pstats_to_tree(pstats_file):
         children = []
         if current_depth < max_depth and node_id in callees_map and node_id not in visited:
             visited_next = visited | {node_id}
-            for child_tuple, child_ct, child_tt, child_cc in callees_map[node_id][:5]:
+            for child_tuple, child_ct, child_tt, child_cc in callees_map[node_id][:10]:
                 if child_ct >= min_cutoff and child_tuple != func_tuple:
                     child_node = build_node(child_tuple, visited_next, current_depth + 1, max_depth)
                     if child_node["value"] > 0:
@@ -59,8 +59,8 @@ def pstats_to_tree(pstats_file):
 
         return {
             "name": f"{func_name} [{file_name}:{line_no}]",
-            "value": round(ct, 4),
-            "self_time": round(tt, 4),
+            "value": round(ct, 6),
+            "self_time": round(tt, 6),
             "calls": cc,
             "children": children,
         }
@@ -69,7 +69,19 @@ def pstats_to_tree(pstats_file):
     top_entries = []
     for func_tuple, (cc, nc, tt, ct, callers) in sorted_funcs:
         file_name = func_tuple[0]
-        if any(p in file_name for p in ["spanner_cpu_profile_suite", "run_point_select", "run_limit_1000", "runners.py", "app.py"]):
+        func_name = func_tuple[2]
+        if any(
+            p in file_name or p in func_name
+            for p in [
+                "spanner_cpu_profile_suite",
+                "run_point_select",
+                "run_limit_1000",
+                "worker_thread_loop",
+                "async_worker_loop",
+                "runners.py",
+                "app.py",
+            ]
+        ):
             top_entries.append(func_tuple)
             if len(top_entries) >= 3:
                 break
@@ -78,10 +90,11 @@ def pstats_to_tree(pstats_file):
         top_entries = [sorted_funcs[0][0]]
 
     root_children = [build_node(t, set(), 1) for t in top_entries]
+    root_val = max(round(total_time, 6), sum(c["value"] for c in root_children))
 
     root = {
-        "name": f"Total Profiled Workload ({total_time:.3f}s)",
-        "value": round(total_time, 4),
+        "name": f"Total Profiled Workload ({total_time:.4f}s)",
+        "value": round(root_val, 6),
         "self_time": 0.0,
         "calls": 1,
         "children": root_children,
@@ -306,11 +319,14 @@ def main():
     profile_dir = os.path.dirname(os.path.abspath(__file__)) or os.getcwd()
 
     scenarios = [
-        ("spanner_point_select_c1.prof", "spanner_point_select_c1.html", "Scenario 1: Point Select (Concurrency = 1) - Real Spanner"),
-        ("spanner_point_select_c32.prof", "spanner_point_select_c32.html", "Scenario 2: Point Select (Concurrency = 32 Coroutines) - Real Spanner"),
-        ("spanner_limit1000_c1.prof", "spanner_limit1000_c1.html", "Scenario 3: LIMIT 1000 Read (11 Columns) - Real Spanner"),
-        ("spanner_point_select_c32_threads.prof", "spanner_point_select_c32_threads.html", "Scenario 4: Point Select Multi-Threaded (C=32 Threads) - Real Spanner & GIL Contention"),
-        ("spanner_point_select_c32_multiprocess.prof", "spanner_point_select_c32_multiprocess.html", "Scenario 5: Multi-Processing (4 Procs x 8 Threads = 32 Concurrency) - Real Spanner"),
+        ("spanner_point_select_c1.prof", "spanner_point_select_c1.html", "Scenario 1A: Point Select (C=1, Sync) - Without Shared Core (Stock Python SDK)"),
+        ("spanner_point_select_c1_go_core.prof", "spanner_point_select_c1_go_core.html", "Scenario 1B: Point Select (C=1, Sync) - With Go Shared Core (Cross-FFI)"),
+        ("spanner_point_select_c32.prof", "spanner_point_select_c32.html", "Scenario 2A: Point Select (C=32 Coroutines, AsyncIO) - Without Shared Core (Stock Python SDK)"),
+        ("spanner_point_select_c32_go_core.prof", "spanner_point_select_c32_go_core.html", "Scenario 2B: Point Select (C=32 Coroutines, AsyncIO) - With Go Shared Core (Cross-FFI)"),
+        ("spanner_limit1000_c1.prof", "spanner_limit1000_c1.html", "Scenario 3A: LIMIT 1000 Read (11 Columns, Sync) - Without Shared Core (Stock Python SDK)"),
+        ("spanner_limit1000_c1_go_core.prof", "spanner_limit1000_c1_go_core.html", "Scenario 3B: LIMIT 1000 Read (11 Columns, Sync) - With Go Shared Core (Cross-FFI)"),
+        ("spanner_point_select_c32_threads.prof", "spanner_point_select_c32_threads.html", "Scenario 4A: Point Select Multi-Threaded (C=32 OS Threads) - Without Shared Core (Stock Python SDK)"),
+        ("spanner_point_select_c32_threads_go_core.prof", "spanner_point_select_c32_threads_go_core.html", "Scenario 4B: Point Select Multi-Threaded (C=32 OS Threads) - With Go Shared Core (Cross-FFI)"),
     ]
 
     for prof_name, html_name, title in scenarios:
@@ -318,8 +334,6 @@ def main():
         html_p = os.path.join(profile_dir, html_name)
         if os.path.exists(prof_p):
             generate_flamegraph_html(prof_p, html_p, title)
-        else:
-            print(f"[-] Profile file not found: {prof_p}")
 
 
 if __name__ == "__main__":

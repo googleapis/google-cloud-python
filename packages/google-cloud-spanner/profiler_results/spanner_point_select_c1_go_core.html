@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scenario 1B: Point Select (C=1, Sync) - With Go Shared Core (Cross-FFI) - CPU Flame Graph</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #f8f9fa;
+      color: #202124;
+    }
+    .header {
+      background: #ffffff;
+      padding: 20px 24px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
+      color: #1a73e8;
+    }
+    .meta {
+      font-size: 14px;
+      color: #5f6368;
+    }
+    .card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+    }
+    .controls {
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 280px;
+    }
+    button {
+      padding: 8px 16px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    button:hover {
+      background: #1557b0;
+    }
+    button.secondary {
+      background: #f1f3f4;
+      color: #3c4043;
+    }
+    button.secondary:hover {
+      background: #e8eaed;
+    }
+    #details {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a73e8;
+      min-height: 20px;
+    }
+    #chart {
+      width: 100%;
+      min-height: 500px;
+    }
+    pre {
+      background: #202124;
+      color: #e8eaed;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .error-box {
+      display: none;
+      padding: 12px 16px;
+      background: #fce8e6;
+      color: #c5221f;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Scenario 1B: Point Select (C=1, Sync) - With Go Shared Core (Cross-FFI)</h1>
+    <div class="meta">
+      <strong>Source Profile:</strong> <code>spanner_point_select_c1_go_core.prof</code> |
+      <strong>Total Profiled CPU Time:</strong> 0.0212 seconds |
+      <strong>Interactive:</strong> Click any frame to zoom in, click root or 'Reset Zoom' to zoom out.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="controls">
+      <input type="text" id="search" placeholder="Search function or module...">
+      <button onclick="search()">Search</button>
+      <button class="secondary" onclick="clearSearch()">Clear</button>
+      <button class="secondary" onclick="resetZoom()">Reset Zoom</button>
+    </div>
+    <div id="error-box" class="error-box"></div>
+    <div id="details">Hover over a function to view time and call metrics</div>
+    <div id="chart"></div>
+  </div>
+
+  <div class="card">
+    <h2>Top 20 Functions by Cumulative CPU Time</h2>
+    <pre>Sun Oct 11 04:37:07 2026    /usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.prof
+
+         122 function calls (123 primitive calls) in 0.021 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       10    0.000    0.000    0.021    0.002 spanner_cpu_profile_suite.py:466(run_point_select_query_go_core_sync)
+       10    0.000    0.000    0.017    0.002 main.go:364([Go Shared Core] main.executeStreamingSqlInternal)
+       10    0.014    0.001    0.014    0.001 runtime:1([Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads))
+       10    0.004    0.000    0.004    0.000 spanner_go_ext:0(execute_streaming_sql)
+       10    0.001    0.000    0.001    0.000 main.go:441([Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet))
+       10    0.001    0.000    0.001    0.000 client.go:138([Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init))
+       10    0.000    0.000    0.000    0.000 main.go:391([Go Shared Core] main.buildExecuteSqlRequestAndAuth)
+       10    0.000    0.000    0.000    0.000 main.go:215([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
+       10    0.000    0.000    0.000    0.000 spanner_go_ext.c:190([C-FFI] batch_to_pylist (CSpannerCell -> PyList))
+       12    0.000    0.000    0.000    0.000 time:0(perf_counter)
+       10    0.000    0.000    0.000    0.000 builtins:0(len)
+       10    0.000    0.000    0.000    0.000 main.go:465([Go Shared Core] main.assembleStreamingRowChunks)
+      0/1    0.000             0.000    0.000 spanner_cpu_profile_suite.py:169(CrossFFIProfileSession.stop)
+
+
+</pre>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.min.js"></script>
+  <script>
+    const data = {"name": "Total Profiled Workload (0.0212s)", "value": 0.021224, "self_time": 0.0, "calls": 1, "children": [{"name": "run_point_select_query_go_core_sync [spanner_cpu_profile_suite.py:466]", "value": 0.021176, "self_time": 2.8e-05, "calls": 10, "children": [{"name": "[Go Shared Core] main.executeStreamingSqlInternal [main.go:364]", "value": 0.016641, "self_time": 1e-06, "calls": 10, "children": [{"name": "[Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads) [runtime:1]", "value": 0.01387, "self_time": 0.01387, "calls": 10, "children": []}, {"name": "[Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet) [main.go:441]", "value": 0.001359, "self_time": 0.001359, "calls": 10, "children": []}, {"name": "[Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init) [client.go:138]", "value": 0.000979, "self_time": 0.000979, "calls": 10, "children": []}, {"name": "[Go Shared Core] main.buildExecuteSqlRequestAndAuth [main.go:391]", "value": 0.000233, "self_time": 0.000233, "calls": 10, "children": []}, {"name": "[Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena) [main.go:215]", "value": 0.00017, "self_time": 0.00017, "calls": 10, "children": []}, {"name": "[Go Shared Core] main.assembleStreamingRowChunks [main.go:465]", "value": 3.1e-05, "self_time": 3.1e-05, "calls": 10, "children": []}]}, {"name": "execute_streaming_sql [spanner_go_ext:0]", "value": 0.004341, "self_time": 0.004341, "calls": 10, "children": []}, {"name": "[C-FFI] batch_to_pylist (CSpannerCell -> PyList) [spanner_go_ext.c:190]", "value": 0.000125, "self_time": 0.000125, "calls": 10, "children": []}, {"name": "len [builtins:0]", "value": 4.1e-05, "self_time": 4.1e-05, "calls": 10, "children": []}]}, {"name": "CrossFFIProfileSession.stop [spanner_cpu_profile_suite.py:169]", "value": 0.0, "self_time": 0.0, "calls": 1, "children": []}]};
+
+    let flamegraphInstance = null;
+
+    try {
+      // Correct constructor resolution: global flamegraph() or d3.flamegraph()
+      const createFlamegraph = (typeof flamegraph === 'function') 
+        ? flamegraph 
+        : (typeof d3 !== 'undefined' && typeof d3.flamegraph === 'function' ? d3.flamegraph : null);
+
+      if (!createFlamegraph) {
+        throw new Error("Flamegraph library failed to load. Please check internet access for CDN scripts.");
+      }
+
+      flamegraphInstance = createFlamegraph()
+        .width(document.getElementById('chart').offsetWidth || 1100)
+        .cellHeight(20)
+        .transitionDuration(400)
+        .minFrameSize(2)
+        .transitionEase(d3.easeCubic)
+        .sort(true)
+        .title("")
+        .onClick(function (d) {
+          console.info("Clicked on " + d.data.name);
+        })
+        .setDetailsElement(document.getElementById("details"));
+
+      d3.select("#chart")
+        .datum(data)
+        .call(flamegraphInstance);
+
+      window.addEventListener('resize', () => {
+        if (flamegraphInstance) {
+          flamegraphInstance.width(document.getElementById('chart').offsetWidth);
+          d3.select("#chart").call(flamegraphInstance);
+        }
+      });
+    } catch (err) {
+      console.error("Error initializing flamegraph:", err);
+      const errBox = document.getElementById("error-box");
+      errBox.style.display = "block";
+      errBox.textContent = "Error rendering flame graph: " + err.message;
+    }
+
+    function search() {
+      const term = document.getElementById("search").value;
+      if (term && flamegraphInstance) {
+        flamegraphInstance.search(term);
+      }
+    }
+
+    function clearSearch() {
+      document.getElementById("search").value = "";
+      if (flamegraphInstance) {
+        flamegraphInstance.clear();
+      }
+    }
+
+    function resetZoom() {
+      if (flamegraphInstance) {
+        flamegraphInstance.resetZoom();
+      }
+    }
+  </script>
+</body>
+</html>
