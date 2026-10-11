@@ -1347,3 +1347,60 @@ class TestCursor(unittest.TestCase):
         )
 
         self.assertEqual(connection._ddl_statements, EXP_DDLS)
+
+    def test_execute_ddl_statement_not_added_to_transaction_helper(self):
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        cursor = self._make_one(connection)
+        sql = "CREATE TABLE table_name (row_id INT64) PRIMARY KEY (row_id)"
+        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+
+        cursor.execute(sql=sql)
+
+        self.assertEqual(connection._ddl_statements, [sql])
+        transaction_helper_mock.add_execute_statement_for_retry.assert_not_called()
+
+    def test_execute_ddl_statement_exception_added_to_transaction_helper(self):
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        cursor = self._make_one(connection)
+        sql = (
+            "CREATE TABLE table_name (row_id INT64) PRIMARY KEY (row_id);"
+            "UPDATE table_name SET row_id = 1"
+        )
+        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+
+        with self.assertRaises(ValueError):
+            cursor.execute(sql=sql)
+
+        self.assertEqual(connection._ddl_statements, [])
+        transaction_helper_mock.add_execute_statement_for_retry.assert_called_once()
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_ddl_then_aborted_dml_does_not_requeue_ddl(
+        self, mock_peek_iterator
+    ):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE table_name (row_id INT64) PRIMARY KEY (row_id)"
+        insert_sql = "INSERT INTO table_name (row_id) VALUES (1)"
+        select_sql = "SELECT row_id FROM table_name"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        metadata_mock = mock.Mock()
+        metadata_mock.trailing_metadata.return_value = {}
+        connection.run_statement = mock.Mock(
+            side_effect=[
+                Aborted("Aborted", errors=[metadata_mock]),
+                mock.MagicMock(),
+                mock.MagicMock(),
+            ]
+        )
+
+        cursor.execute(sql=insert_sql)
+        self.assertEqual(connection._ddl_statements, [])
+        mock_database.update_ddl.assert_called_once_with([ddl_sql])
+
+        cursor.execute(sql=select_sql)
+        mock_database.update_ddl.assert_called_once_with([ddl_sql])
