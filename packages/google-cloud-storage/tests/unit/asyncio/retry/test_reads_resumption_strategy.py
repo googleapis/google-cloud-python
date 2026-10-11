@@ -495,6 +495,37 @@ class TestReadResumptionStrategy(unittest.TestCase):
         self.assertTrue(queued.cancelled())
         self.assertEqual(len(self.state["pending_checksums"]), 0)
 
+    def test_verify_pending_checksums_discards_queue_when_worker_raises(self):
+        content = self._large_chunk()
+        failed, queued = concurrent.futures.Future(), concurrent.futures.Future()
+        failed.set_exception(TypeError("worker failed"))
+        self._offload_to([failed, queued])
+        read_state = self._add_download(_READ_ID, length=2 * len(content))
+        for i in range(2):
+            response = self._create_response(content, _READ_ID, offset=i * len(content))
+            self.strategy.update_state_from_response(response, self.state)
+
+        with self.assertRaisesRegex(TypeError, "worker failed"):
+            asyncio.run(self.strategy.verify_pending_checksums(self.state))
+
+        self.assertTrue(queued.cancelled())
+        self.assertEqual(len(self.state["pending_checksums"]), 0)
+        self.assertEqual(read_state.next_expected_offset, 0)
+
+    def test_update_state_offload_disabled_by_zero_threshold(self):
+        content = self._large_chunk()
+        self._add_download(_READ_ID, length=len(content))
+        with (
+            mock.patch.object(
+                reads_resumption_strategy, "_CRC32C_OFFLOAD_MIN_BYTES", 0
+            ),
+            mock.patch.object(reads_resumption_strategy, "_submit_crc32c") as submit,
+        ):
+            response = self._create_response(content, _READ_ID, offset=0)
+            self.strategy.update_state_from_response(response, self.state)
+        submit.assert_not_called()
+        self.assertFalse(self.state.get("pending_checksums"))
+
     def test_discard_pending_checksums_cancels_and_rewinds(self):
         content = self._large_chunk()
         future = concurrent.futures.Future()

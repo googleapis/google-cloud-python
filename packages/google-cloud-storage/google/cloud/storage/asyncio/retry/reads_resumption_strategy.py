@@ -45,9 +45,10 @@ def _int_from_env(name: str, default: int) -> int:
 
 
 # Chunks at least this large are checksummed on a worker thread instead of the
-# event-loop thread; smaller chunks are hashed inline. The 1 MiB default matches
-# google_crc32c's GIL-release threshold, so offloaded hashes over ``bytes``-backed
-# chunks (received chunks are) always run with the GIL released.
+# event-loop thread; smaller chunks are hashed inline, and 0 (or any value
+# below 1) hashes every chunk inline. The 1 MiB default matches google_crc32c's
+# GIL-release threshold, so offloaded hashes over ``bytes``-backed chunks
+# (received chunks are) always run with the GIL released.
 _CRC32C_OFFLOAD_MIN_BYTES = _int_from_env(
     "GOOGLE_CLOUD_STORAGE_CRC32C_OFFLOAD_MIN_BYTES", 1024 * 1024
 )
@@ -212,7 +213,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             if checksum_enabled and checksummed_data.HasField("crc32c"):
                 server_checksum = checksummed_data.crc32c
                 if (
-                    len(data) >= _CRC32C_OFFLOAD_MIN_BYTES
+                    0 < _CRC32C_OFFLOAD_MIN_BYTES <= len(data)
                     and read_state.rolling_checksum is None
                 ):
                     # Hash off the loop thread; the chunk is written by
@@ -310,17 +311,22 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         unfinished checksum at the head of the queue is waited for. On a
         mismatch, raises DataCorruption after discarding every held chunk
         (see discard_pending_checksums()), so nothing from the corrupt chunk
-        on is written and a retry requests it again.
+        on is written and a retry requests it again; a checksum that failed
+        on the worker is re-raised the same way.
         """
         pending = state.get("pending_checksums")
         while pending:
             chunk = pending[0]
             if chunk.checksum is not None:
-                if not chunk.checksum.done():
-                    if len(pending) <= max_pending:
-                        return
-                    await asyncio.wrap_future(chunk.checksum)
-                client_checksum = chunk.checksum.result()
+                try:
+                    if not chunk.checksum.done():
+                        if len(pending) <= max_pending:
+                            return
+                        await asyncio.wrap_future(chunk.checksum)
+                    client_checksum = chunk.checksum.result()
+                except BaseException:
+                    self.discard_pending_checksums(state)
+                    raise
                 if client_checksum != chunk.server_checksum:
                     self.discard_pending_checksums(state)
                     raise DataCorruption(

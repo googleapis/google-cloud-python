@@ -395,6 +395,11 @@ class AsyncMultiRangeDownloader:
 
         :type enable_checksum: bool
         :param enable_checksum: (Optional) If True, checksums are verified for downloaded data. Defaults to True.
+            Chunks of 1 MiB or more are verified on a worker thread and written
+            to their buffer once the checksum matches; chunks still waiting are
+            discarded if the call is cancelled or a mismatch is found, and a
+            retry requests them again. ``GOOGLE_CLOUD_STORAGE_CRC32C_OFFLOAD_MIN_BYTES``
+            changes the size threshold; ``0`` verifies every chunk inline.
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
