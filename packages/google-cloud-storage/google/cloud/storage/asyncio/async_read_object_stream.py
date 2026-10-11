@@ -68,6 +68,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         generation_number: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
         zero_copy: Optional[bool] = None,
+        client_info=None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -89,7 +90,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         transport = self.client._client._transport
         # Zero-copy BidiReadObject responses when asked for and google-crc32c
         # can verify memoryview payloads; otherwise the generated parser.
-        self.rpc = _zero_copy_bidi_read.wrapped_rpc(transport, zero_copy)
+        self.rpc = _zero_copy_bidi_read.wrapped_rpc(transport, zero_copy, client_info)
         if self.rpc is None:
             self.rpc = transport._wrapped_methods[transport.bidi_read_object]
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)

@@ -277,8 +277,12 @@ def deserialize(buf):
 
     Anything that is not a plain data response (object metadata present, or
     bytes that do not parse cleanly) is handed to the generated parser, which
-    either produces the real message or raises its usual ``DecodeError``.
+    either produces the real message or raises its usual ``DecodeError``. So
+    is any buffer that is not an immutable ``bytes``: the chunks alias ``buf``,
+    which is only safe when nothing can change or recycle it.
     """
+    if type(buf) is not bytes:
+        return _generated_deserialize(buf)
     try:
         mv = memoryview(buf)
         n = len(buf)
@@ -339,13 +343,14 @@ def is_enabled(zero_copy=None):
 _rpcs = weakref.WeakKeyDictionary()
 
 
-def wrapped_rpc(transport, zero_copy=None):
+def wrapped_rpc(transport, zero_copy=None, client_info=None):
     """Return the zero-copy ``BidiReadObject`` callable for ``transport``.
 
     The callable is the generated transport's stub with :func:`deserialize`
     swapped in, wrapped exactly like ``transport._wrapped_methods`` entries
-    (error mapping, no default retry or timeout, the client-info header).
-    Returns ``None`` when :func:`is_enabled` is false for ``zero_copy`` or
+    (error mapping, no default retry or timeout, the ``x-goog-api-client``
+    header from ``client_info``, the transport's own by default). Returns
+    ``None`` when :func:`is_enabled` is false for ``zero_copy`` or
     ``transport`` is not the generated grpc_asyncio transport, in which case
     callers should use the generated wrapped method.
     """
@@ -361,7 +366,7 @@ def wrapped_rpc(transport, zero_copy=None):
             response_deserializer=deserialize,
         )
         rpc = gapic_v1.method_async.wrap_method(
-            stub, default_timeout=None, client_info=DEFAULT_CLIENT_INFO
+            stub, default_timeout=None, client_info=client_info or DEFAULT_CLIENT_INFO
         )
         _rpcs[transport] = rpc
     return rpc

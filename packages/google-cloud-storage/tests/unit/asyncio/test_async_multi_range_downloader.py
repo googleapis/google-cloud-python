@@ -85,6 +85,7 @@ class TestAsyncMultiRangeDownloader:
             generation_number=_TEST_GENERATION_NUMBER,
             read_handle=_TEST_READ_HANDLE,
             zero_copy=None,
+            client_info=mock_client._client_info,
         )
 
         mrd.read_obj_str.open.assert_called_once()

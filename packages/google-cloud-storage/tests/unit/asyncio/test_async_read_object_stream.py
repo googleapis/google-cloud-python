@@ -134,7 +134,7 @@ def test_init_prefers_zero_copy_rpc(mock_wrapped_rpc, mock_client, mock_async_bi
 
     # Assert
     assert read_obj_stream.rpc is mock.sentinel.zero_copy_rpc
-    mock_wrapped_rpc.assert_called_once_with(mock_client._client._transport, None)
+    mock_wrapped_rpc.assert_called_once_with(mock_client._client._transport, None, None)
 
 
 @mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
@@ -158,7 +158,9 @@ def test_init_passes_zero_copy_argument(
         zero_copy=zero_copy,
     )
 
-    mock_wrapped_rpc.assert_called_once_with(mock_client._client._transport, zero_copy)
+    mock_wrapped_rpc.assert_called_once_with(
+        mock_client._client._transport, zero_copy, None
+    )
 
 
 @mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")

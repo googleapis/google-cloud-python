@@ -19,10 +19,14 @@ import logging
 import google_crc32c
 import grpc
 import pytest
+from google.api_core.gapic_v1.client_info import ClientInfo
 from google.auth.credentials import AnonymousCredentials
 from google.protobuf.message import DecodeError
 
 from google.cloud import _storage_v2
+from google.cloud._storage_v2.services.storage.transports.base import (
+    DEFAULT_CLIENT_INFO,
+)
 from google.cloud._storage_v2.services.storage.transports.grpc_asyncio import (
     StorageGrpcAsyncIOTransport,
 )
@@ -492,12 +496,22 @@ def test_is_enabled_argument_overrides_environment(monkeypatch, env):
     assert _zero_copy_bidi_read.is_enabled(True) is False
 
 
+@pytest.mark.parametrize("wrap", [bytearray, memoryview])
+def test_deserialize_only_aliases_immutable_bytes(wrap):
+    # A mutable or recyclable buffer must not be aliased by the chunks.
+    response = _zero_copy_bidi_read.deserialize(wrap(_data_response(crc32c=1)))
+    assert isinstance(response, _storage_v2.BidiReadObjectResponse)
+    assert isinstance(response.object_data_ranges[0].checksummed_data.content, bytes)
+
+
 # --- wrapped_rpc ---------------------------------------------------------------
 
 
-def _transport(target):
+def _transport(target, client_info=None):
     return StorageGrpcAsyncIOTransport(
-        channel=grpc.aio.insecure_channel(target), credentials=AnonymousCredentials()
+        channel=grpc.aio.insecure_channel(target),
+        credentials=AnonymousCredentials(),
+        client_info=client_info or DEFAULT_CLIENT_INFO,
     )
 
 
@@ -600,11 +614,16 @@ async def test_read_object_stream_end_to_end(
     )
     second = _data_response(crc32c=crc)
 
+    client_info = ClientInfo(user_agent="custom-agent/1", gapic_version="9.9.9")
     async with _FakeStorageServer([first, second]) as server:
-        transport = _transport(server.target)
+        transport = _transport(server.target, client_info)
         client = _storage_v2.StorageAsyncClient(transport=transport)
         stream = _AsyncReadObjectStream(
-            client=client, bucket_name="b", object_name="o", zero_copy=supported
+            client=client,
+            bucket_name="b",
+            object_name="o",
+            zero_copy=supported,
+            client_info=client_info,
         )
         try:
             await stream.open()
@@ -642,4 +661,6 @@ async def test_read_object_stream_end_to_end(
     assert server.invocation_metadata["x-goog-request-params"] == (
         "bucket=projects/_/buckets/b"
     )
-    assert "gapic/" in server.invocation_metadata["x-goog-api-client"]
+    # The header the caller's ClientInfo produces, on both parser paths.
+    assert "gapic/9.9.9" in server.invocation_metadata["x-goog-api-client"]
+    assert "custom-agent/1" in server.invocation_metadata["x-goog-api-client"]

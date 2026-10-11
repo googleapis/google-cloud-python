@@ -310,6 +310,7 @@ class AsyncMultiRangeDownloader:
                 generation_number=self.generation,
                 read_handle=self.read_handle,
                 zero_copy=self.zero_copy,
+                client_info=getattr(self.client, "_client_info", None),
             )
 
             if self._routing_token:
@@ -350,6 +351,7 @@ class AsyncMultiRangeDownloader:
                 generation_number=self.generation,
                 read_handle=current_handle,
                 zero_copy=self.zero_copy,
+                client_info=getattr(self.client, "_client_info", None),
             )
 
             current_metadata = list(metadata) if metadata else []
