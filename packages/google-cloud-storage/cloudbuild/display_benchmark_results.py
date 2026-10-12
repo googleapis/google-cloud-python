@@ -19,6 +19,7 @@ import os
 import sys
 
 
+# Display formatted benchmark results from pytest-benchmark JSON output.
 def display_results(result_path: str) -> None:
     """Reads benchmark JSON result and prints a formatted summary table."""
     if not os.path.exists(result_path):
