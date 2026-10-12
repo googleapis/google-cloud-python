@@ -282,7 +282,6 @@ class _StreamPool:
                         if scale_tasks:
                             return assignments, overflow, scale_tasks
 
-
                 current_stream.record_request(1, read_range[1])
                 assignments.setdefault(current_stream, []).append(read_range)
 

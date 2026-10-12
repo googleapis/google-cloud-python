@@ -1443,4 +1443,3 @@ class TestAsyncMultiRangeDownloader:
             assert dispatched_shards[1] == (mrd._pool.streams[1], r_large[4:])
 
         await mrd.close()
-
