@@ -185,6 +185,10 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.client"
 
 _LOGGER = logging.getLogger(__name__)
 
+# Short timeout for the metadata-server call that resolves a CE credential's
+# principal. 169.254.169.254 is link-local, so a missing route or blackholed
+# host would otherwise block client construction for the OS TCP timeout.
+_PRINCIPAL_RESOLVE_TIMEOUT = 5.0  # seconds
 
 # Sentinel distinguishing "principal not yet resolved" from a resolved value of
 # None (the unverifiable case), so resolution is attempted at most once.
@@ -396,6 +400,7 @@ class BigtableDataClientAsync(ClientWithProject):
         self._accelerator_blocked_reason: str | None = None
         self._accelerator_flags: list[str] = []
         self._accelerator_env: dict[str, str] = {}
+        self._cached_principal: str | None | object = _UNSET
 
         # In-memory secrets that cannot be forwarded to a separate process.
         if explicit_credentials:
@@ -465,9 +470,8 @@ class BigtableDataClientAsync(ClientWithProject):
 
         Cached: resolution runs at most once per client.
         """
-        cached = getattr(self, "_cached_principal", _UNSET)
-        if cached is not _UNSET:
-            return cast("str | None", cached)
+        if self._cached_principal is not _UNSET:
+            return cast("str | None", self._cached_principal)
 
         creds = self._credentials
         email = getattr(creds, "service_account_email", None)
@@ -477,14 +481,22 @@ class BigtableDataClientAsync(ClientWithProject):
             # Compute Engine credentials only populate the email after a refresh
             # against the (link-local, non-egress) metadata server.
             try:
-                creds.refresh(google_auth_requests.Request())
-            except Exception:
-                pass
+                # Request.__call__ passes timeout=120 to session.request, so
+                # inject our bound at the session level to always override it.
+                _auth_req = google_auth_requests.Request()
+                _http = _auth_req.session.request
+
+                def _with_timeout(*args, **kwargs):
+                    kwargs["timeout"] = _PRINCIPAL_RESOLVE_TIMEOUT
+                    return _http(*args, **kwargs)
+
+                _auth_req.session.request = _with_timeout
+                creds.refresh(_auth_req)
+            except Exception as exc:
+                _LOGGER.debug("Compute Engine credential refresh failed: %s", exc)
             email = getattr(creds, "service_account_email", None)
 
-        principal: str | None = email or None
-        if principal == "default":
-            principal = None
+        principal: str | None = email if (email and email != "default") else None
         self._cached_principal = principal
         return principal
 
@@ -1390,6 +1402,9 @@ class _DataApiTargetAsync(abc.ABC):
         except _AcceleratorIdentityError as exc:
             if explicit:
                 raise
+            # Callers using gcloud user ADC (_resolve_principal returns None)
+            # consistently land here; fail-closed to the native client is
+            # intentional — user ADC is almost never what the daemon resolved.
             warnings.warn(
                 f"Accelerator disabled: {exc}",
                 RuntimeWarning,

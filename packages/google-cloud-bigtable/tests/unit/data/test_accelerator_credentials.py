@@ -26,12 +26,15 @@ from google.cloud.bigtable.data._async.client import (
     BigtableDataClientAsync,
     _AcceleratorIdentityError,
     _DataApiTargetAsync,
+    _UNSET,
 )
 
 
 def _bare_client():
     """A client instance that skips __init__ (no network / event loop)."""
-    return object.__new__(BigtableDataClientAsync)
+    c = object.__new__(BigtableDataClientAsync)
+    c._cached_principal = _UNSET
+    return c
 
 
 class _FakeCreds:

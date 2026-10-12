@@ -139,6 +139,7 @@ if TYPE_CHECKING:
     )
 
 _LOGGER = logging.getLogger(__name__)
+_PRINCIPAL_RESOLVE_TIMEOUT = 5.0  # seconds
 _UNSET: Any = object()
 
 
@@ -305,6 +306,7 @@ class BigtableDataClient(ClientWithProject):
         self._accelerator_blocked_reason: str | None = None
         self._accelerator_flags: list[str] = []
         self._accelerator_env: dict[str, str] = {}
+        self._cached_principal: str | None | object = _UNSET
         if explicit_credentials:
             self._accelerator_blocked_reason = "an explicit credentials= object cannot be forwarded to the accelerator daemon"
         elif client_options is not None and getattr(client_options, "api_key", None):
@@ -351,22 +353,27 @@ class BigtableDataClient(ClientWithProject):
         and falls back to the native client.
 
         Cached: resolution runs at most once per client."""
-        cached = getattr(self, "_cached_principal", _UNSET)
-        if cached is not _UNSET:
-            return cast("str | None", cached)
+        if self._cached_principal is not _UNSET:
+            return cast("str | None", self._cached_principal)
         creds = self._credentials
         email = getattr(creds, "service_account_email", None)
         if (not email or email == "default") and isinstance(
             creds, compute_engine.Credentials
         ):
             try:
-                creds.refresh(google_auth_requests.Request())
-            except Exception:
-                pass
+                _auth_req = google_auth_requests.Request()
+                _http = _auth_req.session.request
+
+                def _with_timeout(*args, **kwargs):
+                    kwargs["timeout"] = _PRINCIPAL_RESOLVE_TIMEOUT
+                    return _http(*args, **kwargs)
+
+                _auth_req.session.request = _with_timeout
+                creds.refresh(_auth_req)
+            except Exception as exc:
+                _LOGGER.debug("Compute Engine credential refresh failed: %s", exc)
             email = getattr(creds, "service_account_email", None)
-        principal: str | None = email or None
-        if principal == "default":
-            principal = None
+        principal: str | None = email if (email and email != "default") else None
         self._cached_principal = principal
         return principal
 
@@ -1095,6 +1102,9 @@ class _DataApiTarget(abc.ABC):
         except _AcceleratorIdentityError as exc:
             if explicit:
                 raise
+            # Callers using gcloud user ADC (_resolve_principal returns None)
+            # consistently land here; fail-closed to the native client is
+            # intentional — user ADC is almost never what the daemon resolved.
             warnings.warn(
                 f"Accelerator disabled: {exc}",
                 RuntimeWarning,
