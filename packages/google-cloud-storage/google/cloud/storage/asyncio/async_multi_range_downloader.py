@@ -85,21 +85,21 @@ def _is_read_retryable(exc):
 class MRDStreamConfig:
     """Configuration parameters for multi-stream download scaling and load balancing.
 
-    :type min_connections: int
-    :param min_connections: Minimum number of streams opened at initialization. Defaults to 1.
+    :type min_streams: int
+    :param min_streams: Minimum number of streams opened at initialization. Defaults to 1.
 
-    :type max_connections: int
-    :param max_connections: Maximum concurrent streams allowed. Defaults to 8.
+    :type max_streams: int
+    :param max_streams: Maximum concurrent streams allowed. Defaults to 8.
 
     :type target_io_depth: int
-    :param target_io_depth: Target outstanding requests per connection before scaling up. Defaults to 8.
+    :param target_io_depth: Target outstanding requests per stream before scaling up. Defaults to 8.
 
     :type target_bytes: int
-    :param target_bytes: Target outstanding bytes per connection before scaling up. Defaults to 8 MB.
+    :param target_bytes: Target outstanding bytes per stream before scaling up. Defaults to 8 MB.
     """
 
-    min_connections: int = 1
-    max_connections: int = 8
+    min_streams: int = 1
+    max_streams: int = 8
     target_io_depth: int = 8
     target_bytes: int = 8 * 1024 * 1024
 
@@ -121,7 +121,11 @@ class _PooledStream:
         """Returns normalized load metric combining request count and bytes."""
         u_req = self.pending_ranges / target_io_depth if target_io_depth > 0 else 0.0
         u_bytes = self.pending_bytes / target_bytes if target_bytes > 0 else 0.0
-        return 0.5 * u_req + 0.5 * u_bytes
+        return 0.5 * (u_req + u_bytes)
+
+    def is_fully_loaded(self, target_io_depth: int, target_bytes: int) -> bool:
+        """Returns True if normalized load is at or above 1.0."""
+        return self.calculate_load(target_io_depth, target_bytes) >= 1.0
 
     def record_request(self, range_count: int, byte_count: int) -> None:
         self.pending_ranges += range_count
@@ -135,30 +139,32 @@ class _PooledStream:
         """Closes the underlying multiplexer and stream cleanly."""
         try:
             await self.multiplexer.close()
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning(f"Failed to close stream multiplexer: {e}")
         try:
             res = self.stream.close()
             if inspect.isawaitable(res):
                 await res
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning(f"Failed to close underlying read stream: {e}")
 
 
 class _StreamPool:
-    """Manages a pool of _PooledStream instances with dynamic scaling and least-loaded dispatch."""
+    """Manages a pool of _PooledStream instances with dynamic scaling and a hybrid
+    stream selection strategy (least-loaded across base streams, first-fit across
+    scaled streams) with contiguous range distribution."""
 
     def __init__(
         self,
         stream_factory: Callable[[], Awaitable[_PooledStream]],
-        min_connections: int = 1,
-        max_connections: int = 8,
+        min_streams: int = 1,
+        max_streams: int = 8,
         target_io_depth: int = 8,
         target_bytes: int = 8 * 1024 * 1024,
     ):
         self._stream_factory = stream_factory
-        self.min_connections = max(1, min_connections)
-        self.max_connections = max(self.min_connections, max_connections)
+        self.min_streams = max(1, min_streams)
+        self.max_streams = max(self.min_streams, max_streams)
         self.target_io_depth = target_io_depth
         self.target_bytes = target_bytes
 
@@ -172,37 +178,116 @@ class _StreamPool:
         async with self._lock:
             self.streams.append(pooled_stream)
 
+    def _select_stream(self) -> _PooledStream:
+        base_streams = self.streams[: self.min_streams]
+        best_base = min(
+            base_streams,
+            key=lambda s: s.calculate_load(self.target_io_depth, self.target_bytes),
+        )
+        if not best_base.is_fully_loaded(self.target_io_depth, self.target_bytes):
+            return best_base
+
+        for stream in self.streams[self.min_streams :]:
+            if not stream.is_fully_loaded(self.target_io_depth, self.target_bytes):
+                return stream
+
+        return min(
+            self.streams,
+            key=lambda s: s.calculate_load(self.target_io_depth, self.target_bytes),
+        )
+
+    def _maybe_scale_up(self, extra_load: float = 0.0) -> List[asyncio.Task]:
+        total_load = (
+            sum(
+                s.calculate_load(self.target_io_depth, self.target_bytes)
+                for s in self.streams
+            )
+            + extra_load
+        )
+        desired_streams = math.ceil(total_load)
+        planned_streams = len(self.streams) + self._pending_scale_ups
+        needed_scale_ups = max(
+            0, min(desired_streams, self.max_streams) - planned_streams
+        )
+
+        tasks = []
+        for _ in range(needed_scale_ups):
+            self._pending_scale_ups += 1
+            task = asyncio.create_task(self._scale_up())
+            self._background_tasks.add(task)
+            task.add_done_callback(self._background_tasks.discard)
+            tasks.append(task)
+        return tasks
+
     async def acquire_stream(self, range_count: int, req_bytes: int) -> _PooledStream:
-        """Finds least loaded stream and triggers background scale-up proportional to load."""
+        """Selects stream based on load and triggers background scale-up."""
         async with self._lock:
             if self._closed:
                 raise ValueError("Pool is closed")
             if not self.streams:
                 raise ValueError("No streams available in stream pool")
-            best = min(
-                self.streams,
-                key=lambda s: s.calculate_load(self.target_io_depth, self.target_bytes),
-            )
-            best.record_request(range_count, req_bytes)
 
-            # Trigger background scale-ups proportional to total load across all streams
-            total_load = sum(
-                s.calculate_load(self.target_io_depth, self.target_bytes)
-                for s in self.streams
-            )
-            desired_streams = math.ceil(total_load)
-            planned_streams = len(self.streams) + self._pending_scale_ups
-            needed_scale_ups = max(
-                0, min(desired_streams, self.max_connections) - planned_streams
-            )
+            selected = self._select_stream()
+            selected.record_request(range_count, req_bytes)
+            self._maybe_scale_up()
+            return selected
 
-            for _ in range(needed_scale_ups):
-                self._pending_scale_ups += 1
-                task = asyncio.create_task(self._scale_up())
-                self._background_tasks.add(task)
-                task.add_done_callback(self._background_tasks.discard)
+    async def distribute_ranges(
+        self,
+        read_ranges: List[Tuple[int, int, BytesIO]],
+        allow_scale_up: bool = True,
+    ) -> Tuple[
+        Dict[_PooledStream, List[Tuple[int, int, BytesIO]]],
+        List[Tuple[int, int, BytesIO]],
+        List[asyncio.Task],
+    ]:
+        """Distributes read_ranges across open streams, returning any overflow that awaits scale-up."""
+        async with self._lock:
+            if self._closed:
+                raise ValueError("Pool is closed")
+            if not self.streams:
+                raise ValueError("No streams available in stream pool")
 
-            return best
+            assignments: Dict[_PooledStream, List[Tuple[int, int, BytesIO]]] = {}
+            current_stream: Optional[_PooledStream] = None
+
+            for idx, read_range in enumerate(read_ranges):
+                if current_stream is None or current_stream.is_fully_loaded(
+                    self.target_io_depth, self.target_bytes
+                ):
+                    current_stream = self._select_stream()
+                    if (
+                        allow_scale_up
+                        and len(read_ranges) > 1
+                        and all(
+                            s.is_fully_loaded(self.target_io_depth, self.target_bytes)
+                            for s in self.streams
+                        )
+                    ):
+                        overflow = read_ranges[idx:]
+                        overflow_bytes = sum(length for _, length, _ in overflow)
+                        u_req = (
+                            len(overflow) / self.target_io_depth
+                            if self.target_io_depth > 0
+                            else 0.0
+                        )
+                        u_bytes = (
+                            overflow_bytes / self.target_bytes
+                            if self.target_bytes > 0
+                            else 0.0
+                        )
+                        scale_tasks = self._maybe_scale_up(
+                            extra_load=0.5 * (u_req + u_bytes)
+                        )
+                        if scale_tasks:
+                            return assignments, overflow, scale_tasks
+
+
+                current_stream.record_request(1, read_range[1])
+                assignments.setdefault(current_stream, []).append(read_range)
+
+            self._maybe_scale_up()
+            return assignments, [], []
 
     async def _scale_up(self) -> None:
         try:
@@ -473,7 +558,6 @@ class AsyncMultiRangeDownloader:
                 current_metadata.append(
                     ("x-goog-request-params", f"routing_token={self._routing_token}")
                 )
-                self._routing_token = None
 
             await self.read_obj_str.open(
                 metadata=current_metadata if current_metadata else None
@@ -495,21 +579,21 @@ class AsyncMultiRangeDownloader:
         self._multiplexer = _StreamMultiplexer(self.read_obj_str)
         self._primary_stream = _PooledStream(self.read_obj_str, self._multiplexer)
 
-        if self.stream_config is not None and self.stream_config.max_connections > 1:
+        if self.stream_config is not None and self.stream_config.max_streams > 1:
             self._pool = _StreamPool(
                 stream_factory=self._create_pooled_stream,
-                min_connections=self.stream_config.min_connections,
-                max_connections=self.stream_config.max_connections,
+                min_streams=self.stream_config.min_streams,
+                max_streams=self.stream_config.max_streams,
                 target_io_depth=self.stream_config.target_io_depth,
                 target_bytes=self.stream_config.target_bytes,
             )
             await self._pool.add_stream(self._primary_stream)
 
-            if self.stream_config.min_connections > 1:
+            if self.stream_config.min_streams > 1:
                 extra_streams = await asyncio.gather(
                     *(
                         self._create_pooled_stream()
-                        for _ in range(self.stream_config.min_connections - 1)
+                        for _ in range(self.stream_config.min_streams - 1)
                     ),
                     return_exceptions=True,
                 )
@@ -531,25 +615,42 @@ class AsyncMultiRangeDownloader:
 
     async def _create_pooled_stream(self) -> _PooledStream:
         """Opens an additional pooled stream using current routing and read_handle."""
-        current_metadata = list(self._metadata) if self._metadata else []
-        if self._routing_token:
-            current_metadata.append(
-                ("x-goog-request-params", f"routing_token={self._routing_token}")
+        stream: Optional[_AsyncReadObjectStream] = None
+
+        async def _do_open_pooled():
+            nonlocal stream
+            if stream is not None and getattr(stream, "is_stream_open", False):
+                try:
+                    await stream.close()
+                except exceptions.GoogleAPICallError as e:
+                    logger.warning(
+                        f"Failed to close existing pooled stream during resumption: {e}"
+                    )
+
+            current_metadata = list(self._metadata) if self._metadata else []
+            if self._routing_token:
+                current_metadata.append(
+                    ("x-goog-request-params", f"routing_token={self._routing_token}")
+                )
+
+            stream = _AsyncReadObjectStream(
+                client=self.client.grpc_client,
+                bucket_name=self.bucket_name,
+                object_name=self.object_name,
+                generation_number=self.generation,
+                read_handle=self.read_handle,
             )
+            await stream.open(metadata=current_metadata if current_metadata else None)
 
-        stream = _AsyncReadObjectStream(
-            client=self.client.grpc_client,
-            bucket_name=self.bucket_name,
-            object_name=self.object_name,
-            generation_number=self.generation,
-            read_handle=self.read_handle,
+            if stream.generation_number:
+                self.generation = stream.generation_number
+            if stream.read_handle:
+                self.read_handle = stream.read_handle
+
+        retry_policy = AsyncRetry(
+            predicate=_is_open_retryable, on_error=self._on_open_error
         )
-        await stream.open(metadata=current_metadata if current_metadata else None)
-
-        if stream.generation_number:
-            self.generation = stream.generation_number
-        if stream.read_handle:
-            self.read_handle = stream.read_handle
+        await retry_policy(_do_open_pooled)()
 
         mux = _StreamMultiplexer(stream)
         return _PooledStream(stream, mux)
@@ -585,6 +686,8 @@ class AsyncMultiRangeDownloader:
                 self.generation = stream.generation_number
             if stream.read_handle:
                 self.read_handle = stream.read_handle
+            if current_token:
+                self._routing_token = current_token
             self.is_finalized = stream.is_finalized
             self.full_obj_server_crc32c = stream.full_obj_server_crc32c
 
@@ -681,7 +784,7 @@ class AsyncMultiRangeDownloader:
         initial_state = {
             "download_states": download_states,
             "read_handle": self.read_handle,
-            "routing_token": None,
+            "routing_token": self._routing_token,
             "enable_checksum": enable_checksum,
             "full_obj_server_crc32c": self.full_obj_server_crc32c,
         }
@@ -782,6 +885,8 @@ class AsyncMultiRangeDownloader:
 
             if initial_state.get("read_handle"):
                 self.read_handle = initial_state["read_handle"]
+            if initial_state.get("routing_token"):
+                self._routing_token = initial_state["routing_token"]
         finally:
             if pooled_stream.multiplexer is not None:
                 pooled_stream.multiplexer.unregister(read_ids)
@@ -843,20 +948,44 @@ class AsyncMultiRangeDownloader:
         if retry_policy is None:
             retry_policy = AsyncRetry(predicate=_is_read_retryable)
 
-        # Fallback for manually mocked tests that set mrd._multiplexer without calling open()
         if self._primary_stream is None and self.read_obj_str and self._multiplexer:
             self._primary_stream = _PooledStream(self.read_obj_str, self._multiplexer)
 
         if self._pool is not None:
-            total_bytes = sum(length for _, length, _ in read_ranges)
-            total_ranges = len(read_ranges)
-            pooled_stream = await self._pool.acquire_stream(total_ranges, total_bytes)
-            try:
-                await self._download_ranges_on_stream(
-                    pooled_stream, read_ranges, retry_policy, metadata, enable_checksum
+
+            async def _download_batch(
+                stream: _PooledStream,
+                batch: List[Tuple[int, int, BytesIO]],
+            ) -> None:
+                batch_bytes = sum(length for _, length, _ in batch)
+                try:
+                    await self._download_ranges_on_stream(
+                        stream, batch, retry_policy, metadata, enable_checksum
+                    )
+                finally:
+                    if self._pool is not None:
+                        self._pool.release_stream(stream, len(batch), batch_bytes)
+
+            async def _download_overflow() -> None:
+                await asyncio.gather(*scale_tasks)
+                extra_assignments, _, _ = await self._pool.distribute_ranges(
+                    overflow, allow_scale_up=False
                 )
-            finally:
-                self._pool.release_stream(pooled_stream, total_ranges, total_bytes)
+                await asyncio.gather(
+                    *(_download_batch(s, b) for s, b in extra_assignments.items())
+                )
+
+            assignments, overflow, scale_tasks = await self._pool.distribute_ranges(
+                read_ranges
+            )
+            tasks = [_download_batch(s, b) for s, b in assignments.items()]
+            if overflow:
+                tasks.append(_download_overflow())
+
+            if len(tasks) == 1:
+                await tasks[0]
+            elif tasks:
+                await asyncio.gather(*tasks)
         else:
             await self._download_ranges_on_stream(
                 self._primary_stream,
