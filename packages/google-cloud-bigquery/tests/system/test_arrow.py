@@ -16,6 +16,7 @@
 
 import datetime
 from typing import Optional
+from unittest import mock
 
 import pyarrow
 import pytest
@@ -413,3 +414,43 @@ def test_query_and_wait_arrow_timestamp_precision_picosecond_column(
         assert all(".123456789012" in value for value in values)
     else:
         assert values == _MICROSECOND_VALUES
+
+
+@pytest.mark.parametrize(
+    ("page_size", "priority", "expected_offset"),
+    [
+        (100, None, 100),
+        # jobs.query doesn't accept a priority, so this case runs through
+        # jobs.insert, which returns no rows inline.
+        (None, enums.QueryPriority.INTERACTIVE, 0),
+    ],
+    ids=["some_rows_inline", "no_rows_inline"],
+)
+def test_query_and_wait_arrow_matches_struct_encoding(
+    bigquery_client, bqstorage_client, page_size, priority, expected_offset
+):
+    query = (
+        "SELECT x, CAST(x AS STRING) AS s, MOD(x, 2) = 0 AS even, "
+        "DATE_ADD(DATE '2026-01-01', INTERVAL x DAY) AS d "
+        "FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x"
+    )
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        job_config.priority = priority
+    expected = [
+        dict(row.items())
+        for row in bigquery_client.query_and_wait(query, job_config=job_config)
+    ]
+    read_rows = mock.Mock(wraps=bqstorage_client.read_rows)
+
+    rows = bigquery_client.query_and_wait(
+        query,
+        job_config=job_config,
+        page_size=page_size,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    with mock.patch.object(bqstorage_client, "read_rows", read_rows):
+        batches = list(rows.to_arrow_iterable(bqstorage_client=bqstorage_client))
+
+    assert pyarrow.Table.from_batches(batches).to_pylist() == expected
+    assert read_rows.call_args.kwargs["offset"] == expected_offset

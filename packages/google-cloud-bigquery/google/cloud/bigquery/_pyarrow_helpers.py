@@ -238,6 +238,13 @@ def _to_read_api_arrow_options(
     }
 
 
+def _arrow_has_more_pages(
+    response: Dict[str, Any],
+) -> bool:
+    """Return True if an ARROW ``jobs.query`` response has more rows to stream."""
+    return int(response.get("pageRowCount", 0)) < int(response.get("totalRows", 0))
+
+
 def _deserialize_arrow_schema(
     schema_bytes: Union[bytes, str],
 ) -> "pyarrow.Schema":
@@ -329,7 +336,6 @@ def download_arrow_from_job(
     # Step 2: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
         first_page = row_iterator._first_page_response
-        row_iterator._first_page_response = None
 
         job_complete = bool(first_page.get("jobComplete", False))
         if job_complete:
