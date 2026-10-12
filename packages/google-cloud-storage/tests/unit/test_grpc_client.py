@@ -248,6 +248,35 @@ class TestGrpcClient(unittest.TestCase):
 
     @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
+    def test_create_gapic_client_custom_client_options_with_interconnect(
+        self, mock_storage_client, mock_base_client
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+        mock_base_client.return_value._credentials = mock_creds
+
+        client_options_obj = client_options_lib.ClientOptions(
+            api_endpoint="custom.endpoint.com",
+            quota_project_id="my-quota-proj",
+        )
+        grpc_client.GrpcClient(
+            project="test-project",
+            credentials=mock_creds,
+            client_options=client_options_obj,
+            attempt_direct_path_xds_over_interconnect=True,
+        )
+
+        mock_transport_cls.create_channel.assert_called_once_with(
+            host="custom.endpoint.com",
+            credentials=mock_creds,
+            quota_project_id="my-quota-proj",
+            attempt_direct_path=True,
+            attempt_direct_path_xds_over_interconnect=True,
+        )
+
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_grpc_client_attempt_direct_path_xds_over_interconnect_env_override(
         self, mock_storage_client, mock_base_client
     ):

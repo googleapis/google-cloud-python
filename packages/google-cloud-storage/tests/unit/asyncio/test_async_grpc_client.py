@@ -460,6 +460,38 @@ class TestAsyncGrpcClient:
         )
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_create_gapic_client_custom_client_options_with_interconnect(
+        self, mock_async_storage_client
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+
+        client_options_obj = client_options.ClientOptions(
+            api_endpoint="custom.endpoint.com",
+            quota_project_id="my-quota-proj",
+        )
+        async_grpc_client.AsyncGrpcClient(
+            credentials=mock_creds,
+            client_options=client_options_obj,
+            attempt_direct_path_xds_over_interconnect=True,
+        )
+
+        kwargs = mock_async_storage_client.call_args.kwargs
+        client_info = kwargs["client_info"]
+        primary_user_agent = client_info.to_user_agent()
+        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+
+        mock_transport_cls.create_channel.assert_called_once_with(
+            host="custom.endpoint.com",
+            quota_project_id="my-quota-proj",
+            attempt_direct_path=True,
+            attempt_direct_path_xds_over_interconnect=True,
+            credentials=mock_creds,
+            options=expected_options,
+        )
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_async_grpc_client_interconnect_env_override(
         self, mock_async_storage_client
     ):
