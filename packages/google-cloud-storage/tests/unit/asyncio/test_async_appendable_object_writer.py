@@ -173,6 +173,7 @@ class TestAsyncAppendableObjectWriter:
             write_handle=None,
             routing_token=None,
             storage_class=storage_class,
+            if_generation_match=None,
         )
         assert writer.write_obj_stream.storage_class == storage_class
 
@@ -272,6 +273,7 @@ class TestAsyncAppendableObjectWriter:
             write_handle=None,
             routing_token=None,
             storage_class=storage_class,
+            if_generation_match=None,
         )
         assert writer.write_obj_stream.storage_class == storage_class
 
@@ -311,6 +313,19 @@ class TestAsyncAppendableObjectWriter:
         mock_stream_cls = mock_appendable_writer["mock_stream_cls"]
         assert mock_stream_cls.call_args.kwargs["storage_class"] is None
         assert writer.write_obj_stream.storage_class is None
+
+    @pytest.mark.asyncio
+    async def test_open_passes_if_generation_match(self, mock_appendable_writer):
+        writer = self._make_one(
+            mock_appendable_writer["mock_client"], if_generation_match=123
+        )
+        assert writer.if_generation_match == 123
+
+        await writer.open()
+
+        mock_stream_cls = mock_appendable_writer["mock_stream_cls"]
+        assert mock_stream_cls.call_args.kwargs["if_generation_match"] == 123
+        assert mock_stream_cls.call_args.kwargs["generation_number"] is None
 
     def test_on_open_error_redirection(self, mock_appendable_writer):
         """Verify redirect info is extracted from helper."""

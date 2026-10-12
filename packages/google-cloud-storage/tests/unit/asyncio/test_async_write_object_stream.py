@@ -188,6 +188,61 @@ class TestAsyncWriteObjectStream:
 
     @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
     @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "generation_number, if_generation_match, expected",
+        [(None, None, None), (0, None, 0), (None, 0, 0), (None, 123, 123)],
+    )
+    async def test_open_new_object_if_generation_match(
+        self,
+        mock_rpc_cls,
+        mock_client,
+        generation_number,
+        if_generation_match,
+        expected,
+    ):
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.recv = AsyncMock(return_value=MagicMock(resource=None))
+
+        stream = _AsyncWriteObjectStream(
+            mock_client,
+            BUCKET,
+            OBJECT,
+            generation_number=generation_number,
+            if_generation_match=if_generation_match,
+        )
+        await stream.open()
+
+        spec = mock_rpc_cls.call_args.kwargs["initial_request"].write_object_spec
+        assert spec.appendable
+        if expected is None:
+            assert "if_generation_match" not in spec
+        else:
+            assert spec.if_generation_match == expected
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
+    async def test_open_existing_object_ignores_if_generation_match(
+        self, mock_rpc_cls, mock_client
+    ):
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.recv = AsyncMock(return_value=MagicMock(resource=None))
+
+        stream = _AsyncWriteObjectStream(
+            mock_client,
+            BUCKET,
+            OBJECT,
+            generation_number=GENERATION,
+            if_generation_match=123,
+        )
+        await stream.open()
+
+        initial_request = mock_rpc_cls.call_args.kwargs["initial_request"]
+        assert initial_request.append_object_spec.generation == GENERATION
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
     async def test_open_metadata_merging(self, mock_rpc_cls, mock_client):
         mock_rpc = mock_rpc_cls.return_value
         mock_rpc.open = AsyncMock()
