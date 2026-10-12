@@ -21,14 +21,19 @@ and
 https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema/pyarrow_to_bigquery.py
 """
 
-from typing import Any, Optional, TYPE_CHECKING
+from __future__ import annotations
+
+import base64
+from typing import Any, Dict, Iterator, Optional, TYPE_CHECKING, Union
 
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import enums
 from google.cloud.bigquery import exceptions
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud import bigquery_storage
     from google.cloud.bigquery import job
+    from google.cloud.bigquery.table import RowIterator
 
 try:
     import pyarrow  # type: ignore
@@ -191,3 +196,172 @@ def _check_arrow_dependencies() -> None:
             "(version found: "
             f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
         )
+
+
+def _to_rest_arrow_options(
+    compression_codec: Optional[str],
+) -> Dict[str, str]:
+    """Build the ``jobs.query`` ``arrowSerializationOptions`` dict.
+
+    Send the same options on ``jobs.query`` and ``ReadRows``, including the
+    defaults, so every batch in the result uses one encoding.
+    """
+    return {
+        "bufferCompression": getattr(compression_codec, "value", compression_codec)
+        or "COMPRESSION_UNSPECIFIED",
+        "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+    }
+
+
+def _to_read_api_arrow_options(
+    options: Optional[Dict[str, str]],
+) -> Dict[str, str]:
+    """Convert ``jobs.query`` ``arrowSerializationOptions`` to the BigQuery
+    Storage ``ArrowSerializationOptions`` fields, filling in the defaults.
+    """
+    options = options or {}
+    return {
+        "buffer_compression": options.get(
+            "bufferCompression", "COMPRESSION_UNSPECIFIED"
+        ),
+        "picos_timestamp_precision": options.get(
+            "picosTimestampPrecision", "TIMESTAMP_PRECISION_MICROS"
+        ),
+    }
+
+
+def _deserialize_arrow_schema(
+    schema_bytes: Union[bytes, str],
+) -> "pyarrow.Schema":
+    """Deserialize an Arrow IPC schema from bytes or base64-encoded string."""
+    if isinstance(schema_bytes, str):
+        schema_bytes = base64.b64decode(schema_bytes)
+    return pyarrow.ipc.read_schema(pyarrow.py_buffer(schema_bytes))
+
+
+def _deserialize_arrow_batch(
+    batch_bytes: Union[bytes, str],
+    schema: "pyarrow.Schema",
+) -> "pyarrow.RecordBatch":
+    """Deserialize an Arrow IPC record batch from bytes or base64-encoded string."""
+    if isinstance(batch_bytes, str):
+        batch_bytes = base64.b64decode(batch_bytes)
+    return pyarrow.ipc.read_record_batch(pyarrow.py_buffer(batch_bytes), schema)
+
+
+def _open_arrow_read_stream(
+    row_iterator: "RowIterator",
+    bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"],
+    offset: int,
+    timeout: Optional[float],
+) -> Any:
+    """Open a BigQuery Storage Read API stream for remaining Arrow rows."""
+    if bqstorage_client is None:
+        if row_iterator.client is None:
+            raise ValueError("RowIterator client is None.")
+        bqstorage_client = row_iterator.client._ensure_bqstorage_client()
+        if bqstorage_client is None:
+            raise ValueError(
+                "The google-cloud-bigquery-storage library is required to read "
+                "Arrow results (`pip install google-cloud-bigquery-storage`)."
+            )
+
+    read_options = _to_read_api_arrow_options(row_iterator._arrow_serialization_options)
+    project = row_iterator._project or (
+        row_iterator.client.project if row_iterator.client else None
+    )
+    location = row_iterator._location or (
+        row_iterator.client.location if row_iterator.client else None
+    )
+    stream_name = f"projects/{project}/locations/{location}/jobs/{row_iterator._job_id}/streams/_default"
+    return bqstorage_client.read_rows(
+        stream_name,
+        offset=offset,
+        timeout=timeout,
+        arrow_serialization_options=read_options,
+    )
+
+
+_NO_PYARROW_ERROR = (
+    "The pyarrow library is not installed, please install "
+    "pyarrow to use the to_arrow() function."
+)
+
+
+def download_arrow_from_job(
+    row_iterator: "RowIterator",
+    bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
+    timeout: Optional[float] = None,
+) -> Iterator["pyarrow.RecordBatch"]:
+    """Yield Arrow record batches for query results formatted as ARROW.
+
+    First processes inline Arrow data in the initial page response (if present),
+    updating row offset and total row counts. If more rows remain, streams
+    remaining batches using the BigQuery Read API.
+    """
+    if pyarrow is None:
+        raise ValueError(_NO_PYARROW_ERROR)
+
+    # Step 1: Ensure BigQuery Read API client is available upfront.
+    if bqstorage_client is None:
+        if row_iterator.client is None:
+            raise ValueError("RowIterator client is None.")
+        bqstorage_client = row_iterator.client._ensure_bqstorage_client()
+        if bqstorage_client is None:
+            raise ValueError(
+                "The google-cloud-bigquery-storage library is required to read "
+                "Arrow results (`pip install google-cloud-bigquery-storage`)."
+            )
+
+    offset = 0
+    pa_schema: Optional["pyarrow.Schema"] = None
+    total_rows = row_iterator.total_rows
+    job_complete = False
+
+    # Step 2: Process initial inline Arrow response from jobs.query if available.
+    if row_iterator._first_page_response:
+        first_page = row_iterator._first_page_response
+        row_iterator._first_page_response = None
+
+        job_complete = bool(first_page.get("jobComplete", False))
+        if job_complete:
+            total_rows = int(first_page.get("totalRows", 0))
+
+        schema_bytes = (first_page.get("arrowSchema") or {}).get("serializedSchema")
+        if schema_bytes:
+            pa_schema = _deserialize_arrow_schema(schema_bytes)
+
+        batch_bytes = (first_page.get("arrowRecordBatch") or {}).get(
+            "serializedRecordBatch"
+        )
+        if batch_bytes and pa_schema is not None:
+            batch = _deserialize_arrow_batch(batch_bytes, pa_schema)
+            offset += batch.num_rows
+            yield batch
+
+    # Step 3: Return early if all results were delivered in the first page response.
+    if job_complete and offset >= total_rows:
+        return
+
+    # Step 4: Stream remaining Arrow record batches from the job default stream.
+    reader = _open_arrow_read_stream(
+        row_iterator, bqstorage_client, offset, timeout
+    )
+    for response in reader:
+        if (
+            response.arrow_schema
+            and response.arrow_schema.serialized_schema
+            and pa_schema is None
+        ):
+            pa_schema = _deserialize_arrow_schema(
+                response.arrow_schema.serialized_schema
+            )
+        if (
+            response.arrow_record_batch
+            and response.arrow_record_batch.serialized_record_batch
+            and pa_schema is not None
+        ):
+            yield _deserialize_arrow_batch(
+                response.arrow_record_batch.serialized_record_batch,
+                pa_schema,
+            )

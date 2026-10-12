@@ -16,7 +16,6 @@
 
 from __future__ import absolute_import
 
-import base64
 import copy
 import datetime
 import functools
@@ -61,6 +60,7 @@ from google.api_core.page_iterator import HTTPIterator
 from google.cloud.bigquery import (
     _helpers,
     _pandas_helpers,
+    _pyarrow_helpers,
     _string_references,
     _versions_helpers,
     external_config,
@@ -188,7 +188,7 @@ def _disallow_when_arrow(func):
 
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
-        if self._query_results_format == QueryResultsFormat.ARROW.value:
+        if self._is_arrow_format:
             raise ValueError(_CANNOT_ITERATE_ARROW_ERROR)
         return func(self, *args, **kwargs)
 
@@ -1916,6 +1916,9 @@ class RowIterator(HTTPIterator):
             If representing query results, the start time of the associated query.
         ended (Optional[datetime.datetime]):
             If representing query results, the end time of the associated query.
+        arrow_serialization_options (Optional[Dict[str, str]]):
+            The ``arrowSerializationOptions`` sent on ``jobs.query`` for
+            ``ARROW`` results. The stream requests the same options.
     """
 
     def __init__(
@@ -1944,6 +1947,7 @@ class RowIterator(HTTPIterator):
         started: Optional[datetime.datetime] = None,
         ended: Optional[datetime.datetime] = None,
         query_results_format: Optional[str] = None,
+        arrow_serialization_options: Optional[Dict[str, str]] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1978,6 +1982,11 @@ class RowIterator(HTTPIterator):
         self._job_started = started
         self._job_ended = ended
         self._query_results_format = query_results_format
+        self._arrow_serialization_options = arrow_serialization_options
+
+    @property
+    def _is_arrow_format(self) -> bool:
+        return self._query_results_format == QueryResultsFormat.ARROW.value
 
     @property
     @_disallow_when_arrow
@@ -2273,7 +2282,7 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 2.31.0
         """
-        if self._query_results_format == QueryResultsFormat.ARROW.value:
+        if self._is_arrow_format:
             return self._download_arrow_from_job_id(
                 bqstorage_client=bqstorage_client,
                 timeout=timeout,
@@ -2325,85 +2334,11 @@ class RowIterator(HTTPIterator):
         Yields:
             pyarrow.RecordBatch: Record batches generated from the query result.
         """
-        if pyarrow is None:
-            raise ValueError(_NO_PYARROW_ERROR)
-
-        # Step 1: Ensure BigQuery Read API client is available upfront.
-        if bqstorage_client is None:
-            if self.client is None:
-                raise ValueError("RowIterator client is None.")
-            bqstorage_client = self.client._ensure_bqstorage_client()
-            if bqstorage_client is None:
-                raise ValueError(
-                    "The google-cloud-bigquery-storage library is required to read "
-                    "Arrow results (`pip install google-cloud-bigquery-storage`)."
-                )
-
-        offset = 0
-        pa_schema = None
-        total_rows = self.total_rows
-        job_complete = False
-
-        # Step 2: Process initial inline Arrow response from jobs.query if available.
-        if self._first_page_response:
-            first_page = self._first_page_response
-            self._first_page_response = None
-
-            job_complete = bool(first_page.get("jobComplete", False))
-            if job_complete:
-                total_rows = int(first_page.get("totalRows", 0))
-
-            arrow_schema_json = first_page.get("arrowSchema")
-            if isinstance(arrow_schema_json, dict):
-                schema_bytes = arrow_schema_json.get("serializedSchema")
-                if schema_bytes:
-                    if isinstance(schema_bytes, str):
-                        schema_bytes = base64.b64decode(schema_bytes)
-                    pa_schema = pyarrow.ipc.read_schema(pyarrow.py_buffer(schema_bytes))
-
-            arrow_batch_json = first_page.get("arrowRecordBatch")
-            if isinstance(arrow_batch_json, dict) and pa_schema is not None:
-                batch_bytes = arrow_batch_json.get("serializedRecordBatch")
-                if batch_bytes:
-                    if isinstance(batch_bytes, str):
-                        batch_bytes = base64.b64decode(batch_bytes)
-                    batch = pyarrow.ipc.read_record_batch(
-                        pyarrow.py_buffer(batch_bytes),
-                        pa_schema,
-                    )
-                    offset += batch.num_rows
-                    yield batch
-
-        # Step 3: Return early if all results were delivered in the first page response.
-        if job_complete and offset >= total_rows:
-            return
-
-        # Step 4: Stream remaining Arrow record batches from the job default stream.
-        project = self._project or (self.client.project if self.client else None)
-        location = self._location or (self.client.location if self.client else None)
-        stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
-        reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
-        for response in reader:
-            if (
-                response.arrow_schema
-                and response.arrow_schema.serialized_schema
-                and pa_schema is None
-            ):
-                pa_schema = pyarrow.ipc.read_schema(
-                    pyarrow.py_buffer(response.arrow_schema.serialized_schema)
-                )
-            if (
-                response.arrow_record_batch
-                and response.arrow_record_batch.serialized_record_batch
-                and pa_schema is not None
-            ):
-                batch = pyarrow.ipc.read_record_batch(
-                    pyarrow.py_buffer(
-                        response.arrow_record_batch.serialized_record_batch
-                    ),
-                    pa_schema,
-                )
-                yield batch
+        return _pyarrow_helpers.download_arrow_from_job(
+            self,
+            bqstorage_client=bqstorage_client,
+            timeout=timeout,
+        )
 
     # If changing the signature of this method, make sure to apply the same
     # changes to job.QueryJob.to_arrow()
@@ -2517,10 +2452,7 @@ class RowIterator(HTTPIterator):
                 # but mypy cannot infer this correlation. We ignore the union-attr error here.
                 bqstorage_client._transport.close()  # type: ignore[union-attr]
 
-        if record_batches and (
-            bqstorage_client is not None
-            or self._query_results_format == QueryResultsFormat.ARROW.value
-        ):
+        if record_batches and (bqstorage_client is not None or self._is_arrow_format):
             return pyarrow.Table.from_batches(record_batches)
         else:
             # No records (not record_batches), use schema based on BigQuery schema
@@ -2601,7 +2533,7 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
-        if self._query_results_format == QueryResultsFormat.ARROW.value:
+        if self._is_arrow_format:
 
             def _batch_to_dataframe(batch):
                 df = batch.to_pandas()
@@ -2984,11 +2916,8 @@ class RowIterator(HTTPIterator):
 
         self._maybe_warn_max_results(bqstorage_client)
 
-        if (
-            self._query_results_format != QueryResultsFormat.ARROW.value
-            and not self._should_use_bqstorage(
-                bqstorage_client, create_bqstorage_client
-            )
+        if not self._is_arrow_format and not self._should_use_bqstorage(
+            bqstorage_client, create_bqstorage_client
         ):
             create_bqstorage_client = False
             bqstorage_client = None
