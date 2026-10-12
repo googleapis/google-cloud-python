@@ -104,7 +104,7 @@
     <h1>Scenario 1B: Point Select (C=1, Sync) - With Go Shared Core (Cross-FFI)</h1>
     <div class="meta">
       <strong>Source Profile:</strong> <code>spanner_point_select_c1_go_core.prof</code> |
-      <strong>Total Profiled CPU Time:</strong> 0.0212 seconds |
+      <strong>Total Profiled CPU Time:</strong> 1.3017 seconds |
       <strong>Interactive:</strong> Click any frame to zoom in, click root or 'Reset Zoom' to zoom out.
     </div>
   </div>
@@ -123,25 +123,25 @@
 
   <div class="card">
     <h2>Top 20 Functions by Cumulative CPU Time</h2>
-    <pre>Sun Oct 11 04:37:07 2026    /usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.prof
+    <pre>Mon Oct 12 11:23:09 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.prof
 
-         122 function calls (123 primitive calls) in 0.021 seconds
+         28610 function calls (28611 primitive calls) in 1.302 seconds
 
    Ordered by: cumulative time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-       10    0.000    0.000    0.021    0.002 spanner_cpu_profile_suite.py:466(run_point_select_query_go_core_sync)
-       10    0.000    0.000    0.017    0.002 main.go:364([Go Shared Core] main.executeStreamingSqlInternal)
-       10    0.014    0.001    0.014    0.001 runtime:1([Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads))
-       10    0.004    0.000    0.004    0.000 spanner_go_ext:0(execute_streaming_sql)
-       10    0.001    0.000    0.001    0.000 main.go:441([Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet))
-       10    0.001    0.000    0.001    0.000 client.go:138([Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init))
-       10    0.000    0.000    0.000    0.000 main.go:391([Go Shared Core] main.buildExecuteSqlRequestAndAuth)
-       10    0.000    0.000    0.000    0.000 main.go:215([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
-       10    0.000    0.000    0.000    0.000 spanner_go_ext.c:190([C-FFI] batch_to_pylist (CSpannerCell -> PyList))
-       12    0.000    0.000    0.000    0.000 time:0(perf_counter)
-       10    0.000    0.000    0.000    0.000 builtins:0(len)
-       10    0.000    0.000    0.000    0.000 main.go:465([Go Shared Core] main.assembleStreamingRowChunks)
+     2384    0.019    0.000    1.293    0.001 spanner_cpu_profile_suite.py:466(run_point_select_query_go_core_sync)
+     2384    0.000    0.000    0.739    0.000 main.go:364([Go Shared Core] main.executeStreamingSqlInternal)
+     2384    0.510    0.000    0.510    0.000 spanner_go_ext:0(execute_streaming_sql)
+     2384    0.376    0.000    0.376    0.000 runtime:1([Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads))
+     2384    0.149    0.000    0.149    0.000 main.go:441([Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet))
+     2384    0.147    0.000    0.147    0.000 client.go:138([Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init))
+     2384    0.032    0.000    0.032    0.000 main.go:391([Go Shared Core] main.buildExecuteSqlRequestAndAuth)
+     2384    0.028    0.000    0.028    0.000 main.go:215([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
+     2384    0.017    0.000    0.017    0.000 spanner_go_ext.c:190([C-FFI] batch_to_pylist (CSpannerCell -> PyList))
+     2386    0.009    0.000    0.009    0.000 time:0(perf_counter)
+     2384    0.008    0.000    0.008    0.000 main.go:465([Go Shared Core] main.assembleStreamingRowChunks)
+     2384    0.008    0.000    0.008    0.000 builtins:0(len)
       0/1    0.000             0.000    0.000 spanner_cpu_profile_suite.py:169(CrossFFIProfileSession.stop)
 
 
@@ -151,7 +151,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.min.js"></script>
   <script>
-    const data = {"name": "Total Profiled Workload (0.0212s)", "value": 0.021224, "self_time": 0.0, "calls": 1, "children": [{"name": "run_point_select_query_go_core_sync [spanner_cpu_profile_suite.py:466]", "value": 0.021176, "self_time": 2.8e-05, "calls": 10, "children": [{"name": "[Go Shared Core] main.executeStreamingSqlInternal [main.go:364]", "value": 0.016641, "self_time": 1e-06, "calls": 10, "children": [{"name": "[Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads) [runtime:1]", "value": 0.01387, "self_time": 0.01387, "calls": 10, "children": []}, {"name": "[Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet) [main.go:441]", "value": 0.001359, "self_time": 0.001359, "calls": 10, "children": []}, {"name": "[Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init) [client.go:138]", "value": 0.000979, "self_time": 0.000979, "calls": 10, "children": []}, {"name": "[Go Shared Core] main.buildExecuteSqlRequestAndAuth [main.go:391]", "value": 0.000233, "self_time": 0.000233, "calls": 10, "children": []}, {"name": "[Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena) [main.go:215]", "value": 0.00017, "self_time": 0.00017, "calls": 10, "children": []}, {"name": "[Go Shared Core] main.assembleStreamingRowChunks [main.go:465]", "value": 3.1e-05, "self_time": 3.1e-05, "calls": 10, "children": []}]}, {"name": "execute_streaming_sql [spanner_go_ext:0]", "value": 0.004341, "self_time": 0.004341, "calls": 10, "children": []}, {"name": "[C-FFI] batch_to_pylist (CSpannerCell -> PyList) [spanner_go_ext.c:190]", "value": 0.000125, "self_time": 0.000125, "calls": 10, "children": []}, {"name": "len [builtins:0]", "value": 4.1e-05, "self_time": 4.1e-05, "calls": 10, "children": []}]}, {"name": "CrossFFIProfileSession.stop [spanner_cpu_profile_suite.py:169]", "value": 0.0, "self_time": 0.0, "calls": 1, "children": []}]};
+    const data = {"name": "Total Profiled Workload (1.3017s)", "value": 1.301712, "self_time": 0.0, "calls": 1, "children": [{"name": "run_point_select_query_go_core_sync [spanner_cpu_profile_suite.py:466]", "value": 1.292929, "self_time": 0.019192, "calls": 2384, "children": [{"name": "[Go Shared Core] main.executeStreamingSqlInternal [main.go:364]", "value": 0.739386, "self_time": 1e-06, "calls": 2384, "children": [{"name": "[Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads) [runtime:1]", "value": 0.376066, "self_time": 0.376066, "calls": 2384, "children": []}, {"name": "[Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet) [main.go:441]", "value": 0.149195, "self_time": 0.149195, "calls": 2384, "children": []}, {"name": "[Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init) [client.go:138]", "value": 0.146775, "self_time": 0.146775, "calls": 2384, "children": []}, {"name": "[Go Shared Core] main.buildExecuteSqlRequestAndAuth [main.go:391]", "value": 0.031728, "self_time": 0.031728, "calls": 2384, "children": []}, {"name": "[Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena) [main.go:215]", "value": 0.027649, "self_time": 0.027649, "calls": 2384, "children": []}, {"name": "[Go Shared Core] main.assembleStreamingRowChunks [main.go:465]", "value": 0.007972, "self_time": 0.007972, "calls": 2384, "children": []}]}, {"name": "execute_streaming_sql [spanner_go_ext:0]", "value": 0.509933, "self_time": 0.509933, "calls": 2384, "children": []}, {"name": "[C-FFI] batch_to_pylist (CSpannerCell -> PyList) [spanner_go_ext.c:190]", "value": 0.016734, "self_time": 0.016734, "calls": 2384, "children": []}, {"name": "len [builtins:0]", "value": 0.007685, "self_time": 0.007685, "calls": 2384, "children": []}]}, {"name": "CrossFFIProfileSession.stop [spanner_cpu_profile_suite.py:169]", "value": 0.0, "self_time": 0.0, "calls": 1, "children": []}]};
 
     let flamegraphInstance = null;
 
