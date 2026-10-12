@@ -280,6 +280,32 @@ def _slice_arrow_batch(
     return batch, remaining - batch.num_rows
 
 
+# The shared BigQuery Storage client pings the server every minute while a
+# stream is open, so idle connections aren't dropped while the caller
+# processes a batch.
+_BQSTORAGE_KEEPALIVE_TIME_MS = 60 * 1000
+
+
+def _create_bqstorage_transport(**kwargs):
+    """Create a BigQuery Storage gRPC transport whose channel sends keepalive
+    pings.
+
+    ``BigQueryReadClient`` calls this with the arguments it passes to its
+    default transport.
+    """
+    from google.cloud import bigquery_storage
+
+    transport_class = bigquery_storage.BigQueryReadClient.get_transport_class("grpc")
+
+    def create_channel(*args, options=(), **channel_kwargs):
+        options = list(options) + [
+            ("grpc.keepalive_time_ms", _BQSTORAGE_KEEPALIVE_TIME_MS)
+        ]
+        return transport_class.create_channel(*args, options=options, **channel_kwargs)
+
+    return transport_class(channel=create_channel, **kwargs)
+
+
 def _open_arrow_read_stream(
     row_iterator: "RowIterator",
     bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"],
@@ -290,7 +316,7 @@ def _open_arrow_read_stream(
     if bqstorage_client is None:
         if row_iterator.client is None:
             raise ValueError("RowIterator client is None.")
-        bqstorage_client = row_iterator.client._ensure_bqstorage_client()
+        bqstorage_client = row_iterator.client._get_shared_bqstorage_client()
         if bqstorage_client is None:
             raise ValueError(
                 "The google-cloud-bigquery-storage library is required to read "
@@ -333,24 +359,13 @@ def download_arrow_from_job(
     if pyarrow is None:
         raise ValueError(_NO_PYARROW_ERROR)
 
-    # Step 1: Ensure BigQuery Read API client is available upfront.
-    if bqstorage_client is None:
-        if row_iterator.client is None:
-            raise ValueError("RowIterator client is None.")
-        bqstorage_client = row_iterator.client._ensure_bqstorage_client()
-        if bqstorage_client is None:
-            raise ValueError(
-                "The google-cloud-bigquery-storage library is required to read "
-                "Arrow results (`pip install google-cloud-bigquery-storage`)."
-            )
-
     offset = 0
     pa_schema: Optional["pyarrow.Schema"] = None
     total_rows = row_iterator.total_rows
     job_complete = False
     remaining = row_iterator.max_results
 
-    # Step 2: Process initial inline Arrow response from jobs.query if available.
+    # Step 1: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
         first_page = row_iterator._first_page_response
 
@@ -371,12 +386,12 @@ def download_arrow_from_job(
             batch, remaining = _slice_arrow_batch(batch, remaining)
             yield batch
 
-    # Step 3: Return early if all results were delivered in the first page
+    # Step 2: Return early if all results were delivered in the first page
     # response, or if the first page already reached max_results.
     if (job_complete and offset >= total_rows) or remaining == 0:
         return
 
-    # Step 4: Stream remaining Arrow record batches from the job default stream.
+    # Step 3: Stream remaining Arrow record batches from the job default stream.
     reader = _open_arrow_read_stream(
         row_iterator, bqstorage_client, offset, timeout
     )

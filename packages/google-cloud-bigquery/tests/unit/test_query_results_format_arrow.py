@@ -205,7 +205,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_constructs_stream_and_reads(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         iterator = RowIterator(
             client=mock_client,
@@ -241,7 +241,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_with_first_page_response(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         raw_schema_bytes = b"schema_bytes_123"
         raw_batch_bytes = b"batch_bytes_123"
@@ -314,7 +314,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_with_first_page_response_schema_only(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         raw_schema_bytes = b"schema_bytes_456"
         first_page_response = {
@@ -365,7 +365,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
     def test_download_arrow_from_job_id_missing_storage_client_raises_value_error(self):
         mock_client = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = None
+        mock_client._get_shared_bqstorage_client.return_value = None
 
         iterator = RowIterator(
             client=mock_client,
@@ -389,7 +389,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_with_schema_and_batch(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         iterator = RowIterator(
             client=mock_client,
@@ -483,12 +483,12 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             self.assertEqual(batches, [mock_first_batch])
             batches_second = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches_second, [mock_first_batch])
-            mock_client._ensure_bqstorage_client.assert_called_once()
+            mock_client._get_shared_bqstorage_client.assert_not_called()
 
     def test_download_arrow_from_job_id_calls_read_rows_when_job_not_complete(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         raw_schema_bytes = b"schema_bytes_789"
         raw_batch_bytes = b"batch_bytes_789"
@@ -525,7 +525,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, [mock_first_batch])
-            mock_client._ensure_bqstorage_client.assert_called_once()
+            mock_client._get_shared_bqstorage_client.assert_called_once_with()
             expected_stream = "projects/test-proj/locations/US/jobs/test-job-incomplete/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(
                 expected_stream,
@@ -581,7 +581,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_row_iterator_to_dataframe_iterable_when_format_is_arrow(self):
         pytest.importorskip("pandas")
         mock_client = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
+        mock_client._get_shared_bqstorage_client.return_value = mock.MagicMock()
 
         iterator = RowIterator(
             client=mock_client,
@@ -604,7 +604,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_row_iterator_to_dataframe_when_format_is_arrow(self):
         pytest.importorskip("pandas")
         mock_client = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
+        mock_client._get_shared_bqstorage_client.return_value = mock.MagicMock()
 
         iterator = RowIterator(
             client=mock_client,
@@ -1149,6 +1149,51 @@ def test_query_and_wait_arrow_first_page_reaching_max_results_doesnt_wait():
     wait_or_cancel.assert_not_called()
     assert rows.max_results == 10
     assert client._call_api.call_args.kwargs["data"]["maxResults"] == 10
+
+
+def test_download_arrow_uses_passed_client_and_leaves_it_open():
+    iterator, bqstorage_client, _ = _limited_iterator([10, 15], 25, max_results=None)
+
+    batches = list(iterator._download_arrow_from_job_id(bqstorage_client))
+
+    assert _values(batches) == list(range(1, 26))
+    iterator.client._get_shared_bqstorage_client.assert_not_called()
+    bqstorage_client._transport.close.assert_not_called()
+
+
+def test_download_arrow_needs_a_client_only_to_stream():
+    iterator, _, _ = _limited_iterator([10, 15], 25, max_results=None)
+    iterator.client = None
+    batches = iterator._download_arrow_from_job_id()
+
+    assert next(batches).num_rows == 10
+    with pytest.raises(ValueError, match="RowIterator client is None"):
+        next(batches)
+
+
+def test_to_arrow_with_arrow_format_reads_with_the_shared_client():
+    pyarrow = pytest.importorskip("pyarrow")
+    client = mock.MagicMock()
+    iterator = RowIterator(
+        client=client,
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        query_results_format="ARROW",
+    )
+    batch = pyarrow.record_batch([pyarrow.array([1, 2])], names=["x"])
+
+    with (
+        mock.patch.object(iterator, "_should_use_bqstorage", return_value=True),
+        mock.patch.object(
+            iterator, "to_arrow_iterable", return_value=iter([batch])
+        ) as to_arrow_iterable,
+    ):
+        table = iterator.to_arrow()
+
+    assert table.num_rows == 2
+    client._ensure_bqstorage_client.assert_not_called()
+    assert to_arrow_iterable.call_args.kwargs["bqstorage_client"] is None
 
 
 if __name__ == "__main__":
