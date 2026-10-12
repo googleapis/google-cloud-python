@@ -25,10 +25,10 @@ from google.cloud.bigquery import _job_helpers
 from google.cloud.bigquery import _pyarrow_helpers
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
+from google.cloud.bigquery._pyarrow_helpers import _to_read_api_arrow_options
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.enums import TimestampPrecision, WriteDisposition
 from google.cloud.bigquery.job import QueryJobConfig
-from google.cloud.bigquery._pyarrow_helpers import _to_read_api_arrow_options
 from google.cloud.bigquery.table import (
     RowIterator,
     TableReference,
@@ -227,10 +227,14 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_response.arrow_record_batch = None
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery._pyarrow_helpers.pyarrow") as mock_pyarrow:
+        with mock.patch(
+            "google.cloud.bigquery._pyarrow_helpers.pyarrow"
+        ) as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
-            self.assertEqual(batches, [])
+            # No rows and no schema: one empty batch without columns.
+            self.assertEqual(batches, [mock_pyarrow.record_batch.return_value])
+            mock_pyarrow.record_batch.assert_called_once_with([])
 
             expected_stream_name = (
                 "projects/test-proj/locations/US/jobs/test-job-456/streams/_default"
@@ -284,7 +288,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery._pyarrow_helpers.pyarrow") as mock_pyarrow:
+        with mock.patch(
+            "google.cloud.bigquery._pyarrow_helpers.pyarrow"
+        ) as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.side_effect = [
@@ -346,7 +352,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery._pyarrow_helpers.pyarrow") as mock_pyarrow:
+        with mock.patch(
+            "google.cloud.bigquery._pyarrow_helpers.pyarrow"
+        ) as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = mock_stream_batch
@@ -417,7 +425,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery._pyarrow_helpers.pyarrow") as mock_pyarrow:
+        with mock.patch(
+            "google.cloud.bigquery._pyarrow_helpers.pyarrow"
+        ) as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "fake_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = "fake_batch"
@@ -478,7 +488,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_first_batch = mock.MagicMock()
         mock_first_batch.num_rows = 10
 
-        with mock.patch("google.cloud.bigquery._pyarrow_helpers.pyarrow") as mock_pyarrow:
+        with mock.patch(
+            "google.cloud.bigquery._pyarrow_helpers.pyarrow"
+        ) as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = mock_first_batch
@@ -522,7 +534,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_first_batch.num_rows = 10
         mock_bqstorage.read_rows.return_value = []
 
-        with mock.patch("google.cloud.bigquery._pyarrow_helpers.pyarrow") as mock_pyarrow:
+        with mock.patch(
+            "google.cloud.bigquery._pyarrow_helpers.pyarrow"
+        ) as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = mock_first_batch
@@ -1311,11 +1325,87 @@ def test_download_arrow_explicit_destination_reads_a_read_session():
     )
 
 
-def test_download_arrow_explicit_destination_without_streams_reads_nothing():
-    iterator, bqstorage_client, _ = _destination_iterator([], serialized_schema=b"")
+@pytest.mark.parametrize(
+    ("serialized_schema", "expected_names"),
+    [(None, ["x"]), (b"", [])],
+    ids=["with_schema", "without_schema"],
+)
+def test_download_arrow_explicit_destination_without_rows(
+    serialized_schema, expected_names
+):
+    iterator, bqstorage_client, _ = _destination_iterator(
+        [], serialized_schema=serialized_schema
+    )
 
-    assert list(iterator._download_arrow_from_job_id(bqstorage_client)) == []
+    (batch,) = iterator._download_arrow_from_job_id(bqstorage_client)
+
+    assert batch.num_rows == 0
+    assert batch.schema.names == expected_names
     bqstorage_client.read_rows.assert_not_called()
+
+
+def _zero_row_iterator():
+    """A RowIterator whose jobs.query response has a schema and no rows."""
+    schema, _ = _arrow_pages()
+    return RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+        first_page_response={
+            "jobComplete": True,
+            "totalRows": "0",
+            "arrowSchema": {"serializedSchema": base64.b64encode(schema).decode()},
+            # A response without rows carries no serialized batch.
+            "arrowRecordBatch": {},
+        },
+    )
+
+
+def test_download_arrow_zero_rows_inline_keep_the_schema():
+    iterator = _zero_row_iterator()
+
+    (batch,) = iterator._download_arrow_from_job_id()
+
+    assert batch.num_rows == 0
+    assert batch.schema.names == ["x"]
+    iterator.client._get_shared_bqstorage_client.assert_not_called()
+
+
+def test_to_arrow_zero_rows_keep_the_schema():
+    table = _zero_row_iterator().to_arrow()
+
+    assert table.num_rows == 0
+    assert table.schema.names == ["x"]
+
+
+def test_download_arrow_zero_rows_streamed_use_the_query_results_schema():
+    pyarrow = pytest.importorskip("pyarrow")
+    from google.cloud.bigquery.schema import SchemaField
+
+    bqstorage_client = mock.MagicMock()
+    # The default job stream sends no responses for zero rows.
+    bqstorage_client.read_rows.return_value = []
+    iterator = RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=[SchemaField("x", "INTEGER")],
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+        first_page_response={"jobComplete": False},
+    )
+
+    (batch,) = iterator._download_arrow_from_job_id(bqstorage_client)
+
+    assert batch.num_rows == 0
+    assert batch.schema.field("x").type == pyarrow.int64()
 
 
 if __name__ == "__main__":
