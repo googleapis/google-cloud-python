@@ -163,11 +163,14 @@ def _validate_arrow_query(
     query_results_format: Optional[str],
     compression_codec: Optional[str],
     job_config: Optional["job.QueryJobConfig"],
+    timestamp_precision: Optional[str] = None,
 ) -> None:
     """Raise before sending a query whose ARROW results can't be returned."""
     if query_results_format != enums.QueryResultsFormat.ARROW:
         if compression_codec is not None:
             raise ValueError("compression_codec requires query_results_format=ARROW.")
+        if timestamp_precision is not None:
+            raise ValueError("timestamp_precision requires query_results_format=ARROW.")
         return
 
     if (
@@ -200,6 +203,7 @@ def _check_arrow_dependencies() -> None:
 
 def _to_rest_arrow_options(
     compression_codec: Optional[str],
+    timestamp_precision: Optional[str] = None,
 ) -> Dict[str, str]:
     """Build the ``jobs.query`` ``arrowSerializationOptions`` dict.
 
@@ -209,7 +213,11 @@ def _to_rest_arrow_options(
     return {
         "bufferCompression": getattr(compression_codec, "value", compression_codec)
         or "COMPRESSION_UNSPECIFIED",
-        "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+        "picosTimestampPrecision": (
+            "TIMESTAMP_PRECISION_PICOS"
+            if timestamp_precision == enums.TimestampPrecision.PICOSECOND
+            else "TIMESTAMP_PRECISION_MICROS"
+        ),
     }
 
 

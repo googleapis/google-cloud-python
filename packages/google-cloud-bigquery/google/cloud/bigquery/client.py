@@ -3677,6 +3677,7 @@ class Client(ClientWithProject):
         max_results: Optional[int] = None,
         query_results_format: Optional[str] = None,
         compression_codec: Optional[str] = None,
+        timestamp_precision: Optional[enums.TimestampPrecision] = None,
     ) -> RowIterator:
         """Run the query, wait for it to finish, and return the results.
 
@@ -3728,6 +3729,12 @@ class Client(ClientWithProject):
                 [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
             compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
                 [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
+            timestamp_precision (Optional[enums.TimestampPrecision]):
+                [Private Preview] Precision of ``TIMESTAMP`` values in ``ARROW``
+                results. If set to ``enums.TimestampPrecision.PICOSECOND``,
+                picosecond ``TIMESTAMP`` columns arrive at full precision as
+                ISO 8601 strings. Otherwise, they're truncated to microsecond
+                precision. Requires ``query_results_format=ARROW``.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3747,8 +3754,9 @@ class Client(ClientWithProject):
                 :class:`~google.cloud.bigquery.job.QueryJobConfig`
                 class.
             ValueError:
-                If ``compression_codec`` is set without ``ARROW``, or if an
-                ``ARROW`` query uses ``WRITE_APPEND``, including through
+                If ``compression_codec`` or ``timestamp_precision`` is set
+                without ``ARROW``, or if an ``ARROW`` query uses
+                ``WRITE_APPEND``, including through
                 ``default_query_job_config``.
             google.cloud.bigquery.exceptions.BigQueryError:
                 If an ``ARROW`` query can't be read because pyarrow or
@@ -3768,6 +3776,7 @@ class Client(ClientWithProject):
             max_results=max_results,
             query_results_format=query_results_format,
             compression_codec=compression_codec,
+            timestamp_precision=timestamp_precision,
         )
 
     def _query_and_wait_bigframes(
@@ -3785,6 +3794,7 @@ class Client(ClientWithProject):
         max_results: Optional[int] = None,
         query_results_format: Optional[str] = None,
         compression_codec: Optional[str] = None,
+        timestamp_precision: Optional[enums.TimestampPrecision] = None,
         callback: Callable = lambda _: None,
     ) -> RowIterator:
         """See query_and_wait.
@@ -3819,6 +3829,7 @@ class Client(ClientWithProject):
             max_results=max_results,
             query_results_format=query_results_format,
             compression_codec=compression_codec,
+            timestamp_precision=timestamp_precision,
             callback=callback,
         )
 
