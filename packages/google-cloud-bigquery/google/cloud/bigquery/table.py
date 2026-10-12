@@ -1983,6 +1983,9 @@ class RowIterator(HTTPIterator):
         self._job_ended = ended
         self._query_results_format = query_results_format
         self._arrow_serialization_options = arrow_serialization_options
+        # Set by query_and_wait() if the query wrote to a destination table
+        # from its job config.
+        self._explicit_destination = False
 
     @property
     def _is_arrow_format(self) -> bool:

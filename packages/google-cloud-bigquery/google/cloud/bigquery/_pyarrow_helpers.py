@@ -311,8 +311,13 @@ def _open_arrow_read_stream(
     bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"],
     offset: int,
     timeout: Optional[float],
-) -> Any:
-    """Open a BigQuery Storage Read API stream for remaining Arrow rows."""
+    pa_schema: Optional["pyarrow.Schema"],
+) -> Tuple[Any, Optional["pyarrow.Schema"]]:
+    """Open the BigQuery Storage stream that reads the rest of an ARROW result.
+
+    Returns ``(reader, pa_schema)``. ``reader`` is ``None`` if a destination
+    table read session has no streams because the table is empty.
+    """
     if bqstorage_client is None:
         if row_iterator.client is None:
             raise ValueError("RowIterator client is None.")
@@ -324,6 +329,35 @@ def _open_arrow_read_stream(
             )
 
     read_options = _to_read_api_arrow_options(row_iterator._arrow_serialization_options)
+    if row_iterator._explicit_destination and row_iterator._table is not None:
+        from google.cloud import bigquery_storage
+
+        # The default job stream rejects jobs with an explicit destination
+        # table, so read the table through a read session. One stream keeps
+        # the rows in order.
+        session = bqstorage_client.create_read_session(
+            parent=f"projects/{row_iterator._billing_project}",
+            read_session=bigquery_storage.types.stream.ReadSession(
+                table=row_iterator._table.to_bqstorage(),
+                data_format=bigquery_storage.types.stream.DataFormat.ARROW,
+                read_options=bigquery_storage.types.stream.ReadSession.TableReadOptions(
+                    arrow_serialization_options=read_options
+                ),
+            ),
+            max_stream_count=1,
+            timeout=timeout,
+        )
+        if session.arrow_schema.serialized_schema and pa_schema is None:
+            pa_schema = _deserialize_arrow_schema(
+                session.arrow_schema.serialized_schema
+            )
+        if not session.streams:
+            return None, pa_schema
+        reader = bqstorage_client.read_rows(
+            session.streams[0].name, offset=offset, timeout=timeout
+        )
+        return reader, pa_schema
+
     project = row_iterator._project or (
         row_iterator.client.project if row_iterator.client else None
     )
@@ -331,12 +365,13 @@ def _open_arrow_read_stream(
         row_iterator.client.location if row_iterator.client else None
     )
     stream_name = f"projects/{project}/locations/{location}/jobs/{row_iterator._job_id}/streams/_default"
-    return bqstorage_client.read_rows(
+    reader = bqstorage_client.read_rows(
         stream_name,
         offset=offset,
         timeout=timeout,
         arrow_serialization_options=read_options,
     )
+    return reader, pa_schema
 
 
 _NO_PYARROW_ERROR = (
@@ -391,10 +426,13 @@ def download_arrow_from_job(
     if (job_complete and offset >= total_rows) or remaining == 0:
         return
 
-    # Step 3: Stream remaining Arrow record batches from the job default stream.
-    reader = _open_arrow_read_stream(
-        row_iterator, bqstorage_client, offset, timeout
+    # Step 3: Stream remaining Arrow record batches from the job default stream,
+    # or from the destination table if the job config set one.
+    reader, pa_schema = _open_arrow_read_stream(
+        row_iterator, bqstorage_client, offset, timeout, pa_schema
     )
+    if reader is None:
+        return
     finished = False
     try:
         for response in reader:
