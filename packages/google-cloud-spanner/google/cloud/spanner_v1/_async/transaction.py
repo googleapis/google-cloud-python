@@ -84,7 +84,9 @@ class Transaction(_SnapshotBase, _BatchBase):
     _read_only: bool = False
 
     def __init__(self, session, client_context=None):
-        super(Transaction, self).__init__(session, client_context=client_context)
+        super(Transaction, self).__init__(
+            session, client_context=client_context, multi_use=True
+        )
         self.rolled_back: bool = False
 
         # If this transaction is used to retry a previous aborted transaction with a

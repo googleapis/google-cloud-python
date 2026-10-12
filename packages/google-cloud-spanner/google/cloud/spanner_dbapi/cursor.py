@@ -353,7 +353,14 @@ class Cursor(object):
             raise
 
         finally:
-            if not self._in_retry_mode and not call_from_execute_many:
+            if (
+                not self._in_retry_mode
+                and not call_from_execute_many
+                and not (
+                    self._parsed_statement is not None
+                    and self._parsed_statement.statement_type == StatementType.DDL
+                )
+            ):
                 self.transaction_helper.add_execute_statement_for_retry(
                     self, sql, args, exception, False
                 )
