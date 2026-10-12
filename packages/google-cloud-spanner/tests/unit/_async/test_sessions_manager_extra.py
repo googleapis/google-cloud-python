@@ -105,7 +105,8 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
 
         task = asyncio.create_task(fake_coro())
         manager._multiplexed_session_thread = task
-        manager._multiplexed_session = mock.AsyncMock()
+        mock_session = mock.AsyncMock()
+        manager._multiplexed_session = mock_session
         manager._multiplexed_session_terminate_event = mock.Mock()
 
         with mock.patch(
@@ -116,10 +117,13 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
             # task is cancelled and awaited in close()
             self.assertTrue(task.done())
             manager._multiplexed_session_terminate_event.set.assert_called_once()
+            self.assertIsNone(manager._multiplexed_session)
+            mock_session.delete.assert_not_called()
 
         # Sync branch of close
         manager._multiplexed_session_thread = mock.Mock()
-        manager._multiplexed_session = mock.AsyncMock()
+        mock_session_sync = mock.AsyncMock()
+        manager._multiplexed_session = mock_session_sync
         manager._multiplexed_session_terminate_event = mock.Mock()
         with mock.patch(
             "google.cloud.spanner_v1._async.database_sessions_manager.CrossSync.is_async",
@@ -128,6 +132,8 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
             await manager.close()
             self.assertTrue(manager._multiplexed_session_thread.join.called)
             manager._multiplexed_session_terminate_event.set.assert_called_once()
+            self.assertIsNone(manager._multiplexed_session)
+            mock_session_sync.delete.assert_not_called()
 
     async def test_maintain_multiplexed_session_refresh(self):
         # coverage for line 196-202
@@ -250,24 +256,20 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
         mock_lock.acquire.assert_not_called()
         mock_lock.__aenter__.assert_not_called()
 
-    async def test_maintain_multiplexed_session_swaps_before_deleting_old_session(
-        self,
-    ):
+    async def test_maintain_multiplexed_session_rotates_session(self):
         from weakref import ref
 
         manager = DatabaseSessionsManager(self.database, self.pool)
         manager._multiplexed_session_lock = asyncio.Lock()
-        manager._multiplexed_session_terminate_event = asyncio.Event()
+        manager._multiplexed_session_terminate_event = mock.Mock()
+        manager._multiplexed_session_terminate_event.is_set.side_effect = [
+            False,
+            True,
+        ]
 
         old_session = mock.AsyncMock()
         new_session = mock.AsyncMock()
         manager._multiplexed_session = old_session
-
-        async def verify_swap_on_delete():
-            self.assertIs(manager._multiplexed_session, new_session)
-            manager._multiplexed_session_terminate_event.set()
-
-        old_session.delete.side_effect = verify_swap_on_delete
 
         refresh_interval = manager._MAINTENANCE_THREAD_REFRESH_INTERVAL.total_seconds()
         call_count = 0
@@ -290,7 +292,8 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
                     ref(manager)
                 )
                 mock_build.assert_called_once()
-                old_session.delete.assert_called_once()
+                old_session.delete.assert_not_called()
+                new_session.delete.assert_not_called()
                 self.assertIs(manager._multiplexed_session, new_session)
 
     async def test_maintain_multiplexed_session_handles_build_failure(self):
@@ -336,48 +339,6 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
                     mock_event_wait_call.assert_called_once()
                     current_session.delete.assert_not_called()
                     self.assertIs(manager._multiplexed_session, current_session)
-
-    async def test_maintain_multiplexed_session_handles_delete_failure(self):
-        from weakref import ref
-
-        manager = DatabaseSessionsManager(self.database, self.pool)
-        manager._multiplexed_session_lock = asyncio.Lock()
-        manager._multiplexed_session_terminate_event = asyncio.Event()
-
-        old_session = mock.AsyncMock()
-        old_session.delete.side_effect = Exception("delete failed")
-        new_session = mock.AsyncMock()
-        manager._multiplexed_session = old_session
-
-        async def verify_swap_on_delete():
-            self.assertIs(manager._multiplexed_session, new_session)
-            manager._multiplexed_session_terminate_event.set()
-            raise Exception("delete failed")
-
-        old_session.delete.side_effect = verify_swap_on_delete
-
-        refresh_interval = manager._MAINTENANCE_THREAD_REFRESH_INTERVAL.total_seconds()
-        call_count = 0
-
-        def mock_time():
-            nonlocal call_count
-            call_count += 1
-            if call_count == 1:
-                return 0
-            return refresh_interval + 100
-
-        with mock.patch(
-            "google.cloud.spanner_v1._async.database_sessions_manager.time.monotonic",
-            side_effect=mock_time,
-        ):
-            with mock.patch.object(
-                manager, "_build_multiplexed_session", return_value=new_session
-            ):
-                await DatabaseSessionsManager._maintain_multiplexed_session(
-                    ref(manager)
-                )
-                old_session.delete.assert_called_once()
-                self.assertIs(manager._multiplexed_session, new_session)
 
     async def test_maintain_multiplexed_session_old_session_none(self):
         from weakref import ref
@@ -580,7 +541,8 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
             result = await manager._rotate_multiplexed_session()
             self.assertTrue(result)
             self.assertIs(manager._multiplexed_session, new_session)
-            old_session.delete.assert_called_once()
+            old_session.delete.assert_not_called()
+            new_session.delete.assert_not_called()
 
     async def test_rotate_multiplexed_session_build_failure(self):
         manager = DatabaseSessionsManager(self.database, self.pool)
@@ -597,19 +559,3 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(result)
             self.assertIs(manager._multiplexed_session, current_session)
             current_session.delete.assert_not_called()
-
-    async def test_rotate_multiplexed_session_delete_failure(self):
-        manager = DatabaseSessionsManager(self.database, self.pool)
-        manager._multiplexed_session_lock = asyncio.Lock()
-        old_session = mock.AsyncMock()
-        old_session.delete.side_effect = Exception("delete failed")
-        new_session = mock.AsyncMock()
-        manager._multiplexed_session = old_session
-
-        with mock.patch.object(
-            manager, "_build_multiplexed_session", return_value=new_session
-        ):
-            result = await manager._rotate_multiplexed_session()
-            self.assertTrue(result)
-            self.assertIs(manager._multiplexed_session, new_session)
-            old_session.delete.assert_called_once()

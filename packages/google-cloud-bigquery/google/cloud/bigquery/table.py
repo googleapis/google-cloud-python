@@ -2158,15 +2158,16 @@ class RowIterator(HTTPIterator):
 
         params = self._get_query_params()
 
-        # If the user has provided page_size and start_index, we need to pass
-        # start_index for the first page, but for all subsequent pages, we
-        # should not pass start_index. We make a shallow copy of params and do
-        # not alter the original, so if the user iterates the results again,
-        # start_index is preserved.
+        # If the user has provided start_index, we need to pass it for the
+        # first page, but once the server hands back a page token we should
+        # not pass start_index, because the server only allows one of them.
+        # This applies whether the pages come from page_size or from the
+        # server splitting a large result. We make a shallow copy of params
+        # and do not alter the original, so if the user iterates the results
+        # again, start_index is preserved.
         params_copy = copy.copy(params)
-        if self._page_size is not None:
-            if self.page_number and "startIndex" in params:
-                del params_copy["startIndex"]
+        if self.next_page_token is not None and "startIndex" in params:
+            del params_copy["startIndex"]
 
         return self.api_request(
             method=self._HTTP_METHOD, path=self.path, query_params=params_copy

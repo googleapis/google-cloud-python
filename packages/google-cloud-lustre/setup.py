@@ -50,6 +50,7 @@ dependencies = [
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.26.1, <2.0.0",
     "protobuf >= 6.33.5, < 8.0.0",
+    "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
 ]
 extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-lustre"
@@ -86,6 +87,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.15",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],

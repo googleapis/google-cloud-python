@@ -120,7 +120,13 @@ class SearchHint(proto.Message):
     class IndexHint(proto.Message):
         r"""Message to specify the index to use for the search.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
+            dense_scann_params (google.cloud.vectorsearch_v1.types.SearchHint.IndexHint.DenseScannParams):
+                Optional. Dense ScaNN parameters.
+
+                This field is a member of `oneof`_ ``params``.
             name (str):
                 Required. The resource name of the index to use for the
                 search. The index must be in the same project, location, and
@@ -128,6 +134,32 @@ class SearchHint(proto.Message):
                 ``projects/{project}/locations/{location}/collections/{collection}/indexes/{index}``
         """
 
+        class DenseScannParams(proto.Message):
+            r"""Parameters for dense ScaNN.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                target_recall (float):
+                    Optional. The target recall for the search. Must be a double
+                    in the range [0, 1]. While the search aims to achieve this
+                    level of recall, it is not guaranteed.
+
+                    This field is a member of `oneof`_ ``_target_recall``.
+            """
+
+            target_recall: float = proto.Field(
+                proto.DOUBLE,
+                number=3,
+                optional=True,
+            )
+
+        dense_scann_params: "SearchHint.IndexHint.DenseScannParams" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="params",
+            message="SearchHint.IndexHint.DenseScannParams",
+        )
         name: str = proto.Field(
             proto.STRING,
             number=1,
@@ -291,14 +323,20 @@ class SemanticSearch(proto.Message):
 
     Attributes:
         search_text (str):
-            Required. The query text, which is used to
+            Optional. The query text, which is used to
             generate an embedding according to the embedding
             model specified in the collection config.
+
+            Required when using the text search mode.
         search_field (str):
             Required. The vector field to search.
         task_type (google.cloud.vectorsearch_v1.types.EmbeddingTaskType):
-            Required. The task type of the query
-            embedding.
+            Optional. The task type of the query
+            embedding. Must be specified for text-only
+            embedding models, see
+            <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/task-types>
+            Not needed for multi modal embedding models, see
+            <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/get-multimodal-embeddings#specify-task-instructions>
         output_fields (google.cloud.vectorsearch_v1.types.OutputFields):
             Optional. The fields to return in the search
             results.
@@ -779,7 +817,7 @@ class ReciprocalRankFusion(proto.Message):
 class VertexRanker(proto.Message):
     r"""Defines a ranker using the Vertex AI ranking service.
     See
-    https://cloud.google.com/generative-ai-app-builder/docs/ranking
+    <https://cloud.google.com/generative-ai-app-builder/docs/ranking>
     for details.
 
 

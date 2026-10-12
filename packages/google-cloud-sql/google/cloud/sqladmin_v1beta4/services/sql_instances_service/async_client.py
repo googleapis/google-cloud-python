@@ -87,8 +87,24 @@ class SqlInstancesServiceAsyncClient:
     parse_backup_dr_backup_path = staticmethod(
         SqlInstancesServiceClient.parse_backup_dr_backup_path
     )
+    crypto_key_path = staticmethod(SqlInstancesServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(
+        SqlInstancesServiceClient.parse_crypto_key_path
+    )
+    crypto_key_version_path = staticmethod(
+        SqlInstancesServiceClient.crypto_key_version_path
+    )
+    parse_crypto_key_version_path = staticmethod(
+        SqlInstancesServiceClient.parse_crypto_key_version_path
+    )
     network_path = staticmethod(SqlInstancesServiceClient.network_path)
     parse_network_path = staticmethod(SqlInstancesServiceClient.parse_network_path)
+    network_attachment_path = staticmethod(
+        SqlInstancesServiceClient.network_attachment_path
+    )
+    parse_network_attachment_path = staticmethod(
+        SqlInstancesServiceClient.parse_network_attachment_path
+    )
     secret_version_path = staticmethod(SqlInstancesServiceClient.secret_version_path)
     parse_secret_version_path = staticmethod(
         SqlInstancesServiceClient.parse_secret_version_path
@@ -1520,11 +1536,20 @@ class SqlInstancesServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.insert]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
-        )
+        header_params: dict[str, str] = {}
+
+        if request.project:
+            header_params["project"] = request.project
+
+        routing_param_regex = re.compile("^(?P<region>.*)$")
+        regex_match = routing_param_regex.match(request.body.region)
+        if regex_match and regex_match.group("region"):
+            header_params["region"] = regex_match.group("region")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3963,7 +3988,7 @@ class SqlInstancesServiceAsyncClient:
 
         Returns:
             google.cloud.sqladmin_v1beta4.types.SqlInstancesExecuteSqlResponse:
-                Execute SQL statements response.
+
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as

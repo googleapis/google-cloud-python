@@ -20,11 +20,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers
-from google.auth import crypt
-from google.auth import exceptions
-from google.auth import jwt
-
+from google.auth import _helpers, crypt, exceptions, jwt
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 

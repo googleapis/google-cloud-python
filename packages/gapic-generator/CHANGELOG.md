@@ -4,6 +4,46 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.43.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.42.0...gapic-generator-v1.43.0) (2026-10-08)
+
+
+### Features
+
+* **gapic-generator:** generate code samples for resumable upload RPCs ([#18501](https://github.com/googleapis/google-cloud-python/issues/18501)) ([c8926ab](https://github.com/googleapis/google-cloud-python/commit/c8926ab89d240239fee0c82be2373c752d3507c0))
+* generate client, transport, and unit test templates for resumable uploads ([#18495](https://github.com/googleapis/google-cloud-python/issues/18495)) ([3f8d00b](https://github.com/googleapis/google-cloud-python/commit/3f8d00bf5d95337a97268bcbdd7ef1ee155f7516))
+* **observability:** implement universal 4-path OpenTelemetry tracing ([#18433](https://github.com/googleapis/google-cloud-python/issues/18433)) ([7d18b25](https://github.com/googleapis/google-cloud-python/commit/7d18b2575c5170518df0ba0e425d87a41f0eba56))
+
+## [1.42.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.41.0...gapic-generator-v1.42.0) (2026-10-01)
+
+
+### Features
+
+* **gapic-generator:** add rpc_name metadata to mixin schema definitions ([#18516](https://github.com/googleapis/google-cloud-python/issues/18516)) ([fc1b469](https://github.com/googleapis/google-cloud-python/commit/fc1b469837256a7a3b59d1b8b0ed1ffe078aab3b))
+
+## [1.41.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.40.0...gapic-generator-v1.41.0) (2026-09-29)
+
+
+### Features
+
+* **gapic-generator:** add schema support for resumable uploads ([#18480](https://github.com/googleapis/google-cloud-python/issues/18480)) ([78ff458](https://github.com/googleapis/google-cloud-python/commit/78ff458d055a6104a385dc96990773f02a138f7d))
+
+
+### Bug Fixes
+
+* **gapic-generator:** init mock response in version header test ([#18488](https://github.com/googleapis/google-cloud-python/issues/18488)) ([7871fa9](https://github.com/googleapis/google-cloud-python/commit/7871fa9d142807248e225cb9d24d2ffda88e1b90))
+
+## [1.40.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.39.0...gapic-generator-v1.40.0) (2026-09-24)
+
+
+### Features
+
+* add 3.15 support to gapic library classifiers ([#18450](https://github.com/googleapis/google-cloud-python/issues/18450)) ([5fe1ef3](https://github.com/googleapis/google-cloud-python/commit/5fe1ef3b5f11155a7768660a39c3a8e964d9d652))
+
+
+### Bug Fixes
+
+* **bazel:** allow CustomProtoInfo in gapic_compat_proto_library ([#18417](https://github.com/googleapis/google-cloud-python/issues/18417)) ([11bdf92](https://github.com/googleapis/google-cloud-python/commit/11bdf928710031cd3dd279215d1be2bd7d73e18f))
+
 ## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.38.0...gapic-generator-v1.39.0) (2026-08-21)
 
 

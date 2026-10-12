@@ -21,17 +21,18 @@ MANYLINUX_DIR=$(echo $(cd $(dirname ${0}); pwd))
 SCRIPTS_DIR=$(dirname ${MANYLINUX_DIR})
 REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository -y ppa:deadsnakes/ppa
-sudo apt-get update
-sudo apt-get install -y python3.12
+if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
+    KEYSTORE_FILE="${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3"
+    if [[ ! -s "${KEYSTORE_FILE}" ]]; then
+        echo "ERROR [pre-flight]: PyPI token missing or empty at '${KEYSTORE_FILE}'." >&2
+        exit 1
+    fi
+fi
 
 cd $REPO_ROOT
 # Add directory as safe to avoid "detected dubious ownership" fatal issue1
 git config --global --add safe.directory '*'
 git submodule update --init --recursive
-
-
 
 docker pull quay.io/pypa/manylinux2014_x86_64
 docker run \
@@ -39,6 +40,7 @@ docker run \
     --interactive \
     --volume ${REPO_ROOT}:/var/code/python-crc32c/ \
     --env BUILD_PYTHON=${BUILD_PYTHON} \
+    --env CRC32C_PURE_PYTHON=0 \
     quay.io/pypa/manylinux2014_x86_64 \
     /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
 
@@ -49,9 +51,29 @@ docker run \
     --interactive \
     --volume ${REPO_ROOT}:/var/code/python-crc32c/ \
     --env BUILD_PYTHON=${BUILD_PYTHON} \
+    --env CRC32C_PURE_PYTHON=0 \
     quay.io/pypa/manylinux2014_aarch64 \
     /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
 
-if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
-    . /${MANYLINUX_DIR}/publish_python_wheel.sh
+DOCKER_VOLUMES=(--volume "${REPO_ROOT}:/var/code/python-crc32c/")
+if [[ -d "/tmpfs" ]]; then
+    DOCKER_VOLUMES+=(--volume "/tmpfs:/tmpfs")
 fi
+if [[ -n "${KOKORO_KEYSTORE_DIR}" && -d "${KOKORO_KEYSTORE_DIR}" && "${KOKORO_KEYSTORE_DIR}" != /tmpfs/* ]]; then
+    DOCKER_VOLUMES+=(--volume "${KOKORO_KEYSTORE_DIR}:${KOKORO_KEYSTORE_DIR}")
+fi
+
+docker run \
+    --rm \
+    --interactive \
+    "${DOCKER_VOLUMES[@]}" \
+    --env REPO_ROOT=/var/code/python-crc32c \
+    --env BUILD_PYTHON \
+    --env PUBLISH_WHEELS \
+    --env KOKORO_KEYSTORE_DIR \
+    --env KOKORO_GFILE_DIR \
+    --env KOKORO_BUILD_ID \
+    --env KOKORO_GITHUB_COMMIT \
+    --env KOKORO_GITHUB_PULL_REQUEST_NUMBER \
+    quay.io/pypa/manylinux2014_x86_64 \
+    /var/code/python-crc32c/scripts/manylinux/publish_python_wheel.sh

@@ -11,14 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import threading
 from datetime import timedelta
 from os import environ
-from time import sleep, time
-from typing import Callable
 from unittest import TestCase
 
 from google.api_core.exceptions import BadRequest, FailedPrecondition
-from mock import MagicMock, Mock, patch
+from mock import DEFAULT, MagicMock, Mock, patch
 
 from google.cloud.spanner_v1.database_sessions_manager import (
     DatabaseSessionsManager,
@@ -27,12 +26,6 @@ from google.cloud.spanner_v1.database_sessions_manager import (
 from tests._builders import build_database
 
 
-# Shorten polling and refresh intervals for testing.
-@patch.multiple(
-    DatabaseSessionsManager,
-    _MAINTENANCE_THREAD_POLLING_INTERVAL=timedelta(seconds=1),
-    _MAINTENANCE_THREAD_REFRESH_INTERVAL=timedelta(seconds=2),
-)
 class TestDatabaseSessionManager(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -64,7 +57,8 @@ class TestDatabaseSessionManager(TestCase):
 
         if thread and thread.is_alive():
             manager._multiplexed_session_terminate_event.set()
-            self._assert_true_with_timeout(lambda: not thread.is_alive())
+            thread.join(timeout=10)
+            self.assertFalse(thread.is_alive())
 
     def test_read_only_pooled(self):
         manager = self._manager
@@ -180,19 +174,31 @@ class TestDatabaseSessionManager(TestCase):
         # Verify create_session was called.
         manager._database.spanner_api.create_session.assert_called_once()
 
+    @patch.multiple(
+        DatabaseSessionsManager,
+        _MAINTENANCE_THREAD_POLLING_INTERVAL=timedelta(milliseconds=5),
+        _MAINTENANCE_THREAD_REFRESH_INTERVAL=timedelta(milliseconds=10),
+    )
     def test_multiplexed_maintenance(self):
         manager = self._manager
         self._enable_multiplexed_sessions()
+
+        rotated = threading.Event()
+
+        def on_create_session(*args, **kwargs):
+            if manager._database.spanner_api.create_session.call_count > 1:
+                rotated.set()
+            return DEFAULT
+
+        manager._database.spanner_api.create_session.side_effect = on_create_session
 
         # Maintenance thread is started.
         session_1 = manager.get_session(TransactionType.READ_ONLY)
         self.assertTrue(session_1.is_multiplexed)
         self.assertTrue(manager._multiplexed_session_thread.is_alive())
 
-        # Wait for maintenance thread to execute.
-        self._assert_true_with_timeout(
-            lambda: manager._database.spanner_api.create_session.call_count > 1
-        )
+        # Wait for maintenance thread to execute without polling.
+        self.assertTrue(rotated.wait(timeout=10.0))
 
         # Verify that maintenance thread created new multiplexed session.
         session_2 = manager.get_session(TransactionType.READ_ONLY)
@@ -222,23 +228,31 @@ class TestDatabaseSessionManager(TestCase):
         # Mock maintenance thread creation to avoid spawning background tasks
         manager._build_maintenance_thread = Mock(return_value=Mock())
 
-        # Mock _build_multiplexed_session to include a suspension point
-        async def slow_build():
-            await asyncio.sleep(0.5)
-            return Mock()
-
-        manager._build_multiplexed_session = slow_build
-
         # Enable multiplexed sessions in environment for verification
         environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = "true"
 
         async def run_concurrent():
+            entered_slow_build = asyncio.Event()
+            release_slow_build = asyncio.Event()
+
+            # Mock _build_multiplexed_session to include a suspension point
+            async def slow_build():
+                entered_slow_build.set()
+                await release_slow_build.wait()
+                return Mock()
+
+            manager._build_multiplexed_session = slow_build
+
             # Trigger Coroutine 1
             task1 = asyncio.create_task(manager._get_multiplexed_session())
-            await asyncio.sleep(0.1)  # Allow Coroutine 1 to acquire lock and suspend
+            # Wait until Coroutine 1 has acquired the lock and suspended
+            await entered_slow_build.wait()
 
-            # Trigger Coroutine 2 - this would previously block the main thread
+            # Trigger Coroutine 2 while Coroutine 1 holds the lock
             task2 = asyncio.create_task(manager._get_multiplexed_session())
+
+            # Release Coroutine 1 to complete
+            release_slow_build.set()
 
             await asyncio.gather(task1, task2)
 
@@ -274,7 +288,7 @@ class TestDatabaseSessionManager(TestCase):
         mock_lock.acquire.assert_not_called()
         mock_lock.__enter__.assert_not_called()
 
-    def test_maintain_multiplexed_session_swaps_before_deleting_old_session(self):
+    def test_maintain_multiplexed_session_rotates_session(self):
         import threading
         from weakref import ref
 
@@ -286,11 +300,6 @@ class TestDatabaseSessionManager(TestCase):
         old_session = Mock()
         new_session = Mock()
         manager._multiplexed_session = old_session
-
-        def verify_swap_on_delete():
-            self.assertIs(manager._multiplexed_session, new_session)
-
-        old_session.delete.side_effect = verify_swap_on_delete
 
         call_count = 0
 
@@ -310,7 +319,8 @@ class TestDatabaseSessionManager(TestCase):
             ) as mock_build:
                 DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
                 mock_build.assert_called_once()
-                old_session.delete.assert_called_once()
+                old_session.delete.assert_not_called()
+                new_session.delete.assert_not_called()
                 self.assertIs(manager._multiplexed_session, new_session)
 
     def test_close_branches(self):
@@ -330,7 +340,7 @@ class TestDatabaseSessionManager(TestCase):
         manager._multiplexed_session_terminate_event.set.assert_called_once()
         mock_thread.join.assert_called_once()
         self.assertIsNone(manager._multiplexed_session)
-        mock_session.delete.assert_called_once()
+        mock_session.delete.assert_not_called()
 
     def test_maintain_multiplexed_session_handles_build_failure(self):
         import threading
@@ -373,40 +383,6 @@ class TestDatabaseSessionManager(TestCase):
                     mock_event_wait.assert_called_once()
                     current_session.delete.assert_not_called()
                     self.assertIs(manager._multiplexed_session, current_session)
-
-    def test_maintain_multiplexed_session_handles_delete_failure(self):
-        import threading
-        from weakref import ref
-
-        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
-        manager._multiplexed_session_lock = threading.Lock()
-        manager._multiplexed_session_terminate_event = Mock()
-        manager._multiplexed_session_terminate_event.is_set.side_effect = [False, True]
-
-        old_session = Mock()
-        old_session.delete.side_effect = Exception("delete failed")
-        new_session = Mock()
-        manager._multiplexed_session = old_session
-
-        call_count = 0
-
-        def mock_time():
-            nonlocal call_count
-            call_count += 1
-            if call_count == 1:
-                return 0
-            return 1000000
-
-        with patch(
-            "google.cloud.spanner_v1.database_sessions_manager.time.monotonic",
-            side_effect=mock_time,
-        ):
-            with patch.object(
-                manager, "_build_multiplexed_session", return_value=new_session
-            ):
-                DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
-                old_session.delete.assert_called_once()
-                self.assertIs(manager._multiplexed_session, new_session)
 
     def test_maintain_multiplexed_session_old_session_none(self):
         import threading
@@ -662,7 +638,8 @@ class TestDatabaseSessionManager(TestCase):
             result = manager._rotate_multiplexed_session()
             self.assertTrue(result)
             self.assertIs(manager._multiplexed_session, new_session)
-            old_session.delete.assert_called_once()
+            old_session.delete.assert_not_called()
+            new_session.delete.assert_not_called()
 
     def test_rotate_multiplexed_session_build_failure(self):
         import threading
@@ -681,40 +658,6 @@ class TestDatabaseSessionManager(TestCase):
             self.assertFalse(result)
             self.assertIs(manager._multiplexed_session, current_session)
             current_session.delete.assert_not_called()
-
-    def test_rotate_multiplexed_session_delete_failure(self):
-        import threading
-
-        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
-        manager._multiplexed_session_lock = threading.Lock()
-        old_session = Mock()
-        old_session.delete.side_effect = Exception("delete failed")
-        new_session = Mock()
-        manager._multiplexed_session = old_session
-
-        with patch.object(
-            manager, "_build_multiplexed_session", return_value=new_session
-        ):
-            result = manager._rotate_multiplexed_session()
-            self.assertTrue(result)
-            self.assertIs(manager._multiplexed_session, new_session)
-            old_session.delete.assert_called_once()
-
-    def _assert_true_with_timeout(self, condition: Callable) -> None:
-        """Asserts that the given condition is met within a timeout period.
-
-        :type condition: Callable
-        :param condition: A callable that returns a boolean indicating whether the condition is met.
-        """
-
-        sleep_seconds = 0.1
-        timeout_seconds = 10
-
-        start_time = time()
-        while not condition() and time() - start_time < timeout_seconds:
-            sleep(sleep_seconds)
-
-        self.assertTrue(condition())
 
     @staticmethod
     def _disable_multiplexed_sessions() -> None:

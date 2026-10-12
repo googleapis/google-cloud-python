@@ -21,7 +21,7 @@ functions. This module is implementing the same surface with AsyncIO semantics.
 import asyncio
 import functools
 import warnings
-from typing import AsyncGenerator, Generic, Iterator, Optional, TypeVar
+from typing import AsyncGenerator, Generic, Iterator, Optional, Sequence, TypeVar
 
 import grpc
 from grpc import aio
@@ -306,6 +306,59 @@ def create_channel(
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
+
+
+def apply_channel_interceptors(
+    channel: aio.Channel,
+    interceptors: Optional[Sequence[aio.ClientInterceptor]] = None,
+) -> aio.Channel:
+    """Applies client interceptors to a gRPC AsyncIO channel.
+
+    In grpc.aio, channels maintain internal interceptor lists
+    (_unary_unary_interceptors, etc.). To preserve the public API contract for
+    callers who supply their own pre-instantiated ``channel`` object or a custom
+    channel factory callable (which does not accept ``interceptors``), we attach
+    interceptors post-instantiation directly to the channel's interceptor lists.
+
+    Args:
+        channel (aio.Channel): The async gRPC channel to intercept.
+        interceptors (Optional[Sequence[aio.ClientInterceptor]]):
+            Additional interceptors to apply to the channel.
+
+    Returns:
+        aio.Channel: The channel with interceptors attached, or the original channel
+            if no interceptors were provided.
+    """
+    if not interceptors:
+        return channel
+
+    mapping = (
+        ("intercept_unary_unary", "_unary_unary_interceptors"),
+        ("intercept_unary_stream", "_unary_stream_interceptors"),
+        ("intercept_stream_unary", "_stream_unary_interceptors"),
+        ("intercept_stream_stream", "_stream_stream_interceptors"),
+    )
+    for interceptor in interceptors:
+        matched = False
+        for method_name, attr_name in mapping:
+            if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
+                target_list = getattr(channel, attr_name)
+                if isinstance(target_list, list):
+                    if interceptor not in target_list:
+                        target_list.append(interceptor)
+                    matched = True
+                elif hasattr(target_list, "append"):
+                    target_list.append(interceptor)
+                    matched = True
+        if not matched and hasattr(channel, "_unary_unary_interceptors"):
+            unary_interceptors = channel._unary_unary_interceptors
+            if isinstance(unary_interceptors, list):
+                if interceptor not in unary_interceptors:
+                    unary_interceptors.append(interceptor)
+            elif hasattr(unary_interceptors, "append"):
+                unary_interceptors.append(interceptor)
+
+    return channel
 
 
 class FakeUnaryUnaryCall(_WrappedUnaryUnaryCall):

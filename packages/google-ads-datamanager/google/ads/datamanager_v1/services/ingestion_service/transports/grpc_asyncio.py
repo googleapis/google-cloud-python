@@ -461,6 +461,74 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
         return self._stubs["ingest_events"]
 
     @property
+    def ingest_users(
+        self,
+    ) -> Callable[
+        [ingestion_service.IngestUsersRequest],
+        Awaitable[ingestion_service.IngestUsersResponse],
+    ]:
+        r"""Return a callable for the ingest users method over gRPC.
+
+        Uploads a list of users to the provided destinations. Unlike
+        [IngestAudienceMembers][google.ads.datamanager.v1.IngestionService.IngestAudienceMembers]
+        (which adds users to specific advertiser audience lists for
+        targeting), ``IngestUsers`` ingests account level identity
+        linkage data (for example, user identifiers linked to mobile
+        IDs) independent of specific audience segments.
+
+        This feature is only available to accounts on an allowlist.
+
+        Returns:
+            Callable[[~.IngestUsersRequest],
+                    Awaitable[~.IngestUsersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "ingest_users" not in self._stubs:
+            self._stubs["ingest_users"] = self._logged_channel.unary_unary(
+                "/google.ads.datamanager.v1.IngestionService/IngestUsers",
+                request_serializer=ingestion_service.IngestUsersRequest.serialize,
+                response_deserializer=ingestion_service.IngestUsersResponse.deserialize,
+            )
+        return self._stubs["ingest_users"]
+
+    @property
+    def remove_users(
+        self,
+    ) -> Callable[
+        [ingestion_service.RemoveUsersRequest],
+        Awaitable[ingestion_service.RemoveUsersResponse],
+    ]:
+        r"""Return a callable for the remove users method over gRPC.
+
+        Removes a list of users from the provided
+        destinations.
+        This feature is only available to accounts on an
+        allowlist.
+
+        Returns:
+            Callable[[~.RemoveUsersRequest],
+                    Awaitable[~.RemoveUsersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_users" not in self._stubs:
+            self._stubs["remove_users"] = self._logged_channel.unary_unary(
+                "/google.ads.datamanager.v1.IngestionService/RemoveUsers",
+                request_serializer=ingestion_service.RemoveUsersRequest.serialize,
+                response_deserializer=ingestion_service.RemoveUsersResponse.deserialize,
+            )
+        return self._stubs["remove_users"]
+
+    @property
     def ingest_ad_events(
         self,
     ) -> Callable[
@@ -561,6 +629,36 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
             ),
             self.ingest_events: self._wrap_method(
                 self.ingest_events,
+                default_retry=retries.AsyncRetry(
+                    initial=5.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.ingest_users: self._wrap_method(
+                self.ingest_users,
+                default_retry=retries.AsyncRetry(
+                    initial=5.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.remove_users: self._wrap_method(
+                self.remove_users,
                 default_retry=retries.AsyncRetry(
                     initial=5.0,
                     maximum=60.0,

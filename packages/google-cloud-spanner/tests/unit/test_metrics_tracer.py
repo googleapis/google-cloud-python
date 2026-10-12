@@ -175,9 +175,25 @@ def test_set_location(metrics_tracer):
     metrics_tracer.set_location("test_location")
     assert metrics_tracer.client_attributes["location"] == "test_location"
 
-    # Ensure it does not overwrite
     metrics_tracer.set_location("new_location")
     assert metrics_tracer.client_attributes["location"] == "test_location"
+
+
+def test_set_resource_info(metrics_tracer):
+    resource_info = {
+        "project": "test_project",
+        "instance": "test_instance",
+        "database": "test_database",
+    }
+    metrics_tracer.set_resource_info(resource_info)
+    assert metrics_tracer.client_attributes["project_id"] == "test_project"
+    assert metrics_tracer.client_attributes["instance_id"] == "test_instance"
+    assert metrics_tracer.client_attributes["database"] == "test_database"
+
+    # None and empty resource_info are safe no-ops
+    metrics_tracer.set_resource_info(None)
+    metrics_tracer.set_resource_info({})
+    assert metrics_tracer.client_attributes["project_id"] == "test_project"
 
 
 def test_set_client_hash(metrics_tracer):

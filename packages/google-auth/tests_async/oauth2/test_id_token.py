@@ -18,9 +18,8 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import environment_vars
-from google.auth import exceptions
 import google.auth.compute_engine._metadata
+from google.auth import environment_vars, exceptions
 from google.oauth2 import _id_token_async as id_token
 from google.oauth2 import _service_account_async
 from google.oauth2 import id_token as sync_id_token
@@ -210,11 +209,25 @@ async def test_verify_firebase_token_clock_skew(verify_token):
 
 
 @pytest.mark.asyncio
-async def test_fetch_id_token_from_metadata_server(monkeypatch):
+@pytest.mark.parametrize(
+    "call_kwargs,expected_bind_id_token",
+    [
+        ({}, None),
+        ({"bind_id_token": None}, None),
+        ({"bind_id_token": True}, True),
+        ({"bind_id_token": False}, False),
+    ],
+)
+async def test_fetch_id_token_from_metadata_server(
+    monkeypatch, call_kwargs, expected_bind_id_token
+):
     monkeypatch.delenv(environment_vars.CREDENTIALS, raising=False)
 
-    def mock_init(self, request, audience, use_metadata_identity_endpoint):
+    def mock_init(
+        self, request, audience, use_metadata_identity_endpoint, bind_id_token
+    ):
         assert use_metadata_identity_endpoint
+        assert bind_id_token is expected_bind_id_token
         self.token = "id_token"
 
     with mock.patch("google.auth.compute_engine._metadata.ping", return_value=True):
@@ -225,13 +238,16 @@ async def test_fetch_id_token_from_metadata_server(monkeypatch):
         ):
             request = mock.AsyncMock()
             token = await id_token.fetch_id_token(
-                request, "https://pubsub.googleapis.com"
+                request,
+                "https://pubsub.googleapis.com",
+                **call_kwargs,
             )
             assert token == "id_token"
 
 
 @pytest.mark.asyncio
-async def test_fetch_id_token_from_explicit_cred_json_file(monkeypatch):
+@pytest.mark.parametrize("bind_id_token", [None, True, False])
+async def test_fetch_id_token_from_explicit_cred_json_file(monkeypatch, bind_id_token):
     monkeypatch.setenv(environment_vars.CREDENTIALS, test_id_token.SERVICE_ACCOUNT_FILE)
 
     async def mock_refresh(self, request):
@@ -241,7 +257,9 @@ async def test_fetch_id_token_from_explicit_cred_json_file(monkeypatch):
         _service_account_async.IDTokenCredentials, "refresh", mock_refresh
     ):
         request = mock.AsyncMock()
-        token = await id_token.fetch_id_token(request, "https://pubsub.googleapis.com")
+        token = await id_token.fetch_id_token(
+            request, "https://pubsub.googleapis.com", bind_id_token=bind_id_token
+        )
         assert token == "id_token"
 
 

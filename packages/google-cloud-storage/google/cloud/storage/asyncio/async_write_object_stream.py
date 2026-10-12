@@ -58,6 +58,9 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
     :type write_handle: _storage_v2.BidiWriteHandle
     :param write_handle: (Optional) An existing handle for writing the object.
                         If provided, opening the bidi-gRPC connection will be faster.
+
+    :type storage_class: Optional[str]
+    :param storage_class: (Optional) The storage class of the object.
     """
 
     def __init__(
@@ -69,6 +72,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         routing_token: Optional[str] = None,
         blob: Optional[Blob] = None,
+        storage_class: Optional[str] = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -86,6 +90,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         self.write_handle: Optional[_storage_v2.BidiWriteHandle] = write_handle
         self.routing_token: Optional[str] = routing_token
         self.blob: Optional[Blob] = blob
+        self.storage_class: Optional[str] = storage_class
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
         self.rpc = self.client._client._transport._wrapped_methods[
@@ -124,7 +129,9 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                 resource = _grpc_conversions.blob_to_proto(self.blob)
             else:
                 resource = _storage_v2.Object(
-                    name=self.object_name, bucket=self._full_bucket_name
+                    name=self.object_name,
+                    bucket=self._full_bucket_name,
+                    storage_class=self.storage_class,
                 )
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(

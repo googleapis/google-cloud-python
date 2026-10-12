@@ -112,6 +112,10 @@ class _BaseParticipantsRestTransport(ParticipantsTransport):
             ]
             return http_options
 
+    class _BaseBidiStreamingAnalyzeContent:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
     class _BaseCreateParticipant:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -175,6 +179,10 @@ class _BaseParticipantsRestTransport(ParticipantsTransport):
             return http_options
 
     class _BaseStreamingAnalyzeContent:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+    class _BaseStreamingReactiveCompanionSuggestions:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 

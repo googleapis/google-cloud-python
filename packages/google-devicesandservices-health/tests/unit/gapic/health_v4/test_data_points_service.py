@@ -7105,6 +7105,7 @@ def test_create_data_point_rest_call_success(request_type):
             "sample_time": {},
             "root_mean_square_of_successive_differences_milliseconds": 0.5830000000000001,
             "standard_deviation_milliseconds": 0.32880000000000004,
+            "metadata": {"high_frequency_power": 0.2141, "low_frequency_power": 0.2063},
         },
         "daily_sleep_temperature_derivations": {
             "date": {},
@@ -7646,6 +7647,7 @@ def test_update_data_point_rest_call_success(request_type):
             "sample_time": {},
             "root_mean_square_of_successive_differences_milliseconds": 0.5830000000000001,
             "standard_deviation_milliseconds": 0.32880000000000004,
+            "metadata": {"high_frequency_power": 0.2141, "low_frequency_power": 0.2063},
         },
         "daily_sleep_temperature_derivations": {
             "date": {},
