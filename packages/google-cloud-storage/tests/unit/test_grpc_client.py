@@ -361,13 +361,11 @@ class TestGrpcClient(unittest.TestCase):
                 expected_host,
             )
 
-    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
-    def test_metrics_properties(self, mock_storage_client, mock_base_client):
+    def test_metrics_properties(self, mock_storage_client):
         from google.cloud.storage import _opentelemetry_metrics
 
         mock_creds = _make_credentials()
-        mock_base_client.return_value._credentials = mock_creds
 
         client = grpc_client.GrpcClient(
             project="test-project",
@@ -400,3 +398,36 @@ class TestGrpcClient(unittest.TestCase):
             client._enable_debug_metrics = True
             self.assertFalse(client.metrics_enabled)
             self.assertFalse(client.debug_metrics_enabled)
+
+    @mock.patch("google.cloud._storage_v2.StorageClient")
+    def test_ctor_metrics_defaults_and_env_fallback(self, mock_storage_client):
+        from google.cloud.storage import _opentelemetry_metrics
+
+        mock_creds = _make_credentials()
+        client = grpc_client.GrpcClient(
+            project="test-project",
+            credentials=mock_creds,
+        )
+
+        self.assertIsNone(client._enable_metrics)
+        self.assertIsNone(client._enable_debug_metrics)
+
+        with mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=True,
+        ):
+            with mock.patch.dict("os.environ", {}, clear=True):
+                self.assertFalse(client.metrics_enabled)
+                self.assertFalse(client.debug_metrics_enabled)
+
+            with mock.patch.dict(
+                "os.environ",
+                {
+                    "GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS": "true",
+                    "GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS": "true",
+                },
+                clear=True,
+            ):
+                self.assertTrue(client.metrics_enabled)
+                self.assertTrue(client.debug_metrics_enabled)

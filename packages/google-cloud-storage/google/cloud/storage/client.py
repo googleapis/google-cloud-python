@@ -131,15 +131,15 @@ class Client(ClientWithProject):
     :type enable_metrics: bool or None
     :param enable_metrics:
         (Optional, Experimental) Whether to enable OpenTelemetry metrics. If
-        None, falls back to the GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS
-        environment variable, or False if unset.
+        ``None``, falls back to the ``GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS``
+        environment variable, or ``False`` if unset.
 
     :type enable_debug_metrics: bool or None
     :param enable_debug_metrics:
         (Optional, Experimental) Whether to enable debug OpenTelemetry
-        metrics. If None, falls back to the
-        GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS environment variable, or False
-        if unset.
+        metrics. If ``None``, falls back to the
+        ``GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS`` environment variable,
+        or ``False`` if unset.
     """
 
     SCOPE = (
@@ -179,6 +179,8 @@ class Client(ClientWithProject):
         self._initial_client_info = client_info
         self._initial_client_options = client_options
         self._extra_headers = extra_headers
+        self._enable_metrics = enable_metrics
+        self._enable_debug_metrics = enable_debug_metrics
 
         connection_kw_args = {"client_info": client_info}
 
@@ -309,17 +311,15 @@ class Client(ClientWithProject):
         self._connection = connection
         self._batch_stack = _LocalStack()
         self._bucket_metadata_cache = BucketMetadataCache(self)
-        self._enable_metrics = enable_metrics
-        self._enable_debug_metrics = enable_debug_metrics
 
     @property
     def metrics_enabled(self) -> bool:
-        """Returns True if metrics recording is active for this client."""
+        """(Experimental) Returns ``True`` if OpenTelemetry metrics recording is active for this client."""
         return _opentelemetry_metrics.is_metrics_enabled(self._enable_metrics)
 
     @property
     def debug_metrics_enabled(self) -> bool:
-        """Returns True if debug metrics recording is active for this client."""
+        """(Experimental) Returns ``True`` if debug metrics recording is active for this client."""
         return _opentelemetry_metrics.is_debug_metrics_enabled(
             self._enable_debug_metrics
         )

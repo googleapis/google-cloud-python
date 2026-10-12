@@ -339,6 +339,36 @@ class TestClient(unittest.TestCase):
             self.assertFalse(client_disabled_base.metrics_enabled)
             self.assertTrue(client_disabled_base.debug_metrics_enabled)
 
+    def test_ctor_metrics_defaults_and_env_fallback(self):
+        from google.cloud.storage import _opentelemetry_metrics
+
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+
+        self.assertIsNone(client._enable_metrics)
+        self.assertIsNone(client._enable_debug_metrics)
+
+        with mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=True,
+        ):
+            with mock.patch.dict("os.environ", {}, clear=True):
+                self.assertFalse(client.metrics_enabled)
+                self.assertFalse(client.debug_metrics_enabled)
+
+            with mock.patch.dict(
+                "os.environ",
+                {
+                    "GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS": "true",
+                    "GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS": "true",
+                },
+                clear=True,
+            ):
+                self.assertTrue(client.metrics_enabled)
+                self.assertTrue(client.debug_metrics_enabled)
+
     def test_ctor_w_universe_domain_and_mismatched_credentials(self):
         PROJECT = "PROJECT"
         universe_domain = "example.com"

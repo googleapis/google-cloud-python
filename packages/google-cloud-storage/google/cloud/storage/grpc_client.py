@@ -108,15 +108,15 @@ class GrpcClient(ClientWithProject):
     :type enable_metrics: bool or None
     :param enable_metrics:
         (Optional, Experimental) Whether to enable OpenTelemetry metrics. If
-        None, falls back to the GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS
-        environment variable, or False if unset.
+        ``None``, falls back to the ``GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS``
+        environment variable, or ``False`` if unset.
 
     :type enable_debug_metrics: bool or None
     :param enable_debug_metrics:
         (Optional, Experimental) Whether to enable debug OpenTelemetry
-        metrics. If None, falls back to the
-        GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS environment variable, or False
-        if unset.
+        metrics. If ``None``, falls back to the
+        ``GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS`` environment variable,
+        or ``False`` if unset.
     """
 
     def __init__(
@@ -159,12 +159,12 @@ class GrpcClient(ClientWithProject):
 
     @property
     def metrics_enabled(self) -> bool:
-        """Returns True if metrics recording is active for this client."""
+        """(Experimental) Returns ``True`` if OpenTelemetry metrics recording is active for this client."""
         return _opentelemetry_metrics.is_metrics_enabled(self._enable_metrics)
 
     @property
     def debug_metrics_enabled(self) -> bool:
-        """Returns True if debug metrics recording is active for this client."""
+        """(Experimental) Returns ``True`` if debug metrics recording is active for this client."""
         return _opentelemetry_metrics.is_debug_metrics_enabled(
             self._enable_debug_metrics
         )
