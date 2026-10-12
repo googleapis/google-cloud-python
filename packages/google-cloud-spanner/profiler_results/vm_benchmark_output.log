@@ -5,38 +5,38 @@ Overriding of current MeterProvider is not allowed
 SCENARIO 1 [1A]: Point Select C=1 (Sync) — WITHOUT SHARED CORE (Stock Python SDK)
 ========================================================================================
 [*] Warming up for 5.0 seconds...
-[+] Warmup completed: 714 requests executed.
+[+] Warmup completed: 786 requests executed.
 [*] Profiling pure CPU time (Cross-FFI enabled=False) for 10.0 seconds...
-[+] Profiling finished: 729 requests (72.9 QPS) | Total CPU: 7.4544s (10.226 ms/query)
+[+] Profiling finished: 741 requests (74.02 QPS) | Total CPU: 7.5966s (10.252 ms/query)
 [+] Saved profile stats to: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.prof
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 1A: Point Select C=1 (Without Shared Core - Stock Python SDK)
-Total Requests: 729 | Total Process Pure CPU: 7.4544 s | Avg CPU/Query: 10.226 ms
+Total Requests: 741 | Total Process Pure CPU: 7.5966 s | Avg CPU/Query: 10.252 ms
 ----------------------------------------------------------------------------------------
-Mon Oct 12 11:21:57 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.prof
+Mon Oct 12 12:31:21 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.prof
 
-         1370708 function calls (1389663 primitive calls) in 6.918 seconds
+         1394492 function calls (1413759 primitive calls) in 7.068 seconds
 
    Ordered by: cumulative time
    List reduced from 393 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-      729    0.021    0.000    5.698    0.008 spanner_cpu_profile_suite.py:455(run_point_select_query_sync)
-     1458    0.011    0.000    4.458    0.003 streamed.py:169(StreamedResultSet.__iter__)
-      729    0.027    0.000    4.446    0.006 streamed.py:150(StreamedResultSet._consume_next)
-     1458    0.053    0.000    4.170    0.003 snapshot.py:75(_restart_on_unavailable)
-5832/11664    0.052    0.000    1.451    0.000 builtins:0(next)
-      729    0.008    0.000    1.314    0.002 cross_sync.py:331(run_if_async)
-      729    0.027    0.000    1.306    0.002 client.py:1453(SpannerClient.execute_streaming_sql)
-      729    0.025    0.000    1.199    0.002 method.py:151(_GapicCallable.__call__)
-     1458    0.025    0.000    1.161    0.001 threading.py:964(run)
-      729    0.009    0.000    1.048    0.001 timeout.py:101(func_with_timeout)
-      729    0.012    0.000    1.028    0.001 grpc_helpers.py:140(error_remapped_callable)
-      729    0.050    0.000    1.020    0.001 snapshot.py:415(Snapshot.execute_sql)
-     5103    0.109    0.000    0.866    0.000 message.py:611(QueryOptions.__init__)
-      729    0.009    0.000    0.840    0.001 _interceptor.py:410(_UnaryStreamMultiCallable.__call__)
-      729    0.006    0.000    0.827    0.001 client.py:94(MetricsInterceptor.intercept_unary_stream)
+      741    0.022    0.000    5.841    0.008 spanner_cpu_profile_suite.py:623(run_point_select_query_sync)
+     1482    0.011    0.000    4.565    0.003 streamed.py:169(StreamedResultSet.__iter__)
+      741    0.030    0.000    4.553    0.006 streamed.py:150(StreamedResultSet._consume_next)
+     1482    0.054    0.000    4.274    0.003 snapshot.py:75(_restart_on_unavailable)
+5928/11856    0.053    0.000    1.490    0.000 builtins:0(next)
+      741    0.008    0.000    1.356    0.002 cross_sync.py:331(run_if_async)
+      741    0.029    0.000    1.348    0.002 client.py:1453(SpannerClient.execute_streaming_sql)
+      741    0.026    0.000    1.237    0.002 method.py:151(_GapicCallable.__call__)
+     1482    0.026    0.000    1.166    0.001 threading.py:964(run)
+      741    0.009    0.000    1.082    0.001 timeout.py:101(func_with_timeout)
+      741    0.013    0.000    1.063    0.001 grpc_helpers.py:140(error_remapped_callable)
+      741    0.056    0.000    1.049    0.001 snapshot.py:415(Snapshot.execute_sql)
+     5187    0.115    0.000    0.883    0.000 message.py:611(QueryOptions.__init__)
+      741    0.009    0.000    0.873    0.001 _interceptor.py:410(_UnaryStreamMultiCallable.__call__)
+      741    0.007    0.000    0.858    0.001 client.py:94(MetricsInterceptor.intercept_unary_stream)
 
 
 
@@ -46,38 +46,38 @@ SCENARIO 2 [2A]: Point Select C=32 (AsyncIO) — WITHOUT SHARED CORE (Stock Pyth
 ========================================================================================
 [*] Initializing high-level spanner_v1.AsyncClient for span-cloud-testing / suvham-testing / benchmark_db_async...
 [*] Warming up 32 concurrent coroutines on event loop for 5.0 seconds...
-[+] Warmup completed: 2827 total requests executed across 32 coroutines.
+[+] Warmup completed: 2748 total requests executed across 32 coroutines.
 [*] Profiling pure CPU time across all 32 coroutines for 10.0 seconds...
-[+] Profiling finished: 1140 requests (113.2 QPS) | Total CPU: 9.9698s (8.745 ms/query)
+[+] Profiling finished: 1156 requests (114.72 QPS) | Total CPU: 9.9805s (8.634 ms/query)
 [+] Saved profile stats to: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32.prof
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 2A: Point Select C=32 AsyncIO (Without Shared Core - Stock Python SDK)
-Total Requests: 1140 | Total Process Pure CPU: 9.9698 s | Avg CPU/Query: 8.745 ms
+Total Requests: 1156 | Total Process Pure CPU: 9.9805 s | Avg CPU/Query: 8.634 ms
 ----------------------------------------------------------------------------------------
-Mon Oct 12 11:22:16 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32.prof
+Mon Oct 12 12:31:41 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32.prof
 
-         2061207 function calls (2088570 primitive calls) in 9.574 seconds
+         2088263 function calls (2116010 primitive calls) in 9.585 seconds
 
    Ordered by: cumulative time
    List reduced from 438 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-     5654    0.188    0.000    8.880    0.002 base_events.py:1845(_UnixSelectorEventLoop._run_once)
-    18259    0.081    0.000    8.384    0.000 events.py:78(Handle._run)
-    18259    0.153    0.000    8.303    0.000 builtins:0(<method 'run' of '_contextvars.Context' objects>)
-       32    0.033    0.001    6.975    0.218 spanner_cpu_profile_suite.py:601(async_worker_loop_high_level)
-     1140    0.046    0.000    6.939    0.006 spanner_cpu_profile_suite.py:590(run_single_async_query_high_level)
-     1140    0.032    0.000    5.080    0.004 spanner_cpu_profile_suite.py:597(<listcomp>)
-     1140    0.033    0.000    5.033    0.004 streamed.py:193(StreamedResultSet.__aiter__)
-     1140    0.059    0.000    4.998    0.004 streamed.py:166(StreamedResultSet._consume_next)
-      0/1    0.093             4.537    4.537 snapshot.py:72(_restart_on_unavailable)
-     1140    0.071    0.000    1.525    0.001 snapshot.py:339(Snapshot.execute_sql)
-     7980    0.168    0.000    1.328    0.000 message.py:611(QueryOptions.__init__)
-    17100    0.162    0.000    1.088    0.000 message.py:806(QueryOptions.__getattr__)
-20520/21660    0.245    0.000    1.074    0.000 marshal.py:199(Marshal.to_proto)
-4560/11400    0.047    0.000    1.014    0.000 builtins:0(next)
-     1140    0.029    0.000    0.988    0.001 snapshot.py:758(Snapshot._update_for_result_set_pb)
+     5654    0.184    0.000    8.984    0.002 base_events.py:1845(_UnixSelectorEventLoop._run_once)
+    18435    0.081    0.000    8.501    0.000 events.py:78(Handle._run)
+    18435    0.155    0.000    8.420    0.000 builtins:0(<method 'run' of '_contextvars.Context' objects>)
+       32    0.032    0.001    7.102    0.222 spanner_cpu_profile_suite.py:756(async_worker_loop_high_level)
+     1156    0.051    0.000    7.068    0.006 spanner_cpu_profile_suite.py:745(run_single_async_query_high_level)
+     1156    0.032    0.000    5.194    0.004 spanner_cpu_profile_suite.py:752(<listcomp>)
+     1156    0.032    0.000    5.148    0.004 streamed.py:193(StreamedResultSet.__aiter__)
+     1156    0.059    0.000    5.114    0.004 streamed.py:166(StreamedResultSet._consume_next)
+      0/1    0.093             4.651    4.651 snapshot.py:72(_restart_on_unavailable)
+     1156    0.068    0.000    1.532    0.001 snapshot.py:339(Snapshot.execute_sql)
+     8092    0.170    0.000    1.341    0.000 message.py:611(QueryOptions.__init__)
+20808/21964    0.250    0.000    1.086    0.000 marshal.py:199(Marshal.to_proto)
+    17340    0.160    0.000    1.084    0.000 message.py:806(QueryOptions.__getattr__)
+4624/11560    0.046    0.000    1.026    0.000 builtins:0(next)
+     1156    0.027    0.000    1.023    0.001 cross_sync.py:151(run_if_async)
 
 
 
@@ -86,41 +86,41 @@ Mon Oct 12 11:22:16 2026    /home/suvham_google_com/workspace/cloud-python/googl
 SCENARIO 3 [3A]: LIMIT 1000 Read (11-Col Table) — WITHOUT SHARED CORE (Stock Python SDK)
 ========================================================================================
 [*] Warming up LIMIT 1000 stream for 5.0 seconds...
-[+] Warmup completed: 143 queries (143000 rows) executed.
+[+] Warmup completed: 145 queries (145000 rows) executed.
 [*] Profiling LIMIT 1000 pure CPU time for 10.0 seconds...
-[+] Profiling finished: 88 queries (88000 rows) | Total CPU: 9.2264s (104.845 ms/query)
+[+] Profiling finished: 89 queries (89000 rows) | Total CPU: 9.1700s (103.033 ms/query)
 [+] Saved profile stats to: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1.prof
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 3A: LIMIT 1000 Read C=1 (Without Shared Core - Stock Python SDK)
-Total Requests: 88 | Total Process Pure CPU: 9.2264 s | Avg CPU/Query: 104.845 ms
+Total Requests: 89 | Total Process Pure CPU: 9.1700 s | Avg CPU/Query: 103.033 ms
 ----------------------------------------------------------------------------------------
-Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "95a92d98-b1f7-4e64-a8ee-974782ac2645@2701443@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"client_hash": "0001d3", "location": "us-central1", "instance_config": "unknown"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"client_name": "spanner-python/3.69.1", "status": "", "client_uid": "95a92d98-b1f7-4e64-a8ee-974782ac2645@2701443@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "client_hash": "0001d3", "instance_config": "unknown"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"client_uid": "95a92d98-b1f7-4e64-a8ee-974782ac2645@2701443@suvham-vm-1-core", "status": "", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"client_hash": "0001d3", "location": "us-central1", "instance_config": "unknown"}): the set of resource labels is incomplete, missing (instance_id) [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
+Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "5405e359-e19d-46e4-a680-d195ff6cbc97@2717080@suvham-vm-1-core", "status": ""}, resource.type="spanner_instance_client", resource.labels={"instance_config": "unknown", "client_hash": "0002af", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "5405e359-e19d-46e4-a680-d195ff6cbc97@2717080@suvham-vm-1-core", "status": ""}, resource.type="spanner_instance_client", resource.labels={"instance_config": "unknown", "client_hash": "0002af", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_uid": "5405e359-e19d-46e4-a680-d195ff6cbc97@2717080@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"client_hash": "0002af", "instance_config": "unknown", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id) [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
 value: "\010\017\020\014\032\006\n\002\010\003\020\003"
 ]
-Mon Oct 12 11:22:32 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1.prof
+Mon Oct 12 12:31:56 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1.prof
 
-         2361626 function calls (2363827 primitive calls) in 8.910 seconds
+         2388395 function calls (2390621 primitive calls) in 8.849 seconds
 
    Ordered by: cumulative time
    List reduced from 390 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-       88    0.131    0.001    8.628    0.098 spanner_cpu_profile_suite.py:471(run_limit_1000_query_sync)
-    88088    0.360    0.000    8.343    0.000 streamed.py:169(StreamedResultSet.__iter__)
-       88    0.900    0.010    7.860    0.089 streamed.py:150(StreamedResultSet._consume_next)
-       88    3.595    0.041    6.432    0.073 streamed.py:111(StreamedResultSet._merge_values)
-  1056440    1.436    0.000    1.436    0.000 builtins:0(<method 'append' of 'list' objects>)
-   970288    1.384    0.000    1.384    0.000 builtins:0(<method 'HasField' of 'google._upb._message.Message' objects>)
-      176    0.007    0.000    0.527    0.003 snapshot.py:75(_restart_on_unavailable)
-      176    0.003    0.000    0.273    0.002 threading.py:964(run)
-       88    0.084    0.001    0.220    0.002 _channel.py:1722(channel_spin)
- 704/1408    0.007    0.000    0.186    0.000 builtins:0(next)
-       88    0.001    0.000    0.171    0.002 cross_sync.py:331(run_if_async)
-       88    0.004    0.000    0.170    0.002 client.py:1453(SpannerClient.execute_streaming_sql)
-       88    0.003    0.000    0.157    0.002 method.py:151(_GapicCallable.__call__)
-       88    0.001    0.000    0.138    0.002 timeout.py:101(func_with_timeout)
-       88    0.002    0.000    0.135    0.002 grpc_helpers.py:140(error_remapped_callable)
+       89    0.131    0.001    8.561    0.096 spanner_cpu_profile_suite.py:634(run_limit_1000_query_sync)
+    89089    0.363    0.000    8.276    0.000 streamed.py:169(StreamedResultSet.__iter__)
+       89    0.862    0.010    7.788    0.088 streamed.py:150(StreamedResultSet._consume_next)
+       89    3.572    0.040    6.384    0.072 streamed.py:111(StreamedResultSet._merge_values)
+  1068445    1.424    0.000    1.424    0.000 builtins:0(<method 'append' of 'list' objects>)
+   981314    1.371    0.000    1.371    0.000 builtins:0(<method 'HasField' of 'google._upb._message.Message' objects>)
+      178    0.007    0.000    0.542    0.003 snapshot.py:75(_restart_on_unavailable)
+      178    0.004    0.000    0.279    0.002 threading.py:964(run)
+       89    0.086    0.001    0.224    0.003 _channel.py:1722(channel_spin)
+ 712/1424    0.007    0.000    0.190    0.000 builtins:0(next)
+       89    0.001    0.000    0.179    0.002 cross_sync.py:331(run_if_async)
+       89    0.004    0.000    0.178    0.002 client.py:1453(SpannerClient.execute_streaming_sql)
+       89    0.003    0.000    0.164    0.002 method.py:151(_GapicCallable.__call__)
+       89    0.001    0.000    0.144    0.002 timeout.py:101(func_with_timeout)
+       89    0.002    0.000    0.142    0.002 grpc_helpers.py:140(error_remapped_callable)
 
 
 
@@ -129,48 +129,48 @@ Mon Oct 12 11:22:32 2026    /home/suvham_google_com/workspace/cloud-python/googl
 SCENARIO 4 [4A]: Multi-Threaded Point Select C=32 OS Threads — WITHOUT SHARED CORE (Stock Python SDK)
 ========================================================================================
 [*] Warming up 32 OS worker threads for 5.0 seconds...
-[+] Warmup completed: 3183 requests executed across 32 threads.
+[+] Warmup completed: 3222 requests executed across 32 threads.
 [*] Profiling pure CPU time & GIL contention across 32 OS threads for 10.0 seconds...
 
 ========================================================================================
 SCENARIO 4 [4A] GIL & CROSS-FFI CONTENTION SUMMARY (WITHOUT SHARED CORE (Stock Python SDK)):
 1. Concurrency Model:                   Multi-Threading (32 OS Threads)
-2. Total Wall-Clock Elapsed Time:       10.143 s
-3. Total Queries Completed:             1061 queries (104.6 QPS)
-4. Total Process Pure CPU (All Threads):10.0147 s (9.439 ms / query)
-5. Python GIL-Held CPU Time:            8.3311 s (7.852 ms / query)
-6. GIL-Released Native/Go CPU Time:     0.4213 s (0.397 ms / query)
-7. GIL Serialization Utilization:       82.1% of wall-clock window
-8. Total Estimated GIL Wait Time:       6.6287 s (Contention Ratio: 39.8%)
+2. Total Wall-Clock Elapsed Time:       10.144 s
+3. Total Queries Completed:             1056 queries (104.1 QPS)
+4. Total Process Pure CPU (All Threads):10.0267 s (9.495 ms / query)
+5. Python GIL-Held CPU Time:            8.3541 s (7.911 ms / query)
+6. GIL-Released Native/Go CPU Time:     0.4206 s (0.398 ms / query)
+7. GIL Serialization Utilization:       82.4% of wall-clock window
+8. Total Estimated GIL Wait Time:       6.6650 s (Contention Ratio: 39.9%)
 ========================================================================================
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 4A: Point Select Multi-Threaded C=32 (Without Shared Core - Stock Python SDK)
-Total Requests: 1061 | Total Process Pure CPU: 10.0147 s | Avg CPU/Query: 9.439 ms
+Total Requests: 1056 | Total Process Pure CPU: 10.0267 s | Avg CPU/Query: 9.495 ms
 ----------------------------------------------------------------------------------------
-Mon Oct 12 11:22:50 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads.prof
+Mon Oct 12 12:32:15 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads.prof
 
-         1925367 function calls (1953074 primitive calls) in 9.593 seconds
+         1918111 function calls (1945688 primitive calls) in 9.606 seconds
 
    Ordered by: cumulative time
    List reduced from 994 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-     1095    0.028    0.000    9.524    0.009 threading.py:964(run)
-       32    0.061    0.002    8.332    0.260 spanner_cpu_profile_suite.py:776(worker_thread_loop)
-     1061    0.035    0.000    8.239    0.008 spanner_cpu_profile_suite.py:455(run_point_select_query_sync)
-     2122    0.016    0.000    6.434    0.003 streamed.py:169(StreamedResultSet.__iter__)
-     1061    0.037    0.000    6.416    0.006 streamed.py:150(StreamedResultSet._consume_next)
-     2122    0.080    0.000    6.017    0.003 snapshot.py:75(_restart_on_unavailable)
-8493/16981    0.082    0.000    2.123    0.000 builtins:0(next)
-     1061    0.013    0.000    2.023    0.002 cross_sync.py:331(run_if_async)
-     1061    0.043    0.000    2.010    0.002 client.py:1453(SpannerClient.execute_streaming_sql)
-     1062    0.039    0.000    1.847    0.002 method.py:151(_GapicCallable.__call__)
-     1062    0.015    0.000    1.618    0.002 timeout.py:101(func_with_timeout)
-     1061    0.022    0.000    1.584    0.001 grpc_helpers.py:140(error_remapped_callable)
-     1061    0.074    0.000    1.482    0.001 snapshot.py:415(Snapshot.execute_sql)
-     7427    0.160    0.000    1.270    0.000 message.py:611(QueryOptions.__init__)
-     1061    0.014    0.000    1.142    0.001 _interceptor.py:410(_UnaryStreamMultiCallable.__call__)
+     1090    0.025    0.000    9.537    0.009 threading.py:964(run)
+       32    0.060    0.002    8.355    0.261 spanner_cpu_profile_suite.py:923(worker_thread_loop)
+     1056    0.035    0.000    8.262    0.008 spanner_cpu_profile_suite.py:623(run_point_select_query_sync)
+     2112    0.016    0.000    6.472    0.003 streamed.py:169(StreamedResultSet.__iter__)
+     1056    0.038    0.000    6.454    0.006 streamed.py:150(StreamedResultSet._consume_next)
+     2112    0.080    0.000    6.059    0.003 snapshot.py:75(_restart_on_unavailable)
+8453/16901    0.081    0.000    2.123    0.000 builtins:0(next)
+     1056    0.014    0.000    2.094    0.002 cross_sync.py:331(run_if_async)
+     1056    0.044    0.000    2.080    0.002 client.py:1453(SpannerClient.execute_streaming_sql)
+     1057    0.040    0.000    1.918    0.002 method.py:151(_GapicCallable.__call__)
+     1057    0.015    0.000    1.693    0.002 timeout.py:101(func_with_timeout)
+     1056    0.022    0.000    1.660    0.002 grpc_helpers.py:140(error_remapped_callable)
+     1056    0.078    0.000    1.468    0.001 snapshot.py:415(Snapshot.execute_sql)
+     7392    0.160    0.000    1.248    0.000 message.py:611(QueryOptions.__init__)
+     1056    0.013    0.000    1.216    0.001 _interceptor.py:410(_UnaryStreamMultiCallable.__call__)
 
 
 
@@ -182,10 +182,10 @@ SIDE-BY-SIDE CROSS-FFI CPU PROFILING COMPARISON: WITHOUT SHARED CORE (STOCK PYTH
 ====================================================================================================================
 Scenario                                   | Stock CPU/q  | GoCore CPU/q | Py+C / Go Split (ms/q)   | CPU Reduction  | QPS Gain
 --------------------------------------------------------------------------------------------------------------------
-Scenario 1: Point Select C=1 (Sync)        |   10.226 ms |    2.122 ms | 0.458 Py / 1.664 Go   | - 79.2% ( 4.8x) |   72.9 ->    4.5 (0.06x)
-Scenario 2: Point Select C=32 (AsyncIO)    |    8.745 ms |    5.057 ms | 0.399 Py / 4.658 Go   | - 42.2% ( 1.7x) |  113.2 ->  138.7 (1.22x)
-Scenario 3: LIMIT 1000 Read C=1 (Sync)     |  104.845 ms |   26.038 ms | 7.419 Py / 18.181 Go   | - 75.2% ( 4.0x) |    8.8 ->    1.4 (0.16x)
-Scenario 4: Point Select C=32 (OS Threads) |    9.439 ms |    1.558 ms | 0.576 Py / 0.982 Go   | - 83.5% ( 6.1x) |  104.6 ->   79.8 (0.76x)
+Scenario 1: Point Select C=1 (Sync)        |   10.252 ms |    0.546 ms | 0.236 Py / 0.310 Go   | - 94.7% (18.8x) |   74.0 ->  238.3 (3.22x)
+Scenario 2: Point Select C=32 (AsyncIO)    |    8.634 ms |    0.330 ms | 0.114 Py / 0.217 Go   | - 96.2% (26.2x) |  114.7 -> 3443.2 (30.01x)
+Scenario 3: LIMIT 1000 Read C=1 (Sync)     |  103.033 ms |   17.425 ms | 8.775 Py / 7.832 Go   | - 83.1% ( 5.9x) |    8.8 ->   45.7 (5.17x)
+Scenario 4: Point Select C=32 (OS Threads) |    9.495 ms |    0.207 ms | 0.131 Py / 0.076 Go   | - 97.8% (45.9x) |  104.1 -> 4301.5 (41.32x)
 ====================================================================================================================
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.html
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.html
@@ -195,179 +195,188 @@ Scenario 4: Point Select C=32 (OS Threads) |    9.439 ms |    1.558 ms | 0.576 P
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1_go_core.html
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads.html
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads_go_core.html
-Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "95a92d98-b1f7-4e64-a8ee-974782ac2645@2701443@suvham-vm-1-core", "status": ""}, resource.type="spanner_instance_client", resource.labels={"instance_config": "unknown", "client_hash": "0001d3", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"status": "", "client_name": "spanner-python/3.69.1", "client_uid": "95a92d98-b1f7-4e64-a8ee-974782ac2645@2701443@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"instance_config": "unknown", "client_hash": "0001d3", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_uid": "95a92d98-b1f7-4e64-a8ee-974782ac2645@2701443@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"instance_config": "unknown", "client_hash": "0001d3", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[0-6,8,9,11,12,14] (example metric.type="spanner.googleapis.com/internal/client/gfe_latencies", metric.labels={"client_uid": "95a92d98-b1f7-4e64-a8ee-974782ac2645@2701443@suvham-vm-1-core", "method": "Spanner.ExecuteStreamingSql", "client_name": "spanner-python/3.69.1", "database": "benchmark_db_async", "status": "OK"}, resource.type="spanner_instance_client", resource.labels={"project_id": "span-cloud-testing", "location": "us-central1", "instance_id": "suvham-testing", "client_hash": "0001d3", "instance_config": "unknown"}): write for resource failed: One or more points were written more frequently than the maximum sampling period configured for the metric. {Metric: spanner.googleapis.com/internal/client/attempt_latencies, Timestamps: {Youngest Existing: '2026/10/12-04:22:38.206', New: '2026/10/12-04:22:50.745'}} [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
+Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"status": "", "client_uid": "5405e359-e19d-46e4-a680-d195ff6cbc97@2717080@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "0002af"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"client_uid": "5405e359-e19d-46e4-a680-d195ff6cbc97@2717080@suvham-vm-1-core", "client_name": "spanner-python/3.69.1", "status": ""}, resource.type="spanner_instance_client", resource.labels={"client_hash": "0002af", "instance_config": "unknown", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_uid": "5405e359-e19d-46e4-a680-d195ff6cbc97@2717080@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "0002af"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[0-6,8,9,11,12,14] (example metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"status": "OK", "database": "benchmark_db_async", "method": "Spanner.CreateSession", "client_uid": "5405e359-e19d-46e4-a680-d195ff6cbc97@2717080@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"client_hash": "0002af", "location": "us-central1", "instance_id": "suvham-testing", "instance_config": "unknown", "project_id": "span-cloud-testing"}): write for resource failed: One or more points were written more frequently than the maximum sampling period configured for the metric. {Metric: spanner.googleapis.com/internal/client/attempt_latencies, Timestamps: {Youngest Existing: '2026/10/12-05:32:03.137', New: '2026/10/12-05:32:15.419'}} [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
 value: "\010\017\032\006\n\002\010\t\020\014\032\006\n\002\010\003\020\003"
 ]
 [Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+Overriding of current MeterProvider is not allowed
 [*] Initializing Sync Spanner Client for span-cloud-testing / suvham-testing / benchmark_db_async...
-[+] Initialized & pre-warmed Go Shared Core client pool (4 gRPC channels) on session: projects/span-cloud-testing/instances/suvham-testing/databases/benchmark_db_async/sessions/ACy6UTyfGMc_8mMrHSlL59tIkkVvdp58mvMjSEK7-cgBTfzs0yl01Otb3Y-PkGPOrMvPYA
+[+] Initialized & pre-warmed Go Shared Core client pool (4 gRPC channels) on session: projects/span-cloud-testing/instances/suvham-testing/databases/benchmark_db_async/sessions/ACy6UTwlapIqVzf0xLnlRn7dUo08wsOcGMCrTzljxYoAN7JgcaNSKg2q1VGN-Dhy9-Ir
 
 ========================================================================================
-SCENARIO 1 [1B]: Point Select C=1 (Sync) — WITH GO SHARED CORE (Cross-FFI)
+SCENARIO 1 [1B]: Point Select C=1 (Sync) — WITH GO SHARED CORE (Cross-FFI via database.snapshot())
 ========================================================================================
 [*] Warming up for 5.0 seconds...
-[+] Warmup completed: 1200 requests executed.
+[+] Warmup completed: 1072 requests executed.
 [*] Profiling pure CPU time (Cross-FFI enabled=True) for 10.0 seconds...
-[+] Profiling finished: 2384 requests (238.34 QPS) | Total CPU: 1.3017s (0.546 ms/query)
+[+] Profiling finished: 2040 requests (203.98 QPS) | Total CPU: 1.9789s (0.970 ms/query)
 [+] Saved profile stats to: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.prof
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 1B: Point Select C=1 (With Go Shared Core - Cross-FFI)
-Total Requests: 2384 | Total Process Pure CPU: 1.3017 s | Avg CPU/Query: 0.546 ms
-Cross-FFI Split -> Python+C-Ext CPU: 0.5623 s (0.236 ms/q) | Go Shared Core CPU: 0.7394 s (0.310 ms/q)
+Total Requests: 2040 | Total Process Pure CPU: 1.9789 s | Avg CPU/Query: 0.970 ms
+Cross-FFI Split -> Python+C-Ext CPU: 0.8785 s (0.431 ms/q) | Go Shared Core CPU: 1.1004 s (0.539 ms/q)
 ----------------------------------------------------------------------------------------
-Mon Oct 12 11:23:09 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.prof
+Mon Oct 12 12:32:34 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.prof
 
-         28610 function calls (28611 primitive calls) in 1.302 seconds
+         157082 function calls (157083 primitive calls) in 1.979 seconds
 
    Ordered by: cumulative time
+   List reduced from 56 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-     2384    0.019    0.000    1.293    0.001 spanner_cpu_profile_suite.py:466(run_point_select_query_go_core_sync)
-     2384    0.000    0.000    0.739    0.000 main.go:364([Go Shared Core] main.executeStreamingSqlInternal)
-     2384    0.510    0.000    0.510    0.000 spanner_go_ext:0(execute_streaming_sql)
-     2384    0.376    0.000    0.376    0.000 runtime:1([Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads))
-     2384    0.149    0.000    0.149    0.000 main.go:441([Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet))
-     2384    0.147    0.000    0.147    0.000 client.go:138([Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init))
-     2384    0.032    0.000    0.032    0.000 main.go:391([Go Shared Core] main.buildExecuteSqlRequestAndAuth)
-     2384    0.028    0.000    0.028    0.000 main.go:215([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
-     2384    0.017    0.000    0.017    0.000 spanner_go_ext.c:190([C-FFI] batch_to_pylist (CSpannerCell -> PyList))
-     2386    0.009    0.000    0.009    0.000 time:0(perf_counter)
-     2384    0.008    0.000    0.008    0.000 main.go:465([Go Shared Core] main.assembleStreamingRowChunks)
-     2384    0.008    0.000    0.008    0.000 builtins:0(len)
-      0/1    0.000             0.000    0.000 spanner_cpu_profile_suite.py:169(CrossFFIProfileSession.stop)
+     2040    0.065    0.000    1.972    0.001 spanner_cpu_profile_suite.py:623(run_point_select_query_sync)
+     2040    0.044    0.000    1.252    0.001 spanner_cpu_profile_suite.py:532(Snapshot.go_core_sync_execute_sql)
+     2040    0.038    0.000    1.152    0.001 spanner_go_ext:0(execute_streaming_sql)
+     2040    0.000    0.000    1.100    0.001 main.go:400([Go Shared Core] main.executeStreamingSqlInternal)
+     2040    0.921    0.000    0.921    0.000 runtime:1([Go Shared Core] grpc.http2Client + crypto/tls (gRPC Transport & M-Threads))
+     2040    0.034    0.000    0.429    0.000 database.py:1466(SnapshotCheckout.__enter__)
+     2040    0.035    0.000    0.241    0.000 database_sessions_manager.py:80(DatabaseSessionsManager.get_session)
+     2040    0.036    0.000    0.196    0.000 database.py:1472(SnapshotCheckout.__exit__)
+     2040    0.035    0.000    0.150    0.000 snapshot.py:940(Snapshot.__init__)
+     2040    0.037    0.000    0.140    0.000 database_sessions_manager.py:106(DatabaseSessionsManager.put_session)
+     4080    0.022    0.000    0.121    0.000 _opentelemetry_tracing.py:153(get_current_span)
+     2040    0.013    0.000    0.116    0.000 database_sessions_manager.py:205(_use_multiplexed)
+     2040    0.045    0.000    0.104    0.000 snapshot.py:199(Snapshot.__init__)
+     2040    0.020    0.000    0.103    0.000 database_sessions_manager.py:216(_getenv)
+     4080    0.021    0.000    0.099    0.000 __init__.py:24(get_current_span)
 
 
 
 
 ========================================================================================
-SCENARIO 2 [2B]: Point Select C=32 (AsyncIO) — WITH GO SHARED CORE (Cross-FFI Async Pipe)
+SCENARIO 2 [2B]: Point Select C=32 (AsyncIO) — WITH GO SHARED CORE (Cross-FFI via async_database.snapshot())
 ========================================================================================
+[*] Initializing high-level spanner_v1.AsyncClient for span-cloud-testing / suvham-testing / benchmark_db_async...
 [*] Warming up 32 concurrent coroutines on event loop for 5.0 seconds...
-[+] Warmup completed: 21716 total requests executed across 32 coroutines.
+[+] Warmup completed: 15559 total requests executed across 32 coroutines.
 [*] Profiling pure CPU time across all 32 coroutines for 10.0 seconds...
-[+] Profiling finished: 34460 requests (3443.15 QPS) | Total CPU: 11.3876s (0.330 ms/query)
+[+] Profiling finished: 13419 requests (1340.57 QPS) | Total CPU: 9.9038s (0.738 ms/query)
 [+] Saved profile stats to: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_go_core.prof
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 2B: Point Select C=32 AsyncIO (With Go Shared Core - Cross-FFI)
-Total Requests: 34460 | Total Process Pure CPU: 11.3876 s | Avg CPU/Query: 0.330 ms
-Cross-FFI Split -> Python+C-Ext CPU: 3.9154 s (0.114 ms/q) | Go Shared Core CPU: 7.4722 s (0.217 ms/q)
+Total Requests: 13419 | Total Process Pure CPU: 9.9038 s | Avg CPU/Query: 0.738 ms
+Cross-FFI Split -> Python+C-Ext CPU: 6.2565 s (0.466 ms/q) | Go Shared Core CPU: 3.6473 s (0.272 ms/q)
 ----------------------------------------------------------------------------------------
-Mon Oct 12 11:23:24 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_go_core.prof
+Mon Oct 12 12:32:51 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_go_core.prof
 
-         990508 function calls (990510 primitive calls) in 11.388 seconds
+         1354258 function calls (1354260 primitive calls) in 9.904 seconds
 
    Ordered by: cumulative time
-   List reduced from 60 to 15 due to restriction <15>
+   List reduced from 125 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-     7858    0.349    0.000   11.385    0.001 base_events.py:1845(_UnixSelectorEventLoop._run_once)
-    39975    0.180    0.000   10.567    0.000 events.py:78(Handle._run)
-    39975    0.184    0.000   10.387    0.000 builtins:0(<method 'run' of '_contextvars.Context' objects>)
-       32    0.344    0.011    8.684    0.271 spanner_cpu_profile_suite.py:609(async_worker_loop_go_core)
-    34460    0.360    0.000    8.281    0.000 spanner_cpu_profile_suite.py:436(GoCoreAsyncSession.execute_streaming_sql_go_async)
-    34460    0.181    0.000    7.653    0.000 spanner_go_ext:0(submit_async)
-    34460    0.000    0.000    7.472    0.000 main.go:364([Go Shared Core] main.executeStreamingSqlInternal)
-    34460    4.749    0.000    4.749    0.000 main.go:441([Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet))
-     5451    0.247    0.000    1.518    0.000 spanner_cpu_profile_suite.py:427(GoCoreAsyncSession._on_go_completion_ready)
-    34460    0.963    0.000    0.963    0.000 client.go:138([Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init))
-    34461    0.148    0.000    0.899    0.000 builtins:0(<method 'set_result' of '_asyncio.Future' objects>)
-    34460    0.890    0.000    0.890    0.000 main.go:215([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
-    34460    0.784    0.000    0.784    0.000 main.go:391([Go Shared Core] main.buildExecuteSqlRequestAndAuth)
-    34525    0.200    0.000    0.753    0.000 base_events.py:751(_UnixSelectorEventLoop.call_soon)
-    34525    0.217    0.000    0.494    0.000 base_events.py:780(_UnixSelectorEventLoop._call_soon)
+      590    0.116    0.000    9.901    0.017 base_events.py:1845(_UnixSelectorEventLoop._run_once)
+    14017    0.078    0.000    9.720    0.001 events.py:78(Handle._run)
+    14017    0.153    0.000    9.643    0.001 builtins:0(<method 'run' of '_contextvars.Context' objects>)
+       32    0.199    0.006    8.966    0.280 spanner_cpu_profile_suite.py:756(async_worker_loop_high_level)
+    13419    0.388    0.000    8.733    0.001 spanner_cpu_profile_suite.py:745(run_single_async_query_high_level)
+    13419    0.223    0.000    4.425    0.000 spanner_cpu_profile_suite.py:582(Snapshot.go_core_async_execute_sql)
+    13419    0.103    0.000    3.909    0.000 spanner_cpu_profile_suite.py:477(GoCoreAsyncSession.submit_rows_future)
+    13419    0.063    0.000    3.710    0.000 spanner_go_ext:0(submit_async)
+    13419    0.000    0.000    3.647    0.000 main.go:400([Go Shared Core] main.executeStreamingSqlInternal)
+    13419    2.989    0.000    2.989    0.000 runtime:1([Go Shared Core] grpc.http2Client + crypto/tls (gRPC Transport & M-Threads))
+    13419    0.183    0.000    2.421    0.000 database.py:1647(SnapshotCheckout.__aenter__)
+    13419    0.215    0.000    1.770    0.000 database_sessions_manager.py:79(DatabaseSessionsManager.get_session)
+    13419    0.132    0.000    0.851    0.000 database.py:1657(SnapshotCheckout.__aexit__)
+    13419    0.175    0.000    0.664    0.000 database_sessions_manager.py:106(DatabaseSessionsManager.put_session)
+    26838    0.102    0.000    0.656    0.000 _opentelemetry_tracing.py:153(get_current_span)
 
 
 
 
 ========================================================================================
-SCENARIO 3 [3B]: LIMIT 1000 Read (11-Col Table) — WITH GO SHARED CORE (Cross-FFI)
+SCENARIO 3 [3B]: LIMIT 1000 Read (11-Col Table) — WITH GO SHARED CORE (Cross-FFI via database.snapshot())
 ========================================================================================
 [*] Warming up LIMIT 1000 stream for 5.0 seconds...
-[+] Warmup completed: 214 queries (214000 rows) executed.
+[+] Warmup completed: 200 queries (200000 rows) executed.
 [*] Profiling LIMIT 1000 pure CPU time for 10.0 seconds...
-[+] Profiling finished: 457 queries (457000 rows) | Total CPU: 7.9632s (17.425 ms/query)
+[+] Profiling finished: 423 queries (423000 rows) | Total CPU: 5.7153s (13.511 ms/query)
 [+] Saved profile stats to: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1_go_core.prof
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 3B: LIMIT 1000 Read C=1 (With Go Shared Core - Cross-FFI)
-Total Requests: 457 | Total Process Pure CPU: 7.9632 s | Avg CPU/Query: 17.425 ms
-Cross-FFI Split -> Python+C-Ext CPU: 4.0104 s (8.775 ms/q) | Go Shared Core CPU: 3.5793 s (7.832 ms/q)
+Total Requests: 423 | Total Process Pure CPU: 5.7153 s | Avg CPU/Query: 13.511 ms
+Cross-FFI Split -> Python+C-Ext CPU: 0.6098 s (1.442 ms/q) | Go Shared Core CPU: 5.1055 s (12.070 ms/q)
 ----------------------------------------------------------------------------------------
-Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"status": "", "client_name": "spanner-python/3.69.1", "client_uid": "aba94e7d-f739-4499-b159-8431db7ba49d@2713153@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "000355"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"status": "", "client_name": "spanner-python/3.69.1", "client_uid": "aba94e7d-f739-4499-b159-8431db7ba49d@2713153@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "client_hash": "000355", "instance_config": "unknown"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "aba94e7d-f739-4499-b159-8431db7ba49d@2713153@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"client_hash": "000355", "location": "us-central1", "instance_config": "unknown"}): the set of resource labels is incomplete, missing (instance_id) [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
+Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_uid": "7bb13b76-74ef-479b-adf9-ea857e425e14@2728936@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "000303"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"client_uid": "7bb13b76-74ef-479b-adf9-ea857e425e14@2728936@suvham-vm-1-core", "status": "", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "000303"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "7bb13b76-74ef-479b-adf9-ea857e425e14@2728936@suvham-vm-1-core", "status": ""}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "000303"}): the set of resource labels is incomplete, missing (instance_id) [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
 value: "\010\017\020\014\032\006\n\002\010\003\020\003"
 ]
-Mon Oct 12 11:23:39 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1_go_core.prof
+Mon Oct 12 12:33:06 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1_go_core.prof
 
-         5029 function calls (5030 primitive calls) in 7.963 seconds
+         32152 function calls (32153 primitive calls) in 5.715 seconds
 
    Ordered by: cumulative time
+   List reduced from 58 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-      457    0.000    0.000    7.588    0.017 spanner_cpu_profile_suite.py:478(run_limit_1000_query_go_core_sync)
-      457    3.999    0.009    3.999    0.009 spanner_go_ext:0(execute_streaming_sql)
-      457    0.000    0.000    3.579    0.008 main.go:364([Go Shared Core] main.executeStreamingSqlInternal)
-      457    3.240    0.007    3.240    0.007 main.go:441([Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet))
-      457    0.381    0.001    0.381    0.001 spanner_go_ext.c:190([C-FFI] batch_to_pylist (CSpannerCell -> PyList))
-      457    0.199    0.000    0.199    0.000 main.go:215([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
-      457    0.101    0.000    0.101    0.000 main.go:465([Go Shared Core] main.assembleStreamingRowChunks)
-      457    0.031    0.000    0.031    0.000 client.go:138([Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init))
-      457    0.008    0.000    0.008    0.000 main.go:391([Go Shared Core] main.buildExecuteSqlRequestAndAuth)
-      459    0.002    0.000    0.002    0.000 time:0(perf_counter)
-      457    0.002    0.000    0.002    0.000 builtins:0(len)
-      0/1    0.000             0.000    0.000 spanner_cpu_profile_suite.py:169(CrossFFIProfileSession.stop)
+      423    0.016    0.000    5.713    0.014 spanner_cpu_profile_suite.py:634(run_limit_1000_query_sync)
+      423    0.009    0.000    5.554    0.013 spanner_cpu_profile_suite.py:532(Snapshot.go_core_sync_execute_sql)
+      423    0.012    0.000    5.533    0.013 spanner_go_ext:0(execute_streaming_sql)
+      423    0.000    0.000    5.106    0.012 main.go:400([Go Shared Core] main.executeStreamingSqlInternal)
+      423    2.759    0.007    2.759    0.007 main.go:90([Go Shared Core] timingProtoCodec.Unmarshal(PartialResultSet))
+      423    2.061    0.005    2.061    0.005 runtime:1([Go Shared Core] grpc.http2Client + crypto/tls (gRPC Transport & M-Threads))
+      423    0.416    0.001    0.416    0.001 spanner_go_ext.c:205([C-FFI] batch_to_pylist (CSpannerCell -> PyList))
+      423    0.183    0.000    0.183    0.000 main.go:252([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
+      423    0.008    0.000    0.096    0.000 database.py:1466(SnapshotCheckout.__enter__)
+      423    0.091    0.000    0.091    0.000 main.go:506([Go Shared Core] main.assembleStreamingRowChunks)
+      423    0.008    0.000    0.054    0.000 database_sessions_manager.py:80(DatabaseSessionsManager.get_session)
+      423    0.008    0.000    0.041    0.000 database.py:1472(SnapshotCheckout.__exit__)
+      423    0.008    0.000    0.033    0.000 snapshot.py:940(Snapshot.__init__)
+      423    0.007    0.000    0.028    0.000 database_sessions_manager.py:106(DatabaseSessionsManager.put_session)
+      423    0.003    0.000    0.026    0.000 database_sessions_manager.py:205(_use_multiplexed)
 
 
 
 
 ========================================================================================
-SCENARIO 4 [4B]: Multi-Threaded Point Select C=32 OS Threads — WITH GO SHARED CORE (GIL Released via Py_BEGIN_ALLOW_THREADS)
+SCENARIO 4 [4B]: Multi-Threaded Point Select C=32 OS Threads — WITH GO SHARED CORE (Cross-FFI via database.snapshot())
 ========================================================================================
 [*] Warming up 32 OS worker threads for 5.0 seconds...
-[+] Warmup completed: 21653 requests executed across 32 threads.
+[+] Warmup completed: 19033 requests executed across 32 threads.
 [*] Profiling pure CPU time & GIL contention across 32 OS threads for 10.0 seconds...
 
 ========================================================================================
-SCENARIO 4 [4B] GIL & CROSS-FFI CONTENTION SUMMARY (WITH GO SHARED CORE (GIL Released via Py_BEGIN_ALLOW_THREADS)):
+SCENARIO 4 [4B] GIL & CROSS-FFI CONTENTION SUMMARY (WITH GO SHARED CORE (Cross-FFI via database.snapshot())):
 1. Concurrency Model:                   Multi-Threading (32 OS Threads)
-2. Total Wall-Clock Elapsed Time:       10.026 s
-3. Total Queries Completed:             43127 queries (4301.5 QPS)
-4. Total Process Pure CPU (All Threads):8.9133 s (0.207 ms / query)
-5. Python GIL-Held CPU Time:            5.6440 s (0.131 ms / query)
-6. GIL-Released Native/Go CPU Time:     3.2693 s (0.076 ms / query)
-7. GIL Serialization Utilization:       56.3% of wall-clock window
-8. Total Estimated GIL Wait Time:       3.0779 s (Contention Ratio: 25.7%)
+2. Total Wall-Clock Elapsed Time:       10.027 s
+3. Total Queries Completed:             18844 queries (1879.4 QPS)
+4. Total Process Pure CPU (All Threads):9.5562 s (0.507 ms / query)
+5. Python GIL-Held CPU Time:            6.1646 s (0.327 ms / query)
+6. GIL-Released Native/Go CPU Time:     3.3916 s (0.180 ms / query)
+7. GIL Serialization Utilization:       61.5% of wall-clock window
+8. Total Estimated GIL Wait Time:       3.6717 s (Contention Ratio: 27.8%)
 ========================================================================================
 
 ----------------------------------------------------------------------------------------
 SUMMARY FOR: Scenario 4B: Point Select Multi-Threaded C=32 (With Go Shared Core - Cross-FFI)
-Total Requests: 43127 | Total Process Pure CPU: 8.9133 s | Avg CPU/Query: 0.207 ms
-Cross-FFI Split -> Python+C-Ext CPU: 5.6440 s (0.131 ms/q) | Go Shared Core CPU: 3.2693 s (0.076 ms/q)
+Total Requests: 18844 | Total Process Pure CPU: 9.5562 s | Avg CPU/Query: 0.507 ms
+Cross-FFI Split -> Python+C-Ext CPU: 6.1646 s (0.327 ms/q) | Go Shared Core CPU: 3.3916 s (0.180 ms/q)
 ----------------------------------------------------------------------------------------
-Mon Oct 12 11:23:54 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads_go_core.prof
+Mon Oct 12 12:33:21 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads_go_core.prof
 
-         532071 function calls (532192 primitive calls) in 8.913 seconds
+         1465431 function calls (1465552 primitive calls) in 9.556 seconds
 
    Ordered by: cumulative time
-   List reduced from 785 to 15 due to restriction <15>
+   List reduced from 812 to 15 due to restriction <15>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-       33    0.000    0.000    8.865    0.269 threading.py:964(run)
-       32    0.379    0.012    8.762    0.274 spanner_cpu_profile_suite.py:776(worker_thread_loop)
-    43127    0.234    0.000    8.293    0.000 spanner_cpu_profile_suite.py:466(run_point_select_query_go_core_sync)
-    43127    4.584    0.000    4.584    0.000 spanner_go_ext:0(execute_streaming_sql)
-    43127    0.000    0.000    3.269    0.000 main.go:364([Go Shared Core] main.executeStreamingSqlInternal)
-    43127    1.467    0.000    1.467    0.000 main.go:441([Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet))
-    43127    0.992    0.000    0.992    0.000 client.go:138([Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init))
-    43127    0.277    0.000    0.277    0.000 main.go:391([Go Shared Core] main.buildExecuteSqlRequestAndAuth)
-    43127    0.270    0.000    0.270    0.000 main.go:215([Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena))
-    43127    0.153    0.000    0.153    0.000 runtime:1([Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads))
-    43127    0.120    0.000    0.120    0.000 spanner_go_ext.c:190([C-FFI] batch_to_pylist (CSpannerCell -> PyList))
-    43127    0.111    0.000    0.111    0.000 main.go:465([Go Shared Core] main.assembleStreamingRowChunks)
-        1    0.000    0.000    0.102    0.102 _plugin_wrapping.py:99(_Plugin.__call__)
-        1    0.000    0.000    0.102    0.102 grpc.py:115(AuthMetadataPlugin.__call__)
-        1    0.000    0.000    0.102    0.102 grpc.py:88(AuthMetadataPlugin._get_authorization_headers)
+       33    0.000    0.000    9.510    0.288 threading.py:964(run)
+       32    0.214    0.007    9.412    0.294 spanner_cpu_profile_suite.py:923(worker_thread_loop)
+    18844    0.369    0.000    9.158    0.000 spanner_cpu_profile_suite.py:623(run_point_select_query_sync)
+    18844    0.333    0.000    4.379    0.000 spanner_cpu_profile_suite.py:532(Snapshot.go_core_sync_execute_sql)
+    18844    0.207    0.000    3.649    0.000 spanner_go_ext:0(execute_streaming_sql)
+    18844    0.000    0.000    3.392    0.000 main.go:400([Go Shared Core] main.executeStreamingSqlInternal)
+    18844    0.208    0.000    3.029    0.000 database.py:1466(SnapshotCheckout.__enter__)
+    18844    2.538    0.000    2.538    0.000 runtime:1([Go Shared Core] grpc.http2Client + crypto/tls (gRPC Transport & M-Threads))
+    18844    0.278    0.000    1.776    0.000 database_sessions_manager.py:80(DatabaseSessionsManager.get_session)
+    18844    0.192    0.000    1.215    0.000 database.py:1472(SnapshotCheckout.__exit__)
+    18844    0.232    0.000    1.017    0.000 snapshot.py:940(Snapshot.__init__)
+    18844    0.242    0.000    0.933    0.000 database_sessions_manager.py:106(DatabaseSessionsManager.put_session)
+    37688    0.149    0.000    0.888    0.000 _opentelemetry_tracing.py:153(get_current_span)
+    18844    0.085    0.000    0.775    0.000 database_sessions_manager.py:205(_use_multiplexed)
+    37688    0.146    0.000    0.739    0.000 __init__.py:24(get_current_span)
 
 
 
@@ -379,10 +388,10 @@ SIDE-BY-SIDE CROSS-FFI CPU PROFILING COMPARISON: WITHOUT SHARED CORE (STOCK PYTH
 ====================================================================================================================
 Scenario                                   | Stock CPU/q  | GoCore CPU/q | Py+C / Go Split (ms/q)   | CPU Reduction  | QPS Gain
 --------------------------------------------------------------------------------------------------------------------
-Scenario 1: Point Select C=1 (Sync)        |   10.226 ms |    0.546 ms | 0.236 Py / 0.310 Go   | - 94.7% (18.7x) |   72.9 ->  238.3 (3.27x)
-Scenario 2: Point Select C=32 (AsyncIO)    |    8.745 ms |    0.330 ms | 0.114 Py / 0.217 Go   | - 96.2% (26.5x) |  113.2 -> 3443.2 (30.42x)
-Scenario 3: LIMIT 1000 Read C=1 (Sync)     |  104.845 ms |   17.425 ms | 8.775 Py / 7.832 Go   | - 83.4% ( 6.0x) |    8.8 ->   45.7 (5.20x)
-Scenario 4: Point Select C=32 (OS Threads) |    9.439 ms |    0.207 ms | 0.131 Py / 0.076 Go   | - 97.8% (45.6x) |  104.6 -> 4301.5 (41.12x)
+Scenario 1: Point Select C=1 (Sync)        |   10.252 ms |    0.970 ms | 0.431 Py / 0.539 Go   | - 90.5% (10.6x) |   74.0 ->  204.0 (2.76x)
+Scenario 2: Point Select C=32 (AsyncIO)    |    8.634 ms |    0.738 ms | 0.466 Py / 0.272 Go   | - 91.5% (11.7x) |  114.7 -> 1340.6 (11.69x)
+Scenario 3: LIMIT 1000 Read C=1 (Sync)     |  103.033 ms |   13.511 ms | 1.442 Py / 12.070 Go   | - 86.9% ( 7.6x) |    8.8 ->   42.2 (4.78x)
+Scenario 4: Point Select C=32 (OS Threads) |    9.495 ms |    0.507 ms | 0.327 Py / 0.180 Go   | - 94.7% (18.7x) |  104.1 -> 1879.4 (18.05x)
 ====================================================================================================================
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.html
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.html
@@ -392,8 +401,8 @@ Scenario 4: Point Select C=32 (OS Threads) |    9.439 ms |    0.207 ms | 0.131 P
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1_go_core.html
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads.html
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads_go_core.html
-Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "aba94e7d-f739-4499-b159-8431db7ba49d@2713153@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"instance_config": "unknown", "client_hash": "000355", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"client_name": "spanner-python/3.69.1", "client_uid": "aba94e7d-f739-4499-b159-8431db7ba49d@2713153@suvham-vm-1-core", "status": ""}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "client_hash": "000355", "instance_config": "unknown"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"client_uid": "aba94e7d-f739-4499-b159-8431db7ba49d@2713153@suvham-vm-1-core", "client_name": "spanner-python/3.69.1", "status": ""}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "000355"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[0-6,8,9,11,12,14] (example metric.type="spanner.googleapis.com/internal/client/afe_latencies", metric.labels={"database": "benchmark_db_async", "method": "Spanner.CreateSession", "status": "OK", "client_name": "spanner-python/3.69.1", "client_uid": "aba94e7d-f739-4499-b159-8431db7ba49d@2713153@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"client_hash": "000355", "instance_config": "unknown", "project_id": "span-cloud-testing", "location": "us-central1", "instance_id": "suvham-testing"}): write for resource failed: One or more points were written more frequently than the maximum sampling period configured for the metric. {Metric: spanner.googleapis.com/internal/client/attempt_latencies, Timestamps: {Youngest Existing: '2026/10/12-04:23:53.369', New: '2026/10/12-04:23:55.083'}} [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
-value: "\010\017\032\006\n\002\010\003\020\003\032\006\n\002\010\t\020\014"
+Failed to export metrics to Cloud Monitoring: 400 One or more TimeSeries could not be written: timeSeries[10] (metric.type="spanner.googleapis.com/internal/client/operation_latencies", metric.labels={"client_name": "spanner-python/3.69.1", "status": "", "client_uid": "7bb13b76-74ef-479b-adf9-ea857e425e14@2728936@suvham-vm-1-core"}, resource.type="spanner_instance_client", resource.labels={"instance_config": "unknown", "client_hash": "000303", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[7] (metric.type="spanner.googleapis.com/internal/client/operation_count", metric.labels={"status": "", "client_uid": "7bb13b76-74ef-479b-adf9-ea857e425e14@2728936@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "instance_config": "unknown", "client_hash": "000303"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[13] (metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"client_uid": "7bb13b76-74ef-479b-adf9-ea857e425e14@2728936@suvham-vm-1-core", "client_name": "spanner-python/3.69.1"}, resource.type="spanner_instance_client", resource.labels={"client_hash": "000303", "instance_config": "unknown", "location": "us-central1"}): the set of resource labels is incomplete, missing (instance_id); timeSeries[0-6,8,9,11,12,14] (example metric.type="spanner.googleapis.com/internal/client/attempt_count", metric.labels={"database": "benchmark_db_async", "method": "Spanner.CreateSession", "client_name": "spanner-python/3.69.1", "client_uid": "7bb13b76-74ef-479b-adf9-ea857e425e14@2728936@suvham-vm-1-core", "status": "OK"}, resource.type="spanner_instance_client", resource.labels={"location": "us-central1", "client_hash": "000303", "instance_id": "suvham-testing", "instance_config": "unknown", "project_id": "span-cloud-testing"}): write for resource failed: One or more points were written more frequently than the maximum sampling period configured for the metric. {Metric: spanner.googleapis.com/internal/client/attempt_latencies, Timestamps: {Youngest Existing: '2026/10/12-05:33:18.030', New: '2026/10/12-05:33:21.697'}} [type_url: "type.googleapis.com/google.monitoring.v3.CreateTimeSeriesSummary"
+value: "\010\017\032\006\n\002\010\t\020\014\032\006\n\002\010\003\020\003"
 ]
 ====================================================================================================
 [*] PHASE 1/2: Running Flow A (WITHOUT Shared Core — Stock Python SDK) in isolated process...
@@ -408,10 +417,10 @@ SIDE-BY-SIDE CROSS-FFI CPU PROFILING COMPARISON: WITHOUT SHARED CORE (STOCK PYTH
 ====================================================================================================================
 Scenario                                   | Stock CPU/q  | GoCore CPU/q | Py+C / Go Split (ms/q)   | CPU Reduction  | QPS Gain
 --------------------------------------------------------------------------------------------------------------------
-Scenario 1: Point Select C=1 (Sync)        |   10.226 ms |    0.546 ms | 0.236 Py / 0.310 Go   | - 94.7% (18.7x) |   72.9 ->  238.3 (3.27x)
-Scenario 2: Point Select C=32 (AsyncIO)    |    8.745 ms |    0.330 ms | 0.114 Py / 0.217 Go   | - 96.2% (26.5x) |  113.2 -> 3443.2 (30.42x)
-Scenario 3: LIMIT 1000 Read C=1 (Sync)     |  104.845 ms |   17.425 ms | 8.775 Py / 7.832 Go   | - 83.4% ( 6.0x) |    8.8 ->   45.7 (5.20x)
-Scenario 4: Point Select C=32 (OS Threads) |    9.439 ms |    0.207 ms | 0.131 Py / 0.076 Go   | - 97.8% (45.6x) |  104.6 -> 4301.5 (41.12x)
+Scenario 1: Point Select C=1 (Sync)        |   10.252 ms |    0.970 ms | 0.431 Py / 0.539 Go   | - 90.5% (10.6x) |   74.0 ->  204.0 (2.76x)
+Scenario 2: Point Select C=32 (AsyncIO)    |    8.634 ms |    0.738 ms | 0.466 Py / 0.272 Go   | - 91.5% (11.7x) |  114.7 -> 1340.6 (11.69x)
+Scenario 3: LIMIT 1000 Read C=1 (Sync)     |  103.033 ms |   13.511 ms | 1.442 Py / 12.070 Go   | - 86.9% ( 7.6x) |    8.8 ->   42.2 (4.78x)
+Scenario 4: Point Select C=32 (OS Threads) |    9.495 ms |    0.507 ms | 0.327 Py / 0.180 Go   | - 94.7% (18.7x) |  104.1 -> 1879.4 (18.05x)
 ====================================================================================================================
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.html
 [+] Generated Interactive Flame Graph HTML: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1_go_core.html
