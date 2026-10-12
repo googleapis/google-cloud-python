@@ -52,6 +52,8 @@ class SqlUsersDeleteRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     host: str = proto.Field(
@@ -69,6 +71,10 @@ class SqlUsersDeleteRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -86,6 +92,8 @@ class SqlUsersGetRequest(proto.Message):
             instance.
         host (str):
             Host of a user of the instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -104,6 +112,10 @@ class SqlUsersGetRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class SqlUsersInsertRequest(proto.Message):
@@ -118,6 +130,8 @@ class SqlUsersInsertRequest(proto.Message):
             instance.
         body (google.cloud.sqladmin_v1beta4.types.User):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -133,6 +147,10 @@ class SqlUsersInsertRequest(proto.Message):
         number=100,
         message="User",
     )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlUsersListRequest(proto.Message):
@@ -145,6 +163,8 @@ class SqlUsersListRequest(proto.Message):
         project (str):
             Project ID of the project that contains the
             instance.
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     instance: str = proto.Field(
@@ -154,6 +174,10 @@ class SqlUsersListRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -197,6 +221,8 @@ class SqlUsersUpdateRequest(proto.Message):
             This field is a member of `oneof`_ ``_revoke_existing_server_roles``.
         body (google.cloud.sqladmin_v1beta4.types.User):
 
+        location (str):
+            Optional. Region of the Cloud SQL instance.
     """
 
     host: str = proto.Field(
@@ -237,6 +263,10 @@ class SqlUsersUpdateRequest(proto.Message):
         proto.MESSAGE,
         number=100,
         message="User",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 
@@ -389,8 +419,8 @@ class User(proto.Message):
                 Read-only. Login for a service account that
                 belongs to the Cloud IAM group.
             CLOUD_IAM_WORKFORCE_IDENTITY (6):
-                Cloud IAM workforce identity user managed via
-                workforce identity federation.
+                Cloud IAM workforce identity managed by
+                Workforce Identity Federation.
             ENTRAID_USER (7):
                 Microsoft Entra ID user.
         """
@@ -524,9 +554,9 @@ class SqlServerUserDetails(proto.Message):
 
     Attributes:
         disabled (bool):
-            If the user has been disabled
+            Indicates if the user has been disabled.
         server_roles (MutableSequence[str]):
-            The server roles for this user
+            Indicates the server roles for this user.
     """
 
     disabled: bool = proto.Field(

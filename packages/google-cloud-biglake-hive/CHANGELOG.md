@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-biglake-hive/#history
 
+## [0.3.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-biglake-hive-v0.3.4...google-cloud-biglake-hive-v0.3.5) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-biglake-hive-v0.3.3...google-cloud-biglake-hive-v0.3.4) (2026-09-03)
 
 

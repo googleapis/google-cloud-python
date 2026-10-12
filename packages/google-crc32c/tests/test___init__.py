@@ -206,10 +206,13 @@ def _crc32c(request):
 
         return python
     elif request.param == "cext":
-        from google_crc32c import cext
+        try:
+            from google_crc32c import cext
 
-        return cext
-    else:
+            return cext  # pragma: NO COVER
+        except ImportError:  # pragma: NO COVER
+            pytest.skip("C extension not compiled")  # pragma: NO COVER
+    else:  # pragma: NO COVER
         raise ValueError("invalid internal test config")
 
 
@@ -224,6 +227,17 @@ class TestChecksum(object):
         chunk = b"DEADBEEF"
         helper = google_crc32c.Checksum(chunk)
         assert helper._crc == google_crc32c.value(chunk)
+
+    @staticmethod
+    def test_update_array():
+        import array
+
+        from google_crc32c import python
+
+        chunk = array.array("B", b"DEADBEEF")
+        helper = python.Checksum()
+        helper.update(chunk)
+        assert helper._crc == python.value(b"DEADBEEF")
 
     @staticmethod
     def test_update(_crc32c):
@@ -287,3 +301,18 @@ class TestChecksum(object):
         assert found == expected
         for call in stream.read.call_args_list:
             assert call == mock.call(chunksize)
+
+
+def test_common_checksum():
+    from google_crc32c._checksum import CommonChecksum
+
+    class DummyChecksum(CommonChecksum):
+        __slots__ = ("_crc",)
+
+    checksum = DummyChecksum()
+    assert checksum._crc == 0
+    with pytest.raises(NotImplementedError):
+        checksum.update(b"data")
+
+    with pytest.raises(NotImplementedError):
+        DummyChecksum(b"foo")

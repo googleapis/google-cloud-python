@@ -55,6 +55,14 @@ from google.oauth2 import service_account
 from google.cloud.compute_v1.services.advice import AdviceClient, transports
 from google.cloud.compute_v1.types import compute
 
+try:
+    from google.api_core import version_header
+
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
+
+
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
     "credential_type": "service account credentials",
@@ -158,6 +166,109 @@ def test__get_client_cert_source():
                 AdviceClient._get_client_cert_source(mock_provided_cert_source, "true")
                 is mock_provided_cert_source
             )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_calendar_mode_api_version_header(transport_name):
+    client = AdviceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.calendar_mode), "__call__"
+        ) as call:
+            call.return_value = compute.CalendarModeAdviceResponse()
+            client.calendar_mode()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_capacity_api_version_header(transport_name):
+    client = AdviceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.capacity), "__call__") as call:
+            call.return_value = compute.CapacityAdviceResponse()
+            client.capacity()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_capacity_history_api_version_header(transport_name):
+    client = AdviceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.capacity_history), "__call__"
+        ) as call:
+            call.return_value = compute.CapacityHistoryResponse()
+            client.capacity_history()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
 
 
 @pytest.mark.parametrize(
@@ -1395,7 +1506,11 @@ def test_capacity_history_rest_flattened():
             region="region_value",
             capacity_history_request_resource=compute.CapacityHistoryRequest(
                 instance_properties=compute.CapacityHistoryRequestInstanceProperties(
-                    machine_type="machine_type_value"
+                    disks=[
+                        compute.CapacityHistoryRequestInstancePropertiesAttachedDisk(
+                            type_="type__value"
+                        )
+                    ]
                 )
             ),
         )
@@ -1439,7 +1554,11 @@ def test_capacity_history_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             capacity_history_request_resource=compute.CapacityHistoryRequest(
                 instance_properties=compute.CapacityHistoryRequestInstanceProperties(
-                    machine_type="machine_type_value"
+                    disks=[
+                        compute.CapacityHistoryRequestInstancePropertiesAttachedDisk(
+                            type_="type__value"
+                        )
+                    ]
                 )
             ),
         )
@@ -1981,6 +2100,13 @@ def test_capacity_history_rest_call_success(request_type):
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["capacity_history_request_resource"] = {
         "instance_properties": {
+            "disks": [{"type_": "type__value"}],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
             "machine_type": "machine_type_value",
             "scheduling": {"provisioning_model": "provisioning_model_value"},
         },

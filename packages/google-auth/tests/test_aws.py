@@ -16,16 +16,19 @@ import datetime
 import http.client as http_client
 import json
 import os
-from unittest import mock
 import urllib.parse
+from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, external_account
-from google.auth import aws
-from google.auth import environment_vars
-from google.auth import exceptions
-from google.auth import transport
+from google.auth import (
+    _helpers,
+    aws,
+    environment_vars,
+    exceptions,
+    external_account,
+    transport,
+)
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
 IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
@@ -768,9 +771,11 @@ class TestCredentials(object):
                 }
             )
         # Append x-goog-cloud-target-resource header.
-        reformatted_signed_request.get("headers").append(
-            {"key": "x-goog-cloud-target-resource", "value": AUDIENCE}
-        ),
+        (
+            reformatted_signed_request.get("headers").append(
+                {"key": "x-goog-cloud-target-resource", "value": AUDIENCE}
+            ),
+        )
         return urllib.parse.quote(
             json.dumps(
                 reformatted_signed_request, separators=(",", ":"), sort_keys=True
@@ -1364,9 +1369,9 @@ class TestCredentials(object):
             imdsv2_session_token_data=self.AWS_IMDSV2_SESSION_TOKEN,
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url[
-            "imdsv2_session_token_url"
-        ] = IMDSV2_SESSION_TOKEN_URL
+        credential_source_token_url["imdsv2_session_token_url"] = (
+            IMDSV2_SESSION_TOKEN_URL
+        )
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )
@@ -1470,9 +1475,9 @@ class TestCredentials(object):
             imdsv2_session_token_data=self.AWS_IMDSV2_SESSION_TOKEN,
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url[
-            "imdsv2_session_token_url"
-        ] = IMDSV2_SESSION_TOKEN_URL
+        credential_source_token_url["imdsv2_session_token_url"] = (
+            IMDSV2_SESSION_TOKEN_URL
+        )
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )
@@ -1526,9 +1531,9 @@ class TestCredentials(object):
             imdsv2_session_token_data=self.AWS_IMDSV2_SESSION_TOKEN,
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url[
-            "imdsv2_session_token_url"
-        ] = IMDSV2_SESSION_TOKEN_URL
+        credential_source_token_url["imdsv2_session_token_url"] = (
+            IMDSV2_SESSION_TOKEN_URL
+        )
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )
@@ -1576,9 +1581,9 @@ class TestCredentials(object):
             imdsv2_session_token_data=self.AWS_IMDSV2_SESSION_TOKEN,
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url[
-            "imdsv2_session_token_url"
-        ] = IMDSV2_SESSION_TOKEN_URL
+        credential_source_token_url["imdsv2_session_token_url"] = (
+            IMDSV2_SESSION_TOKEN_URL
+        )
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )
@@ -1626,9 +1631,9 @@ class TestCredentials(object):
             role_status=http_client.OK, role_name=self.AWS_ROLE
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url[
-            "imdsv2_session_token_url"
-        ] = IMDSV2_SESSION_TOKEN_URL
+        credential_source_token_url["imdsv2_session_token_url"] = (
+            IMDSV2_SESSION_TOKEN_URL
+        )
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )
@@ -1706,9 +1711,9 @@ class TestCredentials(object):
             imdsv2_session_token_data="unauthorized",
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url[
-            "imdsv2_session_token_url"
-        ] = IMDSV2_SESSION_TOKEN_URL
+        credential_source_token_url["imdsv2_session_token_url"] = (
+            IMDSV2_SESSION_TOKEN_URL
+        )
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )

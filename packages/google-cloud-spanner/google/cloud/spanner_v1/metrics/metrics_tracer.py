@@ -587,6 +587,27 @@ class MetricsTracer:
         attributes[METRIC_LABEL_KEY_STATUS] = self.current_op.current_attempt.status
         return attributes
 
+    def set_resource_info(
+        self, resource_info: Optional[Dict[str, str]]
+    ) -> "MetricsTracer":
+        """Set resource attributes (project, instance, database) for metrics tracing.
+
+        :param resource_info: A dictionary containing project, instance, and database information.
+        :return: This instance of MetricsTracer for method chaining.
+        """
+        if resource_info:
+            client_attributes = self._client_attributes
+            project = resource_info.get("project")
+            if project and MONITORED_RES_LABEL_KEY_PROJECT not in client_attributes:
+                client_attributes[MONITORED_RES_LABEL_KEY_PROJECT] = project
+            instance = resource_info.get("instance")
+            if instance and MONITORED_RES_LABEL_KEY_INSTANCE not in client_attributes:
+                client_attributes[MONITORED_RES_LABEL_KEY_INSTANCE] = instance
+            database = resource_info.get("database")
+            if database and METRIC_LABEL_KEY_DATABASE not in client_attributes:
+                client_attributes[METRIC_LABEL_KEY_DATABASE] = database
+        return self
+
     def set_project(self, project: str) -> "MetricsTracer":
         """
         Set the project attribute for metrics tracing.

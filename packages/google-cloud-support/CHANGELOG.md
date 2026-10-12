@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-support/#history
 
+## [0.5.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.5.3...google-cloud-support-v0.5.4) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [0.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.5.2...google-cloud-support-v0.5.3) (2026-08-21)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gcp-sphinx-docfx-yaml/#history
 
+## [3.3.3](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.3.2...gcp-sphinx-docfx-yaml-v3.3.3) (2026-10-01)
+
+
+### Bug Fixes
+
+* **ci:** fix docfx and db-dtypes pandas compat ([#18512](https://github.com/googleapis/google-cloud-python/issues/18512)) ([5d57b25](https://github.com/googleapis/google-cloud-python/commit/5d57b255271ed43274286cb65a9f6e52ee56875a))
+
 ## [3.3.2](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.3.1...gcp-sphinx-docfx-yaml-v3.3.2) (2026-08-21)
 
 
