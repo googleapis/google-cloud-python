@@ -618,7 +618,7 @@ def query_and_wait(
         page_token = query_results.page_token
         more_pages = page_token is not None
         if arrow_serialization_options is not None:
-            more_pages = _pyarrow_helpers._arrow_has_more_pages(response)
+            more_pages = _pyarrow_helpers._arrow_has_more_pages(response, max_results)
 
         if more_pages or not query_results.complete:
             # TODO(swast): Avoid a call to jobs.get in some cases (few

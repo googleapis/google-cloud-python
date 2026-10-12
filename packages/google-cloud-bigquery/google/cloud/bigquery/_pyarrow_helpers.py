@@ -240,9 +240,13 @@ def _to_read_api_arrow_options(
 
 def _arrow_has_more_pages(
     response: Dict[str, Any],
+    max_results: Optional[int],
 ) -> bool:
     """Return True if an ARROW ``jobs.query`` response has more rows to stream."""
-    return int(response.get("pageRowCount", 0)) < int(response.get("totalRows", 0))
+    rows_wanted = int(response.get("totalRows", 0))
+    if max_results is not None:
+        rows_wanted = min(rows_wanted, max_results)
+    return int(response.get("pageRowCount", 0)) < rows_wanted
 
 
 def _deserialize_arrow_schema(
@@ -262,6 +266,18 @@ def _deserialize_arrow_batch(
     if isinstance(batch_bytes, str):
         batch_bytes = base64.b64decode(batch_bytes)
     return pyarrow.ipc.read_record_batch(pyarrow.py_buffer(batch_bytes), schema)
+
+
+def _slice_arrow_batch(
+    batch: "pyarrow.RecordBatch",
+    remaining: Optional[int],
+) -> Tuple["pyarrow.RecordBatch", Optional[int]]:
+    """Slice ``batch`` to at most ``remaining`` rows and return updated remaining count."""
+    if remaining is None:
+        return batch, None
+    if batch.num_rows > remaining:
+        batch = batch.slice(0, remaining)
+    return batch, remaining - batch.num_rows
 
 
 def _open_arrow_read_stream(
@@ -332,6 +348,7 @@ def download_arrow_from_job(
     pa_schema: Optional["pyarrow.Schema"] = None
     total_rows = row_iterator.total_rows
     job_complete = False
+    remaining = row_iterator.max_results
 
     # Step 2: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
@@ -351,31 +368,46 @@ def download_arrow_from_job(
         if batch_bytes and pa_schema is not None:
             batch = _deserialize_arrow_batch(batch_bytes, pa_schema)
             offset += batch.num_rows
+            batch, remaining = _slice_arrow_batch(batch, remaining)
             yield batch
 
-    # Step 3: Return early if all results were delivered in the first page response.
-    if job_complete and offset >= total_rows:
+    # Step 3: Return early if all results were delivered in the first page
+    # response, or if the first page already reached max_results.
+    if (job_complete and offset >= total_rows) or remaining == 0:
         return
 
     # Step 4: Stream remaining Arrow record batches from the job default stream.
     reader = _open_arrow_read_stream(
         row_iterator, bqstorage_client, offset, timeout
     )
-    for response in reader:
-        if (
-            response.arrow_schema
-            and response.arrow_schema.serialized_schema
-            and pa_schema is None
-        ):
-            pa_schema = _deserialize_arrow_schema(
-                response.arrow_schema.serialized_schema
-            )
-        if (
-            response.arrow_record_batch
-            and response.arrow_record_batch.serialized_record_batch
-            and pa_schema is not None
-        ):
-            yield _deserialize_arrow_batch(
-                response.arrow_record_batch.serialized_record_batch,
-                pa_schema,
-            )
+    finished = False
+    try:
+        for response in reader:
+            if (
+                response.arrow_schema
+                and response.arrow_schema.serialized_schema
+                and pa_schema is None
+            ):
+                pa_schema = _deserialize_arrow_schema(
+                    response.arrow_schema.serialized_schema
+                )
+            if (
+                response.arrow_record_batch
+                and response.arrow_record_batch.serialized_record_batch
+                and pa_schema is not None
+            ):
+                batch = _deserialize_arrow_batch(
+                    response.arrow_record_batch.serialized_record_batch,
+                    pa_schema,
+                )
+                batch, remaining = _slice_arrow_batch(batch, remaining)
+                yield batch
+                if remaining == 0:
+                    break
+        else:
+            finished = True
+    finally:
+        # Stop the stream if reading ends before it does: at max_results,
+        # on an error, or when the caller closes the iterator.
+        if not finished:
+            reader.cancel()
