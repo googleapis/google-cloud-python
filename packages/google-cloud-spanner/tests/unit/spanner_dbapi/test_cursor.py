@@ -1372,11 +1372,11 @@ class TestCursor(unittest.TestCase):
         )
         update_sql = "UPDATE table_name SET row_id = 1"
 
+        orig_batch_ddls = cursor.__class__._batch_DDLs
         with mock.patch.object(
             cursor.__class__,
             "_batch_DDLs",
-            autospec=True,
-            wraps=cursor.__class__._batch_DDLs,
+            side_effect=lambda sql: orig_batch_ddls(cursor, sql),
         ) as mock_batch_ddls:
             with self.assertRaises(ValueError):
                 cursor.execute(sql=invalid_ddl_sql)
