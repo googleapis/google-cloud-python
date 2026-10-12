@@ -1431,3 +1431,48 @@ class TestCursor(unittest.TestCase):
 
         cursor.execute(sql=select_sql)
         mock_database.update_ddl.assert_called_once_with([ddl_sql])
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_ddl_then_dml_retry_replays_prior_dml_without_replaying_ddl(
+        self, mock_peek_iterator
+    ):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE table_name (row_id INT64) PRIMARY KEY (row_id)"
+        insert_1_sql = "INSERT INTO table_name (row_id) VALUES (1)"
+        insert_2_sql = "INSERT INTO table_name (row_id) VALUES (2)"
+
+        # 1. Execute DDL
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        metadata_mock = mock.Mock()
+        metadata_mock.trailing_metadata.return_value = {}
+
+        # 2. insert_1 succeeds; insert_2 aborts on attempt 1, triggering retry of insert_1 and retry of insert_2
+        connection.run_statement = mock.Mock(
+            side_effect=[
+                mock.MagicMock(),  # insert_1 (attempt 1 -> succeeds)
+                Aborted(
+                    "Aborted", errors=[metadata_mock]
+                ),  # insert_2 (attempt 1 -> aborts)
+                mock.MagicMock(),  # insert_1 (replayed by retry_transaction)
+                mock.MagicMock(),  # insert_2 (attempt 2 -> succeeds)
+            ]
+        )
+
+        cursor.execute(sql=insert_1_sql)
+        mock_database.update_ddl.assert_called_once_with([ddl_sql])
+        self.assertEqual(connection._ddl_statements, [])
+        self.assertEqual(
+            len(cursor.transaction_helper._statement_result_details_list), 1
+        )
+
+        # 3. insert_2 aborts and triggers retry_transaction()
+        cursor.execute(sql=insert_2_sql)
+
+        # Assert insert_1 was replayed, insert_2 was retried, and update_ddl was NOT called a second time
+        self.assertEqual(connection.run_statement.call_count, 4)
+        mock_database.update_ddl.assert_called_once_with([ddl_sql])
+        self.assertEqual(connection._ddl_statements, [])
