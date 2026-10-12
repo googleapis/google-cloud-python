@@ -62,10 +62,46 @@ import (
 
 	spannerpb "cloud.google.com/go/spanner/apiv1/spannerpb"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/encoding"
+	_ "google.golang.org/grpc/encoding/proto"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/structpb"
 )
+
+type timingProtoCodec struct {
+	base encoding.Codec
+}
+
+func (c timingProtoCodec) Name() string {
+	return "proto"
+}
+
+func (c timingProtoCodec) Marshal(v interface{}) ([]byte, error) {
+	t0 := goThreadCPUTimeNs()
+	out, err := c.base.Marshal(v)
+	t1 := goThreadCPUTimeNs()
+	if t1 >= t0 {
+		atomic.AddUint64(&statReqBuildNs, t1-t0)
+	}
+	return out, err
+}
+
+func (c timingProtoCodec) Unmarshal(data []byte, v interface{}) error {
+	t0 := goThreadCPUTimeNs()
+	err := c.base.Unmarshal(data, v)
+	t1 := goThreadCPUTimeNs()
+	if t1 >= t0 {
+		atomic.AddUint64(&statRecvProtoNs, t1-t0)
+	}
+	return err
+}
+
+func init() {
+	if base := encoding.GetCodec("proto"); base != nil {
+		encoding.RegisterCodec(timingProtoCodec{base: base})
+	}
+}
 
 type completedAsyncItem struct {
 	reqID uint64
@@ -367,7 +403,6 @@ func executeStreamingSqlInternal(
 	sqlStr string,
 	paramIdStr string,
 ) *C.CSpannerBatch {
-	t0 := goThreadCPUTimeNs()
 	client := getClient(handle)
 	if client == nil {
 		return buildCBatch(nil, nil, "", 1, "Invalid or closed CoreClient handle", int(codes.InvalidArgument), true)
@@ -388,11 +423,13 @@ func executeStreamingSqlInternal(
 
 	for {
 		attemptCount++
-		tReq0 := t0
-		if attemptCount > 1 {
-			tReq0 = goThreadCPUTimeNs()
+		token, err := client.GetToken()
+		if err != nil {
+			return buildCBatch(nil, nil, "", attemptCount, fmt.Sprintf("Failed to get GCP auth token: %v", err), int(codes.Unauthenticated), true)
 		}
 
+		// Non-parking synchronous request & metadata construction phase
+		tReq0 := goThreadCPUTimeNs()
 		req := spannerpb.ExecuteSqlRequest{
 			Session: sessionStr,
 			Sql:     sqlStr,
@@ -411,11 +448,6 @@ func executeStreamingSqlInternal(
 			req.ResumeToken = lastResumeToken
 		}
 
-		token, err := client.GetToken()
-		if err != nil {
-			return buildCBatch(nil, nil, "", attemptCount, fmt.Sprintf("Failed to get GCP auth token: %v", err), int(codes.Unauthenticated), true)
-		}
-
 		md := metadata.Pairs(
 			"google-cloud-resource-prefix", dbPrefix,
 			"x-goog-request-params", "session="+sessionStr,
@@ -430,11 +462,9 @@ func executeStreamingSqlInternal(
 			atomic.AddUint64(&statReqBuildNs, tReq1-tReq0)
 		}
 
+		// Note: ExecuteStreamingSql and stream.Recv() may gopark while waiting on network I/O;
+		// protobuf Marshal/Unmarshal CPU inside them is measured synchronously by timingProtoCodec.
 		stream, err := client.ExecuteStreamingSql(ctx, &req)
-		tInit1 := goThreadCPUTimeNs()
-		if tInit1 >= tReq1 {
-			atomic.AddUint64(&statStreamInitNs, tInit1-tReq1)
-		}
 		if err != nil {
 			st, _ := status.FromError(err)
 			if (st.Code() == codes.Unavailable || st.Code() == codes.Internal) && len(lastResumeToken) > 0 {
@@ -453,12 +483,7 @@ func executeStreamingSqlInternal(
 		shouldRetry := false
 
 		for {
-			tRecv0 := goThreadCPUTimeNs()
 			chunk, err := stream.Recv()
-			tRecv1 := goThreadCPUTimeNs()
-			if tRecv1 >= tRecv0 && (tRecv1-tRecv0) < 500000000 {
-				atomic.AddUint64(&statRecvProtoNs, tRecv1-tRecv0)
-			}
 			if err == io.EOF {
 				break
 			}
@@ -471,6 +496,8 @@ func executeStreamingSqlInternal(
 				return buildCBatch(nil, nil, serverTiming, attemptCount, st.Message(), int(st.Code()), true)
 			}
 
+			// Non-parking synchronous in-memory chunked row assembly phase
+			tAsm0 := goThreadCPUTimeNs()
 			atomic.AddUint64(&statChunkCount, 1)
 
 			if len(chunk.ResumeToken) > 0 {
@@ -512,8 +539,8 @@ func executeStreamingSqlInternal(
 				}
 			}
 			tAsm1 := goThreadCPUTimeNs()
-			if tAsm1 >= tRecv1 {
-				atomic.AddUint64(&statChunkAssembleNs, tAsm1-tRecv1)
+			if tAsm1 >= tAsm0 {
+				atomic.AddUint64(&statChunkAssembleNs, tAsm1-tAsm0)
 			}
 		}
 

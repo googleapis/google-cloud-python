@@ -152,7 +152,7 @@ class CrossFFIProfileSession:
         self.rusage_end = (0.0, 0.0, 0.0)
         self.threads_start = {}
         self.threads_end = {}
-        self.go_core_stats = (0, 0, 0, 0, 0, 0, 0, 0)
+        self.go_core_stats = (0, 0, 0, 0, 0, 0, 0, 0, 0)
 
     def start(self):
         if self.use_go_core and self.go_ext is not None:
@@ -177,7 +177,7 @@ class CrossFFIProfileSession:
             self.go_core_stats = self.go_ext.get_core_stats()
 
     def save_and_stitch(self, output_prof_path, request_count):
-        """Saves Yappi pstats and stitches C-FFI + Go Shared Core (or Native C++ gRPC) CPU frames."""
+        """Saves Yappi pstats and stitches C-FFI + Go Shared Core CPU frames without double-counting."""
         stats = yappi.get_func_stats()
         stats.save(output_prof_path, type="pstat")
 
@@ -189,7 +189,22 @@ class CrossFFIProfileSession:
         sys_proc_cpu = max(0.0, self.rusage_end[2] - self.rusage_start[2])
 
         if self.use_go_core:
-            calls, chunks, req_ns, init_ns, recv_ns, asm_ns, enc_ns, c_pylist_ns = self.go_core_stats
+            if len(self.go_core_stats) >= 9:
+                (
+                    calls,
+                    chunks,
+                    req_ns,
+                    init_ns,
+                    recv_ns,
+                    asm_ns,
+                    enc_ns,
+                    c_pylist_ns,
+                    c_on_thread_go_ns,
+                ) = self.go_core_stats[:9]
+            else:
+                calls, chunks, req_ns, init_ns, recv_ns, asm_ns, enc_ns, c_pylist_ns = self.go_core_stats[:8]
+                c_on_thread_go_ns = 0
+
             n_calls = max(1, int(calls) if calls > 0 else int(request_count))
             n_chunks = max(n_calls, int(chunks))
 
@@ -199,11 +214,28 @@ class CrossFFIProfileSession:
             asm_s = asm_ns / 1e9
             enc_s = enc_ns / 1e9
             c_pylist_s = c_pylist_ns / 1e9
+            on_thread_go_s = c_on_thread_go_ns / 1e9
+
+            # Subtract on-thread cgo execution time (on_thread_go_s) that Yappi's thread CPU clock
+            # already attributed to spanner_go_ext.execute_streaming_sql / submit_async.
+            deducted_on_thread_go_s = min(on_thread_go_s, max(0.0, python_yappi_cpu - c_pylist_s))
+            true_python_and_c_cpu = max(0.0, python_yappi_cpu - deducted_on_thread_go_s)
+
+            # Anchor total process CPU to the Linux kernel's exact RUSAGE_SELF delta
+            true_total_cpu = max(total_proc_cpu, true_python_and_c_cpu)
+            go_budget_s = max(0.0, true_total_cpu - true_python_and_c_cpu)
 
             fg_go_s = req_s + init_s + recv_s + asm_s + enc_s
-            # Total CPU outside Python interpreter = max(fg_go_s, total_proc_cpu - python_yappi_cpu)
-            off_thread_total_s = max(fg_go_s, total_proc_cpu - python_yappi_cpu)
-            bg_go_m_threads_s = max(0.0, off_thread_total_s - fg_go_s)
+            if fg_go_s > go_budget_s and fg_go_s > 0.0:
+                scale = go_budget_s / fg_go_s
+                req_s *= scale
+                init_s *= scale
+                recv_s *= scale
+                asm_s *= scale
+                enc_s *= scale
+                fg_go_s = go_budget_s
+
+            bg_go_m_threads_s = max(0.0, go_budget_s - fg_go_s)
             go_total_s = fg_go_s + bg_go_m_threads_s
 
             self._stitch_go_frames(
@@ -217,9 +249,9 @@ class CrossFFIProfileSession:
                 enc_s=enc_s,
                 bg_go_s=bg_go_m_threads_s,
                 c_pylist_s=c_pylist_s,
+                deducted_on_thread_go_s=deducted_on_thread_go_s,
             )
             ps = pstats.Stats(output_prof_path)
-            true_total_cpu = max(total_proc_cpu, float(ps.total_tt))
             breakdown = {
                 "wall_elapsed_sec": round(self.wall_elapsed, 4),
                 "request_count": int(request_count),
@@ -227,8 +259,9 @@ class CrossFFIProfileSession:
                 "total_process_cpu_sec": round(true_total_cpu, 4),
                 "user_cpu_sec": round(user_proc_cpu, 4),
                 "sys_cpu_sec": round(sys_proc_cpu, 4),
-                "python_and_c_ext_cpu_sec": round(python_yappi_cpu, 4),
+                "python_and_c_ext_cpu_sec": round(true_python_and_c_cpu, 4),
                 "c_ext_pylist_decode_cpu_sec": round(c_pylist_s, 4),
+                "on_thread_cgo_deducted_cpu_sec": round(deducted_on_thread_go_s, 4),
                 "go_shared_core_total_cpu_sec": round(go_total_s, 4),
                 "go_foreground_phases_cpu_sec": round(fg_go_s, 4),
                 "go_background_m_threads_cpu_sec": round(bg_go_m_threads_s, 4),
@@ -238,7 +271,7 @@ class CrossFFIProfileSession:
                 "go_chunk_assemble_cpu_sec": round(asm_s, 4),
                 "go_zero_copy_arena_encode_cpu_sec": round(enc_s, 4),
                 "cpu_ms_per_query": round((true_total_cpu / max(1, request_count)) * 1000.0, 3),
-                "python_cpu_ms_per_query": round((python_yappi_cpu / max(1, request_count)) * 1000.0, 3),
+                "python_cpu_ms_per_query": round((true_python_and_c_cpu / max(1, request_count)) * 1000.0, 3),
                 "go_core_cpu_ms_per_query": round((go_total_s / max(1, request_count)) * 1000.0, 3),
             }
         else:
@@ -273,52 +306,51 @@ class CrossFFIProfileSession:
         enc_s,
         bg_go_s,
         c_pylist_s,
+        deducted_on_thread_go_s=0.0,
     ):
-        """Injects Cross-FFI C-Extension and Go Shared Core nodes into the pstats dictionary."""
+        """Injects Cross-FFI C-Extension and Go Shared Core nodes into the pstats dictionary without double-counting."""
         with open(prof_path, "rb") as f:
             raw_stats = marshal.load(f)
 
-        # Locate the FFI boundary caller inside raw_stats:
-        # Either <built-in method execute_streaming_sql> / <built-in method submit_async>
-        # or our Python wrapper function run_point_select_query_go_core / execute_streaming_sql.
         ffi_Sync_key = None
         ffi_Async_submit_key = None
         ffi_Async_pop_key = None
         wrapper_key = None
 
         for k in list(raw_stats.keys()):
-            fn_name = k[2]
-            if "execute_streaming_sql" in fn_name and ("built-in" in fn_name or k[0] == "~"):
+            mod_name, _, fn_name = k[0], k[1], k[2]
+            is_c_ext = ("spanner_go_ext" in str(mod_name)) or ("built-in" in fn_name) or (mod_name == "~")
+            if is_c_ext and "execute_streaming_sql" in fn_name and "go_async" not in fn_name:
                 ffi_Sync_key = k
-            elif "submit_async" in fn_name:
+            elif is_c_ext and "submit_async" in fn_name:
                 ffi_Async_submit_key = k
-            elif "pop_completed" in fn_name:
+            elif is_c_ext and "pop_completed" in fn_name:
                 ffi_Async_pop_key = k
             elif fn_name in (
-                "run_point_select_query_go_core_sync",
-                "run_limit_1000_query_go_core_sync",
-                "execute_streaming_sql_go_async",
+                "go_core_sync_execute_sql",
+                "go_core_async_execute_sql",
+                "submit_rows_future",
+                "run_point_select_query_sync",
+                "run_limit_1000_query_sync",
             ):
                 wrapper_key = k
 
         parent_key = ffi_Sync_key or ffi_Async_submit_key or wrapper_key
         if parent_key is None and raw_stats:
-            # Fallback to highest cumulative function
             parent_key = max(raw_stats.items(), key=lambda x: x[1][3])[0]
 
         go_total_s = req_s + init_s + recv_s + asm_s + enc_s + bg_go_s
 
-        # Define synthetic pstats keys for the C-Extension and Go Shared Core frames
-        k_c_decode = ("c_ext/spanner_go_ext.c", 190, "[C-FFI] batch_to_pylist (CSpannerCell -> PyList)")
-        k_go_entry = ("spanner_go_core/main.go", 364, "[Go Shared Core] main.executeStreamingSqlInternal")
-        k_go_req = ("spanner_go_core/main.go", 391, "[Go Shared Core] main.buildExecuteSqlRequestAndAuth")
+        k_c_decode = ("c_ext/spanner_go_ext.c", 205, "[C-FFI] batch_to_pylist (CSpannerCell -> PyList)")
+        k_go_entry = ("spanner_go_core/main.go", 400, "[Go Shared Core] main.executeStreamingSqlInternal")
+        k_go_req = ("spanner_go_core/main.go", 432, "[Go Shared Core] main.buildExecuteSqlRequest + proto.Marshal")
         k_go_init = ("spanner_go_core/client.go", 138, "[Go Shared Core] CoreClient.ExecuteStreamingSql (gRPC Stream Init)")
-        k_go_recv = ("spanner_go_core/main.go", 441, "[Go Shared Core] grpc.ClientStream.Recv + proto.Unmarshal(PartialResultSet)")
-        k_go_asm = ("spanner_go_core/main.go", 465, "[Go Shared Core] main.assembleStreamingRowChunks")
-        k_go_enc = ("spanner_go_core/main.go", 215, "[Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena)")
-        k_go_bg = ("spanner_go_core/runtime", 1, "[Go Shared Core] grpc.http2Client.reader + crypto/tls (Background M-Threads)")
+        k_go_recv = ("spanner_go_core/main.go", 90, "[Go Shared Core] timingProtoCodec.Unmarshal(PartialResultSet)")
+        k_go_asm = ("spanner_go_core/main.go", 506, "[Go Shared Core] main.assembleStreamingRowChunks")
+        k_go_enc = ("spanner_go_core/main.go", 252, "[Go Shared Core] main.buildCBatch (Zero-Copy CSpannerCell Arena)")
+        k_go_bg = ("spanner_go_core/runtime", 1, "[Go Shared Core] grpc.http2Client + crypto/tls (gRPC Transport & M-Threads)")
 
-        # Add C-extension batch_to_pylist under pop_completed (async) or parent_key (sync)
+        # 1. Attach C-extension batch_to_pylist under pop_completed (async) or parent_key (sync)
         c_decode_parent = ffi_Async_pop_key if ffi_Async_pop_key is not None else parent_key
         if c_decode_parent is not None and c_pylist_s > 0:
             raw_stats[k_c_decode] = (
@@ -328,19 +360,25 @@ class CrossFFIProfileSession:
                 c_pylist_s,
                 {c_decode_parent: (n_calls, n_calls, c_pylist_s, c_pylist_s)},
             )
-            # Reduce self-time of c_decode_parent by c_pylist_s so total time is not double-counted
             p_cc, p_nc, p_tt, p_ct, p_callers = raw_stats[c_decode_parent]
             new_p_tt = max(0.0, p_tt - c_pylist_s)
             raw_stats[c_decode_parent] = (p_cc, p_nc, new_p_tt, max(p_ct, c_pylist_s), p_callers)
 
-        # Add Go Shared Core hierarchy under parent_key
+        # 2. Subtract deducted_on_thread_go_s from parent_key's self-time (tt) so on-thread cgo CPU is not double-counted
+        actual_parent_deduct = 0.0
+        if parent_key is not None and deducted_on_thread_go_s > 0:
+            p_cc, p_nc, p_tt, p_ct, p_callers = raw_stats[parent_key]
+            actual_parent_deduct = min(p_tt, deducted_on_thread_go_s)
+            raw_stats[parent_key] = (p_cc, p_nc, max(0.0, p_tt - actual_parent_deduct), p_ct, p_callers)
+
+        # 3. Add Go Shared Core hierarchy under parent_key
         if parent_key is not None:
             raw_stats[k_go_entry] = (
                 n_calls,
                 n_calls,
-                0.000001,
+                0.0,
                 go_total_s,
-                {parent_key: (n_calls, n_calls, 0.000001, go_total_s)},
+                {parent_key: (n_calls, n_calls, 0.0, go_total_s)},
             )
             raw_stats[k_go_req] = (
                 n_calls,
@@ -349,13 +387,14 @@ class CrossFFIProfileSession:
                 req_s,
                 {k_go_entry: (n_calls, n_calls, req_s, req_s)},
             )
-            raw_stats[k_go_init] = (
-                n_calls,
-                n_calls,
-                init_s,
-                init_s,
-                {k_go_entry: (n_calls, n_calls, init_s, init_s)},
-            )
+            if init_s > 0:
+                raw_stats[k_go_init] = (
+                    n_calls,
+                    n_calls,
+                    init_s,
+                    init_s,
+                    {k_go_entry: (n_calls, n_calls, init_s, init_s)},
+                )
             raw_stats[k_go_recv] = (
                 n_chunks,
                 n_chunks,
@@ -386,31 +425,33 @@ class CrossFFIProfileSession:
                     {k_go_entry: (n_chunks, n_chunks, bg_go_s, bg_go_s)},
                 )
 
-            # Propagate go_total_s up the cumulative time chain from parent_key to root callers
-            visited = set()
-            stack = [parent_key]
-            while stack:
-                curr = stack.pop()
-                if curr in visited or curr not in raw_stats:
-                    continue
-                visited.add(curr)
-                cc, nc, tt, ct, callers = raw_stats[curr]
-                updated_callers = {}
-                for caller_k, caller_val in callers.items():
-                    if isinstance(caller_val, tuple) and len(caller_val) == 4:
-                        c_cc, c_nc, c_tt, c_ct = caller_val
-                        updated_callers[caller_k] = (c_cc, c_nc, c_tt, c_ct + go_total_s)
-                    else:
-                        updated_callers[caller_k] = caller_val
-                    stack.append(caller_k)
-                raw_stats[curr] = (cc, nc, tt, ct + go_total_s, updated_callers)
+            # Propagate net off-thread Go CPU (go_total_s - actual_parent_deduct) up the cumulative time chain
+            ct_delta = max(0.0, go_total_s - actual_parent_deduct)
+            if ct_delta > 0:
+                visited = set()
+                stack = [parent_key]
+                while stack:
+                    curr = stack.pop()
+                    if curr in visited or curr not in raw_stats:
+                        continue
+                    visited.add(curr)
+                    cc, nc, tt, ct, callers = raw_stats[curr]
+                    updated_callers = {}
+                    for caller_k, caller_val in callers.items():
+                        if isinstance(caller_val, tuple) and len(caller_val) == 4:
+                            c_cc, c_nc, c_tt, c_ct = caller_val
+                            updated_callers[caller_k] = (c_cc, c_nc, c_tt, c_ct + ct_delta)
+                        else:
+                            updated_callers[caller_k] = caller_val
+                        stack.append(caller_k)
+                    raw_stats[curr] = (cc, nc, tt, ct + ct_delta, updated_callers)
 
         with open(prof_path, "wb") as f:
             marshal.dump(raw_stats, f)
 
 
 # -----------------------------------------------------------------------------
-# Go Shared Core AsyncIO Wrapper (Non-blocking Submit + epoll_wait Pipe Reader)
+# Go Shared Core SDK Integration Hooks (Plugs Go Shared Core into Snapshot.execute_sql)
 # -----------------------------------------------------------------------------
 class GoCoreAsyncSession:
     """Integrates Go Shared Core with Python's asyncio SelectorEventLoop via a non-blocking OS pipe."""
@@ -433,13 +474,16 @@ class GoCoreAsyncSession:
                 else:
                     fut.set_result(rows)
 
-    async def execute_streaming_sql_go_async(self, session_name, sql, param_id=""):
+    def submit_rows_future(self, session_name, sql, param_id=""):
         req_id = self._next_id
         self._next_id += 1
         fut = self.loop.create_future()
         self._pending[req_id] = fut
         self.go_ext.submit_async(self.cid, req_id, session_name, sql, param_id)
-        rows = await fut
+        return fut
+
+    async def execute_streaming_sql_go_async(self, session_name, sql, param_id=""):
+        rows = await self.submit_rows_future(session_name, sql, param_id)
         return len(rows)
 
     def close(self):
@@ -449,8 +493,132 @@ class GoCoreAsyncSession:
             pass
 
 
+class _GoCoreAsyncStreamedResultSet:
+    """Async row iterator returned by async Snapshot.execute_sql when backed by Go Shared Core."""
+
+    def __init__(self, rows_future):
+        self._rows_future = rows_future
+        self._rows = None
+        self._idx = 0
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        if self._rows is None:
+            self._rows = await self._rows_future
+        if self._idx >= len(self._rows):
+            raise StopAsyncIteration
+        row = self._rows[self._idx]
+        self._idx += 1
+        return row
+
+
+from contextlib import contextmanager
+from google.cloud.spanner_v1.snapshot import _SnapshotBase as _SyncSnapshotBase
+try:
+    from google.cloud.spanner_v1._async.snapshot import _SnapshotBase as _AsyncSnapshotBase
+except ImportError:
+    _AsyncSnapshotBase = None
+
+
+@contextmanager
+def patched_sync_snapshot_go_core(go_ext, cid, fallback_session_name):
+    """Hooks _SnapshotBase.execute_sql so `with database.snapshot() as snapshot: list(snapshot.execute_sql(...))`
+    executes the exact same Python Snapshot checkout/lifecycle while delegating streaming SQL RPC + decoding to Go Shared Core.
+    """
+    orig_execute_sql = _SyncSnapshotBase.execute_sql
+
+    def go_core_sync_execute_sql(
+        self,
+        sql,
+        params=None,
+        param_types=None,
+        query_mode=None,
+        query_options=None,
+        request_options=None,
+        last_statement=False,
+        partition=None,
+        retry=None,
+        timeout=None,
+        data_boost_enabled=False,
+        directed_read_options=None,
+        column_info=None,
+        lazy_decode=False,
+    ):
+        with self._lock:
+            if self._begin_request_sent or self._read_request_count > 0:
+                if not self._multi_use:
+                    raise ValueError("Cannot re-use single-use snapshot.")
+            else:
+                self._begin_request_sent = True
+        self._execute_sql_request_count += 1
+        self._read_request_count += 1
+        param_id = params.get("id", "") if params else ""
+        sess_name = (
+            self._session.name
+            if getattr(self, "_session", None) is not None and getattr(self._session, "_session_id", None)
+            else fallback_session_name
+        )
+        return go_ext.execute_streaming_sql(cid, sess_name, sql, param_id)
+
+    _SyncSnapshotBase.execute_sql = go_core_sync_execute_sql
+    try:
+        yield
+    finally:
+        _SyncSnapshotBase.execute_sql = orig_execute_sql
+
+
+@contextmanager
+def patched_async_snapshot_go_core(go_async_session, fallback_session_name):
+    """Hooks async _SnapshotBase.execute_sql so `async with async_database.snapshot() as snapshot:`
+    executes the exact same Python AsyncSnapshot checkout/lifecycle while delegating streaming SQL to Go Shared Core.
+    """
+    if _AsyncSnapshotBase is None:
+        yield
+        return
+    orig_async_execute_sql = _AsyncSnapshotBase.execute_sql
+
+    async def go_core_async_execute_sql(
+        self,
+        sql,
+        params=None,
+        param_types=None,
+        query_mode=None,
+        query_options=None,
+        request_options=None,
+        last_statement=False,
+        partition=None,
+        retry=None,
+        timeout=None,
+        data_boost_enabled=False,
+        directed_read_options=None,
+        column_info=None,
+        lazy_decode=False,
+    ):
+        if self._read_request_count > 0:
+            if not self._multi_use:
+                raise ValueError("Cannot re-use single-use snapshot.")
+        self._execute_sql_request_count += 1
+        self._read_request_count += 1
+        param_id = params.get("id", "") if params else ""
+        sess_name = (
+            self._session.name
+            if getattr(self, "_session", None) is not None and getattr(self._session, "_session_id", None)
+            else fallback_session_name
+        )
+        fut = go_async_session.submit_rows_future(sess_name, sql, param_id)
+        return _GoCoreAsyncStreamedResultSet(fut)
+
+    _AsyncSnapshotBase.execute_sql = go_core_async_execute_sql
+    try:
+        yield
+    finally:
+        _AsyncSnapshotBase.execute_sql = orig_async_execute_sql
+
+
 # -----------------------------------------------------------------------------
-# Scenario 1 & 3: Synchronous Client Queries (Without Shared Core vs With Go Shared Core)
+# Scenario 1 & 3: Synchronous Client Queries (Identical High-Level SDK Entry Point)
 # -----------------------------------------------------------------------------
 def run_point_select_query_sync(database, user_id="user-0"):
     with database.snapshot() as snapshot:
@@ -463,21 +631,11 @@ def run_point_select_query_sync(database, user_id="user-0"):
         return len(rows)
 
 
-def run_point_select_query_go_core_sync(go_ext, cid, session_name, user_id="user-0"):
-    rows = go_ext.execute_streaming_sql(cid, session_name, POINT_SELECT_SQL, user_id)
-    return len(rows)
-
-
 def run_limit_1000_query_sync(database):
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(LIMIT_1000_SQL)
         rows = list(results)
         return len(rows)
-
-
-def run_limit_1000_query_go_core_sync(go_ext, cid, session_name):
-    rows = go_ext.execute_streaming_sql(cid, session_name, LIMIT_1000_SQL, "")
-    return len(rows)
 
 
 def extract_multiplexed_session_name(database):
@@ -503,39 +661,36 @@ def run_scenario_1_point_select_c1(
     warmup_sec=WARMUP_DURATION_SEC,
     profile_sec=PROFILE_DURATION_SEC,
 ):
-    label = "WITH GO SHARED CORE (Cross-FFI)" if use_go_core else "WITHOUT SHARED CORE (Stock Python SDK)"
+    label = "WITH GO SHARED CORE (Cross-FFI via database.snapshot())" if use_go_core else "WITHOUT SHARED CORE (Stock Python SDK)"
     print("\n" + "=" * 88)
     print(f"SCENARIO 1 [{'1B' if use_go_core else '1A'}]: Point Select C=1 (Sync) — {label}")
     print("=" * 88)
 
-    print(f"[*] Warming up for {warmup_sec} seconds...")
-    warmup_end = time.perf_counter() + warmup_sec
-    warmup_count = 0
-    while time.perf_counter() < warmup_end:
-        uid = f"user-{warmup_count % 100}"
-        if use_go_core:
-            run_point_select_query_go_core_sync(go_ext, cid, session_name, uid)
-        else:
+    ctx = patched_sync_snapshot_go_core(go_ext, cid, session_name) if use_go_core else contextmanager(lambda: (yield))()
+    with ctx:
+        print(f"[*] Warming up for {warmup_sec} seconds...")
+        warmup_end = time.perf_counter() + warmup_sec
+        warmup_count = 0
+        while time.perf_counter() < warmup_end:
+            uid = f"user-{warmup_count % 100}"
             run_point_select_query_sync(database, uid)
-        warmup_count += 1
-    print(f"[+] Warmup completed: {warmup_count} requests executed.")
+            warmup_count += 1
+        print(f"[+] Warmup completed: {warmup_count} requests executed.")
 
-    pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
-    print(f"[*] Profiling pure CPU time (Cross-FFI enabled={use_go_core}) for {profile_sec} seconds...")
-    prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
-    prof_session.start()
+        pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
+        print(f"[*] Profiling pure CPU time (Cross-FFI enabled={use_go_core}) for {profile_sec} seconds...")
+        prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
+        prof_session.start()
 
-    prof_end = time.perf_counter() + profile_sec
-    recorded_count = 0
-    while time.perf_counter() < prof_end:
-        uid = f"user-{recorded_count % 100}"
-        if use_go_core:
-            run_point_select_query_go_core_sync(go_ext, cid, session_name, uid)
-        else:
+        prof_end = time.perf_counter() + profile_sec
+        recorded_count = 0
+        while time.perf_counter() < prof_end:
+            uid = f"user-{recorded_count % 100}"
             run_point_select_query_sync(database, uid)
-        recorded_count += 1
+            recorded_count += 1
 
-    prof_session.stop()
+        prof_session.stop()
+
     ps, breakdown = prof_session.save_and_stitch(output_prof_path, recorded_count)
     print(f"[+] Profiling finished: {recorded_count} requests ({breakdown['qps']} QPS) | Total CPU: {breakdown['total_process_cpu_sec']:.4f}s ({breakdown['cpu_ms_per_query']:.3f} ms/query)")
     print(f"[+] Saved profile stats to: {output_prof_path}")
@@ -543,7 +698,7 @@ def run_scenario_1_point_select_c1(
 
 
 # -----------------------------------------------------------------------------
-# Scenario 2: Async Client with 32 Concurrency Coroutines (Without vs With Go Shared Core)
+# Scenario 2: Async Client with 32 Concurrency Coroutines (Identical High-Level SDK Entry Point)
 # -----------------------------------------------------------------------------
 async def run_single_async_query_with_parsing(async_client, session_name, user_id="user-0"):
     request = ExecuteSqlRequest(
@@ -606,16 +761,6 @@ async def async_worker_loop_high_level(async_database, worker_id, stop_time):
     return count
 
 
-async def async_worker_loop_go_core(go_async_session, session_name, worker_id, stop_time):
-    count = 0
-    while time.perf_counter() < stop_time:
-        await go_async_session.execute_streaming_sql_go_async(
-            session_name, POINT_SELECT_SQL, f"user-{(worker_id + count) % 100}"
-        )
-        count += 1
-    return count
-
-
 async def execute_async_scenario_2(
     output_prof_path,
     concurrency=32,
@@ -626,51 +771,56 @@ async def execute_async_scenario_2(
     warmup_sec=WARMUP_DURATION_SEC,
     profile_sec=PROFILE_DURATION_SEC,
 ):
-    label = "WITH GO SHARED CORE (Cross-FFI Async Pipe)" if use_go_core else "WITHOUT SHARED CORE (Stock Python Async SDK)"
+    label = "WITH GO SHARED CORE (Cross-FFI via async_database.snapshot())" if use_go_core else "WITHOUT SHARED CORE (Stock Python Async SDK)"
     print("\n" + "=" * 88)
     print(f"SCENARIO 2 [{'2B' if use_go_core else '2A'}]: Point Select C={concurrency} (AsyncIO) — {label}")
     print("=" * 88)
 
+    use_high_level = HighLevelAsyncClient is not None
+    if use_high_level:
+        print(f"[*] Initializing high-level spanner_v1.AsyncClient for {PROJECT} / {INSTANCE} / {DATABASE}...")
+        async_client = HighLevelAsyncClient(project=PROJECT)
+        async_instance = async_client.instance(INSTANCE)
+        pool = AsyncBurstyPool(target_size=concurrency) if AsyncBurstyPool else None
+        if pool is not None:
+            async_database = await async_instance.database(DATABASE, pool=pool)
+        else:
+            async_database = await async_instance.database(DATABASE)
+        worker_fn = lambda wid, st: async_worker_loop_high_level(async_database, wid, st)
+    else:
+        print(f"[*] Initializing SpannerAsyncClient (grpc.aio transport) for {DB_PATH}...")
+        async_client = SpannerAsyncClient()
+        sessions = await asyncio.gather(*[async_client.create_session(database=DB_PATH) for _ in range(concurrency)])
+        session_names = [s.name for s in sessions]
+        worker_fn = lambda wid, st: async_worker_loop_gapic(async_client, session_names[wid], wid, st)
+
     go_async_session = None
     if use_go_core:
         go_async_session = GoCoreAsyncSession(go_ext, cid, loop=asyncio.get_running_loop())
-        worker_fn = lambda wid, st: async_worker_loop_go_core(go_async_session, session_name, wid, st)
-    else:
-        use_high_level = HighLevelAsyncClient is not None
-        if use_high_level:
-            print(f"[*] Initializing high-level spanner_v1.AsyncClient for {PROJECT} / {INSTANCE} / {DATABASE}...")
-            async_client = HighLevelAsyncClient(project=PROJECT)
-            async_instance = async_client.instance(INSTANCE)
-            pool = AsyncBurstyPool(target_size=concurrency) if AsyncBurstyPool else None
-            # Important: async_instance.database() is a coroutine whether pool is passed or not
-            if pool is not None:
-                async_database = await async_instance.database(DATABASE, pool=pool)
-            else:
-                async_database = await async_instance.database(DATABASE)
-            worker_fn = lambda wid, st: async_worker_loop_high_level(async_database, wid, st)
-        else:
-            print(f"[*] Initializing SpannerAsyncClient (grpc.aio transport) for {DB_PATH}...")
-            async_client = SpannerAsyncClient()
-            sessions = await asyncio.gather(*[async_client.create_session(database=DB_PATH) for _ in range(concurrency)])
-            session_names = [s.name for s in sessions]
-            worker_fn = lambda wid, st: async_worker_loop_gapic(async_client, session_names[wid], wid, st)
 
-    print(f"[*] Warming up {concurrency} concurrent coroutines on event loop for {warmup_sec} seconds...")
-    warmup_end = time.perf_counter() + warmup_sec
-    warmup_tasks = [worker_fn(i, warmup_end) for i in range(concurrency)]
-    warmup_results = await asyncio.gather(*warmup_tasks)
-    print(f"[+] Warmup completed: {sum(warmup_results)} total requests executed across {concurrency} coroutines.")
+    ctx = (
+        patched_async_snapshot_go_core(go_async_session, session_name)
+        if use_go_core
+        else contextmanager(lambda: (yield))()
+    )
+    with ctx:
+        print(f"[*] Warming up {concurrency} concurrent coroutines on event loop for {warmup_sec} seconds...")
+        warmup_end = time.perf_counter() + warmup_sec
+        warmup_tasks = [worker_fn(i, warmup_end) for i in range(concurrency)]
+        warmup_results = await asyncio.gather(*warmup_tasks)
+        print(f"[+] Warmup completed: {sum(warmup_results)} total requests executed across {concurrency} coroutines.")
 
-    pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
-    print(f"[*] Profiling pure CPU time across all {concurrency} coroutines for {profile_sec} seconds...")
-    prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
-    prof_session.start()
+        pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
+        print(f"[*] Profiling pure CPU time across all {concurrency} coroutines for {profile_sec} seconds...")
+        prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
+        prof_session.start()
 
-    prof_end = time.perf_counter() + profile_sec
-    profile_tasks = [worker_fn(i, prof_end) for i in range(concurrency)]
-    profile_results = await asyncio.gather(*profile_tasks)
+        prof_end = time.perf_counter() + profile_sec
+        profile_tasks = [worker_fn(i, prof_end) for i in range(concurrency)]
+        profile_results = await asyncio.gather(*profile_tasks)
 
-    prof_session.stop()
+        prof_session.stop()
+
     if go_async_session is not None:
         go_async_session.close()
 
@@ -709,7 +859,7 @@ def run_scenario_2_point_select_c32_async(
 
 
 # -----------------------------------------------------------------------------
-# Scenario 3: LIMIT 1000 Read (Without Shared Core vs With Go Shared Core)
+# Scenario 3: LIMIT 1000 Read (Identical High-Level SDK Entry Point)
 # -----------------------------------------------------------------------------
 def run_scenario_3_limit_1000_c1(
     database,
@@ -721,37 +871,34 @@ def run_scenario_3_limit_1000_c1(
     warmup_sec=WARMUP_DURATION_SEC,
     profile_sec=PROFILE_DURATION_SEC,
 ):
-    label = "WITH GO SHARED CORE (Cross-FFI)" if use_go_core else "WITHOUT SHARED CORE (Stock Python SDK)"
+    label = "WITH GO SHARED CORE (Cross-FFI via database.snapshot())" if use_go_core else "WITHOUT SHARED CORE (Stock Python SDK)"
     print("\n" + "=" * 88)
     print(f"SCENARIO 3 [{'3B' if use_go_core else '3A'}]: LIMIT 1000 Read (11-Col Table) — {label}")
     print("=" * 88)
 
-    print(f"[*] Warming up LIMIT 1000 stream for {warmup_sec} seconds...")
-    warmup_end = time.perf_counter() + warmup_sec
-    warmup_count = 0
-    while time.perf_counter() < warmup_end:
-        if use_go_core:
-            run_limit_1000_query_go_core_sync(go_ext, cid, session_name)
-        else:
+    ctx = patched_sync_snapshot_go_core(go_ext, cid, session_name) if use_go_core else contextmanager(lambda: (yield))()
+    with ctx:
+        print(f"[*] Warming up LIMIT 1000 stream for {warmup_sec} seconds...")
+        warmup_end = time.perf_counter() + warmup_sec
+        warmup_count = 0
+        while time.perf_counter() < warmup_end:
             run_limit_1000_query_sync(database)
-        warmup_count += 1
-    print(f"[+] Warmup completed: {warmup_count} queries ({warmup_count * 1000} rows) executed.")
+            warmup_count += 1
+        print(f"[+] Warmup completed: {warmup_count} queries ({warmup_count * 1000} rows) executed.")
 
-    pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
-    print(f"[*] Profiling LIMIT 1000 pure CPU time for {profile_sec} seconds...")
-    prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
-    prof_session.start()
+        pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
+        print(f"[*] Profiling LIMIT 1000 pure CPU time for {profile_sec} seconds...")
+        prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
+        prof_session.start()
 
-    prof_end = time.perf_counter() + profile_sec
-    recorded_count = 0
-    while time.perf_counter() < prof_end:
-        if use_go_core:
-            run_limit_1000_query_go_core_sync(go_ext, cid, session_name)
-        else:
+        prof_end = time.perf_counter() + profile_sec
+        recorded_count = 0
+        while time.perf_counter() < prof_end:
             run_limit_1000_query_sync(database)
-        recorded_count += 1
+            recorded_count += 1
 
-    prof_session.stop()
+        prof_session.stop()
+
     ps, breakdown = prof_session.save_and_stitch(output_prof_path, recorded_count)
     print(
         f"[+] Profiling finished: {recorded_count} queries ({recorded_count * 1000} rows) | "
@@ -762,7 +909,7 @@ def run_scenario_3_limit_1000_c1(
 
 
 # -----------------------------------------------------------------------------
-# Scenario 4: Point Select with 32 OS Threads (Sync SDK vs Go Shared Core + GIL Contention)
+# Scenario 4: Point Select with 32 OS Threads (Identical High-Level SDK Entry Point)
 # -----------------------------------------------------------------------------
 class ThreadBenchmarkMetric:
     def __init__(self, thread_id, name):
@@ -778,10 +925,6 @@ def worker_thread_loop(
     worker_id,
     stop_time,
     metric,
-    use_go_core=False,
-    go_ext=None,
-    cid=None,
-    session_name=None,
 ):
     t_start_wall = time.perf_counter()
     t_start_cpu = time.thread_time()
@@ -789,10 +932,7 @@ def worker_thread_loop(
 
     while time.perf_counter() < stop_time:
         uid = f"user-{(worker_id + queries) % 100}"
-        if use_go_core:
-            run_point_select_query_go_core_sync(go_ext, cid, session_name, uid)
-        else:
-            run_point_select_query_sync(database, uid)
+        run_point_select_query_sync(database, uid)
         queries += 1
 
     t_end_wall = time.perf_counter()
@@ -814,56 +954,54 @@ def run_scenario_4_point_select_c32_threads(
     warmup_sec=WARMUP_DURATION_SEC,
     profile_sec=PROFILE_DURATION_SEC,
 ):
-    label = "WITH GO SHARED CORE (GIL Released via Py_BEGIN_ALLOW_THREADS)" if use_go_core else "WITHOUT SHARED CORE (Stock Python SDK)"
+    label = "WITH GO SHARED CORE (Cross-FFI via database.snapshot())" if use_go_core else "WITHOUT SHARED CORE (Stock Python SDK)"
     print("\n" + "=" * 88)
     print(f"SCENARIO 4 [{'4B' if use_go_core else '4A'}]: Multi-Threaded Point Select C={concurrency} OS Threads — {label}")
     print("=" * 88)
 
-    print(f"[*] Warming up {concurrency} OS worker threads for {warmup_sec} seconds...")
-    warmup_end = time.perf_counter() + warmup_sec
-    warmup_metrics = [ThreadBenchmarkMetric(i, f"Warmup-{i}") for i in range(concurrency)]
-    with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as executor:
-        futures = [
-            executor.submit(
-                worker_thread_loop,
-                database,
-                i,
-                warmup_end,
-                warmup_metrics[i],
-                use_go_core,
-                go_ext,
-                cid,
-                session_name,
+    ctx = patched_sync_snapshot_go_core(go_ext, cid, session_name) if use_go_core else contextmanager(lambda: (yield))()
+    with ctx:
+        print(f"[*] Warming up {concurrency} OS worker threads for {warmup_sec} seconds...")
+        warmup_end = time.perf_counter() + warmup_sec
+        warmup_metrics = [ThreadBenchmarkMetric(i, f"Warmup-{i}") for i in range(concurrency)]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as executor:
+            futures = [
+                executor.submit(
+                    worker_thread_loop,
+                    database,
+                    i,
+                    warmup_end,
+                    warmup_metrics[i],
+                )
+                for i in range(concurrency)
+            ]
+            concurrent.futures.wait(futures)
+        print(f"[+] Warmup completed: {sum(m.query_count for m in warmup_metrics)} requests executed across {concurrency} threads.")
+
+        pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
+        print(f"[*] Profiling pure CPU time & GIL contention across {concurrency} OS threads for {profile_sec} seconds...")
+        metrics = [ThreadBenchmarkMetric(i, f"Worker-{i}") for i in range(concurrency)]
+
+        prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
+        prof_session.start()
+
+        benchmark_start_wall = time.perf_counter()
+        benchmark_end_wall = benchmark_start_wall + profile_sec
+
+        threads = []
+        for i in range(concurrency):
+            t = threading.Thread(
+                target=worker_thread_loop,
+                args=(database, i, benchmark_end_wall, metrics[i]),
+                name=f"SpannerWorkerThread-{i}",
             )
-            for i in range(concurrency)
-        ]
-        concurrent.futures.wait(futures)
-    print(f"[+] Warmup completed: {sum(m.query_count for m in warmup_metrics)} requests executed across {concurrency} threads.")
+            threads.append(t)
+            t.start()
 
-    pprof_path = output_prof_path.replace(".prof", ".pprof") if use_go_core else None
-    print(f"[*] Profiling pure CPU time & GIL contention across {concurrency} OS threads for {profile_sec} seconds...")
-    metrics = [ThreadBenchmarkMetric(i, f"Worker-{i}") for i in range(concurrency)]
+        for t in threads:
+            t.join()
 
-    prof_session = CrossFFIProfileSession(use_go_core=use_go_core, go_ext=go_ext, pprof_path=pprof_path)
-    prof_session.start()
-
-    benchmark_start_wall = time.perf_counter()
-    benchmark_end_wall = benchmark_start_wall + profile_sec
-
-    threads = []
-    for i in range(concurrency):
-        t = threading.Thread(
-            target=worker_thread_loop,
-            args=(database, i, benchmark_end_wall, metrics[i], use_go_core, go_ext, cid, session_name),
-            name=f"SpannerWorkerThread-{i}",
-        )
-        threads.append(t)
-        t.start()
-
-    for t in threads:
-        t.join()
-
-    prof_session.stop()
+        prof_session.stop()
     total_wall_elapsed = prof_session.wall_elapsed
     total_recorded = sum(m.query_count for m in metrics)
     total_worker_thread_cpu = sum(m.cpu_time for m in metrics)
@@ -1036,8 +1174,9 @@ def run_all(flow="all", warmup_sec=WARMUP_DURATION_SEC, profile_sec=PROFILE_DURA
         go_ext = ensure_go_shared_core()
         session_name = extract_multiplexed_session_name(database)
         cid = go_ext.init_client(4)
-        for ch_idx in range(8):
-            run_point_select_query_go_core_sync(go_ext, cid, session_name, f"user-{ch_idx}")
+        with patched_sync_snapshot_go_core(go_ext, cid, session_name):
+            for ch_idx in range(8):
+                run_point_select_query_sync(database, f"user-{ch_idx}")
         print(f"[+] Initialized & pre-warmed Go Shared Core client pool (4 gRPC channels) on session: {session_name}")
 
     all_results = {}

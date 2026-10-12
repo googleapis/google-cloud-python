@@ -144,6 +144,7 @@ static PopCompletedAsyncFn g_pop_completed = NULL;
 static ResetGoCoreStatsFn g_reset_stats = NULL;
 static GetGoCoreStatsFn g_get_stats = NULL;
 static uint64_t g_c_pylist_decode_ns = 0;
+static uint64_t g_c_on_thread_go_ns = 0;
 
 static inline uint64_t c_thread_cputime_ns(void) {
     struct timespec ts;
@@ -333,9 +334,14 @@ static PyObject* py_execute_streaming_sql(PyObject* self, PyObject* args) {
     }
 
     CSpannerBatch* batch = NULL;
+    uint64_t t_go0 = c_thread_cputime_ns();
     Py_BEGIN_ALLOW_THREADS
     batch = g_exec_sync((uintptr_t)handle, session, sql, param_id);
     Py_END_ALLOW_THREADS
+    uint64_t t_go1 = c_thread_cputime_ns();
+    if (t_go1 >= t_go0) {
+        __atomic_add_fetch(&g_c_on_thread_go_ns, t_go1 - t_go0, __ATOMIC_RELAXED);
+    }
 
     if (!batch) {
         PyErr_SetString(PyExc_RuntimeError, "ExecuteStreamingSqlSync returned NULL batch");
@@ -383,7 +389,12 @@ static PyObject* py_submit_async(PyObject* self, PyObject* args) {
         PyErr_SetString(PyExc_RuntimeError, "SubmitStreamingSqlAsync symbol not found");
         return NULL;
     }
+    uint64_t t_go0 = c_thread_cputime_ns();
     g_submit_async((uintptr_t)handle, (uint64_t)req_id, session, sql, param_id);
+    uint64_t t_go1 = c_thread_cputime_ns();
+    if (t_go1 >= t_go0) {
+        __atomic_add_fetch(&g_c_on_thread_go_ns, t_go1 - t_go0, __ATOMIC_RELAXED);
+    }
     Py_RETURN_NONE;
 }
 
@@ -445,6 +456,7 @@ static PyObject* py_reset_core_stats(PyObject* self, PyObject* Py_UNUSED(ignored
         return NULL;
     }
     __atomic_store_n(&g_c_pylist_decode_ns, 0, __ATOMIC_RELAXED);
+    __atomic_store_n(&g_c_on_thread_go_ns, 0, __ATOMIC_RELAXED);
     if (g_reset_stats) {
         g_reset_stats();
     }
@@ -460,7 +472,8 @@ static PyObject* py_get_core_stats(PyObject* self, PyObject* Py_UNUSED(ignored))
         g_get_stats(go_stats);
     }
     uint64_t c_decode_ns = __atomic_load_n(&g_c_pylist_decode_ns, __ATOMIC_RELAXED);
-    PyObject* tup = PyTuple_New(8);
+    uint64_t c_on_thread_go_ns = __atomic_load_n(&g_c_on_thread_go_ns, __ATOMIC_RELAXED);
+    PyObject* tup = PyTuple_New(9);
     if (!tup) {
         return NULL;
     }
@@ -468,6 +481,7 @@ static PyObject* py_get_core_stats(PyObject* self, PyObject* Py_UNUSED(ignored))
         PyTuple_SetItem(tup, i, PyLong_FromUnsignedLongLong((unsigned long long)go_stats[i]));
     }
     PyTuple_SetItem(tup, 7, PyLong_FromUnsignedLongLong((unsigned long long)c_decode_ns));
+    PyTuple_SetItem(tup, 8, PyLong_FromUnsignedLongLong((unsigned long long)c_on_thread_go_ns));
     return tup;
 }
 
