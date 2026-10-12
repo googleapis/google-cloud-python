@@ -139,7 +139,7 @@ if TYPE_CHECKING:
     )
 
 _LOGGER = logging.getLogger(__name__)
-_PRINCIPAL_RESOLVE_TIMEOUT = 5.0  # seconds
+_PRINCIPAL_RESOLVE_TIMEOUT = 5.0  # seconds; see async client comment
 _UNSET: Any = object()
 
 

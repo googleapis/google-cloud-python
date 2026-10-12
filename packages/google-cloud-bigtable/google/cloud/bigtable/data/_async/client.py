@@ -186,8 +186,8 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.client"
 _LOGGER = logging.getLogger(__name__)
 
 # Short timeout for the metadata-server call that resolves a CE credential's
-# principal. 169.254.169.254 is link-local, so a missing route or blackholed
-# host would otherwise block client construction for the OS TCP timeout.
+# principal. The metadata server is link-local, so a missing route or
+# blackholed host would otherwise block client construction for minutes.
 _PRINCIPAL_RESOLVE_TIMEOUT = 5.0  # seconds
 
 # Sentinel distinguishing "principal not yet resolved" from a resolved value of
