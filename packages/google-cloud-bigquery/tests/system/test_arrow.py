@@ -274,3 +274,29 @@ def test_query_and_wait_arrow_format_to_dataframe_iterable(bigquery_client):
     concat_df = pandas.concat(dfs, ignore_index=True)
     assert concat_df.columns.tolist() == ["num", "text"]
     assert concat_df.to_dict(orient="records") == [{"num": 200, "text": "python"}]
+
+
+def test_query_and_wait_arrow_rejects_write_append(bigquery_client, dataset_id):
+    table_id = f"{bigquery_client.project}.{dataset_id}.arrow_write_append"
+    bigquery_client.query_and_wait(
+        f"CREATE OR REPLACE TABLE `{table_id}` AS SELECT 1 AS x"
+    )
+    append = bigquery.QueryJobConfig(
+        destination=table_id,
+        write_disposition=enums.WriteDisposition.WRITE_APPEND,
+    )
+
+    with pytest.raises(ValueError, match="WRITE_APPEND"):
+        bigquery_client.query_and_wait(
+            "SELECT 2 AS x",
+            job_config=append,
+            query_results_format=enums.QueryResultsFormat.ARROW,
+        )
+    with bigquery.Client(default_query_job_config=append) as client:
+        with pytest.raises(ValueError, match="WRITE_APPEND"):
+            client.query_and_wait(
+                "SELECT 2 AS x", query_results_format=enums.QueryResultsFormat.ARROW
+            )
+
+    rows = bigquery_client.query_and_wait(f"SELECT x FROM `{table_id}`")
+    assert [row.x for row in rows] == [1]

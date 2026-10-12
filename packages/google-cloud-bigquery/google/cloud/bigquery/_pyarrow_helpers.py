@@ -21,7 +21,14 @@ and
 https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema/pyarrow_to_bigquery.py
 """
 
-from typing import Any
+from typing import Any, Optional, TYPE_CHECKING
+
+from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery import enums
+from google.cloud.bigquery import exceptions
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.bigquery import job
 
 try:
     import pyarrow  # type: ignore
@@ -145,3 +152,42 @@ def arrow_scalar_ids_to_bq(arrow_scalar: Any):
         If it cannot find the arrow scalar, return None.
     """
     return _ARROW_SCALAR_IDS_TO_BQ.get(arrow_scalar)
+
+
+def _validate_arrow_query(
+    query_results_format: Optional[str],
+    compression_codec: Optional[str],
+    job_config: Optional["job.QueryJobConfig"],
+) -> None:
+    """Raise before sending a query whose ARROW results can't be returned."""
+    if query_results_format != enums.QueryResultsFormat.ARROW:
+        if compression_codec is not None:
+            raise ValueError("compression_codec requires query_results_format=ARROW.")
+        return
+
+    if (
+        job_config is not None
+        and job_config.write_disposition == enums.WriteDisposition.WRITE_APPEND
+    ):
+        raise ValueError(
+            "query_results_format=ARROW doesn't support WRITE_APPEND, because "
+            "the results would also include the rows already in the "
+            "destination table."
+        )
+
+    _check_arrow_dependencies()
+
+
+def _check_arrow_dependencies() -> None:
+    """Raise if pyarrow or google-cloud-bigquery-storage can't read ARROW results."""
+    _versions_helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
+    _versions_helpers.BQ_STORAGE_VERSIONS.try_import(raise_if_error=True)
+    if not _versions_helpers.BQ_STORAGE_VERSIONS.supports_arrow_serialization_options:
+        raise exceptions.LegacyBigQueryStorageError(
+            "Dependency google-cloud-bigquery-storage is outdated, please "
+            "upgrade it to version >= "
+            f"{_versions_helpers._BQ_STORAGE_ARROW_OPTIONS_VERSION} "
+            "(`pip install --upgrade google-cloud-bigquery-storage`) "
+            "(version found: "
+            f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
+        )

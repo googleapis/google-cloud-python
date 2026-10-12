@@ -49,6 +49,7 @@ import warnings
 import google.api_core.exceptions as core_exceptions
 from google.api_core import retry as retries
 
+from google.cloud.bigquery import _pyarrow_helpers
 from google.cloud.bigquery import enums
 from google.cloud.bigquery import job
 import google.cloud.bigquery.job.query
@@ -501,7 +502,17 @@ def query_and_wait(
             If ``job_config`` is not an instance of
             :class:`~google.cloud.bigquery.job.QueryJobConfig`
             class.
+        ValueError:
+            If ``compression_codec`` is set without ``ARROW``, or if an
+            ``ARROW`` query uses ``WRITE_APPEND``.
+        google.cloud.bigquery.exceptions.BigQueryError:
+            If an ``ARROW`` query can't be read because pyarrow or
+            google-cloud-bigquery-storage is missing or outdated.
     """
+    _pyarrow_helpers._validate_arrow_query(
+        query_results_format, compression_codec, job_config
+    )
+
     request_body = _to_query_request(
         query=query, job_config=job_config, location=location, timeout=api_timeout
     )

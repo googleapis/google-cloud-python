@@ -3746,6 +3746,14 @@ class Client(ClientWithProject):
                 If ``job_config`` is not an instance of
                 :class:`~google.cloud.bigquery.job.QueryJobConfig`
                 class.
+            ValueError:
+                If ``compression_codec`` is set without ``ARROW``, or if an
+                ``ARROW`` query uses ``WRITE_APPEND``, including through
+                ``default_query_job_config``.
+            google.cloud.bigquery.exceptions.BigQueryError:
+                If an ``ARROW`` query can't be read because pyarrow or
+                google-cloud-bigquery-storage is missing or outdated. The
+                query isn't sent.
         """
         return self._query_and_wait_bigframes(
             query,

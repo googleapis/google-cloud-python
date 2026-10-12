@@ -21,6 +21,10 @@ from google.cloud.bigquery import exceptions
 _MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
 _MIN_BQ_STORAGE_VERSION = packaging.version.Version("2.0.0")
 _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION = packaging.version.Version("2.6.0")
+# TODO(add link to bug): Update to the released google-cloud-bigquery-storage
+# version (e.g. 2.43.0) once BigQueryReadClient.read_rows(arrow_serialization_options=...)
+# is released.
+_BQ_STORAGE_ARROW_OPTIONS_VERSION = packaging.version.Version("2.42.0")
 _MIN_PANDAS_VERSION = packaging.version.Version("1.1.0")
 
 _MIN_PANDAS_VERSION_RANGE = packaging.version.Version("1.5.0")
@@ -128,6 +132,13 @@ class BQStorageVersions:
         """
         return self.installed_version >= _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION
 
+    @property
+    def supports_arrow_serialization_options(self) -> bool:
+        """True if ``BigQueryReadClient.read_rows()`` accepts
+        ``arrow_serialization_options``, which ``ARROW`` query results need.
+        """
+        return self.installed_version >= _BQ_STORAGE_ARROW_OPTIONS_VERSION
+
     def try_import(self, raise_if_error: bool = False) -> Any:
         """Tries to import the bigquery_storage module, and returns results
         accordingly. It also verifies the module version is recent enough.
@@ -154,7 +165,8 @@ class BQStorageVersions:
                 msg = (
                     "Package google-cloud-bigquery-storage not found. "
                     "Install google-cloud-bigquery-storage version >= "
-                    f"{_MIN_BQ_STORAGE_VERSION}."
+                    f"{_MIN_BQ_STORAGE_VERSION} "
+                    "(`pip install google-cloud-bigquery-storage`)."
                 )
                 raise exceptions.BigQueryStorageNotFoundError(msg)
             return None

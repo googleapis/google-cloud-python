@@ -288,6 +288,14 @@ def system(session):
         extras = "[all]"
     session.install("-e", f".{extras}", "-c", constraints_path)
 
+    # TODO(add link to bug): Revert once google-cloud-bigquery-storage is
+    # released with BigQueryReadClient.read_rows(arrow_serialization_options=...).
+    session.install(
+        "-e",
+        str(CURRENT_DIRECTORY.parent / "google-cloud-bigquery-storage"),
+        "--no-deps",
+    )
+
     # Test with some broken "extras" in case the user didn't install the extra
     # directly. For example, pandas-gbq is recommended for pandas features, but
     # we want to test that we fallback to the previous behavior. For context,

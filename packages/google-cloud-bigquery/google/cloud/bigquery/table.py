@@ -2335,7 +2335,8 @@ class RowIterator(HTTPIterator):
             bqstorage_client = self.client._ensure_bqstorage_client()
             if bqstorage_client is None:
                 raise ValueError(
-                    "The google-cloud-bigquery-storage library is required to read Arrow results."
+                    "The google-cloud-bigquery-storage library is required to read "
+                    "Arrow results (`pip install google-cloud-bigquery-storage`)."
                 )
 
         offset = 0
