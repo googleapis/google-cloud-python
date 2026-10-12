@@ -95,6 +95,16 @@ class TestConnection(unittest.TestCase):
         mock_commit.assert_called_once()
         self.assertTrue(connection._autocommit)
 
+    @mock.patch("google.cloud.spanner_dbapi.connection.Connection.commit")
+    def test_autocommit_setter_with_pending_ddl_statements(self, mock_commit):
+        connection = self._make_connection()
+        connection._ddl_statements = ["CREATE TABLE t (id INT64) PRIMARY KEY (id)"]
+
+        connection.autocommit = True
+
+        mock_commit.assert_called_once()
+        self.assertTrue(connection._autocommit)
+
     def test_property_database(self):
         from google.cloud.spanner_v1.database import Database
 
@@ -395,12 +405,16 @@ class TestConnection(unittest.TestCase):
         mock_transaction.rollback = mock_rollback
         transaction_helper = self._under_test._transaction_helper
         transaction_helper._statement_result_details_list = [{}, {}]
+        self._under_test._ddl_statements = [
+            "CREATE TABLE t (id INT64) PRIMARY KEY (id)"
+        ]
         with mock.patch(
             "google.cloud.spanner_dbapi.connection.Connection._release_session"
         ) as mock_release:
             self._under_test.rollback()
 
         self.assertEqual(len(transaction_helper._statement_result_details_list), 0)
+        self.assertEqual(self._under_test._ddl_statements, [])
         mock_rollback.assert_called_once_with()
         mock_release.assert_called_once_with()
 
