@@ -357,8 +357,7 @@ class Cursor(object):
                 not self._in_retry_mode
                 and not call_from_execute_many
                 and not (
-                    exception is None
-                    and self._parsed_statement is not None
+                    self._parsed_statement is not None
                     and self._parsed_statement.statement_type == StatementType.DDL
                 )
             ):

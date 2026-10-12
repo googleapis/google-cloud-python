@@ -1359,20 +1359,47 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(connection._ddl_statements, [sql])
         transaction_helper_mock.add_execute_statement_for_retry.assert_not_called()
 
-    def test_execute_ddl_statement_exception_added_to_transaction_helper(self):
-        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_ddl_statement_exception_not_retried_on_aborted_dml(
+        self, mock_peek_iterator
+    ):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
         cursor = self._make_one(connection)
-        sql = (
+        invalid_ddl_sql = (
             "CREATE TABLE table_name (row_id INT64) PRIMARY KEY (row_id);"
             "UPDATE table_name SET row_id = 1"
         )
-        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+        update_sql = "UPDATE table_name SET row_id = 1"
 
-        with self.assertRaises(ValueError):
-            cursor.execute(sql=sql)
+        with mock.patch.object(
+            cursor.__class__,
+            "_batch_DDLs",
+            autospec=True,
+            wraps=cursor.__class__._batch_DDLs,
+        ) as mock_batch_ddls:
+            with self.assertRaises(ValueError):
+                cursor.execute(sql=invalid_ddl_sql)
 
-        self.assertEqual(connection._ddl_statements, [])
-        transaction_helper_mock.add_execute_statement_for_retry.assert_called_once()
+            self.assertEqual(connection._ddl_statements, [])
+            self.assertEqual(
+                cursor.transaction_helper._statement_result_details_list, []
+            )
+            self.assertEqual(mock_batch_ddls.call_count, 1)
+
+            metadata_mock = mock.Mock()
+            metadata_mock.trailing_metadata.return_value = {}
+            connection.run_statement = mock.Mock(
+                side_effect=[
+                    Aborted("Aborted", errors=[metadata_mock]),
+                    mock.MagicMock(),
+                ]
+            )
+
+            cursor.execute(sql=update_sql)
+            self.assertEqual(connection.run_statement.call_count, 2)
+            self.assertEqual(mock_batch_ddls.call_count, 1)
+            mock_database.update_ddl.assert_not_called()
 
     @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
     def test_execute_ddl_then_aborted_dml_does_not_requeue_ddl(

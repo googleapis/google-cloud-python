@@ -73,7 +73,6 @@ def literal_round_trip_spanner(metadata, connection):
     ):
         t = Table("t_literal_round_trip_spanner", metadata, Column("x", type_))
         t.create(connection)
-        connection.connection.commit()
 
         for value in input_:
             ins = t.insert().values(x=literal(value, type_))
