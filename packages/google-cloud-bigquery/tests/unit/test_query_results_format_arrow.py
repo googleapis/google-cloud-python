@@ -30,7 +30,7 @@ from google.cloud.bigquery.enums import QueryResultsCompressionCodec
 from google.cloud.bigquery.enums import TimestampPrecision
 from google.cloud.bigquery.enums import WriteDisposition
 from google.cloud.bigquery.job import QueryJobConfig
-from google.cloud.bigquery.table import RowIterator, _EmptyRowIterator
+from google.cloud.bigquery.table import RowIterator, TableReference, _EmptyRowIterator
 
 from .helpers import make_client
 
@@ -870,6 +870,7 @@ def test_query_and_wait_arrow_jobs_insert_omits_arrow_fields():
         max_results=mock.ANY,
         query_results_format="ARROW",
         arrow_serialization_options=_DEFAULT_QUERY_OPTIONS,
+        explicit_destination=True,
         callback=mock.ANY,
     )
     assert wait_or_cancel.call_args.kwargs["page_size"] == 0
@@ -1263,6 +1264,127 @@ def test_to_arrow_with_arrow_format_reads_with_the_shared_client():
     # stream uses the BigQuery client's shared one.
     client._ensure_bqstorage_client.assert_not_called()
     assert to_arrow_iterable.call_args.kwargs["bqstorage_client"] is None
+
+
+@pytest.mark.parametrize(
+    ("job_config", "expected"),
+    [
+        (QueryJobConfig(destination="p.d.t"), True),
+        # jobs.query doesn't accept a priority either, so this also runs
+        # through jobs.insert, without a destination.
+        (QueryJobConfig(priority="INTERACTIVE"), False),
+    ],
+    ids=["destination", "no_destination"],
+)
+def test_query_and_wait_arrow_marks_explicit_destination(job_config, expected):
+    client = mock.MagicMock(spec=Client)
+
+    with (
+        mock.patch.object(_job_helpers, "query_jobs_insert") as query_jobs_insert,
+        mock.patch.object(_job_helpers, "_wait_or_cancel") as wait_or_cancel,
+    ):
+        _query_and_wait(client, job_config=job_config, query_results_format="ARROW")
+
+    wait_or_cancel.assert_called_once_with(
+        query_jobs_insert.return_value,
+        api_timeout=mock.ANY,
+        wait_timeout=mock.ANY,
+        retry=mock.ANY,
+        page_size=mock.ANY,
+        max_results=mock.ANY,
+        query_results_format="ARROW",
+        arrow_serialization_options=mock.ANY,
+        explicit_destination=expected,
+        callback=mock.ANY,
+    )
+
+
+def test_wait_or_cancel_sets_explicit_destination():
+    job = mock.MagicMock(dry_run=False)
+    job.result.return_value = RowIterator(
+        client=mock.MagicMock(), api_request=mock.MagicMock(), path=None, schema=()
+    )
+    assert not job.result.return_value._explicit_destination
+
+    rows = _job_helpers._wait_or_cancel(
+        job,
+        api_timeout=None,
+        wait_timeout=None,
+        retry=None,
+        page_size=0,
+        max_results=None,
+        explicit_destination=True,
+    )
+
+    assert rows._explicit_destination
+
+
+def _destination_iterator(row_counts, serialized_schema=None):
+    """A RowIterator for a query with an explicit destination table, plus its
+    mock BigQuery Storage client.
+    """
+    bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+    options = bigquery_storage.types.ArrowSerializationOptions
+    if "picos_timestamp_precision" not in options.meta.fields:
+        # query_and_wait() rejects ARROW with this release before it runs.
+        pytest.skip("google-cloud-bigquery-storage has no timestamp precision")
+    schema, batches = _arrow_pages(*row_counts)
+    reader = mock.MagicMock()
+    reader.__iter__.return_value = iter([_stream_response(batch) for batch in batches])
+    stream = mock.Mock()
+    stream.name = "projects/p/locations/us/sessions/s/streams/0"
+    session = mock.Mock(streams=[stream] if row_counts else [])
+    session.arrow_schema.serialized_schema = (
+        schema if serialized_schema is None else serialized_schema
+    )
+    bqstorage_client = mock.MagicMock()
+    bqstorage_client.create_read_session.return_value = session
+    bqstorage_client.read_rows.return_value = reader
+    iterator = RowIterator(
+        client=mock.MagicMock(project="billing-project"),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        table=TableReference.from_string("p.d.t"),
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+    )
+    iterator._explicit_destination = True
+    return iterator, bqstorage_client
+
+
+def test_download_arrow_explicit_destination_reads_a_read_session():
+    iterator, bqstorage_client = _destination_iterator([10, 15])
+    from google.cloud import bigquery_storage
+
+    batches = list(iterator._download_arrow_from_job_id(bqstorage_client))
+
+    assert _values(batches) == list(range(1, 26))
+    bqstorage_client.create_read_session.assert_called_once_with(
+        parent="projects/billing-project",
+        read_session=bigquery_storage.types.stream.ReadSession(
+            table="projects/p/datasets/d/tables/t",
+            data_format=bigquery_storage.types.stream.DataFormat.ARROW,
+            read_options=bigquery_storage.types.stream.ReadSession.TableReadOptions(
+                arrow_serialization_options=_DEFAULT_READ_OPTIONS
+            ),
+        ),
+        max_stream_count=1,
+        timeout=None,
+    )
+    # The read session carries the serialization options, so ReadRows doesn't.
+    bqstorage_client.read_rows.assert_called_once_with(
+        "projects/p/locations/us/sessions/s/streams/0", offset=0, timeout=None
+    )
+
+
+def test_download_arrow_explicit_destination_without_streams_reads_nothing():
+    iterator, bqstorage_client = _destination_iterator([], serialized_schema=b"")
+
+    assert list(iterator._download_arrow_from_job_id(bqstorage_client)) == []
+    bqstorage_client.read_rows.assert_not_called()
 
 
 if __name__ == "__main__":

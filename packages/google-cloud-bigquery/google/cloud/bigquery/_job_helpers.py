@@ -562,6 +562,9 @@ def query_and_wait(
             max_results=max_results,
             query_results_format=query_results_format,
             arrow_serialization_options=arrow_serialization_options,
+            explicit_destination=(
+                job_config is not None and job_config.destination is not None
+            ),
             callback=callback,
         )
 
@@ -737,6 +740,7 @@ def _wait_or_cancel(
     *,
     query_results_format: Optional[str] = None,
     arrow_serialization_options: Optional[Dict[str, str]] = None,
+    explicit_destination: bool = False,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Wait for a job to complete and return the results.
@@ -783,6 +787,7 @@ def _wait_or_cancel(
             )
         query_results._query_results_format = query_results_format
         query_results._arrow_serialization_options = arrow_serialization_options
+        query_results._explicit_destination = explicit_destination
         return query_results
     except Exception:
         # Attempt to cancel the job since we can't return the results.

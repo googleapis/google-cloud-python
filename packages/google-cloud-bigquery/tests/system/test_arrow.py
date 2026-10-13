@@ -848,3 +848,42 @@ def test_query_and_wait_arrow_ending_a_read_early_cancels_only_its_stream():
     assert stream._name.endswith(f"/jobs/{ended_early_rows.job_id}/streams/_default")
     table = pyarrow.Table.from_batches(rows)
     assert table.column("x").to_pylist() == list(range(1, 100001))
+
+
+@pytest.mark.parametrize(
+    "write_disposition",
+    [None, enums.WriteDisposition.WRITE_TRUNCATE],
+    ids=["default", "overwrite"],
+)
+def test_query_and_wait_arrow_explicit_destination(
+    bigquery_client, bqstorage_client, dataset_id, write_disposition
+):
+    table_name = f"arrow_destination_{write_disposition or 'default'}".lower()
+    table_id = f"{bigquery_client.project}.{dataset_id}.{table_name}"
+    job_config = bigquery.QueryJobConfig(destination=table_id)
+    if write_disposition is not None:
+        # The rows already in the table are replaced, not read.
+        bigquery_client.query_and_wait(
+            f"CREATE OR REPLACE TABLE `{table_id}` AS SELECT -1 AS x"
+        )
+        job_config.write_disposition = write_disposition
+    # Wrap create_read_session() to check how the table is read.
+    create_read_session = mock.Mock(wraps=bqstorage_client.create_read_session)
+
+    rows = bigquery_client.query_and_wait(
+        "SELECT x FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x",
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    with mock.patch.object(
+        bqstorage_client, "create_read_session", create_read_session
+    ):
+        batches = list(rows.to_arrow_iterable(bqstorage_client=bqstorage_client))
+
+    table = pyarrow.Table.from_batches(batches)
+    assert table.column("x").to_pylist() == list(range(1, 1001))
+    kwargs = create_read_session.call_args.kwargs
+    assert kwargs["read_session"].table == (
+        f"projects/{bigquery_client.project}/datasets/{dataset_id}/tables/{table_name}"
+    )
+    assert kwargs["max_stream_count"] == 1
