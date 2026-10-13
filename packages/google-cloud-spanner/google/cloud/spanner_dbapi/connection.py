@@ -228,7 +228,11 @@ class Connection:
         :type value: bool
         :param value: New autocommit mode state.
         """
-        if value and not self._autocommit and self._spanner_transaction_started:
+        if (
+            value
+            and not self._autocommit
+            and (self._spanner_transaction_started or self._ddl_statements)
+        ):
             self.commit()
 
         self._autocommit = value
@@ -519,6 +523,8 @@ class Connection:
         if self._spanner_transaction_started and not self._read_only:
             self._transaction.rollback()
 
+        self._ddl_statements = []
+
         if self._own_pool and self.database:
             self.database._sessions_manager._pool.clear()
 
@@ -556,8 +562,8 @@ class Connection:
                 )
             return
 
-        self.run_prior_DDL_statements()
         try:
+            self.run_prior_DDL_statements()
             if self._spanner_transaction_started and not self._read_only:
                 self._transaction.commit()
         except Aborted:
@@ -588,6 +594,7 @@ class Connection:
         self._transaction_begin_marked = False
         self._transaction_isolation_level = None
         self._spanner_transaction_started = False
+        self._ddl_statements = []
 
     @check_not_closed
     def cursor(self):
