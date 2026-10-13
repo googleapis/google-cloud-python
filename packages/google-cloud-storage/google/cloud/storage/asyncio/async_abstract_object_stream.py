@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import abc
-from typing import Any, Optional
+from typing import Any
 
 
 class _AsyncAbstractObjectStream(abc.ABC):
@@ -41,14 +41,14 @@ class _AsyncAbstractObjectStream(abc.ABC):
         self,
         bucket_name: str,
         object_name: str,
-        generation_number: Optional[int] = None,
-        handle: Optional[Any] = None,
+        generation_number: int | None = None,
+        handle: Any | None = None,
     ) -> None:
         super().__init__()
         self.bucket_name: str = bucket_name
         self.object_name: str = object_name
-        self.generation_number: Optional[int] = generation_number
-        self.handle: Optional[Any] = handle
+        self.generation_number: int | None = generation_number
+        self.handle: Any | None = handle
 
     @abc.abstractmethod
     async def open(self) -> None:

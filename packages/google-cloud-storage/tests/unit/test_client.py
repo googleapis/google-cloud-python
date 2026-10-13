@@ -19,9 +19,9 @@ import json
 import re
 import unittest
 import urllib
+from unittest import mock
 from unittest.mock import patch
 
-import mock
 import pytest
 import requests
 from google.api_core import exceptions

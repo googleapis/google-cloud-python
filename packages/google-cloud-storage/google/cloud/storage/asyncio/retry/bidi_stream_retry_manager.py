@@ -13,7 +13,8 @@
 # limitations under the License.
 
 import logging
-from typing import Any, AsyncIterator, Callable
+from collections.abc import AsyncIterator, Callable
+from typing import Any
 
 from google.cloud.storage.asyncio.retry.base_strategy import (
     _BaseResumptionStrategy,

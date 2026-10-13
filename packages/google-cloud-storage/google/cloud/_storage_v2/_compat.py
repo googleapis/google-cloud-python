@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +16,7 @@
 
 import json
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 from urllib.parse import urlparse, urlunparse
 
 from google.api_core import path_template
@@ -75,7 +74,7 @@ try:
     from google.api_core.universe import get_default_mtls_endpoint
 except ImportError:  # pragma: NO COVER
 
-    def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
+    def get_default_mtls_endpoint(api_endpoint: str | None) -> str | None:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -128,10 +127,10 @@ try:
 except ImportError:  # pragma: NO COVER
 
     def get_api_endpoint(
-        api_override: Optional[str],
+        api_override: str | None,
         universe_domain: str,
         default_universe: str,
-        default_mtls_endpoint: Optional[str],
+        default_mtls_endpoint: str | None,
         default_endpoint_template: str,
         use_mtls: bool,
     ) -> str:
@@ -175,7 +174,7 @@ try:
 except ImportError:  # pragma: NO COVER
 
     def get_universe_domain(
-        *potential_universes: Optional[str],
+        *potential_universes: str | None,
         default_universe: str,
     ) -> str:
         """Return the universe domain used by the client.
@@ -205,11 +204,11 @@ try:
 except ImportError:  # pragma: NO COVER
 
     def transcode_request(
-        http_options: List[Dict[str, str]],
+        http_options: list[dict[str, str]],
         request: Any,
-        required_fields_default_values: Optional[Dict[str, Any]] = None,
+        required_fields_default_values: dict[str, Any] | None = None,
         rest_numeric_enums: bool = False,
-    ) -> Tuple[Dict[str, Any], Optional[str], Dict[str, Any]]:
+    ) -> tuple[dict[str, Any], str | None, dict[str, Any]]:
         """Transcodes a request into HTTP method, URI, body, and query parameters.
 
         Args:

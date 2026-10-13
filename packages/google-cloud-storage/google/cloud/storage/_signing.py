@@ -53,9 +53,9 @@ def ensure_signed_credentials(credentials):
     if not isinstance(credentials, google.auth.credentials.Signing):
         raise AttributeError(
             "you need a private key to sign credentials."
-            "the credentials you are currently using {} "
-            "just contains a token. see {} for more "
-            "details.".format(type(credentials), SERVICE_ACCOUNT_URL)
+            f"the credentials you are currently using {type(credentials)} "
+            f"just contains a token. see {SERVICE_ACCOUNT_URL} for more "
+            "details."
         )
 
 
@@ -116,7 +116,7 @@ def get_expiration_seconds_v2(expiration):
     if not isinstance(expiration, int):
         raise TypeError(
             "Expected an integer timestamp, datetime, or "
-            "timedelta. Got %s" % type(expiration)
+            f"timedelta. Got {type(expiration)}"
         )
     return expiration
 
@@ -140,7 +140,7 @@ def get_expiration_seconds_v4(expiration):
     if not isinstance(expiration, _EXPIRATION_TYPES):
         raise TypeError(
             "Expected an integer timestamp, datetime, or "
-            "timedelta. Got %s" % type(expiration)
+            f"timedelta. Got {type(expiration)}"
         )
 
     now = _NOW(_UTC)
@@ -407,11 +407,7 @@ def generate_signed_url_v2(
     sorted_signed_query_params = sorted(signed_query_params.items())
 
     # Return the built URL.
-    return "{endpoint}{resource}?{querystring}".format(
-        endpoint=api_access_endpoint,
-        resource=resource,
-        querystring=urllib.parse.urlencode(sorted_signed_query_params),
-    )
+    return f"{api_access_endpoint}{resource}?{urllib.parse.urlencode(sorted_signed_query_params)}"
 
 
 SEVEN_DAYS = 7 * 24 * 60 * 60  # max age for V4 signed URLs.
@@ -634,9 +630,7 @@ def generate_signed_url_v4(
         signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
         signature = binascii.hexlify(signature_bytes).decode("ascii")
 
-    return "{}{}?{}&X-Goog-Signature={}".format(
-        api_access_endpoint, resource, canonical_query_string, signature
-    )
+    return f"{api_access_endpoint}{resource}?{canonical_query_string}&X-Goog-Signature={signature}"
 
 
 def get_v4_now_dtstamps():

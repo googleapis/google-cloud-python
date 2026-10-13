@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import unittest
+from unittest import mock
 
-import mock
 import pytest
 
 from google.cloud.storage.retry import (
@@ -552,7 +552,7 @@ class Test__scalar_property(unittest.TestCase):
         return _scalar_property(fieldName)
 
     def test_getter(self):
-        class Test(object):
+        class Test:
             def __init__(self, **kw):
                 self._properties = kw.copy()
 
@@ -562,7 +562,7 @@ class Test__scalar_property(unittest.TestCase):
         self.assertEqual(test.do_re_mi, "Latido")
 
     def test_setter(self):
-        class Test(object):
+        class Test:
             def _patch_property(self, name, value):
                 self._patched = (name, value)
 
@@ -591,9 +591,9 @@ class Test__base64_md5hash(unittest.TestCase):
         self.assertEqual(SIGNED_CONTENT, b"kBiQqOnIz21aGlQrIp/r/w==")
 
     def test_it_with_stubs(self):
-        import mock
+        from unittest import mock
 
-        class _Buffer(object):
+        class _Buffer:
             def __init__(self, return_vals):
                 self.return_vals = return_vals
                 self._block_sizes = []
@@ -775,7 +775,7 @@ class Test__parse_bool_env:
                 self._call_fut("TEST_VAR")
 
 
-class _MD5Hash(object):
+class _MD5Hash:
     def __init__(self, digest_val):
         self.digest_val = digest_val
         self.num_digest_calls = 0
@@ -789,7 +789,7 @@ class _MD5Hash(object):
         return self.digest_val
 
 
-class _MD5(object):
+class _MD5:
     def __init__(self, digest_val):
         self.hash_obj = _MD5Hash(digest_val)
         self._called = []
@@ -799,7 +799,7 @@ class _MD5(object):
         return self.hash_obj
 
 
-class _Base64(object):
+class _Base64:
     def __init__(self):
         self._called_b64encode = []
 

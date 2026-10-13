@@ -19,8 +19,8 @@ import os
 import tempfile
 import uuid
 import warnings
+from unittest import mock
 
-import mock
 import pytest
 from google.api_core import exceptions
 
@@ -784,7 +784,7 @@ def test_blob_upload_from_string_w_custom_time_no_micros(
     blob.upload_from_string(payload)
     blobs_to_delete.append(blob)
 
-    same_blob = shared_bucket.blob(("CustomTimeNoMicrosBlob"))
+    same_blob = shared_bucket.blob("CustomTimeNoMicrosBlob")
     same_blob.reload(projection="full")
     custom_time = same_blob.custom_time.replace(tzinfo=None)
     assert custom_time == time_without_micros

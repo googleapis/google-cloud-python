@@ -111,7 +111,7 @@ def check_response(
         total_bytes = len(actual_contents)
     assert json_response["metageneration"] == "1"
     assert json_response["name"] == blob_name
-    assert json_response["size"] == "{:d}".format(total_bytes)
+    assert json_response["size"] == f"{total_bytes:d}"
     assert json_response["storageClass"] == "STANDARD"
     if metadata is None:
         assert "metadata" not in json_response
@@ -465,21 +465,21 @@ def test_resumable_upload_recover_with_headers(authorized_transport, bucket, cle
     _resumable_upload_recover_helper(authorized_transport, cleanup, headers=headers)
 
 
-class TestResumableUploadUnknownSize(object):
+class TestResumableUploadUnknownSize:
     @staticmethod
     def _check_range_sent(response, start, end, total):
         headers_sent = response.request.headers
         if start is None and end is None:
-            expected_content_range = "bytes */{:d}".format(total)
+            expected_content_range = f"bytes */{total:d}"
         else:
             # Allow total to be an int or a string "*"
-            expected_content_range = "bytes {:d}-{:d}/{}".format(start, end, total)
+            expected_content_range = f"bytes {start:d}-{end:d}/{total}"
 
         assert headers_sent["content-range"] == expected_content_range
 
     @staticmethod
     def _check_range_received(response, size):
-        assert response.headers["range"] == "bytes=0-{:d}".format(size - 1)
+        assert response.headers["range"] == f"bytes=0-{size - 1:d}"
 
     def _check_partial(self, upload, response, chunk_size, num_chunks):
         start_byte = (num_chunks - 1) * chunk_size

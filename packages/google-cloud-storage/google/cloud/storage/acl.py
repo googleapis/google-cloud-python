@@ -23,7 +23,7 @@ from google.cloud.storage.retry import (
 )
 
 
-class _ACLEntity(object):
+class _ACLEntity:
     """Class representing a set of roles for an entity.
 
     This is a helper class that you likely won't ever construct
@@ -50,7 +50,7 @@ class _ACLEntity(object):
         if not self.identifier:
             return str(self.type)
         else:
-            return "{acl.type}-{acl.identifier}".format(acl=self)
+            return f"{self.type}-{self.identifier}"
 
     def __repr__(self):
         return f"<ACL Entity: {self} ({', '.join(self.roles)})>"
@@ -105,7 +105,7 @@ class _ACLEntity(object):
         self.revoke(_ACLEntity.OWNER_ROLE)
 
 
-class ACL(object):
+class ACL:
     """Container class representing a list of access controls."""
 
     _URL_PATH_ELEM = "acl"
@@ -693,7 +693,7 @@ class BucketACL(ACL):
     """
 
     def __init__(self, bucket):
-        super(BucketACL, self).__init__()
+        super().__init__()
         self.bucket = bucket
 
     @property
@@ -732,7 +732,7 @@ class ObjectACL(ACL):
     """
 
     def __init__(self, blob):
-        super(ObjectACL, self).__init__()
+        super().__init__()
         self.blob = blob
 
     @property

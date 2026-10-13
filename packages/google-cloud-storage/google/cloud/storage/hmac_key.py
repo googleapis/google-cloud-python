@@ -25,7 +25,7 @@ from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY, DEFAULT_RETRY_IF_ETAG_IN_JSON
 
 
-class HMACKeyMetadata(object):
+class HMACKeyMetadata:
     """Metadata about an HMAC service account key withn Cloud Storage.
 
     :type client: :class:`~google.cloud.stoage.client.Client`

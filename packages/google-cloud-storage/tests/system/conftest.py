@@ -268,9 +268,7 @@ def default_ebh_bucket_name():
     # per test rerun.
     global ebh_bucket_iteration
     ebh_bucket_iteration += 1
-    return _helpers.unique_name("gcp-systest-default-ebh") + "-{}".format(
-        ebh_bucket_iteration
-    )
+    return _helpers.unique_name("gcp-systest-default-ebh") + f"-{ebh_bucket_iteration}"
 
 
 # ebh_bucket/name are not scope=session because the bucket is modified in test.

@@ -15,8 +15,8 @@
 import http.client
 import unittest
 from http.client import NO_CONTENT, SERVICE_UNAVAILABLE
+from unittest import mock
 
-import mock
 import requests
 
 from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
@@ -764,7 +764,7 @@ class Test__FutureDict(unittest.TestCase):
             future[None] = None
 
 
-class _Connection(object):
+class _Connection:
     project = "TESTING"
 
     def __init__(self, **kw):
@@ -778,11 +778,11 @@ class _Connection(object):
         )
 
 
-class _MockObject(object):
+class _MockObject:
     pass
 
 
-class _Client(object):
+class _Client:
     def __init__(self, connection):
         self._base_connection = connection
         self._connection = connection

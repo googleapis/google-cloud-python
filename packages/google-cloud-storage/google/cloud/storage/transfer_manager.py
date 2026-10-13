@@ -1176,9 +1176,7 @@ def upload_chunks_concurrently(
     transport = blob._get_transport(client)
 
     hostname = _get_host_name(client._connection)
-    url = "{hostname}/{bucket}/{blob}".format(
-        hostname=hostname, bucket=bucket.name, blob=_quote(blob.name)
-    )
+    url = f"{hostname}/{bucket.name}/{_quote(blob.name)}"
 
     base_headers, object_metadata, content_type = blob._get_upload_arguments(
         client, content_type, filename=filename, command="tm.upload_sharded"

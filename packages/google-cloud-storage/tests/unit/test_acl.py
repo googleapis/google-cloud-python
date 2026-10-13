@@ -13,8 +13,7 @@
 # limitations under the License.
 
 import unittest
-
-import mock
+from unittest import mock
 
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
@@ -132,7 +131,7 @@ class Test_ACLEntity(unittest.TestCase):
         self.assertEqual(entity.get_roles(), set())
 
 
-class FakeReload(object):
+class FakeReload:
     """A callable used for faking the reload() method of an ACL instance."""
 
     def __init__(self, acl):
@@ -1124,7 +1123,7 @@ class Test_ObjectACL(unittest.TestCase):
             m.assert_called_once_with(**kwargs)
 
 
-class _Blob(object):
+class _Blob:
     user_project = None
 
     def __init__(self, bucket, blob):
@@ -1136,7 +1135,7 @@ class _Blob(object):
         return f"{self.bucket.path}/o/{self.blob}"
 
 
-class _Bucket(object):
+class _Bucket:
     user_project = None
 
     def __init__(self, name):

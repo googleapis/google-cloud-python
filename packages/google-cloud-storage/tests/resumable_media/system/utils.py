@@ -18,18 +18,15 @@ import time
 
 from test_utils.retry import RetryResult  # type: ignore
 
-BUCKET_NAME = "grpm-systest-{}".format(int(1000 * time.time()))
+BUCKET_NAME = f"grpm-systest-{int(1000 * time.time())}"
 BUCKET_POST_URL = "https://www.googleapis.com/storage/v1/b/"
-BUCKET_URL = "https://www.googleapis.com/storage/v1/b/{}".format(BUCKET_NAME)
+BUCKET_URL = f"https://www.googleapis.com/storage/v1/b/{BUCKET_NAME}"
 
-_DOWNLOAD_BASE = "https://www.googleapis.com/download/storage/v1/b/{}".format(
-    BUCKET_NAME
-)
+_DOWNLOAD_BASE = f"https://www.googleapis.com/download/storage/v1/b/{BUCKET_NAME}"
 DOWNLOAD_URL_TEMPLATE = _DOWNLOAD_BASE + "/o/{blob_name}?alt=media"
 
 _UPLOAD_BASE = (
-    "https://www.googleapis.com/upload/storage/v1/b/{}".format(BUCKET_NAME)
-    + "/o?uploadType="
+    f"https://www.googleapis.com/upload/storage/v1/b/{BUCKET_NAME}" + "/o?uploadType="
 )
 SIMPLE_UPLOAD_TEMPLATE = _UPLOAD_BASE + "media&name={blob_name}"
 MULTIPART_UPLOAD = _UPLOAD_BASE + "multipart"

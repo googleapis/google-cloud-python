@@ -14,8 +14,6 @@
 
 """Shared utilities used by both downloads and uploads."""
 
-from __future__ import absolute_import
-
 import base64
 import hashlib
 import logging
@@ -242,7 +240,7 @@ def _parse_checksum_header(header_value, response, checksum_label):
     else:
         raise InvalidResponse(
             response,
-            "X-Goog-Hash header had multiple ``{}`` values.".format(checksum_label),
+            f"X-Goog-Hash header had multiple ``{checksum_label}`` values.",
             header_value,
             matches,
         )
@@ -361,7 +359,7 @@ def _is_decompressive_transcoding(response, get_headers):
     )
 
 
-class _DoNothingHash(object):
+class _DoNothingHash:
     """Do-nothing hash object.
 
     Intended as a stand-in for ``hashlib.md5`` or a crc32c checksum

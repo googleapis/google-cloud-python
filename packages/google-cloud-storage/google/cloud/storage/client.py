@@ -264,7 +264,7 @@ class Client(ClientWithProject):
                     no_project = True
                     project = "<none>"
 
-        super(Client, self).__init__(
+        super().__init__(
             project=project,
             credentials=credentials,
             client_options=client_options,
@@ -275,13 +275,10 @@ class Client(ClientWithProject):
         # universe domain of the client.
         if self._credentials.universe_domain != self.universe_domain:
             raise ValueError(
-                "The configured universe domain ({client_ud}) does not match "
-                "the universe domain found in the credentials ({cred_ud}). If "
+                f"The configured universe domain ({self.universe_domain}) does not match "
+                f"the universe domain found in the credentials ({self._credentials.universe_domain}). If "
                 "you haven't configured the universe domain explicitly, "
-                "`googleapis.com` is the default.".format(
-                    client_ud=self.universe_domain,
-                    cred_ud=self._credentials.universe_domain,
-                )
+                "`googleapis.com` is the default."
             )
 
         if no_project:
@@ -2009,9 +2006,7 @@ class Client(ClientWithProject):
         # prepare policy conditions and fields
         timestamp, datestamp = get_v4_now_dtstamps()
 
-        x_goog_credential = "{email}/{datestamp}/auto/storage/goog4_request".format(
-            email=client_email, datestamp=datestamp
-        )
+        x_goog_credential = f"{client_email}/{datestamp}/auto/storage/goog4_request"
         required_conditions = [
             {"bucket": bucket_name},
             {"key": blob_name},

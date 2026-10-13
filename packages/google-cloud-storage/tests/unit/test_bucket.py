@@ -14,8 +14,8 @@
 
 import datetime
 import unittest
+from unittest import mock
 
-import mock
 import pytest
 
 from google.cloud.storage._helpers import _NOW, _UTC, _get_default_storage_base_url
@@ -2217,8 +2217,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, blob_name)
 
-        expected_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
-            source_name, blob_name, dest_name, blob_name
+        expected_path = (
+            f"/b/{source_name}/o/{blob_name}/copyTo/b/{dest_name}/o/{blob_name}"
         )
         expected_data = None
         expected_query_params = {}
@@ -2254,8 +2254,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, blob_name)
 
-        expected_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
-            source_name, blob_name, dest_name, blob_name
+        expected_path = (
+            f"/b/{source_name}/o/{blob_name}/copyTo/b/{dest_name}/o/{blob_name}"
         )
         expected_data = None
         expected_query_params = {"sourceGeneration": generation}
@@ -2292,8 +2292,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, blob_name)
 
-        expected_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
-            source_name, blob_name, dest_name, blob_name
+        expected_path = (
+            f"/b/{source_name}/o/{blob_name}/copyTo/b/{dest_name}/o/{blob_name}"
         )
         expected_data = None
         expected_query_params = {
@@ -2333,8 +2333,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(new_blob.name, new_name)
         self.assertIsInstance(new_blob.acl, ObjectACL)
 
-        expected_copy_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
-            source_name, blob_name, dest_name, new_name
+        expected_copy_path = (
+            f"/b/{source_name}/o/{blob_name}/copyTo/b/{dest_name}/o/{new_name}"
         )
         expected_copy_data = None
         expected_copy_query_params = {}
@@ -2378,8 +2378,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, new_name)
 
-        expected_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
-            source_name, blob_name, dest_name, new_name
+        expected_path = (
+            f"/b/{source_name}/o/{blob_name}/copyTo/b/{dest_name}/o/{new_name}"
         )
         expected_data = None
         expected_query_params = {"userProject": user_project}
@@ -2423,8 +2423,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(new_blob.name, new_name)
         self.assertEqual(new_blob.contexts.custom["foo"].value, "bar")
 
-        expected_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
-            source_name, blob_name, dest_name, new_name
+        expected_path = (
+            f"/b/{source_name}/o/{blob_name}/copyTo/b/{dest_name}/o/{new_name}"
         )
         expected_data = {"contexts": {"custom": {"foo": {"value": "bar"}}}}
         expected_query_params = {}
@@ -2454,9 +2454,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, source)
         self.assertEqual(new_blob.name, new_name)
 
-        expected_path = "/b/{}/o/{}/moveTo/o/{}".format(
-            source_name, blob_name, new_name
-        )
+        expected_path = f"/b/{source_name}/o/{blob_name}/moveTo/o/{new_name}"
         expected_data = None
         expected_query_params = {"ifGenerationMatch": 0}
         client._post_resource.assert_called_once_with(
@@ -2485,9 +2483,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, source)
         self.assertEqual(new_blob.name, new_name)
 
-        expected_path = "/b/{}/o/{}/moveTo/o/{}".format(
-            source_name, blob_name, _quote(new_name)
-        )
+        expected_path = f"/b/{source_name}/o/{blob_name}/moveTo/o/{_quote(new_name)}"
         expected_data = None
         expected_query_params = {"ifGenerationMatch": 0}
         client._post_resource.assert_called_once_with(
@@ -2517,9 +2513,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, source)
         self.assertEqual(new_blob.name, new_name)
 
-        expected_path = "/b/{}/o/{}/moveTo/o/{}".format(
-            source_name, blob_name, new_name
-        )
+        expected_path = f"/b/{source_name}/o/{blob_name}/moveTo/o/{new_name}"
         expected_data = None
         expected_query_params = {"userProject": user_project}
         client._post_resource.assert_called_once_with(
@@ -2705,9 +2699,7 @@ class Test_Bucket(unittest.TestCase):
 
         list(bucket.lifecycle_rules)
         mock_warn.assert_called_with(
-            "Unknown lifecycle rule type received: {}. Please upgrade to the latest version of google-cloud-storage.".format(
-                BOGUS_RULE
-            ),
+            f"Unknown lifecycle rule type received: {BOGUS_RULE}. Please upgrade to the latest version of google-cloud-storage.",
             UserWarning,
             stacklevel=1,
         )
@@ -3992,7 +3984,7 @@ class Test_Bucket(unittest.TestCase):
 
         _saved = []
 
-        class _Blob(object):
+        class _Blob:
             _granted = False
 
             def __init__(self, bucket, name):
@@ -4202,7 +4194,7 @@ class Test_Bucket(unittest.TestCase):
     def test_make_private_recursive(self):
         _saved = []
 
-        class _Blob(object):
+        class _Blob:
             _granted = True
 
             def __init__(self, bucket, name):
@@ -4632,8 +4624,8 @@ class Test_Bucket(unittest.TestCase):
         else:
             effective_version = version
 
-        to_patch = "google.cloud.storage.bucket.generate_signed_url_{}".format(
-            effective_version
+        to_patch = (
+            f"google.cloud.storage.bucket.generate_signed_url_{effective_version}"
         )
 
         with mock.patch(to_patch) as signer:
@@ -4657,8 +4649,8 @@ class Test_Bucket(unittest.TestCase):
             expected_creds = credentials
 
         if virtual_hosted_style:
-            expected_api_access_endpoint = "https://{}.storage.googleapis.com".format(
-                bucket_name
+            expected_api_access_endpoint = (
+                f"https://{bucket_name}.storage.googleapis.com"
             )
         elif bucket_bound_hostname:
             expected_api_access_endpoint = _bucket_bound_hostname_url(
