@@ -82,6 +82,47 @@ def _rollback_txn(connection):
         rollback_fn()
 
 
+@contextmanager
+def _temporary_spanner_table(metadata, connection, table_name, *columns):
+    """Context manager managing an isolated Spanner table lifecycle.
+
+    Guarantees that:
+    1. Table creation DDL is committed immediately.
+    2. Any active read-write transactions are rolled back prior to DDL drop.
+    3. The table is dropped and its DDL committed.
+    4. The table reference is evicted from SQLAlchemy metadata even if drop fails.
+    """
+    t = Table(table_name, metadata, *columns)
+    try:
+        t.create(connection)
+        _commit_ddl(connection)
+        yield t
+    finally:
+        _rollback_txn(connection)
+        try:
+            t.drop(connection, checkfirst=True)
+            _commit_ddl(connection)
+        except Exception:
+            pass
+        finally:
+            metadata.remove(t)
+
+
+def _build_literal_select(table, type_, input_val, compare, support_whereclause):
+    """Build a SELECT statement for literal testing with optional WHERE clause."""
+    if not support_whereclause:
+        return table.select()
+
+    if compare:
+        return table.select().where(
+            table.c.x == literal(compare, type_),
+            table.c.x == literal(input_val, type_),
+        )
+
+    target_val = compare if compare is not None else input_val
+    return table.select().where(table.c.x == literal(target_val, type_))
+
+
 @pytest.fixture
 def literal_round_trip_spanner(metadata, connection):
     """Test literal SQL rendering in INSERT and SELECT with full table isolation.
@@ -94,14 +135,9 @@ def literal_round_trip_spanner(metadata, connection):
     To ensure test isolation in Cloud Spanner, this fixture:
     1. Generates a unique table name per invocation using the column type and
        UUID entropy.
-    2. Wraps table creation in the primary try block so table reference cleanup
-       in metadata is guaranteed even if creation fails.
-    3. Flushes and commits table creation DDL immediately.
-    4. Executes the insert and select assertions.
-    5. Cleans up any active read-write transactions before attempting DDL drops,
-       preventing Spanner's concurrent schema change rejection.
-    6. Drops the table and uses a nested finally block to guarantee table eviction
-       from metadata even if the drop operation fails.
+    2. Uses _temporary_spanner_table to manage table creation, transaction
+       rollback, drop, and metadata eviction cleanly.
+    3. Executes the insert and select assertions with _build_literal_select.
     """
 
     def run(
@@ -113,58 +149,23 @@ def literal_round_trip_spanner(metadata, connection):
         support_whereclause=True,
     ):
         table_name = f"t_lit_{type_.__class__.__name__.lower()}_{uuid.uuid4().hex[:6]}"
-        t = Table(table_name, metadata, Column("x", type_))
 
-        try:
-            t.create(connection)
-            _commit_ddl(connection)
+        with _temporary_spanner_table(
+            metadata, connection, table_name, Column("x", type_)
+        ) as t:
+            for value in input_:
+                ins = t.insert().values(x=literal(value, type_))
+                connection.execute(ins)
 
-            try:
-                for value in input_:
-                    ins = t.insert().values(x=literal(value, type_))
-                    connection.execute(ins)
-
-                if support_whereclause:
-                    if compare:
-                        stmt = t.select().where(
-                            t.c.x
-                            == literal(
-                                compare,
-                                type_,
-                            ),
-                            t.c.x
-                            == literal(
-                                input_[0],
-                                type_,
-                            ),
-                        )
-                    else:
-                        stmt = t.select().where(
-                            t.c.x
-                            == literal(
-                                compare if compare is not None else input_[0],
-                                type_,
-                            )
-                        )
-                else:
-                    stmt = t.select()
-
-                rows = connection.execute(stmt).all()
-                assert rows, "No rows returned"
-                for row in rows:
-                    value = row[0]
-                    if filter_ is not None:
-                        value = filter_(value)
-                    assert value in output
-            finally:
-                _rollback_txn(connection)
-        finally:
-            try:
-                t.drop(connection, checkfirst=True)
-                _commit_ddl(connection)
-            except Exception:
-                pass
-            finally:
-                metadata.remove(t)
+            stmt = _build_literal_select(
+                t, type_, input_[0], compare, support_whereclause
+            )
+            rows = connection.execute(stmt).all()
+            assert rows, "No rows returned"
+            for row in rows:
+                value = row[0]
+                if filter_ is not None:
+                    value = filter_(value)
+                assert value in output
 
     return run
