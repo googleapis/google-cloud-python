@@ -23,7 +23,12 @@ from types import SimpleNamespace
 
 import pytest
 
-from google.cloud.bigtable.data._async.client import _DataApiTargetAsync
+import unittest.mock
+
+from google.cloud.bigtable.data._async.client import (
+    _AcceleratorIdentityError,
+    _DataApiTargetAsync,
+)
 
 
 class _ConcreteTarget(_DataApiTargetAsync):
@@ -125,3 +130,25 @@ class TestMaybeStartAccelerator:
         t = _bare_target(emulator=None, start=_interrupt)
         with pytest.raises(KeyboardInterrupt):
             t._maybe_start_accelerator(explicit=False)
+
+    def test_identity_error_auto_warns_and_falls_back(self, monkeypatch):
+        """Identity mismatch on auto path warns and falls back — no NameError."""
+
+        def _start():
+            raise _AcceleratorIdentityError("principal mismatch")
+
+        t = _bare_target(emulator=None, start=_start)
+        with pytest.warns(RuntimeWarning, match="Accelerator disabled"):
+            t._maybe_start_accelerator(explicit=False)
+        assert t._accelerator_client is None
+        assert t._accelerator_daemon is None
+
+    def test_identity_error_explicit_raises(self, monkeypatch):
+        """Identity mismatch on explicit path re-raises _AcceleratorIdentityError, not NameError."""
+
+        def _start():
+            raise _AcceleratorIdentityError("principal mismatch")
+
+        t = _bare_target(emulator=None, start=_start)
+        with pytest.raises(_AcceleratorIdentityError, match="principal mismatch"):
+            t._maybe_start_accelerator(explicit=True)
