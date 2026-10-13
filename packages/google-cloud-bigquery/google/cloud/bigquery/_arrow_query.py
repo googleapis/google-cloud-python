@@ -19,6 +19,10 @@ from __future__ import annotations
 import base64
 from typing import Iterator, Optional, TYPE_CHECKING
 
+from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery import enums
+from google.cloud.bigquery import exceptions
+
 try:
     import pyarrow  # type: ignore
 except ImportError:
@@ -26,12 +30,75 @@ except ImportError:
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import bigquery_storage
+    from google.cloud.bigquery import job
     from google.cloud.bigquery.table import RowIterator
 
 _NO_PYARROW_ERROR = (
     "The pyarrow library is not installed, please install "
     "pyarrow to use the to_arrow() function."
 )
+
+
+def validate_query(
+    query_results_format: Optional[str],
+    job_config: Optional["job.QueryJobConfig"],
+    *,
+    compression_codec: Optional[str] = None,
+) -> None:
+    """Raise before sending a query whose ``ARROW`` results can't be read.
+
+    Args:
+        query_results_format: The ``query_results_format`` passed to
+            ``query_and_wait()``.
+        job_config: The job config, already merged with
+            ``Client.default_query_job_config``.
+        compression_codec: The ``compression_codec`` passed to
+            ``query_and_wait()``.
+
+    Raises:
+        ValueError:
+            If ``compression_codec`` is set without ``ARROW``, or if an
+            ``ARROW`` query uses ``WRITE_APPEND``.
+        google.cloud.bigquery.exceptions.BigQueryError:
+            If pyarrow or google-cloud-bigquery-storage is missing or too old
+            to read ``ARROW`` results.
+    """
+    if query_results_format != enums.QueryResultsFormat.ARROW:
+        if compression_codec is not None:
+            raise ValueError("compression_codec requires query_results_format=ARROW.")
+        return
+
+    # Results that don't fit in the jobs.query response are read from the
+    # destination table, which with WRITE_APPEND also holds older rows.
+    if (
+        job_config is not None
+        and job_config.write_disposition == enums.WriteDisposition.WRITE_APPEND
+    ):
+        raise ValueError(
+            "query_results_format=ARROW doesn't support WRITE_APPEND, because "
+            "the results would also include the rows already in the "
+            "destination table."
+        )
+
+    # Check before the query runs, so a query doesn't succeed while its
+    # results fit in the first page and then fail once they need a stream.
+    _check_dependencies()
+
+
+def _check_dependencies() -> None:
+    """Raise if pyarrow or google-cloud-bigquery-storage can't read ``ARROW``
+    results."""
+    _versions_helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
+    _versions_helpers.BQ_STORAGE_VERSIONS.try_import(raise_if_error=True)
+    if not _versions_helpers.BQ_STORAGE_VERSIONS.supports_arrow_serialization_options:
+        raise exceptions.LegacyBigQueryStorageError(
+            "query_results_format=ARROW needs a google-cloud-bigquery-storage "
+            "release whose BigQueryReadClient.read_rows() accepts "
+            "arrow_serialization_options, please upgrade it "
+            "(`pip install --upgrade google-cloud-bigquery-storage`) "
+            "(version found: "
+            f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
+        )
 
 
 def download_arrow_from_job(
