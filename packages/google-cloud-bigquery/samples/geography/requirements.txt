@@ -1,4 +1,4 @@
-attrs==25.4.0
+attrs==26.1.0
 certifi==2025.10.5
 cffi==2.0.0
 charset-normalizer==3.4.3
