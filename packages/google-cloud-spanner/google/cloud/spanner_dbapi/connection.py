@@ -516,6 +516,8 @@ class Connection:
         if self._spanner_transaction_started and not self._read_only:
             self._transaction.rollback()
 
+        self._ddl_statements = []
+
         if self._own_pool and self.database:
             self.database._sessions_manager._pool.clear()
 
@@ -553,8 +555,8 @@ class Connection:
                 )
             return
 
-        self.run_prior_DDL_statements()
         try:
+            self.run_prior_DDL_statements()
             if self._spanner_transaction_started and not self._read_only:
                 self._transaction.commit()
         except Aborted:

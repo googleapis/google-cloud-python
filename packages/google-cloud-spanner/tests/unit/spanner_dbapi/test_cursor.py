@@ -1477,6 +1477,19 @@ class TestCursor(unittest.TestCase):
         mock_database.update_ddl.assert_called_once_with([ddl_sql])
         self.assertEqual(connection._ddl_statements, [])
 
+    def test_execute_ddl_then_close_clears_ddl(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.close()
+        self.assertEqual(connection._ddl_statements, [])
+        mock_database.update_ddl.assert_not_called()
+
     def test_execute_ddl_then_rollback_and_close_clears_ddl(self):
         mock_database = mock.MagicMock()
         connection = self._make_connection(self.INSTANCE, mock_database)
@@ -1589,3 +1602,23 @@ class TestCursor(unittest.TestCase):
 
         mock_database.update_ddl.assert_called_once_with([valid_ddl])
         self.assertEqual(connection._ddl_statements, [])
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_dml_then_ddl_then_rollback_discards_ddl(self, mock_peek_iterator):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        connection.run_statement = mock.Mock(return_value=mock.MagicMock())
+        dml_sql = "INSERT INTO users (id) VALUES (1)"
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=dml_sql)
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.rollback()
+        self.assertEqual(connection._ddl_statements, [])
+
+        cursor.execute(sql="SELECT 1")
+        connection.commit()
+        mock_database.update_ddl.assert_not_called()

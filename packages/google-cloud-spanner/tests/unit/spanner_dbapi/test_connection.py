@@ -354,6 +354,22 @@ class TestConnection(unittest.TestCase):
         mock_release.assert_called_once_with()
         self.assertEqual(len(transaction_helper._statement_result_details_list), 0)
 
+    def test_commit_with_failing_ddl_resets_connection(self):
+        connection = self._under_test
+        connection._spanner_transaction_started = True
+        connection._ddl_statements = ["CREATE TABLE t (id INT64) PRIMARY KEY (id)"]
+        connection.database.update_ddl = mock.MagicMock(
+            side_effect=Exception("DDL execution failed")
+        )
+
+        with mock.patch.object(
+            connection, "_reset_post_commit_or_rollback"
+        ) as mock_reset:
+            with pytest.raises(Exception, match="DDL execution failed"):
+                connection.commit()
+
+        mock_reset.assert_called_once()
+
     @mock.patch.object(warnings, "warn")
     def test_commit_in_autocommit_mode(self, mock_warn):
         self._under_test._autocommit = True
