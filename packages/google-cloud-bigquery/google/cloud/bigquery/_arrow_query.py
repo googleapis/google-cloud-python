@@ -44,6 +44,7 @@ def validate_query(
     job_config: Optional["job.QueryJobConfig"],
     *,
     compression_codec: Optional[str] = None,
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
 ) -> None:
     """Raise before sending a query whose ``ARROW`` results can't be read.
 
@@ -54,11 +55,13 @@ def validate_query(
             ``Client.default_query_job_config``.
         compression_codec: The ``compression_codec`` passed to
             ``query_and_wait()``.
+        timestamp_precision: The ``timestamp_precision`` passed to
+            ``query_and_wait()``.
 
     Raises:
         ValueError:
-            If ``compression_codec`` is set without ``ARROW``, or if an
-            ``ARROW`` query uses ``WRITE_APPEND``.
+            If ``compression_codec`` or ``timestamp_precision`` is set
+            without ``ARROW``, or if an ``ARROW`` query uses ``WRITE_APPEND``.
         google.cloud.bigquery.exceptions.BigQueryError:
             If pyarrow or google-cloud-bigquery-storage is missing or too old
             to read ``ARROW`` results.
@@ -66,6 +69,8 @@ def validate_query(
     if query_results_format != enums.QueryResultsFormat.ARROW:
         if compression_codec is not None:
             raise ValueError("compression_codec requires query_results_format=ARROW.")
+        if timestamp_precision is not None:
+            raise ValueError("timestamp_precision requires query_results_format=ARROW.")
         return
 
     # Results that don't fit in the jobs.query response are read from the
@@ -101,7 +106,10 @@ def _check_dependencies() -> None:
         )
 
 
-def serialization_options(compression_codec: Optional[str]) -> Dict[str, str]:
+def serialization_options(
+    compression_codec: Optional[str],
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
+) -> Dict[str, str]:
     """Build the ``arrowSerializationOptions`` sent on ``jobs.query``.
 
     ``ReadRows`` gets the same options. Options the caller didn't set are sent
@@ -111,7 +119,13 @@ def serialization_options(compression_codec: Optional[str]) -> Dict[str, str]:
     return {
         "bufferCompression": getattr(compression_codec, "value", compression_codec)
         or "COMPRESSION_UNSPECIFIED",
-        "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+        # Picosecond values come back as ISO 8601 strings at full precision,
+        # so there's no need to offer nanoseconds.
+        "picosTimestampPrecision": (
+            "TIMESTAMP_PRECISION_PICOS"
+            if timestamp_precision == enums.TimestampPrecision.PICOSECOND
+            else "TIMESTAMP_PRECISION_MICROS"
+        ),
     }
 
 

@@ -14,11 +14,13 @@
 
 """System tests for Arrow connector."""
 
+import datetime
 from typing import Optional
 
 import pyarrow
 import pytest
 
+from google.api_core import exceptions
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
 
@@ -337,3 +339,103 @@ def test_query_and_wait_arrow_compression_matches_uncompressed(
 
     assert compressed.num_rows == 1000
     assert compressed.equals(read())
+
+
+_MICROSECOND_VALUES = [
+    datetime.datetime(2025, 1, day, 0, 0, 0, 123456, tzinfo=datetime.timezone.utc)
+    for day in (1, 2, 3)
+]
+_TIMESTAMP_PRECISIONS = pytest.mark.parametrize(
+    "timestamp_precision",
+    [
+        None,
+        enums.TimestampPrecision.MICROSECOND,
+        enums.TimestampPrecision.PICOSECOND,
+    ],
+    ids=["default", "microsecond", "picosecond"],
+)
+_PAGE_SIZES = pytest.mark.parametrize(
+    "page_size", [None, 1], ids=["first_page_only", "with_stream"]
+)
+
+
+def _read_timestamps(bigquery_client, query, timestamp_precision, page_size):
+    rows = bigquery_client.query_and_wait(
+        query,
+        job_config=bigquery.QueryJobConfig(use_query_cache=False),
+        page_size=page_size,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+        timestamp_precision=timestamp_precision,
+    )
+    table = pyarrow.Table.from_batches(list(rows.to_arrow_iterable()))
+    return table.column("ts").to_pylist()
+
+
+@_PAGE_SIZES
+@_TIMESTAMP_PRECISIONS
+def test_query_and_wait_arrow_timestamp_precision_microsecond_column(
+    bigquery_client, timestamp_precision, page_size
+):
+    values = _read_timestamps(
+        bigquery_client,
+        "SELECT TIMESTAMP_ADD(TIMESTAMP '2025-01-01 00:00:00.123456 UTC', "
+        "INTERVAL x DAY) AS ts FROM UNNEST([0, 1, 2]) AS x ORDER BY x",
+        timestamp_precision,
+        page_size,
+    )
+
+    assert values == _MICROSECOND_VALUES
+
+
+@_PAGE_SIZES
+@_TIMESTAMP_PRECISIONS
+def test_query_and_wait_arrow_timestamp_precision_picosecond_column(
+    bigquery_client, timestamp_precision, page_size
+):
+    try:
+        values = _read_timestamps(
+            bigquery_client,
+            "SELECT CAST(FORMAT('2025-01-0%dT00:00:00.123456789012Z', x) "
+            "AS TIMESTAMP(12)) AS ts FROM UNNEST([1, 2, 3]) AS x ORDER BY x",
+            timestamp_precision,
+            page_size,
+        )
+    except exceptions.BadRequest as exc:
+        # TIMESTAMP(12) is enabled per project. The test project has it, but
+        # a developer's own project may not.
+        if "Timestamp precision type parameter is not supported" not in str(exc):
+            raise
+        pytest.xfail(f"TIMESTAMP(12) isn't enabled in this project: {exc.message}")
+
+    if timestamp_precision == enums.TimestampPrecision.PICOSECOND:
+        assert [value[:10] for value in values] == [
+            "2025-01-01",
+            "2025-01-02",
+            "2025-01-03",
+        ]
+        assert all(".123456789012" in value for value in values)
+    else:
+        assert values == _MICROSECOND_VALUES
+
+
+@_PAGE_SIZES
+@_TIMESTAMP_PRECISIONS
+def test_query_and_wait_arrow_timestamp_precision_picosecond_table(
+    bigquery_client, scalars_table_pico, timestamp_precision, page_size
+):
+    values = _read_timestamps(
+        bigquery_client,
+        f"SELECT pico_col AS ts FROM `{scalars_table_pico}` ORDER BY pico_col",
+        timestamp_precision,
+        page_size,
+    )
+
+    if timestamp_precision == enums.TimestampPrecision.PICOSECOND:
+        assert [value[:10] for value in values] == [
+            "2025-01-01",
+            "2025-01-02",
+            "2025-01-03",
+        ]
+        assert all(".123456789012" in value for value in values)
+    else:
+        assert values == _MICROSECOND_VALUES

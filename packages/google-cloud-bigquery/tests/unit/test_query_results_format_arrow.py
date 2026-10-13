@@ -25,6 +25,7 @@ from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.enums import QueryResultsCompressionCodec
+from google.cloud.bigquery.enums import TimestampPrecision
 from google.cloud.bigquery.enums import WriteDisposition
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.table import RowIterator, _EmptyRowIterator
@@ -928,6 +929,53 @@ def test_download_arrow_from_job_id_sends_query_options_on_read_rows():
             "picos_timestamp_precision": "TIMESTAMP_PRECISION_MICROS",
         },
     )
+
+
+@pytest.mark.parametrize(
+    "timestamp_precision",
+    [TimestampPrecision.MICROSECOND, TimestampPrecision.PICOSECOND],
+)
+def test_query_and_wait_timestamp_precision_requires_arrow(
+    check_dependencies, timestamp_precision
+):
+    client = mock.MagicMock(spec=Client)
+
+    with pytest.raises(ValueError, match="timestamp_precision requires"):
+        _query_and_wait(client, timestamp_precision=timestamp_precision)
+
+    client._call_api.assert_not_called()
+    check_dependencies.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    ("timestamp_precision", "expected"),
+    [
+        (None, "TIMESTAMP_PRECISION_MICROS"),
+        (TimestampPrecision.MICROSECOND, "TIMESTAMP_PRECISION_MICROS"),
+        (TimestampPrecision.PICOSECOND, "TIMESTAMP_PRECISION_PICOS"),
+    ],
+)
+def test_client_query_and_wait_arrow_timestamp_precision(timestamp_precision, expected):
+    client = make_client()
+    client._call_api = mock.Mock(
+        return_value={
+            "jobReference": {"projectId": "PROJECT", "jobId": "j", "location": "US"},
+            "jobComplete": True,
+            "schema": {"fields": []},
+        }
+    )
+
+    rows = client.query_and_wait(
+        "SELECT 1",
+        query_results_format="ARROW",
+        timestamp_precision=timestamp_precision,
+    )
+
+    data = client._call_api.call_args.kwargs["data"]
+    assert data["arrowSerializationOptions"]["picosTimestampPrecision"] == expected
+    assert rows._arrow_serialization_options["picosTimestampPrecision"] == expected
+    # formatOptions only shapes STRUCT_ENCODING rows, which ARROW doesn't return.
+    assert "timestampOutputFormat" not in data["formatOptions"]
 
 
 if __name__ == "__main__":

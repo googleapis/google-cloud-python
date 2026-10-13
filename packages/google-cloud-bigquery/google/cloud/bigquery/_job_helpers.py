@@ -433,6 +433,7 @@ def query_and_wait(
     max_results: Optional[int] = None,
     query_results_format: Optional[str] = None,
     compression_codec: Optional[str] = None,
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Run the query, wait for it to finish, and return the results.
@@ -482,6 +483,11 @@ def query_and_wait(
             [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
         compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
             [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
+        timestamp_precision (Optional[enums.TimestampPrecision]):
+            [Private Preview] Precision of picosecond ``TIMESTAMP`` columns in
+            ``ARROW`` results. With ``PICOSECOND``, they arrive at full
+            precision as ISO 8601 strings. Otherwise, they're truncated to
+            microseconds. Requires ``query_results_format=ARROW``.
         callback (Callable):
             A callback function used by bigframes to report query progress.
 
@@ -503,14 +509,17 @@ def query_and_wait(
             :class:`~google.cloud.bigquery.job.QueryJobConfig`
             class.
         ValueError:
-            If ``compression_codec`` is set without ``ARROW``, or if an
-            ``ARROW`` query uses ``WRITE_APPEND``.
+            If ``compression_codec`` or ``timestamp_precision`` is set
+            without ``ARROW``, or if an ``ARROW`` query uses ``WRITE_APPEND``.
         google.cloud.bigquery.exceptions.BigQueryError:
             If pyarrow or google-cloud-bigquery-storage is missing or too old
             to read ``ARROW`` results. The query isn't sent.
     """
     _arrow_query.validate_query(
-        query_results_format, job_config, compression_codec=compression_codec
+        query_results_format,
+        job_config,
+        compression_codec=compression_codec,
+        timestamp_precision=timestamp_precision,
     )
 
     request_body = _to_query_request(
@@ -521,7 +530,7 @@ def query_and_wait(
     arrow_serialization_options = None
     if query_results_format == enums.QueryResultsFormat.ARROW:
         arrow_serialization_options = _arrow_query.serialization_options(
-            compression_codec
+            compression_codec, timestamp_precision
         )
         request_body["arrowSerializationOptions"] = arrow_serialization_options
 
