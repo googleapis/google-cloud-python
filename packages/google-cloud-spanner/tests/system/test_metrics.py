@@ -19,10 +19,27 @@ import pytest
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import InMemoryMetricReader
 
+from google.cloud.spanner_v1._helpers import _GLOBAL_STREAM_DRAINER
 from google.cloud.spanner_v1.metrics import constants
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
+
+
+def _wait_for_stream_drainer(timeout: float = 10.0) -> None:
+    """Wait for pending background stream draining tasks to complete.
+
+    TODO(#18656): Remove this helper once metrics are recorded immediately
+    upon observing PartialResultSet.last=True.
+    """
+    drain_queue = _GLOBAL_STREAM_DRAINER._queue
+    with drain_queue.all_tasks_done:
+        drained = drain_queue.all_tasks_done.wait_for(
+            lambda: drain_queue.unfinished_tasks == 0,
+            timeout=timeout,
+        )
+    if not drained:
+        pytest.fail("Timed out waiting for background stream drainer to complete.")
 
 
 def test_builtin_metrics_with_default_otel(not_emulator, shared_database):
@@ -50,6 +67,13 @@ def test_builtin_metrics_with_default_otel(not_emulator, shared_database):
         ):
             with shared_database.snapshot() as snapshot:
                 list(snapshot.execute_sql("SELECT 1"))
+            # When PartialResultSet.last is True, stream draining and metric recording
+            # for attempt/GFE/AFE latencies happen asynchronously in the background.
+            # Wait for any pending drain tasks to complete before collecting metrics.
+            # TODO(#18656): Record attempt and front-end metrics when PartialResultSet.last=True
+            # is observed on the stream, rather than waiting for StopIteration in the background
+            # drainer. This synchronization step can then be removed.
+            _wait_for_stream_drainer()
     finally:
         SpannerMetricsTracerFactory._metrics_tracer_factory = old_factory
 
@@ -76,7 +100,7 @@ def test_builtin_metrics_with_default_otel(not_emulator, shared_database):
         if metric.name == constants.METRIC_NAME_OPERATION_COUNT:
             point = next(iter(metric.data.data_points))
             assert point.value == 1
-            assert point.attributes["method"] == "ExecuteSql"
+            assert point.attributes["method"] == "Spanner.ExecuteStreamingSql"
             return
 
     pytest.fail(f"Metric '{constants.METRIC_NAME_OPERATION_COUNT}' not found.")
