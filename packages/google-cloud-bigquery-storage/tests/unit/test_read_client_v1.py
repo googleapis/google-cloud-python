@@ -153,6 +153,58 @@ def test_read_rows(mock_transport, client_under_test):
     )
 
 
+def test_read_rows_with_arrow_serialization_options(mock_transport, client_under_test):
+    rpc_callable = mock.Mock()
+    mock_transport._wrapped_methods[mock_transport.read_rows] = rpc_callable
+    options = {"buffer_compression": "LZ4_FRAME"}
+
+    client_under_test.read_rows(
+        "teststream", offset=10, arrow_serialization_options=options
+    )
+
+    rpc_callable.assert_called_once_with(
+        types.ReadRowsRequest(
+            read_stream="teststream", offset=10, arrow_serialization_options=options
+        ),
+        metadata=mock.ANY,
+        retry=mock.ANY,
+        timeout=mock.ANY,
+    )
+
+
+def test_read_rows_reconnect_resends_arrow_serialization_options(
+    mock_transport, client_under_test
+):
+    def first_stream():
+        yield types.ReadRowsResponse(row_count=5)
+        raise google.api_core.exceptions.ServiceUnavailable("transient disconnect")
+
+    rpc_callable = mock.Mock(
+        side_effect=[first_stream(), iter([types.ReadRowsResponse(row_count=3)])]
+    )
+    mock_transport._wrapped_methods[mock_transport.read_rows] = rpc_callable
+    options = {"buffer_compression": "ZSTD"}
+
+    stream = client_under_test.read_rows(
+        "teststream", offset=10, arrow_serialization_options=options
+    )
+
+    assert [m.row_count for m in stream] == [5, 3]
+    assert rpc_callable.call_args_list == [
+        mock.call(
+            types.ReadRowsRequest(
+                read_stream="teststream",
+                offset=offset,
+                arrow_serialization_options=options,
+            ),
+            metadata=mock.ANY,
+            retry=mock.ANY,
+            timeout=mock.ANY,
+        )
+        for offset in (10, 15)
+    ]
+
+
 @pytest.mark.parametrize(
     "module_under_test",
     ["google.cloud.bigquery_storage_v1", "google.cloud.bigquery_storage_v1beta2"],

@@ -86,7 +86,13 @@ class ReadRowsStream(object):
     """
 
     def __init__(
-        self, client, name, offset, read_rows_kwargs, retry_delay_callback=None
+        self,
+        client,
+        name,
+        offset,
+        read_rows_kwargs,
+        retry_delay_callback=None,
+        arrow_serialization_options=None,
     ):
         """Construct a ReadRowsStream.
 
@@ -114,6 +120,11 @@ class ReadRowsStream(object):
                 ReadRowsStream will call retry_delay_callback with the delay
                 duration (in seconds) before it starts sleeping until the next
                 attempt.
+            arrow_serialization_options (Optional[Union[dict, \
+                ~google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions \
+            ]]):
+                Arrow serialization options to send on every ``ReadRows``
+                request, including after a reconnect.
 
         Returns:
             Iterable[ \
@@ -129,6 +140,8 @@ class ReadRowsStream(object):
         self._offset = offset
         self._read_rows_kwargs = read_rows_kwargs
         self._retry_delay_callback = retry_delay_callback
+        self._arrow_serialization_options = arrow_serialization_options
+        self._cancelled = False
         self._wrapped = None
 
     def __iter__(self):
@@ -140,13 +153,13 @@ class ReadRowsStream(object):
             ]:
                 A sequence of row messages.
         """
-        # Infinite loop to reconnect on reconnectable errors while processing
-        # the row stream.
+        # Loop to reconnect on reconnectable errors while processing the row
+        # stream, until the stream ends or is cancelled.
 
         if self._wrapped is None:
             self._reconnect()
 
-        while True:
+        while not self._cancelled:
             try:
                 for message in self._wrapped:
                     rowcount = message.row_count
@@ -165,22 +178,57 @@ class ReadRowsStream(object):
                 # Transient error, so reconnect to the stream.
                 pass
             except Exception as exc:
+                # cancel() makes the call fail, which isn't an error here.
+                if self._cancelled:
+                    return
                 if not self._resource_exhausted_exception_is_retryable(exc):
                     raise
 
             self._reconnect()
 
+    def cancel(self):
+        """Cancel the ``ReadRows`` call.
+
+        Use this to stop reading before the end of the stream. After
+        ``cancel()``, iterating the stream yields no more messages, and the
+        stream doesn't reconnect. The client stays open for other calls.
+        """
+        self._cancelled = True
+        cancel = getattr(self._wrapped, "cancel", None)
+        if cancel is not None:
+            cancel()
+
     def _reconnect(self):
         """Reconnect to the ReadRows stream using the most recent offset."""
-        while True:
+        while not self._cancelled:
             try:
-                self._wrapped = self._client.read_rows(
-                    read_stream=self._name,
-                    offset=self._offset,
-                    **self._read_rows_kwargs,
-                )
+                if self._arrow_serialization_options is None:
+                    wrapped = self._client.read_rows(
+                        read_stream=self._name,
+                        offset=self._offset,
+                        **self._read_rows_kwargs,
+                    )
+                else:
+                    # The flattened read_rows() arguments don't include
+                    # arrow_serialization_options, so send a full request.
+                    wrapped = self._client.read_rows(
+                        request={
+                            "read_stream": self._name,
+                            "offset": self._offset,
+                            "arrow_serialization_options": self._arrow_serialization_options,
+                        },
+                        **self._read_rows_kwargs,
+                    )
+                # Store the new call before checking for cancel(), so a
+                # concurrent cancel() either cancels it or is seen here.
+                self._wrapped = wrapped
+                if self._cancelled:
+                    self.cancel()
+                    return
                 break
             except Exception as exc:
+                if self._cancelled:
+                    return
                 if not self._resource_exhausted_exception_is_retryable(exc):
                     raise
 
