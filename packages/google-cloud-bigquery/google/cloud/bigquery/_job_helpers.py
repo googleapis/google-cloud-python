@@ -534,6 +534,10 @@ def query_and_wait(
         )
         request_body["arrowSerializationOptions"] = arrow_serialization_options
 
+    # jobs.getQueryResults only returns STRUCT_ENCODING rows, so while waiting
+    # for an ARROW query, request none of them.
+    wait_page_size = 0 if arrow_serialization_options is not None else page_size
+
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
     if not _supported_by_jobs_query(request_body):
@@ -554,7 +558,7 @@ def query_and_wait(
             api_timeout=api_timeout,
             wait_timeout=wait_timeout,
             retry=retry,
-            page_size=page_size,
+            page_size=wait_page_size,
             max_results=max_results,
             query_results_format=query_results_format,
             arrow_serialization_options=arrow_serialization_options,
@@ -617,6 +621,8 @@ def query_and_wait(
         )
         page_token = query_results.page_token
         more_pages = page_token is not None
+        if arrow_serialization_options is not None:
+            more_pages = _arrow_query.has_more_rows(response)
 
         if more_pages or not query_results.complete:
             # TODO(swast): Avoid a call to jobs.get in some cases (few
@@ -628,7 +634,7 @@ def query_and_wait(
                 api_timeout=api_timeout,
                 wait_timeout=wait_timeout,
                 retry=retry,
-                page_size=page_size,
+                page_size=wait_page_size,
                 max_results=max_results,
                 query_results_format=query_results_format,
                 arrow_serialization_options=arrow_serialization_options,

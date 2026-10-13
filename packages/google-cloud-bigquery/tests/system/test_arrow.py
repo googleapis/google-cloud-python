@@ -15,10 +15,15 @@
 """System tests for Arrow connector."""
 
 import datetime
+import json
+import math
 from typing import Optional
+from unittest import mock
+import uuid
 
 import pyarrow
 import pytest
+from dateutil import relativedelta
 
 from google.api_core import exceptions
 from google.cloud import bigquery
@@ -439,3 +444,312 @@ def test_query_and_wait_arrow_timestamp_precision_picosecond_table(
         assert all(".123456789012" in value for value in values)
     else:
         assert values == _MICROSECOND_VALUES
+
+
+@pytest.mark.parametrize(
+    ("page_size", "priority", "expected_offset"),
+    [
+        (100, None, 100),
+        # jobs.query doesn't accept a priority, so this case runs through
+        # jobs.insert, which returns no rows inline.
+        (None, enums.QueryPriority.INTERACTIVE, 0),
+    ],
+    ids=["some_rows_inline", "no_rows_inline"],
+)
+def test_query_and_wait_arrow_matches_struct_encoding(
+    bigquery_client, bqstorage_client, page_size, priority, expected_offset
+):
+    query = (
+        "SELECT x, CAST(x AS STRING) AS s, MOD(x, 2) = 0 AS even, "
+        "DATE_ADD(DATE '2026-01-01', INTERVAL x DAY) AS d "
+        "FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x"
+    )
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        job_config.priority = priority
+    expected = [
+        dict(row.items())
+        for row in bigquery_client.query_and_wait(query, job_config=job_config)
+    ]
+    # Wrap read_rows() to check where the stream starts.
+    read_rows = mock.Mock(wraps=bqstorage_client.read_rows)
+
+    rows = bigquery_client.query_and_wait(
+        query,
+        job_config=job_config,
+        page_size=page_size,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    with mock.patch.object(bqstorage_client, "read_rows", read_rows):
+        batches = list(rows.to_arrow_iterable(bqstorage_client=bqstorage_client))
+
+    assert pyarrow.Table.from_batches(batches).to_pylist() == expected
+    read_rows.assert_called_once_with(
+        f"projects/{bigquery_client.project}/locations/{rows.location}"
+        f"/jobs/{rows.job_id}/streams/_default",
+        offset=expected_offset,
+        timeout=mock.ANY,
+        arrow_serialization_options=mock.ANY,
+    )
+
+
+def _interval_to_relativedelta(value):
+    return relativedelta.relativedelta(
+        months=value.months, days=value.days, microseconds=value.nanoseconds // 1000
+    )
+
+
+def _arrow_rows(table):
+    """Return the rows of an Arrow table as STRUCT_ENCODING returns them.
+
+    Arrow has JSON values as strings and INTERVAL values as MonthDayNano,
+    while STRUCT_ENCODING rows have parsed JSON and relativedelta values.
+    """
+    converters = {}
+    for field in table.schema:
+        if field.metadata == {b"ARROW:extension:name": b"google:sqlType:json"}:
+            converters[field.name] = json.loads
+        elif pyarrow.types.is_interval(field.type):
+            converters[field.name] = _interval_to_relativedelta
+    rows = table.to_pylist()
+    for row in rows:
+        for name, convert in converters.items():
+            if row[name] is not None:
+                row[name] = convert(row[name])
+    return rows
+
+
+@pytest.mark.parametrize(
+    ("page_size", "priority", "expected_offset"),
+    [
+        (1, None, 1),
+        # jobs.query doesn't accept a priority, so this case runs through
+        # jobs.insert, which returns no rows inline.
+        (None, enums.QueryPriority.INTERACTIVE, 0),
+    ],
+    ids=["some_rows_inline", "no_rows_inline"],
+)
+def test_query_and_wait_arrow_locations(
+    bigquery_client,
+    bqstorage_client,
+    scalars_table_multi_location,
+    page_size,
+    priority,
+    expected_offset,
+):
+    location, table_id = scalars_table_multi_location
+    query = f"SELECT * FROM `{table_id}` ORDER BY rowindex"
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        job_config.priority = priority
+    expected = [
+        dict(row.items())
+        for row in bigquery_client.query_and_wait(query, job_config=job_config)
+    ]
+    read_rows = mock.Mock(wraps=bqstorage_client.read_rows)
+
+    # The query doesn't name a location, so only jobReference has it.
+    rows = bigquery_client.query_and_wait(
+        query,
+        job_config=job_config,
+        page_size=page_size,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    with mock.patch.object(bqstorage_client, "read_rows", read_rows):
+        batches = list(rows.to_arrow_iterable(bqstorage_client=bqstorage_client))
+
+    assert rows.location == location
+    assert _arrow_rows(pyarrow.Table.from_batches(batches)) == expected
+    read_rows.assert_called_once_with(
+        f"projects/{bigquery_client.project}/locations/{location}"
+        f"/jobs/{rows.job_id}/streams/_default",
+        offset=expected_offset,
+        timeout=mock.ANY,
+        arrow_serialization_options=mock.ANY,
+    )
+
+
+_DATA_TYPES_QUERY = """
+SELECT
+  i,
+  IF(i = 2, NULL, i = 1) AS bool_col,
+  IF(i = 2, NULL, i * 1000000000000) AS int64_col,
+  IF(i = 2, NULL, i / 3) AS float64_col,
+  IF(i = 2, NULL, NUMERIC '-123456789.123456789') AS numeric_col,
+  IF(i = 2, NULL, BIGNUMERIC '1.23456789012345678901234567890123456789') AS bignumeric_col,
+  IF(i = 2, NULL, FORMAT('row %d', i)) AS string_col,
+  IF(i = 2, NULL, CAST(FORMAT('row %d', i) AS BYTES)) AS bytes_col,
+  IF(i = 2, NULL, DATE_ADD(DATE '2026-01-01', INTERVAL i DAY)) AS date_col,
+  IF(i = 2, NULL, DATETIME '2026-01-01 12:34:56.789012') AS datetime_col,
+  IF(i = 2, NULL, TIME '12:34:56.789012') AS time_col,
+  IF(i = 2, NULL, TIMESTAMP '2026-01-01 12:34:56.789012 UTC') AS timestamp_col,
+  IF(i = 2, NULL, INTERVAL '1-2 3 4:5:6.789012' YEAR TO SECOND) AS interval_col,
+  IF(i = 2, NULL, ST_GEOGPOINT(-122.0838511, 37.3860517)) AS geography_col,
+  IF(i = 2, NULL, JSON '{"a": [1, 2.5, "x"], "b": null, "c": {"d": true}}') AS json_col,
+  IF(i = 2, NULL, RANGE(DATE '2026-01-01', DATE '2026-02-01')) AS range_date_col,
+  IF(i = 2, NULL, RANGE(DATETIME '2026-01-01 00:00:00', NULL)) AS range_datetime_col,
+  IF(
+    i = 2,
+    NULL,
+    RANGE(TIMESTAMP '2026-01-01 00:00:00 UTC', TIMESTAMP '2026-01-02 00:00:00 UTC')
+  ) AS range_timestamp_col,
+  IF(i = 2, [], [i, i + 1]) AS array_col,
+  IF(i = 2, NULL, STRUCT(i AS x, [STRUCT('a' AS s, [1.5, 2.5] AS f)] AS nested)) AS struct_col
+FROM UNNEST([1, 2, 3]) AS i
+ORDER BY i
+"""
+
+
+def test_query_and_wait_arrow_data_types(bigquery_client):
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    expected = [
+        dict(row.items())
+        for row in bigquery_client.query_and_wait(
+            _DATA_TYPES_QUERY, job_config=job_config
+        )
+    ]
+
+    rows = bigquery_client.query_and_wait(
+        _DATA_TYPES_QUERY,
+        job_config=job_config,
+        # The first row arrives in the first page, the others in the stream.
+        page_size=1,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    batches = list(rows.to_arrow_iterable())
+
+    assert batches[0].num_rows == 1
+    assert _arrow_rows(pyarrow.Table.from_batches(batches)) == expected
+
+
+@pytest.mark.parametrize(
+    "priority",
+    [None, enums.QueryPriority.INTERACTIVE],
+    ids=["jobs_query", "jobs_insert"],
+)
+def test_query_and_wait_arrow_unnamed_struct_fields(bigquery_client, priority):
+    query = "SELECT (1, 'a') AS s, STRUCT(2 AS x, 'b') AS p"
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        # jobs.query doesn't accept a priority, so this runs through jobs.insert.
+        job_config.priority = priority
+    expected = [
+        dict(row.items())
+        for row in bigquery_client.query_and_wait(query, job_config=job_config)
+    ]
+
+    try:
+        rows = bigquery_client.query_and_wait(
+            query,
+            job_config=job_config,
+            # jobs.query fails with a jobInternalError, which job_retry would
+            # retry until its deadline.
+            job_retry=None,
+            query_results_format=enums.QueryResultsFormat.ARROW,
+        )
+    except exceptions.BadRequest as exc:
+        if not any(error.get("reason") == "jobInternalError" for error in exc.errors):
+            raise
+        pytest.xfail(f"jobs.query can't send unnamed STRUCT fields: {exc.message}")
+    table = pyarrow.Table.from_batches(list(rows.to_arrow_iterable()))
+
+    assert table.to_pylist() == expected
+
+
+@pytest.mark.parametrize(
+    "priority",
+    [None, enums.QueryPriority.INTERACTIVE],
+    ids=["first_page_only", "no_rows_inline"],
+)
+def test_query_and_wait_arrow_extreme_values(
+    bigquery_client, scalars_extreme_table, priority
+):
+    # BigQuery fails the extreme INTERVAL values with "Out of range conversion
+    # for microseconds value", since Arrow's interval type can't hold them.
+    query = (
+        f"SELECT * EXCEPT (interval_col) FROM `{scalars_extreme_table}` "
+        "ORDER BY rowindex"
+    )
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        job_config.priority = priority
+    expected = [
+        dict(row.items())
+        for row in bigquery_client.query_and_wait(query, job_config=job_config)
+    ]
+
+    rows = bigquery_client.query_and_wait(
+        query,
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    actual = _arrow_rows(pyarrow.Table.from_batches(list(rows.to_arrow_iterable())))
+
+    # NaN never equals itself, so check it on its own.
+    assert math.isnan(actual[2].pop("float64_col"))
+    assert math.isnan(expected[2].pop("float64_col"))
+    assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "priority",
+    [None, enums.QueryPriority.INTERACTIVE],
+    ids=["some_rows_inline", "no_rows_inline"],
+)
+def test_query_and_wait_arrow_cached_results(bigquery_client, priority):
+    # No other query uses this literal, so only the second run can hit the
+    # cache.
+    query = (
+        f"SELECT x, '{uuid.uuid4().hex}' AS key "
+        "FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x"
+    )
+    job_config = bigquery.QueryJobConfig(use_query_cache=True)
+    if priority is not None:
+        job_config.priority = priority
+
+    def read():
+        rows = bigquery_client.query_and_wait(
+            query,
+            job_config=job_config,
+            page_size=100,
+            query_results_format=enums.QueryResultsFormat.ARROW,
+        )
+        table = pyarrow.Table.from_batches(list(rows.to_arrow_iterable()))
+        return bigquery_client.get_job(rows.job_id, location=rows.location), table
+
+    first_job, first = read()
+    cached_job, cached = read()
+
+    assert not first_job.cache_hit
+    assert cached_job.cache_hit
+    assert cached.num_rows == 1000
+    assert cached.equals(first)
+
+
+@pytest.mark.parametrize(
+    "priority",
+    [None, enums.QueryPriority.INTERACTIVE],
+    ids=["jobs_query", "jobs_insert"],
+)
+def test_query_and_wait_arrow_failed_query(bigquery_client, priority):
+    # The last row fails, so the query fails while it runs.
+    query = (
+        "SELECT IF(x < 1000, x, ERROR(FORMAT('failed at row %d', x))) AS x "
+        "FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x"
+    )
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        job_config.priority = priority
+
+    with pytest.raises(exceptions.GoogleAPICallError) as struct_encoding_error:
+        bigquery_client.query_and_wait(query, job_config=job_config)
+    with pytest.raises(exceptions.GoogleAPICallError) as arrow_error:
+        rows = bigquery_client.query_and_wait(
+            query,
+            job_config=job_config,
+            query_results_format=enums.QueryResultsFormat.ARROW,
+        )
+        list(rows.to_arrow_iterable())
+
+    assert type(arrow_error.value) is type(struct_encoding_error.value)
+    assert "failed at row 1000" in arrow_error.value.message

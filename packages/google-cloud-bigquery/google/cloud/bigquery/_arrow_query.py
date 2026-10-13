@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import base64
-from typing import Dict, Iterator, Optional, TYPE_CHECKING
+from typing import Any, Dict, Iterator, Optional, TYPE_CHECKING
 
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import enums
@@ -129,6 +129,16 @@ def serialization_options(
     }
 
 
+def has_more_rows(response: Dict[str, Any]) -> bool:
+    """Return True if rows remain after an ``ARROW`` ``jobs.query`` response.
+
+    ``ARROW`` responses say how many rows the first page holds in
+    ``pageRowCount``, so compare that with ``totalRows`` instead of checking
+    for a ``pageToken``.
+    """
+    return int(response.get("pageRowCount", 0)) < int(response.get("totalRows", 0))
+
+
 def _read_rows_options(options: Optional[Dict[str, str]]) -> Dict[str, str]:
     """Convert ``jobs.query`` ``arrowSerializationOptions`` to the
     ``ArrowSerializationOptions`` fields that ``ReadRows`` takes."""
@@ -169,7 +179,6 @@ def download_arrow_from_job(
     # Step 2: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
         first_page = row_iterator._first_page_response
-        row_iterator._first_page_response = None
 
         job_complete = bool(first_page.get("jobComplete", False))
         if job_complete:
