@@ -1139,6 +1139,9 @@ class _DataApiTarget(abc.ABC):
                 server.uds_path, server.auth_secret
             )
             self._accelerator_daemon = server
+        except _AcceleratorUnverified:
+            server.close()
+            raise
         except BaseException:
             server.close()
             raise
