@@ -176,23 +176,13 @@ def download_arrow_from_job(
     if pyarrow is None:
         raise ValueError(_NO_PYARROW_ERROR)
 
-    # Step 1: Ensure BigQuery Read API client is available upfront.
-    if bqstorage_client is None:
-        if row_iterator.client is None:
-            raise ValueError("RowIterator client is None.")
-        bqstorage_client = row_iterator.client._ensure_bqstorage_client()
-        if bqstorage_client is None:
-            raise ValueError(
-                "The google-cloud-bigquery-storage library is required to read Arrow results."
-            )
-
     offset = 0
     pa_schema = None
     total_rows = row_iterator.total_rows
     job_complete = False
     remaining = row_iterator.max_results
 
-    # Step 2: Process initial inline Arrow response from jobs.query if available.
+    # Step 1: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
         first_page = row_iterator._first_page_response
 
@@ -222,12 +212,22 @@ def download_arrow_from_job(
                 batch, remaining = _slice_batch(batch, remaining)
                 yield batch
 
-    # Step 3: Return early if all results were delivered in the first page
+    # Step 2: Return early if all results were delivered in the first page
     # response, or if the first page already reached max_results.
     if (job_complete and offset >= total_rows) or remaining == 0:
         return
 
-    # Step 4: Stream remaining Arrow record batches from the job default stream.
+    # Step 3: Stream remaining Arrow record batches from the job default stream,
+    # with the BigQuery client's shared BigQuery Storage client unless the
+    # caller passed one. Results that fit in the first page never create it.
+    if bqstorage_client is None:
+        if row_iterator.client is None:
+            raise ValueError("RowIterator client is None.")
+        bqstorage_client = row_iterator.client._get_shared_bqstorage_client()
+        if bqstorage_client is None:
+            raise ValueError(
+                "The google-cloud-bigquery-storage library is required to read Arrow results."
+            )
     project = row_iterator._project or (
         row_iterator.client.project if row_iterator.client else None
     )

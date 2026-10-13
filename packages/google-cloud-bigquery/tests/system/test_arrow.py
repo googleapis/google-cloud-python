@@ -782,3 +782,69 @@ def test_query_and_wait_arrow_max_results(
     table = pyarrow.Table.from_batches(batches)
     assert table.column("x").to_pylist() == list(range(1, expected_rows + 1))
     assert read_rows.called == streamed
+
+
+def _query_arrow(client, row_count):
+    return client.query_and_wait(
+        f"SELECT x FROM UNNEST(GENERATE_ARRAY(1, {row_count})) AS x ORDER BY x",
+        job_config=bigquery.QueryJobConfig(use_query_cache=False),
+        page_size=100,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+
+
+def test_query_and_wait_arrow_queries_share_one_bqstorage_client():
+    from google.cloud.bigquery import client as client_module
+
+    with bigquery.Client() as client:
+        # Wrap the client factory to count how many clients get created.
+        ensure = mock.Mock(wraps=client._ensure_bqstorage_client)
+        with mock.patch.object(client, "_ensure_bqstorage_client", ensure):
+            tables = [
+                pyarrow.Table.from_batches(
+                    list(_query_arrow(client, 1000).to_arrow_iterable())
+                ),
+                _query_arrow(client, 1000).to_arrow(),
+                pyarrow.Table.from_batches(
+                    list(_query_arrow(client, 1000).to_arrow_iterable())
+                ),
+            ]
+        shared = client._shared_bqstorage_client
+
+    for table in tables:
+        assert table.column("x").to_pylist() == list(range(1, 1001))
+    ensure.assert_called_once_with(
+        client_options=None, transport=client_module._create_bqstorage_transport
+    )
+    assert shared is not None
+    # Leaving the with block calls close(), which closes the shared channel.
+    assert client._shared_bqstorage_client is None
+    with pytest.raises(ValueError, match="(?i)closed"):
+        shared.read_rows("projects/p/locations/US/jobs/j/streams/_default")
+
+
+def test_query_and_wait_arrow_ending_a_read_early_cancels_only_its_stream():
+    from google.cloud.bigquery_storage_v1 import reader
+
+    # Wrap ReadRowsStream.cancel() to count calls without changing it.
+    cancel_stream = reader.ReadRowsStream.cancel
+    with bigquery.Client() as client, mock.patch.object(
+        reader.ReadRowsStream, "cancel", autospec=True, side_effect=cancel_stream
+    ) as cancel:
+        ended_early_rows = _query_arrow(client, 100000)
+        ended_early = ended_early_rows.to_arrow_iterable()
+        read_fully = _query_arrow(client, 100000).to_arrow_iterable()
+        # Two reads reach the stream, whether or not jobs.query returned a
+        # first page.
+        next(ended_early)
+        next(ended_early)
+        rows = [next(read_fully), next(read_fully)]
+
+        ended_early.close()
+        rows.extend(read_fully)
+
+    (stream,) = cancel.call_args.args
+    cancel.assert_called_once_with(stream)
+    assert stream._name.endswith(f"/jobs/{ended_early_rows.job_id}/streams/_default")
+    table = pyarrow.Table.from_batches(rows)
+    assert table.column("x").to_pylist() == list(range(1, 100001))
