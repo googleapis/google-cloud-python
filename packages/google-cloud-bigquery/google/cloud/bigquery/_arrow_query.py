@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import base64
-from typing import Any, Dict, Iterator, Optional, Tuple, TYPE_CHECKING
+from typing import Any, Dict, Iterator, Optional, Sequence, Tuple, TYPE_CHECKING
 
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import enums
@@ -134,6 +134,29 @@ def _slice_batch(
     return batch, remaining - batch.num_rows
 
 
+def _empty_batch(
+    pa_schema: Optional["pyarrow.Schema"], bq_schema: Sequence[Any]
+) -> "pyarrow.RecordBatch":
+    """Build a batch without rows that keeps the result's schema.
+
+    Use the Arrow schema BigQuery sent if there is one. The default job
+    stream sends nothing for zero rows, so fall back to the schema from
+    ``jobs.getQueryResults``, and else to no columns.
+    """
+    if pa_schema is None and bq_schema:
+        # Imported here: _pandas_helpers imports pandas_gbq, which imports
+        # this package's table module.
+        from google.cloud.bigquery import _pandas_helpers
+
+        pa_schema = _pandas_helpers.bq_to_arrow_schema(bq_schema)
+    if pa_schema is None:
+        pa_schema = pyarrow.schema([])
+    return pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([], type=field.type) for field in pa_schema],
+        schema=pa_schema,
+    )
+
+
 def _read_rows_options(options: Optional[Dict[str, str]]) -> Dict[str, str]:
     """Convert ``jobs.query`` ``arrowSerializationOptions`` to the
     ``ArrowSerializationOptions`` fields that ``ReadRows`` takes."""
@@ -231,6 +254,9 @@ def download_arrow_from_job(
     page_token = None
     job_complete = False
     remaining = row_iterator.max_results
+    # Results without rows still yield one empty batch, so callers get the
+    # schema.
+    yielded = False
 
     # Step 1: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
@@ -264,6 +290,7 @@ def download_arrow_from_job(
                 )
                 offset += batch.num_rows
                 batch, remaining = _slice_batch(batch, remaining)
+                yielded = True
                 yield batch
 
     # Step 2: Return early if all results were delivered in the first page
@@ -271,6 +298,8 @@ def download_arrow_from_job(
     # pageToken says rows remain: totalRows is 0 when cached results are too
     # large to return inline.
     if (job_complete and page_token is None) or remaining == 0:
+        if not yielded:
+            yield _empty_batch(pa_schema, row_iterator._schema)
         return
 
     # Step 3: Stream remaining Arrow record batches from the job default stream,
@@ -293,6 +322,7 @@ def download_arrow_from_job(
         reader = _open_job_stream(row_iterator, bqstorage_client, offset, timeout)
     if reader is None:
         # An empty destination table has no streams.
+        yield _empty_batch(pa_schema, row_iterator._schema)
         return
     finished = False
     try:
@@ -318,6 +348,7 @@ def download_arrow_from_job(
                     pa_schema,
                 )
                 batch, remaining = _slice_batch(batch, remaining)
+                yielded = True
                 yield batch
                 if remaining == 0:
                     break
@@ -328,3 +359,5 @@ def download_arrow_from_job(
         # an error, or when the caller closes the iterator.
         if not finished:
             reader.cancel()
+    if not yielded:
+        yield _empty_batch(pa_schema, row_iterator._schema)
