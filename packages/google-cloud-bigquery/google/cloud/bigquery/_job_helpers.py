@@ -518,11 +518,12 @@ def query_and_wait(
     )
     if query_results_format is not None:
         request_body["queryResultsFormat"] = query_results_format
-    if compression_codec is not None:
-        request_body.setdefault("formatOptions", {})
-        request_body["formatOptions"]["arrowSerializationOptions"] = {
-            "bufferCompression": compression_codec
-        }
+    arrow_serialization_options = None
+    if query_results_format == enums.QueryResultsFormat.ARROW:
+        arrow_serialization_options = _arrow_query.serialization_options(
+            compression_codec
+        )
+        request_body["arrowSerializationOptions"] = arrow_serialization_options
 
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
@@ -547,6 +548,7 @@ def query_and_wait(
             page_size=page_size,
             max_results=max_results,
             query_results_format=query_results_format,
+            arrow_serialization_options=arrow_serialization_options,
             callback=callback,
         )
 
@@ -620,6 +622,7 @@ def query_and_wait(
                 page_size=page_size,
                 max_results=max_results,
                 query_results_format=query_results_format,
+                arrow_serialization_options=arrow_serialization_options,
                 callback=callback,
             )
 
@@ -660,6 +663,7 @@ def query_and_wait(
             started=query_results.started,
             ended=query_results.ended,
             query_results_format=query_results_format,
+            arrow_serialization_options=arrow_serialization_options,
         )
 
     if job_retry is not None:
@@ -701,6 +705,7 @@ def _supported_by_jobs_query(request_body: Dict[str, Any]) -> bool:
         "reservation",
         "maxSlots",
         "queryResultsFormat",
+        "arrowSerializationOptions",
     }
 
     unsupported_keys = request_keys - keys_allowlist
@@ -716,6 +721,7 @@ def _wait_or_cancel(
     max_results: Optional[int],
     *,
     query_results_format: Optional[str] = None,
+    arrow_serialization_options: Optional[Dict[str, str]] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Wait for a job to complete and return the results.
@@ -761,6 +767,7 @@ def _wait_or_cancel(
                 )
             )
         query_results._query_results_format = query_results_format
+        query_results._arrow_serialization_options = arrow_serialization_options
         return query_results
     except Exception:
         # Attempt to cancel the job since we can't return the results.

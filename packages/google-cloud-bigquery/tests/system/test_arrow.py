@@ -301,3 +301,39 @@ def test_query_and_wait_arrow_rejects_write_append(bigquery_client, dataset_id):
     # Neither query ran, so the table still holds only its original row.
     rows = bigquery_client.query_and_wait(f"SELECT x FROM `{table_id}`")
     assert [row.x for row in rows] == [1]
+
+
+@pytest.mark.parametrize(
+    "codec",
+    [
+        enums.QueryResultsCompressionCodec.LZ4_FRAME,
+        enums.QueryResultsCompressionCodec.ZSTD,
+    ],
+)
+@pytest.mark.parametrize(
+    "page_size", [None, 100], ids=["first_page_only", "with_stream"]
+)
+def test_query_and_wait_arrow_compression_matches_uncompressed(
+    bigquery_client, codec, page_size
+):
+    query = (
+        "SELECT x, CAST(x AS STRING) AS s, x / 7 AS f, "
+        "TIMESTAMP_ADD(TIMESTAMP '2026-01-01', INTERVAL x SECOND) AS ts "
+        "FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x"
+    )
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+
+    def read(**kwargs):
+        rows = bigquery_client.query_and_wait(
+            query,
+            job_config=job_config,
+            page_size=page_size,
+            query_results_format=enums.QueryResultsFormat.ARROW,
+            **kwargs,
+        )
+        return pyarrow.Table.from_batches(list(rows.to_arrow_iterable()))
+
+    compressed = read(compression_codec=codec)
+
+    assert compressed.num_rows == 1000
+    assert compressed.equals(read())

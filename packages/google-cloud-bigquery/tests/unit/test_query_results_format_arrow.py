@@ -24,11 +24,23 @@ from google.cloud.bigquery import _job_helpers
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.client import Client
+from google.cloud.bigquery.enums import QueryResultsCompressionCodec
 from google.cloud.bigquery.enums import WriteDisposition
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.table import RowIterator, _EmptyRowIterator
 
 from .helpers import make_client
+
+# The Arrow serialization options that jobs.query and ReadRows get when the
+# caller sets none.
+_DEFAULT_QUERY_OPTIONS = {
+    "bufferCompression": "COMPRESSION_UNSPECIFIED",
+    "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+}
+_DEFAULT_READ_OPTIONS = {
+    "buffer_compression": "COMPRESSION_UNSPECIFIED",
+    "picos_timestamp_precision": "TIMESTAMP_PRECISION_MICROS",
+}
 
 # The real check, saved before the autouse fixture below replaces it.
 _check_dependencies = _arrow_query._check_dependencies
@@ -93,12 +105,15 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         )
 
         call_args = client._call_api.call_args
-        self.assertIn("formatOptions", call_args.kwargs["data"])
+        self.assertNotIn(
+            "arrowSerializationOptions", call_args.kwargs["data"]["formatOptions"]
+        )
         self.assertEqual(
-            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"][
-                "bufferCompression"
-            ],
-            "LZ4_FRAME",
+            call_args.kwargs["data"]["arrowSerializationOptions"],
+            {
+                "bufferCompression": "LZ4_FRAME",
+                "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+            },
         )
 
     def test_job_helpers_query_and_wait_fallback_preserves_query_results_format(self):
@@ -220,7 +235,10 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
                 "projects/test-proj/locations/US/jobs/test-job-456/streams/_default"
             )
             mock_bqstorage.read_rows.assert_called_once_with(
-                expected_stream_name, offset=0, timeout=5.0
+                expected_stream_name,
+                offset=0,
+                timeout=5.0,
+                arrow_serialization_options=_DEFAULT_READ_OPTIONS,
             )
 
     def test_download_arrow_from_job_id_with_first_page_response(self):
@@ -290,7 +308,10 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
                 "projects/test-proj/locations/US/jobs/test-job-sync/streams/_default"
             )
             mock_bqstorage.read_rows.assert_called_once_with(
-                expected_stream_name, offset=10, timeout=5.0
+                expected_stream_name,
+                offset=10,
+                timeout=5.0,
+                arrow_serialization_options=_DEFAULT_READ_OPTIONS,
             )
 
     def test_download_arrow_from_job_id_with_first_page_response_schema_only(self):
@@ -339,7 +360,10 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             )
             expected_stream_name = "projects/test-proj/locations/US/jobs/test-job-schema-only/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(
-                expected_stream_name, offset=0, timeout=5.0
+                expected_stream_name,
+                offset=0,
+                timeout=5.0,
+                arrow_serialization_options=_DEFAULT_READ_OPTIONS,
             )
 
     def test_download_arrow_from_job_id_missing_storage_client_raises_value_error(self):
@@ -492,7 +516,10 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             mock_client._ensure_bqstorage_client.assert_called_once()
             expected_stream = "projects/test-proj/locations/US/jobs/test-job-incomplete/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(
-                expected_stream, offset=10, timeout=5.0
+                expected_stream,
+                offset=10,
+                timeout=5.0,
+                arrow_serialization_options=_DEFAULT_READ_OPTIONS,
             )
 
     def test_enums_values(self):
@@ -535,9 +562,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         call_args = client._call_api.call_args
         self.assertEqual(call_args.kwargs["data"]["queryResultsFormat"], "ARROW")
         self.assertEqual(
-            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"][
-                "bufferCompression"
-            ],
+            call_args.kwargs["data"]["arrowSerializationOptions"]["bufferCompression"],
             "LZ4_FRAME",
         )
 
@@ -724,6 +749,185 @@ def test_check_dependencies_requires_read_rows_arrow_options(supported):
                 r"\(version found: 2\.42\.0\)",
             ):
                 _check_dependencies()
+
+
+def test_query_and_wait_arrow_sends_default_serialization_options():
+    client = mock.MagicMock(spec=Client)
+    client._call_api.return_value = {
+        "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+        "jobComplete": True,
+        "schema": {"fields": []},
+    }
+
+    row_iterator = _query_and_wait(client, query_results_format="ARROW")
+
+    data = client._call_api.call_args.kwargs["data"]
+    assert data["arrowSerializationOptions"] == _DEFAULT_QUERY_OPTIONS
+    assert "arrowSerializationOptions" not in data["formatOptions"]
+    assert row_iterator._arrow_serialization_options == _DEFAULT_QUERY_OPTIONS
+
+
+def test_query_and_wait_without_arrow_sends_no_serialization_options():
+    client = mock.MagicMock(spec=Client)
+    client._call_api.return_value = {
+        "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+        "jobComplete": True,
+        "rows": [],
+        "schema": {"fields": []},
+    }
+
+    row_iterator = _query_and_wait(client)
+
+    assert "arrowSerializationOptions" not in client._call_api.call_args.kwargs["data"]
+    assert row_iterator._arrow_serialization_options is None
+
+
+def test_query_and_wait_arrow_waits_with_the_same_options():
+    client = mock.MagicMock(spec=Client)
+    client._call_api.return_value = {
+        "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+        "jobComplete": False,
+    }
+
+    with (
+        mock.patch.object(_job_helpers, "_to_query_job") as to_query_job,
+        mock.patch.object(_job_helpers, "_wait_or_cancel") as wait_or_cancel,
+    ):
+        _query_and_wait(client, query_results_format="ARROW", compression_codec="ZSTD")
+
+    wait_or_cancel.assert_called_once_with(
+        to_query_job.return_value,
+        api_timeout=mock.ANY,
+        wait_timeout=mock.ANY,
+        retry=mock.ANY,
+        page_size=mock.ANY,
+        max_results=mock.ANY,
+        query_results_format="ARROW",
+        arrow_serialization_options={
+            "bufferCompression": "ZSTD",
+            "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+        },
+        callback=mock.ANY,
+    )
+
+
+def test_wait_or_cancel_sets_arrow_serialization_options():
+    job = mock.MagicMock(dry_run=False)
+    job.result.return_value = RowIterator(
+        client=mock.MagicMock(), api_request=mock.MagicMock(), path=None, schema=()
+    )
+
+    rows = _job_helpers._wait_or_cancel(
+        job,
+        api_timeout=None,
+        wait_timeout=None,
+        retry=None,
+        page_size=None,
+        max_results=None,
+        query_results_format="ARROW",
+        arrow_serialization_options=_DEFAULT_QUERY_OPTIONS,
+    )
+
+    assert rows._query_results_format == "ARROW"
+    assert rows._arrow_serialization_options == _DEFAULT_QUERY_OPTIONS
+
+
+def test_query_and_wait_arrow_jobs_insert_omits_arrow_fields():
+    client = make_client()
+    client._call_api = mock.Mock(
+        return_value={
+            "jobReference": {"projectId": "PROJECT", "jobId": "j", "location": "US"},
+            "configuration": {"query": {"query": "SELECT 1"}},
+            "status": {"state": "RUNNING"},
+        }
+    )
+    # jobs.query doesn't accept a destination table, so this uses jobs.insert.
+    job_config = QueryJobConfig(destination="PROJECT.dataset.table")
+
+    with mock.patch.object(_job_helpers, "_wait_or_cancel") as wait_or_cancel:
+        client.query_and_wait(
+            "SELECT 1", job_config=job_config, query_results_format="ARROW"
+        )
+
+    (insert_call,) = client._call_api.call_args_list
+    assert insert_call.kwargs["path"] == "/projects/PROJECT/jobs"
+    query_config = insert_call.kwargs["data"]["configuration"]["query"]
+    assert "queryResultsFormat" not in query_config
+    assert "arrowSerializationOptions" not in query_config
+    wait_or_cancel.assert_called_once_with(
+        mock.ANY,
+        api_timeout=mock.ANY,
+        wait_timeout=mock.ANY,
+        retry=mock.ANY,
+        page_size=mock.ANY,
+        max_results=mock.ANY,
+        query_results_format="ARROW",
+        arrow_serialization_options=_DEFAULT_QUERY_OPTIONS,
+        callback=mock.ANY,
+    )
+
+
+def test_supported_by_jobs_query_includes_arrow_serialization_options():
+    body = {
+        "query": "SELECT 1",
+        "queryResultsFormat": "ARROW",
+        "arrowSerializationOptions": _DEFAULT_QUERY_OPTIONS,
+    }
+
+    assert _job_helpers._supported_by_jobs_query(body)
+
+
+@pytest.mark.parametrize("codec", ["LZ4_FRAME", QueryResultsCompressionCodec.LZ4_FRAME])
+def test_serialization_options_accepts_str_and_enum(codec):
+    assert _arrow_query.serialization_options(codec) == {
+        "bufferCompression": "LZ4_FRAME",
+        "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+    }
+
+
+def test_read_rows_options():
+    assert _arrow_query._read_rows_options(None) == _DEFAULT_READ_OPTIONS
+    assert _arrow_query._read_rows_options(
+        {
+            "bufferCompression": "ZSTD",
+            "picosTimestampPrecision": "TIMESTAMP_PRECISION_PICOS",
+        }
+    ) == {
+        "buffer_compression": "ZSTD",
+        "picos_timestamp_precision": "TIMESTAMP_PRECISION_PICOS",
+    }
+
+
+def test_download_arrow_from_job_id_sends_query_options_on_read_rows():
+    bqstorage_client = mock.MagicMock()
+    bqstorage_client.read_rows.return_value = []
+    iterator = RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+        arrow_serialization_options={
+            "bufferCompression": "LZ4_FRAME",
+            "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+        },
+    )
+
+    with mock.patch("google.cloud.bigquery._arrow_query.pyarrow"):
+        list(iterator._download_arrow_from_job_id(bqstorage_client=bqstorage_client))
+
+    bqstorage_client.read_rows.assert_called_once_with(
+        "projects/p/locations/US/jobs/j/streams/_default",
+        offset=0,
+        timeout=None,
+        arrow_serialization_options={
+            "buffer_compression": "LZ4_FRAME",
+            "picos_timestamp_precision": "TIMESTAMP_PRECISION_MICROS",
+        },
+    )
 
 
 if __name__ == "__main__":

@@ -222,6 +222,14 @@ def mypy(session):
     """Run type checks with mypy."""
 
     session.install("-e", ".[all]")
+    # TODO: Remove once google-cloud-bigquery requires a
+    # google-cloud-bigquery-storage release whose read_rows() accepts
+    # arrow_serialization_options. Not editable, because mypy can't follow the
+    # import hook of an editable install.
+    session.install(
+        str(CURRENT_DIRECTORY.parent / "google-cloud-bigquery-storage"),
+        "--no-deps",
+    )
     session.install(MYPY_VERSION)
 
     # Just install the dependencies' type info directly, since "mypy --install-types"

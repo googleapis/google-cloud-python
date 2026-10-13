@@ -1916,6 +1916,9 @@ class RowIterator(HTTPIterator):
             If representing query results, the start time of the associated query.
         ended (Optional[datetime.datetime]):
             If representing query results, the end time of the associated query.
+        arrow_serialization_options (Optional[Dict[str, str]]):
+            The ``arrowSerializationOptions`` sent on ``jobs.query`` for
+            ``ARROW`` results. ``ReadRows`` requests the same options.
     """
 
     def __init__(
@@ -1944,6 +1947,7 @@ class RowIterator(HTTPIterator):
         started: Optional[datetime.datetime] = None,
         ended: Optional[datetime.datetime] = None,
         query_results_format: Optional[str] = None,
+        arrow_serialization_options: Optional[Dict[str, str]] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1978,6 +1982,7 @@ class RowIterator(HTTPIterator):
         self._job_started = started
         self._job_ended = ended
         self._query_results_format = query_results_format
+        self._arrow_serialization_options = arrow_serialization_options
 
     @property
     @_disallow_when_arrow

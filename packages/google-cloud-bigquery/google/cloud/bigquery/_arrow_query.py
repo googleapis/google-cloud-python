@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import base64
-from typing import Iterator, Optional, TYPE_CHECKING
+from typing import Dict, Iterator, Optional, TYPE_CHECKING
 
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import enums
@@ -101,6 +101,30 @@ def _check_dependencies() -> None:
         )
 
 
+def serialization_options(compression_codec: Optional[str]) -> Dict[str, str]:
+    """Build the ``arrowSerializationOptions`` sent on ``jobs.query``.
+
+    ``ReadRows`` gets the same options. Options the caller didn't set are sent
+    with their defaults, so every batch uses one encoding, whatever each
+    endpoint would default to.
+    """
+    return {
+        "bufferCompression": getattr(compression_codec, "value", compression_codec)
+        or "COMPRESSION_UNSPECIFIED",
+        "picosTimestampPrecision": "TIMESTAMP_PRECISION_MICROS",
+    }
+
+
+def _read_rows_options(options: Optional[Dict[str, str]]) -> Dict[str, str]:
+    """Convert ``jobs.query`` ``arrowSerializationOptions`` to the
+    ``ArrowSerializationOptions`` fields that ``ReadRows`` takes."""
+    options = options or serialization_options(None)
+    return {
+        "buffer_compression": options["bufferCompression"],
+        "picos_timestamp_precision": options["picosTimestampPrecision"],
+    }
+
+
 def download_arrow_from_job(
     row_iterator: "RowIterator",
     bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
@@ -170,7 +194,14 @@ def download_arrow_from_job(
         row_iterator.client.location if row_iterator.client else None
     )
     stream_name = f"projects/{project}/locations/{location}/jobs/{row_iterator._job_id}/streams/_default"
-    reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
+    reader = bqstorage_client.read_rows(
+        stream_name,
+        offset=offset,
+        timeout=timeout,
+        arrow_serialization_options=_read_rows_options(
+            row_iterator._arrow_serialization_options
+        ),
+    )
     for response in reader:
         if (
             response.arrow_schema
