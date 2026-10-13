@@ -200,6 +200,11 @@ class _AcceleratorIdentityError(RuntimeError):
     this client's — signals the caller to fall back to the native client."""
 
 
+# Alias used in _start_accelerator's except clause; identity and "unverified"
+# refer to the same failure mode.
+_AcceleratorUnverified = _AcceleratorIdentityError
+
+
 def _normalize_scopes(scopes: Any) -> frozenset[str]:
     """Normalize a scope value to a comparable, order-insensitive set.
 
@@ -419,6 +424,14 @@ class BigtableDataClientAsync(ClientWithProject):
                 "client_cert_source (mTLS) cannot be forwarded to the "
                 "accelerator daemon"
             )
+        # User-Agent prefix always forwarded so the daemon can construct the full
+        # "python-v{ver}-go-accelerator-v{ver}" string even when the daemon is
+        # ultimately blocked (the flag is harmless when the daemon never starts).
+        self._accelerator_flags += [
+            "--caller-user-agent",
+            f"python-v{google.cloud.bigtable.__version__}",
+        ]
+
         if self._accelerator_blocked_reason:
             return
 
