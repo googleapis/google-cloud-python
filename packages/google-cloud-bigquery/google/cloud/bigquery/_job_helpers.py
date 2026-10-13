@@ -620,6 +620,11 @@ def query_and_wait(
         )
         page_token = query_results.page_token
         more_pages = page_token is not None
+        if (
+            arrow_serialization_options is not None
+            and _arrow_query.reached_max_results(response, max_results)
+        ):
+            more_pages = False
 
         if more_pages or not query_results.complete:
             # TODO(swast): Avoid a call to jobs.get in some cases (few
