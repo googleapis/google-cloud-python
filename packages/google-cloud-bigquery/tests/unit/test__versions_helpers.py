@@ -200,6 +200,24 @@ def test_bqstorage_is_read_session_optional_false():
         assert not bqstorage_versions.is_read_session_optional
 
 
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test_bqstorage_supports_arrow_serialization_options_true():
+    bqstorage_versions = _versions_helpers.BQStorageVersions()
+    with mock.patch("google.cloud.bigquery_storage.__version__", new="2.42.0"):
+        assert bqstorage_versions.supports_arrow_serialization_options
+
+
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test_bqstorage_supports_arrow_serialization_options_false():
+    bqstorage_versions = _versions_helpers.BQStorageVersions()
+    with mock.patch("google.cloud.bigquery_storage.__version__", new="2.41.0"):
+        assert not bqstorage_versions.supports_arrow_serialization_options
+
+
 @pytest.mark.skipif(pandas is None, reason="pandas is not installed")
 @pytest.mark.parametrize("version", ["1.1.5", "2.0.0", "2.1.0"])
 def test_try_import_raises_no_error_w_recent_pandas(version):

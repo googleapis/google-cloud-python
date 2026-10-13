@@ -21,7 +21,19 @@ and
 https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema/pyarrow_to_bigquery.py
 """
 
-from typing import Any
+from __future__ import annotations
+
+import base64
+from typing import Any, Dict, Iterator, Optional, Sequence, Tuple, TYPE_CHECKING, Union
+
+from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery import enums
+from google.cloud.bigquery import exceptions
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud import bigquery_storage
+    from google.cloud.bigquery import job
+    from google.cloud.bigquery.table import RowIterator
 
 try:
     import pyarrow  # type: ignore
@@ -145,3 +157,356 @@ def arrow_scalar_ids_to_bq(arrow_scalar: Any):
         If it cannot find the arrow scalar, return None.
     """
     return _ARROW_SCALAR_IDS_TO_BQ.get(arrow_scalar)
+
+
+# The shared BigQuery Storage client pings the server every minute while a
+# stream is open, so idle connections aren't dropped while the caller
+# processes a batch.
+_BQSTORAGE_KEEPALIVE_TIME_MS = 60 * 1000
+
+
+def _create_bqstorage_transport(**kwargs):
+    """Create a BigQuery Storage gRPC transport whose channel sends keepalive
+    pings.
+
+    ``BigQueryReadClient`` calls this with the arguments it passes to its
+    default transport.
+    """
+    from google.cloud import bigquery_storage
+
+    transport_class = bigquery_storage.BigQueryReadClient.get_transport_class("grpc")
+
+    def create_channel(*args, options=(), **channel_kwargs):
+        options = list(options) + [
+            ("grpc.keepalive_time_ms", _BQSTORAGE_KEEPALIVE_TIME_MS)
+        ]
+        return transport_class.create_channel(*args, options=options, **channel_kwargs)
+
+    return transport_class(channel=create_channel, **kwargs)
+
+
+def _validate_arrow_query(
+    query_results_format: Optional[str],
+    compression_codec: Optional[str],
+    job_config: Optional["job.QueryJobConfig"],
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
+) -> None:
+    """Raise before sending a query whose ARROW results can't be returned."""
+    if query_results_format != enums.QueryResultsFormat.ARROW:
+        for name, value in (
+            ("compression_codec", compression_codec),
+            ("timestamp_precision", timestamp_precision),
+        ):
+            if value is not None:
+                raise ValueError(f"{name} requires query_results_format=ARROW.")
+        return
+
+    if (
+        job_config is not None
+        and job_config.write_disposition == enums.WriteDisposition.WRITE_APPEND
+    ):
+        raise ValueError(
+            "query_results_format=ARROW doesn't support WRITE_APPEND, because "
+            "the results would also include the rows already in the "
+            "destination table."
+        )
+
+    _check_arrow_dependencies()
+
+
+def _check_arrow_dependencies() -> None:
+    """Raise if pyarrow or google-cloud-bigquery-storage can't read ARROW results."""
+    _versions_helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
+    _versions_helpers.BQ_STORAGE_VERSIONS.try_import(raise_if_error=True)
+    if not _versions_helpers.BQ_STORAGE_VERSIONS.supports_arrow_serialization_options:
+        raise exceptions.LegacyBigQueryStorageError(
+            "Dependency google-cloud-bigquery-storage is outdated, please "
+            "upgrade it to version >= "
+            f"{_versions_helpers._BQ_STORAGE_ARROW_OPTIONS_VERSION} "
+            "(`pip install --upgrade google-cloud-bigquery-storage`) "
+            "(version found: "
+            f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
+        )
+
+
+def _to_rest_arrow_options(
+    compression_codec: Optional[str],
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
+) -> Dict[str, str]:
+    """Build the ``jobs.query`` ``arrowSerializationOptions`` dict.
+
+    Send the same options on ``jobs.query`` and ``ReadRows``, including the
+    defaults, so every batch in the result uses one encoding.
+    """
+    return {
+        "bufferCompression": getattr(compression_codec, "value", compression_codec)
+        or "COMPRESSION_UNSPECIFIED",
+        "picosTimestampPrecision": (
+            "TIMESTAMP_PRECISION_PICOS"
+            if timestamp_precision == enums.TimestampPrecision.PICOSECOND
+            else "TIMESTAMP_PRECISION_MICROS"
+        ),
+    }
+
+
+def _to_read_api_arrow_options(
+    options: Optional[Dict[str, str]],
+) -> Dict[str, str]:
+    """Convert ``jobs.query`` ``arrowSerializationOptions`` to the BigQuery
+    Storage ``ArrowSerializationOptions`` fields, filling in the defaults.
+    """
+    options = options or {}
+    return {
+        "buffer_compression": options.get(
+            "bufferCompression", "COMPRESSION_UNSPECIFIED"
+        ),
+        "picos_timestamp_precision": options.get(
+            "picosTimestampPrecision", "TIMESTAMP_PRECISION_MICROS"
+        ),
+    }
+
+
+def _arrow_has_more_pages(
+    response: Dict[str, Any],
+    max_results: Optional[int],
+) -> bool:
+    """Return True if an ``ARROW`` ``jobs.query`` response has more rows to fetch.
+
+    An ``ARROW`` response reports how many rows its first page holds via
+    ``pageRowCount``, so compare that with the rows wanted instead of relying
+    on ``pageToken``.
+    """
+    rows_wanted = int(response.get("totalRows", 0))
+    if max_results is not None:
+        rows_wanted = min(rows_wanted, max_results)
+    return int(response.get("pageRowCount", 0)) < rows_wanted
+
+
+def _deserialize_arrow_schema(
+    schema_bytes: Union[bytes, str],
+) -> "pyarrow.Schema":
+    """Deserialize an Arrow IPC schema from bytes or base64-encoded string."""
+    if isinstance(schema_bytes, str):
+        schema_bytes = base64.b64decode(schema_bytes)
+    return pyarrow.ipc.read_schema(pyarrow.py_buffer(schema_bytes))
+
+
+def _deserialize_arrow_batch(
+    batch_bytes: Union[bytes, str],
+    schema: "pyarrow.Schema",
+) -> "pyarrow.RecordBatch":
+    """Deserialize an Arrow IPC record batch from bytes or base64-encoded string."""
+    if isinstance(batch_bytes, str):
+        batch_bytes = base64.b64decode(batch_bytes)
+    return pyarrow.ipc.read_record_batch(pyarrow.py_buffer(batch_bytes), schema)
+
+
+def _slice_arrow_batch(
+    batch: "pyarrow.RecordBatch",
+    remaining: Optional[int],
+) -> Tuple["pyarrow.RecordBatch", Optional[int]]:
+    """Slice ``batch`` to at most ``remaining`` rows and return the updated count."""
+    if remaining is None:
+        return batch, None
+    if batch.num_rows > remaining:
+        batch = batch.slice(0, remaining)
+    return batch, remaining - batch.num_rows
+
+
+def _empty_arrow_batch(
+    pa_schema: Optional["pyarrow.Schema"],
+    bq_schema: Sequence[Any],
+) -> "pyarrow.RecordBatch":
+    """Build a zero-row ``pyarrow.RecordBatch`` preserving the query schema.
+
+    A result without rows keeps the Arrow schema BigQuery sent. The default job
+    stream sends none for zero rows, so fall back to the BigQuery schema from
+    ``jobs.getQueryResults`` if there is one, else return an empty batch with
+    no columns.
+    """
+    schema = pa_schema
+    if schema is None and bq_schema:
+        from google.cloud.bigquery import _pandas_helpers
+
+        schema = _pandas_helpers.bq_to_arrow_schema(bq_schema)
+    if schema is None:
+        return pyarrow.record_batch([])
+    return pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([], type=field.type) for field in schema],
+        schema=schema,
+    )
+
+
+def _open_arrow_read_stream(
+    row_iterator: "RowIterator",
+    bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"],
+    offset: int,
+    timeout: Optional[float],
+    pa_schema: Optional["pyarrow.Schema"],
+) -> Tuple[Optional[Any], Optional["pyarrow.Schema"]]:
+    """Open a BigQuery Storage Read API stream for remaining Arrow rows.
+
+    Reads from a single-stream table ``ReadSession`` when the query wrote to an
+    explicit destination table, or from the job default stream
+    (``projects/.../locations/.../jobs/.../streams/_default``) otherwise.
+
+    Returns ``(reader, pa_schema)``. ``reader`` is ``None`` when an explicit
+    destination table has no streams (empty table).
+    """
+    if bqstorage_client is None:
+        if row_iterator.client is None:
+            raise ValueError("RowIterator client is None.")
+        bqstorage_client = row_iterator.client._get_shared_bqstorage_client()
+        if bqstorage_client is None:
+            raise ValueError(
+                "The google-cloud-bigquery-storage library is required to read "
+                "Arrow results (`pip install google-cloud-bigquery-storage`)."
+            )
+
+    read_options = _to_read_api_arrow_options(row_iterator._arrow_serialization_options)
+    if row_iterator._explicit_destination and row_iterator._table is not None:
+        from google.cloud import bigquery_storage
+
+        # The default job stream rejects jobs with an explicit destination
+        # table, so read the table through a read session. One stream keeps
+        # the rows in order.
+        session = bqstorage_client.create_read_session(
+            parent=f"projects/{row_iterator._billing_project}",
+            read_session=bigquery_storage.types.stream.ReadSession(
+                table=row_iterator._table.to_bqstorage(),
+                data_format=bigquery_storage.types.stream.DataFormat.ARROW,
+                read_options=bigquery_storage.types.stream.ReadSession.TableReadOptions(
+                    arrow_serialization_options=read_options
+                ),
+            ),
+            max_stream_count=1,
+            timeout=timeout,
+        )
+        if session.arrow_schema.serialized_schema and pa_schema is None:
+            pa_schema = _deserialize_arrow_schema(
+                session.arrow_schema.serialized_schema
+            )
+        if not session.streams:
+            return None, pa_schema
+        reader = bqstorage_client.read_rows(
+            session.streams[0].name, offset=offset, timeout=timeout
+        )
+        return reader, pa_schema
+
+    project = row_iterator._project or (
+        row_iterator.client.project if row_iterator.client else None
+    )
+    location = row_iterator._location or (
+        row_iterator.client.location if row_iterator.client else None
+    )
+    stream_name = f"projects/{project}/locations/{location}/jobs/{row_iterator._job_id}/streams/_default"
+    reader = bqstorage_client.read_rows(
+        stream_name,
+        offset=offset,
+        timeout=timeout,
+        arrow_serialization_options=read_options,
+    )
+    return reader, pa_schema
+
+
+_NO_PYARROW_ERROR = (
+    "The pyarrow library is not installed, please install "
+    "pyarrow to use the to_arrow() function."
+)
+
+
+def download_arrow_from_job(
+    row_iterator: "RowIterator",
+    bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
+    timeout: Optional[float] = None,
+) -> Iterator["pyarrow.RecordBatch"]:
+    """Yield Arrow record batches for query results formatted as ARROW.
+
+    First processes inline Arrow data in the initial page response (if present),
+    updating row offset and total row counts. If more rows remain, streams
+    remaining batches using the BigQuery Read API.
+    """
+    if pyarrow is None:
+        raise ValueError(_NO_PYARROW_ERROR)
+
+    offset = 0
+    pa_schema: Optional["pyarrow.Schema"] = None
+    total_rows = row_iterator.total_rows
+    job_complete = False
+    remaining = row_iterator.max_results
+    yielded = False
+
+    # Step 1: Process initial inline Arrow response from jobs.query if available.
+    if row_iterator._first_page_response:
+        first_page = row_iterator._first_page_response
+
+        job_complete = bool(first_page.get("jobComplete", False))
+        if job_complete:
+            total_rows = int(first_page.get("totalRows", 0))
+
+        schema_bytes = (first_page.get("arrowSchema") or {}).get("serializedSchema")
+        if schema_bytes:
+            pa_schema = _deserialize_arrow_schema(schema_bytes)
+
+        batch_bytes = (first_page.get("arrowRecordBatch") or {}).get(
+            "serializedRecordBatch"
+        )
+        if batch_bytes and pa_schema is not None:
+            batch = _deserialize_arrow_batch(batch_bytes, pa_schema)
+            offset += batch.num_rows
+            yielded = True
+            batch, remaining = _slice_arrow_batch(batch, remaining)
+            yield batch
+
+    # Step 2: Return early if all results were delivered in the first page
+    # response, or if the first page already reached max_results.
+    if (job_complete and offset >= total_rows) or remaining == 0:
+        if not yielded:
+            yield _empty_arrow_batch(pa_schema, row_iterator._schema)
+        return
+
+    # Step 3: Stream remaining Arrow record batches from the job default stream,
+    # or from the destination table if the job config set one.
+    reader, pa_schema = _open_arrow_read_stream(
+        row_iterator, bqstorage_client, offset, timeout, pa_schema
+    )
+    if reader is None:
+        # The table is empty. Explicit destinations never come with a first
+        # page, so this is the whole result.
+        yield _empty_arrow_batch(pa_schema, row_iterator._schema)
+        return
+
+    finished = False
+    try:
+        for response in reader:
+            if (
+                response.arrow_schema
+                and response.arrow_schema.serialized_schema
+                and pa_schema is None
+            ):
+                pa_schema = _deserialize_arrow_schema(
+                    response.arrow_schema.serialized_schema
+                )
+            if (
+                response.arrow_record_batch
+                and response.arrow_record_batch.serialized_record_batch
+                and pa_schema is not None
+            ):
+                batch = _deserialize_arrow_batch(
+                    response.arrow_record_batch.serialized_record_batch,
+                    pa_schema,
+                )
+                yielded = True
+                batch, remaining = _slice_arrow_batch(batch, remaining)
+                yield batch
+                if remaining == 0:
+                    break
+        else:
+            finished = True
+    finally:
+        # Stop the stream if reading ends before it does: at max_results,
+        # on an error, or when the caller closes the iterator.
+        if not finished:
+            reader.cancel()
+    if not yielded:
+        yield _empty_arrow_batch(pa_schema, row_iterator._schema)
