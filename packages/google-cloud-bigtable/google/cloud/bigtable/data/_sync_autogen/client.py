@@ -148,6 +148,9 @@ class _AcceleratorIdentityError(RuntimeError):
     this client's — signals the caller to fall back to the native client."""
 
 
+_AcceleratorUnverified = _AcceleratorIdentityError
+
+
 def _normalize_scopes(scopes: Any) -> frozenset[str]:
     """Normalize a scope value to a comparable, order-insensitive set.
 
@@ -317,6 +320,10 @@ class BigtableDataClient(ClientWithProject):
             client_options, "client_cert_source", None
         ):
             self._accelerator_blocked_reason = "client_cert_source (mTLS) cannot be forwarded to the accelerator daemon"
+        self._accelerator_flags += [
+            "--caller-user-agent",
+            f"python-v{google.cloud.bigtable.__version__}",
+        ]
         if self._accelerator_blocked_reason:
             return
         scopes = getattr(client_options, "scopes", None) if client_options else None
