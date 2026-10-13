@@ -118,12 +118,6 @@ _TO_DATAFRAME_DEPRECATED = (
     "For direct, optimized access, please call 'pandas_gbq.read_gbq()' directly."
 )
 
-_TO_ARROW_DEPRECATED = (
-    "Retrieving PyArrow Tables via google-cloud-bigquery is deprecated. "
-    "For direct, optimized access, please call 'pandas_gbq.arrow.read_bigquery_table()' "
-    "or 'pandas_gbq.arrow.read_bigquery_query()' directly."
-)
-
 _CANNOT_ITERATE_ARROW_ERROR = (
     "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. "
     "Use to_arrow_iterable() or to_arrow() instead."
@@ -2469,12 +2463,6 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 1.17.0
         """
-        warnings.warn(
-            _TO_ARROW_DEPRECATED,
-            PendingDeprecationWarning,
-            stacklevel=2,
-        )
-
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
@@ -2992,18 +2980,12 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client = False
             bqstorage_client = None
 
-        with warnings.catch_warnings():
-            warnings.filterwarnings(
-                "ignore",
-                category=PendingDeprecationWarning,
-                message="Retrieving PyArrow Tables.*",
-            )
-            record_batch = self.to_arrow(
-                progress_bar_type=progress_bar_type,
-                bqstorage_client=bqstorage_client,
-                create_bqstorage_client=create_bqstorage_client,
-                timeout=timeout,
-            )
+        record_batch = self.to_arrow(
+            progress_bar_type=progress_bar_type,
+            bqstorage_client=bqstorage_client,
+            create_bqstorage_client=create_bqstorage_client,
+            timeout=timeout,
+        )
 
         # Default date dtype is `db_dtypes.DateDtype()` that could cause out of bounds error,
         # when pyarrow converts date values to nanosecond precision. To avoid the error, we
@@ -3279,11 +3261,6 @@ class _EmptyRowIterator(RowIterator):
         """
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
-        warnings.warn(
-            _TO_ARROW_DEPRECATED,
-            PendingDeprecationWarning,
-            stacklevel=2,
-        )
         return pyarrow.Table.from_arrays(())
 
     def to_dataframe(
