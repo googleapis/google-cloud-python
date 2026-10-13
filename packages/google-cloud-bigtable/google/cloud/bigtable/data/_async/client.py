@@ -1451,16 +1451,9 @@ class _DataApiTargetAsync(abc.ABC):
             self._accelerator_client = AcceleratorClientType(
                 server.uds_path, server.auth_secret
             )
-        except _AcceleratorUnverified:
+        except _AcceleratorIdentityError:
             server.close()
-            warnings.warn(
-                "Accelerator disabled: could not verify that the daemon "
-                "resolves the same identity as this client; using the native "
-                "client instead.",
-                RuntimeWarning,
-                stacklevel=2,
-            )
-            return
+            raise
         except BaseException:
             server.close()
             raise
