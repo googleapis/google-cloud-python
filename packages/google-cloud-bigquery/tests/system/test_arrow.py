@@ -887,3 +887,51 @@ def test_query_and_wait_arrow_explicit_destination(
         f"projects/{bigquery_client.project}/datasets/{dataset_id}/tables/{table_name}"
     )
     assert kwargs["max_stream_count"] == 1
+
+
+@pytest.mark.parametrize(
+    "priority",
+    [None, enums.QueryPriority.INTERACTIVE],
+    ids=["jobs_query", "jobs_insert"],
+)
+def test_query_and_wait_arrow_zero_rows_keep_the_schema(bigquery_client, priority):
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        # jobs.query doesn't accept a priority, so this runs through jobs.insert.
+        job_config.priority = priority
+
+    def query():
+        return bigquery_client.query_and_wait(
+            "SELECT x, CAST(x AS STRING) AS s "
+            "FROM UNNEST(CAST([] AS ARRAY<INT64>)) AS x",
+            job_config=job_config,
+            query_results_format=enums.QueryResultsFormat.ARROW,
+        )
+
+    batches = list(query().to_arrow_iterable())
+
+    assert len(batches) == 1
+    for table in (pyarrow.Table.from_batches(batches), query().to_arrow()):
+        assert table.num_rows == 0
+        assert table.schema.names == ["x", "s"]
+        assert table.schema.field("x").type == pyarrow.int64()
+        assert table.schema.field("s").type == pyarrow.string()
+
+
+def test_query_and_wait_arrow_statements_without_results(bigquery_client, dataset_id):
+    table_id = f"{bigquery_client.project}.{dataset_id}.arrow_statements"
+
+    for statement in (
+        f"CREATE OR REPLACE TABLE `{table_id}` AS SELECT 1 AS x",
+        f"UPDATE `{table_id}` SET x = 2 WHERE TRUE",
+    ):
+        rows = bigquery_client.query_and_wait(
+            statement, query_results_format=enums.QueryResultsFormat.ARROW
+        )
+        (batch,) = rows.to_arrow_iterable()
+        assert batch.num_rows == 0
+
+    assert rows.num_dml_affected_rows == 1
+    assert [
+        row.x for row in bigquery_client.query_and_wait(f"SELECT x FROM `{table_id}`")
+    ] == [2]
