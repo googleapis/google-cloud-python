@@ -15,7 +15,9 @@
 import base64
 import unittest
 from unittest import mock
+import warnings
 
+import google.api_core.exceptions as core_exceptions
 import packaging.version
 import pytest
 
@@ -1047,6 +1049,176 @@ def test_query_and_wait_without_arrow_waits_with_page_size():
         _query_and_wait(client, page_size=10)
 
     assert wait_or_cancel.call_args.kwargs["page_size"] == 10
+
+
+def _arrow_pages(*row_counts):
+    """Serialize an Arrow schema and record batches of consecutive x values."""
+    pyarrow = pytest.importorskip("pyarrow")
+    schema = pyarrow.schema([("x", pyarrow.int64())])
+    batches, start = [], 1
+    for count in row_counts:
+        values = pyarrow.array(range(start, start + count), type=pyarrow.int64())
+        batch = pyarrow.record_batch([values], schema=schema)
+        batches.append(batch.serialize().to_pybytes())
+        start += count
+    return schema.serialize().to_pybytes(), batches
+
+
+def _stream_response(batch):
+    return mock.Mock(
+        arrow_schema=None,
+        arrow_record_batch=mock.Mock(serialized_record_batch=batch),
+    )
+
+
+def _limited_iterator(row_counts, total_rows, max_results):
+    """A RowIterator whose first page has row_counts[0] rows and whose stream
+    returns the rest, plus its mock BigQuery Storage client and stream.
+    """
+    schema, batches = _arrow_pages(*row_counts)
+    reader = mock.MagicMock()
+    reader.__iter__.return_value = iter(
+        [_stream_response(batch) for batch in batches[1:]]
+    )
+    bqstorage_client = mock.MagicMock()
+    bqstorage_client.read_rows.return_value = reader
+    iterator = RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        max_results=max_results,
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+        first_page_response={
+            "jobComplete": True,
+            "totalRows": str(total_rows),
+            "arrowSchema": {"serializedSchema": base64.b64encode(schema).decode()},
+            "arrowRecordBatch": {
+                "serializedRecordBatch": base64.b64encode(batches[0]).decode()
+            },
+        },
+    )
+    return iterator, bqstorage_client, reader
+
+
+def _values(batches):
+    return [value for batch in batches for value in batch.column(0).to_pylist()]
+
+
+def test_download_arrow_max_results_within_first_page_skips_stream():
+    iterator, bqstorage_client, _ = _limited_iterator([10, 15], 25, max_results=4)
+
+    batches = list(iterator._download_arrow_from_job_id(bqstorage_client))
+
+    assert _values(batches) == [1, 2, 3, 4]
+    bqstorage_client.read_rows.assert_not_called()
+
+
+def test_download_arrow_max_results_across_stream_cancels_it():
+    iterator, bqstorage_client, reader = _limited_iterator(
+        [10, 10, 5], 25, max_results=15
+    )
+
+    batches = list(iterator._download_arrow_from_job_id(bqstorage_client))
+
+    assert _values(batches) == list(range(1, 16))
+    assert bqstorage_client.read_rows.call_args.kwargs["offset"] == 10
+    reader.cancel.assert_called_once_with()
+
+
+def test_download_arrow_max_results_past_last_row_reads_everything():
+    iterator, bqstorage_client, reader = _limited_iterator(
+        [10, 10, 5], 25, max_results=100
+    )
+
+    batches = list(iterator._download_arrow_from_job_id(bqstorage_client))
+
+    assert _values(batches) == list(range(1, 26))
+    reader.cancel.assert_not_called()
+
+
+def test_download_arrow_cancels_stream_when_closed_early():
+    iterator, bqstorage_client, reader = _limited_iterator(
+        [10, 10, 5], 25, max_results=None
+    )
+    batches = iterator._download_arrow_from_job_id(bqstorage_client)
+
+    next(batches)  # first page
+    next(batches)  # first stream batch
+    batches.close()
+
+    reader.cancel.assert_called_once_with()
+
+
+def test_download_arrow_raises_stream_errors_after_earlier_batches():
+    iterator, bqstorage_client, reader = _limited_iterator(
+        [10, 10, 5], 25, max_results=None
+    )
+    first_stream_response = next(reader.__iter__.return_value)
+
+    def fail_after_one_response():
+        yield first_stream_response
+        raise core_exceptions.PermissionDenied("stream failed")
+
+    reader.__iter__.return_value = fail_after_one_response()
+    received = []
+
+    with pytest.raises(core_exceptions.PermissionDenied):
+        for batch in iterator._download_arrow_from_job_id(bqstorage_client):
+            received.append(batch)
+
+    # The caller gets the error after the batches that arrived before it, so
+    # a partial result never looks complete.
+    assert _values(received) == list(range(1, 21))
+    reader.cancel.assert_called_once_with()
+
+
+def test_query_and_wait_arrow_first_page_reaching_max_results_doesnt_wait():
+    client = mock.MagicMock(spec=Client)
+    client._call_api.return_value = _arrow_query_response(
+        pageRowCount="10", totalRows="25"
+    )
+
+    with mock.patch.object(_job_helpers, "_wait_or_cancel") as wait_or_cancel:
+        rows = _query_and_wait(client, query_results_format="ARROW", max_results=10)
+
+    wait_or_cancel.assert_not_called()
+    assert rows.max_results == 10
+    assert client._call_api.call_args.kwargs["data"]["maxResults"] == 10
+
+
+def test_to_arrow_with_arrow_format_and_max_results_keeps_bqstorage_client():
+    pyarrow = pytest.importorskip("pyarrow")
+    bqstorage_client = mock.MagicMock()
+    iterator = RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        max_results=5,
+        query_results_format="ARROW",
+    )
+    batch = pyarrow.record_batch([pyarrow.array([1, 2])], names=["x"])
+
+    with (
+        mock.patch.object(
+            iterator, "to_arrow_iterable", return_value=iter([batch])
+        ) as to_arrow_iterable,
+        warnings.catch_warnings(record=True) as caught,
+    ):
+        warnings.simplefilter("always")
+        table = iterator.to_arrow(bqstorage_client=bqstorage_client)
+
+    to_arrow_iterable.assert_called_once_with(
+        bqstorage_client=bqstorage_client, timeout=None
+    )
+    assert table.num_rows == 2
+    # ARROW results apply max_results while streaming, so there's no warning
+    # about falling back to the REST API.
+    assert not [w for w in caught if "max_results" in str(w.message)]
 
 
 if __name__ == "__main__":

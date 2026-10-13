@@ -753,3 +753,32 @@ def test_query_and_wait_arrow_failed_query(bigquery_client, priority):
 
     assert type(arrow_error.value) is type(struct_encoding_error.value)
     assert "failed at row 1000" in arrow_error.value.message
+
+
+@pytest.mark.parametrize(
+    ("page_size", "max_results", "expected_rows", "streamed"),
+    [
+        (None, 10, 10, False),
+        (100, 150, 150, True),
+        (100, 5000, 1000, True),
+    ],
+    ids=["within_first_page", "across_stream", "past_last_row"],
+)
+def test_query_and_wait_arrow_max_results(
+    bigquery_client, bqstorage_client, page_size, max_results, expected_rows, streamed
+):
+    read_rows = mock.Mock(wraps=bqstorage_client.read_rows)
+
+    rows = bigquery_client.query_and_wait(
+        "SELECT x FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x",
+        job_config=bigquery.QueryJobConfig(use_query_cache=False),
+        page_size=page_size,
+        max_results=max_results,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    with mock.patch.object(bqstorage_client, "read_rows", read_rows):
+        batches = list(rows.to_arrow_iterable(bqstorage_client=bqstorage_client))
+
+    table = pyarrow.Table.from_batches(batches)
+    assert table.column("x").to_pylist() == list(range(1, expected_rows + 1))
+    assert read_rows.called == streamed

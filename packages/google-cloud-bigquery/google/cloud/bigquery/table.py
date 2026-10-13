@@ -2408,11 +2408,17 @@ class RowIterator(HTTPIterator):
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
-        self._maybe_warn_max_results(bqstorage_client)
-
-        if not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client):
+        if self._query_results_format == QueryResultsFormat.ARROW.value:
+            # ARROW results apply max_results themselves and read with the
+            # bqstorage_client they're given, so keep it.
             create_bqstorage_client = False
-            bqstorage_client = None
+        else:
+            self._maybe_warn_max_results(bqstorage_client)
+            if not self._should_use_bqstorage(
+                bqstorage_client, create_bqstorage_client
+            ):
+                create_bqstorage_client = False
+                bqstorage_client = None
 
         owns_bqstorage_client = False
         if not bqstorage_client and create_bqstorage_client:
@@ -2911,7 +2917,9 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
-        self._maybe_warn_max_results(bqstorage_client)
+        # ARROW results apply max_results with the BigQuery Storage API too.
+        if self._query_results_format != QueryResultsFormat.ARROW.value:
+            self._maybe_warn_max_results(bqstorage_client)
 
         if (
             self._query_results_format != QueryResultsFormat.ARROW.value
