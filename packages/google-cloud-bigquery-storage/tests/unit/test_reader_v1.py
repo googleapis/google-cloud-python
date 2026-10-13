@@ -800,3 +800,35 @@ def test_cancel_during_reconnect_retry_stops_without_retrying(
     mock_gapic_client.read_rows.assert_called_once_with(
         read_stream="teststream", offset=0
     )
+
+
+def test_del_cancels_unfinished_stream_once(class_under_test, mock_gapic_client):
+    wrapped = mock.MagicMock()
+    mock_gapic_client.read_rows.return_value = wrapped
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+    reader._reconnect()
+
+    del reader
+
+    wrapped.cancel.assert_called_once_with()
+
+
+def test_del_does_not_cancel_twice_or_after_completion(
+    class_under_test, mock_gapic_client
+):
+    cancelled = mock.MagicMock()
+    completed = mock.MagicMock()
+    completed.__iter__.return_value = iter([types.ReadRowsResponse(row_count=1)])
+    mock_gapic_client.read_rows.side_effect = [cancelled, completed]
+
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+    reader._reconnect()
+    reader.cancel()
+    del reader
+
+    finished_reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+    assert len(list(finished_reader)) == 1
+    del finished_reader
+
+    cancelled.cancel.assert_called_once_with()
+    completed.cancel.assert_not_called()

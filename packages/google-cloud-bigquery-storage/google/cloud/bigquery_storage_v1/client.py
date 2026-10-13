@@ -57,6 +57,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=(),
         retry_delay_callback=None,
+        *,
         arrow_serialization_options=None,
     ):
         """

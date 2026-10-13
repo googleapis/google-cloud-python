@@ -92,6 +92,7 @@ class ReadRowsStream(object):
         offset,
         read_rows_kwargs,
         retry_delay_callback=None,
+        *,
         arrow_serialization_options=None,
     ):
         """Construct a ReadRowsStream.
@@ -166,6 +167,7 @@ class ReadRowsStream(object):
                     self._offset += rowcount
                     yield message
 
+                self._wrapped = None
                 return  # Made it through the whole stream.
             except google.api_core.exceptions.InternalServerError as exc:
                 resumable_error = any(
@@ -197,6 +199,10 @@ class ReadRowsStream(object):
         cancel = getattr(self._wrapped, "cancel", None)
         if cancel is not None:
             cancel()
+
+    def __del__(self):
+        if not getattr(self, "_cancelled", True):
+            self.cancel()
 
     def _reconnect(self):
         """Reconnect to the ReadRows stream using the most recent offset."""
