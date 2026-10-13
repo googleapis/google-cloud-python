@@ -14,6 +14,7 @@
 
 import json
 import os
+import re
 import unittest.mock
 
 import pytest
@@ -108,34 +109,6 @@ class TestAuthSecret:
         with pytest.raises(RuntimeError, match="has not been started"):
             _ = daemon.auth_secret
 
-    def test_written_to_stdin_after_popen(self, tmp_path, monkeypatch):
-        """start() mints a secret and writes 'secret\n' to the daemon's stdin."""
-        written = []
-
-        class FakeStdin:
-            def write(self, data):
-                written.append(data)
-
-            def flush(self):
-                pass
-
-        class FakeProc:
-            pid = 12345
-            stdin = FakeStdin()
-
-            def poll(self):
-                return None
-
-        def fake_popen(argv, **kwargs):
-            raise _StopStart()
-
-        monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
-        daemon = _make_daemon(tmp_path)
-        with pytest.raises(_StopStart):
-            daemon.start()
-        # Popen raises _StopStart before secret is written; check that the
-        # secret is written when Popen succeeds by using a real pipe below.
-
     def test_secret_written_to_stdin(self, tmp_path, monkeypatch):
         """The secret is urlsafe and ends with a newline on the wire."""
         written = bytearray()
@@ -169,8 +142,6 @@ class TestAuthSecret:
         assert token == daemon.auth_secret
         # token_urlsafe(32) produces ≥32 chars of base64url characters.
         assert len(token) >= 32
-        import re
-
         assert re.fullmatch(r"[A-Za-z0-9_\-]+", token), "expected urlsafe token"
 
     def test_broken_pipe_kills_and_reraises(self, tmp_path, monkeypatch):

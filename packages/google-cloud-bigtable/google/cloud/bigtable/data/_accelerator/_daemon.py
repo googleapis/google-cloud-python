@@ -381,3 +381,4 @@ class AcceleratorDaemon:
         self._tempdir = None
         self._uds_path = None
         self._log_path = None
+        self._auth_secret = None
