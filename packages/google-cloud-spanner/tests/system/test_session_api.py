@@ -263,45 +263,13 @@ COLUMN_INFO = {
 
 
 @pytest.fixture(scope="session")
-def sessions_database(
-    shared_instance, database_operation_timeout, database_dialect, proto_descriptor_file
-):
-    database_name = _helpers.unique_id("test_sessions", separator="_")
-    pool = spanner_v1.BurstyPool(labels={"testcase": "session_api"})
-
-    if database_dialect == DatabaseDialect.POSTGRESQL:
-        sessions_database = shared_instance.database(
-            database_name,
-            pool=pool,
-            database_dialect=database_dialect,
-        )
-
-        operation = sessions_database.create()
-        operation.result(database_operation_timeout)
-
-        operation = sessions_database.update_ddl(ddl_statements=_helpers.DDL_STATEMENTS)
-        operation.result(database_operation_timeout)
-
-    else:
-        sessions_database = shared_instance.database(
-            database_name,
-            ddl_statements=_helpers.DDL_STATEMENTS,
-            pool=pool,
-            proto_descriptors=proto_descriptor_file,
-        )
-
-        operation = sessions_database.create()
-        operation.result(database_operation_timeout)
-
-    _helpers.retry_has_all_dll(sessions_database.reload)()
+def sessions_database(shared_database):
     # Some tests expect there to be a session present in the pool.
     # Experimental host connections only support multiplexed sessions
     if not _helpers.USE_SPANNER_OMNI:
-        pool.put(pool.get())
+        shared_database._pool.put(shared_database._pool.get())
 
-    yield sessions_database
-
-    sessions_database.drop()
+    return shared_database
 
 
 @pytest.fixture(scope="function")
