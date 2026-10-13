@@ -210,9 +210,15 @@ class AcceleratorDaemon:
         # binds the socket. The daemon reads this line synchronously before
         # accepting connections, then validates it on every RPC via metadata.
         self._auth_secret = secrets.token_urlsafe(32)
+        if self._proc is None or self._proc.stdin is None:
+            self._force_kill()
+            self._cleanup_tempdir()
+            raise RuntimeError(
+                "Accelerator daemon process or its stdin is not initialized."
+            )
         try:
-            self._proc.stdin.write(f"{self._auth_secret}\n".encode())  # type: ignore[union-attr]
-            self._proc.stdin.flush()  # type: ignore[union-attr]
+            self._proc.stdin.write(f"{self._auth_secret}\n".encode())
+            self._proc.stdin.flush()
         except (OSError, ValueError) as exc:
             self._force_kill()
             self._cleanup_tempdir()
