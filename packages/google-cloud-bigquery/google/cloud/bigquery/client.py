@@ -3677,6 +3677,7 @@ class Client(ClientWithProject):
         max_results: Optional[int] = None,
         query_results_format: Optional[str] = None,
         compression_codec: Optional[str] = None,
+        timestamp_precision: Optional[enums.TimestampPrecision] = None,
     ) -> RowIterator:
         """Run the query, wait for it to finish, and return the results.
 
@@ -3728,6 +3729,11 @@ class Client(ClientWithProject):
                 [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
             compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
                 [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
+            timestamp_precision (Optional[enums.TimestampPrecision]):
+                [Private Preview] Precision of picosecond ``TIMESTAMP`` columns
+                in ``ARROW`` results. With ``PICOSECOND``, they arrive at full
+                precision as ISO 8601 strings. Otherwise, they're truncated to
+                microseconds. Requires ``query_results_format=ARROW``.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3747,7 +3753,8 @@ class Client(ClientWithProject):
                 :class:`~google.cloud.bigquery.job.QueryJobConfig`
                 class.
             ValueError:
-                If ``compression_codec`` is set without ``ARROW``.
+                If ``compression_codec`` or ``timestamp_precision`` is set
+                without ``ARROW``.
             google.cloud.bigquery.exceptions.BigQueryError:
                 If pyarrow or google-cloud-bigquery-storage is missing or too
                 old to read ``ARROW`` results. The query isn't sent.
@@ -3765,6 +3772,7 @@ class Client(ClientWithProject):
             max_results=max_results,
             query_results_format=query_results_format,
             compression_codec=compression_codec,
+            timestamp_precision=timestamp_precision,
         )
 
     def _query_and_wait_bigframes(
@@ -3782,6 +3790,7 @@ class Client(ClientWithProject):
         max_results: Optional[int] = None,
         query_results_format: Optional[str] = None,
         compression_codec: Optional[str] = None,
+        timestamp_precision: Optional[enums.TimestampPrecision] = None,
         callback: Callable = lambda _: None,
     ) -> RowIterator:
         """See query_and_wait.
@@ -3816,6 +3825,7 @@ class Client(ClientWithProject):
             max_results=max_results,
             query_results_format=query_results_format,
             compression_codec=compression_codec,
+            timestamp_precision=timestamp_precision,
             callback=callback,
         )
 
