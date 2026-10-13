@@ -27,6 +27,8 @@ except ImportError:  # pragma: NO COVER
 import google.api_core.exceptions
 import google.rpc.error_details_pb2  # type: ignore
 
+from google.cloud.bigquery_storage_v1 import types as gapic_types
+
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -93,7 +95,7 @@ class ReadRowsStream(object):
         read_rows_kwargs,
         retry_delay_callback=None,
         *,
-        arrow_serialization_options=None,
+        request_template=None,
     ):
         """Construct a ReadRowsStream.
 
@@ -121,11 +123,13 @@ class ReadRowsStream(object):
                 ReadRowsStream will call retry_delay_callback with the delay
                 duration (in seconds) before it starts sleeping until the next
                 attempt.
-            arrow_serialization_options (Optional[Union[dict, \
-                ~google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions \
+            request_template (Optional[Union[dict, \
+                ~google.cloud.bigquery_storage_v1.types.ReadRowsRequest \
             ]]):
-                Arrow serialization options to send on every ``ReadRows``
-                request, including after a reconnect.
+                Request fields, such as ``arrow_serialization_options``, to
+                send on every ``ReadRows`` request, including after a
+                reconnect. ``read_stream`` and ``offset`` are set from
+                ``name`` and the current stream offset.
 
         Returns:
             Iterable[ \
@@ -141,7 +145,7 @@ class ReadRowsStream(object):
         self._offset = offset
         self._read_rows_kwargs = read_rows_kwargs
         self._retry_delay_callback = retry_delay_callback
-        self._arrow_serialization_options = arrow_serialization_options
+        self._request_template = request_template
         self._cancelled = False
         self._wrapped = None
 
@@ -208,21 +212,20 @@ class ReadRowsStream(object):
         """Reconnect to the ReadRows stream using the most recent offset."""
         while not self._cancelled:
             try:
-                if self._arrow_serialization_options is None:
+                if self._request_template is None:
                     wrapped = self._client.read_rows(
                         read_stream=self._name,
                         offset=self._offset,
                         **self._read_rows_kwargs,
                     )
                 else:
-                    # The flattened read_rows() arguments don't include
-                    # arrow_serialization_options, so send a full request.
+                    # The flattened read_rows() arguments only include
+                    # read_stream and offset, so send a full request copy.
+                    request = gapic_types.ReadRowsRequest(self._request_template)
+                    request.read_stream = self._name
+                    request.offset = self._offset
                     wrapped = self._client.read_rows(
-                        request={
-                            "read_stream": self._name,
-                            "offset": self._offset,
-                            "arrow_serialization_options": self._arrow_serialization_options,
-                        },
+                        request=request,
                         **self._read_rows_kwargs,
                     )
                 # Store the new call before checking for cancel(), so a

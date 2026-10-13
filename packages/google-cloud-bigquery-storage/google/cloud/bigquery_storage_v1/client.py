@@ -147,6 +147,11 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        request_template = None
+        if arrow_serialization_options is not None:
+            request_template = {
+                "arrow_serialization_options": arrow_serialization_options
+            }
         gapic_client = super(BigQueryReadClient, self)
         stream = reader.ReadRowsStream(
             gapic_client,
@@ -154,7 +159,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
             offset,
             {"retry": retry, "timeout": timeout, "metadata": metadata},
             retry_delay_callback=retry_delay_callback,
-            arrow_serialization_options=arrow_serialization_options,
+            request_template=request_template,
         )
         stream._reconnect()
         return stream

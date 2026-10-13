@@ -832,3 +832,36 @@ def test_del_does_not_cancel_twice_or_after_completion(
 
     cancelled.cancel.assert_called_once_with()
     completed.cancel.assert_not_called()
+
+
+def test_request_template_not_mutated_across_reconnects(
+    class_under_test, mock_gapic_client
+):
+    template = types.ReadRowsRequest(
+        arrow_serialization_options={"buffer_compression": "LZ4_FRAME"}
+    )
+    mock_gapic_client.read_rows.side_effect = [
+        _pages_w_unavailable([types.ReadRowsResponse(row_count=4)]),
+        iter([types.ReadRowsResponse(row_count=2)]),
+    ]
+    reader = class_under_test(
+        mock_gapic_client,
+        "teststream",
+        10,
+        {},
+        request_template=template,
+    )
+
+    assert [m.row_count for m in reader] == [4, 2]
+    assert template.read_stream == ""
+    assert template.offset == 0
+    assert mock_gapic_client.read_rows.call_args_list == [
+        mock.call(
+            request=types.ReadRowsRequest(
+                read_stream="teststream",
+                offset=offset,
+                arrow_serialization_options={"buffer_compression": "LZ4_FRAME"},
+            )
+        )
+        for offset in (10, 14)
+    ]
