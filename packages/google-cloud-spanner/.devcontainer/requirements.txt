@@ -22,9 +22,9 @@ filelock==3.32.7 \
     # via
     #   python-discovery
     #   virtualenv
-nox==2024.10.9 \
-    --hash=sha256:1d36f309a0a2a853e9bccb76bbef6bb118ba92fa92674d15604ca99adeb29eab \
-    --hash=sha256:7aa9dc8d1c27e9f45ab046ffd1c3b2c4f7c91755304769df231308849ebded95
+nox==2026.8.17 \
+    --hash=sha256:8d9c69c9b996a59db1eb2c6968deaebc2edbc55317d205981bbc4a37351d3f2e \
+    --hash=sha256:a96a5286007cbc0d1eb1930e85738668f6722adba1ffaa48287296a96963086e
     # via -r requirements.in
 packaging==26.3 \
     --hash=sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79 \
