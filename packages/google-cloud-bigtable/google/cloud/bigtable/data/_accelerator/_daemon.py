@@ -149,10 +149,15 @@ def _sweep_stale_tempdirs() -> None:
     except OSError:
         return
     now = time.time()
+    # A daemon still mid-startup must not be swept. The log file's mtime is
+    # stamped before Popen, so the grace window must exceed the maximum time
+    # start() can spend waiting for the socket (the configured startup timeout)
+    # plus a fixed buffer.
+    grace = _resolve_startup_timeout() + _STALE_SWEEP_MIN_AGE_SECONDS
     for log_path in logs:
         path = os.path.dirname(log_path)
         try:
-            if now - os.path.getmtime(log_path) < _STALE_SWEEP_MIN_AGE_SECONDS:
+            if now - os.path.getmtime(log_path) < grace:
                 continue
             if _socket_is_live(os.path.join(path, _SOCKET_FILENAME)):
                 continue
