@@ -31,6 +31,7 @@ import shutil
 import socket
 import subprocess
 import tempfile
+import threading
 import time
 from typing import Any, Mapping, Sequence
 
@@ -143,6 +144,8 @@ def _sweep_stale_tempdirs() -> None:
     All failures are swallowed — sweeping is opportunistic and must never break
     startup.
     """
+    if not hasattr(socket, "AF_UNIX"):
+        return
     root = tempfile.gettempdir()
     try:
         logs = glob.glob(os.path.join(root, _TEMPDIR_PREFIX + "*", _LOG_FILENAME))
@@ -273,8 +276,10 @@ class AcceleratorDaemon:
             )
 
         # Reap tempdirs leaked by daemons from prior runs that crashed or were
-        # killed before close() could clean up after them.
-        _sweep_stale_tempdirs()
+        # killed before close() could clean up after them. Fire-and-forget on a
+        # daemon thread so it never blocks startup (sweep probes dead sockets
+        # with a 0.25 s timeout each).
+        threading.Thread(target=_sweep_stale_tempdirs, daemon=True).start()
         self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
         self._uds_path = os.path.join(self._tempdir, _SOCKET_FILENAME)
 

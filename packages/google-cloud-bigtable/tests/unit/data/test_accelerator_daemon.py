@@ -666,6 +666,10 @@ class TestResolveStartupTimeout:
             _make_daemon(tmp_path)
 
 
+@pytest.mark.skipif(
+    not hasattr(_daemon.socket, "AF_UNIX"),
+    reason="Unix domain sockets (AF_UNIX) are not supported on this platform",
+)
 class TestSweepStaleTempdirs:
     """_sweep_stale_tempdirs reaps leftover daemon tempdirs, keyed on the
     daemon.log marker, without touching live or too-young ones."""
@@ -719,10 +723,14 @@ class TestSweepStaleTempdirs:
         assert d.exists()
 
     def test_start_invokes_sweep(self, tmp_path, monkeypatch):
-        called = []
-        monkeypatch.setattr(
-            _daemon, "_sweep_stale_tempdirs", lambda: called.append(True)
-        )
+        import threading
+
+        done = threading.Event()
+
+        def _fake_sweep():
+            done.set()
+
+        monkeypatch.setattr(_daemon, "_sweep_stale_tempdirs", _fake_sweep)
 
         def boom(*args, **kwargs):
             raise OSError("refusing to spawn in test")
@@ -731,4 +739,4 @@ class TestSweepStaleTempdirs:
         daemon = _make_daemon(tmp_path)
         with pytest.raises(RuntimeError):
             daemon.start()
-        assert called == [True]
+        assert done.wait(timeout=2.0), "sweep thread did not run within 2 s"
