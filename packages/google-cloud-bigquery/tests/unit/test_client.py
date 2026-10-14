@@ -1033,6 +1033,128 @@ class TestClient(unittest.TestCase):
         ]
         assert matching_warnings, "Obsolete dependency warning not raised."
 
+    def test_get_shared_bqstorage_client_creates_one_client(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+        from google.cloud.bigquery import client as client_module
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ):
+            first = client._get_shared_bqstorage_client()
+            second = client._get_shared_bqstorage_client()
+
+        self.assertIs(first, mock_client.return_value)
+        self.assertIs(second, first)
+        mock_client.assert_called_once_with(
+            credentials=creds,
+            client_options=None,
+            client_info=mock.ANY,
+            transport=client_module._create_bqstorage_transport,
+        )
+
+    @pytest.mark.skipif(
+        packaging.version.parse(getattr(google.api_core, "__version__", "0.0.0"))
+        < packaging.version.Version("2.15.0"),
+        reason="universe_domain not supported with google-api-core < 2.15.0",
+    )
+    def test_get_shared_bqstorage_client_uses_universe_domain(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_options={"universe_domain": "foo.com"},
+        )
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ):
+            client._get_shared_bqstorage_client()
+
+        _, kwargs = mock_client.call_args
+        self.assertEqual(kwargs["client_options"].universe_domain, "foo.com")
+
+    def test_get_shared_bqstorage_client_tries_again_if_unavailable(self):
+        from google.cloud.bigquery import client as client_module
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        with mock.patch.object(
+            client, "_ensure_bqstorage_client", return_value=None
+        ) as ensure:
+            self.assertIsNone(client._get_shared_bqstorage_client())
+            self.assertIsNone(client._get_shared_bqstorage_client())
+
+        expected = mock.call(
+            client_options=None, transport=client_module._create_bqstorage_transport
+        )
+        self.assertEqual(ensure.call_args_list, [expected, expected])
+
+    def test_get_shared_bqstorage_client_creates_one_client_across_threads(self):
+        import threading
+        import time
+
+        from google.cloud.bigquery import client as client_module
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        def slow_create(**kwargs):
+            time.sleep(0.05)
+            return mock.Mock()
+
+        results = []
+
+        def get_client():
+            results.append(client._get_shared_bqstorage_client())
+
+        with mock.patch.object(
+            client, "_ensure_bqstorage_client", side_effect=slow_create
+        ) as ensure:
+            threads = [threading.Thread(target=get_client) for _ in range(5)]
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join()
+
+        ensure.assert_called_once_with(
+            client_options=None, transport=client_module._create_bqstorage_transport
+        )
+        self.assertEqual(len(results), 5)
+        self.assertTrue(all(result is results[0] for result in results))
+
+    def test_get_shared_bqstorage_client_channel_sends_keepalive_pings(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+        import google.auth.credentials
+        import grpc
+
+        transport_class = bigquery_storage.BigQueryReadClient.get_transport_class(
+            "grpc"
+        )
+        creds = google.auth.credentials.AnonymousCredentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        channel = grpc.insecure_channel("localhost:1")
+
+        with mock.patch.object(
+            transport_class, "create_channel", return_value=channel
+        ) as create_channel:
+            bqstorage_client = client._get_shared_bqstorage_client()
+        channel.close()
+
+        self.assertIsInstance(bqstorage_client._transport, transport_class)
+        options = create_channel.call_args.kwargs["options"]
+        self.assertIn(("grpc.keepalive_time_ms", 60000), options)
+        self.assertIn(("grpc.keepalive_timeout_ms", 60000), options)
+        # The transport's own options are kept.
+        self.assertIn(("grpc.max_receive_message_length", -1), options)
+
     def test_create_routine_w_minimal_resource(self):
         from google.cloud.bigquery.routine import Routine, RoutineReference
 
@@ -1652,6 +1774,23 @@ class TestClient(unittest.TestCase):
 
         http.close.assert_called_once()
         http._auth_request.session.close.assert_called_once()
+
+    def test_close_closes_shared_bqstorage_client(self):
+        creds = _make_credentials()
+        http = mock.Mock()
+        http._auth_request.session = mock.Mock()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        first, second = mock.Mock(), mock.Mock()
+
+        with mock.patch.object(
+            client, "_ensure_bqstorage_client", side_effect=[first, second]
+        ):
+            self.assertIs(client._get_shared_bqstorage_client(), first)
+            client.close()
+            self.assertIs(client._get_shared_bqstorage_client(), second)
+
+        first._transport.close.assert_called_once_with()
+        second._transport.close.assert_not_called()
 
     def test_get_model(self):
         path = "projects/%s/datasets/%s/models/%s" % (

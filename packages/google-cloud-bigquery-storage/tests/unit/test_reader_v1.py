@@ -717,3 +717,86 @@ def test_to_dataframe_emits_pending_deprecation_warning(mut):
 
     assert actual_df == mock_df
     mock_parser.to_dataframe.assert_called_once_with(mock_message, dtypes=None)
+
+
+def test_cancel_stops_iteration_without_reconnecting(
+    class_under_test, mock_gapic_client
+):
+    first = types.ReadRowsResponse(row_count=1)
+
+    def pages():
+        yield first
+        raise google.api_core.exceptions.ServiceUnavailable("connection closed")
+
+    wrapped = mock.MagicMock()
+    wrapped.__iter__.return_value = pages()
+    mock_gapic_client.read_rows.return_value = wrapped
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+
+    messages = iter(reader)
+    assert next(messages) is first
+    reader.cancel()
+
+    assert list(messages) == []
+    wrapped.cancel.assert_called_once_with()
+    mock_gapic_client.read_rows.assert_called_once_with(
+        read_stream="teststream", offset=0
+    )
+
+
+def test_cancel_ignores_the_cancelled_call_error(class_under_test, mock_gapic_client):
+    def pages():
+        yield types.ReadRowsResponse(row_count=1)
+        raise google.api_core.exceptions.Cancelled("call cancelled")
+
+    mock_gapic_client.read_rows.return_value = pages()
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+
+    messages = iter(reader)
+    next(messages)
+    reader.cancel()
+
+    assert list(messages) == []
+
+
+def test_cancel_before_iterating_yields_nothing(class_under_test, mock_gapic_client):
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+
+    reader.cancel()
+
+    assert list(reader) == []
+    mock_gapic_client.read_rows.assert_not_called()
+
+
+def test_cancel_during_reconnect_cancels_new_stream(
+    class_under_test, mock_gapic_client
+):
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+    wrapped = mock.MagicMock()
+
+    def cancel_while_opening(**kwargs):
+        reader.cancel()
+        return wrapped
+
+    mock_gapic_client.read_rows.side_effect = cancel_while_opening
+
+    assert list(reader) == []
+    wrapped.cancel.assert_called_once_with()
+    assert reader._wrapped is wrapped
+
+
+def test_cancel_during_reconnect_retry_stops_without_retrying(
+    class_under_test, mock_gapic_client
+):
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+
+    def cancel_and_fail(**kwargs):
+        reader.cancel()
+        raise google.api_core.exceptions.Cancelled("call cancelled")
+
+    mock_gapic_client.read_rows.side_effect = cancel_and_fail
+
+    assert list(reader) == []
+    mock_gapic_client.read_rows.assert_called_once_with(
+        read_stream="teststream", offset=0
+    )
