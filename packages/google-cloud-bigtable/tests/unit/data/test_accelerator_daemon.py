@@ -15,6 +15,7 @@
 import json
 import os
 import re
+import time
 import unittest.mock
 
 import pytest
@@ -663,3 +664,109 @@ class TestResolveStartupTimeout:
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "xyz")
         with pytest.raises(ValueError, match="not a valid number of seconds"):
             _make_daemon(tmp_path)
+
+
+@pytest.mark.skipif(
+    not hasattr(_daemon.socket, "AF_UNIX"),
+    reason="Unix domain sockets (AF_UNIX) are not supported on this platform",
+)
+class TestSweepStaleTempdirs:
+    """_sweep_stale_tempdirs reaps leftover daemon tempdirs, keyed on the
+    daemon.log marker, without touching live or too-young ones."""
+
+    @staticmethod
+    def _make_leftover(root, name, *, with_log=True, age_seconds=0.0, deadline_offset=None):
+        """Create a fake leftover daemon tempdir.
+
+        deadline_offset: seconds relative to now for the startup deadline file.
+        Negative = deadline already passed (stale); positive = still in future
+        (mid-startup). None = omit the file (tests the fallback heuristic).
+        """
+        d = root / name
+        d.mkdir()
+        if with_log:
+            log = d / _daemon._LOG_FILENAME
+            log.write_bytes(b"hi")
+            if age_seconds:
+                past = time.time() - age_seconds
+                os.utime(log, (past, past))
+        if deadline_offset is not None:
+            dl = d / _daemon._STARTUP_DEADLINE_FILENAME
+            dl.write_text(repr(time.time() + deadline_offset))
+        return d
+
+    @pytest.fixture
+    def tmp_root(self, tmp_path, monkeypatch):
+        # Point the sweep's tempdir root at an isolated dir under pytest's tmp.
+        root = tmp_path / "tmproot"
+        root.mkdir()
+        monkeypatch.setattr(_daemon.tempfile, "gettempdir", lambda: str(root))
+        return root
+
+    def test_removes_stale_dir(self, tmp_root):
+        # Expired deadline + old log + no live socket → should be reaped.
+        d = self._make_leftover(
+            tmp_root, "bt-accel-dead", age_seconds=120, deadline_offset=-70
+        )
+        _daemon._sweep_stale_tempdirs()
+        assert not d.exists()
+
+    def test_keeps_young_dir(self, tmp_root):
+        # No deadline file: fallback uses log mtime + buffer; log is fresh.
+        d = self._make_leftover(tmp_root, "bt-accel-young", age_seconds=0)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_with_future_deadline(self, tmp_root):
+        # Log is old (simulating a long-timeout override) but deadline hasn't
+        # passed yet — this is the case a per-directory deadline file fixes.
+        d = self._make_leftover(
+            tmp_root, "bt-accel-slow", age_seconds=120, deadline_offset=+200
+        )
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_ignores_dir_without_log_marker(self, tmp_root):
+        # Prefix matches but there's no daemon.log, so it isn't one of ours.
+        d = tmp_root / "bt-accel-foreign"
+        d.mkdir()
+        (d / "something-else").write_bytes(b"x")
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_with_live_socket(self, tmp_root, monkeypatch):
+        d = self._make_leftover(
+            tmp_root, "bt-accel-live", age_seconds=120, deadline_offset=-70
+        )
+        sock_path = d / _daemon._SOCKET_FILENAME
+        sock_path.touch()  # make os.path.exists() return True
+
+        # Simulate a successful connect without binding a real UDS (path may
+        # exceed the 104-char macOS limit under pytest's tmp_path).
+        mock_sock = unittest.mock.MagicMock()
+        mock_sock.__enter__ = lambda s: s
+        mock_sock.__exit__ = unittest.mock.MagicMock(return_value=False)
+        mock_sock.connect.return_value = None  # success → daemon alive
+        monkeypatch.setattr(_daemon.socket, "socket", lambda *a, **kw: mock_sock)
+
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_start_invokes_sweep(self, tmp_path, monkeypatch):
+        import threading
+
+        done = threading.Event()
+
+        def _fake_sweep():
+            done.set()
+
+        monkeypatch.setattr(_daemon, "_sweep_stale_tempdirs", _fake_sweep)
+
+        def boom(*args, **kwargs):
+            raise OSError("refusing to spawn in test")
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", boom)
+        daemon = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError):
+            daemon.start()
+        assert done.wait(timeout=2.0), "sweep thread did not run within 2 s"
