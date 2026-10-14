@@ -263,13 +263,20 @@ COLUMN_INFO = {
 
 
 @pytest.fixture(scope="session")
-def sessions_database(shared_database):
+def sessions_database(shared_instance, shared_database):
+    pool = spanner_v1.BurstyPool(labels={"testcase": "session_api"})
+    database = shared_instance.database(
+        shared_database.database_id,
+        pool=pool,
+        database_dialect=shared_database.database_dialect,
+        proto_descriptors=getattr(shared_database, "_proto_descriptors", None),
+    )
     # Some tests expect there to be a session present in the pool.
     # Experimental host connections only support multiplexed sessions
     if not _helpers.USE_SPANNER_OMNI:
-        shared_database._pool.put(shared_database._pool.get())
+        pool.put(pool.get())
 
-    return shared_database
+    return database
 
 
 @pytest.fixture(scope="function")
