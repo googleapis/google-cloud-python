@@ -539,9 +539,10 @@ class TestStartAccelerator:
         assert t._accelerator_daemon is None
         assert t._accelerator_client is None
 
-    def test_identity_verify_failure_closes_daemon_and_warns(self):
-        """Identity mismatches are now caught in _start_accelerator: daemon is
-        closed, a RuntimeWarning is issued, and the method returns (no re-raise).
+    def test_identity_verify_failure_closes_daemon_and_propagates(self):
+        """Identity mismatches propagate from _start_accelerator so
+        _maybe_start_accelerator can decide whether to warn (auto) or raise
+        (explicit). The daemon is closed before the error surfaces.
         """
         from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
 
@@ -560,13 +561,10 @@ class TestStartAccelerator:
             t,
             "_verify_daemon_identity",
             side_effect=_AcceleratorIdentityError("mismatch"),
-        ), pytest.warns(RuntimeWarning, match="could not verify"):
+        ), pytest.raises(_AcceleratorIdentityError, match="mismatch"):
             t._start_accelerator()
 
         fake_daemon.close.assert_called_once()
-        # After a warn-and-return the target has no daemon or client set.
-        assert t._accelerator_daemon is None
-        assert t._accelerator_client is None
 
     def test_passes_project_instance_flags(self):
         from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon

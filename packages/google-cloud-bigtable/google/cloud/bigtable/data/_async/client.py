@@ -494,14 +494,17 @@ class BigtableDataClientAsync(ClientWithProject):
                 # Request.__call__ passes timeout=120 to session.request, so
                 # inject our bound at the session level to always override it.
                 _auth_req = google_auth_requests.Request()
-                _http = _auth_req.session.request
+                try:
+                    _http = _auth_req.session.request
 
-                def _with_timeout(*args, **kwargs):
-                    kwargs["timeout"] = _PRINCIPAL_RESOLVE_TIMEOUT
-                    return _http(*args, **kwargs)
+                    def _with_timeout(*args, **kwargs):
+                        kwargs["timeout"] = _PRINCIPAL_RESOLVE_TIMEOUT
+                        return _http(*args, **kwargs)
 
-                _auth_req.session.request = _with_timeout
-                creds.refresh(_auth_req)
+                    _auth_req.session.request = _with_timeout
+                    creds.refresh(_auth_req)
+                finally:
+                    _auth_req.session.close()
             except Exception as exc:
                 _LOGGER.debug("Compute Engine credential refresh failed: %s", exc)
             email = getattr(creds, "service_account_email", None)
@@ -1458,16 +1461,6 @@ class _DataApiTargetAsync(abc.ABC):
             self._accelerator_client = AcceleratorClientType(
                 server.uds_path, server.auth_secret
             )
-        except _AcceleratorIdentityError as exc:
-            server.close()
-            warnings.warn(
-                f"Accelerator disabled: could not verify daemon identity: {exc}",
-                RuntimeWarning,
-                stacklevel=2,
-            )
-            self._accelerator_daemon = None
-            self._accelerator_client = None
-            return
         except BaseException:
             server.close()
             raise

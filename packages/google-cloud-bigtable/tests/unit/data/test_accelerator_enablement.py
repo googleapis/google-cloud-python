@@ -152,3 +152,35 @@ class TestMaybeStartAccelerator:
         t = _bare_target(emulator=None, start=_start)
         with pytest.raises(_AcceleratorIdentityError, match="principal mismatch"):
             t._maybe_start_accelerator(explicit=True)
+
+    def test_start_accelerator_propagates_identity_error(self, monkeypatch):
+        """_start_accelerator must not catch _AcceleratorIdentityError internally.
+
+        Previously, _start_accelerator absorbed the error and returned normally,
+        making _maybe_start_accelerator's explicit=True re-raise unreachable.
+        """
+        import google.cloud.bigtable.data._async.client as _mod
+
+        mock_server = unittest.mock.MagicMock()
+        mock_server.start.return_value = None
+
+        t = object.__new__(_ConcreteTarget)
+        t.client = SimpleNamespace(
+            project="p",
+            _accelerator_flags=[],
+            _accelerator_env={},
+        )
+        t.instance_id = "i"
+        t.app_profile_id = None
+        t._accelerator_daemon = None
+        t._accelerator_client = None
+        t._verify_daemon_identity = unittest.mock.MagicMock(
+            side_effect=_AcceleratorIdentityError("identity mismatch")
+        )
+
+        monkeypatch.setattr(_mod, "AcceleratorDaemon", lambda **_: mock_server)
+
+        with pytest.raises(_AcceleratorIdentityError, match="identity mismatch"):
+            t._start_accelerator()
+
+        mock_server.close.assert_called_once()
