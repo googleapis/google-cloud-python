@@ -173,7 +173,15 @@ def _sweep_stale_tempdirs() -> None:
                 deadline = os.path.getmtime(log_path) + _STALE_SWEEP_MIN_AGE_SECONDS
             if now < deadline + _STALE_SWEEP_MIN_AGE_SECONDS:
                 continue
-            if _socket_is_live(os.path.join(path, _SOCKET_FILENAME)):
+            sock_path = os.path.join(path, _SOCKET_FILENAME)
+            # Probe twice with a short gap: a transient OS error (ENOBUFS,
+            # EAGAIN) on a single probe could incorrectly signal a dead socket
+            # for a daemon that is actually running fine. Two independent
+            # failures are effectively impossible for a healthy local UDS.
+            if _socket_is_live(sock_path):
+                continue
+            time.sleep(0.1)
+            if _socket_is_live(sock_path):
                 continue
         except OSError:
             continue
