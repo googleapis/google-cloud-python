@@ -1149,10 +1149,10 @@ class _DataApiTarget(abc.ABC):
             self._accelerator_client = AcceleratorClientType(
                 server.uds_path, server.auth_secret
             )
+            self._accelerator_daemon = server
         except BaseException:
             server.close()
             raise
-        self._accelerator_daemon = server
 
     def _use_accelerator(self, method_name: str) -> bool:
         """Whether this call should be routed through the accelerator daemon."""
