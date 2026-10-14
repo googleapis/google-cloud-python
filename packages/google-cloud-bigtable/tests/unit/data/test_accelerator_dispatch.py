@@ -230,6 +230,7 @@ class TestMutateRowViaAccelerator:
         req = MutateRowRequest()
         with pytest.raises(RuntimeError, match="unexpected"):
             self._run(t._mutate_row_via_accelerator(req, 30.0))
+        assert not t._accelerator_breaker.bypass()
 
 
 # ---------------------------------------------------------------------------
@@ -288,6 +289,19 @@ class TestReadRowViaAccelerator:
 
         query = ReadRowsQuery(row_keys=b"key1", limit=1)
         with pytest.raises(core_exceptions.GoogleAPICallError):
+            self._run(t._read_row_via_accelerator(query, 30.0, 20.0))
+        assert not t._accelerator_breaker.bypass()
+
+    def test_non_grpc_exception_reraises(self):
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+
+        client_mock = mock.AsyncMock()
+        client_mock.read_rows.side_effect = RuntimeError("unexpected")
+        daemon = mock.Mock(is_running=True)
+        t = _bare_target(accel_client=client_mock, accel_daemon=daemon)
+
+        query = ReadRowsQuery(row_keys=b"key1", limit=1)
+        with pytest.raises(RuntimeError, match="unexpected"):
             self._run(t._read_row_via_accelerator(query, 30.0, 20.0))
         assert not t._accelerator_breaker.bypass()
 

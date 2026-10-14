@@ -148,9 +148,6 @@ class _AcceleratorIdentityError(RuntimeError):
     this client's — signals the caller to fall back to the native client."""
 
 
-_AcceleratorUnverified = _AcceleratorIdentityError
-
-
 def _normalize_scopes(scopes: Any) -> frozenset[str]:
     """Normalize a scope value to a comparable, order-insensitive set.
 
@@ -320,6 +317,8 @@ class BigtableDataClient(ClientWithProject):
             client_options, "client_cert_source", None
         ):
             self._accelerator_blocked_reason = "client_cert_source (mTLS) cannot be forwarded to the accelerator daemon"
+        import google.cloud.bigtable  # local import avoids circular dependency
+
         self._accelerator_flags += [
             "--caller-user-agent",
             f"python-v{google.cloud.bigtable.__version__}",
@@ -347,11 +346,6 @@ class BigtableDataClient(ClientWithProject):
                 self._accelerator_env["GOOGLE_APPLICATION_CREDENTIALS"] = (
                     credentials_file
                 )
-        self._accelerator_flags += [
-            "--caller-user-agent",
-            f"python-v{google.cloud.bigtable.__version__}",
-        ]
-
     def _resolve_principal(self) -> str | None:
         """Resolve this client's identity to a principal.
 
@@ -1113,9 +1107,6 @@ class _DataApiTarget(abc.ABC):
         except _AcceleratorIdentityError as exc:
             if explicit:
                 raise
-            # Callers using gcloud user ADC (_resolve_principal returns None)
-            # consistently land here; fail-closed to the native client is
-            # intentional — user ADC is almost never what the daemon resolved.
             warnings.warn(
                 f"Accelerator disabled: {exc}",
                 RuntimeWarning,
@@ -1155,9 +1146,16 @@ class _DataApiTarget(abc.ABC):
             self._accelerator_client = AcceleratorClientType(
                 server.uds_path, server.auth_secret
             )
-        except _AcceleratorIdentityError:
+        except _AcceleratorIdentityError as exc:
             server.close()
-            raise
+            warnings.warn(
+                f"Accelerator disabled: could not verify daemon identity: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            self._accelerator_daemon = None
+            self._accelerator_client = None
+            return
         except BaseException:
             server.close()
             raise
