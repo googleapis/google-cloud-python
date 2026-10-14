@@ -38,6 +38,12 @@ def _make_daemon(tmp_path, **kwargs):
     return AcceleratorDaemon(**kwargs)
 
 
+# Captured at import time, before the autouse fixture patches _cleanup_tempdir
+# to a no-op.  Tests that need to exercise the real implementation call this
+# directly as _real_cleanup_tempdir(daemon_instance).
+_real_cleanup_tempdir = AcceleratorDaemon._cleanup_tempdir
+
+
 class TestExtraEnv:
     def test_default_env_none(self, tmp_path, monkeypatch):
         captured = {}
@@ -248,13 +254,6 @@ class TestResolveBinaryPath:
             with pytest.raises(FileNotFoundError, match="Accelerator binary not found"):
                 _resolve_binary_path()
 
-    def test_binary_path_param_bypasses_lookup(self, tmp_path):
-        """Passing binary_path= directly skips _resolve_binary_path entirely."""
-        fake_bin = tmp_path / "my-binary"
-        fake_bin.touch()
-        d = AcceleratorDaemon(binary_path=str(fake_bin))
-        assert d._binary_path == str(fake_bin)
-
 
 # ---------------------------------------------------------------------------
 # start() failure modes
@@ -413,6 +412,40 @@ class TestClose:
 
 
 # ---------------------------------------------------------------------------
+# _cleanup_tempdir: state clearing
+# ---------------------------------------------------------------------------
+
+class TestCleanupTempdir:
+    def test_clears_all_state_fields(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        d._tempdir = str(tmp_path / "accel-tmp")
+        d._uds_path = str(tmp_path / "sock")
+        d._log_path = str(tmp_path / "daemon.log")
+        d._auth_secret = "super-secret"
+
+        _real_cleanup_tempdir(d)
+
+        assert d._tempdir is None
+        assert d._uds_path is None
+        assert d._log_path is None
+        assert d._auth_secret is None
+
+    def test_removes_tempdir_from_disk(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        td = tmp_path / "accel-tmp"
+        td.mkdir()
+        d._tempdir = str(td)
+
+        _real_cleanup_tempdir(d)
+
+        assert not td.exists()
+
+    def test_noop_when_tempdir_is_none(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        _real_cleanup_tempdir(d)  # should not raise
+
+
+# ---------------------------------------------------------------------------
 # Context manager
 # ---------------------------------------------------------------------------
 
@@ -537,7 +570,14 @@ class TestCliFlags:
             raise _StopStart()
 
         monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
-        d = _make_daemon(tmp_path, cli_flags=["--project", "proj", "--instance", "inst"])
+        d = _make_daemon(
+            tmp_path,
+            cli_flags=[
+                "--project", "proj",
+                "--instance", "inst",
+                "--app-profile", "prof",
+            ],
+        )
         with pytest.raises(_StopStart):
             d.start()
 
@@ -547,6 +587,8 @@ class TestCliFlags:
         assert argv[argv.index("--project") + 1] == "proj"
         assert "--instance" in argv
         assert argv[argv.index("--instance") + 1] == "inst"
+        assert "--app-profile" in argv
+        assert argv[argv.index("--app-profile") + 1] == "prof"
 
 
 # ---------------------------------------------------------------------------

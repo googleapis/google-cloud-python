@@ -200,11 +200,6 @@ class _AcceleratorIdentityError(RuntimeError):
     this client's — signals the caller to fall back to the native client."""
 
 
-# Alias used in _start_accelerator's except clause; identity and "unverified"
-# refer to the same failure mode.
-_AcceleratorUnverified = _AcceleratorIdentityError
-
-
 def _normalize_scopes(scopes: Any) -> frozenset[str]:
     """Normalize a scope value to a comparable, order-insensitive set.
 
@@ -427,6 +422,8 @@ class BigtableDataClientAsync(ClientWithProject):
         # User-Agent prefix always forwarded so the daemon can construct the full
         # "python-v{ver}-go-accelerator-v{ver}" string even when the daemon is
         # ultimately blocked (the flag is harmless when the daemon never starts).
+        import google.cloud.bigtable  # local import avoids circular dependency
+
         self._accelerator_flags += [
             "--caller-user-agent",
             f"python-v{google.cloud.bigtable.__version__}",
@@ -469,14 +466,6 @@ class BigtableDataClientAsync(ClientWithProject):
                 self._accelerator_env["GOOGLE_APPLICATION_CREDENTIALS"] = (
                     credentials_file
                 )
-
-        # Identify this client to the daemon so it can construct the full
-        # User-Agent prefix (e.g. "python-v3.0.0a0-go-accelerator-v3.x.x").
-        # The daemon appends its own "-go-accelerator-vX.Y.Z" suffix.
-        self._accelerator_flags += [
-            "--caller-user-agent",
-            f"python-v{google.cloud.bigtable.__version__}",
-        ]
 
     def _resolve_principal(self) -> str | None:
         """Resolve this client's identity to a principal.
@@ -1423,9 +1412,6 @@ class _DataApiTargetAsync(abc.ABC):
         except _AcceleratorIdentityError as exc:
             if explicit:
                 raise
-            # Callers using gcloud user ADC (_resolve_principal returns None)
-            # consistently land here; fail-closed to the native client is
-            # intentional — user ADC is almost never what the daemon resolved.
             warnings.warn(
                 f"Accelerator disabled: {exc}",
                 RuntimeWarning,
@@ -1472,9 +1458,16 @@ class _DataApiTargetAsync(abc.ABC):
             self._accelerator_client = AcceleratorClientType(
                 server.uds_path, server.auth_secret
             )
-        except _AcceleratorIdentityError:
+        except _AcceleratorIdentityError as exc:
             server.close()
-            raise
+            warnings.warn(
+                f"Accelerator disabled: could not verify daemon identity: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            self._accelerator_daemon = None
+            self._accelerator_client = None
+            return
         except BaseException:
             server.close()
             raise
