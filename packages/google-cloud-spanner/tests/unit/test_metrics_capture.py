@@ -52,6 +52,27 @@ def test_metrics_capture_exit(mock_tracer_factory):
     mock_tracer.record_operation_completion.assert_called_once()
 
 
+def test_metrics_capture_reuse(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer_factory.return_value = mock_tracer
+
+    capture = MetricsCapture()
+    with capture:
+        assert SpannerMetricsTracerFactory.get_current_tracer() is mock_tracer
+
+    assert SpannerMetricsTracerFactory.get_current_tracer() is None
+    assert capture._token is None
+    assert capture._tracer is None
+
+    # Reusing the same context manager instance must not raise an error
+    with capture:
+        assert SpannerMetricsTracerFactory.get_current_tracer() is mock_tracer
+
+    assert SpannerMetricsTracerFactory.get_current_tracer() is None
+    assert capture._token is None
+    assert capture._tracer is None
+
+
 def test_metrics_capture_with_resource_info(mock_tracer_factory):
     mock_tracer = mock.Mock()
     mock_tracer_factory.return_value = mock_tracer
@@ -99,7 +120,9 @@ def test_metrics_capture_disabled():
     SpannerMetricsTracerFactory(enabled=False)
     try:
         with MetricsCapture() as capture:
+            assert capture is not None
             assert capture._token is None
+            assert SpannerMetricsTracerFactory.get_current_tracer() is None
     finally:
         SpannerMetricsTracerFactory(enabled=True)
 
@@ -172,4 +195,53 @@ def test_metrics_capture_enter_resets_token_on_start_failure(mock_tracer_factory
 
     assert capture._token is None
     assert capture._tracer is None
+
+
+def test_metrics_capture_enter_resets_token_when_token_is_none(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer.record_operation_start.side_effect = RuntimeError("start failed")
+    mock_tracer_factory.return_value = mock_tracer
+
+    capture = MetricsCapture()
+    with mock.patch.object(
+        SpannerMetricsTracerFactory,
+        "set_current_tracer",
+        return_value=None,
+    ):
+        with pytest.raises(RuntimeError):
+            with capture:
+                pass
+
+    assert capture._token is None
+    assert capture._tracer is None
+
+
+def test_metrics_capture_enter_handles_value_error_on_reset(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer.record_operation_start.side_effect = RuntimeError("start failed")
+    mock_tracer_factory.return_value = mock_tracer
+
+    capture = MetricsCapture()
+    with mock.patch.object(
+        SpannerMetricsTracerFactory,
+        "reset_current_tracer",
+        side_effect=ValueError("Token was created in a different Context"),
+    ):
+        with pytest.raises(RuntimeError):
+            with capture:
+                pass
+
+    assert capture._token is None
+    assert capture._tracer is None
+
+
+def test_metrics_capture_exit_error_resets_token(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer_factory.return_value = mock_tracer
+
+    with pytest.raises(RuntimeError, match="User code failure"):
+        with MetricsCapture():
+            assert SpannerMetricsTracerFactory.get_current_tracer() is mock_tracer
+            raise RuntimeError("User code failure")
+
     assert SpannerMetricsTracerFactory.get_current_tracer() is None
