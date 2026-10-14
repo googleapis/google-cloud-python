@@ -738,10 +738,17 @@ class TestSweepStaleTempdirs:
         d = self._make_leftover(
             tmp_root, "bt-accel-live", age_seconds=120, deadline_offset=-70
         )
-        expected = str(d / _daemon._SOCKET_FILENAME)
-        # Patch _socket_is_live to avoid binding a real socket: macOS limits
-        # UDS paths to 104 chars and pytest's tmp_path is frequently longer.
-        monkeypatch.setattr(_daemon, "_socket_is_live", lambda p: p == expected)
+        sock_path = d / _daemon._SOCKET_FILENAME
+        sock_path.touch()  # make os.path.exists() return True
+
+        # Simulate a successful connect without binding a real UDS (path may
+        # exceed the 104-char macOS limit under pytest's tmp_path).
+        mock_sock = unittest.mock.MagicMock()
+        mock_sock.__enter__ = lambda s: s
+        mock_sock.__exit__ = unittest.mock.MagicMock(return_value=False)
+        mock_sock.connect.return_value = None  # success → daemon alive
+        monkeypatch.setattr(_daemon.socket, "socket", lambda *a, **kw: mock_sock)
+
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 

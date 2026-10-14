@@ -174,15 +174,16 @@ def _sweep_stale_tempdirs() -> None:
             if now < deadline + _STALE_SWEEP_MIN_AGE_SECONDS:
                 continue
             sock_path = os.path.join(path, _SOCKET_FILENAME)
-            # Probe twice with a short gap: a transient OS error (ENOBUFS,
-            # EAGAIN) on a single probe could incorrectly signal a dead socket
-            # for a daemon that is actually running fine. Two independent
-            # failures are effectively impossible for a healthy local UDS.
-            if _socket_is_live(sock_path):
-                continue
-            time.sleep(0.1)
-            if _socket_is_live(sock_path):
-                continue
+            if os.path.exists(sock_path):
+                try:
+                    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
+                        probe.settimeout(0.25)
+                        probe.connect(sock_path)
+                    continue  # connected → daemon is alive
+                except (ConnectionRefusedError, FileNotFoundError):
+                    pass  # definitive: nothing is listening
+                # Any other OSError (ENOBUFS, EAGAIN, …) is transient.
+                # Fall through to the outer except to skip this directory.
         except OSError:
             continue
         shutil.rmtree(path, ignore_errors=True)
