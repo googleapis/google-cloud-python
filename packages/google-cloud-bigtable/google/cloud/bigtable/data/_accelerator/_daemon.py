@@ -59,6 +59,11 @@ _TEMPDIR_PREFIX = "bt-accel-"
 # Names of the files a live daemon keeps inside its tempdir.
 _SOCKET_FILENAME = "sock"
 _LOG_FILENAME = "daemon.log"
+# Absolute POSIX timestamp written by start() so the sweep knows when startup
+# for *this specific* daemon was allowed to finish. Each process may have a
+# different BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT, so the sweep cannot rely on
+# its own env value when judging another process's tempdir.
+_STARTUP_DEADLINE_FILENAME = "startup_deadline"
 
 # How long to wait for the daemon to start listening on its UDS before giving
 # up at startup. Cold, constrained environments (e.g. Cloud Run's gVisor
@@ -152,15 +157,21 @@ def _sweep_stale_tempdirs() -> None:
     except OSError:
         return
     now = time.time()
-    # A daemon still mid-startup must not be swept. The log file's mtime is
-    # stamped before Popen, so the grace window must exceed the maximum time
-    # start() can spend waiting for the socket (the configured startup timeout)
-    # plus a fixed buffer.
-    grace = _resolve_startup_timeout() + _STALE_SWEEP_MIN_AGE_SECONDS
     for log_path in logs:
         path = os.path.dirname(log_path)
         try:
-            if now - os.path.getmtime(log_path) < grace:
+            # Each tempdir records its own startup deadline so this sweep is
+            # correct even when the sweeping process has a different
+            # BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT than the process that
+            # started the daemon being evaluated.
+            deadline_path = os.path.join(path, _STARTUP_DEADLINE_FILENAME)
+            try:
+                deadline = float(open(deadline_path).read())
+            except (OSError, ValueError):
+                # Older daemon without a deadline file: fall back to a simple
+                # age heuristic relative to the log's mtime.
+                deadline = os.path.getmtime(log_path) + _STALE_SWEEP_MIN_AGE_SECONDS
+            if now < deadline + _STALE_SWEEP_MIN_AGE_SECONDS:
                 continue
             if _socket_is_live(os.path.join(path, _SOCKET_FILENAME)):
                 continue
@@ -282,6 +293,11 @@ class AcceleratorDaemon:
         threading.Thread(target=_sweep_stale_tempdirs, daemon=True).start()
         self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
         self._uds_path = os.path.join(self._tempdir, _SOCKET_FILENAME)
+        # Write the absolute time by which startup must complete. The sweep
+        # reads this per-directory so it uses the right deadline regardless of
+        # what BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT the sweeping process has.
+        with open(os.path.join(self._tempdir, _STARTUP_DEADLINE_FILENAME), "w") as _f:
+            _f.write(repr(time.time() + self._startup_timeout))
 
         # Redirect the daemon's stdout/stderr to a log file rather than
         # subprocess.PIPE. Nothing drains those pipes for the daemon's

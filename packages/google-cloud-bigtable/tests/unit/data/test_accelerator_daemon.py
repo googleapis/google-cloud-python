@@ -675,7 +675,13 @@ class TestSweepStaleTempdirs:
     daemon.log marker, without touching live or too-young ones."""
 
     @staticmethod
-    def _make_leftover(root, name, *, with_log=True, age_seconds=0.0):
+    def _make_leftover(root, name, *, with_log=True, age_seconds=0.0, deadline_offset=None):
+        """Create a fake leftover daemon tempdir.
+
+        deadline_offset: seconds relative to now for the startup deadline file.
+        Negative = deadline already passed (stale); positive = still in future
+        (mid-startup). None = omit the file (tests the fallback heuristic).
+        """
         d = root / name
         d.mkdir()
         if with_log:
@@ -684,6 +690,9 @@ class TestSweepStaleTempdirs:
             if age_seconds:
                 past = time.time() - age_seconds
                 os.utime(log, (past, past))
+        if deadline_offset is not None:
+            dl = d / _daemon._STARTUP_DEADLINE_FILENAME
+            dl.write_text(repr(time.time() + deadline_offset))
         return d
 
     @pytest.fixture
@@ -695,13 +704,25 @@ class TestSweepStaleTempdirs:
         return root
 
     def test_removes_stale_dir(self, tmp_root):
-        d = self._make_leftover(tmp_root, "bt-accel-dead", age_seconds=120)
+        # Expired deadline + old log + no live socket → should be reaped.
+        d = self._make_leftover(
+            tmp_root, "bt-accel-dead", age_seconds=120, deadline_offset=-70
+        )
         _daemon._sweep_stale_tempdirs()
         assert not d.exists()
 
     def test_keeps_young_dir(self, tmp_root):
-        # Younger than the grace window: a daemon may still be mid-startup.
+        # No deadline file: fallback uses log mtime + buffer; log is fresh.
         d = self._make_leftover(tmp_root, "bt-accel-young", age_seconds=0)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_with_future_deadline(self, tmp_root):
+        # Log is old (simulating a long-timeout override) but deadline hasn't
+        # passed yet — this is the case a per-directory deadline file fixes.
+        d = self._make_leftover(
+            tmp_root, "bt-accel-slow", age_seconds=120, deadline_offset=+200
+        )
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 
@@ -714,7 +735,9 @@ class TestSweepStaleTempdirs:
         assert d.exists()
 
     def test_keeps_dir_with_live_socket(self, tmp_root, monkeypatch):
-        d = self._make_leftover(tmp_root, "bt-accel-live", age_seconds=120)
+        d = self._make_leftover(
+            tmp_root, "bt-accel-live", age_seconds=120, deadline_offset=-70
+        )
         expected = str(d / _daemon._SOCKET_FILENAME)
         # Patch _socket_is_live to avoid binding a real socket: macOS limits
         # UDS paths to 104 chars and pytest's tmp_path is frequently longer.
