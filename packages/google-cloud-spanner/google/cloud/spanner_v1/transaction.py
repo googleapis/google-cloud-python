@@ -253,13 +253,12 @@ class Transaction(_SnapshotBase, _BatchBase):
                 database._instance._client._client_context, self._client_context
             )
             request_options = _merge_request_options(request_options, client_context)
-            if request_options is None:
-                request_options = RequestOptions()
-            elif type(request_options) is dict:
-                request_options = RequestOptions(request_options)
-            if self.transaction_tag is not None:
-                request_options.transaction_tag = self.transaction_tag
-            request_options.request_tag = None
+            if request_options is not None:
+                if self.transaction_tag is not None:
+                    request_options.transaction_tag = self.transaction_tag
+                request_options.request_tag = None
+            elif self.transaction_tag is not None:
+                request_options = RequestOptions(transaction_tag=self.transaction_tag)
             common_commit_request_args = {
                 "session": session.name,
                 "transaction_id": self._transaction_id,

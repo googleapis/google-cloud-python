@@ -416,6 +416,7 @@ class TestTransaction(OpenTelemetryBase):
         retry_for_precommit_token=None,
         is_multiplexed=False,
         expected_begin_mutation=None,
+        transaction_tag=TRANSACTION_TAG,
     ):
         from google.cloud.spanner_v1 import CommitRequest
 
@@ -428,7 +429,7 @@ class TestTransaction(OpenTelemetryBase):
         database = session._database
         api = database.spanner_api
 
-        transaction.transaction_tag = TRANSACTION_TAG
+        transaction.transaction_tag = transaction_tag
 
         if mutations is not None:
             transaction._mutations = mutations
@@ -486,11 +487,16 @@ class TestTransaction(OpenTelemetryBase):
         if mutations is not None:
             self.assertEqual(transaction._transaction_id, TRANSACTION_ID)
 
+            expected_begin_request_options = (
+                RequestOptions(transaction_tag=transaction_tag)
+                if transaction_tag is not None
+                else None
+            )
             expected_begin_transaction_request = BeginTransactionRequest(
                 session=session.name,
                 options=TransactionOptions(read_write=TransactionOptions.ReadWrite()),
                 mutation_key=expected_begin_mutation,
-                request_options=RequestOptions(transaction_tag=TRANSACTION_TAG),
+                request_options=expected_begin_request_options,
             )
 
             expected_begin_metadata = base_metadata.copy()
@@ -511,16 +517,14 @@ class TestTransaction(OpenTelemetryBase):
         # Verify commit API call(s).
         self.assertEqual(commit.call_count, 1 if not retry_for_precommit_token else 2)
 
-        if request_options is None:
-            expected_request_options = RequestOptions(transaction_tag=TRANSACTION_TAG)
-        elif type(request_options) is dict:
+        if request_options is not None:
             expected_request_options = RequestOptions(request_options)
-            expected_request_options.transaction_tag = TRANSACTION_TAG
+            expected_request_options.transaction_tag = transaction_tag
             expected_request_options.request_tag = None
+        elif transaction_tag is not None:
+            expected_request_options = RequestOptions(transaction_tag=transaction_tag)
         else:
-            expected_request_options = request_options
-            expected_request_options.transaction_tag = TRANSACTION_TAG
-            expected_request_options.request_tag = None
+            expected_request_options = None
 
         common_expected_commit_response_args = {
             "session": session.name,
@@ -716,6 +720,14 @@ class TestTransaction(OpenTelemetryBase):
         request_options = {"incorrect_tag": "tag-1-1"}
         with pytest.raises(ValueError):
             await self._commit_helper(request_options=request_options)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    @CrossSync.pytest
+    async def test_commit_wo_request_options_and_transaction_tag(self, mock_region):
+        await self._commit_helper(transaction_tag=None)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -1441,7 +1453,6 @@ class TestTransaction(OpenTelemetryBase):
             request=CommitRequest(
                 session=session.name,
                 transaction_id=transaction._transaction_id,
-                request_options=RequestOptions(),
                 mutations=transaction._mutations,
             ),
             metadata=[
