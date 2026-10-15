@@ -15,10 +15,7 @@
 @echo "Starting Windows release"
 
 cd /d %~dp0..\..\..\packages\google-crc32c || goto :error
-
-if "%PUBLISH_WHEELS%"=="" set PUBLISH_WHEELS=true
-
-@echo "Build, Test, and Publish Wheels"
+@echo "Build and Test Wheels"
 call scripts\windows\build.bat || goto :error
 
 goto :EOF
