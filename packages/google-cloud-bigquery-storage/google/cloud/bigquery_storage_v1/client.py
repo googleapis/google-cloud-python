@@ -57,6 +57,8 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=(),
         retry_delay_callback=None,
+        *,
+        arrow_serialization_options=None,
     ):
         """
         Reads rows from the table in the format prescribed by the read
@@ -124,6 +126,14 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
                 BigQueryReadClient will call retry_delay_callback with the delay
                 duration (in seconds) before it starts sleeping until the next
                 attempt.
+            arrow_serialization_options (Optional[Union[dict, \
+                ~google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions \
+            ]]):
+                Arrow serialization options, such as buffer compression, to
+                send on every ``ReadRows`` request, including after a
+                reconnect. Only job default streams
+                (``projects/{project}/locations/{location}/jobs/{job}/streams/_default``)
+                accept them.
 
         Returns:
             ~google.cloud.bigquery_storage_v1.reader.ReadRowsStream:
@@ -137,6 +147,11 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        request_template = None
+        if arrow_serialization_options is not None:
+            request_template = {
+                "arrow_serialization_options": arrow_serialization_options
+            }
         gapic_client = super(BigQueryReadClient, self)
         stream = reader.ReadRowsStream(
             gapic_client,
@@ -144,6 +159,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
             offset,
             {"retry": retry, "timeout": timeout, "metadata": metadata},
             retry_delay_callback=retry_delay_callback,
+            request_template=request_template,
         )
         stream._reconnect()
         return stream
