@@ -87,6 +87,17 @@ class RowRange:
                 init_dict["end_key_open"] = end_key
         self._pb = RowRangePB(**init_dict)
 
+    def _key(self) -> tuple[bytes | None, bool, bytes | None, bool]:
+        return (
+            self.start_key,
+            self.start_is_inclusive,
+            self.end_key,
+            self.end_is_inclusive,
+        )
+
+    def __hash__(self) -> int:
+        return hash(self._key())
+
     @property
     def start_key(self) -> bytes | None:
         """
@@ -186,7 +197,7 @@ class RowRange:
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, RowRange):
             return NotImplemented
-        return self._pb == other._pb
+        return self._key() == other._key()
 
     def __str__(self) -> str:
         """
@@ -250,6 +261,11 @@ class ReadRowsQuery:
         self._row_set = RowSetPB(
             row_keys=row_keys, row_ranges=[r._pb for r in row_ranges]
         )
+        # Pre-initialize our signature set using hashable RowRange wrappers
+        self._range_signatures = set(
+            RowRange._from_pb(r) for r in self._row_set.row_ranges
+        )
+
         self.limit = limit or None
         self.filter = row_filter
 
@@ -349,7 +365,9 @@ class ReadRowsQuery:
         Args:
             row_range: a range of row keys to add to this query
         """
-        if row_range not in self.row_ranges:
+        # Utilize pure O(1) set-membership checking
+        if row_range not in self._range_signatures:
+            self._range_signatures.add(row_range)
             self._row_set.row_ranges.append(row_range._pb)
 
     def shard(self, shard_keys: RowKeySamples) -> ShardedQuery:

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
+
 import pytest
 
 TEST_ROWS = [
@@ -586,3 +588,24 @@ class TestReadRowsQuery:
         """Empty strings should be treated as keys inputs"""
         query = self._make_one(row_keys="")
         assert query.row_keys == [b""]
+
+    def test_add_range_performance_regression(self):
+        """Assert O(1) range insertion scaling and prevent regression back to O(N^2)."""
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        query = self._make_one()
+        ranges_count = 1000
+
+        start_time = time.perf_counter()
+        for i in range(ranges_count):
+            # Using 4-digit zero-padding ensures 'key_0009' is lexicographically smaller than 'key_0010'
+            r = RowRange(start_key=f"key_{i:04d}", end_key=f"key_{i + 1:04d}")
+            query.add_range(r)
+        end_time = time.perf_counter()
+
+        elapsed = end_time - start_time
+        # Under O(N^2) on test runners, 1k iterations takes seconds.
+        # Under O(1) with tuple hashing, it takes <0.02s.
+        assert elapsed < 0.5, (
+            f"O(N^2) Performance regression detected! Inserting {ranges_count} ranges took {elapsed:.2f}s"
+        )
