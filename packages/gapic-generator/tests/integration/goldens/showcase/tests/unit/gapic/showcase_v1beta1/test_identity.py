@@ -898,20 +898,19 @@ def test_identity_grpc_asyncio_transport_channel_interceptors():
 
 
 @pytest.mark.skipif(
-    _observability is None,
-    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+    _observability is None or not hasattr(_observability, "apply_otel_async_channel_interceptors"),
+    reason="Requires google-api-core with OpenTelemetry async channel interceptors support",
 )
 def test_identity_grpc_asyncio_transport_otel_channel_interceptor():
-    mock_otel_interceptor = mock.Mock()
     mock_channel = mock.Mock()
     mock_channel._unary_unary_interceptors = []
 
     with (
         mock.patch.object(
             _observability,
-            "get_otel_async_interceptor",
-            return_value=mock_otel_interceptor,
-        ) as mock_get_async_interceptor,
+            "apply_otel_async_channel_interceptors",
+            return_value=mock_channel,
+        ) as mock_apply_async_interceptors,
         mock.patch.object(
             transports.IdentityGrpcAsyncIOTransport,
             "create_channel",
@@ -924,9 +923,8 @@ def test_identity_grpc_asyncio_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_get_async_interceptor.assert_called_once_with(options)
+        mock_apply_async_interceptors.assert_called_once_with(mock_channel, options)
         assert mock_create_channel.call_count == 1
-        assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
         assert transport.grpc_channel == mock_channel
 
 
