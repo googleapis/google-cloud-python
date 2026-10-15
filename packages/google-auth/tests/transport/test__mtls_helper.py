@@ -1340,7 +1340,7 @@ class TestMtlsHelper:
         assert cert == b"cert_bytes"
         assert key == b"key_bytes"
         mock_get_client_ssl_credentials.assert_called_once_with(
-            generate_encrypted_key=True
+            generate_encrypted_key=False
         )
 
 
