@@ -1332,7 +1332,7 @@ class TestMtlsHelper:
             True,
             b"cert_bytes",
             b"key_bytes",
-            b"passphrase",
+            None,
         )
 
         cert, key = _mtls_helper.call_client_cert_callback()
@@ -1340,8 +1340,49 @@ class TestMtlsHelper:
         assert cert == b"cert_bytes"
         assert key == b"key_bytes"
         mock_get_client_ssl_credentials.assert_called_once_with(
-            generate_encrypted_key=True
+            generate_encrypted_key=False
         )
+
+    @mock.patch("subprocess.Popen", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_workload_cert_and_key", autospec=True
+    )
+    def test_call_client_cert_callback_secure_connect_unencrypted_key(
+        self,
+        mock_get_workload_cert_and_key,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_popen,
+    ):
+        mock_get_workload_cert_and_key.return_value = (None, None)
+        mock_check_config_path.return_value = "/path/to/config"
+        mock_load_json_file.return_value = {"cert_provider_command": ["command"]}
+
+        # Like a SecureConnect cert provider, return an encrypted key and a
+        # passphrase only when --with_passphrase is passed.
+        def popen(command, **kwargs):
+            if "--with_passphrase" in command:
+                output = (
+                    pytest.public_cert_bytes + ENCRYPTED_EC_PRIVATE_KEY + PASSPHRASE
+                )
+            else:
+                output = pytest.public_cert_bytes + pytest.private_key_bytes
+            process = mock.Mock()
+            process.configure_mock(
+                **{"communicate.return_value": (output, b""), "returncode": 0}
+            )
+            return process
+
+        mock_popen.side_effect = popen
+
+        cert, key = _mtls_helper.call_client_cert_callback()
+
+        assert cert == pytest.public_cert_bytes
+        assert key == pytest.private_key_bytes
+        # The 401 rotation path loads this key without a passphrase.
+        serialization.load_pem_private_key(key, password=None)
 
 
 class TestSecureCertKeyPaths(object):
