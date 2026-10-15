@@ -15,6 +15,8 @@
 import google_crc32c
 from google.api_core import exceptions
 
+from google.cloud.storage import _opentelemetry_tracing
+
 
 def raise_if_no_fast_crc32c():
     """Check if the C-accelerated version of google-crc32c is available.
@@ -38,3 +40,43 @@ def update_write_handle_if_exists(obj, response):
     """Update the write_handle attribute of an object if it exists in the response."""
     if hasattr(response, "write_handle") and response.write_handle is not None:
         obj.write_handle = response.write_handle
+
+
+try:
+    from opentelemetry.trace.propagation.tracecontext import (
+        TraceContextTextMapPropagator,
+    )
+
+    _TRACE_CONTEXT_PROPAGATOR = TraceContextTextMapPropagator()
+except ImportError:  # pragma: NO COVER
+    _TRACE_CONTEXT_PROPAGATOR = None
+
+
+def inject_traceparent_to_metadata(metadata=None):
+    """Inject W3C traceparent (and tracestate) into gRPC metadata tuple or list."""
+    if (
+        not _opentelemetry_tracing._is_otel_traces_enabled()
+        or _TRACE_CONTEXT_PROPAGATOR is None
+    ):
+        return () if metadata is None else metadata
+
+    carrier = {}
+    try:
+        _TRACE_CONTEXT_PROPAGATOR.inject(carrier)
+    except Exception:
+        return () if metadata is None else metadata
+
+    if not carrier:
+        return () if metadata is None else metadata
+
+    meta_list = list(metadata) if metadata else []
+    existing_keys = {k.lower() for k, _ in meta_list}
+    for key, val in carrier.items():
+        if key.lower() not in existing_keys:
+            meta_list.append((key, val))
+
+    return (
+        tuple(meta_list)
+        if isinstance(metadata, tuple) or metadata is None
+        else meta_list
+    )
