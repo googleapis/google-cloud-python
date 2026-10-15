@@ -605,7 +605,8 @@ class TestReadRowsQuery:
 
         elapsed = end_time - start_time
         # Under O(N^2) on test runners, 1k iterations takes seconds.
-        # Under O(1) with tuple hashing, it takes <0.02s.
-        assert elapsed < 0.5, (
+        # Under O(1) with tuple hashing, it takes <0.10s.
+        # Double the value to avoid flaky tests
+        assert elapsed < 0.20, (
             f"O(N^2) Performance regression detected! Inserting {ranges_count} ranges took {elapsed:.2f}s"
         )
