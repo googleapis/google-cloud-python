@@ -53,127 +53,112 @@ async def test_async_suppressing_interceptor_invocations(method_name):
         mock_suppress.assert_called_once()
 
 
-def test_apply_otel_async_channel_interceptors_none_or_empty():
-    """Proves that passing None or empty interceptors returns the channel unchanged."""
-    channel = mock.Mock()
-    assert (
-        _observability.apply_otel_async_channel_interceptors(channel, None) is channel
+@pytest.mark.parametrize(
+    "options_or_interceptors,tracing_enabled",
+    [
+        (None, False),
+        ([], False),
+        (12345, False),
+        ({}, False),
+        (_observability.ClientOptions(), False),
+    ],
+    ids=[
+        "none_options",
+        "empty_list",
+        "invalid_type",
+        "client_options_dict_tracing_disabled",
+        "client_options_tracing_disabled",
+    ],
+)
+def test_apply_otel_async_channel_interceptors_inactive_or_empty(
+    mock_async_channel, monkeypatch, options_or_interceptors, tracing_enabled
+):
+    """Proves that passing inactive or empty options/interceptors returns channel unchanged."""
+    if tracing_enabled:
+        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    else:
+        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+
+    result = _observability.apply_otel_async_channel_interceptors(
+        mock_async_channel, options_or_interceptors
     )
-    assert _observability.apply_otel_async_channel_interceptors(channel, []) is channel
+    assert result is mock_async_channel
+    assert mock_async_channel._unary_unary_interceptors == []
+    assert mock_async_channel._unary_stream_interceptors == []
 
 
-def test_apply_otel_async_channel_interceptors_prepends_in_order():
-    """Proves that OpenTelemetry interceptors are prepended to the front of channel interceptor lists in order."""
+@pytest.mark.parametrize(
+    "input_mode",
+    ["list", "tuple", "client_options"],
+    ids=["list_interceptors", "tuple_interceptors", "client_options_resolved"],
+)
+def test_apply_otel_async_channel_interceptors_prepending_forms(
+    mock_async_channel, monkeypatch, input_mode
+):
+    """Proves that interceptors (via list, tuple, or ClientOptions) are prepended in order."""
     existing_interceptor = mock.Mock()
+    mock_async_channel._unary_unary_interceptors = [existing_interceptor]
+
     interceptor1 = mock.Mock(spec=["intercept_unary_unary"])
     interceptor2 = mock.Mock(spec=["intercept_unary_unary"])
 
-    channel = mock.Mock()
-    channel._unary_unary_interceptors = [existing_interceptor]
+    if input_mode == "list":
+        arg = [interceptor1, interceptor2]
+    elif input_mode == "tuple":
+        arg = (interceptor1, interceptor2)
+    else:  # client_options
+        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+        arg = _observability.ClientOptions()
+        monkeypatch.setattr(
+            _observability,
+            "get_otel_async_interceptor",
+            lambda opts: [interceptor1, interceptor2],
+        )
 
     result = _observability.apply_otel_async_channel_interceptors(
-        channel, [interceptor1, interceptor2]
+        mock_async_channel, arg
     )
-    assert result is channel
-    assert channel._unary_unary_interceptors == [
+    assert result is mock_async_channel
+    assert mock_async_channel._unary_unary_interceptors == [
         interceptor1,
         interceptor2,
         existing_interceptor,
     ]
 
 
-def test_apply_otel_async_channel_interceptors_prevents_duplicates():
-    """Proves that already-registered interceptors are not prepended again."""
-    interceptor = mock.Mock(spec=["intercept_unary_unary"])
-
-    channel = mock.Mock()
-    channel._unary_unary_interceptors = [interceptor]
-
-    result = _observability.apply_otel_async_channel_interceptors(
-        channel, [interceptor]
-    )
-    assert result is channel
-    assert channel._unary_unary_interceptors == [interceptor]
-
-
-def test_apply_otel_async_channel_interceptors_non_list_ignored():
-    """Proves that non-list interceptor containers on a channel are safely ignored."""
-    channel = mock.Mock()
-    channel._unary_unary_interceptors = "not-a-list"
-    interceptor = mock.Mock(spec=["intercept_unary_unary"])
-
-    result = _observability.apply_otel_async_channel_interceptors(
-        channel, [interceptor]
-    )
-    assert result is channel
-    assert channel._unary_unary_interceptors == "not-a-list"
-
-
-def test_apply_otel_async_channel_interceptors_with_client_options_disabled(
-    monkeypatch,
+@pytest.mark.parametrize(
+    "case,setup_channel,interceptor_spec,expected_result",
+    [
+        (
+            "prevent_duplicates",
+            lambda ch, i: setattr(ch, "_unary_unary_interceptors", [i]),
+            ["intercept_unary_unary"],
+            lambda ch, i: ch._unary_unary_interceptors == [i],
+        ),
+        (
+            "non_list_ignored",
+            lambda ch, i: setattr(ch, "_unary_unary_interceptors", "not-a-list"),
+            ["intercept_unary_unary"],
+            lambda ch, i: ch._unary_unary_interceptors == "not-a-list",
+        ),
+        (
+            "generic_untyped_fallback",
+            lambda ch, i: setattr(ch, "_unary_unary_interceptors", ["existing"]),
+            [],
+            lambda ch, i: ch._unary_unary_interceptors == [i, "existing"],
+        ),
+    ],
+    ids=["prevent_duplicates", "non_list_ignored", "generic_untyped_fallback"],
+)
+def test_apply_otel_async_channel_interceptors_edge_cases(
+    mock_async_channel, case, setup_channel, interceptor_spec, expected_result
 ):
-    """Proves that apply_otel_async_channel_interceptors returns channel unchanged when tracing is disabled."""
-    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
-    channel = mock.Mock()
-    channel._unary_unary_interceptors = []
-    options = _observability.ClientOptions()
-
-    result = _observability.apply_otel_async_channel_interceptors(channel, options)
-    assert result is channel
-    assert channel._unary_unary_interceptors == []
-
-
-def test_apply_otel_async_channel_interceptors_with_client_options_enabled(monkeypatch):
-    """Proves that apply_otel_async_channel_interceptors resolves interceptors and prepends them."""
-    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    channel = mock.Mock()
-    existing = mock.Mock()
-    channel._unary_unary_interceptors = [existing]
-    options = _observability.ClientOptions()
-    mock_interceptor = mock.Mock(spec=["intercept_unary_unary"])
-
-    with mock.patch.object(
-        _observability, "get_otel_async_interceptor", return_value=[mock_interceptor]
-    ) as mock_get:
-        result = _observability.apply_otel_async_channel_interceptors(channel, options)
-        assert result is channel
-        mock_get.assert_called_once_with(options)
-        assert channel._unary_unary_interceptors == [mock_interceptor, existing]
-
-
-def test_apply_otel_async_channel_interceptors_sequence_tuple():
-    """Proves that passing a sequence tuple of interceptors prepends correctly."""
-    channel = mock.Mock()
-    existing = mock.Mock()
-    channel._unary_unary_interceptors = [existing]
-    interceptor = mock.Mock(spec=["intercept_unary_unary"])
+    """Proves edge case handling: deduplication, non-list attributes, and untyped fallback."""
+    interceptor = mock.Mock(spec=interceptor_spec)
+    setup_channel(mock_async_channel, interceptor)
 
     result = _observability.apply_otel_async_channel_interceptors(
-        channel, (interceptor,)
+        mock_async_channel, [interceptor]
     )
-    assert result is channel
-    assert channel._unary_unary_interceptors == [interceptor, existing]
-
-
-def test_apply_otel_async_channel_interceptors_invalid_client_options():
-    """Proves that passing an invalid client_options type returns the channel unchanged."""
-    channel = mock.Mock()
-    channel._unary_unary_interceptors = []
-
-    result = _observability.apply_otel_async_channel_interceptors(channel, 12345)
-    assert result is channel
-    assert channel._unary_unary_interceptors == []
-
-
-def test_apply_otel_async_channel_interceptors_generic_untyped_fallback():
-    """Proves that generic interceptors without standard methods fall back to unary list."""
-    channel = mock.Mock()
-    existing = mock.Mock()
-    channel._unary_unary_interceptors = [existing]
-    generic_interceptor = mock.Mock(spec=[])
-
-    result = _observability.apply_otel_async_channel_interceptors(
-        channel, [generic_interceptor]
-    )
-    assert result is channel
-    assert channel._unary_unary_interceptors == [generic_interceptor, existing]
+    assert result is mock_async_channel
+    assert expected_result(mock_async_channel, interceptor)

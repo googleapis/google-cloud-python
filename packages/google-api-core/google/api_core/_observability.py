@@ -491,6 +491,12 @@ def apply_otel_async_channel_interceptors(
 
     interceptor_list = list(otel_interceptors)
 
+    # Section 1: Typed interceptors - prepend matching interceptors to each
+    # corresponding channel list (unary-unary, unary-stream, etc.) in order.
+    # We prepend (put at the very front) rather than append because gRPC interceptors
+    # run like layers of an onion from first to last: placing our tracing and
+    # suppressing interceptors at the very front ensures our Google span wraps
+    # around the whole call and blocks duplicate background spans before they start.
     for method_name, attr_name in _CHANNEL_INTERCEPTOR_MAPPING:
         target_list = getattr(channel, attr_name, None)
         if isinstance(target_list, list):
@@ -502,7 +508,8 @@ def apply_otel_async_channel_interceptors(
             if matching:
                 target_list[:0] = matching
 
-    # Path 2: Fallback for generic/untyped interceptors.
+    # Section 2: Untyped/generic fallback - prepend any remaining interceptors
+    # lacking standard method names directly to the unary-unary list.
     unary_list = getattr(channel, "_unary_unary_interceptors", None)
     if isinstance(unary_list, list):
         standard_methods = tuple(method for method, _ in _CHANNEL_INTERCEPTOR_MAPPING)

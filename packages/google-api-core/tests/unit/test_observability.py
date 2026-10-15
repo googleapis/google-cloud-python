@@ -233,6 +233,21 @@ def test_get_otel_interceptor_grpc_intercept_channel_fallback(
         assert result is mock_wrapped_channel
 
 
+def test_get_otel_interceptor_grpc_none(monkeypatch, mock_otel_grpc):
+    """Proves that otel_interceptor proceeds cleanly when grpc is None."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    options = ClientOptions()
+    mock_raw_channel = mock.Mock(name="raw_channel")
+    mock_wrapped_channel = mock.Mock(name="wrapped_channel")
+    mock_otel_grpc.client_interceptor.return_value = mock.Mock()
+    mock_otel_grpc.intercept_channel.return_value = mock_wrapped_channel
+
+    otel_interceptor = _observability.get_otel_interceptor(client_options=options)
+    with mock.patch.object(_observability, "grpc", None):
+        result = otel_interceptor(mock_raw_channel)
+        assert result is mock_wrapped_channel
+
+
 def test_get_otel_async_interceptor_enabled(monkeypatch, mock_otel_grpc):
     """Proves that get_otel_async_interceptor instantiates and returns asynchronous
     OpenTelemetry client interceptors with the resolved tracer provider.

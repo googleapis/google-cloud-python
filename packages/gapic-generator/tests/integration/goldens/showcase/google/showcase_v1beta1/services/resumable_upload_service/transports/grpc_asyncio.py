@@ -333,7 +333,7 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                 ],
             )
 
-        # 1. User & Logging Interceptors (appended to channel)
+        # Wrap channel with user-specified and logging interceptors.
         channel_interceptors = list(interceptors) if interceptors else []
         self._interceptor = _LoggingClientAIOInterceptor()
         channel_interceptors.append(self._interceptor)
@@ -341,9 +341,7 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
             self._grpc_channel, channel_interceptors
         )
 
-        # 2. OpenTelemetry Tracing & Suppression Interceptors (prepended to channel)
-        # Must be placed at the front of the channel's pipeline so that our SDK spans
-        # wrap outside and downstream generic auto-instrumentation is suppressed.
+        # Configure OpenTelemetry tracing and span suppression on the channel.
         if (
             _observability is not None
             and hasattr(_observability, "apply_otel_async_channel_interceptors")
