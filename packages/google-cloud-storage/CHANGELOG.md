@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.17.0...google-cloud-storage-v3.17.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* **storage:** set GRPC_ALTS_MAX_CONCURRENT_HANDSHAKES=2 in benchmark runner ([#18703](https://github.com/googleapis/google-cloud-python/issues/18703)) ([a9ca134](https://github.com/googleapis/google-cloud-python/commit/a9ca134cf2adf5b487e197682e064af5915c112b))
+
 ## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.16.0...google-cloud-storage-v3.17.0) (2026-10-08)
 
 
