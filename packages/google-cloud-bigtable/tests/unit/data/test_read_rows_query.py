@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
+from unittest import mock
 
 import pytest
 
@@ -602,7 +602,6 @@ class TestReadRowsQuery:
         that it is never accessed during batch additions, proving we bypass the
         quadratic evaluation path entirely.
         """
-        from unittest import mock
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
         query = self._make_one()
