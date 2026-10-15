@@ -193,7 +193,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_response.arrow_record_batch = None
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, [])
@@ -247,7 +247,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.side_effect = [
@@ -306,7 +306,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = mock_stream_batch
@@ -339,7 +339,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             query_results_format="ARROW",
         )
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow"):
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow"):
             with self.assertRaises(ValueError) as ctx:
                 list(iterator._download_arrow_from_job_id())
             self.assertIn(
@@ -374,7 +374,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
         mock_bqstorage.read_rows.return_value = [mock_response]
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "fake_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = "fake_batch"
@@ -422,7 +422,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_first_batch = mock.MagicMock()
         mock_first_batch.num_rows = 10
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = mock_first_batch
@@ -464,7 +464,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_first_batch.num_rows = 10
         mock_bqstorage.read_rows.return_value = []
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
             mock_pyarrow.ipc.read_record_batch.return_value = mock_first_batch
