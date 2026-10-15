@@ -101,6 +101,14 @@ class AsyncGrpcClient:
     ):
         self._enable_metrics = enable_metrics
         self._enable_debug_metrics = enable_debug_metrics
+        self._metrics_enabled = _opentelemetry_metrics.is_metrics_enabled(
+            enable_metrics
+        )
+        self._debug_metrics_enabled = (
+            _opentelemetry_metrics.is_debug_metrics_enabled(
+                enable_debug_metrics
+            )
+        )
 
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
             if client_options is None or client_options.api_endpoint is None:
@@ -136,14 +144,12 @@ class AsyncGrpcClient:
     @property
     def metrics_enabled(self) -> bool:
         """(Experimental) Returns ``True`` if OpenTelemetry metrics recording is active for this client."""
-        return _opentelemetry_metrics.is_metrics_enabled(self._enable_metrics)
+        return self._metrics_enabled
 
     @property
     def debug_metrics_enabled(self) -> bool:
         """(Experimental) Returns ``True`` if debug metrics recording is active for this client."""
-        return _opentelemetry_metrics.is_debug_metrics_enabled(
-            self._enable_debug_metrics
-        )
+        return self._debug_metrics_enabled
 
     def _create_anonymous_client(self, client_options, credentials):
         channel = grpc.aio.insecure_channel(client_options.api_endpoint)

@@ -275,20 +275,34 @@ class TestClient(unittest.TestCase):
         )
         self.assertTrue(client._enable_debug_metrics)
 
+    def test_ctor_w_invalid_enable_metrics_raises_type_error(self):
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        with self.assertRaises(TypeError):
+            self._make_one(
+                project=PROJECT, credentials=credentials, enable_metrics="true"
+            )
+        with self.assertRaises(TypeError):
+            self._make_one(
+                project=PROJECT,
+                credentials=credentials,
+                enable_debug_metrics="true",
+            )
+
     def test_client_metrics_enabled_property(self):
         from google.cloud.storage import _opentelemetry_metrics
 
         PROJECT = "PROJECT"
         credentials = _make_credentials()
-        client = self._make_one(
-            project=PROJECT, credentials=credentials, enable_metrics=True
-        )
 
         with mock.patch.multiple(
             _opentelemetry_metrics,
             HAS_OPENTELEMETRY_METRICS=True,
             _ENABLE_METRICS_DEV_GATE=True,
         ):
+            client = self._make_one(
+                project=PROJECT, credentials=credentials, enable_metrics=True
+            )
             self.assertTrue(client.metrics_enabled)
 
         with mock.patch.multiple(
@@ -296,6 +310,9 @@ class TestClient(unittest.TestCase):
             HAS_OPENTELEMETRY_METRICS=True,
             _ENABLE_METRICS_DEV_GATE=False,
         ):
+            client = self._make_one(
+                project=PROJECT, credentials=credentials, enable_metrics=True
+            )
             self.assertFalse(client.metrics_enabled)
 
     def test_client_debug_metrics_enabled_property(self):
@@ -303,18 +320,18 @@ class TestClient(unittest.TestCase):
 
         PROJECT = "PROJECT"
         credentials = _make_credentials()
-        client = self._make_one(
-            project=PROJECT,
-            credentials=credentials,
-            enable_metrics=True,
-            enable_debug_metrics=True,
-        )
 
         with mock.patch.multiple(
             _opentelemetry_metrics,
             HAS_OPENTELEMETRY_METRICS=True,
             _ENABLE_METRICS_DEV_GATE=True,
         ):
+            client = self._make_one(
+                project=PROJECT,
+                credentials=credentials,
+                enable_metrics=True,
+                enable_debug_metrics=True,
+            )
             self.assertTrue(client.debug_metrics_enabled)
 
         with mock.patch.multiple(
@@ -322,20 +339,26 @@ class TestClient(unittest.TestCase):
             HAS_OPENTELEMETRY_METRICS=True,
             _ENABLE_METRICS_DEV_GATE=False,
         ):
+            client = self._make_one(
+                project=PROJECT,
+                credentials=credentials,
+                enable_metrics=True,
+                enable_debug_metrics=True,
+            )
             self.assertFalse(client.debug_metrics_enabled)
 
         # Verify that debug metrics are independent when base metrics are disabled
-        client_disabled_base = self._make_one(
-            project=PROJECT,
-            credentials=credentials,
-            enable_metrics=False,
-            enable_debug_metrics=True,
-        )
         with mock.patch.multiple(
             _opentelemetry_metrics,
             HAS_OPENTELEMETRY_METRICS=True,
             _ENABLE_METRICS_DEV_GATE=True,
         ):
+            client_disabled_base = self._make_one(
+                project=PROJECT,
+                credentials=credentials,
+                enable_metrics=False,
+                enable_debug_metrics=True,
+            )
             self.assertFalse(client_disabled_base.metrics_enabled)
             self.assertTrue(client_disabled_base.debug_metrics_enabled)
 
@@ -344,10 +367,6 @@ class TestClient(unittest.TestCase):
 
         PROJECT = "PROJECT"
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
-
-        self.assertIsNone(client._enable_metrics)
-        self.assertIsNone(client._enable_debug_metrics)
 
         with mock.patch.multiple(
             _opentelemetry_metrics,
@@ -355,6 +374,9 @@ class TestClient(unittest.TestCase):
             _ENABLE_METRICS_DEV_GATE=True,
         ):
             with mock.patch.dict("os.environ", {}, clear=True):
+                client = self._make_one(project=PROJECT, credentials=credentials)
+                self.assertIsNone(client._enable_metrics)
+                self.assertIsNone(client._enable_debug_metrics)
                 self.assertFalse(client.metrics_enabled)
                 self.assertFalse(client.debug_metrics_enabled)
 
@@ -366,6 +388,7 @@ class TestClient(unittest.TestCase):
                 },
                 clear=True,
             ):
+                client = self._make_one(project=PROJECT, credentials=credentials)
                 self.assertTrue(client.metrics_enabled)
                 self.assertTrue(client.debug_metrics_enabled)
 

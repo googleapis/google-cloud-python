@@ -367,50 +367,75 @@ class TestGrpcClient(unittest.TestCase):
 
         mock_creds = _make_credentials()
 
-        client = grpc_client.GrpcClient(
-            project="test-project",
-            credentials=mock_creds,
-            enable_metrics=True,
-            enable_debug_metrics=True,
-        )
-
         with mock.patch.multiple(
             _opentelemetry_metrics,
             HAS_OPENTELEMETRY_METRICS=True,
             _ENABLE_METRICS_DEV_GATE=True,
         ):
+            client = grpc_client.GrpcClient(
+                project="test-project",
+                credentials=mock_creds,
+                enable_metrics=True,
+                enable_debug_metrics=True,
+            )
             self.assertTrue(client.metrics_enabled)
             self.assertTrue(client.debug_metrics_enabled)
 
-            client._enable_metrics = False
-            self.assertFalse(client.metrics_enabled)
-            self.assertTrue(client.debug_metrics_enabled)
+            client_base_false = grpc_client.GrpcClient(
+                project="test-project",
+                credentials=mock_creds,
+                enable_metrics=False,
+                enable_debug_metrics=True,
+            )
+            self.assertFalse(client_base_false.metrics_enabled)
+            self.assertTrue(client_base_false.debug_metrics_enabled)
 
-            client._enable_debug_metrics = False
-            self.assertFalse(client.debug_metrics_enabled)
+            client_both_false = grpc_client.GrpcClient(
+                project="test-project",
+                credentials=mock_creds,
+                enable_metrics=False,
+                enable_debug_metrics=False,
+            )
+            self.assertFalse(client_both_false.metrics_enabled)
+            self.assertFalse(client_both_false.debug_metrics_enabled)
 
         with mock.patch.multiple(
             _opentelemetry_metrics,
             HAS_OPENTELEMETRY_METRICS=True,
             _ENABLE_METRICS_DEV_GATE=False,
         ):
-            client._enable_metrics = True
-            client._enable_debug_metrics = True
+            client = grpc_client.GrpcClient(
+                project="test-project",
+                credentials=mock_creds,
+                enable_metrics=True,
+                enable_debug_metrics=True,
+            )
             self.assertFalse(client.metrics_enabled)
             self.assertFalse(client.debug_metrics_enabled)
+
+    @mock.patch("google.cloud._storage_v2.StorageClient")
+    def test_ctor_w_invalid_enable_metrics_raises_type_error(
+        self, mock_storage_client
+    ):
+        mock_creds = _make_credentials()
+        with self.assertRaises(TypeError):
+            grpc_client.GrpcClient(
+                project="test-project",
+                credentials=mock_creds,
+                enable_metrics="true",
+            )
+        with self.assertRaises(TypeError):
+            grpc_client.GrpcClient(
+                project="test-project",
+                credentials=mock_creds,
+                enable_debug_metrics="true",
+            )
 
     @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_ctor_metrics_defaults_and_env_fallback(self, mock_storage_client):
         from google.cloud.storage import _opentelemetry_metrics
 
         mock_creds = _make_credentials()
-        client = grpc_client.GrpcClient(
-            project="test-project",
-            credentials=mock_creds,
-        )
-
-        self.assertIsNone(client._enable_metrics)
-        self.assertIsNone(client._enable_debug_metrics)
 
         with mock.patch.multiple(
             _opentelemetry_metrics,
@@ -418,6 +443,12 @@ class TestGrpcClient(unittest.TestCase):
             _ENABLE_METRICS_DEV_GATE=True,
         ):
             with mock.patch.dict("os.environ", {}, clear=True):
+                client = grpc_client.GrpcClient(
+                    project="test-project",
+                    credentials=mock_creds,
+                )
+                self.assertIsNone(client._enable_metrics)
+                self.assertIsNone(client._enable_debug_metrics)
                 self.assertFalse(client.metrics_enabled)
                 self.assertFalse(client.debug_metrics_enabled)
 
@@ -429,5 +460,9 @@ class TestGrpcClient(unittest.TestCase):
                 },
                 clear=True,
             ):
+                client = grpc_client.GrpcClient(
+                    project="test-project",
+                    credentials=mock_creds,
+                )
                 self.assertTrue(client.metrics_enabled)
                 self.assertTrue(client.debug_metrics_enabled)

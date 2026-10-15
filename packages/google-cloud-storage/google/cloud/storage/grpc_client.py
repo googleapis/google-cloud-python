@@ -136,6 +136,14 @@ class GrpcClient(ClientWithProject):
 
         self._enable_metrics = enable_metrics
         self._enable_debug_metrics = enable_debug_metrics
+        self._metrics_enabled = _opentelemetry_metrics.is_metrics_enabled(
+            enable_metrics
+        )
+        self._debug_metrics_enabled = (
+            _opentelemetry_metrics.is_debug_metrics_enabled(
+                enable_debug_metrics
+            )
+        )
 
         if isinstance(client_options, dict):
             if api_key:
@@ -160,14 +168,12 @@ class GrpcClient(ClientWithProject):
     @property
     def metrics_enabled(self) -> bool:
         """(Experimental) Returns ``True`` if OpenTelemetry metrics recording is active for this client."""
-        return _opentelemetry_metrics.is_metrics_enabled(self._enable_metrics)
+        return self._metrics_enabled
 
     @property
     def debug_metrics_enabled(self) -> bool:
         """(Experimental) Returns ``True`` if debug metrics recording is active for this client."""
-        return _opentelemetry_metrics.is_debug_metrics_enabled(
-            self._enable_debug_metrics
-        )
+        return self._debug_metrics_enabled
 
     def _create_gapic_client(
         self,

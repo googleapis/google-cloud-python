@@ -1420,7 +1420,8 @@ def test__reduce_client():
         assert args[-2:] == (True, True)
         replicated_client(*args)
         mock_client_cls.assert_called_once_with(
-            *args[1:7],
+            *args[1:6],
+            extra_headers=custom_headers,
             enable_metrics=True,
             enable_debug_metrics=True,
         )
@@ -1430,8 +1431,18 @@ def test__reduce_client():
         mock_client_cls.reset_mock()
         replicated_client(*args[:-1])
         mock_client_cls.assert_called_once_with(
-            *args[1:7],
+            *args[1:6],
+            extra_headers=custom_headers,
             enable_metrics=True,
+        )
+
+        # Verify compatibility when only extra_headers is present (len(args) == 6 after id)
+        fake_cache.clear()
+        mock_client_cls.reset_mock()
+        replicated_client(*args[:-2])
+        mock_client_cls.assert_called_once_with(
+            *args[1:6],
+            extra_headers=custom_headers,
         )
 
 
