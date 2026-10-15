@@ -55,7 +55,6 @@ setuptools.setup(
     install_requires=(
         "google-api-core>=2.25.0, <3.0.0",
         "pandas[performance,gcp]>=2.0.0, <4.0.0; python_version < '3.15'",
-        # pandas[performance] requires numba which does not have 3.15 support yet
         "pandas[gcp]>=2.0.0, <4.0.0;python_version>='3.15'",
         # pyarrow is transitive dependency; not accessed by the library directly
         "pyarrow>=15.0.0",
