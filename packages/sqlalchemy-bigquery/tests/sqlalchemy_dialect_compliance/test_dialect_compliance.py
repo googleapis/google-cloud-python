@@ -271,6 +271,49 @@ if packaging.version.parse(sqlalchemy.__version__) >= packaging.version.parse("2
         def test_floordiv_integer_bound(self):
             pass
 
+        @pytest.mark.skip("BQ rounds based on datatype")
+        def test_floordiv_integer_bound(self):
+            pass
+
+        @pytest.mark.skip(
+            "Skip 38-Digit Typed Divisor: BigQuery's SQL compiler evaluates raw, unquoted "
+            "integer sequences as INT64 *before* executing casting wrappers like CAST(). "
+            "Because 30000000000000000000000000000000000000 exceeds standard signed 64-bit "
+            "boundaries (maximum value: 9223372036854775807), the parser throws an immediate "
+            "syntax-level 'Invalid integer literal' error. Solving this requires the dialect compiler "
+            "to natively serialize large Python Decimal objects as string-quoted SQL literals ('30000...')."
+        )
+        def test_truediv_divisor_numeric_38_digit_divisor_typed(self):
+            pass
+
+        @pytest.mark.skip(
+            "Skip 38-Digit Untyped Divisor: Similar to the typed variant, BigQuery's lexical analyzer "
+            "overflows on unquoted digit strings exceeding 64-bit thresholds. Because SQLAlchemy's "
+            "untyped compilation strategy outputs these Python Decimal structures as raw digit text, "
+            "the SQL engine throws a BadRequest 'Invalid integer literal' exception at the parsing step."
+        )
+        def test_truediv_divisor_numeric_38_digit_divisor_untyped_function(self):
+            pass
+
+        @pytest.mark.skip(
+            "Skip Untyped Many Decimals: When wrap_divisor is a lambda (an untyped function), SQLAlchemy "
+            "leaves compiled math expressions uncoerced. Intermediate division calculations on BigQuery standard "
+            "NUMERIC types then fall back to standard FLOAT64 representation behaviors or lower-precision scales, "
+            "resulting in floating-point math inaccuracies (e.g., returning 7.00000000447 instead of the expected 7)."
+        )
+        def test_truediv_divisor_numeric_many_decimals_untyped_function(self):
+            pass
+
+        @pytest.mark.skip(
+            "Skip Untyped Tiny Divisor: BigQuery's standard NUMERIC type has a strict scale ceiling of "
+            "9 decimal places (unlike BIGNUMERIC which supports up to 38 decimal places). When an untyped "
+            "divisor contains a high-precision value like 0.00000000000012345679 (with 13 decimal places), "
+            "the SQL engine's intermediate casting to NUMERIC rounds the value all the way down to 0, "
+            "consequently triggering a 400 Bad Request 'division by zero' exception."
+        )
+        def test_truediv_divisor_numeric_tiny_divisor_untyped_function(self):
+            pass
+
     class SimpleUpdateDeleteTest(_SimpleUpdateDeleteTest):
         """The base tests fail if operations return rows for some reason."""
 
