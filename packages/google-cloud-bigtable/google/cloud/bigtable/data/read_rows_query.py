@@ -151,14 +151,14 @@ class RowRange:
     @classmethod
     def _from_pb(cls, data: RowRangePB) -> RowRange:
         """
-        Creates a RowRange from a protobuf
+        Creates a RowRange from a protobuf without allocating temporary unused objects.
 
         Args:
             data (RowRangePB): The protobuf to convert
         Returns:
             RowRange: The converted RowRange
         """
-        instance = cls()
+        instance = cls.__new__(cls)
         instance._pb = data
         return instance
 
