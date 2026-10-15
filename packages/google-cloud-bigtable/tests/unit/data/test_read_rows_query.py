@@ -589,27 +589,38 @@ class TestReadRowsQuery:
         query = self._make_one(row_keys="")
         assert query.row_keys == [b""]
 
-    def test_add_range_performance_regression(self):
-        """Assert O(1) range insertion scaling and prevent regression back to O(N^2)."""
+    def test_add_range_does_not_materialize_row_ranges(self):
+        """
+        Ensures add_range scales in O(1) time and does not trigger O(N) scans.
+
+        The legacy implementation called the `row_ranges` property helper during
+        membership checks, which dynamically re-allocated and materialized brand
+        new Python RowRange wrapper objects for every element in the array on
+        each insertion. This led to an accidental O(N^2) memory and CPU leak.
+
+        This test mocks out the `row_ranges` property on the class and asserts
+        that it is never accessed during batch additions, proving we bypass the
+        quadratic evaluation path entirely.
+        """
+        from unittest import mock
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
         query = self._make_one()
-        ranges_count = 1000
 
-        start_time = time.perf_counter()
-        for i in range(ranges_count):
-            # Using 4-digit zero-padding ensures 'key_0009' is lexicographically smaller than 'key_0010'
-            r = RowRange(start_key=f"key_{i:04d}", end_key=f"key_{i + 1:04d}")
-            query.add_range(r)
-        end_time = time.perf_counter()
+        # Intercept the `row_ranges` class property with a mock to track accesses
+        with mock.patch.object(
+            type(query), "row_ranges", new_callable=mock.PropertyMock
+        ) as row_ranges:
+            for i in range(100):
+                # Add unique sequential ranges. Utilizing our fast O(1) set signature lookup
+                # should never touch the slow wrapper-materialization properties.
+                query.add_range(RowRange(f"k{i:03d}", f"k{i + 1:03d}"))
 
-        elapsed = end_time - start_time
-        # Under O(N^2) on test runners, 1k iterations takes seconds.
-        # Under O(1) with tuple hashing, it takes <0.10s.
-        # Double the value to avoid flaky tests
-        assert elapsed < 0.20, (
-            f"O(N^2) Performance regression detected! Inserting {ranges_count} ranges took {elapsed:.2f}s"
-        )
+            # ASSERT: The slow, O(N) wrapper-building property was never accessed
+            row_ranges.assert_not_called()
+
+        # Verify that all ranges were successfully committed to the underlying protobuf
+        assert len(query._row_set.row_ranges) == 100
 
     def test_add_range_deduplication_behavior(self):
         """Assert that identical ranges are deduplicated, but distinct ranges are kept."""
