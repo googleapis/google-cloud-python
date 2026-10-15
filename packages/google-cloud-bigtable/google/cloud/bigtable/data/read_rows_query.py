@@ -349,7 +349,12 @@ class ReadRowsQuery:
         Args:
             row_range: a range of row keys to add to this query
         """
-        if row_range not in self.row_ranges:
+        # Check against a set of string signatures to avoid O(n^2) wrapper reconstruction
+        if not hasattr(self, "_range_signatures"):
+            self._range_signatures = set(str(RowRange._from_pb(r)) for r in self._row_set.row_ranges)
+        signature = str(row_range)
+        if signature not in self._range_signatures:
+            self._range_signatures.add(signature)
             self._row_set.row_ranges.append(row_range._pb)
 
     def shard(self, shard_keys: RowKeySamples) -> ShardedQuery:
