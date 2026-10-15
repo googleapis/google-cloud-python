@@ -218,7 +218,7 @@ jobs:
           python-version: ${{ needs.python_config.outputs.latest_stable_python }}
       - name: Install System Deps
         run: sudo apt-get update && sudo apt-get install -y pandoc
-      - name: Run Mypy
+      - name: Run Mypy with released version of google-api-core from PyPI
         run: |
           pip install nox
           cd packages/gapic-generator
