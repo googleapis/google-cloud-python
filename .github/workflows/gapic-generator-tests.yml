@@ -218,7 +218,28 @@ jobs:
           python-version: ${{ needs.python_config.outputs.latest_stable_python }}
       - name: Install System Deps
         run: sudo apt-get update && sudo apt-get install -y pandoc
-      - name: Run Mypy
+      - name: Run Mypy with released version of google-api-core from PyPI
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          nox -s showcase_mypy
+
+  showcase-mypy-canary:
+    needs: python_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Run Mypy Canary with local google-api-core
+        env:
+          INSTALL_LOCAL_CORE: "true"
         run: |
           pip install nox
           cd packages/gapic-generator
@@ -358,7 +379,7 @@ jobs:
   # This job will be reported as 'Success' if all its dependencies either
   # pass or are skipped due to path filtering.
   status:
-    needs: [check_changes, python_config, showcase-unit, showcase, showcase-mypy, goldens, goldens-prerelease, fragment-snippet, integration]
+    needs: [check_changes, python_config, showcase-unit, showcase, showcase-mypy, showcase-mypy-canary, goldens, goldens-prerelease, fragment-snippet, integration]
     if: always()
     runs-on: ubuntu-latest
     steps:

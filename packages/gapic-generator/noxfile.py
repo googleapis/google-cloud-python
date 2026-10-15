@@ -723,7 +723,11 @@ def showcase_mypy(
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
 ):
-    """Perform typecheck analysis on the generated Showcase library."""
+    """Perform typecheck analysis on the generated Showcase library.
+
+    Set INSTALL_LOCAL_CORE=true to install packages/google-api-core from source
+    (useful for local testing and canary validation).
+    """
 
     session.install(
         "mypy",
@@ -734,6 +738,16 @@ def showcase_mypy(
     )
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
+        # When opt-in environment variable is set (e.g. in canary CI or local testing),
+        # install the local google-api-core package from source.
+        if os.getenv("INSTALL_LOCAL_CORE") == "true":
+            local_core = Path(__file__).resolve().parent.parent / "google-api-core"
+            if not local_core.is_dir():
+                session.error(
+                    f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
+                )
+            session.install(str(local_core))
+
         session.chdir(lib)
 
         # Run the tests.
