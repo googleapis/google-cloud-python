@@ -55,7 +55,6 @@ setuptools.setup(
     install_requires=(
         "google-api-core>=2.25.0, <3.0.0",
         "pandas[performance,gcp]>=2.0.0, <4.0.0; python_version < '3.15'",
-        "pandas[gcp]>=2.0.0, <4.0.0;python_version>='3.15'",
         # pyarrow is transitive dependency; not accessed by the library directly
         "pyarrow>=15.0.0",
         "tabulate>=0.9.0, <1.0.0",
