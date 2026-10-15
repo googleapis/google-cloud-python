@@ -54,30 +54,27 @@ async def test_async_suppressing_interceptor_invocations(method_name):
 
 
 @pytest.mark.parametrize(
-    "options_or_interceptors,tracing_enabled",
+    "options_or_interceptors",
     [
-        (None, False),
-        ([], False),
-        (12345, False),
-        ({}, False),
-        (_observability.ClientOptions(), False),
+        None,
+        [],
+        12345,
+        {},
+        _observability.ClientOptions(),
     ],
     ids=[
         "none_options",
         "empty_list",
         "invalid_type",
-        "client_options_dict_tracing_disabled",
+        "client_options_dict",
         "client_options_tracing_disabled",
     ],
 )
 def test_apply_otel_async_channel_interceptors_inactive_or_empty(
-    mock_async_channel, monkeypatch, options_or_interceptors, tracing_enabled
+    mock_async_channel, monkeypatch, options_or_interceptors
 ):
     """Proves that passing inactive or empty options/interceptors returns channel unchanged."""
-    if tracing_enabled:
-        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    else:
-        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
 
     result = _observability.apply_otel_async_channel_interceptors(
         mock_async_channel, options_or_interceptors
