@@ -14,9 +14,21 @@
 
 """Manages OpenTelemetry metrics instruments and gating for GCS client."""
 
+import asyncio
+from collections import deque
+import concurrent.futures
+import contextlib
+from contextvars import ContextVar
+from dataclasses import dataclass
+import http.client
 import logging
 import os
-from typing import Any, Dict, Optional
+import re
+import socket
+import ssl
+import time
+from typing import Any, Deque, Dict, Iterator, List, Optional, Set, Tuple
+from urllib.parse import urlsplit
 
 from google.cloud.storage.version import __version__
 
@@ -38,8 +50,35 @@ ENABLE_OTEL_DEBUG_METRICS_ENV_VAR = "GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRIC
 _DEFAULT_ENABLE_METRICS = False
 _DEFAULT_ENABLE_DEBUG_METRICS = False
 
+DEFAULT_SERVER_ADDRESS = "storage.googleapis.com"
+
 # ---------------------------------------------------------------------------
-# 3. Optional OpenTelemetry Dependency Check
+# 3. Standard Metric Instrument Names
+# ---------------------------------------------------------------------------
+METRIC_RPC_CLIENT_CALL_DURATION = "rpc.client.call.duration"
+METRIC_HTTP_CLIENT_REQUEST_DURATION = "http.client.request.duration"
+METRIC_GCP_CLIENT_REQUEST_DURATION = "gcp.client.request.duration"
+METRIC_STORAGE_CLIENT_OPERATIONS = "gcp.storage.client.operations"
+METRIC_STORAGE_CLIENT_ATTEMPTS = "gcp.storage.client.attempts"
+METRIC_STORAGE_REQUEST_BODY_SIZE = "gcp.storage.client.request.body.size"
+METRIC_STORAGE_RESPONSE_BODY_SIZE = "gcp.storage.client.response.body.size"
+METRIC_STORAGE_OPERATION_TTFB = "gcp.storage.client.operation.ttfb"
+METRIC_STORAGE_CLIENT_ERRORS = "gcp.storage.client.errors"
+
+_LATENCY_METRIC_NAMES = (
+    METRIC_RPC_CLIENT_CALL_DURATION,
+    METRIC_HTTP_CLIENT_REQUEST_DURATION,
+    METRIC_GCP_CLIENT_REQUEST_DURATION,
+    METRIC_STORAGE_OPERATION_TTFB,
+)
+
+_SIZE_METRIC_NAMES = (
+    METRIC_STORAGE_REQUEST_BODY_SIZE,
+    METRIC_STORAGE_RESPONSE_BODY_SIZE,
+)
+
+# ---------------------------------------------------------------------------
+# 4. Optional OpenTelemetry Dependency Check
 # ---------------------------------------------------------------------------
 try:
     from opentelemetry import metrics
@@ -134,7 +173,7 @@ def is_debug_metrics_enabled(
 
 
 # ---------------------------------------------------------------------------
-# 4. Standard Common Attributes & Meter Provider
+# 5. Standard Common Attributes & Meter Provider
 # ---------------------------------------------------------------------------
 _COMMON_ATTRIBUTES: Dict[str, Any] = {
     "gcp.client.service": "storage",
@@ -178,3 +217,917 @@ def get_meter(
         __version__,
         meter_provider=meter_provider,
     )
+
+
+# ---------------------------------------------------------------------------
+# 6. Custom Histogram Bucket Boundaries & Views
+# ---------------------------------------------------------------------------
+def _build_latency_buckets() -> Tuple[float, ...]:
+    """Builds the custom latency histogram bucket boundaries in seconds.
+
+    Uses 2ms resolution for the first 50 buckets (0.000s to 0.098s), then starts
+    at 0.100s with 10ms resolution and doubles the increment every 10 buckets
+    while boundary < 300.0s.
+    """
+    boundaries: List[float] = []
+    boundary = 0.0
+    increment = 0.002
+
+    for _ in range(50):
+        boundaries.append(round(boundary, 6))
+        boundary += increment
+
+    increment = 0.010
+    for i in range(150):
+        if boundary >= 300.0:
+            break
+        if i != 0 and i % 10 == 0:
+            increment *= 2
+        boundaries.append(round(boundary, 6))
+        boundary += increment
+
+    return tuple(boundaries)
+
+
+def _build_size_buckets() -> Tuple[int, ...]:
+    """Builds the custom byte-size histogram bucket boundaries in bytes.
+
+    Uses 128 KiB resolution from 0 up to 4 MiB (33 buckets), then doubles every
+    bucket up to 16 GiB (12 buckets, 45 total buckets).
+    """
+    kb = 1024
+    mb = 1024 * kb
+    gb = 1024 * mb
+
+    boundaries: List[int] = []
+    boundary = 0
+    increment = 128 * kb
+
+    while boundary <= 16 * gb:
+        boundaries.append(boundary)
+        if boundary < 4 * mb:
+            boundary += increment
+        else:
+            boundary *= 2
+
+    return tuple(boundaries)
+
+
+LATENCY_HISTOGRAM_BOUNDARIES: Tuple[float, ...] = _build_latency_buckets()
+SIZE_HISTOGRAM_BOUNDARIES: Tuple[int, ...] = _build_size_buckets()
+
+
+def get_histogram_views() -> List[Any]:
+    """Returns OpenTelemetry SDK Views for custom latency and size histograms.
+
+    If ``opentelemetry-sdk`` is not installed, returns an empty list.
+    """
+    try:
+        from opentelemetry.sdk.metrics.view import (
+            ExplicitBucketHistogramAggregation,
+            View,
+        )
+    except ImportError:
+        return []
+
+    views: List[Any] = []
+    for name in _LATENCY_METRIC_NAMES:
+        views.append(
+            View(
+                instrument_name=name,
+                aggregation=ExplicitBucketHistogramAggregation(
+                    boundaries=LATENCY_HISTOGRAM_BOUNDARIES
+                ),
+            )
+        )
+    for name in _SIZE_METRIC_NAMES:
+        views.append(
+            View(
+                instrument_name=name,
+                aggregation=ExplicitBucketHistogramAggregation(
+                    boundaries=SIZE_HISTOGRAM_BOUNDARIES
+                ),
+            )
+        )
+    return views
+
+
+# ---------------------------------------------------------------------------
+# 7. Canonical Error Classification (`error.type`)
+# ---------------------------------------------------------------------------
+_HTTP_STATUS_TO_ERROR_TYPE: Dict[int, str] = {
+    400: "INVALID_ARGUMENT",
+    401: "UNAUTHENTICATED",
+    403: "PERMISSION_DENIED",
+    404: "NOT_FOUND",
+    408: "DEADLINE_EXCEEDED",
+    409: "ABORTED",
+    412: "FAILED_PRECONDITION",
+    416: "OUT_OF_RANGE",
+    429: "RESOURCE_EXHAUSTED",
+    499: "CANCELLED",
+    500: "INTERNAL",
+    501: "UNIMPLEMENTED",
+    503: "UNAVAILABLE",
+    504: "DEADLINE_EXCEEDED",
+}
+
+
+def _is_valid_status_code(val: Any) -> bool:
+    """Returns True if ``val`` is a valid HTTP error status code (int in 400..599)."""
+    return isinstance(val, int) and not isinstance(val, bool) and 400 <= val < 600
+
+
+def _iter_exception_chain(exc: BaseException) -> Iterator[BaseException]:
+    """Yields ``exc`` and any nested causes, contexts, reasons, or exception args."""
+    visited: Set[int] = {id(exc)}
+    queue: Deque[BaseException] = deque([exc])
+    while queue:
+        current = queue.popleft()
+        yield current
+
+        for attr_name in (
+            "__cause__",
+            "__context__",
+            "cause",
+            "reason",
+            "original_exception",
+        ):
+            nested = getattr(current, attr_name, None)
+            if isinstance(nested, BaseException) and id(nested) not in visited:
+                visited.add(id(nested))
+                queue.append(nested)
+
+        for arg in getattr(current, "args", ()):
+            if isinstance(arg, BaseException) and id(arg) not in visited:
+                visited.add(id(arg))
+                queue.append(arg)
+
+
+def _is_subclass_by_module(
+    cls: type, module_prefix: str, class_names: Optional[Set[str]] = None
+) -> bool:
+    """Checks whether ``cls`` or any of its base classes match module/name criteria."""
+    for base in getattr(cls, "__mro__", ()):
+        mod = getattr(base, "__module__", "") or ""
+        if mod.startswith(module_prefix):
+            if class_names is None or base.__name__ in class_names:
+                return True
+    return False
+
+
+def classify_error_type(
+    exc: Optional[BaseException] = None,
+    status_code: Optional[int] = None,
+) -> str:
+    """Maps an exception or HTTP status code to a low-cardinality ``error.type``.
+
+    Args:
+        exc: Optional exception raised during an operation or transport attempt.
+        status_code: Optional HTTP status code from the response.
+
+    Returns:
+        str: Canonical low-cardinality error classification string.
+    """
+    valid_status = _is_valid_status_code(status_code)
+    if exc is None:
+        if not valid_status or status_code is None:
+            return "OK"
+        return _HTTP_STATUS_TO_ERROR_TYPE.get(status_code, str(status_code))
+
+    chain = list(_iter_exception_chain(exc))
+
+    # 1. Checksum Mismatch (DataCorruption)
+    for item in chain:
+        if _is_subclass_by_module(
+            item.__class__, "google.cloud.storage", {"DataCorruption"}
+        ) or _is_subclass_by_module(
+            item.__class__, "google.resumable_media", {"DataCorruption"}
+        ):
+            return "CHECKSUM_MISMATCH"
+
+    # 2. Authentication / Credentials Failure (google.auth.exceptions)
+    for item in chain:
+        if _is_subclass_by_module(
+            item.__class__,
+            "google.auth.exceptions",
+            {
+                "RefreshError",
+                "TransportError",
+                "DefaultCredentialsError",
+                "GoogleAuthError",
+            },
+        ):
+            return "AUTHENTICATION_ERROR"
+
+    # 3. Cancellation
+    for item in chain:
+        if isinstance(item, asyncio.CancelledError):
+            return "CANCELLED"
+
+    # 4. HTTP response status code on exception (checked before grpc_status_code so
+    # HTTP 409 Conflict consistently maps to ABORTED across HTTP and Veneer metrics)
+    for item in chain:
+        resp = getattr(item, "response", None)
+        resp_status = getattr(resp, "status_code", None)
+        if _is_valid_status_code(resp_status):
+            return _HTTP_STATUS_TO_ERROR_TYPE.get(resp_status, str(resp_status))
+
+        if item.__class__.__name__ == "Conflict" and _is_subclass_by_module(
+            item.__class__, "google.api_core.exceptions", {"Conflict"}
+        ):
+            return _HTTP_STATUS_TO_ERROR_TYPE[409]
+
+    # 5. gRPC / GoogleAPICallError status code
+    for item in chain:
+        grpc_code = getattr(item, "grpc_status_code", None)
+        if grpc_code is not None:
+            name = getattr(grpc_code, "name", None)
+            if name:
+                return str(name)
+            return str(grpc_code)
+
+        # Direct grpc.RpcError (has callable .code())
+        code_attr = getattr(item, "code", None)
+        if callable(code_attr):
+            try:
+                rpc_status = code_attr()
+                if rpc_status is not None:
+                    name = getattr(rpc_status, "name", None)
+                    if name:
+                        return str(name)
+            except Exception:  # pragma: no cover
+                pass
+
+        if _is_valid_status_code(code_attr):
+            return _HTTP_STATUS_TO_ERROR_TYPE.get(code_attr, str(code_attr))
+
+    # 6. TLS / SSL Failure
+    for item in chain:
+        if (
+            isinstance(item, ssl.SSLError)
+            or _is_subclass_by_module(
+                item.__class__,
+                "requests.exceptions",
+                {"SSLError"},
+            )
+            or _is_subclass_by_module(
+                item.__class__,
+                "urllib3.exceptions",
+                {"SSLError"},
+            )
+        ):
+            return "TLS_FAILURE"
+
+    # 7. Specific Socket / Network Failures (DNS, Connection Refused, Connection Reset)
+    for item in chain:
+        if isinstance(item, socket.gaierror) or _is_subclass_by_module(
+            item.__class__,
+            "urllib3.exceptions",
+            {"NameResolutionError"},
+        ):
+            return "DNS_FAILURE"
+        if isinstance(item, ConnectionRefusedError):
+            return "CONNECTION_REFUSED"
+        if isinstance(item, ConnectionResetError):
+            return "CONNECTION_RESET"
+
+    # 8. Timeouts (Note: urllib3.exceptions.NewConnectionError subclasses ConnectTimeoutError
+    # even for non-timeout connection failures, so exclude NewConnectionError here.)
+    for item in chain:
+        if item.__class__.__name__ != "NewConnectionError":
+            if isinstance(
+                item,
+                (
+                    socket.timeout,
+                    TimeoutError,
+                    asyncio.TimeoutError,
+                    concurrent.futures.TimeoutError,
+                ),
+            ):
+                return "TIMEOUT"
+            if _is_subclass_by_module(
+                item.__class__,
+                "requests.exceptions",
+                {"Timeout", "ConnectTimeout", "ReadTimeout"},
+            ) or _is_subclass_by_module(
+                item.__class__,
+                "urllib3.exceptions",
+                {"TimeoutError", "ReadTimeoutError", "ConnectTimeoutError"},
+            ):
+                return "TIMEOUT"
+
+    # 9. Generic Connectivity Failure
+    for item in chain:
+        if (
+            _is_subclass_by_module(
+                item.__class__,
+                "requests.exceptions",
+                {"ConnectionError", "ChunkedEncodingError", "RequestException"},
+            )
+            or _is_subclass_by_module(
+                item.__class__,
+                "urllib3.exceptions",
+                {"HTTPError"},
+            )
+            or isinstance(item, (OSError, http.client.HTTPException))
+        ):
+            return "CONNECTIVITY"
+
+    # 10. Explicit HTTP status_code fallback
+    if valid_status and status_code is not None:
+        return _HTTP_STATUS_TO_ERROR_TYPE.get(status_code, str(status_code))
+
+    # 11. Client Validation Errors
+    for item in chain:
+        if (
+            isinstance(item, (ValueError, TypeError))
+            or _is_subclass_by_module(
+                item.__class__, "google.cloud.storage", {"InvalidResponse"}
+            )
+            or _is_subclass_by_module(
+                item.__class__, "google.resumable_media", {"InvalidResponse"}
+            )
+        ):
+            return "CLIENT_VALIDATION_ERROR"
+
+    return "UNKNOWN"
+
+
+# ---------------------------------------------------------------------------
+# 8. HTTP `url.template` Route Normalization
+# ---------------------------------------------------------------------------
+_URL_TEMPLATE_PATTERNS: Tuple[Tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/rewriteTo/b/[^/]+/o/.+$"),
+        "/storage/v1/b/{bucket}/o/{object}/rewriteTo/b/{bucket}/o/{object}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/copyTo/b/[^/]+/o/.+$"),
+        "/storage/v1/b/{bucket}/o/{object}/copyTo/b/{bucket}/o/{object}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/moveTo/o/.+$"),
+        "/storage/v1/b/{bucket}/o/{object}/moveTo/o/{object}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/compose$"),
+        "/storage/v1/b/{bucket}/o/{object}/compose",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/restore$"),
+        "/storage/v1/b/{bucket}/o/{object}/restore",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/acl/[^/]+$"),
+        "/storage/v1/b/{bucket}/o/{object}/acl/{entity}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/acl$"),
+        "/storage/v1/b/{bucket}/o/{object}/acl",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/[^/]+/iam(?:/.*)?$"),
+        "/storage/v1/b/{bucket}/o/{object}/iam",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o/.+$"),
+        "/storage/v1/b/{bucket}/o/{object}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/o$"),
+        "/storage/v1/b/{bucket}/o",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/acl/[^/]+$"),
+        "/storage/v1/b/{bucket}/acl/{entity}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/acl$"),
+        "/storage/v1/b/{bucket}/acl",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/defaultObjectAcl/[^/]+$"),
+        "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/defaultObjectAcl$"),
+        "/storage/v1/b/{bucket}/defaultObjectAcl",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/iam(?:/.*)?$"),
+        "/storage/v1/b/{bucket}/iam",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/notificationConfigs/[^/]+$"),
+        "/storage/v1/b/{bucket}/notificationConfigs/{notification}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/notificationConfigs$"),
+        "/storage/v1/b/{bucket}/notificationConfigs",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/lockRetentionPolicy$"),
+        "/storage/v1/b/{bucket}/lockRetentionPolicy",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+/restore$"),
+        "/storage/v1/b/{bucket}/restore",
+    ),
+    (
+        re.compile(r"^/storage/v1/b/[^/]+$"),
+        "/storage/v1/b/{bucket}",
+    ),
+    (
+        re.compile(r"^/storage/v1/b$"),
+        "/storage/v1/b",
+    ),
+    (
+        re.compile(r"^/storage/v1/projects/[^/]+/serviceAccount$"),
+        "/storage/v1/projects/{project}/serviceAccount",
+    ),
+    (
+        re.compile(r"^/storage/v1/projects/[^/]+/hmacKeys/[^/]+$"),
+        "/storage/v1/projects/{project}/hmacKeys/{access_id}",
+    ),
+    (
+        re.compile(r"^/storage/v1/projects/[^/]+/hmacKeys$"),
+        "/storage/v1/projects/{project}/hmacKeys",
+    ),
+    (
+        re.compile(r"^/upload/storage/v1/b/[^/]+/o(?:/[^/]+)?$"),
+        "/upload/storage/v1/b/{bucket}/o",
+    ),
+    (
+        re.compile(r"^/download/storage/v1/b/[^/]+/o/.+$"),
+        "/download/storage/v1/b/{bucket}/o/{object}",
+    ),
+    (
+        re.compile(r"^/batch/storage/v1$"),
+        "/batch/storage/v1",
+    ),
+)
+
+_XML_MPU_RESERVED_PREFIXES = {"storage", "upload", "download", "batch", "b", "projects"}
+_XML_MPU_QUERY_KEYS = {"uploads", "uploadId", "partNumber"}
+_XML_MULTI_SEGMENT_RE = re.compile(r"^/([^/]+)/(.+)$")
+
+
+def normalize_url_template(url_or_path: Optional[str]) -> str:
+    """Normalizes a raw HTTP URL or path into a bounded ``url.template`` string.
+
+    Bucket names, object keys, project IDs, and query strings are stripped to
+    prevent cardinality explosion. Unrecognized paths fall back to ``"UNKNOWN"``.
+
+    Args:
+        url_or_path: Full request URL or path string.
+
+    Returns:
+        str: Low-cardinality ``url.template`` value.
+    """
+    if not url_or_path or not isinstance(url_or_path, str):
+        return "UNKNOWN"
+
+    parsed = urlsplit(url_or_path)
+    path = parsed.path or ""
+    query = parsed.query or ""
+
+    path = "/" + path.strip("/")
+    if path == "/":
+        return "UNKNOWN"
+
+    # Normalize relative paths passed to Connection.api_request before /storage/v1 prefixing
+    if path == "/b" or path.startswith(("/b/", "/projects/")):
+        path = "/storage/v1" + path
+
+    for pattern, template in _URL_TEMPLATE_PATTERNS:
+        if pattern.match(path):
+            return template
+
+    # XML API Multipart Upload routes: /{bucket}/{object} with XML MPU query params
+    if query:
+        query_keys = {param.partition("=")[0] for param in query.split("&") if param}
+        if query_keys & _XML_MPU_QUERY_KEYS:
+            match_multi = _XML_MULTI_SEGMENT_RE.match(path)
+            if match_multi and match_multi.group(1) not in _XML_MPU_RESERVED_PREFIXES:
+                return "/{bucket}/{object}"
+
+    return "UNKNOWN"
+
+
+# ---------------------------------------------------------------------------
+# 9. Logical Operation Context & Suppression (`ContextVar`)
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class _OperationState:
+    """Represents the active logical GCS Veneer operation in the current context."""
+
+    client_method: str
+    rpc_method: str
+    suppressed: bool = False
+
+
+_OP_STATE: ContextVar[Optional[_OperationState]] = ContextVar(
+    "_gcs_otel_op_state", default=None
+)
+
+
+def get_current_operation() -> Optional[_OperationState]:
+    """Returns the current logical `_OperationState` in this execution context, if any."""
+    return _OP_STATE.get()
+
+
+@contextlib.contextmanager
+def start_operation(
+    recorder: Optional["_MetricsRecorder"],
+    client_method: str,
+    rpc_method: str,
+    suppress: bool = False,
+) -> Iterator[Optional[_OperationState]]:
+    """Context manager tracking a logical user-facing GCS operation.
+
+    If a parent logical operation is already active in the current context,
+    nested calls become a no-op so only the outermost user-invoked method
+    emits ``gcp.client.request.duration`` and ``gcp.storage.client.operations``.
+
+    Args:
+        recorder: Optional `_MetricsRecorder` configured on the client.
+        client_method: Fully qualified Python method name
+            (e.g. ``"storage.Blob.download_to_filename"``).
+        rpc_method: Canonical GCS RPC operation name
+            (e.g. ``"storage.objects.get"``).
+        suppress: If True, suppresses logical operation and payload size
+            emission for this context and any nested calls (used by
+            ``transfer_manager`` workers and ``BlobReader`` prefetches).
+    """
+    existing = _OP_STATE.get()
+    if existing is not None:
+        if suppress and not existing.suppressed:
+            suppressed_child = _OperationState(
+                client_method=existing.client_method,
+                rpc_method=existing.rpc_method,
+                suppressed=True,
+            )
+            child_token = _OP_STATE.set(suppressed_child)
+            try:
+                yield suppressed_child
+            finally:
+                _OP_STATE.reset(child_token)
+        else:
+            yield existing
+        return
+
+    recorder_active = recorder is not None and recorder.standard_enabled
+    if not recorder_active and not suppress:
+        yield None
+        return
+
+    state = _OperationState(
+        client_method=client_method,
+        rpc_method=rpc_method,
+        suppressed=suppress,
+    )
+    token = _OP_STATE.set(state)
+    start_time = time.perf_counter()
+    error_type = "OK"
+    try:
+        yield state
+    except BaseException as exc:
+        error_type = classify_error_type(exc)
+        raise
+    finally:
+        duration = max(0.0, time.perf_counter() - start_time)
+        _OP_STATE.reset(token)
+        if recorder_active and not suppress and recorder is not None:
+            recorder.record_logical_operation(
+                duration=duration,
+                client_method=client_method,
+                rpc_method=rpc_method,
+                error_type=error_type,
+            )
+
+
+# ---------------------------------------------------------------------------
+# 10. Server Address Parsing & `_MetricsRecorder`
+# ---------------------------------------------------------------------------
+def _extract_server_address(api_endpoint: Optional[str]) -> str:
+    """Extracts the low-cardinality hostname from ``api_endpoint``."""
+    if not api_endpoint or not isinstance(api_endpoint, str):
+        return DEFAULT_SERVER_ADDRESS
+    endpoint = api_endpoint.strip()
+    if not endpoint:
+        return DEFAULT_SERVER_ADDRESS
+    if "://" not in endpoint:
+        endpoint = "https://" + endpoint.lstrip("/")
+    parsed = urlsplit(endpoint)
+    return parsed.hostname or DEFAULT_SERVER_ADDRESS
+
+
+class _MetricsRecorder:
+    """Holds OpenTelemetry metric instruments and records standard GCS metrics."""
+
+    def __init__(
+        self,
+        enable_metrics: Optional[bool] = None,
+        enable_debug_metrics: Optional[bool] = None,
+        meter_provider: Optional[Any] = None,
+        api_endpoint: Optional[str] = None,
+        rpc_system: str = "http",
+    ) -> None:
+        self.standard_enabled: bool = is_metrics_enabled(enable_metrics)
+        self.debug_enabled: bool = is_debug_metrics_enabled(enable_debug_metrics)
+        self.enabled: bool = self.standard_enabled or self.debug_enabled
+        self._meter_provider: Optional[Any] = meter_provider
+        self.rpc_system: str = rpc_system
+        self.server_address: str = _extract_server_address(api_endpoint)
+        self.meter: Optional[Any] = get_meter(
+            enable_metrics=enable_metrics,
+            enable_debug_metrics=enable_debug_metrics,
+            meter_provider=meter_provider,
+        )
+
+        self._base_attributes: Dict[str, Any] = {
+            **_COMMON_ATTRIBUTES,
+            "server.address": self.server_address,
+            "rpc.system.name": self.rpc_system,
+        }
+
+        if self.standard_enabled and self.meter is not None:
+            self.rpc_call_duration = self.meter.create_histogram(
+                METRIC_RPC_CLIENT_CALL_DURATION,
+                unit="s",
+                description="Duration of an individual gRPC attempt in seconds (excluding retries).",
+            )
+            self.http_request_duration = self.meter.create_histogram(
+                METRIC_HTTP_CLIENT_REQUEST_DURATION,
+                unit="s",
+                description="Duration of an individual HTTP request attempt in seconds (excluding retries).",
+            )
+            self.client_request_duration = self.meter.create_histogram(
+                METRIC_GCP_CLIENT_REQUEST_DURATION,
+                unit="s",
+                description="End-to-end latency of a logical user-facing Veneer operation in seconds.",
+            )
+            self.operations_counter = self.meter.create_counter(
+                METRIC_STORAGE_CLIENT_OPERATIONS,
+                unit="{operation}",
+                description="Number of logical GCS client operations.",
+            )
+            self.attempts_counter = self.meter.create_counter(
+                METRIC_STORAGE_CLIENT_ATTEMPTS,
+                unit="{attempt}",
+                description="Number of physical network transport attempts executed.",
+            )
+            self.request_body_size = self.meter.create_histogram(
+                METRIC_STORAGE_REQUEST_BODY_SIZE,
+                unit="By",
+                description="Application payload bytes submitted by the caller for an upload or write operation.",
+            )
+            self.response_body_size = self.meter.create_histogram(
+                METRIC_STORAGE_RESPONSE_BODY_SIZE,
+                unit="By",
+                description="Application payload bytes delivered to the caller.",
+            )
+            self.operation_ttfb = self.meter.create_histogram(
+                METRIC_STORAGE_OPERATION_TTFB,
+                unit="s",
+                description="Time elapsed from attempt initiation to receipt of the first response byte.",
+            )
+            self.errors_counter = self.meter.create_counter(
+                METRIC_STORAGE_CLIENT_ERRORS,
+                unit="{error}",
+                description="Number of physical network transport attempts terminating with a non-OK status.",
+            )
+        else:
+            self.rpc_call_duration = None
+            self.http_request_duration = None
+            self.client_request_duration = None
+            self.operations_counter = None
+            self.attempts_counter = None
+            self.request_body_size = None
+            self.response_body_size = None
+            self.operation_ttfb = None
+            self.errors_counter = None
+
+    def get_base_attributes(self) -> Dict[str, Any]:
+        """Returns a copy of the base attributes for this recorder instance."""
+        return self._base_attributes.copy()
+
+    def _build_operation_attributes(
+        self,
+        operation: Optional[str] = None,
+        client_method: Optional[str] = None,
+        current_op: Optional[_OperationState] = None,
+    ) -> Dict[str, Any]:
+        """Builds base attributes enriched with current or explicit operation metadata."""
+        attrs = self._base_attributes.copy()
+        if current_op is None:
+            current_op = _OP_STATE.get()
+        resolved_op = operation or (current_op.rpc_method if current_op else None)
+        resolved_method = client_method or (
+            current_op.client_method if current_op else None
+        )
+        if resolved_op is not None:
+            attrs["gcp.storage.operation"] = resolved_op
+        if resolved_method is not None:
+            attrs["gcp.client.method"] = resolved_method
+        return attrs
+
+    def record_logical_operation(
+        self,
+        duration: float,
+        client_method: str,
+        rpc_method: str,
+        error_type: str = "OK",
+    ) -> None:
+        """Records end-to-end logical operation duration and count."""
+        if not self.standard_enabled or self.meter is None:
+            return
+        attrs = {
+            **self._base_attributes,
+            "gcp.storage.operation": rpc_method,
+            "gcp.client.method": client_method,
+            "error.type": error_type,
+        }
+        self.client_request_duration.record(max(0.0, duration), attributes=attrs)
+        self.operations_counter.add(1, attributes=attrs)
+
+    def record_http_attempt(
+        self,
+        duration: float,
+        http_method: str,
+        url_template: str,
+        status_code: Optional[int] = None,
+        error_type: str = "OK",
+        operation: Optional[str] = None,
+        client_method: Optional[str] = None,
+        network_path: Optional[str] = None,
+    ) -> None:
+        """Records a single physical HTTP request attempt."""
+        if not self.standard_enabled or self.meter is None:
+            return
+        current_op = _OP_STATE.get()
+        resolved_op = operation or (current_op.rpc_method if current_op else None)
+        resolved_method = client_method or (
+            current_op.client_method if current_op else None
+        )
+        valid_code = (
+            isinstance(status_code, int)
+            and not isinstance(status_code, bool)
+            and 100 <= status_code < 600
+        )
+
+        # 1. http.client.request.duration attributes
+        http_attrs: Dict[str, Any] = {
+            **self._base_attributes,
+            "http.request.method": http_method.upper() if http_method else "UNKNOWN",
+            "url.template": url_template,
+            "error.type": error_type,
+        }
+        if valid_code:
+            http_attrs["http.response.status_code"] = status_code
+        if network_path is not None:
+            http_attrs["network.path"] = network_path
+
+        # 2. gcp.storage.client.attempts attributes
+        attempt_attrs: Dict[str, Any] = {
+            **self._base_attributes,
+            "error.type": error_type,
+        }
+        if resolved_op is not None:
+            attempt_attrs["gcp.storage.operation"] = resolved_op
+        if valid_code:
+            attempt_attrs["http.response.status_code"] = status_code
+        if network_path is not None:
+            attempt_attrs["network.path"] = network_path
+
+        self.http_request_duration.record(max(0.0, duration), attributes=http_attrs)
+        self.attempts_counter.add(1, attributes=attempt_attrs)
+
+        # 3. gcp.storage.client.errors attributes
+        if error_type != "OK":
+            error_attrs: Dict[str, Any] = {
+                **self._base_attributes,
+                "error.type": error_type,
+            }
+            if resolved_op is not None:
+                error_attrs["gcp.storage.operation"] = resolved_op
+            if resolved_method is not None:
+                error_attrs["gcp.client.method"] = resolved_method
+            self.errors_counter.add(1, attributes=error_attrs)
+
+    def record_rpc_attempt(
+        self,
+        duration: float,
+        operation: str,
+        status_code: Optional[str] = None,
+        error_type: str = "OK",
+        client_method: Optional[str] = None,
+        network_path: Optional[str] = None,
+    ) -> None:
+        """Records a single physical gRPC call attempt."""
+        if not self.standard_enabled or self.meter is None:
+            return
+        op_attrs = self._build_operation_attributes(
+            operation=operation, client_method=client_method
+        )
+
+        # 1. rpc.client.call.duration attributes
+        rpc_attrs: Dict[str, Any] = {
+            **op_attrs,
+            "error.type": error_type,
+        }
+        if status_code is not None:
+            rpc_attrs["rpc.response.status_code"] = status_code
+        if network_path is not None:
+            rpc_attrs["network.path"] = network_path
+
+        # 2. gcp.storage.client.attempts attributes
+        attempt_attrs: Dict[str, Any] = {
+            **self._base_attributes,
+            "gcp.storage.operation": operation,
+            "error.type": error_type,
+        }
+        if status_code is not None:
+            attempt_attrs["rpc.response.status_code"] = status_code
+        if network_path is not None:
+            attempt_attrs["network.path"] = network_path
+
+        self.rpc_call_duration.record(max(0.0, duration), attributes=rpc_attrs)
+        self.attempts_counter.add(1, attributes=attempt_attrs)
+
+        # 3. gcp.storage.client.errors attributes
+        if error_type != "OK":
+            error_attrs: Dict[str, Any] = {
+                **op_attrs,
+                "error.type": error_type,
+            }
+            self.errors_counter.add(1, attributes=error_attrs)
+
+    def record_request_body_size(
+        self,
+        size: int,
+        operation: Optional[str] = None,
+        client_method: Optional[str] = None,
+    ) -> None:
+        """Records the payload byte size of an upload or write operation."""
+        if not self.standard_enabled or self.meter is None:
+            return
+        if not isinstance(size, int) or isinstance(size, bool):
+            return
+        current_op = _OP_STATE.get()
+        if current_op is not None and current_op.suppressed:
+            return
+        attrs = self._build_operation_attributes(
+            operation=operation, client_method=client_method, current_op=current_op
+        )
+        self.request_body_size.record(max(0, size), attributes=attrs)
+
+    def record_response_body_size(
+        self,
+        size: int,
+        operation: Optional[str] = None,
+        client_method: Optional[str] = None,
+    ) -> None:
+        """Records the payload byte size of a download or read operation."""
+        if not self.standard_enabled or self.meter is None:
+            return
+        if not isinstance(size, int) or isinstance(size, bool):
+            return
+        current_op = _OP_STATE.get()
+        if current_op is not None and current_op.suppressed:
+            return
+        attrs = self._build_operation_attributes(
+            operation=operation, client_method=client_method, current_op=current_op
+        )
+        self.response_body_size.record(max(0, size), attributes=attrs)
+
+    def record_ttfb(
+        self,
+        duration: float,
+        operation: Optional[str] = None,
+        client_method: Optional[str] = None,
+    ) -> None:
+        """Records time to first response byte (TTFB) in seconds."""
+        if not self.standard_enabled or self.meter is None:
+            return
+        current_op = _OP_STATE.get()
+        if current_op is not None and current_op.suppressed:
+            return
+        attrs = self._build_operation_attributes(
+            operation=operation, client_method=client_method, current_op=current_op
+        )
+        self.operation_ttfb.record(max(0.0, duration), attributes=attrs)
+
+    def shutdown(self) -> None:
+        """Flushes pending metrics on a custom MeterProvider if configured."""
+        if self._meter_provider is not None and hasattr(
+            self._meter_provider, "force_flush"
+        ):
+            try:
+                self._meter_provider.force_flush()
+            except Exception as exc:
+                logger.debug(
+                    "Failed to force_flush custom MeterProvider during client shutdown: %s",
+                    exc,
+                )
