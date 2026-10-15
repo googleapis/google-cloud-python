@@ -271,10 +271,6 @@ if packaging.version.parse(sqlalchemy.__version__) >= packaging.version.parse("2
         def test_floordiv_integer_bound(self):
             pass
 
-        @pytest.mark.skip("BQ rounds based on datatype")
-        def test_floordiv_integer_bound(self):
-            pass
-
         @pytest.mark.skip(
             "Skip 38-Digit Typed Divisor: BigQuery's SQL compiler evaluates raw, unquoted "
             "integer sequences as INT64 *before* executing casting wrappers like CAST(). "
