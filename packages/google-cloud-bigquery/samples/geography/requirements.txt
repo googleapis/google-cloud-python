@@ -1,5 +1,5 @@
-attrs==25.4.0
-certifi==2025.10.5
+attrs==26.1.0
+certifi==2026.7.22
 cffi==2.0.0
 charset-normalizer==3.4.3
 click==8.3.0
@@ -21,10 +21,10 @@ grpcio==1.75.1
 idna==3.15
 munch==4.0.0
 mypy-extensions==1.1.0
-packaging==25.0
+packaging==26.3
 pandas==2.3.3
 proto-plus==1.26.1
-pyarrow==23.0.1
+pyarrow==26.0.0
 pyasn1==0.6.4
 pyasn1-modules==0.4.2
 pycparser==2.23
@@ -34,8 +34,8 @@ pytz==2026.5
 PyYAML==6.0.3
 requests==2.33.0
 rsa==4.9.1
-Shapely==2.1.2
+Shapely==2.2.0
 six==1.17.0
-typing-extensions==4.15.0
+typing-extensions==4.16.0
 typing-inspect==0.9.0
-urllib3==2.7.0
+urllib3==2.8.0

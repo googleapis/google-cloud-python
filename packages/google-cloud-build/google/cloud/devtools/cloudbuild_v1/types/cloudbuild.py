@@ -3650,6 +3650,12 @@ class BuildOptions(proto.Message):
             structured logging is enabled.
             If true, JSON-formatted logs are parsed as
             structured logs.
+        worker_release (str):
+            Optional. Option to specify which release or release channel
+            (rapid|regular|stable) to use to run this build.
+        resolved_worker_release (str):
+            Output only. Worker release resolved from the
+            release channel.
     """
 
     class VerifyOption(proto.Enum):
@@ -3811,11 +3817,27 @@ class BuildOptions(proto.Message):
 
                 Format
                 projects/{project}/locations/{location}/workerPools/{workerPoolId}
+            worker_release (str):
+                Output only. OUTPUT_ONLY. The release or release channel
+                used to run the Build. This is set to the same value as
+                ``PrivatePoolV1Config.WorkerConfig.worker_release`` for the
+                UI to easily access.
+            resolved_worker_release (str):
+                Output only. OUTPUT_ONLY. Worker release resolved from the
+                release channel.
         """
 
         name: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        worker_release: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        resolved_worker_release: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     source_provenance_hash: MutableSequence["Hash.HashType"] = proto.RepeatedField(
@@ -3890,6 +3912,14 @@ class BuildOptions(proto.Message):
     enable_structured_logging: bool = proto.Field(
         proto.BOOL,
         number=23,
+    )
+    worker_release: str = proto.Field(
+        proto.STRING,
+        number=25,
+    )
+    resolved_worker_release: str = proto.Field(
+        proto.STRING,
+        number=26,
     )
 
 
@@ -4237,6 +4267,9 @@ class PrivatePoolV1Config(proto.Message):
                 default, nested virtualization is disabled.
 
                 This field is a member of `oneof`_ ``_enable_nested_virtualization``.
+            worker_release (str):
+                Optional. Option to specify which release or release channel
+                (rapid|regular|stable) to use to run this build.
         """
 
         machine_type: str = proto.Field(
@@ -4251,6 +4284,10 @@ class PrivatePoolV1Config(proto.Message):
             proto.BOOL,
             number=3,
             optional=True,
+        )
+        worker_release: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class NetworkConfig(proto.Message):
