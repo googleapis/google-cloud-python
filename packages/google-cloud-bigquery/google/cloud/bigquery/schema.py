@@ -143,6 +143,7 @@ class _SchemaFieldKey(typing.NamedTuple):
     timestamp_precision: Optional[int]
     rounding_mode: Optional[str]
     foreign_type_definition: Optional[str]
+    data_policies: Optional[tuple[str, ...]]
 
 
 class SchemaField(object):
@@ -239,6 +240,15 @@ class SchemaField(object):
             Defaults to `enums.TimestampPrecision.MICROSECOND` (`None`) for
             microsecond precision. Use `enums.TimestampPrecision.PICOSECOND`
             (`12`) for picosecond precision.
+
+        data_policies: Optional[Iterable[str]]
+            Data policy resource names attached directly to the field, in the
+            form ``projects/{project}/locations/{location}/dataPolicies/{policy}``.
+            Serialized as the REST ``dataPolicies`` field. If omitted, the
+            property is not included in the API representation.
+            ``None`` is serialized as ``null`` and an empty iterable as ``[]``.
+            A single ``str`` or ``bytes`` value raises :class:`TypeError`;
+            use an iterable containing the name instead.
     """
 
     def __init__(
@@ -257,6 +267,7 @@ class SchemaField(object):
         rounding_mode: Union[enums.RoundingMode, str, None] = None,
         foreign_type_definition: Optional[str] = None,
         timestamp_precision: Optional[enums.TimestampPrecision] = None,
+        data_policies: Union[Iterable[str], None, _DefaultSentinel] = _DEFAULT_VALUE,
     ):
         self._properties: Dict[str, Any] = {
             "name": name,
@@ -296,6 +307,16 @@ class SchemaField(object):
             self._properties["roundingMode"] = rounding_mode
         if foreign_type_definition is not None:
             self._properties["foreignTypeDefinition"] = foreign_type_definition
+        if data_policies is not _DEFAULT_VALUE:
+            if isinstance(data_policies, (str, bytes)):
+                raise TypeError(
+                    "data_policies must be an iterable of strings, not str or bytes"
+                )
+            self._properties["dataPolicies"] = (
+                [{"name": name} for name in data_policies]
+                if data_policies is not None
+                else None
+            )
 
         if fields:  # Don't set the property if it's not set.
             self._properties["fields"] = [field.to_api_repr() for field in fields]
@@ -433,6 +454,23 @@ class SchemaField(object):
         return PolicyTagList.from_api_repr(resource) if resource is not None else None
 
     @property
+    def data_policies(self) -> Optional[tuple[str, ...]]:
+        """Optional[Tuple[str, ...]]: Data policy resource names for this field.
+
+        Returns the names from the REST ``dataPolicies`` field, or ``None`` if
+        unset. An explicitly empty list is returned as an empty tuple.
+
+        See:
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema
+        """
+        resource = self._properties.get("dataPolicies")
+        return (
+            tuple(policy["name"] for policy in resource)
+            if resource is not None
+            else None
+        )
+
+    @property
     def timestamp_precision(self) -> enums.TimestampPrecision:
         """Precision (maximum number of total digits in base 10) for seconds of
         TIMESTAMP type.
@@ -478,6 +516,7 @@ class SchemaField(object):
         policy_tags = (
             None if self.policy_tags is None else tuple(sorted(self.policy_tags.names))
         )
+        data_policies = self.data_policies
 
         timestamp_precision = self._properties.get("timestampPrecision")
 
@@ -499,6 +538,9 @@ class SchemaField(object):
             timestamp_precision=timestamp_precision,
             rounding_mode=rounding_mode,
             foreign_type_definition=self.foreign_type_definition,
+            data_policies=(
+                None if data_policies is None else tuple(sorted(data_policies))
+            ),
         )
 
     def to_standard_sql(self) -> standard_sql.StandardSqlField:
@@ -553,8 +595,19 @@ class SchemaField(object):
         policy_tags_inst = (
             None if key.policy_tags is None else PolicyTagList(key.policy_tags)
         )
-        adjusted_key = tuple(key._replace(policy_tags=policy_tags_inst))
-        return f"{self.__class__.__name__}{adjusted_key}"
+        # Keep data_policies keyword-based without changing the existing repr.
+        key_to_show = key._replace(policy_tags=policy_tags_inst)
+        adjusted_key = tuple(
+            getattr(key_to_show, field)
+            for field in key_to_show._fields
+            if field != "data_policies"
+        )
+        representation = f"{self.__class__.__name__}{adjusted_key}"
+        if key.data_policies is not None:
+            representation = (
+                f"{representation[:-1]}, data_policies={key.data_policies!r})"
+            )
+        return representation
 
 
 def _parse_schema_resource(info):

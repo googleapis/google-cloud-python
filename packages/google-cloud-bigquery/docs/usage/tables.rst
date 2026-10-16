@@ -183,6 +183,39 @@ Load a JSON file from Cloud Storage and auto-detect schema:
    :start-after: [START bigquery_load_table_gcs_json_autodetect]
    :end-before: [END bigquery_load_table_gcs_json_autodetect]
 
+Column Data Policies
+^^^^^^^^^^^^^^^^^^^^
+
+Use :class:`~google.cloud.bigquery.schema.SchemaField` to represent data policies
+attached directly to a column. Pass the policy resource names as
+``data_policies``:
+
+.. code-block:: python
+
+    from google.cloud import bigquery
+
+    field = bigquery.SchemaField(
+        "ssn",
+        "STRING",
+        data_policies=["projects/my-project/locations/us/dataPolicies/mask_ssn"],
+    )
+
+The ``data_policies`` property returns a tuple of resource names, or ``None``
+when the property is unset. The client serializes these names as ``dataPolicies``
+objects in the table schema. Omitting the argument leaves that property out of
+the API representation; an empty iterable produces an empty array.
+
+This property represents ``dataPolicies``, not the separate ``dataPolicyList``
+REST field. When ``dataPolicyList`` is present, BigQuery uses it as the source of
+truth for data policy information.
+
+BigQuery does not allow policy tags and data policies on the same column. To
+remove the last data policy from a column, use ``ALTER COLUMN SET OPTIONS`` with
+``data_policies = []``. Serializing an empty array does not change the service's
+policy-removal behavior. See `Mask data with data policies directly on a column
+<https://cloud.google.com/bigquery/docs/column-data-masking>`_
+for permissions and service limitations.
+
 Updating a Table
 ^^^^^^^^^^^^^^^^
 
