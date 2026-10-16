@@ -761,9 +761,9 @@ pep517==0.13.1 \
     --hash=sha256:1b2fa2ffd3938bb4beffe5d6146cbcb2bda996a5a4da9f31abffd8b24e07b317 \
     --hash=sha256:31b206f67165b3536dd577c5c3f1518e8fbaf38cbc57efff8369a392feff1721
     # via -r requirements.in
-pip-tools==7.6.0 \
-    --hash=sha256:4bd99155b6d8de358a214b0865e1a2855a453570c1a83d40f7b564870b8657be \
-    --hash=sha256:c1c59f7844df4866fa9542d3f50d1f44be537ac0027cb50b2563d6a992853981
+pip-tools==7.6.2 \
+    --hash=sha256:04dbe0e25f3b60fbdeee17d0590dac7fe20039876aa410a946fc54dc926c09ba \
+    --hash=sha256:f37eb4b736859c2c30230e50977312c61918b7ef931071ff7811fd067715c25f
     # via -r requirements.in
 proto-plus==1.28.2 \
     --hash=sha256:26d843eb99c1e32fdf1d20ff0faae56607f7748fe774acf9ecd5cfe6c6472501 \
