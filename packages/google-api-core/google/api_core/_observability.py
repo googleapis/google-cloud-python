@@ -246,26 +246,6 @@ try:
     from grpc import (
         UnaryUnaryClientInterceptor as _SyncUnaryUnaryClientInterceptor,
     )
-except ImportError:  # pragma: NO COVER
-    # mypy: Fallback sentinel when optional grpc is not installed in the environment.
-    grpc = None  # type: ignore[assignment]
-
-    # mypy: Fallback dummy classes when optional grpc is not installed.
-    # Four distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
-    class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
-        __slots__ = ()
-
-    class _SyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
-        __slots__ = ()
-
-    class _SyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
-        __slots__ = ()
-
-    class _SyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
-        __slots__ = ()
-
-
-try:
     from grpc.aio import (
         StreamStreamClientInterceptor as _AsyncStreamStreamClientInterceptor,
     )
@@ -279,8 +259,22 @@ try:
         UnaryUnaryClientInterceptor as _AsyncUnaryUnaryClientInterceptor,
     )
 except ImportError:  # pragma: NO COVER
-    # mypy: Fallback dummy classes when optional grpc is not installed.
-    # Four distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
+    # mypy: Fallbacks:  grpc sentinel when optional grpc is not installed in the environment.
+    # and distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
+    grpc = None  # type: ignore[assignment]
+
+    class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
     class _AsyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
         __slots__ = ()
 
