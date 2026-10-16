@@ -21,7 +21,7 @@ from google.cloud import _storage_v2 as storage_v2
 from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
-from google.cloud.storage import __version__
+from google.cloud.storage import __version__, _opentelemetry_metrics
 from google.cloud.storage.grpc_client import (
     _DEFAULT_HOST,
     _resolve_direct_path_interconnect,
@@ -73,6 +73,19 @@ class AsyncGrpcClient:
         using xDS and standard TLS. Can also be overridden via the
         ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT`` environment
         variable (``"true"`` or ``"false"``). Defaults to ``False``.
+
+    :type enable_metrics: bool or None
+    :param enable_metrics:
+        (Optional, Experimental) Whether to enable OpenTelemetry metrics. If
+        ``None``, falls back to the ``GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS``
+        environment variable, or ``False`` if unset.
+
+    :type enable_debug_metrics: bool or None
+    :param enable_debug_metrics:
+        (Optional, Experimental) Whether to enable debug OpenTelemetry
+        metrics. If ``None``, falls back to the
+        ``GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS`` environment variable,
+        or ``False`` if unset.
     """
 
     def __init__(
@@ -83,7 +96,18 @@ class AsyncGrpcClient:
         *,
         attempt_direct_path=True,
         attempt_direct_path_xds_over_interconnect=False,
+        enable_metrics=None,
+        enable_debug_metrics=None,
     ):
+        self._enable_metrics = enable_metrics
+        self._enable_debug_metrics = enable_debug_metrics
+        self._metrics_enabled = _opentelemetry_metrics.is_metrics_enabled(
+            enable_metrics
+        )
+        self._debug_metrics_enabled = _opentelemetry_metrics.is_debug_metrics_enabled(
+            enable_debug_metrics
+        )
+
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
             if client_options is None or client_options.api_endpoint is None:
                 raise ValueError(
@@ -114,6 +138,16 @@ class AsyncGrpcClient:
             attempt_direct_path=attempt_direct_path,
             attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
         )
+
+    @property
+    def metrics_enabled(self) -> bool:
+        """(Experimental) Returns ``True`` if OpenTelemetry metrics recording is active for this client."""
+        return self._metrics_enabled
+
+    @property
+    def debug_metrics_enabled(self) -> bool:
+        """(Experimental) Returns ``True`` if debug metrics recording is active for this client."""
+        return self._debug_metrics_enabled
 
     def _create_anonymous_client(self, client_options, credentials):
         channel = grpc.aio.insecure_channel(client_options.api_endpoint)
