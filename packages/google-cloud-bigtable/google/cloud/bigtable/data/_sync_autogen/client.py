@@ -1139,7 +1139,7 @@ class _DataApiTarget(abc.ABC):
                 server.uds_path, server.auth_secret
             )
             self._accelerator_daemon = server
-        except _AcceleratorUnverified:
+        except _AcceleratorIdentityError:
             server.close()
             raise
         except BaseException:
@@ -1951,6 +1951,8 @@ class _DataApiTarget(abc.ABC):
         if self._accelerator_health is not None:
             try:
                 self._accelerator_health.close()
+            except Exception as exc:
+                _LOGGER.warning("Failed to close accelerator health monitor: %s", exc)
             finally:
                 self._accelerator_health = None
         if self._accelerator_client is not None:
@@ -1967,11 +1969,6 @@ class _DataApiTarget(abc.ABC):
                 _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
             finally:
                 self._accelerator_daemon = None
-        if self._register_instance_future:
-            self._register_instance_future.cancel()
-        self.client._remove_instance_registration(
-            self.instance_id, self.app_profile_id, id(self)
-        )
 
     def __enter__(self):
         """Implement async context manager protocol
@@ -1979,7 +1976,7 @@ class _DataApiTarget(abc.ABC):
         Ensure registration task has time to run, so that
         grpc channels will be warmed for the specified instance"""
         if self._register_instance_future:
-            self._register_instance_future
+            self._register_instance_future.result()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
