@@ -46,7 +46,6 @@ from google.cloud.bigtable.data.mutations import (
 )
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
     from google.cloud.bigtable.data._sync_autogen.client import (
         _DataApiTarget as TargetType,
     )
@@ -164,13 +163,11 @@ class _FlowControl:
             yield mutations[start_idx:end_idx]
 
     def add_to_flow_with_metrics(
-        self,
-        mutations: RowMutationEntry | list[RowMutationEntry],
-        metrics_controller: BigtableClientSideMetricsController,
+        self, mutations: RowMutationEntry | list[RowMutationEntry], target: TargetType
     ):
         inner_generator = self.add_to_flow(mutations)
         while True:
-            metric = metrics_controller.create_operation(OperationType.BULK_MUTATE_ROWS)
+            metric = target._create_operation(OperationType.BULK_MUTATE_ROWS)
             flow_start_time = time.monotonic_ns()
             try:
                 value = inner_generator.__next__()
@@ -342,7 +339,7 @@ class MutationsBatcher:
         ] = []
         found_exceptions: list[FailedMutationEntryError] = []
         for batch, metric in self._flow_control.add_to_flow_with_metrics(
-            new_entries, self._target.client._metrics
+            new_entries, self._target
         ):
             try:
                 batch_task = CrossSync._Sync_Impl.create_task(
