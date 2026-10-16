@@ -224,8 +224,10 @@ class _AsyncAcceleratorHealthMonitor:
         """Stop polling. Does not clear a degraded flag already set."""
         self._closed.set()
         if self._task is not None:
-            self._task.cancel()
-            self._task = None
+            task, self._task = self._task, None
+            task.cancel()
+            # Retrieve any exception so asyncio doesn't log "Task exception was never retrieved"
+            task.add_done_callback(lambda t: None if t.cancelled() else t.exception())
         if self._sync_executor is not None:
             # Don't wait: a probe in flight holds the worker for up to the probe
             # timeout, and closing a Table should not block on that.
