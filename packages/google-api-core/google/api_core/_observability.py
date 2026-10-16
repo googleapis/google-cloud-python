@@ -18,11 +18,19 @@
 
 from __future__ import annotations
 
+import contextlib
 import urllib.parse
 from typing import TYPE_CHECKING, Any, Callable, Sequence
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
+
+try:
+    from opentelemetry.instrumentation.utils import (
+        suppress_instrumentation as _suppress_instrumentation,
+    )
+except ImportError:
+    _suppress_instrumentation = contextlib.nullcontext
 
 if TYPE_CHECKING:
     # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
@@ -223,6 +231,140 @@ def _get_tracer_provider(
     return None
 
 
+try:
+    # flake8: `grpc` imported conditionally for runtime interceptor base classes
+    import grpc  # noqa: F811
+    from grpc import (
+        StreamStreamClientInterceptor as _SyncStreamStreamClientInterceptor,
+    )
+    from grpc import (
+        StreamUnaryClientInterceptor as _SyncStreamUnaryClientInterceptor,
+    )
+    from grpc import (
+        UnaryStreamClientInterceptor as _SyncUnaryStreamClientInterceptor,
+    )
+    from grpc import (
+        UnaryUnaryClientInterceptor as _SyncUnaryUnaryClientInterceptor,
+    )
+    from grpc.aio import (
+        StreamStreamClientInterceptor as _AsyncStreamStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        StreamUnaryClientInterceptor as _AsyncStreamUnaryClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryStreamClientInterceptor as _AsyncUnaryStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryUnaryClientInterceptor as _AsyncUnaryUnaryClientInterceptor,
+    )
+except ImportError:  # pragma: NO COVER
+    # mypy: Fallbacks:  grpc sentinel when optional grpc is not installed in the environment.
+    # and distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
+    grpc = None  # type: ignore[assignment]
+
+    class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+
+class _SuppressingClientInterceptor(
+    _SyncUnaryUnaryClientInterceptor,
+    _SyncUnaryStreamClientInterceptor,
+    _SyncStreamUnaryClientInterceptor,
+    _SyncStreamStreamClientInterceptor,
+):
+    """Client interceptor that suppresses redundant downstream generic auto-instrumentation spans.
+
+    When users enable global OpenTelemetry gRPC auto-instrumentation (e.g. GrpcInstrumentorClient),
+    the underlying channel is wrapped with generic interceptors that emit bare-bones spans.
+    This interceptor wraps downstream calls in OpenTelemetry's native `suppress_instrumentation`
+    context manager so that our feature-rich Google Cloud SDK T4 span is emitted while
+    redundant generic downstream spans are bypassed.
+    """
+
+    __slots__ = ()
+
+    def intercept_unary_unary(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request)
+
+    def intercept_unary_stream(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request)
+
+    def intercept_stream_unary(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request_iterator)
+
+    def intercept_stream_stream(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request_iterator)
+
+
+class _AsyncSuppressingClientInterceptor(
+    _AsyncUnaryUnaryClientInterceptor,
+    _AsyncUnaryStreamClientInterceptor,
+    _AsyncStreamUnaryClientInterceptor,
+    _AsyncStreamStreamClientInterceptor,
+):
+    """AsyncIO client interceptor that suppresses redundant downstream generic auto-instrumentation spans."""
+
+    __slots__ = ()
+
+    async def intercept_unary_unary(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request)
+
+    async def intercept_unary_stream(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request)
+
+    async def intercept_stream_unary(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request_iterator)
+
+    async def intercept_stream_stream(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request_iterator)
+
+
 def get_otel_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> Callable[[grpc.Channel], grpc.Channel] | None:
@@ -249,8 +391,15 @@ def get_otel_interceptor(
         request_hook=request_hook,
         response_hook=_grpc_client_response_hook,
     )
+    suppressor = _SuppressingClientInterceptor()
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
+        if grpc is not None:
+            try:
+                channel = grpc.intercept_channel(channel, suppressor)
+            except (AttributeError, TypeError):
+                # Fallback if grpc lacks intercept_channel or custom channel type rejects it.
+                pass
         return otel_grpc.intercept_channel(channel, interceptor)
 
     otel_interceptor._is_otel_interceptor = True  # type: ignore[attr-defined]
@@ -279,11 +428,91 @@ def get_otel_async_interceptor(
     endpoint_attrs = _extract_endpoint_attributes(client_options)
     request_hook = _make_grpc_client_request_hook(endpoint_attrs)
 
-    return otel_grpc.aio_client_interceptors(
+    raw_interceptors = otel_grpc.aio_client_interceptors(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
         response_hook=_grpc_client_response_hook,
     )
+    interceptors = (
+        list(raw_interceptors)
+        if isinstance(raw_interceptors, (list, tuple))
+        else [raw_interceptors]
+    )
+    interceptors.append(_AsyncSuppressingClientInterceptor())
+
+    return interceptors
+
+
+_CHANNEL_INTERCEPTOR_MAPPING = (
+    ("intercept_unary_unary", "_unary_unary_interceptors"),
+    ("intercept_unary_stream", "_unary_stream_interceptors"),
+    ("intercept_stream_unary", "_stream_unary_interceptors"),
+    ("intercept_stream_stream", "_stream_stream_interceptors"),
+)
+
+
+def apply_otel_async_channel_interceptors(
+    channel: Any,
+    client_options: ClientOptions | dict[str, Any] | Sequence[Any] | None = None,
+) -> Any:
+    """Creates and attaches OpenTelemetry client interceptors to the front of an async gRPC channel.
+
+    In grpc.aio, channels maintain internal interceptor lists evaluated in index order.
+    To ensure Google Cloud SDK telemetry wraps outside downstream interceptors and
+    suppresses ambient generic auto-instrumentation, our interceptors are prepended
+    to the front of the channel's interceptor lists.
+
+    Args:
+        channel: The async gRPC channel to intercept.
+        client_options (Optional[Union[ClientOptions, dict[str, Any], Sequence[Any]]]): The client
+            options used to resolve feature flags and tracer provider, or a sequence of
+            pre-resolved interceptors.
+
+    Returns:
+        The channel with interceptors prepended to its internal lists,
+        or the original channel if tracing is disabled or not installed.
+    """
+    otel_interceptors: Sequence[Any] | None
+    if isinstance(client_options, (ClientOptions, dict)) or client_options is None:
+        otel_interceptors = get_otel_async_interceptor(client_options)
+    elif isinstance(client_options, Sequence):
+        otel_interceptors = client_options
+    else:
+        otel_interceptors = None
+
+    if not otel_interceptors:
+        return channel
+
+    interceptor_list = list(otel_interceptors)
+
+    # Section 1: Typed interceptors - prepend matching interceptors to each
+    # corresponding channel list (unary-unary, unary-stream, etc.) in order.
+    # See note in the docstring about why prepending is important here.
+    for method_name, attr_name in _CHANNEL_INTERCEPTOR_MAPPING:
+        target_list = getattr(channel, attr_name, None)
+        if isinstance(target_list, list):
+            matching = [
+                i
+                for i in interceptor_list
+                if hasattr(i, method_name) and i not in target_list
+            ]
+            if matching:
+                target_list[:0] = matching
+
+    # Section 2: Untyped/generic fallback - prepend any remaining interceptors
+    # lacking standard method names directly to the unary-unary list.
+    unary_list = getattr(channel, "_unary_unary_interceptors", None)
+    if isinstance(unary_list, list):
+        standard_methods = tuple(method for method, _ in _CHANNEL_INTERCEPTOR_MAPPING)
+        fallback_items = [
+            i
+            for i in interceptor_list
+            if not any(hasattr(i, m) for m in standard_methods) and i not in unary_list
+        ]
+        if fallback_items:
+            unary_list[:0] = fallback_items
+
+    return channel
 
 
 _TRACE_CONTEXT_PROPAGATOR: Any = None

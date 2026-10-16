@@ -317,21 +317,25 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                 ],
             )
 
+        # Wrap channel with user-specified and logging interceptors.
         channel_interceptors = list(interceptors) if interceptors else []
         self._interceptor = _LoggingClientAIOInterceptor()
         channel_interceptors.append(self._interceptor)
+        self._grpc_channel = apply_async_channel_interceptors(
+            self._grpc_channel, channel_interceptors
+        )
 
+        # Configure OpenTelemetry tracing and span suppression on the channel.
         if (
             _observability is not None
-            and (otel_interceptors := _observability.get_otel_async_interceptor(self._client_options)) is not None
+            and hasattr(_observability, "apply_otel_async_channel_interceptors")
         ):
             # NOTE: Coverage tool ignores async interceptors in environments running
             # legacy google-api-core (< 2.36.0) where OpenTelemetry is unavailable.
-            # Lifecycle: Can be lifted once lowest constraints require google-api-core >= 2.36.0.
-            otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]  # pragma: NO COVER
-            channel_interceptors.extend(otel_list)  # pragma: NO COVER
-
-        self._grpc_channel = apply_async_channel_interceptors(self._grpc_channel, channel_interceptors)
+            # TODO (Issue #18657): Remove once lowest constraints require google-api-core >= v2.43.0.
+            self._grpc_channel = _observability.apply_otel_async_channel_interceptors(
+                self._grpc_channel, self._client_options
+            )  # pragma: NO COVER
 
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
