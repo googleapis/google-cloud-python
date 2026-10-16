@@ -12,7 +12,7 @@ geopandas==1.1.2
 google-api-core==2.28.0
 google-auth==2.41.1
 google-cloud-bigquery==3.45.0
-google-cloud-bigquery-storage==2.33.1
+google-cloud-bigquery-storage==2.43.0
 google-cloud-core==2.4.3
 google-crc32c==1.7.1
 google-resumable-media==2.7.2
