@@ -138,39 +138,39 @@ def test_apply_otel_async_channel_interceptors_client_options_prepending(
     ]
 
 
-@pytest.mark.parametrize(
-    "case,setup_channel,interceptor_spec,expected_result",
-    [
-        (
-            "prevent_duplicates",
-            lambda ch, i: setattr(ch, "_unary_unary_interceptors", [i]),
-            ["intercept_unary_unary"],
-            lambda ch, i: ch._unary_unary_interceptors == [i],
-        ),
-        (
-            "non_list_ignored",
-            lambda ch, i: setattr(ch, "_unary_unary_interceptors", "not-a-list"),
-            ["intercept_unary_unary"],
-            lambda ch, i: ch._unary_unary_interceptors == "not-a-list",
-        ),
-        (
-            "generic_untyped_fallback",
-            lambda ch, i: setattr(ch, "_unary_unary_interceptors", ["existing"]),
-            [],
-            lambda ch, i: ch._unary_unary_interceptors == [i, "existing"],
-        ),
-    ],
-    ids=["prevent_duplicates", "non_list_ignored", "generic_untyped_fallback"],
-)
-def test_apply_otel_async_channel_interceptors_edge_cases(
-    mock_async_channel, case, setup_channel, interceptor_spec, expected_result
-):
-    """Proves edge case handling: deduplication, non-list attributes, and untyped fallback."""
-    interceptor = mock.Mock(spec=interceptor_spec)
-    setup_channel(mock_async_channel, interceptor)
+def test_apply_otel_async_channel_interceptors_prevents_duplicates(mock_async_channel):
+    """Proves that interceptors already present in the channel list are not duplicated."""
+    interceptor = mock.Mock(spec=["intercept_unary_unary"])
+    mock_async_channel._unary_unary_interceptors = [interceptor]
 
     result = _observability.apply_otel_async_channel_interceptors(
         mock_async_channel, [interceptor]
     )
     assert result is mock_async_channel
-    assert expected_result(mock_async_channel, interceptor)
+    assert mock_async_channel._unary_unary_interceptors == [interceptor]
+
+
+def test_apply_otel_async_channel_interceptors_ignores_non_list_attribute(
+    mock_async_channel,
+):
+    """Proves that channel attributes that are not lists are gracefully ignored."""
+    interceptor = mock.Mock(spec=["intercept_unary_unary"])
+    mock_async_channel._unary_unary_interceptors = "not-a-list"
+
+    result = _observability.apply_otel_async_channel_interceptors(
+        mock_async_channel, [interceptor]
+    )
+    assert result is mock_async_channel
+    assert mock_async_channel._unary_unary_interceptors == "not-a-list"
+
+
+def test_apply_otel_async_channel_interceptors_untyped_fallback(mock_async_channel):
+    """Proves that untyped interceptors fallback to being prepended to all channel lists."""
+    interceptor = mock.Mock(spec=[])
+    mock_async_channel._unary_unary_interceptors = ["existing"]
+
+    result = _observability.apply_otel_async_channel_interceptors(
+        mock_async_channel, [interceptor]
+    )
+    assert result is mock_async_channel
+    assert mock_async_channel._unary_unary_interceptors == [interceptor, "existing"]
