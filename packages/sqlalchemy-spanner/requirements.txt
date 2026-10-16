@@ -284,9 +284,9 @@ google-auth==2.56.2 \
     #   google-cloud-core
     #   google-cloud-monitoring
     #   google-cloud-spanner
-google-cloud-core==2.6.0 \
-    --hash=sha256:6d63ac8e5eca6d9e4319d0a1e2265fadcd7f1049904378caecfa01cf52dd869e \
-    --hash=sha256:e76149739f90fac1fc6757c09f47eaccb3145b54adbd7759b0f7c4b235f46c83
+google-cloud-core==2.8.0 \
+    --hash=sha256:365f8e4518ae81c8101b8dea5fc1c32a960badedb8b511f19db2843cbbd285d2 \
+    --hash=sha256:e235b0952f7ffe7b9c71a4cf96b506d9cfb557e22557c412f0df9b7068b5d007
     # via google-cloud-spanner
 google-cloud-monitoring==2.31.0 \
     --hash=sha256:64f3d56ead48f0a0674f650cb2828c47b936582a02a27c55f2836681a86281c3 \
