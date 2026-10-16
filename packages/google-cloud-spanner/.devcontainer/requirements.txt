@@ -34,9 +34,9 @@ platformdirs==4.9.6 \
     --hash=sha256:3bfa75b0ad0db84096ae777218481852c0ebc6c727b3168c1b9e0118e458cf0a \
     --hash=sha256:e61adb1d5e5cb3441b4b7710bea7e4c12250ca49439228cc1021c00dcfac0917
     # via virtualenv
-python-discovery==1.6.2 \
-    --hash=sha256:cd1738ca1d37c86ef9d0b654dd46fcee1e41c97c6add12575e8501ced39afdb4 \
-    --hash=sha256:f0c697f95a3aaec4174a6e5e58f5885e25768684bafc76f1afde384709ebdcf2
+python-discovery==1.6.3 \
+    --hash=sha256:a62b301d96cf5489cb96ab023b32e068421867fdd5df2e42eece877869047fa2 \
+    --hash=sha256:cb7654125e3dcb594269a6feb56ac693f1f13b7c654493a93eba72dc22d18034
     # via virtualenv
 virtualenv==21.14.7 \
     --hash=sha256:3769219a308c5d2f093e7729621ad12a6346b5767a7ec4338414e2a0fb0c526b \
