@@ -16,11 +16,29 @@ import base64
 import unittest
 from unittest import mock
 
+import packaging.version
 import pytest
 
+from google.cloud.bigquery import _arrow_query
 from google.cloud.bigquery import _job_helpers
+from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.client import Client
+from google.cloud.bigquery.enums import WriteDisposition
+from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.table import RowIterator, _EmptyRowIterator
+
+from .helpers import make_client
+
+# The real check, saved before the autouse fixture below replaces it.
+_check_dependencies = _arrow_query._check_dependencies
+
+
+@pytest.fixture(autouse=True)
+def check_dependencies():
+    """Skip the ARROW dependency check, which depends on installed packages."""
+    with mock.patch.object(_arrow_query, "_check_dependencies") as check:
+        yield check
 
 
 class TestQueryResultsFormatOption1(unittest.TestCase):
@@ -567,6 +585,122 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             with mock.patch("google.cloud.bigquery.table._pandas_helpers"):
                 df = iterator.to_dataframe()
                 self.assertEqual(df, "full_df")
+
+
+def _query_and_wait(client, **kwargs):
+    return _job_helpers.query_and_wait(
+        client,
+        "SELECT 1",
+        project="p",
+        location="us",
+        retry=None,
+        job_retry=None,
+        **{"job_config": None, **kwargs},
+    )
+
+
+def test_query_and_wait_compression_codec_requires_arrow(check_dependencies):
+    client = mock.MagicMock(spec=Client)
+
+    with pytest.raises(ValueError, match="compression_codec requires"):
+        _query_and_wait(client, compression_codec="LZ4_FRAME")
+
+    client._call_api.assert_not_called()
+    check_dependencies.assert_not_called()
+
+
+def test_query_and_wait_without_arrow_skips_dependency_check(check_dependencies):
+    client = mock.MagicMock(spec=Client)
+    client._call_api.return_value = {
+        "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+        "jobComplete": True,
+        "rows": [],
+        "schema": {"fields": []},
+    }
+
+    _query_and_wait(client)
+
+    check_dependencies.assert_not_called()
+
+
+def test_query_and_wait_arrow_allows_write_append(check_dependencies):
+    client = make_client(
+        default_query_job_config=QueryJobConfig(
+            destination="p.d.t", write_disposition=WriteDisposition.WRITE_APPEND
+        )
+    )
+    client._call_api = mock.Mock(side_effect=RuntimeError("sent"))
+
+    with pytest.raises(RuntimeError, match="sent"):
+        client.query_and_wait("SELECT 1", query_results_format="ARROW")
+
+    check_dependencies.assert_called_once_with()
+    client._call_api.assert_called_once()
+
+
+def test_query_and_wait_arrow_checks_dependencies_before_sending(check_dependencies):
+    check_dependencies.side_effect = exceptions.BigQueryStorageNotFoundError("missing")
+    client = mock.MagicMock(spec=Client)
+
+    with pytest.raises(exceptions.BigQueryStorageNotFoundError):
+        _query_and_wait(client, query_results_format="ARROW")
+
+    client._call_api.assert_not_called()
+
+
+def test_check_dependencies_requires_pyarrow():
+    error = exceptions.LegacyPyarrowError("pyarrow is not installed")
+    with mock.patch.object(
+        _versions_helpers.PYARROW_VERSIONS, "try_import", side_effect=error
+    ) as try_import:
+        with pytest.raises(exceptions.LegacyPyarrowError):
+            _check_dependencies()
+
+    try_import.assert_called_once_with(raise_if_error=True)
+
+
+def test_check_dependencies_requires_bigquery_storage():
+    error = exceptions.BigQueryStorageNotFoundError("not installed")
+    with (
+        mock.patch.object(_versions_helpers.PYARROW_VERSIONS, "try_import"),
+        mock.patch.object(
+            _versions_helpers.BQ_STORAGE_VERSIONS, "try_import", side_effect=error
+        ) as try_import,
+    ):
+        with pytest.raises(exceptions.BigQueryStorageNotFoundError):
+            _check_dependencies()
+
+    try_import.assert_called_once_with(raise_if_error=True)
+
+
+@pytest.mark.parametrize("supported", [True, False])
+def test_check_dependencies_requires_read_rows_arrow_options(supported):
+    versions_type = type(_versions_helpers.BQ_STORAGE_VERSIONS)
+    with (
+        mock.patch.object(_versions_helpers.PYARROW_VERSIONS, "try_import"),
+        mock.patch.object(_versions_helpers.BQ_STORAGE_VERSIONS, "try_import"),
+        mock.patch.object(
+            versions_type,
+            "supports_arrow_serialization_options",
+            new_callable=mock.PropertyMock,
+            return_value=supported,
+        ),
+        mock.patch.object(
+            versions_type,
+            "installed_version",
+            new_callable=mock.PropertyMock,
+            return_value=packaging.version.Version("2.42.0"),
+        ),
+    ):
+        if supported:
+            _check_dependencies()
+        else:
+            with pytest.raises(
+                exceptions.LegacyBigQueryStorageError,
+                match=r"pip install --upgrade google-cloud-bigquery-storage.*"
+                r"\(version found: 2\.42\.0\)",
+            ):
+                _check_dependencies()
 
 
 if __name__ == "__main__":
