@@ -414,9 +414,7 @@ class TestGrpcClient(unittest.TestCase):
             self.assertFalse(client.debug_metrics_enabled)
 
     @mock.patch("google.cloud._storage_v2.StorageClient")
-    def test_ctor_w_invalid_enable_metrics_raises_type_error(
-        self, mock_storage_client
-    ):
+    def test_ctor_w_invalid_enable_metrics_raises_type_error(self, mock_storage_client):
         mock_creds = _make_credentials()
         with self.assertRaises(TypeError):
             grpc_client.GrpcClient(
