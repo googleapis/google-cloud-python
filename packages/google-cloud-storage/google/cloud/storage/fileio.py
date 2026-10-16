@@ -118,6 +118,7 @@ class BlobReader(io.BufferedIOBase):
         self._chunk_size = chunk_size or blob.chunk_size or DEFAULT_CHUNK_SIZE
         self._retry = retry
         self._download_kwargs = download_kwargs
+        self._eof = False
 
     def read(self, size=-1):
         self._checkClosed()  # Raises ValueError if closed.
@@ -125,7 +126,7 @@ class BlobReader(io.BufferedIOBase):
         result = self._buffer.read(size)
         # If the read request demands more bytes than are buffered, fetch more.
         remaining_size = size - len(result)
-        if remaining_size > 0 or size < 0:
+        if (remaining_size > 0 or size < 0) and not self._eof:
             self._pos += self._buffer.tell()
             read_size = len(result)
 
@@ -142,17 +143,31 @@ class BlobReader(io.BufferedIOBase):
             # chunked downloads, and the server only knows the checksum of the
             # entire file.
             try:
-                result += self._blob.download_as_bytes(
+                downloaded = self._blob.download_as_bytes(
                     start=fetch_start,
                     end=fetch_end,
                     checksum=None,
                     retry=self._retry,
                     **self._download_kwargs,
                 )
+                # If fewer bytes were returned than requested for a range (len < fetch_end - fetch_start),
+                # or 0 bytes were returned, we have reached EOF. Tracking EOF client-side prevents
+                # infinite read loops for objects (such as doubly-gzipped files) where out-of-bounds
+                # range requests re-send body content instead of raising RequestRangeNotSatisfiable.
+                if (
+                    fetch_end is None
+                    or len(downloaded) == 0
+                    or (
+                        fetch_end is not None
+                        and len(downloaded) < (fetch_end - fetch_start)
+                    )
+                ):
+                    self._eof = True
+                result += downloaded
             except RequestRangeNotSatisfiable:
                 # We've reached the end of the file. Python file objects should
                 # return an empty response in this case, not raise an error.
-                pass
+                self._eof = True
 
             # If more bytes were read than is immediately needed, buffer the
             # remainder and then trim the result.
@@ -175,6 +190,7 @@ class BlobReader(io.BufferedIOBase):
         If the blob size is not already known it will call blob.reload().
         """
         self._checkClosed()  # Raises ValueError if closed.
+        self._eof = False
 
         if self._blob.size is None:
             reload_kwargs = {
