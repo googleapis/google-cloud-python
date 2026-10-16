@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import base64
-from typing import Any, Dict, Iterator, Optional, TYPE_CHECKING
+from typing import Dict, Iterator, Optional, TYPE_CHECKING
 
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import enums
@@ -113,16 +113,6 @@ def serialization_options(
     }
 
 
-def has_more_rows(response: Dict[str, Any]) -> bool:
-    """Return True if rows remain after an ``ARROW`` ``jobs.query`` response.
-
-    ``ARROW`` responses say how many rows the first page holds in
-    ``pageRowCount``, so compare that with ``totalRows`` instead of checking
-    for a ``pageToken``.
-    """
-    return int(response.get("pageRowCount", 0)) < int(response.get("totalRows", 0))
-
-
 def _read_rows_options(options: Optional[Dict[str, str]]) -> Dict[str, str]:
     """Convert ``jobs.query`` ``arrowSerializationOptions`` to the
     ``ArrowSerializationOptions`` fields that ``ReadRows`` takes."""
@@ -157,7 +147,7 @@ def download_arrow_from_job(
 
     offset = 0
     pa_schema = None
-    total_rows = row_iterator.total_rows
+    page_token = None
     job_complete = False
 
     # Step 2: Process initial inline Arrow response from jobs.query if available.
@@ -165,8 +155,7 @@ def download_arrow_from_job(
         first_page = row_iterator._first_page_response
 
         job_complete = bool(first_page.get("jobComplete", False))
-        if job_complete:
-            total_rows = int(first_page.get("totalRows", 0))
+        page_token = first_page.get("pageToken")
 
         arrow_schema_json = first_page.get("arrowSchema")
         if isinstance(arrow_schema_json, dict):
@@ -189,8 +178,10 @@ def download_arrow_from_job(
                 offset += batch.num_rows
                 yield batch
 
-    # Step 3: Return early if all results were delivered in the first page response.
-    if job_complete and offset >= total_rows:
+    # Step 3: Return early if all results were delivered in the first page
+    # response. Only a pageToken says rows remain: totalRows is 0 when cached
+    # results are too large to return inline.
+    if job_complete and page_token is None:
         return
 
     # Step 4: Stream remaining Arrow record batches from the job default stream.

@@ -665,16 +665,24 @@ def test_query_and_wait_arrow_extreme_values(
 
 
 @pytest.mark.parametrize(
-    "priority",
-    [None, enums.QueryPriority.INTERACTIVE],
-    ids=["some_rows_inline", "no_rows_inline"],
+    ("priority", "page_size", "num_rows", "payload_size"),
+    [
+        (None, 100, 1000, 0),
+        # The results are too large to return inline, so the cached jobs.query
+        # response has no rows and totalRows is 0.
+        (None, None, 20000, 1024),
+        (enums.QueryPriority.INTERACTIVE, 100, 1000, 0),
+    ],
+    ids=["some_rows_inline", "too_large_for_inline", "no_rows_inline"],
 )
-def test_query_and_wait_arrow_cached_results(bigquery_client, priority):
+def test_query_and_wait_arrow_cached_results(
+    bigquery_client, priority, page_size, num_rows, payload_size
+):
     # No other query uses this literal, so only the second run can hit the
     # cache.
     query = (
-        f"SELECT x, '{uuid.uuid4().hex}' AS key "
-        "FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x"
+        f"SELECT x, '{uuid.uuid4().hex}' AS key, REPEAT('x', {payload_size}) AS p "
+        f"FROM UNNEST(GENERATE_ARRAY(1, {num_rows})) AS x ORDER BY x"
     )
     job_config = bigquery.QueryJobConfig(use_query_cache=True)
     if priority is not None:
@@ -684,7 +692,7 @@ def test_query_and_wait_arrow_cached_results(bigquery_client, priority):
         rows = bigquery_client.query_and_wait(
             query,
             job_config=job_config,
-            page_size=100,
+            page_size=page_size,
             query_results_format=enums.QueryResultsFormat.ARROW,
         )
         table = pyarrow.Table.from_batches(list(rows.to_arrow_iterable()))
@@ -695,7 +703,7 @@ def test_query_and_wait_arrow_cached_results(bigquery_client, priority):
 
     assert not first_job.cache_hit
     assert cached_job.cache_hit
-    assert cached.num_rows == 1000
+    assert cached.num_rows == num_rows
     assert cached.equals(first)
 
 

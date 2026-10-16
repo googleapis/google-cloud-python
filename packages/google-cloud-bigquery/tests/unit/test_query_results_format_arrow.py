@@ -478,6 +478,53 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             batches_second = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches_second, [mock_first_batch])
 
+    def test_download_arrow_from_job_id_page_token_calls_read_rows(self):
+        mock_client = mock.MagicMock()
+        mock_bqstorage = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+
+        # A cache hit too large to return inline: the job is complete and
+        # totalRows is 0, but the pageToken says rows remain.
+        first_page_response = {
+            "jobComplete": True,
+            "totalRows": "0",
+            "pageToken": "next",
+            "arrowSchema": {"serializedSchema": b"schema_bytes"},
+            "arrowRecordBatch": {},
+        }
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-cached",
+            query_results_format="ARROW",
+            first_page_response=first_page_response,
+        )
+
+        mock_response = mock.MagicMock()
+        mock_response.arrow_schema = None
+        mock_response.arrow_record_batch.serialized_record_batch = b"stream_batch"
+        mock_bqstorage.read_rows.return_value = [mock_response]
+
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
+            mock_pyarrow.py_buffer = lambda x: x
+            mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
+            mock_pyarrow.ipc.read_record_batch.return_value = "stream_batch"
+
+            batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
+
+        self.assertEqual(batches, ["stream_batch"])
+        mock_bqstorage.read_rows.assert_called_once_with(
+            "projects/test-proj/locations/US/jobs/test-job-cached/streams/_default",
+            offset=0,
+            timeout=5.0,
+            arrow_serialization_options=_DEFAULT_READ_OPTIONS,
+        )
+
     def test_download_arrow_from_job_id_calls_read_rows_when_job_not_complete(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
@@ -974,10 +1021,13 @@ def _arrow_query_response(**fields):
 @pytest.mark.parametrize(
     "response",
     [
-        _arrow_query_response(pageRowCount="10", totalRows="25"),
+        _arrow_query_response(pageRowCount="10", totalRows="25", pageToken="next"),
         _arrow_query_response(jobComplete=False),
+        # A cache hit too large to return inline has no pageRowCount and
+        # totalRows is 0, but it still has a pageToken.
+        _arrow_query_response(totalRows="0", pageToken="next"),
     ],
-    ids=["some_rows_inline", "no_rows_inline"],
+    ids=["some_rows_inline", "no_rows_inline", "cache_hit_no_rows_inline"],
 )
 def test_query_and_wait_arrow_waits_without_fetching_rows(response):
     client = mock.MagicMock(spec=Client)
@@ -996,10 +1046,10 @@ def test_query_and_wait_arrow_waits_without_fetching_rows(response):
     assert client._call_api.call_args.kwargs["data"]["maxResults"] == 10
 
 
-def test_query_and_wait_arrow_all_rows_inline_ignores_page_token():
+def test_query_and_wait_arrow_all_rows_inline_doesnt_wait():
     client = mock.MagicMock(spec=Client)
     client._call_api.return_value = _arrow_query_response(
-        pageRowCount="25", totalRows="25", pageToken="next"
+        pageRowCount="25", totalRows="25"
     )
 
     with mock.patch.object(_job_helpers, "_wait_or_cancel") as wait_or_cancel:
