@@ -43,7 +43,6 @@ from google.cloud.bigtable.data.mutations import (
 )
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
     from google.cloud.bigtable.data.mutations import RowMutationEntry
 
     if CrossSync.is_async:
@@ -194,12 +193,12 @@ class _FlowControlAsync:
     async def add_to_flow_with_metrics(
         self,
         mutations: RowMutationEntry | list[RowMutationEntry],
-        metrics_controller: BigtableClientSideMetricsController,
+        target: TargetType,
     ):
         inner_generator = self.add_to_flow(mutations)
         while True:
             # start a new metric
-            metric = metrics_controller.create_operation(OperationType.BULK_MUTATE_ROWS)
+            metric = target._create_operation(OperationType.BULK_MUTATE_ROWS)
             flow_start_time = time.monotonic_ns()
             try:
                 value = await inner_generator.__anext__()
@@ -394,7 +393,7 @@ class MutationsBatcherAsync:
         ] = []
         found_exceptions: list[FailedMutationEntryError] = []
         async for batch, metric in self._flow_control.add_to_flow_with_metrics(
-            new_entries, self._target.client._metrics
+            new_entries, self._target
         ):
             try:
                 batch_task = CrossSync.create_task(
