@@ -13,7 +13,7 @@ google-api-core==2.28.0
 google-auth==2.41.1
 google-cloud-bigquery==3.45.0
 google-cloud-bigquery-storage==2.43.0
-google-cloud-core==2.4.3
+google-cloud-core==2.8.0
 google-crc32c==1.7.1
 google-resumable-media==2.7.2
 googleapis-common-protos==1.75.5
