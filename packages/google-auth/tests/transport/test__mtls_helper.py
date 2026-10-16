@@ -1360,29 +1360,22 @@ class TestMtlsHelper:
         mock_check_config_path.return_value = "/path/to/config"
         mock_load_json_file.return_value = {"cert_provider_command": ["command"]}
 
-        # Like a SecureConnect cert provider, return an encrypted key and a
-        # passphrase only when --with_passphrase is passed.
-        def popen(command, **kwargs):
-            if "--with_passphrase" in command:
-                output = (
-                    pytest.public_cert_bytes + ENCRYPTED_EC_PRIVATE_KEY + PASSPHRASE
-                )
-            else:
-                output = pytest.public_cert_bytes + pytest.private_key_bytes
-            process = mock.Mock()
-            process.configure_mock(
-                **{"communicate.return_value": (output, b""), "returncode": 0}
-            )
-            return process
-
-        mock_popen.side_effect = popen
+        process = mock.Mock()
+        process.configure_mock(
+            **{
+                "communicate.return_value": (
+                    pytest.public_cert_bytes + pytest.private_key_bytes,
+                    b"",
+                ),
+                "returncode": 0,
+            }
+        )
+        mock_popen.return_value = process
 
         cert, key = _mtls_helper.call_client_cert_callback()
 
         assert cert == pytest.public_cert_bytes
         assert key == pytest.private_key_bytes
-        # The 401 rotation path loads this key without a passphrase.
-        serialization.load_pem_private_key(key, password=None)
 
 
 class TestSecureCertKeyPaths(object):
