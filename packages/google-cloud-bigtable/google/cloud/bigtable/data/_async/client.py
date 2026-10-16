@@ -1468,7 +1468,7 @@ class _DataApiTargetAsync(abc.ABC):
                 server.uds_path, server.auth_secret
             )
             self._accelerator_daemon = server
-        except _AcceleratorUnverified:
+        except _AcceleratorIdentityError:
             server.close()
             raise
         except BaseException:
@@ -2384,6 +2384,8 @@ class _DataApiTargetAsync(abc.ABC):
         if self._accelerator_health is not None:
             try:
                 await self._accelerator_health.close()
+            except Exception as exc:
+                _LOGGER.warning("Failed to close accelerator health monitor: %s", exc)
             finally:
                 self._accelerator_health = None
         if self._accelerator_client is not None:
@@ -2400,11 +2402,6 @@ class _DataApiTargetAsync(abc.ABC):
                 _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
             finally:
                 self._accelerator_daemon = None
-        if self._register_instance_future:
-            self._register_instance_future.cancel()
-        self.client._remove_instance_registration(
-            self.instance_id, self.app_profile_id, id(self)
-        )
 
     @CrossSync.convert(sync_name="__enter__")
     async def __aenter__(self):
