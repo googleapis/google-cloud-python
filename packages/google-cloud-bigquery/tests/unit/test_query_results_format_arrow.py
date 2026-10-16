@@ -623,42 +623,19 @@ def test_query_and_wait_without_arrow_skips_dependency_check(check_dependencies)
     check_dependencies.assert_not_called()
 
 
-def test_query_and_wait_arrow_rejects_write_append():
-    client = mock.MagicMock(spec=Client)
-    job_config = QueryJobConfig(write_disposition=WriteDisposition.WRITE_APPEND)
-
-    with pytest.raises(ValueError, match="WRITE_APPEND"):
-        _query_and_wait(client, job_config=job_config, query_results_format="ARROW")
-
-    client._call_api.assert_not_called()
-
-
-def test_query_and_wait_arrow_rejects_default_write_append():
+def test_query_and_wait_arrow_allows_write_append(check_dependencies):
     client = make_client(
         default_query_job_config=QueryJobConfig(
             destination="p.d.t", write_disposition=WriteDisposition.WRITE_APPEND
         )
     )
-    client._call_api = mock.Mock()
+    client._call_api = mock.Mock(side_effect=RuntimeError("sent"))
 
-    with pytest.raises(ValueError, match="WRITE_APPEND"):
+    with pytest.raises(RuntimeError, match="sent"):
         client.query_and_wait("SELECT 1", query_results_format="ARROW")
 
-    client._call_api.assert_not_called()
-
-
-@pytest.mark.parametrize(
-    "write_disposition",
-    [None, WriteDisposition.WRITE_TRUNCATE, WriteDisposition.WRITE_EMPTY],
-)
-def test_validate_query_allows_other_write_dispositions(
-    check_dependencies, write_disposition
-):
-    job_config = QueryJobConfig(write_disposition=write_disposition)
-
-    _arrow_query.validate_query("ARROW", job_config, compression_codec="ZSTD")
-
     check_dependencies.assert_called_once_with()
+    client._call_api.assert_called_once()
 
 
 def test_query_and_wait_arrow_checks_dependencies_before_sending(check_dependencies):

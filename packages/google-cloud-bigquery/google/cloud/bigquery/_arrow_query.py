@@ -30,7 +30,6 @@ except ImportError:
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import bigquery_storage
-    from google.cloud.bigquery import job
     from google.cloud.bigquery.table import RowIterator
 
 _NO_PYARROW_ERROR = (
@@ -41,7 +40,6 @@ _NO_PYARROW_ERROR = (
 
 def validate_query(
     query_results_format: Optional[str],
-    job_config: Optional["job.QueryJobConfig"],
     *,
     compression_codec: Optional[str] = None,
 ) -> None:
@@ -50,15 +48,12 @@ def validate_query(
     Args:
         query_results_format: The ``query_results_format`` passed to
             ``query_and_wait()``.
-        job_config: The job config, already merged with
-            ``Client.default_query_job_config``.
         compression_codec: The ``compression_codec`` passed to
             ``query_and_wait()``.
 
     Raises:
         ValueError:
-            If ``compression_codec`` is set without ``ARROW``, or if an
-            ``ARROW`` query uses ``WRITE_APPEND``.
+            If ``compression_codec`` is set without ``ARROW``.
         google.cloud.bigquery.exceptions.BigQueryError:
             If pyarrow or google-cloud-bigquery-storage is missing or too old
             to read ``ARROW`` results.
@@ -67,18 +62,6 @@ def validate_query(
         if compression_codec is not None:
             raise ValueError("compression_codec requires query_results_format=ARROW.")
         return
-
-    # Results that don't fit in the jobs.query response are read from the
-    # destination table, which with WRITE_APPEND also holds older rows.
-    if (
-        job_config is not None
-        and job_config.write_disposition == enums.WriteDisposition.WRITE_APPEND
-    ):
-        raise ValueError(
-            "query_results_format=ARROW doesn't support WRITE_APPEND, because "
-            "the results would also include the rows already in the "
-            "destination table."
-        )
 
     # Check before the query runs, so a query doesn't succeed while its
     # results fit in the first page and then fail once they need a stream.

@@ -503,14 +503,13 @@ def query_and_wait(
             :class:`~google.cloud.bigquery.job.QueryJobConfig`
             class.
         ValueError:
-            If ``compression_codec`` is set without ``ARROW``, or if an
-            ``ARROW`` query uses ``WRITE_APPEND``.
+            If ``compression_codec`` is set without ``ARROW``.
         google.cloud.bigquery.exceptions.BigQueryError:
             If pyarrow or google-cloud-bigquery-storage is missing or too old
             to read ``ARROW`` results. The query isn't sent.
     """
     _arrow_query.validate_query(
-        query_results_format, job_config, compression_codec=compression_codec
+        query_results_format, compression_codec=compression_codec
     )
 
     request_body = _to_query_request(
