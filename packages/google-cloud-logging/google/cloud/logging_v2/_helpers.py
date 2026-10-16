@@ -152,7 +152,7 @@ def _add_defaults_to_filter(filter_):
     # By default, requests should only return logs in the last 24 hours
     yesterday = datetime.now(timezone.utc) - timedelta(days=1)
     time_filter = f'timestamp>="{yesterday.strftime(_TIME_FORMAT)}"'
-    if filter_ is None:
+    if filter_ is None or not filter_.strip():
         return time_filter
 
     # Look for comparisons on timestamp or casts of timestamp, not occurrences

@@ -176,18 +176,18 @@ class Test__add_defaults_to_filter(unittest.TestCase):
 
     def test_filter_defaults_empty_input(self):
         """Filter should default to return logs < 24 hours old"""
-        out_filter = self._add_defaults_to_filter(None)
-        timestamp = datetime.strptime(
-            out_filter, 'timestamp>="' + self._time_format() + '"'
-        )
-        yesterday = datetime.now(timezone.utc) - timedelta(days=1)
-        self.assertLess(yesterday - timestamp, timedelta(minutes=1))
+        for in_filter in (None, "", "  ", "\t", "\r\n", " \t\r\n "):
+            with self.subTest(filter_=in_filter):
+                out_filter = self._add_defaults_to_filter(in_filter)
+                timestamp = datetime.strptime(
+                    out_filter, 'timestamp>="' + self._time_format() + '"'
+                )
+                yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+                self.assertLess(yesterday - timestamp, timedelta(minutes=1))
 
     def test_filter_defaults_no_timestamp(self):
         """Filter should append 24 hour timestamp filter to input string"""
         test_inputs = [
-            "",
-            "  ",
             "logName=/projects/test/test",
             "test1 AND test2 AND test3",
             "time AND stamp  ",
