@@ -343,7 +343,7 @@ class EchoGrpcAsyncIOTransport(EchoTransport):
         ):
             # NOTE: Coverage tool ignores async interceptors in environments running
             # legacy google-api-core (< 2.36.0) where OpenTelemetry is unavailable.
-            # TODO (Issue #18657): Remove once lowest constraints require google-api-core >= 2.36.0.
+            # TODO (Issue #18657): Remove once lowest constraints require google-api-core >= v2.43.0.
             self._grpc_channel = _observability.apply_otel_async_channel_interceptors(
                 self._grpc_channel, self._client_options
             )  # pragma: NO COVER

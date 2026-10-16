@@ -876,7 +876,7 @@ def test_metrics_service_v2_grpc_asyncio_transport_channel_interceptors():
 
 @pytest.mark.skipif(
     _observability is None or not hasattr(_observability, "apply_otel_async_channel_interceptors"),
-    reason="Requires google-api-core with OpenTelemetry async channel interceptors support",
+    reason="Requires google-api-core with OpenTelemetry async channel interceptors support (>= v2.43.0)",
 )
 def test_metrics_service_v2_grpc_asyncio_transport_otel_channel_interceptor():
     mock_channel = mock.Mock()
