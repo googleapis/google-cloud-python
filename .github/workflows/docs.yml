@@ -47,7 +47,7 @@ jobs:
         google-cloud-retail: 9
     steps:
     - name: Checkout
-      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         fetch-depth: 0
         filter: blob:none
@@ -90,7 +90,7 @@ jobs:
     name: ${{ matrix.package_shard.is_sharded && format('docs ({0})', matrix.package_shard.name) || format('docs ({0})', matrix.package_shard.description) }}
     steps:
     - name: Checkout
-      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
@@ -145,7 +145,7 @@ jobs:
     name: ${{ matrix.package_shard.is_sharded && format('docfx ({0})', matrix.package_shard.name) || format('docfx ({0})', matrix.package_shard.description) }}
     steps:
     - name: Checkout
-      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
