@@ -835,6 +835,11 @@ class TestSchemaFieldDataPolicies:
             {"name": self.POLICY_TWO},
         ]
 
+    @pytest.mark.parametrize("names", [POLICY_ONE, POLICY_ONE.encode(), "", b""])
+    def test_constructor_rejects_strings_and_bytes(self, names):
+        with pytest.raises(TypeError, match="data_policies must be an iterable"):
+            schema.SchemaField("ssn", "STRING", data_policies=names)
+
     def test_constructor_copies_names(self):
         names = [self.POLICY_ONE]
         field = schema.SchemaField("ssn", "STRING", data_policies=names)

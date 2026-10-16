@@ -247,6 +247,8 @@ class SchemaField(object):
             Serialized as the REST ``dataPolicies`` field. If omitted, the
             property is not included in the API representation.
             ``None`` is serialized as ``null`` and an empty iterable as ``[]``.
+            A single ``str`` or ``bytes`` value raises :class:`TypeError`;
+            use an iterable containing the name instead.
     """
 
     def __init__(
@@ -306,6 +308,10 @@ class SchemaField(object):
         if foreign_type_definition is not None:
             self._properties["foreignTypeDefinition"] = foreign_type_definition
         if data_policies is not _DEFAULT_VALUE:
+            if isinstance(data_policies, (str, bytes)):
+                raise TypeError(
+                    "data_policies must be an iterable of strings, not str or bytes"
+                )
             self._properties["dataPolicies"] = (
                 [{"name": name} for name in data_policies]
                 if data_policies is not None
@@ -590,7 +596,12 @@ class SchemaField(object):
             None if key.policy_tags is None else PolicyTagList(key.policy_tags)
         )
         # Keep data_policies keyword-based without changing the existing repr.
-        adjusted_key = tuple(key._replace(policy_tags=policy_tags_inst))[:-1]
+        key_to_show = key._replace(policy_tags=policy_tags_inst)
+        adjusted_key = tuple(
+            getattr(key_to_show, field)
+            for field in key_to_show._fields
+            if field != "data_policies"
+        )
         representation = f"{self.__class__.__name__}{adjusted_key}"
         if key.data_policies is not None:
             representation = (
