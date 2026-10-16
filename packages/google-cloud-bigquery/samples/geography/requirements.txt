@@ -1,6 +1,6 @@
 attrs==26.1.0
 certifi==2026.7.22
-cffi==2.0.0
+cffi==2.1.1
 charset-normalizer==3.4.3
 click==8.3.0
 click-plugins==1.1.1.2
