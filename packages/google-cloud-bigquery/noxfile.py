@@ -288,16 +288,6 @@ def system(session):
         extras = "[all]"
     session.install("-e", f".{extras}", "-c", constraints_path)
 
-    # TODO: Remove once google-cloud-bigquery requires a
-    # google-cloud-bigquery-storage release whose read_rows() accepts
-    # arrow_serialization_options. Until then, query_results_format=ARROW
-    # needs the in-repo version.
-    session.install(
-        "-e",
-        str(CURRENT_DIRECTORY.parent / "google-cloud-bigquery-storage"),
-        "--no-deps",
-    )
-
     # Test with some broken "extras" in case the user didn't install the extra
     # directly. For example, pandas-gbq is recommended for pandas features, but
     # we want to test that we fallback to the previous behavior. For context,
