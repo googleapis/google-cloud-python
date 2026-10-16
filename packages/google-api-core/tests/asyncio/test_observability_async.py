@@ -85,35 +85,50 @@ def test_apply_otel_async_channel_interceptors_inactive_or_empty(
 
 
 @pytest.mark.parametrize(
-    "input_mode",
-    ["list", "tuple", "client_options"],
-    ids=["list_interceptors", "tuple_interceptors", "client_options_resolved"],
+    "seq_type",
+    [list, tuple],
+    ids=["list", "tuple"],
 )
-def test_apply_otel_async_channel_interceptors_prepending_forms(
-    mock_async_channel, monkeypatch, input_mode
+def test_apply_otel_async_channel_interceptors_sequence_prepending(
+    mock_async_channel, seq_type
 ):
-    """Proves that interceptors (via list, tuple, or ClientOptions) are prepended in order."""
+    """Proves that interceptor sequences (list or tuple) are prepended in order."""
     existing_interceptor = mock.Mock()
     mock_async_channel._unary_unary_interceptors = [existing_interceptor]
 
     interceptor1 = mock.Mock(spec=["intercept_unary_unary"])
     interceptor2 = mock.Mock(spec=["intercept_unary_unary"])
 
-    if input_mode == "list":
-        arg = [interceptor1, interceptor2]
-    elif input_mode == "tuple":
-        arg = (interceptor1, interceptor2)
-    else:  # client_options
-        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-        arg = _observability.ClientOptions()
-        monkeypatch.setattr(
-            _observability,
-            "get_otel_async_interceptor",
-            lambda opts: [interceptor1, interceptor2],
-        )
+    result = _observability.apply_otel_async_channel_interceptors(
+        mock_async_channel, seq_type([interceptor1, interceptor2])
+    )
+    assert result is mock_async_channel
+    assert mock_async_channel._unary_unary_interceptors == [
+        interceptor1,
+        interceptor2,
+        existing_interceptor,
+    ]
+
+
+def test_apply_otel_async_channel_interceptors_client_options_prepending(
+    mock_async_channel, monkeypatch
+):
+    """Proves that interceptors resolved from ClientOptions are prepended in order."""
+    existing_interceptor = mock.Mock()
+    mock_async_channel._unary_unary_interceptors = [existing_interceptor]
+
+    interceptor1 = mock.Mock(spec=["intercept_unary_unary"])
+    interceptor2 = mock.Mock(spec=["intercept_unary_unary"])
+
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    monkeypatch.setattr(
+        _observability,
+        "get_otel_async_interceptor",
+        lambda opts: [interceptor1, interceptor2],
+    )
 
     result = _observability.apply_otel_async_channel_interceptors(
-        mock_async_channel, arg
+        mock_async_channel, _observability.ClientOptions()
     )
     assert result is mock_async_channel
     assert mock_async_channel._unary_unary_interceptors == [
