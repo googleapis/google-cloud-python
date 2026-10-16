@@ -493,10 +493,7 @@ def apply_otel_async_channel_interceptors(
 
     # Section 1: Typed interceptors - prepend matching interceptors to each
     # corresponding channel list (unary-unary, unary-stream, etc.) in order.
-    # We prepend (rather than append) because gRPC interceptors run from outside
-    # in: placing our tracing and suppressing interceptors at the front of the 
-    # sequence ensures our Google span wraps are outside the entire call
-    # and block duplicate background spans before they start.
+    # See note in the docstring about why prepending is important here.
     for method_name, attr_name in _CHANNEL_INTERCEPTOR_MAPPING:
         target_list = getattr(channel, attr_name, None)
         if isinstance(target_list, list):
