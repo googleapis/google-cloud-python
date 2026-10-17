@@ -303,7 +303,7 @@ class AsyncPipelineStream(_PipelineResultContainer[T], AsyncIterable[T]):
         request = self._build_request()
         metadata = (
             self._client._transaction_rpc_metadata
-            if self.transaction is not None
+            if self._transaction is not None
             else self._client._rpc_metadata
         )
         stream = await self._client._firestore_api.execute_pipeline(
