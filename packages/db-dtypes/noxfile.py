@@ -265,6 +265,11 @@ def prerelease(session, tests_path):
         "pytest",
         "pytest-cov",
         "pytest-asyncio",
+        # tzdata is only needed for testing: pandas 3.0+ no longer installs
+        # tzdata by default on Linux, and compliance tests import
+        # pandas.tests.extension.base (which loads pandas.conftest and
+        # initializes a "US/Pacific" date_range via zoneinfo).
+        "tzdata",
         "-c",
         constraints_path,
     )
