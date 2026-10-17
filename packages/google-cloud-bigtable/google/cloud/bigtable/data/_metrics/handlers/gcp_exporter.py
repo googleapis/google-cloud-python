@@ -164,6 +164,12 @@ def _get_monitoring_credentials(
     return credentials
 
 
+# Cloud Monitoring rejects points written more often than the metric's sample
+# period (60s for Bigtable client metrics). Exports that come sooner than half of
+# that after the previous write (e.g. the final export on shutdown) are skipped
+_MIN_EXPORT_INTERVAL_SECONDS = 30
+
+
 class GoogleCloudMetricsHandler(OpenTelemetryMetricsHandler):
     """
     Maintains an internal set of OpenTelemetry metrics for the Bigtable client library,
@@ -228,6 +234,8 @@ class BigtableMetricsExporter(MetricExporter):
         # Once disabled, exports are skipped instead of failing (and logging)
         # on every export interval
         self._disabled = False
+        # time.monotonic() of the last successful write to Cloud Monitoring
+        self._last_export_time: float | None = None
 
     def export(
         self, metrics_data: MetricsData, timeout_millis: float = 10_000, **kwargs
@@ -238,6 +246,17 @@ class BigtableMetricsExporter(MetricExporter):
         """
         if self._disabled:
             return MetricExportResult.FAILURE
+        if (
+            self._last_export_time is not None
+            and time.monotonic() - self._last_export_time < _MIN_EXPORT_INTERVAL_SECONDS
+        ):
+            # writing again this soon would be rejected by Cloud Monitoring.
+            # Metrics are cumulative, so the next export still includes this data
+            _LOGGER.debug(
+                "Skipping metrics export: previous export was less than %d seconds ago",
+                _MIN_EXPORT_INTERVAL_SECONDS,
+            )
+            return MetricExportResult.SUCCESS
         deadline = time.monotonic() + (timeout_millis / 1000)
         metric_kind = MetricDescriptor.MetricKind.CUMULATIVE
         series_by_project: dict[str, list[TimeSeries]] = defaultdict(list)
@@ -291,6 +310,8 @@ class BigtableMetricsExporter(MetricExporter):
                     project_id,
                 )
                 self._batch_write(project_id, series_list, deadline)
+            if series_by_project:
+                self._last_export_time = time.monotonic()
             return MetricExportResult.SUCCESS
         except (Unauthenticated, PermissionDenied) as e:
             # authentication/authorization failures won't resolve on their own.
