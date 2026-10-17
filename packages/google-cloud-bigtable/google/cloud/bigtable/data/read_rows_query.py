@@ -177,7 +177,8 @@ class RowRange:
         formatted_data = {
             k: v.encode() if isinstance(v, str) else v for k, v in data.items()
         }
-        instance = cls()
+        # Skip __init__ to avoid allocating an unused RowRangePB
+        instance = cls.__new__(cls)
         instance._pb = RowRangePB(**formatted_data)
         return instance
 
