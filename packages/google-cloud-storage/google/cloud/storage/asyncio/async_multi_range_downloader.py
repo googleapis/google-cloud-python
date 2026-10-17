@@ -40,6 +40,7 @@ from google.cloud.storage.asyncio.retry.bidi_stream_retry_manager import (
     _BidiStreamRetryManager,
 )
 from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
+    _CRC32C_MAX_PENDING,
     _DownloadState,
     _ReadResumptionStrategy,
 )
@@ -394,6 +395,11 @@ class AsyncMultiRangeDownloader:
 
         :type enable_checksum: bool
         :param enable_checksum: (Optional) If True, checksums are verified for downloaded data. Defaults to True.
+            Chunks of 1 MiB or more are verified on a worker thread and written
+            to their buffer once the checksum matches; chunks still waiting are
+            discarded if the call is cancelled or a mismatch is found, and a
+            retry requests them again. ``GOOGLE_CLOUD_STORAGE_CRC32C_OFFLOAD_MIN_BYTES``
+            changes the size threshold; ``0`` verifies every chunk inline.
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
@@ -447,6 +453,7 @@ class AsyncMultiRangeDownloader:
 
         read_ids = set(download_states.keys())
         queue = self._multiplexer.register(read_ids)
+        strategy = _ReadResumptionStrategy()
 
         try:
             attempt_count = 0
@@ -522,20 +529,42 @@ class AsyncMultiRangeDownloader:
                                         data_range.read_range.read_id
                                     )
                         yield item
+                        # The strategy has consumed `item` by now: write the
+                        # chunks whose checksums are done, and keep the
+                        # backlog bounded.
+                        await strategy.verify_pending_checksums(
+                            state, _CRC32C_MAX_PENDING
+                        )
+
+                    # Write (or reject) every held chunk before the attempt
+                    # ends, so a mismatch is raised inside the retry loop,
+                    # as an inline one is.
+                    await strategy.verify_pending_checksums(state)
 
                 return generator()
 
-            strategy = _ReadResumptionStrategy()
             retry_manager = _BidiStreamRetryManager(
                 strategy, send_and_recv_via_multiplexer
             )
 
             try:
-                await retry_manager.execute(initial_state, retry_policy)
+                try:
+                    await retry_manager.execute(initial_state, retry_policy)
+                except DataCorruption:
+                    raise
+                except Exception:
+                    # Write the chunks received before the failure; a corrupt
+                    # one is reported instead, as it would have been inline.
+                    await strategy.verify_pending_checksums(initial_state)
+                    raise
+                await strategy.verify_pending_checksums(initial_state)
             except DataCorruption:
                 if self.is_stream_open:
                     await self.close()
                 raise
+            finally:
+                # Drop chunks still held, e.g. after cancellation.
+                strategy.discard_pending_checksums(initial_state)
 
             if initial_state.get("read_handle"):
                 self.read_handle = initial_state["read_handle"]
