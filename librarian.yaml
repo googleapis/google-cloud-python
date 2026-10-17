@@ -80,11 +80,11 @@ default:
     library_type: GAPIC_AUTO
 libraries:
   - name: bigquery-magics
-    version: 0.15.1
+    version: 0.15.2
     python:
       library_type: INTEGRATION
   - name: db-dtypes
-    version: 1.8.0
+    version: 1.9.0
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
@@ -92,7 +92,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.43.1
+    version: 1.44.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.42.0
+    version: 2.43.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -278,7 +278,7 @@ libraries:
       metadata_name_override: accessapproval
       default_version: v1
   - name: google-cloud-access-context-manager
-    version: 0.6.1
+    version: 0.6.2
     apis:
       - path: google/identity/accesscontextmanager/v1
       - path: google/identity/accesscontextmanager/type
@@ -465,7 +465,7 @@ libraries:
       metadata_name_override: assuredworkloads
       default_version: v1
   - name: google-cloud-audit-log
-    version: 0.6.2
+    version: 0.6.3
     apis:
       - path: google/cloud/audit
     python:
@@ -570,7 +570,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.46.2
+    version: 3.47.0
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -650,7 +650,7 @@ libraries:
       metadata_name_override: bigqueryreservation
       default_version: v1
   - name: google-cloud-bigquery-storage
-    version: 2.43.0
+    version: 2.44.0
     apis:
       - path: google/cloud/bigquery/storage/v1
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1088,7 +1088,7 @@ libraries:
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
-    version: 0.17.4
+    version: 0.17.5
     python:
       library_type: OTHER
       metadata_name_override: documentai-toolbox
@@ -2034,7 +2034,7 @@ libraries:
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
-    version: 3.17.1
+    version: 3.18.0
     apis:
       - path: google/storage/v2
     python:
@@ -2623,7 +2623,7 @@ libraries:
     python:
       default_version: apiVersion
   - name: googleapis-common-protos
-    version: 1.75.5
+    version: 1.76.0
     apis:
       - path: google/api
       - path: google/cloud
@@ -2655,7 +2655,7 @@ libraries:
           - python-gapic-name=grafeas
       default_version: v1
   - name: grpc-google-iam-v1
-    version: 0.14.5
+    version: 0.14.6
     apis:
       - path: google/iam/v1
     python:
@@ -2665,7 +2665,7 @@ libraries:
       metadata_name_override: grpc-iam
       default_version: apiVersion
   - name: pandas-gbq
-    version: 0.35.2
+    version: 0.35.3
     python:
       library_type: INTEGRATION
   - name: proto-plus
@@ -2673,7 +2673,7 @@ libraries:
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
-    version: 1.17.3
+    version: 1.18.0
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
