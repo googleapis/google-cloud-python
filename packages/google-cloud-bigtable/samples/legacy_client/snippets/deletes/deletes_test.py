@@ -120,6 +120,7 @@ def test_streaming_and_batching(capsys, table_id):
 def test_streaming_and_batching_actually_deletes(table_id):
     """Verifies that streaming_and_batching actually deletes cells from the table."""
     from google.cloud import bigtable
+
     from . import deletes_snippets
 
     client = bigtable.Client(project=PROJECT, admin=True)
