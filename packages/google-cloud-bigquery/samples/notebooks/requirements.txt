@@ -3,5 +3,5 @@ db-dtypes==1.8.0
 google-cloud-bigquery==3.45.0
 google-cloud-bigquery-storage==2.43.0
 ipython==9.17.1
-matplotlib==3.10.6
+matplotlib==3.11.2
 pandas==3.0.6
