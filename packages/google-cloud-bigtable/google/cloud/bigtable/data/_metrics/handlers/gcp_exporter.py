@@ -310,6 +310,7 @@ class BigtableMetricsExporter(MetricExporter):
                     project_id,
                 )
                 self._batch_write(project_id, series_list, deadline)
+            if series_by_project:
                 self._last_export_time = time.monotonic()
             return MetricExportResult.SUCCESS
         except (Unauthenticated, PermissionDenied) as e:

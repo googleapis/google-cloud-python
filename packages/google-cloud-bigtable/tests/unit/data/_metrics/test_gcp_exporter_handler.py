@@ -141,14 +141,21 @@ class TestGoogleCloudMetricsHandler:
             exporter = BigtableMetricsExporter()
         exporter.client = mock.Mock()
         handler = self._make_one(exporter)
-        counter = handler.meter_provider.get_meter("test").create_counter("retry_count")
-        attributes = {"resource_project": "project", "resource_instance": "instance"}
-        counter.add(1, attributes)
-        # periodic export
-        assert handler.meter_provider.force_flush()
-        assert exporter.client.create_service_time_series.call_count == 1
-        counter.add(1, attributes)
-        handler.close()
+        try:
+            counter = handler.meter_provider.get_meter("test").create_counter(
+                "retry_count"
+            )
+            attributes = {
+                "resource_project": "project",
+                "resource_instance": "instance",
+            }
+            counter.add(1, attributes)
+            # periodic export
+            assert handler.meter_provider.force_flush()
+            assert exporter.client.create_service_time_series.call_count == 1
+            counter.add(1, attributes)
+        finally:
+            handler.close()
         assert exporter.client.create_service_time_series.call_count == 1
 
 
@@ -738,3 +745,24 @@ class TestBigtableMetricsExporter:
             MetricExportResult.SUCCESS
         )
         assert write_mock.call_count == 2
+
+    def test_export_not_skipped_after_partial_multi_project_failure(self):
+        """A partial failure across multiple projects doesn't count as a recent export"""
+        instance = self._make_one()
+        instance.client = mock.Mock()
+        write_mock = instance.client.create_service_time_series
+        write_mock.side_effect = [
+            None,
+            api_exceptions.ServiceUnavailable("test"),
+            None,
+            None,
+        ]
+
+        metrics_data = self._make_metrics_data(project_id="project1")
+        metrics_data_2 = self._make_metrics_data(project_id="project2")
+        metrics_data.resource_metrics.extend(metrics_data_2.resource_metrics)
+
+        assert instance.export(metrics_data) == MetricExportResult.FAILURE
+        # Immediate retry (< 30s) is not skipped because the previous export failed
+        assert instance.export(metrics_data) == MetricExportResult.SUCCESS
+        assert write_mock.call_count == 4
