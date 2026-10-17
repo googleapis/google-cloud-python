@@ -643,3 +643,27 @@ class TestReadRowsQuery:
         assert len(query.row_ranges) == 2
         assert query.row_ranges[0] == r1
         assert query.row_ranges[1] == r3
+
+    def test_row_range_hash_matches_legacy(self):
+        """
+        Verify that base RowRange and legacy row_set.RowRange instances representing
+        the same range compare equal, produce identical hashes, and deduplicate
+        properly when combined in a ReadRowsQuery.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable.row_set import RowRange as LegacyRowRange
+
+        # Instantiate equivalent ranges using both the data API and legacy classes.
+        base_range = RowRange(b"a", b"b")
+        legacy_range = LegacyRowRange(b"a", b"b")
+
+        # Equal RowRange objects must produce identical hashes so set membership
+        # operates consistently across base and legacy types.
+        assert base_range == legacy_range
+        assert hash(base_range) == hash(legacy_range)
+
+        # Adding an equivalent legacy range to a query initialized with a base range
+        # should be recognized as a duplicate and ignored.
+        query = self._make_one(row_ranges=[base_range])
+        query.add_range(legacy_range)
+        assert len(query.row_ranges) == 1

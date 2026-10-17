@@ -87,16 +87,17 @@ class RowRange:
                 init_dict["end_key_open"] = end_key
         self._pb = RowRangePB(**init_dict)
 
-    def _key(self) -> tuple[bytes | None, bool, bytes | None, bool]:
+    def _signature(self) -> tuple[bytes, bytes, bytes, bytes]:
+        pb = self._pb
         return (
-            self.start_key,
-            self.start_is_inclusive,
-            self.end_key,
-            self.end_is_inclusive,
+            pb.start_key_closed,
+            pb.start_key_open,
+            pb.end_key_closed,
+            pb.end_key_open,
         )
 
     def __hash__(self) -> int:
-        return hash(self._key())
+        return hash(self._signature())
 
     @property
     def start_key(self) -> bytes | None:
