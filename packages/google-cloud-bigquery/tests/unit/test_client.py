@@ -32,7 +32,7 @@ import pytest
 import requests
 
 try:
-    import opentelemetry
+    import opentelemetry.sdk as opentelemetry
 except ImportError:
     opentelemetry = None
 
@@ -1101,7 +1101,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_span_status_is_set(self):
-        pytest.importorskip("opentelemetry")
+        pytest.importorskip("opentelemetry.sdk")
         from google.cloud.bigquery.routine import Routine
 
         tracer_provider = TracerProvider()

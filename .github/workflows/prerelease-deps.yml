@@ -36,12 +36,10 @@ env:
   PACKAGE_DIRS: packages
   NOX_DEFAULT_VENV_BACKEND: "virtualenv"
   UV_PRERELEASE: "allow"
-  # Workaround: Allows libcst/Rust extensions to compile on Python 3.15+ while PyO3 catches up
-  PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
 
 jobs:
   prerelease:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         python: ["3.15"]
@@ -51,7 +49,7 @@ jobs:
       FAILURE_LOG_DIR: "/tmp/test_failures"
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
         # See https://github.com/googleapis/google-cloud-python/issues/12013
         # and https://github.com/actions/checkout#checkout-head.
@@ -60,13 +58,13 @@ jobs:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: ${{ env.PY_VERSION }}
           allow-prereleases: true
 
       - name: Cache pip wheels (including compiled source builds)
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.cache/pip
           # Save a fresh cache snapshot for each run so newly compiled wheels are persisted
@@ -178,7 +176,11 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create issue on failure
-        if: ${{ steps.run-tests.outcome == 'failure' && github.repository == 'googleapis/google-cloud-python' }}
+        # Only file an issue from the nightly schedule or a manual dispatch, never from a
+        # pull request. PRs that touch `ci/**` or this workflow trigger the check for
+        # validation purposes only; filing a `priority: p1` issue from them would duplicate
+        # the nightly report. The job summary written above still surfaces PR failures.
+        if: ${{ steps.run-tests.outcome == 'failure' && github.event_name != 'pull_request' && github.repository == 'googleapis/google-cloud-python' }}
         uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
           title: "prerelease_deps check failed"

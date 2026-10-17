@@ -127,7 +127,7 @@ if "%PUBLISH_WHEELS%"=="true" (
     echo "## Uploading Wheels and sdist ##"
 
     set /p TWINE_PASSWORD=<%KOKORO_KEYSTORE_DIR%/73713_google-cloud-pypi-token-keystore-3
-    py -3 -m twine upload --skip-existing --username __token__ --password "%TWINE_PASSWORD%" dist/* wheels/* || goto :error
+    py -3 -m twine upload --skip-existing --username __token__ --password "!TWINE_PASSWORD!" dist/* wheels/* || goto :error
     dir wheels
     dir dist
 ) else (

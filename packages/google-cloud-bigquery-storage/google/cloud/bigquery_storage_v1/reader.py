@@ -27,6 +27,8 @@ except ImportError:  # pragma: NO COVER
 import google.api_core.exceptions
 import google.rpc.error_details_pb2  # type: ignore
 
+from google.cloud.bigquery_storage_v1 import types as gapic_types
+
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -86,7 +88,14 @@ class ReadRowsStream(object):
     """
 
     def __init__(
-        self, client, name, offset, read_rows_kwargs, retry_delay_callback=None
+        self,
+        client,
+        name,
+        offset,
+        read_rows_kwargs,
+        retry_delay_callback=None,
+        *,
+        request_template=None,
     ):
         """Construct a ReadRowsStream.
 
@@ -114,6 +123,13 @@ class ReadRowsStream(object):
                 ReadRowsStream will call retry_delay_callback with the delay
                 duration (in seconds) before it starts sleeping until the next
                 attempt.
+            request_template (Optional[Union[dict, \
+                ~google.cloud.bigquery_storage_v1.types.ReadRowsRequest \
+            ]]):
+                Request fields, such as ``arrow_serialization_options``, to
+                send on every ``ReadRows`` request, including after a
+                reconnect. ``read_stream`` and ``offset`` are set from
+                ``name`` and the current stream offset.
 
         Returns:
             Iterable[ \
@@ -129,6 +145,8 @@ class ReadRowsStream(object):
         self._offset = offset
         self._read_rows_kwargs = read_rows_kwargs
         self._retry_delay_callback = retry_delay_callback
+        self._request_template = request_template
+        self._cancelled = False
         self._wrapped = None
 
     def __iter__(self):
@@ -140,19 +158,20 @@ class ReadRowsStream(object):
             ]:
                 A sequence of row messages.
         """
-        # Infinite loop to reconnect on reconnectable errors while processing
-        # the row stream.
+        # Loop to reconnect on reconnectable errors while processing the row
+        # stream, until the stream ends or is cancelled.
 
         if self._wrapped is None:
             self._reconnect()
 
-        while True:
+        while not self._cancelled:
             try:
                 for message in self._wrapped:
                     rowcount = message.row_count
                     self._offset += rowcount
                     yield message
 
+                self._wrapped = None
                 return  # Made it through the whole stream.
             except google.api_core.exceptions.InternalServerError as exc:
                 resumable_error = any(
@@ -165,22 +184,60 @@ class ReadRowsStream(object):
                 # Transient error, so reconnect to the stream.
                 pass
             except Exception as exc:
+                # cancel() makes the call fail, which isn't an error here.
+                if self._cancelled:
+                    return
                 if not self._resource_exhausted_exception_is_retryable(exc):
                     raise
 
             self._reconnect()
 
+    def cancel(self):
+        """Cancel the ``ReadRows`` call.
+
+        Use this to stop reading before the end of the stream. After
+        ``cancel()``, iterating the stream yields no more messages, and the
+        stream doesn't reconnect. The client stays open for other calls.
+        """
+        self._cancelled = True
+        cancel = getattr(self._wrapped, "cancel", None)
+        if cancel is not None:
+            cancel()
+
+    def __del__(self):
+        if not getattr(self, "_cancelled", True):
+            self.cancel()
+
     def _reconnect(self):
         """Reconnect to the ReadRows stream using the most recent offset."""
-        while True:
+        while not self._cancelled:
             try:
-                self._wrapped = self._client.read_rows(
-                    read_stream=self._name,
-                    offset=self._offset,
-                    **self._read_rows_kwargs,
-                )
+                if self._request_template is None:
+                    wrapped = self._client.read_rows(
+                        read_stream=self._name,
+                        offset=self._offset,
+                        **self._read_rows_kwargs,
+                    )
+                else:
+                    # The flattened read_rows() arguments only include
+                    # read_stream and offset, so send a full request copy.
+                    request = gapic_types.ReadRowsRequest(self._request_template)
+                    request.read_stream = self._name
+                    request.offset = self._offset
+                    wrapped = self._client.read_rows(
+                        request=request,
+                        **self._read_rows_kwargs,
+                    )
+                # Store the new call before checking for cancel(), so a
+                # concurrent cancel() either cancels it or is seen here.
+                self._wrapped = wrapped
+                if self._cancelled:
+                    self.cancel()
+                    return
                 break
             except Exception as exc:
+                if self._cancelled:
+                    return
                 if not self._resource_exhausted_exception_is_retryable(exc):
                     raise
 

@@ -50,10 +50,12 @@ from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.bson import (
     BSONBinary,
+    BSONDecimal128,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONRegex,
     BSONTimestamp,
 )
 from google.cloud.firestore_v1.vector import Vector
@@ -1283,9 +1285,9 @@ def test_unicode_doc(client, cleanup, database):
 
 
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
-def test_bson_document_writes(client, cleanup, database):
-    """Test write operations for BSON types on Enterprise DB."""
-    collection_id = "bson_type_writes_" + UNIQUE_RESOURCE_ID
+def test_bson_document_read_and_write(client, cleanup, database):
+    """Test read and write operations for BSON types on Enterprise DB."""
+    collection_id = "bson_type_read_write_" + UNIQUE_RESOURCE_ID
     doc_ref = client.collection(collection_id).document("bson_doc")
     cleanup(doc_ref.delete)
 
@@ -1294,27 +1296,80 @@ def test_bson_document_writes(client, cleanup, database):
         "min_key": BSONMinKey(),
         "max_key": BSONMaxKey(),
         "int32_val": BSONInt32(42),
+        "binary_val_sub0": b"hello",
         "binary_val_sub128": BSONBinary(b"world", subtype=128),
         "timestamp_val": BSONTimestamp(1700000000, 1),
+        "regex_val": BSONRegex("^hello.*$", options="i"),
+        "decimal128_val": BSONDecimal128("123.45"),
     }
 
     doc_ref.set(bson_payload)
 
     snapshot = doc_ref.get()
     assert snapshot.exists
+    assert snapshot.to_dict() == bson_payload
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_regex_invalid_options(client, cleanup, database):
+    """Test write operations for BSONRegex with invalid options against backend."""
+    collection_id = "bson_regex_invalid_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("invalid_regex")
+    cleanup(doc_ref.delete)
+
+    # Backend enforces supported BSON regex flags ('i', 'm', 's', 'u', 'x')
+    # and rejects unsupported options (e.g. 'l') with InvalidArgument.
+    with pytest.raises(InvalidArgument) as exc_info:
+        doc_ref.set({"regex_val": BSONRegex("hello", options="l")})
+    assert "Invalid regex option" in exc_info.value.message
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_decimal128_special_values(client, cleanup, database):
+    """Test write and read operations for BSONDecimal128 special values against backend."""
+    collection_id = "bson_decimal128_special_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("special_decimals")
+    cleanup(doc_ref.delete)
+
+    # Firestore backend accepts "inf", "-inf", and "NaN", automatically
+    # normalizing them to "Infinity", "-Infinity", and "NaN" upon storage.
+    doc_ref.set(
+        {
+            "inf_val": BSONDecimal128("inf"),
+            "neg_inf_val": BSONDecimal128("-inf"),
+            "nan_val": BSONDecimal128("NaN"),
+        }
+    )
+
+    snapshot = doc_ref.get()
+    assert snapshot.exists
     assert snapshot.to_dict() == {
-        "user_id": {"__oid__": "507f191e810c19729de860ea"},
-        "min_key": {"__min__": None},
-        "max_key": {"__max__": None},
-        "int32_val": {"__int__": 42},
-        "binary_val_sub128": {"__binary__": b"\x80world"},
-        "timestamp_val": {
-            "__request_timestamp__": {
-                "seconds": 1700000000,
-                "increment": 1,
-            }
-        },
+        "inf_val": BSONDecimal128("Infinity"),
+        "neg_inf_val": BSONDecimal128("-Infinity"),
+        "nan_val": BSONDecimal128("NaN"),
     }
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_query_ordering(client, cleanup, database):
+    """Test server query ordering for BSON types."""
+    collection_id = "bson_ordering_" + UNIQUE_RESOURCE_ID
+    coll_ref = client.collection(collection_id)
+
+    doc1 = coll_ref.document("doc1")
+    doc2 = coll_ref.document("doc2")
+    doc3 = coll_ref.document("doc3")
+    cleanup(doc1.delete)
+    cleanup(doc2.delete)
+    cleanup(doc3.delete)
+
+    doc1.set({"val": BSONMinKey()})
+    doc2.set({"val": BSONInt32(10)})
+    doc3.set({"val": BSONMaxKey()})
+
+    query = coll_ref.order_by("val")
+    results = [doc.to_dict()["val"] for doc in query.stream()]
+    assert results == [BSONMinKey(), BSONInt32(10), BSONMaxKey()]
 
 
 @pytest.fixture(scope="module")

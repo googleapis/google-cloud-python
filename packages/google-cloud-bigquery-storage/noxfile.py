@@ -294,9 +294,6 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if session.python == "3.15":
-        session.skip("Skipping 3.15 until wheels are available for pyarrow.")
-
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -533,7 +530,11 @@ def prerelease_deps(session, protobuf_implementation):
     session.install("-e", f".[{','.join(UNIT_TEST_EXTRAS)}]")
 
     # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    unit_deps_all = (
+        UNIT_TEST_STANDARD_DEPENDENCIES
+        + UNIT_TEST_DEPENDENCIES
+        + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    )
     session.install(*unit_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python
@@ -645,7 +646,11 @@ def core_deps_from_source(session, protobuf_implementation):
     session.install("-e", f".[{','.join(UNIT_TEST_EXTRAS)}]")
 
     # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    unit_deps_all = (
+        UNIT_TEST_STANDARD_DEPENDENCIES
+        + UNIT_TEST_DEPENDENCIES
+        + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    )
     session.install(*unit_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python

@@ -45776,6 +45776,14 @@ def test_create_repository_rest_call_success(request_type):
         "kms_key_name": "kms_key_name_value",
         "data_encryption_state": {"kms_key_version_name": "kms_key_version_name_value"},
         "internal_metadata": "internal_metadata_value",
+        "end_user_auth_config": {
+            "oauth_config": {
+                "additional_oauth_scopes": [
+                    "additional_oauth_scopes_value1",
+                    "additional_oauth_scopes_value2",
+                ]
+            }
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -46029,6 +46037,14 @@ def test_update_repository_rest_call_success(request_type):
         "kms_key_name": "kms_key_name_value",
         "data_encryption_state": {"kms_key_version_name": "kms_key_version_name_value"},
         "internal_metadata": "internal_metadata_value",
+        "end_user_auth_config": {
+            "oauth_config": {
+                "additional_oauth_scopes": [
+                    "additional_oauth_scopes_value1",
+                    "additional_oauth_scopes_value2",
+                ]
+            }
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -51943,6 +51959,15 @@ def test_create_workflow_config_rest_call_success(request_type):
             "transitive_dependents_included": True,
             "fully_refresh_incremental_tables_enabled": True,
             "service_account": "service_account_value",
+            "end_user_auth_config": {
+                "user_email": "user_email_value",
+                "oauth_config": {
+                    "additional_oauth_scopes": [
+                        "additional_oauth_scopes_value1",
+                        "additional_oauth_scopes_value2",
+                    ]
+                },
+            },
             "query_priority": 1,
         },
         "cron_schedule": "cron_schedule_value",
@@ -52198,6 +52223,15 @@ def test_update_workflow_config_rest_call_success(request_type):
             "transitive_dependents_included": True,
             "fully_refresh_incremental_tables_enabled": True,
             "service_account": "service_account_value",
+            "end_user_auth_config": {
+                "user_email": "user_email_value",
+                "oauth_config": {
+                    "additional_oauth_scopes": [
+                        "additional_oauth_scopes_value1",
+                        "additional_oauth_scopes_value2",
+                    ]
+                },
+            },
             "query_priority": 1,
         },
         "cron_schedule": "cron_schedule_value",
@@ -52836,6 +52870,15 @@ def test_create_workflow_invocation_rest_call_success(request_type):
             "transitive_dependents_included": True,
             "fully_refresh_incremental_tables_enabled": True,
             "service_account": "service_account_value",
+            "end_user_auth_config": {
+                "user_email": "user_email_value",
+                "oauth_config": {
+                    "additional_oauth_scopes": [
+                        "additional_oauth_scopes_value1",
+                        "additional_oauth_scopes_value2",
+                    ]
+                },
+            },
             "query_priority": 1,
         },
         "state": 1,

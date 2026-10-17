@@ -17,8 +17,8 @@
 import google_crc32c.__config__  # noqa: F401
 from google_crc32c._checksum import CommonChecksum
 from google_crc32c._crc32c import (  # type: ignore
-    extend,  # type: ignore
-    value,  # type: ignore
+    extend,
+    value,
 )
 
 

@@ -25,23 +25,27 @@ Example:
 """
 
 import abc
+import decimal
 import re
-from typing import Any, Dict, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 __all__ = [
+    "BSONType",
     "BSONObjectId",
     "BSONMinKey",
     "BSONMaxKey",
     "BSONInt32",
     "BSONBinary",
     "BSONTimestamp",
+    "BSONRegex",
+    "BSONDecimal128",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
 _HEX_24_REGEX = re.compile(r"^[0-9a-fA-F]{24}$")
 
 
-class _BSONType(abc.ABC):
+class BSONType(abc.ABC):
     """Abstract base class for all BSON type containers in Firestore."""
 
     __slots__ = ()
@@ -62,11 +66,33 @@ class _BSONType(abc.ABC):
     def __hash__(self) -> int:
         """Hash representation contract for set and dictionary keys."""
 
+    @classmethod
+    def _from_dict(cls, data: Any) -> Optional[Union["BSONType", bytes]]:
+        """Deserializes a BSON wire map dictionary into a BSON instance or bytes.
+
+        Args:
+            data (Any): Potential BSON wire map dictionary.
+
+        Returns:
+            Optional[Union[BSONType, bytes]]: Deserialized BSON container
+            instance or bytes, or None if not a BSON wire map or if decoding fails.
+        """
+        if not isinstance(data, dict) or len(data) != 1:
+            return None
+        key, val = next(iter(data.items()))
+        decoder = _BSON_DECODERS.get(key)
+        if decoder is None:
+            return None
+        try:
+            return decoder(val)
+        except Exception:
+            return None
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
 
 
-class BSONObjectId(_BSONType):
+class BSONObjectId(BSONType):
     """Represents a 12-byte BSON ObjectId identifier.
 
     Args:
@@ -125,7 +151,7 @@ class BSONObjectId(_BSONType):
         return hash((type(self), self._value))
 
 
-class BSONMinKey(_BSONType):
+class BSONMinKey(BSONType):
     """Represents the BSON MinKey sentinel value for query range boundaries."""
 
     __slots__ = ()
@@ -143,7 +169,7 @@ class BSONMinKey(_BSONType):
         return hash(type(self))
 
 
-class BSONMaxKey(_BSONType):
+class BSONMaxKey(BSONType):
     """Represents the BSON MaxKey sentinel value for query range boundaries."""
 
     __slots__ = ()
@@ -161,7 +187,7 @@ class BSONMaxKey(_BSONType):
         return hash(type(self))
 
 
-class BSONInt32(_BSONType):
+class BSONInt32(BSONType):
     """Represents a 32-bit signed integer value container for Firestore BSON.
 
     Args:
@@ -218,7 +244,7 @@ class BSONInt32(_BSONType):
         return hash((type(self), self._value))
 
 
-class BSONBinary(_BSONType):
+class BSONBinary(BSONType):
     """Represents a BSON binary data container with a subtype for Firestore.
 
     Args:
@@ -283,7 +309,7 @@ class BSONBinary(_BSONType):
         return hash((type(self), self._data, self._subtype))
 
 
-class BSONTimestamp(_BSONType):
+class BSONTimestamp(BSONType):
     """Container for BSON Timestamp values.
 
     Args:
@@ -342,3 +368,183 @@ class BSONTimestamp(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._seconds, self._increment))
+
+
+class BSONRegex(BSONType):
+    """Represents a BSON Regular Expression container for Firestore.
+
+    Args:
+        pattern (str): The regular expression pattern string.
+        options (str, optional): BSON regex option flags as a string
+            (e.g. "i", "m", "s", "x", "u"). Defaults to "".
+
+    Raises:
+        TypeError: If pattern is not a string or options is not a string.
+
+    Example:
+        >>> regex = BSONRegex("^hello.*$", options="i")
+        >>> regex.pattern
+        '^hello.*$'
+        >>> regex.options
+        'i'
+    """
+
+    __slots__ = ("_pattern", "_options")
+
+    def __init__(self, pattern: str, options: str = ""):
+        if not isinstance(pattern, str):
+            raise TypeError("BSONRegex pattern must be a str.")
+
+        if not isinstance(options, str):
+            raise TypeError("BSONRegex options must be a str.")
+
+        self._pattern: str = pattern
+        self._options: str = "".join(sorted(set(options)))
+
+    @property
+    def pattern(self) -> str:
+        """str: The regular expression pattern string."""
+        return self._pattern
+
+    @property
+    def options(self) -> str:
+        """str: The normalized BSON regex option flags sorted alphabetically."""
+        return self._options
+
+    def _to_map_value(self) -> Dict[str, Dict[str, str]]:
+        """Returns map dictionary representation for wire serialization."""
+        return {
+            "__regex__": {
+                "pattern": self._pattern,
+                "options": self._options,
+            }
+        }
+
+    def __repr__(self) -> str:
+        return f"BSONRegex({self._pattern!r}, options={self._options!r})"
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONRegex):
+            return self._pattern == other._pattern and self._options == other._options
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash((type(self), self._pattern, self._options))
+
+
+class BSONDecimal128(BSONType):
+    """Represents a BSON 128-bit Decimal container for Firestore.
+
+    Args:
+        value (Union[str, int, decimal.Decimal, BSONDecimal128]):
+            The decimal value as a string, integer, decimal.Decimal,
+            or BSONDecimal128 instance.
+
+    Raises:
+        TypeError: If value is a boolean or an unsupported type.
+        ValueError: If value cannot be parsed as a valid decimal number.
+
+    Example:
+        >>> dec = BSONDecimal128("123.45")
+        >>> dec.value
+        '123.45'
+        >>> dec.to_decimal()
+        Decimal('123.45')
+    """
+
+    __slots__ = ("_value",)
+
+    def __init__(
+        self,
+        value: Union[str, int, decimal.Decimal, "BSONDecimal128"],
+    ):
+        if isinstance(value, BSONDecimal128):
+            self._value: str = value._value
+        elif isinstance(value, (str, int, decimal.Decimal)) and not isinstance(
+            value, bool
+        ):
+            try:
+                # Validate the value parses as a valid decimal number
+                decimal.Decimal(value)
+            except decimal.InvalidOperation as exc:
+                raise ValueError(f"Cannot convert {value!r} to Decimal: {exc}") from exc
+            self._value = str(value)
+        elif isinstance(value, float):
+            raise TypeError(
+                "BSONDecimal128 does not accept float values due to potential precision loss. "
+                "Convert the float to a str or decimal.Decimal first."
+            )
+        else:
+            raise TypeError("BSONDecimal128 value must be a Decimal, str, or int.")
+
+    @property
+    def value(self) -> str:
+        """str: The string representation of the 128-bit decimal value."""
+        return self._value
+
+    def to_decimal(self) -> decimal.Decimal:
+        """decimal.Decimal: Convert to Python standard library Decimal instance."""
+        return decimal.Decimal(self._value)
+
+    def _to_map_value(self) -> Dict[str, str]:
+        """Returns map dictionary representation for wire serialization."""
+        return {"__decimal128__": self._value}
+
+    def __repr__(self) -> str:
+        return f"BSONDecimal128({self._value!r})"
+
+    def __str__(self) -> str:
+        return self._value
+
+    def __float__(self) -> float:
+        """float: Convert decimal value to float."""
+        d = self.to_decimal()
+        if d.is_nan():
+            return float("-nan") if d.is_signed() else float("nan")
+        return float(d)
+
+    def __int__(self) -> int:
+        """int: Convert decimal value to integer."""
+        return int(self.to_decimal())
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONDecimal128):
+            try:
+                d1, d2 = self.to_decimal(), other.to_decimal()
+                # Following PyMongo's bson.decimal128.Decimal128 specification,
+                # two Decimal128 instances compare equal if their underlying BSON
+                # encodings are identical (including NaN == NaN). This aligns with
+                # Firestore query and indexing semantics where NaN matches NaN.
+                if d1.is_nan() and d2.is_nan():
+                    return True
+                return d1 == d2
+            except decimal.InvalidOperation:
+                return self._value == other._value
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        try:
+            d = self.to_decimal()
+            if d.is_nan():
+                return hash((type(self), "NAN"))
+            return hash(d)
+        except decimal.InvalidOperation:
+            return hash((type(self), self._value))
+
+
+_BSON_DECODERS: Dict[str, Callable[..., Optional[Union[BSONType, bytes]]]] = {
+    "__oid__": BSONObjectId,
+    "__min__": lambda _: BSONMinKey(),
+    "__max__": lambda _: BSONMaxKey(),
+    "__int__": BSONInt32,
+    "__decimal128__": BSONDecimal128,
+    "__binary__": lambda v: (v[1:] if v[0] == 0 else BSONBinary(v[1:], subtype=v[0]))
+    if isinstance(v, (bytes, bytearray)) and len(v) >= 1
+    else None,
+    "__request_timestamp__": lambda v: BSONTimestamp(v["seconds"], v["increment"])
+    if isinstance(v, dict) and "seconds" in v and "increment" in v
+    else None,
+    "__regex__": lambda v: BSONRegex(v["pattern"], v.get("options", ""))
+    if isinstance(v, dict) and "pattern" in v
+    else None,
+}
