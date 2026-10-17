@@ -19,6 +19,10 @@ from __future__ import annotations
 import base64
 from typing import Iterator, Optional, TYPE_CHECKING
 
+from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery import enums
+from google.cloud.bigquery import exceptions
+
 try:
     import pyarrow  # type: ignore
 except ImportError:
@@ -32,6 +36,52 @@ _NO_PYARROW_ERROR = (
     "The pyarrow library is not installed, please install "
     "pyarrow to use the to_arrow() function."
 )
+
+
+def validate_query(
+    query_results_format: Optional[str],
+    *,
+    compression_codec: Optional[str] = None,
+) -> None:
+    """Raise before sending a query whose ``ARROW`` results can't be read.
+
+    Args:
+        query_results_format: The ``query_results_format`` passed to
+            ``query_and_wait()``.
+        compression_codec: The ``compression_codec`` passed to
+            ``query_and_wait()``.
+
+    Raises:
+        ValueError:
+            If ``compression_codec`` is set without ``ARROW``.
+        google.cloud.bigquery.exceptions.BigQueryError:
+            If pyarrow or google-cloud-bigquery-storage is missing or too old
+            to read ``ARROW`` results.
+    """
+    if query_results_format != enums.QueryResultsFormat.ARROW:
+        if compression_codec is not None:
+            raise ValueError("compression_codec requires query_results_format=ARROW.")
+        return
+
+    # Check before the query runs, so a query doesn't succeed while its
+    # results fit in the first page and then fail once they need a stream.
+    _check_dependencies()
+
+
+def _check_dependencies() -> None:
+    """Raise if pyarrow or google-cloud-bigquery-storage can't read ``ARROW``
+    results."""
+    _versions_helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
+    _versions_helpers.BQ_STORAGE_VERSIONS.try_import(raise_if_error=True)
+    if not _versions_helpers.BQ_STORAGE_VERSIONS.supports_arrow_serialization_options:
+        raise exceptions.LegacyBigQueryStorageError(
+            "query_results_format=ARROW needs a google-cloud-bigquery-storage "
+            "release whose BigQueryReadClient.read_rows() accepts "
+            "arrow_serialization_options, please upgrade it "
+            "(`pip install --upgrade google-cloud-bigquery-storage`) "
+            "(version found: "
+            f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
+        )
 
 
 def download_arrow_from_job(
