@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.76.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.5...googleapis-common-protos-v1.76.0) (2026-10-17)
+
+
+### Features
+
+* declare support for Python 3.15 ([#18737](https://github.com/googleapis/google-cloud-python/issues/18737)) ([65c8767](https://github.com/googleapis/google-cloud-python/commit/65c87678e7a63aa4c8115c9273581aa5db82fbe9))
+
 ## [1.75.5](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.4...googleapis-common-protos-v1.75.5) (2026-09-29)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.43.0...google-cloud-bigquery-storage-v2.44.0) (2026-10-17)
+
+
+### Features
+
+* support Python 3.15 ([8fceef4](https://github.com/googleapis/google-cloud-python/commit/8fceef49c523bcc8989abf3b6b82bcf143332d50))
+
 ## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.42.0...google-cloud-bigquery-storage-v2.43.0) (2026-10-15)
 
 

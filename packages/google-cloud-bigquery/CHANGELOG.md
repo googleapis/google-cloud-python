@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.47.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.2...google-cloud-bigquery-v3.47.0) (2026-10-17)
+
+
+### Features
+
+* **bigquery:** validate Arrow queries before sending them ([#18645](https://github.com/googleapis/google-cloud-python/issues/18645)) ([1ac51ce](https://github.com/googleapis/google-cloud-python/commit/1ac51ce2bbd5b0bc14addd829d537f716baba7ce))
+* support Python 3.15 ([8fceef4](https://github.com/googleapis/google-cloud-python/commit/8fceef49c523bcc8989abf3b6b82bcf143332d50))
+
 ## [3.46.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.1...google-cloud-bigquery-v3.46.2) (2026-10-15)
 
 

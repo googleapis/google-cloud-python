@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.17.1...google-cloud-storage-v3.18.0) (2026-10-17)
+
+
+### Features
+
+* declare support for Python 3.15 ([#18737](https://github.com/googleapis/google-cloud-python/issues/18737)) ([65c8767](https://github.com/googleapis/google-cloud-python/commit/65c87678e7a63aa4c8115c9273581aa5db82fbe9))
+* **storage:** support DirectPath over Interconnect in gRPC client ([#18482](https://github.com/googleapis/google-cloud-python/issues/18482)) ([6b9d7f7](https://github.com/googleapis/google-cloud-python/commit/6b9d7f7b949916c2175bca62f073e59b7677f4d7))
+
 ## [3.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.17.0...google-cloud-storage-v3.17.1) (2026-10-15)
 
 
