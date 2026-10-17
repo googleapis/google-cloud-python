@@ -112,6 +112,7 @@ class AsyncAppendableObjectWriter:
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
         storage_class: Optional[str] = None,
+        if_generation_match: Optional[int] = None,
     ):
         """
         Class for appending data to a GCS Appendable Object.
@@ -184,6 +185,15 @@ class AsyncAppendableObjectWriter:
         :param storage_class: (Optional) Storage class of the object bytes.
             If specified, it overrides the bucket's `storage_class`. If not, object storage class
             will be the same as bucket's storage_class.
+
+        :type if_generation_match: Optional[int]
+        :param if_generation_match: (Optional) Only create the object if its
+            current generation matches this value; ``0`` means the object must
+            not exist. Use this for compare-and-swap overwrites of an existing
+            object. Ignored when ``generation`` selects an existing object to
+            append to. A mismatch raises
+            :class:`google.api_core.exceptions.FailedPrecondition` from
+            ``open()``.
         """
         _utils.raise_if_no_fast_crc32c()
         self.client = client
@@ -192,6 +202,7 @@ class AsyncAppendableObjectWriter:
         self.write_handle = write_handle
         self.generation = generation
         self.storage_class = storage_class
+        self.if_generation_match = if_generation_match
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -369,6 +380,7 @@ class AsyncAppendableObjectWriter:
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,
                 storage_class=self.storage_class,
+                if_generation_match=self.if_generation_match,
             )
 
             if self._routing_token:

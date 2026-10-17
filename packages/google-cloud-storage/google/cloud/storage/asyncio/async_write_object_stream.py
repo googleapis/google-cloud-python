@@ -61,6 +61,12 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
 
     :type storage_class: Optional[str]
     :param storage_class: (Optional) The storage class of the object.
+
+    :type if_generation_match: Optional[int]
+    :param if_generation_match: (Optional) Precondition for creating a new
+        object: the write succeeds only if the object's current generation
+        matches this value (``0`` means the object must not exist). Ignored
+        when ``generation_number`` selects an existing object to append to.
     """
 
     def __init__(
@@ -73,6 +79,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         routing_token: Optional[str] = None,
         blob: Optional[Blob] = None,
         storage_class: Optional[str] = None,
+        if_generation_match: Optional[int] = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -91,6 +98,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         self.routing_token: Optional[str] = routing_token
         self.blob: Optional[Blob] = blob
         self.storage_class: Optional[str] = storage_class
+        self.if_generation_match: Optional[int] = if_generation_match
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
         self.rpc = self.client._client._transport._wrapped_methods[
@@ -114,7 +122,8 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         :rtype: None
         :raises ValueError: If the stream is already open.
         :raises google.api_core.exceptions.FailedPrecondition:
-            if `generation_number` is 0 and object already exists.
+            if `if_generation_match` (or `generation_number` is 0) does not
+            match the object's current generation.
         """
         if self._is_stream_open:
             raise ValueError("Stream is already open")
@@ -133,11 +142,14 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                     bucket=self._full_bucket_name,
                     storage_class=self.storage_class,
                 )
+            if_generation_match = self.if_generation_match
+            if if_generation_match is None:
+                if_generation_match = self.generation_number
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
                     resource=resource,
                     appendable=True,
-                    if_generation_match=self.generation_number,
+                    if_generation_match=if_generation_match,
                 ),
             )
         else:
