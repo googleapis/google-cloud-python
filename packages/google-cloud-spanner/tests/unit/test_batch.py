@@ -104,6 +104,33 @@ class Test_BatchBase(_BaseTest):
         self.assertIs(base._session, session)
         self.assertEqual(len(base._mutations), 0)
 
+    def test_resource_info_with_database(self):
+        session = mock.Mock()
+        mock_db = mock.Mock(spec=["_resource_info"])
+        mock_db._resource_info = {"project": "p", "instance": "i", "database": "d"}
+        session._database = mock_db
+        base = self._make_one(session)
+        self.assertEqual(base._resource_info, mock_db._resource_info)
+
+    def test_resource_info_fallback(self):
+        session = mock.Mock()
+        mock_db = mock.Mock(spec=["_instance", "database_id"])
+        mock_db._instance = mock.Mock(spec=["_client", "instance_id"])
+        mock_db._instance.instance_id = "i"
+        mock_db._instance._client = mock.Mock(spec=["project"])
+        mock_db._instance._client.project = "p"
+        mock_db.database_id = "d"
+        session._database = mock_db
+        base = self._make_one(session)
+        self.assertEqual(
+            base._resource_info,
+            {"project": "p", "instance": "i", "database": "d"},
+        )
+
+    def test_resource_info_none(self):
+        base = self._make_one(None)
+        self.assertIsNone(base._resource_info)
+
     def test_insert(self):
         session = _Session()
         base = self._make_one(session)
@@ -666,6 +693,33 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         session = _Session()
         groups = self._make_one(session)
         self.assertIs(groups._session, session)
+
+    def test_resource_info_with_database(self):
+        session = mock.Mock()
+        mock_db = mock.Mock(spec=["_resource_info"])
+        mock_db._resource_info = {"project": "p", "instance": "i", "database": "d"}
+        session._database = mock_db
+        groups = self._make_one(session)
+        self.assertEqual(groups._resource_info, mock_db._resource_info)
+
+    def test_resource_info_fallback(self):
+        session = mock.Mock()
+        mock_db = mock.Mock(spec=["_instance", "database_id"])
+        mock_db._instance = mock.Mock(spec=["_client", "instance_id"])
+        mock_db._instance.instance_id = "i"
+        mock_db._instance._client = mock.Mock(spec=["project"])
+        mock_db._instance._client.project = "p"
+        mock_db.database_id = "d"
+        session._database = mock_db
+        groups = self._make_one(session)
+        self.assertEqual(
+            groups._resource_info,
+            {"project": "p", "instance": "i", "database": "d"},
+        )
+
+    def test_resource_info_none(self):
+        groups = self._make_one(None)
+        self.assertIsNone(groups._resource_info)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",

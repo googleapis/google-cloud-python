@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.47.0
+version: v0.48.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 6a8220ce2f0b8f51e60bb2cc0d74a14d380a823b
-    sha256: eb737809a4b1aa6ab7be3c2078b6cbdde44337dcdf464d35813e6345896e3343
+    commit: b6efa15f5537f053786e5d8875d75bc3a6246455
+    sha256: d432e85ea4bb83e7b0ed83415d24fae57a52e7c51afc7a96c6147a27da85eb02
 tools:
   pip:
     - name: black
@@ -84,7 +84,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: db-dtypes
-    version: 1.7.2
+    version: 1.8.0
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
@@ -92,11 +92,11 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.43.0
+    version: 1.43.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
-    version: 3.3.3
+    version: 3.4.0
     python:
       library_type: OTHER
   - name: google-ads-admanager
@@ -245,7 +245,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.61.0
+    version: 2.62.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -320,7 +320,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-alloydb
-    version: 0.11.3
+    version: 0.11.4
     apis:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
@@ -570,7 +570,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.46.1
+    version: 3.46.2
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -650,7 +650,7 @@ libraries:
       metadata_name_override: bigqueryreservation
       default_version: v1
   - name: google-cloud-bigquery-storage
-    version: 2.42.0
+    version: 2.43.0
     apis:
       - path: google/cloud/bigquery/storage/v1
       - path: google/cloud/bigquery/storage/v1beta2
@@ -664,7 +664,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.50.0
+    version: 2.50.1
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -711,7 +711,7 @@ libraries:
       metadata_name_override: binaryauthorization
       default_version: v1
   - name: google-cloud-build
-    version: 3.40.0
+    version: 3.41.0
     apis:
       - path: google/devtools/cloudbuild/v2
       - path: google/devtools/cloudbuild/v1
@@ -798,7 +798,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.55.0
+    version: 1.56.0
     preview:
       version: 1.56.0-preview.1
       apis:
@@ -809,7 +809,7 @@ libraries:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.12.8
+    version: 0.12.9
     apis:
       - path: google/cloud/compute/v1beta
     python:
@@ -837,7 +837,7 @@ libraries:
     python:
       default_version: v1alpha
   - name: google-cloud-contact-center-insights
-    version: 1.28.0
+    version: 1.29.0
     apis:
       - path: google/cloud/contactcenterinsights/v1
     python:
@@ -963,7 +963,7 @@ libraries:
       metadata_name_override: dataplex
       default_version: v1
   - name: google-cloud-dataproc
-    version: 5.31.0
+    version: 5.32.0
     apis:
       - path: google/cloud/dataproc/v1
     python:
@@ -995,7 +995,7 @@ libraries:
       metadata_name_override: datastore
       default_version: v1
   - name: google-cloud-datastream
-    version: 1.20.0
+    version: 1.21.0
     apis:
       - path: google/cloud/datastream/v1
       - path: google/cloud/datastream/v1alpha1
@@ -1479,7 +1479,7 @@ libraries:
       metadata_name_override: memcache
       default_version: v1
   - name: google-cloud-memorystore
-    version: 0.5.5
+    version: 0.5.6
     apis:
       - path: google/cloud/memorystore/v1
       - path: google/cloud/memorystore/v1beta
@@ -1741,7 +1741,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-pubsub
-    version: 2.42.0
+    version: 2.43.0
     apis:
       - path: google/pubsub/v1
     python:
@@ -1803,7 +1803,7 @@ libraries:
       metadata_name_override: redis
       default_version: v1
   - name: google-cloud-redis-cluster
-    version: 0.5.4
+    version: 0.5.5
     apis:
       - path: google/cloud/redis/cluster/v1
       - path: google/cloud/redis/cluster/v1beta1
@@ -1888,7 +1888,7 @@ libraries:
       metadata_name_override: publicca
       default_version: v1
   - name: google-cloud-securitycenter
-    version: 1.47.0
+    version: 1.48.0
     apis:
       - path: google/cloud/securitycenter/v2
       - path: google/cloud/securitycenter/v1
@@ -2034,7 +2034,7 @@ libraries:
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
-    version: 3.17.0
+    version: 3.17.1
     apis:
       - path: google/storage/v2
     python:
@@ -2309,7 +2309,7 @@ libraries:
     python:
       library_type: OTHER
   - name: google-developer-knowledge
-    version: 0.1.4
+    version: 0.1.5
     apis:
       - path: google/developers/knowledge/v1
     copyright_year: "2026"
