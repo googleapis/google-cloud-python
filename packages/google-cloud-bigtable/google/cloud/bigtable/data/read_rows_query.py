@@ -87,6 +87,18 @@ class RowRange:
                 init_dict["end_key_open"] = end_key
         self._pb = RowRangePB(**init_dict)
 
+    def _signature(self) -> tuple[bytes, bytes, bytes, bytes]:
+        pb = self._pb
+        return (
+            pb.start_key_closed,
+            pb.start_key_open,
+            pb.end_key_closed,
+            pb.end_key_open,
+        )
+
+    def __hash__(self) -> int:
+        return hash(self._signature())
+
     @property
     def start_key(self) -> bytes | None:
         """
@@ -147,7 +159,8 @@ class RowRange:
         Returns:
             RowRange: The converted RowRange
         """
-        instance = cls()
+        # Skip __init__ to avoid allocating an unused RowRangePB
+        instance = cls.__new__(cls)
         instance._pb = data
         return instance
 
@@ -164,7 +177,8 @@ class RowRange:
         formatted_data = {
             k: v.encode() if isinstance(v, str) else v for k, v in data.items()
         }
-        instance = cls()
+        # Skip __init__ to avoid allocating an unused RowRangePB
+        instance = cls.__new__(cls)
         instance._pb = RowRangePB(**formatted_data)
         return instance
 
@@ -250,6 +264,11 @@ class ReadRowsQuery:
         self._row_set = RowSetPB(
             row_keys=row_keys, row_ranges=[r._pb for r in row_ranges]
         )
+        # Pre-initialize our signature set using hashable RowRange wrappers
+        self._range_signatures = set(
+            RowRange._from_pb(r) for r in self._row_set.row_ranges
+        )
+
         self.limit = limit or None
         self.filter = row_filter
 
@@ -349,7 +368,9 @@ class ReadRowsQuery:
         Args:
             row_range: a range of row keys to add to this query
         """
-        if row_range not in self.row_ranges:
+        # Utilize pure O(1) set-membership checking
+        if row_range not in self._range_signatures:
+            self._range_signatures.add(row_range)
             self._row_set.row_ranges.append(row_range._pb)
 
     def shard(self, shard_keys: RowKeySamples) -> ShardedQuery:

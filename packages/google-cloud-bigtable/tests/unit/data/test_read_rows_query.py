@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
 import pytest
 
 TEST_ROWS = [
@@ -586,3 +588,82 @@ class TestReadRowsQuery:
         """Empty strings should be treated as keys inputs"""
         query = self._make_one(row_keys="")
         assert query.row_keys == [b""]
+
+    def test_add_range_does_not_materialize_row_ranges(self):
+        """
+        Ensures add_range scales in O(1) time and does not trigger O(N) scans.
+
+        The legacy implementation called the `row_ranges` property helper during
+        membership checks, which dynamically re-allocated and materialized brand
+        new Python RowRange wrapper objects for every element in the array on
+        each insertion. This led to an accidental O(N^2) memory and CPU leak.
+
+        This test mocks out the `row_ranges` property on the class and asserts
+        that it is never accessed during batch additions, proving we bypass the
+        quadratic evaluation path entirely.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        query = self._make_one()
+
+        # Intercept the `row_ranges` class property with a mock to track accesses
+        with mock.patch.object(
+            type(query), "row_ranges", new_callable=mock.PropertyMock
+        ) as row_ranges:
+            for i in range(100):
+                # Add unique sequential ranges. Utilizing our fast O(1) set signature lookup
+                # should never touch the slow wrapper-materialization properties.
+                query.add_range(RowRange(f"k{i:03d}", f"k{i + 1:03d}"))
+
+            # ASSERT: The slow, O(N) wrapper-building property was never accessed
+            row_ranges.assert_not_called()
+
+        # Verify that all ranges were successfully committed to the underlying protobuf
+        assert len(query._row_set.row_ranges) == 100
+
+    def test_add_range_deduplication_behavior(self):
+        """Assert that identical ranges are deduplicated, but distinct ranges are kept."""
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        query = self._make_one()
+
+        # Create two identical ranges
+        r1 = RowRange(start_key="a", end_key="b")
+        r2 = RowRange(start_key="a", end_key="b")
+
+        # Create a distinct range
+        r3 = RowRange(start_key="c", end_key="d")
+
+        # Add all three ranges
+        query.add_range(r1)
+        query.add_range(r2)  # Duplicate, should be ignored
+        query.add_range(r3)  # Distinct, should be kept
+
+        # Assert that only r1 and r3 are in the final query
+        assert len(query.row_ranges) == 2
+        assert query.row_ranges[0] == r1
+        assert query.row_ranges[1] == r3
+
+    def test_row_range_hash_matches_legacy(self):
+        """
+        Verify that base RowRange and legacy row_set.RowRange instances representing
+        the same range compare equal, produce identical hashes, and deduplicate
+        properly when combined in a ReadRowsQuery.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable.row_set import RowRange as LegacyRowRange
+
+        # Instantiate equivalent ranges using both the data API and legacy classes.
+        base_range = RowRange(b"a", b"b")
+        legacy_range = LegacyRowRange(b"a", b"b")
+
+        # Equal RowRange objects must produce identical hashes so set membership
+        # operates consistently across base and legacy types.
+        assert base_range == legacy_range
+        assert hash(base_range) == hash(legacy_range)
+
+        # Adding an equivalent legacy range to a query initialized with a base range
+        # should be recognized as a duplicate and ignored.
+        query = self._make_one(row_ranges=[base_range])
+        query.add_range(legacy_range)
+        assert len(query.row_ranges) == 1
