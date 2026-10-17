@@ -120,6 +120,7 @@ class AsyncMultiRangeDownloader:
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
+        zero_copy: Optional[bool] = None,
         **kwargs,
     ) -> AsyncMultiRangeDownloader:
         """Initializes a MultiRangeDownloader and opens the underlying bidi-gRPC
@@ -148,6 +149,16 @@ class AsyncMultiRangeDownloader:
         :type metadata: List[Tuple[str, str]]
         :param metadata: (Optional) The metadata to be sent with the ``open`` request.
 
+        :type zero_copy: bool
+        :param zero_copy: (Optional) Parse responses in place over the gRPC
+                          buffer. ``download_ranges`` then passes each chunk
+                          to ``buffer.write()`` as a ``memoryview`` instead of
+                          ``bytes``. ``None`` (the default) defers to the
+                          ``GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ``
+                          environment variable; ``False`` keeps the generated
+                          parser regardless of it. Ignored when the installed
+                          ``google-crc32c`` cannot hash ``memoryview`` inputs.
+
         :rtype: :class:`~google.cloud.storage.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader`
         :returns: An initialized AsyncMultiRangeDownloader instance for reading.
         """
@@ -157,6 +168,7 @@ class AsyncMultiRangeDownloader:
             object_name,
             generation=generation,
             read_handle=read_handle,
+            zero_copy=zero_copy,
             **kwargs,
         )
         await mrd.open(retry_policy=retry_policy, metadata=metadata)
@@ -169,6 +181,7 @@ class AsyncMultiRangeDownloader:
         object_name: str,
         generation: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
+        zero_copy: Optional[bool] = None,
         **kwargs,
     ) -> None:
         """Constructor for AsyncMultiRangeDownloader, clients are not adviced to
@@ -189,6 +202,9 @@ class AsyncMultiRangeDownloader:
 
         :type read_handle: _storage_v2.BidiReadHandle
         :param read_handle: (Optional) An existing read handle.
+
+        :type zero_copy: bool
+        :param zero_copy: (Optional) See :meth:`create_mrd`.
         """
         if "generation_number" in kwargs:
             if generation is not None:
@@ -207,6 +223,7 @@ class AsyncMultiRangeDownloader:
         self.object_name = object_name
         self.generation = generation
         self.read_handle: Optional[_storage_v2.BidiReadHandle] = read_handle
+        self.zero_copy: Optional[bool] = zero_copy
         self.read_obj_str: Optional[_AsyncReadObjectStream] = None
         self._is_stream_open: bool = False
         self._routing_token: Optional[str] = None
@@ -292,6 +309,8 @@ class AsyncMultiRangeDownloader:
                 object_name=self.object_name,
                 generation_number=self.generation,
                 read_handle=self.read_handle,
+                zero_copy=self.zero_copy,
+                client_info=getattr(self.client, "_client_info", None),
             )
 
             if self._routing_token:
@@ -331,6 +350,8 @@ class AsyncMultiRangeDownloader:
                 object_name=self.object_name,
                 generation_number=self.generation,
                 read_handle=current_handle,
+                zero_copy=self.zero_copy,
+                client_info=getattr(self.client, "_client_info", None),
             )
 
             current_metadata = list(metadata) if metadata else []
@@ -375,6 +396,14 @@ class AsyncMultiRangeDownloader:
             (`start_byte`, `bytes_to_read`, `writeable_buffer`). Buffer has
             to be provided by the user, and user has to make sure appropriate
             memory is available in the application to avoid out-of-memory crash.
+
+            Each chunk is passed to ``writeable_buffer.write()`` as ``bytes``,
+            or as a read-only ``memoryview`` when the downloader was created
+            with ``zero_copy`` on. Such a view references the received gRPC
+            message, which is immutable and stays alive for as long as the view
+            does, so a buffer may keep the view and copy from it after
+            ``write()`` returns; a buffer that needs ``bytes`` must call
+            ``bytes(data)``.
 
             Special cases:
             if the value of `bytes_to_read` is 0, it'll be interpreted as

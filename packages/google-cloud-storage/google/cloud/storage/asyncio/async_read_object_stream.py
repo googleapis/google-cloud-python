@@ -19,6 +19,7 @@ from typing import List, Optional, Tuple
 from google.api_core.bidi_async import AsyncBidiRpc
 
 from google.cloud import _storage_v2
+from google.cloud.storage.asyncio import _zero_copy_bidi_read
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
@@ -49,6 +50,14 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
     :type read_handle: _storage_v2.BidiReadHandle
     :param read_handle: (Optional) An existing handle for reading the object.
                         If provided, opening the bidi-gRPC connection will be faster.
+
+    :type zero_copy: bool
+    :param zero_copy: (Optional) Parse responses in place over the gRPC buffer,
+                      so chunk payloads are ``memoryview`` objects instead of
+                      ``bytes``. ``None`` defers to the
+                      ``GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ`` environment
+                      variable. Ignored when the installed ``google-crc32c``
+                      cannot hash ``memoryview`` inputs.
     """
 
     def __init__(
@@ -58,6 +67,8 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         object_name: str,
         generation_number: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
+        zero_copy: Optional[bool] = None,
+        client_info=None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -76,9 +87,12 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
 
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
-        self.rpc = self.client._client._transport._wrapped_methods[
-            self.client._client._transport.bidi_read_object
-        ]
+        transport = self.client._client._transport
+        # Zero-copy BidiReadObject responses when asked for and google-crc32c
+        # can verify memoryview payloads; otherwise the generated parser.
+        self.rpc = _zero_copy_bidi_read.wrapped_rpc(transport, zero_copy, client_info)
+        if self.rpc is None:
+            self.rpc = transport._wrapped_methods[transport.bidi_read_object]
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)
         self.socket_like_rpc: Optional[AsyncBidiRpc] = None
         self._is_stream_open: bool = False

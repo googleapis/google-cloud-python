@@ -84,6 +84,8 @@ class TestAsyncMultiRangeDownloader:
             object_name=_TEST_OBJECT_NAME,
             generation_number=_TEST_GENERATION_NUMBER,
             read_handle=_TEST_READ_HANDLE,
+            zero_copy=None,
+            client_info=mock_client._client_info,
         )
 
         mrd.read_obj_str.open.assert_called_once()
@@ -97,6 +99,30 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.is_stream_open
         assert mrd.object_metadata == mrd.read_obj_str.object_metadata
         assert mrd._open_retries == 0
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("zero_copy", [True, False])
+    async def test_create_mrd_passes_zero_copy_to_every_stream(
+        self, mock_cls_async_read_object_stream, zero_copy
+    ):
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = mock.AsyncMock()
+        mock_stream.persisted_size = _TEST_OBJECT_SIZE
+        mock_stream.read_handle = _TEST_READ_HANDLE
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME, zero_copy=zero_copy
+        )
+
+        assert mrd.zero_copy is zero_copy
+        assert (
+            mock_cls_async_read_object_stream.call_args.kwargs["zero_copy"] is zero_copy
+        )
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
