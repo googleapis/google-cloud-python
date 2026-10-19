@@ -667,3 +667,24 @@ class TestReadRowsQuery:
         query = self._make_one(row_ranges=[base_range])
         query.add_range(legacy_range)
         assert len(query.row_ranges) == 1
+
+    def test_add_range_immune_to_caller_mutating_row_range_after_insert(self):
+        """
+        Verify that mutating a RowRange's underlying protobuf after adding it to
+        a query does not corrupt the query's internal deduplication set.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        query = self._make_one()
+        r1 = RowRange(start_key=b"a", end_key=b"b")
+        query.add_range(r1)
+
+        # Mutate the caller's RowRange wrapper reference after insertion.
+        r1._pb = RowRange(start_key=b"x", end_key=b"y")._pb
+
+        # Adding a new RowRange with the original ("a", "b") bounds must still be
+        # detected as a duplicate of the previously added range.
+        query.add_range(RowRange(start_key=b"a", end_key=b"b"))
+
+        assert len(query.row_ranges) == 1
+        assert query.row_ranges[0] == RowRange(start_key=b"a", end_key=b"b")

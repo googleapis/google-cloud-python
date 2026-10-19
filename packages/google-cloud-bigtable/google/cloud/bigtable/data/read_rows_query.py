@@ -261,14 +261,10 @@ class ReadRowsQuery:
         if not isinstance(row_keys, list):
             row_keys = [row_keys]
         row_keys = [key.encode() if isinstance(key, str) else key for key in row_keys]
-        self._row_set = RowSetPB(
-            row_keys=row_keys, row_ranges=[r._pb for r in row_ranges]
-        )
-        # Pre-initialize our signature set using hashable RowRange wrappers
-        self._range_signatures = set(
-            RowRange._from_pb(r) for r in self._row_set.row_ranges
-        )
-
+        self._row_set = RowSetPB(row_keys=row_keys)
+        self._range_signatures: set[tuple[bytes, bytes, bytes, bytes]] = set()
+        for r in row_ranges:
+            self.add_range(r)
         self.limit = limit or None
         self.filter = row_filter
 
@@ -368,9 +364,9 @@ class ReadRowsQuery:
         Args:
             row_range: a range of row keys to add to this query
         """
-        # Utilize pure O(1) set-membership checking
-        if row_range not in self._range_signatures:
-            self._range_signatures.add(row_range)
+        sig = row_range._signature()
+        if sig not in self._range_signatures:
+            self._range_signatures.add(sig)
             self._row_set.row_ranges.append(row_range._pb)
 
     def shard(self, shard_keys: RowKeySamples) -> ShardedQuery:
