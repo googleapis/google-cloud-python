@@ -16,7 +16,8 @@ import grpc
 import mock
 import pytest
 from google.api_core import exceptions as core_exceptions
-from google.rpc import code_pb2, status_pb2
+from google.protobuf import any_pb2
+from google.rpc import code_pb2, error_details_pb2, status_pb2
 
 import google.cloud.bigtable.data._helpers as _helpers
 import google.cloud.bigtable.data.exceptions as bt_exceptions
@@ -351,6 +352,39 @@ class TestGetStatusesFromMutationsExceptionGroup:
         )
         assert statuses[0] == expected_status
 
+    def test_get_status_packs_unpacked_error_details(self):
+        err_info = error_details_pb2.ErrorInfo(
+            reason="IAM_PERMISSION_DENIED",
+            domain="bigtable.googleapis.com",
+            metadata={"resource": "projects/p/instances/i/tables/t"},
+        )
+        retry_info = error_details_pb2.RetryInfo()
+        already_packed = any_pb2.Any()
+        already_packed.Pack(retry_info)
+
+        proto_plus_wrapper = mock.Mock()
+        proto_plus_wrapper._pb = error_details_pb2.DebugInfo(detail="stack")
+
+        exc = core_exceptions.PermissionDenied(
+            "Permission denied",
+            details=[err_info, already_packed, proto_plus_wrapper, "ignored"],
+        )
+
+        status = _helpers._get_status(exc)
+        assert status.code == code_pb2.PERMISSION_DENIED
+        assert status.message == "Permission denied"
+        assert len(status.details) == 3
+
+        unpacked_err_info = error_details_pb2.ErrorInfo()
+        assert status.details[0].Unpack(unpacked_err_info)
+        assert unpacked_err_info == err_info
+
+        assert status.details[1] == already_packed
+
+        unpacked_debug_info = error_details_pb2.DebugInfo()
+        assert status.details[2].Unpack(unpacked_debug_info)
+        assert unpacked_debug_info == proto_plus_wrapper._pb
+
 
 class TestGetRetryableErrors:
     @pytest.mark.parametrize(
@@ -396,6 +430,24 @@ class TestGetRetryableErrors:
             setattr(fake_table, f"{key}_retryable_errors", input_table[key])
         result = _helpers._get_retryable_errors(input_codes, fake_table)
         assert result == expected
+
+    @pytest.mark.parametrize(
+        "invalid_code",
+        [
+            0,
+            grpc.StatusCode.OK,
+            -1,
+            999,
+            True,
+            False,
+            "INVALID",
+        ],
+    )
+    def test_get_error_type_invalid_status_code(self, invalid_code):
+        with pytest.raises(ValueError, match="Invalid gRPC error status code"):
+            _helpers._get_error_type(invalid_code)
+        with pytest.raises(ValueError, match="Invalid gRPC error status code"):
+            _helpers._get_retryable_errors([invalid_code], mock.Mock())
 
 
 class TestTrackedBackoffGenerator:
