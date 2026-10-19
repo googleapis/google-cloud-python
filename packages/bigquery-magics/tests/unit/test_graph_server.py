@@ -750,6 +750,9 @@ def test_convert_schema_shared_label():
     assert set(labels["Person"]["propertyDeclarationNames"]) == {"id", "name"}
 
 
+@pytest.mark.skipif(
+    graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+)
 def test_stop_server_immediately_after_init():
     """Verifies that GraphServer.init() waits until the underlying TCP server
     is initialized before returning, preventing a race condition with stop_server().
