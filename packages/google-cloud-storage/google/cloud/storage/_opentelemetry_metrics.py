@@ -777,7 +777,9 @@ def start_operation(
             yield existing
         return
 
-    recorder_active = recorder is not None and recorder.standard_enabled
+    recorder_active = (
+        recorder is not None and getattr(recorder, "standard_enabled", False) is True
+    )
     if not recorder_active and not suppress:
         yield None
         return
@@ -807,6 +809,14 @@ def start_operation(
             )
 
 
+def get_active_recorder(obj: Any) -> Optional["_MetricsRecorder"]:
+    """Returns ``obj._metrics_recorder`` if it is an active ``_MetricsRecorder``."""
+    recorder = getattr(obj, "_metrics_recorder", None)
+    if recorder is not None and getattr(recorder, "standard_enabled", False) is True:
+        return recorder
+    return None
+
+
 # ---------------------------------------------------------------------------
 # 10. Server Address Parsing & `_MetricsRecorder`
 # ---------------------------------------------------------------------------
@@ -817,7 +827,9 @@ def _extract_server_address(api_endpoint: Optional[str]) -> str:
     endpoint = api_endpoint.strip()
     if not endpoint:
         return DEFAULT_SERVER_ADDRESS
-    if "://" not in endpoint:
+    if ":///" in endpoint:
+        endpoint = "https://" + endpoint.split(":///", 1)[1].lstrip("/")
+    elif "://" not in endpoint:
         endpoint = "https://" + endpoint.lstrip("/")
     parsed = urlsplit(endpoint)
     return parsed.hostname or DEFAULT_SERVER_ADDRESS

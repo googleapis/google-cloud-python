@@ -393,3 +393,55 @@ class TestAsyncWriteObjectStream:
             await stream.recv()
         with pytest.raises(ValueError, match="Stream is not open"):
             await stream.close()
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
+    async def test_open_records_write_ttfb_and_close_marks_clean(
+        self, mock_rpc_cls, mock_client
+    ):
+        mock_recorder = MagicMock()
+        mock_recorder.standard_enabled = True
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.send = AsyncMock()
+        mock_rpc.recv = AsyncMock(
+            side_effect=[
+                MagicMock(
+                    persisted_size=0, resource=None, write_handle=b"h1"
+                ),
+                grpc.aio.EOF,
+            ]
+        )
+        mock_rpc.close = AsyncMock()
+        mock_call = MagicMock(_closing_cleanly=False)
+        mock_rpc.call = mock_call
+
+        stream = _AsyncWriteObjectStream(
+            mock_client, BUCKET, OBJECT, metrics_recorder=mock_recorder
+        )
+        await stream.open()
+        mock_recorder.record_ttfb.assert_called_once()
+        assert (
+            mock_recorder.record_ttfb.call_args.kwargs["operation"]
+            == "google.storage.v2.Storage/BidiWriteObject"
+        )
+
+        await stream.close()
+        assert mock_call._closing_cleanly is True
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
+    async def test_open_closes_rpc_when_initial_recv_fails(
+        self, mock_rpc_cls, mock_client
+    ):
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.recv = AsyncMock(side_effect=RuntimeError("initial recv failed"))
+        mock_rpc.close = AsyncMock()
+
+        stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT)
+        with pytest.raises(RuntimeError, match="initial recv failed"):
+            await stream.open()
+
+        mock_rpc.close.assert_awaited_once()
+        assert not stream.is_stream_open

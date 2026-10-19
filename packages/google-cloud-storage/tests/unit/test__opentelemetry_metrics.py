@@ -1025,11 +1025,11 @@ def test_start_operation_asyncio_concurrency_isolation(monkeypatch):
     async def run_all():
         await asyncio.gather(
             worker(
-                "storage.AsyncMultiRangeDownloader.download_ranges",
+                "storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
                 "google.storage.v2.Storage/BidiReadObject",
             ),
             worker(
-                "storage.AsyncAppendableObjectWriter.append",
+                "storage.asyncio.AsyncAppendableObjectWriter.append",
                 "google.storage.v2.Storage/BidiWriteObject",
             ),
         )
@@ -1205,7 +1205,7 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
         operation="google.storage.v2.Storage/BidiReadObject",
         status_code="OK",
         error_type="OK",
-        client_method="storage.AsyncMultiRangeDownloader.download_ranges",
+        client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
         network_path="directpath",
     )
     recorder.record_rpc_attempt(
@@ -1213,7 +1213,7 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
         operation="google.storage.v2.Storage/BidiReadObject",
         status_code="UNAVAILABLE",
         error_type="UNAVAILABLE",
-        client_method="storage.AsyncMultiRangeDownloader.download_ranges",
+        client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
     )
     assert recorder.rpc_call_duration.record.call_count == 2
     _, rpc_dur_kwargs = recorder.rpc_call_duration.record.call_args_list[0]
@@ -1223,7 +1223,7 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
     )
     assert (
         rpc_dur_kwargs["attributes"]["gcp.client.method"]
-        == "storage.AsyncMultiRangeDownloader.download_ranges"
+        == "storage.asyncio.AsyncMultiRangeDownloader.download_ranges"
     )
     assert rpc_dur_kwargs["attributes"]["rpc.response.status_code"] == "OK"
     assert rpc_dur_kwargs["attributes"]["network.path"] == "directpath"
@@ -1250,6 +1250,36 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
 
     mock_provider.force_flush.side_effect = RuntimeError("flush failed")
     recorder.shutdown()  # Must not raise
+
+
+def test_get_active_recorder_and_grpc_uri_schemes(monkeypatch):
+    monkeypatch.setattr(_opentelemetry_metrics, "HAS_OPENTELEMETRY_METRICS", True)
+    monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
+
+    assert (
+        _opentelemetry_metrics._extract_server_address("dns:///custom.endpoint.com:443")
+        == "custom.endpoint.com"
+    )
+    assert (
+        _opentelemetry_metrics._extract_server_address(
+            "google-c2p-experimental:///storage.googleapis.com"
+        )
+        == "storage.googleapis.com"
+    )
+
+    # Unconfigured MagicMock should not be treated as an active recorder
+    unconfigured_mock = mock.MagicMock()
+    assert _opentelemetry_metrics.get_active_recorder(unconfigured_mock) is None
+    assert _opentelemetry_metrics.get_active_recorder(None) is None
+
+    active_rec = _opentelemetry_metrics._MetricsRecorder(enable_metrics=True)
+    holder = mock.MagicMock()
+    holder._metrics_recorder = active_rec
+    assert _opentelemetry_metrics.get_active_recorder(holder) is active_rec
+
+    disabled_rec = _opentelemetry_metrics._MetricsRecorder(enable_metrics=False)
+    holder._metrics_recorder = disabled_rec
+    assert _opentelemetry_metrics.get_active_recorder(holder) is None
 
 
 def test_metrics_recorder_disabled_no_ops(monkeypatch):

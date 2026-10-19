@@ -865,3 +865,116 @@ class TestAsyncMultiRangeDownloader:
         assert _is_read_retryable(exceptions.NotFound("not found")) is False
         assert _is_read_retryable(exceptions.PermissionDenied("denied")) is False
         assert _is_read_retryable(exceptions.InvalidArgument("invalid")) is False
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_mrd_metrics_recording(
+        self, mock_cls_async_read_object_stream, mock_random_int
+    ):
+        mock_recorder = mock.MagicMock()
+        mock_recorder.standard_enabled = True
+        mock_client = mock.MagicMock()
+        mock_client._metrics_recorder = mock_recorder
+        mock_client.grpc_client = mock.AsyncMock()
+
+        stream = mock.MagicMock()
+        stream.open = AsyncMock()
+        stream.close = AsyncMock()
+        stream.send = AsyncMock()
+        stream._mark_closing_cleanly = mock.MagicMock()
+        stream.generation_number = _TEST_GENERATION_NUMBER
+        stream.persisted_size = _TEST_OBJECT_SIZE
+        stream.read_handle = _TEST_READ_HANDLE
+        stream.is_finalized = True
+        stream.full_obj_server_crc32c = None
+        stream.is_stream_open = True
+        mock_cls_async_read_object_stream.return_value = stream
+
+        response = _storage_v2.BidiReadObjectResponse(
+            object_data_ranges=[
+                _storage_v2.ObjectRangeData(
+                    checksummed_data=_storage_v2.ChecksummedData(
+                        content=b"data", crc32c=google_crc32c.value(b"data")
+                    ),
+                    range_end=True,
+                    read_range=_storage_v2.ReadRange(
+                        read_offset=0, read_length=4, read_id=123
+                    ),
+                )
+            ]
+        )
+        stream.recv = AsyncMock(side_effect=[response])
+        mock_random_int.return_value = 123
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            mock_client,
+            _TEST_BUCKET_NAME,
+            _TEST_OBJECT_NAME,
+        )
+        # create_mrd suppresses nested open() so only 1 logical operation is recorded
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncMultiRangeDownloader.create_mrd"
+        )
+
+        mock_recorder.record_logical_operation.reset_mock()
+        buf = BytesIO()
+        await mrd.download_ranges([(0, 4, buf)])
+        mock_recorder.record_ttfb.assert_called_once()
+        mock_recorder.record_response_body_size.assert_called_once_with(
+            4, operation="google.storage.v2.Storage/BidiReadObject"
+        )
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncMultiRangeDownloader.download_ranges"
+        )
+
+        # Verify download_ranges with custom metadata marks stream clean before reopen
+        # and records TTFB only once even across multiple response chunks
+        chunk1 = _storage_v2.BidiReadObjectResponse(
+            object_data_ranges=[
+                _storage_v2.ObjectRangeData(
+                    checksummed_data=_storage_v2.ChecksummedData(
+                        content=b"ab", crc32c=google_crc32c.value(b"ab")
+                    ),
+                    range_end=False,
+                    read_range=_storage_v2.ReadRange(
+                        read_offset=0, read_length=2, read_id=123
+                    ),
+                )
+            ]
+        )
+        chunk2 = _storage_v2.BidiReadObjectResponse(
+            object_data_ranges=[
+                _storage_v2.ObjectRangeData(
+                    checksummed_data=_storage_v2.ChecksummedData(
+                        content=b"cd", crc32c=google_crc32c.value(b"cd")
+                    ),
+                    range_end=True,
+                    read_range=_storage_v2.ReadRange(
+                        read_offset=2, read_length=2, read_id=123
+                    ),
+                )
+            ]
+        )
+        stream.recv = AsyncMock(side_effect=[chunk1, chunk2])
+        mock_recorder.record_ttfb.reset_mock()
+        mock_recorder.record_response_body_size.reset_mock()
+        stream._mark_closing_cleanly.reset_mock()
+        buf2 = BytesIO()
+        await mrd.download_ranges([(0, 4, buf2)], metadata=[("x-custom", "val")])
+        stream._mark_closing_cleanly.assert_called()
+        mock_recorder.record_ttfb.assert_called_once()
+        mock_recorder.record_response_body_size.assert_called_once_with(
+            4, operation="google.storage.v2.Storage/BidiReadObject"
+        )
+
+        await mrd.close()
+        stream._mark_closing_cleanly.assert_called()

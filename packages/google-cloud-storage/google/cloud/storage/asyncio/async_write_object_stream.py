@@ -12,18 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Optional, Tuple
+import asyncio
+import time
+from typing import Any, List, Optional, Tuple
 
 import grpc
 from google.api_core.bidi_async import AsyncBidiRpc
 
 from google.cloud import _storage_v2
-from google.cloud.storage import Blob, _grpc_conversions
+from google.cloud.storage import Blob, _grpc_conversions, _opentelemetry_metrics
 from google.cloud.storage.asyncio import _utils
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
-from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
+from google.cloud.storage.asyncio.async_grpc_client import (
+    AsyncGrpcClient,
+    _mark_call_closing_cleanly,
+)
+
+_BIDI_WRITE_OBJECT_RPC = "google.storage.v2.Storage/BidiWriteObject"
 
 
 class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
@@ -73,6 +80,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         routing_token: Optional[str] = None,
         blob: Optional[Blob] = None,
         storage_class: Optional[str] = None,
+        metrics_recorder: Optional[Any] = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -91,6 +99,11 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         self.routing_token: Optional[str] = routing_token
         self.blob: Optional[Blob] = blob
         self.storage_class: Optional[str] = storage_class
+        self._metrics_recorder = (
+            metrics_recorder
+            if metrics_recorder is not None
+            else _opentelemetry_metrics.get_active_recorder(client)
+        )
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
         self.rpc = self.client._client._transport._wrapped_methods[
@@ -168,8 +181,18 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             metadata=final_metadata,
         )
 
-        await self.socket_like_rpc.open()  # this is actually 1 send
-        response = await self.socket_like_rpc.recv()
+        attempt_start = time.perf_counter()
+        try:
+            await self.socket_like_rpc.open()  # this is actually 1 send
+            response = await self.socket_like_rpc.recv()
+        except (asyncio.CancelledError, Exception):
+            await self._close_socket_like_rpc()
+            raise
+        if self._metrics_recorder is not None:
+            self._metrics_recorder.record_ttfb(
+                time.perf_counter() - attempt_start,
+                operation=_BIDI_WRITE_OBJECT_RPC,
+            )
         self._is_stream_open = True
 
         if response.persisted_size:
@@ -187,13 +210,29 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         if response.write_handle:
             self.write_handle = response.write_handle
 
+    async def _close_socket_like_rpc(self) -> None:
+        try:
+            await self.socket_like_rpc.close()
+        except Exception:
+            pass
+
+    def _mark_closing_cleanly(self) -> None:
+        """Marks the underlying gRPC call as closing cleanly for metrics."""
+        if self.socket_like_rpc is not None:
+            call = getattr(self.socket_like_rpc, "call", None)
+            if call is not None:
+                _mark_call_closing_cleanly(call)
+
     async def close(self) -> None:
         """Closes the bidi-gRPC connection."""
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
-        await self.requests_done()
-        await self.socket_like_rpc.close()
-        self._is_stream_open = False
+        try:
+            await self.requests_done()
+            self._mark_closing_cleanly()
+        finally:
+            self._is_stream_open = False
+            await self.socket_like_rpc.close()
 
     async def requests_done(self):
         """Signals that all requests have been sent."""

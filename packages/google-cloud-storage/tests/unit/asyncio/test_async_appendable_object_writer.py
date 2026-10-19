@@ -870,3 +870,71 @@ class TestAsyncAppendableObjectWriter:
         assert writer.write_handle.handle == b"h2"
         writer.open.assert_awaited_once()
         assert not writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_writer_metrics_recording(self, mock_appendable_writer):
+        mock_recorder = mock.MagicMock()
+        mock_recorder.standard_enabled = True
+        mock_client = mock_appendable_writer["mock_client"]
+        mock_client._metrics_recorder = mock_recorder
+        mock_stream = mock_appendable_writer["mock_stream"]
+
+        writer = self._make_one(mock_client)
+        await writer.open()
+        assert mock_stream._metrics_recorder is mock_recorder
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.open"
+        )
+
+        # Direct append records request_body_size once
+        mock_recorder.record_logical_operation.reset_mock()
+        await writer.append(b"hello")
+        mock_recorder.record_request_body_size.assert_called_once_with(
+            5, operation="google.storage.v2.Storage/BidiWriteObject"
+        )
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.append"
+        )
+
+        # append_from_file suppresses per-chunk append metrics and records total size once
+        mock_recorder.record_logical_operation.reset_mock()
+        mock_recorder.record_request_body_size.reset_mock()
+        await writer.append_from_file(io.BytesIO(b"abcdefghij"), block_size=4)
+        mock_recorder.record_request_body_size.assert_called_once_with(
+            10, operation="google.storage.v2.Storage/BidiWriteObject"
+        )
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.append_from_file"
+        )
+
+        # state_lookup, simple_flush, flush, close(finalize_on_close=True)
+        for method_name, call_coro in (
+            ("state_lookup", writer.state_lookup()),
+            ("simple_flush", writer.simple_flush()),
+            ("flush", writer.flush()),
+        ):
+            mock_recorder.record_logical_operation.reset_mock()
+            await call_coro
+            mock_recorder.record_logical_operation.assert_called_once()
+            assert (
+                mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+                == f"storage.asyncio.AsyncAppendableObjectWriter.{method_name}"
+            )
+
+        mock_recorder.record_logical_operation.reset_mock()
+        mock_stream.recv.return_value = storage_type.BidiWriteObjectResponse(
+            resource=storage_type.Object(size=15)
+        )
+        await writer.close(finalize_on_close=True)
+        # close(finalize_on_close=True) records outer close without duplicating finalize
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.close"
+        )
