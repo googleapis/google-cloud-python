@@ -775,7 +775,7 @@ class Client(ClientWithProject):
         except core_exceptions.Conflict:
             if not exists_ok:
                 raise
-            return self.get_dataset(dataset.reference, retry=retry)
+            return self.get_dataset(dataset.reference, retry=retry, timeout=timeout)
 
     def create_routine(
         self,
@@ -830,7 +830,7 @@ class Client(ClientWithProject):
         except core_exceptions.Conflict:
             if not exists_ok:
                 raise
-            return self.get_routine(routine.reference, retry=retry)
+            return self.get_routine(routine.reference, retry=retry, timeout=timeout)
 
     def create_table(
         self,
@@ -891,7 +891,7 @@ class Client(ClientWithProject):
         except core_exceptions.Conflict:
             if not exists_ok:
                 raise
-            return self.get_table(table.reference, retry=retry)
+            return self.get_table(table.reference, retry=retry, timeout=timeout)
 
     def _call_api(
         self,
