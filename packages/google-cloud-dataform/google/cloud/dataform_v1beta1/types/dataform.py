@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "DirectoryContentsView",
         "DataEncryptionState",
         "Repository",
+        "OAuthConfig",
         "PrivateResourceMetadata",
         "ListRepositoriesRequest",
         "ListRepositoriesResponse",
@@ -63,6 +64,11 @@ __protobuf__ = proto.module(
         "CommitAuthor",
         "PullGitCommitsRequest",
         "PullGitCommitsResponse",
+        "CheckoutWorkspaceBranchRequest",
+        "SyncWorkspaceRefsRequest",
+        "SyncWorkspaceRefsResponse",
+        "DeleteBranchRequest",
+        "DeleteBranchResponse",
         "PushGitCommitsRequest",
         "PushGitCommitsResponse",
         "FetchFileGitStatusesRequest",
@@ -173,6 +179,11 @@ __protobuf__ = proto.module(
         "MoveFolderMetadata",
         "MoveRepositoryMetadata",
         "DeleteRepositoryLongRunningMetadata",
+        "FetchWorkspaceBranchesRequest",
+        "BranchMetadata",
+        "FetchWorkspaceBranchesResponse",
+        "FetchCurrentWorkspaceBranchRequest",
+        "FetchCurrentWorkspaceBranchResponse",
     },
 )
 
@@ -292,6 +303,9 @@ class Repository(proto.Message):
             etc. The format of this field is a JSON string.
 
             This field is a member of `oneof`_ ``_internal_metadata``.
+        end_user_auth_config (google.cloud.dataform_v1beta1.types.Repository.EndUserAuthConfig):
+            Optional. Includes configuration options for
+            end user authentication.
     """
 
     class GitRemoteSettings(proto.Message):
@@ -442,6 +456,22 @@ class Repository(proto.Message):
             number=3,
         )
 
+    class EndUserAuthConfig(proto.Message):
+        r"""Includes configuration options for repository end user
+        authentication.
+
+        Attributes:
+            oauth_config (google.cloud.dataform_v1beta1.types.OAuthConfig):
+                Optional. OAuth configuration for repository
+                end user authentication.
+        """
+
+        oauth_config: "OAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="OAuthConfig",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -505,6 +535,27 @@ class Repository(proto.Message):
         proto.STRING,
         number=15,
         optional=True,
+    )
+    end_user_auth_config: EndUserAuthConfig = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=EndUserAuthConfig,
+    )
+
+
+class OAuthConfig(proto.Message):
+    r"""OAuth configuration for end user authentication.
+
+    Attributes:
+        additional_oauth_scopes (MutableSequence[str]):
+            Optional. Additional OAuth scopes to use for BigQuery
+            executions. Scopes always in use:
+            ``https://www.googleapis.com/auth/bigquery``
+    """
+
+    additional_oauth_scopes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1228,10 +1279,43 @@ class Workspace(proto.Message):
             Instead, it will be deleted.
 
             This field is a member of `oneof`_ ``_disable_moves``.
+        original_branch (str):
+            Optional. Input only. Immutable. The name of
+            the default upstream branch for all pull/push
+            operations in the remote repository for this
+            workspace. If empty, the HEAD branch from
+            repository will be used.
+
+            This field is a member of `oneof`_ ``_original_branch``.
         private_resource_metadata (google.cloud.dataform_v1beta1.types.PrivateResourceMetadata):
             Output only. Metadata indicating whether this resource is
             user-scoped. For ``Workspace`` resources, the
             ``user_scoped`` field is always ``true``.
+        enable_branch_management (bool):
+            Immutable. Controls the enablement of branch
+            checkout for the workspace.
+
+            When set to True, the workspace will be allowed
+            to checkout branches.
+
+            This field is a member of `oneof`_ ``_enable_branch_management``.
+        depth (int):
+            Optional. Input only. Immutable. The maximum
+            depth of the Git repository to checkout for this
+            workspace. If defined and greater than 0, the
+            Git repository will be created as a shallow
+            clone with the given depth, otherwise a full
+            clone will be performed. This field is available
+            only for GitHub, Gitlab and 1p repositories with
+            enabled branch management.
+        shallow (bool):
+            Output only. If set to true, the workspace
+            was created as a shallow clone. Will be set to
+            true if the depth field is set to a value
+            greater than 0, otherwise it will be set to
+            false.
+
+            This field is a member of `oneof`_ ``_shallow``.
     """
 
     name: str = proto.Field(
@@ -1258,10 +1342,29 @@ class Workspace(proto.Message):
         number=6,
         optional=True,
     )
+    original_branch: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
     private_resource_metadata: "PrivateResourceMetadata" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="PrivateResourceMetadata",
+    )
+    enable_branch_management: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+        optional=True,
+    )
+    depth: int = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    shallow: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
     )
 
 
@@ -1462,6 +1565,126 @@ class PullGitCommitsRequest(proto.Message):
 
 class PullGitCommitsResponse(proto.Message):
     r"""``PullGitCommits`` response message."""
+
+
+class CheckoutWorkspaceBranchRequest(proto.Message):
+    r"""``CheckoutWorkspaceBranch`` request message.
+
+    Attributes:
+        name (str):
+            Required. The workspace resource name.
+            Format:
+
+            projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+        branch (str):
+            Required. The name of the branch in the Git
+            repository to which the workspace should be
+            checked out.
+        create_if_not_exists (bool):
+            Optional. If set to true and the branch does
+            not exist, it will be created. Otherwise, an
+            error will be thrown.
+        source_branch (str):
+            Optional. The name of the branch in the Git repository from
+            which the new branch should be created. If left unset, the
+            workspace's current branch name will be used. Accepts only
+            branch names from FetchWorkspaceBranches response, and can
+            only be set if ``create_if_not_exists`` is true. Oherwise,
+            an error will be thrown.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    branch: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_if_not_exists: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    source_branch: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class SyncWorkspaceRefsRequest(proto.Message):
+    r"""``SyncWorkspaceRefs`` request message.
+
+    Attributes:
+        name (str):
+            Required. The workspace resource name.
+            Format:
+
+            projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+        remote_branch_name (str):
+            Optional. The name of the branch in the Git
+            remote to which the refs should be fetched for.
+            If left unset, all remote branches will be
+            fetched.
+        deepen (int):
+            Optional. Can be used to deepen the commit
+            history of shallow clones. Git documentation:
+
+            https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---deependepth
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    remote_branch_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    deepen: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class SyncWorkspaceRefsResponse(proto.Message):
+    r"""``SyncWorkspaceRefs`` response message."""
+
+
+class DeleteBranchRequest(proto.Message):
+    r"""``DeleteBranch`` request message.
+
+    Attributes:
+        name (str):
+            Required. The workspace resource name.
+            Format:
+
+            projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+        branch (str):
+            Required. The name of the branch in the Git
+            repository to delete.
+        force (bool):
+            Optional. If set to true, any non-pushed
+            commits on the branch will be deleted. Upstream
+            branch name will be the same as the branch to
+            delete.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    branch: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class DeleteBranchResponse(proto.Message):
+    r"""``DeleteBranch`` response message."""
 
 
 class PushGitCommitsRequest(proto.Message):
@@ -2874,6 +3097,8 @@ class TableUpdateTrigger(proto.Message):
 class CodeCompilationConfig(proto.Message):
     r"""Configures various aspects of Dataform code compilation.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         default_database (str):
             Optional. The default database (Google Cloud
@@ -2913,6 +3138,12 @@ class CodeCompilationConfig(proto.Message):
             Optional. The pipeline options which defines
             the pipeline type and path within the Git
             repository.
+        lineage_enabled (bool):
+            Output only. Whether OpenLineage events are emitted for
+            actions in this workflow. Reflects the ``lineage.enabled``
+            setting from ``workflow_settings.yaml``.
+
+            This field is a member of `oneof`_ ``_lineage_enabled``.
     """
 
     default_database: str = proto.Field(
@@ -2961,6 +3192,11 @@ class CodeCompilationConfig(proto.Message):
         proto.MESSAGE,
         number=12,
         message="PipelineConfig",
+    )
+    lineage_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+        optional=True,
     )
 
 
@@ -4260,6 +4496,10 @@ class InvocationConfig(proto.Message):
         service_account (str):
             Optional. The service account to run workflow
             invocations under.
+        end_user_auth_config (google.cloud.dataform_v1beta1.types.InvocationConfig.EndUserAuthenticationConfig):
+            Optional. Configuration for end user authentication. Note
+            that this should not be set when ``service_account`` is
+            used.
         query_priority (google.cloud.dataform_v1beta1.types.InvocationConfig.QueryPriority):
             Optional. Specifies the priority for query
             execution in BigQuery. More information can be
@@ -4290,6 +4530,28 @@ class InvocationConfig(proto.Message):
         INTERACTIVE = 1
         BATCH = 2
 
+    class EndUserAuthenticationConfig(proto.Message):
+        r"""Includes configuration options for end user authentication.
+
+        Attributes:
+            user_email (str):
+                Output only. Email address of the user to run
+                workflow invocations under.
+            oauth_config (google.cloud.dataform_v1beta1.types.OAuthConfig):
+                Optional. OAuth configuration for end user
+                authentication.
+        """
+
+        user_email: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        oauth_config: "OAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="OAuthConfig",
+        )
+
     included_targets: MutableSequence["Target"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
@@ -4314,6 +4576,11 @@ class InvocationConfig(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    end_user_auth_config: EndUserAuthenticationConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=EndUserAuthenticationConfig,
     )
     query_priority: QueryPriority = proto.Field(
         proto.ENUM,
@@ -6447,6 +6714,152 @@ class DeleteRepositoryLongRunningMetadata(proto.Message):
     remaining_child_resources_count: int = proto.Field(
         proto.INT64,
         number=7,
+    )
+
+
+class FetchWorkspaceBranchesRequest(proto.Message):
+    r"""Request message for ``FetchWorkspaceBranches`` method.
+
+    Attributes:
+        name (str):
+            Required. The workspace resource name.
+            Format:
+
+            projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+        filter (google.cloud.dataform_v1beta1.types.FetchWorkspaceBranchesRequest.BranchFilter):
+            Optional. Filter for the returned list.
+        page_size (int):
+            Optional. Maximum number of branches to
+            return. The server may return fewer items than
+            requested. If unspecified, the server will pick
+            an appropriate default. The maximum value is
+            1000; values above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``FetchWorkspaceBranches`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``FetchWorkspaceBranches``, with the exception of
+            ``page_size``, must match the call that provided the page
+            token.
+    """
+
+    class BranchFilter(proto.Enum):
+        r"""Filter for the returned list.
+
+        Values:
+            BRANCH_FILTER_UNSPECIFIED (0):
+                Default value. This value is unused.
+            LOCAL_ONLY (1):
+                Returns local branches.
+            REMOTE_ONLY (2):
+                Returns remote branches.
+            ALL (3):
+                Returns all branches.
+        """
+
+        BRANCH_FILTER_UNSPECIFIED = 0
+        LOCAL_ONLY = 1
+        REMOTE_ONLY = 2
+        ALL = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: BranchFilter = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=BranchFilter,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class BranchMetadata(proto.Message):
+    r"""Contains metadata about a branch.
+
+    Attributes:
+        branch_name (str):
+            The branch name.
+        last_commit (google.cloud.dataform_v1beta1.types.CommitLogEntry):
+            The last commit on the branch.
+    """
+
+    branch_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    last_commit: "CommitLogEntry" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CommitLogEntry",
+    )
+
+
+class FetchWorkspaceBranchesResponse(proto.Message):
+    r"""Response message for ``FetchWorkspaceBranches`` method.
+
+    Attributes:
+        branches (MutableSequence[google.cloud.dataform_v1beta1.types.BranchMetadata]):
+            The branches in the workspace.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    branches: MutableSequence["BranchMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BranchMetadata",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class FetchCurrentWorkspaceBranchRequest(proto.Message):
+    r"""Request message for ``FetchCurrentWorkspaceBranch`` method.
+
+    Attributes:
+        name (str):
+            Required. The workspace resource name.
+            Format:
+
+            projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FetchCurrentWorkspaceBranchResponse(proto.Message):
+    r"""Response message for ``FetchCurrentWorkspaceBranch`` method.
+
+    Attributes:
+        branch_name (str):
+            The name of the current branch for the
+            workspace.
+    """
+
+    branch_name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_reviews_v1beta._compat import transcode_request
 from google.shopping.merchant_reviews_v1beta.types import productreviews
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -416,17 +417,18 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
             """
 
             http_options = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_product_review(
                 request, metadata
             )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview,
+                    "_BaseDeleteProductReview__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -533,17 +535,18 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
             """
 
             http_options = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_http_options()
-
             request, metadata = self._interceptor.pre_get_product_review(
                 request, metadata
             )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseProductReviewsServiceRestTransport._BaseGetProductReview,
+                    "_BaseGetProductReview__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -684,21 +687,18 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
             """
 
             http_options = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_http_options()
-
             request, metadata = self._interceptor.pre_insert_product_review(
                 request, metadata
             )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseProductReviewsServiceRestTransport._BaseInsertProductReview,
+                    "_BaseInsertProductReview__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -839,17 +839,18 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
             """
 
             http_options = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_http_options()
-
             request, metadata = self._interceptor.pre_list_product_reviews(
                 request, metadata
             )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseProductReviewsServiceRestTransport._BaseListProductReviews,
+                    "_BaseListProductReviews__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

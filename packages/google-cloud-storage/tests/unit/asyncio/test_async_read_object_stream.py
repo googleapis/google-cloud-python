@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
 import pytest
+from google.api_core.exceptions import Aborted
 
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio import async_read_object_stream
@@ -200,6 +202,123 @@ async def test_close(mock_client, mock_cls_async_bidi_rpc):
     # assert
     read_obj_stream.requests_done.assert_called_once()
     read_obj_stream.socket_like_rpc.close.assert_called_once()
+    assert not read_obj_stream.is_stream_open
+
+
+@mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
+@mock.patch(
+    "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
+async def test_open_closes_rpc_when_first_recv_fails(
+    mock_client, mock_cls_async_bidi_rpc
+):
+    read_obj_stream = await instantiate_read_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=False
+    )
+    socket_like_rpc = mock_cls_async_bidi_rpc.return_value
+    socket_like_rpc.recv = AsyncMock(
+        side_effect=Aborted("Idle stream has been closed.")
+    )
+
+    with pytest.raises(Aborted):
+        await read_obj_stream.open()
+
+    socket_like_rpc.open.assert_awaited_once()
+    socket_like_rpc.close.assert_awaited_once()
+    assert not read_obj_stream.is_stream_open
+
+
+@mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
+@mock.patch(
+    "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.parametrize("cancelled_await", ["open", "recv"])
+@pytest.mark.asyncio
+async def test_open_closes_rpc_when_cancelled(
+    mock_client, mock_cls_async_bidi_rpc, cancelled_await
+):
+    read_obj_stream = await instantiate_read_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=False
+    )
+    socket_like_rpc = mock_cls_async_bidi_rpc.return_value
+    setattr(
+        socket_like_rpc,
+        cancelled_await,
+        AsyncMock(side_effect=asyncio.CancelledError),
+    )
+
+    with pytest.raises(asyncio.CancelledError):
+        await read_obj_stream.open()
+
+    socket_like_rpc.close.assert_awaited_once()
+    assert not read_obj_stream.is_stream_open
+
+
+@mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
+@mock.patch(
+    "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
+async def test_open_propagates_close_failure_from_failed_open(
+    mock_client, mock_cls_async_bidi_rpc
+):
+    read_obj_stream = await instantiate_read_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=False
+    )
+    socket_like_rpc = mock_cls_async_bidi_rpc.return_value
+    socket_like_rpc.recv = AsyncMock(
+        side_effect=Aborted("Idle stream has been closed.")
+    )
+    socket_like_rpc.close = AsyncMock(side_effect=RuntimeError("close blew up"))
+
+    with pytest.raises(Aborted):
+        await read_obj_stream.open()
+
+    assert not read_obj_stream.is_stream_open
+
+
+@mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
+@mock.patch(
+    "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
+async def test_close_closes_rpc_when_requests_done_fails(
+    mock_client, mock_cls_async_bidi_rpc
+):
+    read_obj_stream = await instantiate_read_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=True
+    )
+    socket_like_rpc = read_obj_stream.socket_like_rpc
+    read_obj_stream.requests_done = AsyncMock(
+        side_effect=Aborted("Idle stream has been closed.")
+    )
+
+    with pytest.raises(Aborted):
+        await read_obj_stream.close()
+
+    socket_like_rpc.close.assert_awaited_once()
+    assert not read_obj_stream.is_stream_open
+
+
+@mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
+@mock.patch(
+    "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
+async def test_close_skips_requests_done_on_inactive_rpc(
+    mock_client, mock_cls_async_bidi_rpc
+):
+    read_obj_stream = await instantiate_read_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=True
+    )
+    read_obj_stream.socket_like_rpc.is_active = False
+    read_obj_stream.requests_done = AsyncMock()
+
+    await read_obj_stream.close()
+
+    read_obj_stream.requests_done.assert_not_called()
+    read_obj_stream.socket_like_rpc.close.assert_awaited_once()
     assert not read_obj_stream.is_stream_open
 
 

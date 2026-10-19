@@ -125,6 +125,8 @@ class DatabaseVersion(proto.Enum):
             The database version is Postgres 17.
         POSTGRES_18 (6):
             The database version is Postgres 18.
+        POSTGRES_19 (7):
+            The database version is Postgres 19.
     """
 
     DATABASE_VERSION_UNSPECIFIED = 0
@@ -134,6 +136,7 @@ class DatabaseVersion(proto.Enum):
     POSTGRES_16 = 4
     POSTGRES_17 = 5
     POSTGRES_18 = 6
+    POSTGRES_19 = 7
 
 
 class SubscriptionType(proto.Enum):
@@ -1430,8 +1433,21 @@ class Instance(proto.Message):
             PRIMARY instance.
         query_insights_config (google.cloud.alloydb_v1beta.types.Instance.QueryInsightsInstanceConfig):
             Configuration for query insights.
+        query_insights_info (google.cloud.alloydb_v1beta.types.Instance.QueryInsightsInstanceInfo):
+            Output only. Instance level Query Insights information,
+            which is read-only and available in the output only.
+            Contains the effective query insights settings for this
+            instance, by merging customer's provided
+            ``QueryInsightsInstanceConfig`` with the Query Insights
+            defaults.
         observability_config (google.cloud.alloydb_v1beta.types.Instance.ObservabilityInstanceConfig):
             Configuration for observability.
+        observability_instance_info (google.cloud.alloydb_v1beta.types.Instance.ObservabilityInstanceInfo):
+            Output only. Instance level observability information,
+            contains the effective values of observability settings for
+            this instance, by merging customer's provided
+            ``ObservabilityInstanceConfig`` with the Observability
+            defaults.
         read_pool_config (google.cloud.alloydb_v1beta.types.Instance.ReadPoolConfig):
             Read pool instance configuration. This is required if the
             value of instanceType is READ_POOL.
@@ -1473,6 +1489,9 @@ class Instance(proto.Message):
             Output only. Reserved for future use.
         psc_instance_config (google.cloud.alloydb_v1beta.types.Instance.PscInstanceConfig):
             Optional. The configuration for Private
+            Service Connect (PSC) for the instance.
+        psc_instance_info (google.cloud.alloydb_v1beta.types.Instance.PscInstanceInfo):
+            Output only. Information about the Private
             Service Connect (PSC) for the instance.
         network_config (google.cloud.alloydb_v1beta.types.Instance.InstanceNetworkConfig):
             Optional. Instance-level network
@@ -1591,6 +1610,26 @@ class Instance(proto.Message):
         AVAILABILITY_TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2
+
+    class PscAutoDnsState(proto.Enum):
+        r"""The state of the PSC auto DNS.
+
+        Values:
+            PSC_AUTO_DNS_STATE_UNSPECIFIED (0):
+                The state is unspecified. For old instances, this means the
+                PSC auto DNS is disabled. For new instances, this means the
+                PSC auto DNS is enabled by default. Use
+                ``effective_psc_auto_dns_enabled`` to check the effective
+                state of the PSC auto DNS.
+            PSC_AUTO_DNS_STATE_ENABLED (1):
+                Enables the PSC auto DNS for the instance.
+            PSC_AUTO_DNS_STATE_DISABLED (2):
+                Disables the PSC auto DNS for the instance.
+        """
+
+        PSC_AUTO_DNS_STATE_UNSPECIFIED = 0
+        PSC_AUTO_DNS_STATE_ENABLED = 1
+        PSC_AUTO_DNS_STATE_DISABLED = 2
 
     class ActivationPolicy(proto.Enum):
         r"""Specifies whether an instance needs to spin up.
@@ -1720,6 +1759,48 @@ class Instance(proto.Message):
             optional=True,
         )
 
+    class QueryInsightsInstanceInfo(proto.Message):
+        r"""Instance level Query Insights information, which is read-only
+        and available in the output only.
+
+        Attributes:
+            enabled (bool):
+                Output only. Whether Query Insights is
+                enabled.
+            record_application_tags (bool):
+                Output only. Whether to record application
+                tags.
+            record_client_address (bool):
+                Output only. Whether to record client
+                address.
+            query_string_length (int):
+                Output only. Maximum query string length.
+            query_plans_per_minute (int):
+                Output only. Number of query execution plans
+                captured per minute.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        record_application_tags: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        record_client_address: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        query_string_length: int = proto.Field(
+            proto.UINT32,
+            number=4,
+        )
+        query_plans_per_minute: int = proto.Field(
+            proto.UINT32,
+            number=5,
+        )
+
     class ObservabilityInstanceConfig(proto.Message):
         r"""Observability Instance specific configuration.
 
@@ -1836,6 +1917,92 @@ class Instance(proto.Message):
             proto.BOOL,
             number=10,
             optional=True,
+        )
+
+    class ObservabilityInstanceInfo(proto.Message):
+        r"""
+
+        Attributes:
+            enabled (bool):
+                Output only. Observability feature status for
+                an instance.
+            preserve_comments (bool):
+                Output only. Preserve comments in query
+                string for an instance.
+            track_wait_events (bool):
+                Output only. Track wait events during query
+                execution for an instance.
+            track_wait_event_types (bool):
+                Output only. Track wait event types during
+                query execution for an instance.
+            max_query_string_length (int):
+                Output only. Query string length. The default
+                value is 10k.
+            record_application_tags (bool):
+                Output only. Record application tags for an
+                instance.
+            query_plans_per_minute (int):
+                Output only. Number of query execution plans
+                captured by Insights per minute for all queries
+                combined.
+            track_active_queries (bool):
+                Output only. Track actively running queries
+                on the instance.
+            track_client_address (bool):
+                Output only. Track client address for an
+                instance.
+            assistive_experiences_enabled (bool):
+                Output only. Whether assistive experiences
+                are enabled for this AlloyDB instance.
+            track_active_query_plan (bool):
+                Output only. Indicates whether to track active query plans
+                for an instance. Deprecated: Use track_active_queries
+                instead.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        preserve_comments: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        track_wait_events: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        track_wait_event_types: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
+        max_query_string_length: int = proto.Field(
+            proto.INT32,
+            number=6,
+        )
+        record_application_tags: bool = proto.Field(
+            proto.BOOL,
+            number=7,
+        )
+        query_plans_per_minute: int = proto.Field(
+            proto.INT32,
+            number=8,
+        )
+        track_active_queries: bool = proto.Field(
+            proto.BOOL,
+            number=9,
+        )
+        track_client_address: bool = proto.Field(
+            proto.BOOL,
+            number=10,
+        )
+        assistive_experiences_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=11,
+        )
+        track_active_query_plan: bool = proto.Field(
+            proto.BOOL,
+            number=13,
         )
 
     class ReadPoolConfig(proto.Message):
@@ -2019,7 +2186,34 @@ class Instance(proto.Message):
             psc_auto_connections (MutableSequence[google.cloud.alloydb_v1beta.types.Instance.PscAutoConnectionConfig]):
                 Optional. Configurations for setting up PSC
                 service automation.
+            psc_auto_dns_state (google.cloud.alloydb_v1beta.types.Instance.PscAutoDnsState):
+                Optional. Configuration for setting up PSC
+                auto DNS for the instance.
+            psc_auto_connection_policy_state (google.cloud.alloydb_v1beta.types.Instance.PscInstanceConfig.PscAutoConnectionPolicyState):
+                Optional. Configuration for setting up PSC
+                auto connection for the instance.
         """
+
+        class PscAutoConnectionPolicyState(proto.Enum):
+            r"""The state of the PSC auto connection policy.
+
+            Values:
+                PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED (0):
+                    The state is unspecified. For old instances,
+                    this means the PSC auto connection is disabled.
+                    For new instances, this means the PSC auto
+                    connection is enabled by default.
+                ENABLED (1):
+                    Enables the PSC auto connection for the
+                    instance.
+                DISABLED (2):
+                    Disables the PSC auto connection for the
+                    instance.
+            """
+
+            PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED = 0
+            ENABLED = 1
+            DISABLED = 2
 
         service_attachment_link: str = proto.Field(
             proto.STRING,
@@ -2046,6 +2240,56 @@ class Instance(proto.Message):
                 number=9,
                 message="Instance.PscAutoConnectionConfig",
             )
+        )
+        psc_auto_dns_state: "Instance.PscAutoDnsState" = proto.Field(
+            proto.ENUM,
+            number=11,
+            enum="Instance.PscAutoDnsState",
+        )
+        psc_auto_connection_policy_state: "Instance.PscInstanceConfig.PscAutoConnectionPolicyState" = proto.Field(
+            proto.ENUM,
+            number=13,
+            enum="Instance.PscInstanceConfig.PscAutoConnectionPolicyState",
+        )
+
+    class PscInstanceInfo(proto.Message):
+        r"""Information about the Private Service Connect (PSC) for the
+        instance.
+
+        Attributes:
+            effective_psc_auto_dns_enabled (bool):
+                Output only. The effective state of the PSC
+                auto DNS for the instance.
+            psc_auto_dns_names (MutableSequence[str]):
+                Output only. Specifies the auto DNS names for
+                the instance.
+            effective_psc_auto_connection_policy (bool):
+                Output only. Indicates if the PSC auto
+                connection policy is enabled for the instance.
+                For older instances, this will be off by
+                default, but for newer instances, this will be
+                auto-enabled.
+            service_connection_policy (str):
+                Output only. The PSC service connection policy name. The
+                format is
+                "projects/<PROJECT_ID>/regions/<REGION_ID>/serviceConnectionPolicies/<alloydb-$NETWORK-$RANDOM-scp>".
+        """
+
+        effective_psc_auto_dns_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        psc_auto_dns_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        effective_psc_auto_connection_policy: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        service_connection_policy: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class InstanceNetworkConfig(proto.Message):
@@ -2225,10 +2469,20 @@ class Instance(proto.Message):
         number=21,
         message=QueryInsightsInstanceConfig,
     )
+    query_insights_info: QueryInsightsInstanceInfo = proto.Field(
+        proto.MESSAGE,
+        number=47,
+        message=QueryInsightsInstanceInfo,
+    )
     observability_config: ObservabilityInstanceConfig = proto.Field(
         proto.MESSAGE,
         number=26,
         message=ObservabilityInstanceConfig,
+    )
+    observability_instance_info: ObservabilityInstanceInfo = proto.Field(
+        proto.MESSAGE,
+        number=44,
+        message=ObservabilityInstanceInfo,
     )
     read_pool_config: ReadPoolConfig = proto.Field(
         proto.MESSAGE,
@@ -2274,6 +2528,11 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=28,
         message=PscInstanceConfig,
+    )
+    psc_instance_info: PscInstanceInfo = proto.Field(
+        proto.MESSAGE,
+        number=46,
+        message=PscInstanceInfo,
     )
     network_config: InstanceNetworkConfig = proto.Field(
         proto.MESSAGE,
@@ -2334,6 +2593,9 @@ class ConnectionInfo(proto.Message):
         psc_dns_name (str):
             Output only. The DNS name to use with PSC for
             the Instance.
+        psc_auto_dns_name (str):
+            Output only. Specifies the DNS name to use
+            with PSC service automation for the Instance.
     """
 
     name: str = proto.Field(
@@ -2359,6 +2621,10 @@ class ConnectionInfo(proto.Message):
     psc_dns_name: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    psc_auto_dns_name: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 

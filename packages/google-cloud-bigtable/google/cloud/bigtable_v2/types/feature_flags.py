@@ -84,6 +84,9 @@ class FeatureFlags(proto.Message):
         sessions_required (bool):
             Internal flag to force sessions for internal
             projects.
+        microsecond_timestamp (bool):
+            Optional. Indicates whether the client
+            supports microsecond precision timestamps.
     """
 
     reverse_scans: bool = proto.Field(
@@ -133,6 +136,10 @@ class FeatureFlags(proto.Message):
     sessions_required: bool = proto.Field(
         proto.BOOL,
         number=13,
+    )
+    microsecond_timestamp: bool = proto.Field(
+        proto.BOOL,
+        number=14,
     )
 
 

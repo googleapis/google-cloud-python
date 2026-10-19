@@ -133,8 +133,15 @@ class TestBigtableDataClient:
         client.close()
 
     def test_ctor_super_inits(self):
+        import copy
+
         from google.api_core import client_options as client_options_lib
         from google.cloud.client import ClientWithProject
+
+        from google.cloud.bigtable import __version__ as bigtable_version
+        from google.cloud.bigtable_v2.services.bigtable.transports.base import (
+            DEFAULT_CLIENT_INFO,
+        )
 
         project = "project-id"
         credentials = AnonymousCredentials()
@@ -161,11 +168,55 @@ class TestBigtableDataClient:
                 kwargs = bigtable_client_init.call_args[1]
                 assert kwargs["credentials"] == credentials
                 assert kwargs["client_options"] == options_parsed
+                expected_client_info = copy.copy(DEFAULT_CLIENT_INFO)
+                expected_client_info.client_library_version = (
+                    f"{bigtable_version}-data"
+                    if not CrossSync._Sync_Impl.is_async
+                    else f"{bigtable_version}-data-async"
+                )
+                assert (
+                    kwargs["client_info"].to_user_agent()
+                    == expected_client_info.to_user_agent()
+                )
+                assert (
+                    kwargs["client_info"].to_grpc_metadata()
+                    == expected_client_info.to_grpc_metadata()
+                )
                 assert client_project_init.call_count == 1
                 kwargs = client_project_init.call_args[1]
                 assert kwargs["project"] == project
                 assert kwargs["credentials"] == credentials
                 assert kwargs["client_options"] == options_parsed
+
+    def test_ctor_legacy_client(self):
+        from google.api_core import client_options as client_options_lib
+        from google.api_core.gapic_v1.client_info import ClientInfo
+
+        project = "project-id"
+        credentials = AnonymousCredentials()
+        client_info = ClientInfo(gapic_version="1.2.3", user_agent="test-client-")
+        client_options = {"api_endpoint": "foo.bar:1234"}
+        options_parsed = client_options_lib.from_dict(client_options)
+        with mock.patch.object(
+            CrossSync._Sync_Impl.GapicClient, "__init__"
+        ) as bigtable_client_init:
+            try:
+                client = self._make_client(
+                    project=project,
+                    credentials=credentials,
+                    client_options=options_parsed,
+                    use_emulator=False,
+                    _client_info=client_info,
+                    _disable_background_refresh=True,
+                )
+                assert client._disable_background_refresh
+                assert client.client_info is client_info
+            except TypeError:
+                pass
+            assert bigtable_client_init.call_count == 1
+            kwargs = bigtable_client_init.call_args[1]
+            assert kwargs["credentials"] == credentials
+            assert kwargs["client_options"] == options_parsed
 
     def test_ctor_dict_options(self):
         from google.api_core.client_options import ClientOptions
@@ -279,6 +330,21 @@ class TestBigtableDataClient:
             CrossSync._Sync_Impl.sleep(0.1)
             assert ping_and_warm.call_count == 1
             client.close()
+
+    def test__start_background_channel_refresh_disable_background_refresh(self):
+        client = self._make_client(
+            project="project-id", _disable_background_refresh=True
+        )
+        with mock.patch.object(
+            client, "_ping_and_warm_instances", CrossSync._Sync_Impl.Mock()
+        ) as ping_and_warm:
+            client._emulator_host = None
+            client.transport._grpc_channel = CrossSync._Sync_Impl.SwappableChannel(
+                mock.Mock
+            )
+            client._start_background_channel_refresh()
+            assert client._channel_refresh_task is None
+            ping_and_warm.assert_not_called()
 
     def test__ping_and_warm_instances(self):
         """test ping and warm with mocked asyncio.gather"""
@@ -1197,18 +1263,19 @@ class TestTable:
         client.close()
 
     @pytest.mark.parametrize(
-        "fn_name,fn_args,is_stream,extra_retryables",
+        "fn_name,fn_args,is_read_rows_fn,is_stream,extra_retryables",
         [
-            ("read_rows_stream", (ReadRowsQuery(),), True, ()),
-            ("read_rows", (ReadRowsQuery(),), True, ()),
-            ("read_row", (b"row_key",), True, ()),
-            ("read_rows_sharded", ([ReadRowsQuery()],), True, ()),
-            ("row_exists", (b"row_key",), True, ()),
-            ("sample_row_keys", (), False, ()),
-            ("mutate_row", (b"row_key", [DeleteAllFromRow()]), False, ()),
+            ("read_rows_stream", (ReadRowsQuery(),), True, True, ()),
+            ("read_rows", (ReadRowsQuery(),), True, True, ()),
+            ("read_row", (b"row_key",), True, True, ()),
+            ("read_rows_sharded", ([ReadRowsQuery()],), True, True, ()),
+            ("row_exists", (b"row_key",), True, True, ()),
+            ("sample_row_keys", (), False, False, ()),
+            ("mutate_row", (b"row_key", [DeleteAllFromRow()]), False, False, ()),
             (
                 "bulk_mutate_rows",
                 ([mutations.RowMutationEntry(b"key", [DeleteAllFromRow()])],),
+                False,
                 False,
                 (_MutateRowsIncomplete,),
             ),
@@ -1244,6 +1311,7 @@ class TestTable:
         expected_retryables,
         fn_name,
         fn_args,
+        is_read_rows_fn,
         is_stream,
         extra_retryables,
     ):
@@ -1253,6 +1321,11 @@ class TestTable:
         if is_stream:
             retry_fn += "_stream"
         retry_fn = f"CrossSync._Sync_Impl.{retry_fn}"
+        subpackage = "_sync_autogen"
+        if is_read_rows_fn:
+            predicate_builder = f"google.cloud.bigtable.data.{subpackage}._read_rows._rst_stream_aware_predicate"
+        else:
+            predicate_builder = "google.api_core.retry.if_exception_type"
         with mock.patch(
             f"google.cloud.bigtable.data._cross_sync.{retry_fn}"
         ) as retry_fn_mock:
@@ -1260,9 +1333,7 @@ class TestTable:
                 table = client.get_table("instance-id", "table-id")
                 expected_predicate = expected_retryables.__contains__
                 retry_fn_mock.side_effect = RuntimeError("stop early")
-                with mock.patch(
-                    "google.api_core.retry.if_exception_type"
-                ) as predicate_builder_mock:
+                with mock.patch(predicate_builder) as predicate_builder_mock:
                     predicate_builder_mock.return_value = expected_predicate
                     with pytest.raises(Exception):
                         test_fn = table.__getattribute__(fn_name)
@@ -1307,6 +1378,21 @@ class TestTable:
         transport_mock = mock.MagicMock()
         rpc_mock = CrossSync._Sync_Impl.Mock()
         transport_mock._wrapped_methods.__getitem__.return_value = rpc_mock
+        if gapic_fn == "mutate_rows":
+            from google.rpc import status_pb2
+
+            from google.cloud.bigtable_v2.types import MutateRowsResponse
+
+            def mutate_rows_stream(*args, **kwargs):
+                yield MutateRowsResponse(
+                    entries=[
+                        MutateRowsResponse.Entry(
+                            index=0, status=status_pb2.Status(code=0)
+                        )
+                    ]
+                )
+
+            rpc_mock.side_effect = mutate_rows_stream
         gapic_client = client._gapic_client
         gapic_client._transport = transport_mock
         gapic_client._is_universe_domain_valid = True
@@ -2959,7 +3045,7 @@ class TestBulkMutateRows:
             table = client.get_table("instance", "table")
             with mock.patch.object(client._gapic_client, "mutate_rows") as mock_gapic:
                 mock_gapic.side_effect = [
-                    self._mock_response([DeadlineExceeded("mock")]),
+                    self._mock_response([DeadlineExceeded("mock"), None, None]),
                     self._mock_response([None]),
                 ]
                 mutation = mutations.SetCell(

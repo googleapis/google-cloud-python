@@ -1,4 +1,3 @@
-packages/bigframes
 packages/bigquery-magics
 packages/db-dtypes
 packages/django-google-spanner

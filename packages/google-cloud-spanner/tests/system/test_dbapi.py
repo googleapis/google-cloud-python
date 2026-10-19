@@ -96,6 +96,7 @@ class TestDbApi:
     @staticmethod
     def clear_table(transaction):
         transaction.execute_update("DELETE FROM contacts WHERE true")
+        transaction.execute_update("DELETE FROM all_types WHERE true")
 
     @pytest.fixture(scope="function")
     def dbapi_database(self, raw_database):
@@ -105,8 +106,6 @@ class TestDbApi:
         raw_database.run_in_transaction(self.clear_table)
 
         yield raw_database
-
-        raw_database.run_in_transaction(self.clear_table)
 
     @pytest.fixture(autouse=True)
     def init_connection(self, request, shared_instance, dbapi_database):
@@ -1319,10 +1318,6 @@ class TestDbApi:
 
             assert got_rows == [want_row]
         finally:
-            # Wait a bit for emulator to settle
-            import time
-
-            time.sleep(1)
             if table.exists():
                 try:
                     dbapi_database.update_ddl([f"DROP TABLE {table_name}"]).result()
@@ -1368,10 +1363,6 @@ class TestDbApi:
 
             assert got_rows == [want_row]
         finally:
-            # Wait a bit for emulator to settle
-            import time
-
-            time.sleep(1)
             if table.exists():
                 try:
                     dbapi_database.update_ddl([f"DROP TABLE {table_name}"]).result()
@@ -1421,36 +1412,22 @@ class TestDbApi:
                 op.result()
 
     @pytest.mark.skipif(_helpers.USE_EMULATOR, reason="Emulator does not support json.")
-    def test_json_array(self, dbapi_database):
+    def test_json_array(self):
         try:
-            # Create table
             self._conn.autocommit = True
-
             self._cursor.execute(
-                """
-                CREATE TABLE JsonDetails (
-                    DataId     INT64 NOT NULL,
-                    Details    JSON,
-                ) PRIMARY KEY (DataId)
-            """
-            )
-            self._cursor.execute(
-                "INSERT INTO JsonDetails (DataId, Details) VALUES (%s, %s)",
+                "INSERT INTO all_types (col_int64, col_json) VALUES (%s, %s)",
                 [1, JsonObject([1, 2, 3])],
             )
 
-            self._cursor.execute("SELECT * FROM JsonDetails WHERE DataId = 1")
+            self._cursor.execute(
+                "SELECT col_int64, col_json FROM all_types WHERE col_int64 = 1"
+            )
             row = self._cursor.fetchone()
             assert isinstance(row[1], JsonObject)
             assert row[1].serialize() == "[1,2,3]"
-
-            self._cursor.execute("DROP TABLE JsonDetails")
         finally:
-            # Delete table
-            table = dbapi_database.table("JsonDetails")
-            if table.exists():
-                op = dbapi_database.update_ddl(["DROP TABLE JsonDetails"])
-                op.result()
+            self._cursor.execute("DELETE FROM all_types WHERE col_int64 = 1")
 
     @pytest.mark.noautofixt
     def test_DDL_commit(self, shared_instance, dbapi_database):
@@ -1502,6 +1479,8 @@ class TestDbApi:
             ca_certificate=_helpers.CA_CERTIFICATE,
             client_certificate=_helpers.CLIENT_CERTIFICATE,
             client_key=_helpers.CLIENT_KEY,
+            username=_helpers.SPANNER_OMNI_USER,
+            password=_helpers.SPANNER_OMNI_PASSWORD,
         )
         assert (
             conn.instance._client._client_info.user_agent
@@ -1565,61 +1544,46 @@ class TestDbApi:
         assert len(self._cursor.fetchall()) == 1
 
     @pytest.mark.parametrize("autocommit", [False, True])
-    def test_rowcount(self, dbapi_database, autocommit):
-        try:
-            self._conn.autocommit = autocommit
+    def test_rowcount(self, autocommit):
+        self._conn.autocommit = autocommit
 
-            self._cursor.execute(
-                """
-            CREATE TABLE Singers (
-                SingerId INT64 NOT NULL,
-                Name     STRING(1024),
-            ) PRIMARY KEY (SingerId)
-            """
-            )
+        # executemany sets rowcount to the total modified rows
+        rows = [(i, f"Singer {i}") for i in range(100)]
+        self._cursor.executemany(
+            "INSERT INTO contacts (contact_id, first_name) VALUES (%s, %s)",
+            rows[:98],
+        )
+        assert self._cursor.rowcount == 98
+
+        # execute with INSERT
+        self._cursor.execute(
+            "INSERT INTO contacts (contact_id, first_name) VALUES (%s, %s), (%s, %s)",
+            [x for row in rows[98:] for x in row],
+        )
+        assert self._cursor.rowcount == 2
+
+        # execute with UPDATE
+        self._cursor.execute(
+            "UPDATE contacts SET first_name = 'Cher' WHERE contact_id < 25"
+        )
+        assert self._cursor.rowcount == 25
+
+        # execute with SELECT
+        self._cursor.execute("SELECT first_name FROM contacts WHERE contact_id < 75")
+        assert len(self._cursor.fetchall()) == 75
+        # rowcount is not available for SELECT
+        assert self._cursor.rowcount == -1
+
+        # execute with DELETE
+        self._cursor.execute("DELETE FROM contacts WHERE true")
+        assert self._cursor.rowcount == 100
+
+        # execute with UPDATE matching 0 rows
+        self._cursor.execute(
+            "UPDATE contacts SET first_name = 'Cher' WHERE contact_id < 25"
+        )
+        if not autocommit:
             self._conn.commit()
-
-            # executemany sets rowcount to the total modified rows
-            rows = [(i, f"Singer {i}") for i in range(100)]
-            self._cursor.executemany(
-                "INSERT INTO Singers (SingerId, Name) VALUES (%s, %s)", rows[:98]
-            )
-            assert self._cursor.rowcount == 98
-
-            # execute with INSERT
-            self._cursor.execute(
-                "INSERT INTO Singers (SingerId, Name) VALUES (%s, %s), (%s, %s)",
-                [x for row in rows[98:] for x in row],
-            )
-            assert self._cursor.rowcount == 2
-
-            # execute with UPDATE
-            self._cursor.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
-            assert self._cursor.rowcount == 25
-
-            # execute with SELECT
-            self._cursor.execute("SELECT Name FROM Singers WHERE SingerId < 75")
-            assert len(self._cursor.fetchall()) == 75
-            # rowcount is not available for SELECT
-            assert self._cursor.rowcount == -1
-
-            # execute with DELETE
-            self._cursor.execute("DELETE FROM Singers")
-            assert self._cursor.rowcount == 100
-
-            # execute with UPDATE matching 0 rows
-            self._cursor.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
-            assert self._cursor.rowcount == 0
-
-            self._conn.commit()
-            self._cursor.execute("DROP TABLE Singers")
-            self._conn.commit()
-        finally:
-            # Delete table
-            table = dbapi_database.table("Singers")
-            if table.exists():
-                op = dbapi_database.update_ddl(["DROP TABLE Singers"])
-                op.result()
 
     @pytest.mark.parametrize("autocommit", [False, True])
     @pytest.mark.skipif(

@@ -34,6 +34,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.backupdr_v1._compat import transcode_request
 from google.cloud.backupdr_v1.types import (
     backupdr,
     backupplan,
@@ -2633,25 +2634,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_backup_plan(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseCreateBackupPlan,
+                    "_BaseCreateBackupPlan__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2790,21 +2784,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_http_options()
-
             request, metadata = self._interceptor.pre_create_backup_plan_association(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation,
+                    "_BaseCreateBackupPlanAssociation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2945,21 +2936,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseCreateBackupVault._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_backup_vault(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseCreateBackupVault,
+                    "_BaseCreateBackupVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3097,21 +3085,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_http_options()
-
             request, metadata = self._interceptor.pre_create_management_server(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseCreateManagementServer,
+                    "_BaseCreateManagementServer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3247,19 +3232,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteBackup._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseDeleteBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseDeleteBackup._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseDeleteBackup,
+                    "_BaseDeleteBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3396,19 +3378,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_backup_plan(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseDeleteBackupPlan,
+                    "_BaseDeleteBackupPlan__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3545,17 +3526,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_backup_plan_association(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation,
+                    "_BaseDeleteBackupPlanAssociation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3694,17 +3676,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_backup_vault(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseDeleteBackupVault,
+                    "_BaseDeleteBackupVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3840,17 +3823,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_management_server(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseDeleteManagementServer,
+                    "_BaseDeleteManagementServer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3991,19 +3975,20 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_fetch_backup_plan_associations_for_resource_type(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType,
+                    "_BaseFetchBackupPlanAssociationsForResourceType__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4151,17 +4136,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_backups_for_resource_type(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType,
+                    "_BaseFetchBackupsForResourceType__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4310,19 +4296,20 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_fetch_data_source_references_for_resource_type(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType,
+                    "_BaseFetchDataSourceReferencesForResourceType__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4474,17 +4461,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_usable_backup_vaults(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults,
+                    "_BaseFetchUsableBackupVaults__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4618,19 +4606,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseGetBackup._get_http_options()
-
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetBackup._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetBackup,
+                    "_BaseGetBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4771,19 +4756,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetBackupPlan._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_backup_plan(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlan._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetBackupPlan,
+                    "_BaseGetBackupPlan__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4923,17 +4905,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_backup_plan_association(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation,
+                    "_BaseGetBackupPlanAssociation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5072,17 +5055,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_http_options()
-
             request, metadata = self._interceptor.pre_get_backup_plan_revision(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetBackupPlanRevision,
+                    "_BaseGetBackupPlanRevision__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5221,21 +5205,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetBackupVault._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_backup_vault(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetBackupVault._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetBackupVault._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetBackupVault,
+                    "_BaseGetBackupVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5376,19 +5357,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetDataSource._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetDataSource._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetDataSource._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetDataSource,
+                    "_BaseGetDataSource__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5525,17 +5503,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_http_options()
-
             request, metadata = self._interceptor.pre_get_data_source_reference(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetDataSourceReference,
+                    "_BaseGetDataSourceReference__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5676,17 +5655,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetManagementServer._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_management_server(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetManagementServer._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetManagementServer._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetManagementServer,
+                    "_BaseGetManagementServer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5827,21 +5807,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseInitializeService._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_initialize_service(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseInitializeService._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBackupDRRestTransport._BaseInitializeService._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseInitializeService._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseInitializeService,
+                    "_BaseInitializeService__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5978,17 +5955,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_backup_plan_associations(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListBackupPlanAssociations,
+                    "_BaseListBackupPlanAssociations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6130,17 +6108,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_backup_plan_revisions(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListBackupPlanRevisions,
+                    "_BaseListBackupPlanRevisions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6280,21 +6259,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListBackupPlans._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_backup_plans(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListBackupPlans._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListBackupPlans._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListBackupPlans,
+                    "_BaseListBackupPlans__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6430,19 +6406,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListBackups._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListBackups._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListBackups._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListBackups,
+                    "_BaseListBackups__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6581,19 +6554,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListBackupVaults._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_backup_vaults(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupVaults._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListBackupVaults._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListBackupVaults,
+                    "_BaseListBackupVaults__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6733,17 +6705,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_http_options()
-
             request, metadata = self._interceptor.pre_list_data_source_references(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListDataSourceReferences,
+                    "_BaseListDataSourceReferences__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6886,21 +6859,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListDataSources._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_data_sources(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListDataSources._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListDataSources._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListDataSources,
+                    "_BaseListDataSources__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7039,17 +7009,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseListManagementServers._get_http_options()
-
             request, metadata = self._interceptor.pre_list_management_servers(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListManagementServers._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListManagementServers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListManagementServers,
+                    "_BaseListManagementServers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7192,23 +7163,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseRestoreBackup._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_restore_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseRestoreBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseBackupDRRestTransport._BaseRestoreBackup._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseRestoreBackup._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseRestoreBackup,
+                    "_BaseRestoreBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7348,23 +7312,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseTriggerBackup._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_trigger_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseTriggerBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseBackupDRRestTransport._BaseTriggerBackup._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseTriggerBackup._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseTriggerBackup,
+                    "_BaseTriggerBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7502,23 +7459,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseUpdateBackup._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseUpdateBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseBackupDRRestTransport._BaseUpdateBackup._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseUpdateBackup._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseUpdateBackup,
+                    "_BaseUpdateBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7658,25 +7608,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_backup_plan(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseUpdateBackupPlan,
+                    "_BaseUpdateBackupPlan__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7815,21 +7758,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_http_options()
-
             request, metadata = self._interceptor.pre_update_backup_plan_association(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation,
+                    "_BaseUpdateBackupPlanAssociation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7971,21 +7911,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_backup_vault(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseUpdateBackupVault,
+                    "_BaseUpdateBackupVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8125,25 +8062,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseUpdateDataSource._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_data_source(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateDataSource._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseBackupDRRestTransport._BaseUpdateDataSource._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseUpdateDataSource._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseUpdateDataSource,
+                    "_BaseUpdateDataSource__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8651,19 +8581,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8795,19 +8722,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8937,19 +8861,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetIamPolicy,
+                    "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9080,23 +9001,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseSetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseBackupDRRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseSetIamPolicy,
+                    "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9230,21 +9144,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseTestIamPermissions._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9375,27 +9286,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseBackupDRRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9500,21 +9402,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9619,19 +9518,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9763,19 +9659,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBackupDRRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

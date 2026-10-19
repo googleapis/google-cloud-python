@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "FlushRowsResponse",
         "StorageError",
         "RowError",
+        "ClientStats",
     },
 )
 
@@ -108,6 +109,8 @@ class CreateReadSessionRequest(proto.Message):
 class ReadRowsRequest(proto.Message):
     r"""Request message for ``ReadRows``.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         read_stream (str):
             Required. Stream to read rows from.
@@ -116,6 +119,12 @@ class ReadRowsRequest(proto.Message):
             last row read from Read. Requesting a larger
             offset is undefined. If not specified, start
             reading from offset zero.
+        arrow_serialization_options (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions):
+            Optional. Options specific to the Apache
+            Arrow output format.
+            This feature is not yet available.
+
+            This field is a member of `oneof`_ ``output_format_serialization_options``.
     """
 
     read_stream: str = proto.Field(
@@ -125,6 +134,12 @@ class ReadRowsRequest(proto.Message):
     offset: int = proto.Field(
         proto.INT64,
         number=2,
+    )
+    arrow_serialization_options: arrow.ArrowSerializationOptions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="output_format_serialization_options",
+        message=arrow.ArrowSerializationOptions,
     )
 
 
@@ -249,6 +264,14 @@ class ReadRowsResponse(proto.Message):
             client should skip decompression.
 
             This field is a member of `oneof`_ ``_uncompressed_byte_size``.
+        total_estimated_row_count (int):
+            Output only. The total estimated number of
+            rows in the query results. Only populated when
+            reading data from a BigQuery job.
+
+            This feature is not yet available.
+
+            This field is a member of `oneof`_ ``_total_estimated_row_count``.
     """
 
     avro_rows: avro.AvroRows = proto.Field(
@@ -292,6 +315,11 @@ class ReadRowsResponse(proto.Message):
     uncompressed_byte_size: int = proto.Field(
         proto.INT64,
         number=9,
+        optional=True,
+    )
+    total_estimated_row_count: int = proto.Field(
+        proto.INT64,
+        number=10,
         optional=True,
     )
 
@@ -385,7 +413,7 @@ class AppendRowsRequest(proto.Message):
     table destinations within the same connection for the default
     stream.
 
-    The size of a single AppendRowsRequest must be less than 10 MB in
+    The size of a single AppendRowsRequest must be less than 20 MB in
     size. Requests larger than this return an error, typically
     ``INVALID_ARGUMENT``.
 
@@ -481,6 +509,9 @@ class AppendRowsRequest(proto.Message):
             ``DEFAULT_VALUE`` and at the same time, set
             ``missing_value_interpretations`` to ``NULL_VALUE`` on those
             columns.
+        client_stats (google.cloud.bigquery_storage_v1.types.ClientStats):
+            Optional. Stats and telemetry data gathered
+            on the client side.
     """
 
     class MissingValueInterpretation(proto.Enum):
@@ -598,6 +629,11 @@ class AppendRowsRequest(proto.Message):
         proto.ENUM,
         number=8,
         enum=MissingValueInterpretation,
+    )
+    client_stats: "ClientStats" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="ClientStats",
     )
 
 
@@ -978,6 +1014,159 @@ class RowError(proto.Message):
     message: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class ClientStats(proto.Message):
+    r"""Stats and telemetry data gathered on the client side about
+    requests being sent to the BigQuery Storage service, for
+    internal use only.
+
+    Attributes:
+        request_stats (google.cloud.bigquery_storage_v1.types.ClientStats.RequestStats):
+            Optional. Per-request stats.
+        window_stats (google.cloud.bigquery_storage_v1.types.ClientStats.WindowStats):
+            Optional. Windowed stats.
+    """
+
+    class RequestStats(proto.Message):
+        r"""Stats and telemetry data gathered on the client side about a
+        single request.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            send_time_millis (int):
+                Optional. Timestamp indicating when the
+                request was sent over the network, expressed in
+                epoch milliseconds.
+
+                This field is a member of `oneof`_ ``_send_time_millis``.
+            queued_requests_count (int):
+                Optional. Number of pending requests at the
+                moment this request was sent. This includes
+                requests waiting to be sent, and those that are
+                inflight.
+
+                This field is a member of `oneof`_ ``_queued_requests_count``.
+        """
+
+        send_time_millis: int = proto.Field(
+            proto.INT64,
+            number=1,
+            optional=True,
+        )
+        queued_requests_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+            optional=True,
+        )
+
+    class WindowStats(proto.Message):
+        r"""Aggregate connection metrics over a window interval.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            max_response_latency_millis (int):
+                Optional. The maximum response latency
+                observed in the window, expressed in
+                milliseconds.
+
+                This field is a member of `oneof`_ ``_max_response_latency_millis``.
+            avg_response_latency_millis (int):
+                Optional. The average response latency
+                observed in the window, expressed in
+                milliseconds.
+
+                This field is a member of `oneof`_ ``_avg_response_latency_millis``.
+            longest_wait_no_response_millis (int):
+                Optional. The longest time spent waiting without receiving a
+                response in the window. This could exceed
+                max_response_latency_millis because the latter is evaluated
+                only when a response is received. Expressed in milliseconds.
+
+                This field is a member of `oneof`_ ``_longest_wait_no_response_millis``.
+            requests_sent_count (int):
+                Optional. How many requests were sent in the
+                window.
+
+                This field is a member of `oneof`_ ``_requests_sent_count``.
+            responses_received_count (int):
+                Optional. How many responses were received in
+                the window.
+
+                This field is a member of `oneof`_ ``_responses_received_count``.
+            bytes_sent_count (int):
+                Optional. How many bytes were sent in the
+                window.
+
+                This field is a member of `oneof`_ ``_bytes_sent_count``.
+            window_start_time_epoch_millis (int):
+                Optional. Start time of the window interval
+                for which these stats are aggregated, expressed
+                in epoch milliseconds.
+
+                This field is a member of `oneof`_ ``_window_start_time_epoch_millis``.
+            window_millis (int):
+                Optional. Duration of the window interval for
+                which these stats are aggregated, expressed in
+                milliseconds.
+
+                This field is a member of `oneof`_ ``_window_millis``.
+        """
+
+        max_response_latency_millis: int = proto.Field(
+            proto.INT64,
+            number=1,
+            optional=True,
+        )
+        avg_response_latency_millis: int = proto.Field(
+            proto.INT64,
+            number=2,
+            optional=True,
+        )
+        longest_wait_no_response_millis: int = proto.Field(
+            proto.INT64,
+            number=3,
+            optional=True,
+        )
+        requests_sent_count: int = proto.Field(
+            proto.INT64,
+            number=4,
+            optional=True,
+        )
+        responses_received_count: int = proto.Field(
+            proto.INT64,
+            number=5,
+            optional=True,
+        )
+        bytes_sent_count: int = proto.Field(
+            proto.INT64,
+            number=6,
+            optional=True,
+        )
+        window_start_time_epoch_millis: int = proto.Field(
+            proto.INT64,
+            number=7,
+            optional=True,
+        )
+        window_millis: int = proto.Field(
+            proto.INT64,
+            number=8,
+            optional=True,
+        )
+
+    request_stats: RequestStats = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=RequestStats,
+    )
+    window_stats: WindowStats = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=WindowStats,
     )
 
 

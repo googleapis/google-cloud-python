@@ -24,7 +24,6 @@ from google.type import expr_pb2
 from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1 import DirectedReadOptions
-from google.cloud.spanner_v1.pool import FixedSizePool, PingingPool
 
 from . import _helpers, _sample_data
 
@@ -90,75 +89,6 @@ def test_create_database(shared_instance, databases_to_delete, database_dialect)
 
     database_ids = [database.name for database in shared_instance.list_databases()]
     assert temp_db.name in database_ids
-
-
-def test_database_binding_of_fixed_size_pool(
-    not_emulator,
-    shared_instance,
-    databases_to_delete,
-    not_postgres,
-    proto_descriptor_file,
-    not_spanner_omni,
-):
-    temp_db_id = _helpers.unique_id("fixed_size_db", separator="_")
-    temp_db = shared_instance.database(temp_db_id)
-
-    create_op = temp_db.create()
-    databases_to_delete.append(temp_db)
-    create_op.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
-
-    # Create role and grant select permission on table contacts for parent role.
-    ddl_statements = _helpers.DDL_STATEMENTS + [
-        "CREATE ROLE parent",
-        "GRANT SELECT ON TABLE contacts TO ROLE parent",
-    ]
-    operation = temp_db.update_ddl(
-        ddl_statements, proto_descriptors=proto_descriptor_file
-    )
-    operation.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
-
-    pool = FixedSizePool(
-        size=1,
-        default_timeout=500,
-        database_role="parent",
-    )
-    database = shared_instance.database(temp_db_id, pool=pool)
-    assert database._pool.database_role == "parent"
-
-
-def test_database_binding_of_pinging_pool(
-    not_emulator,
-    shared_instance,
-    databases_to_delete,
-    not_postgres,
-    proto_descriptor_file,
-    not_spanner_omni,
-):
-    temp_db_id = _helpers.unique_id("binding_db", separator="_")
-    temp_db = shared_instance.database(temp_db_id)
-
-    create_op = temp_db.create()
-    databases_to_delete.append(temp_db)
-    create_op.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
-
-    # Create role and grant select permission on table contacts for parent role.
-    ddl_statements = _helpers.DDL_STATEMENTS + [
-        "CREATE ROLE parent",
-        "GRANT SELECT ON TABLE contacts TO ROLE parent",
-    ]
-    operation = temp_db.update_ddl(
-        ddl_statements, proto_descriptors=proto_descriptor_file
-    )
-    operation.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
-
-    pool = PingingPool(
-        size=1,
-        default_timeout=500,
-        ping_interval=100,
-        database_role="parent",
-    )
-    database = shared_instance.database(temp_db_id, pool=pool)
-    assert database._pool.database_role == "parent"
 
 
 def test_create_database_pitr_invalid_retention_period(
@@ -565,6 +495,71 @@ def test_db_batch_insert_then_db_snapshot_read(shared_database):
         from_snap = list(snapshot.read(sd.TABLE, sd.COLUMNS, sd.ALL))
 
     sd._check_rows_data(from_snap)
+
+
+def test_db_batch_send_and_ack(
+    not_emulator, spanner_client, database_dialect, shared_instance
+):
+    import uuid
+
+    from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
+
+    from google.cloud.spanner_admin_database_v1 import DatabaseDialect
+
+    db_id = f"test-db-{uuid.uuid4().hex[:8]}"
+    queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
+
+    try:
+        test_database = shared_instance.database(
+            db_id, database_dialect=database_dialect
+        )
+        operation = test_database.create()
+        operation.result(300)
+
+        # Create the Queue
+        if database_dialect == DatabaseDialect.POSTGRESQL:
+            queue_ddl = f"""CREATE QUEUE {queue_name} (
+                id bigint NOT NULL,
+                "Payload" varchar NOT NULL,
+                PRIMARY KEY (id)
+            )"""
+        else:
+            queue_ddl = f"""CREATE QUEUE {queue_name} (
+                Id INT64 NOT NULL,
+                Payload STRING(MAX) NOT NULL
+            ) PRIMARY KEY (Id)"""
+        try:
+            operation = test_database.update_ddl([queue_ddl])
+            operation.result(600)
+        except MethodNotImplemented as e:
+            pytest.skip(f"Queues are not implemented yet: {e}")
+        except GoogleAPIError as e:
+            grpc_status_name = getattr(
+                getattr(e, "grpc_status_code", None), "name", None
+            )
+            if (
+                getattr(e, "code", None) == 501
+                or grpc_status_name == "UNIMPLEMENTED"
+                or "UNIMPLEMENTED" in str(e)
+            ):
+                pytest.skip(f"Queues are not implemented yet: {e}")
+            raise
+
+        with test_database.batch() as batch:
+            batch.send(
+                queue=queue_name,
+                key=(2,),
+                payload="Hello, Queues!",
+            )
+
+        with test_database.batch() as batch:
+            batch.ack(
+                queue=queue_name,
+                key=(2,),
+            )
+
+    finally:
+        test_database.drop()
 
 
 def test_db_run_in_transaction_then_snapshot_execute_sql(shared_database):

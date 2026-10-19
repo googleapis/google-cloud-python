@@ -31,6 +31,18 @@ __protobuf__ = proto.module(
 class SupportEventSubscription(proto.Message):
     r"""A support event subscription.
 
+    You can also manage support event subscriptions using other tools:
+
+    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+      (or
+      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+      for beta)
+    - `Terraform
+      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+      (or `google-beta
+      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+      for beta)
+
     Attributes:
         name (str):
             Identifier. The resource name of the support

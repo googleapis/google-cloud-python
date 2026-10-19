@@ -18,10 +18,10 @@
 import collections
 import copy
 import dataclasses
-from functools import cached_property
 import glob
 import os
 import re
+from functools import cached_property
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Type, Union
 
 from google.api_core.client_options import ClientOptions
@@ -943,7 +943,8 @@ class Document:
                 A string hOCR version of the Document
         """
         environment = Environment(
-            loader=PackageLoader("google.cloud.documentai_toolbox", "templates")
+            loader=PackageLoader("google.cloud.documentai_toolbox", "templates"),
+            autoescape=True,
         )
         template = environment.get_template("hocr_document_template.xml.j2")
         content = template.render(pages=self.pages, title=title)

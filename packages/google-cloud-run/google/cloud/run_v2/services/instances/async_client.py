@@ -421,7 +421,7 @@ class InstancesAsyncClient:
             self._client._transport.create_instance
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)$"
@@ -551,7 +551,7 @@ class InstancesAsyncClient:
             self._client._transport.delete_instance
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
@@ -676,7 +676,7 @@ class InstancesAsyncClient:
             self._client._transport.get_instance
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
@@ -803,7 +803,7 @@ class InstancesAsyncClient:
             self._client._transport.list_instances
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)$"

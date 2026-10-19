@@ -322,6 +322,31 @@ class DataformTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.sync_workspace_refs: gapic_v1.method.wrap_method(
+                self.sync_workspace_refs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_workspace_branches: gapic_v1.method.wrap_method(
+                self.fetch_workspace_branches,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_branch: gapic_v1.method.wrap_method(
+                self.delete_branch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.checkout_workspace_branch: gapic_v1.method.wrap_method(
+                self.checkout_workspace_branch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_current_workspace_branch: gapic_v1.method.wrap_method(
+                self.fetch_current_workspace_branch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.push_git_commits: gapic_v1.method.wrap_method(
                 self.push_git_commits,
                 default_timeout=None,
@@ -909,6 +934,60 @@ class DataformTransport(abc.ABC):
         [dataform.PullGitCommitsRequest],
         Union[
             dataform.PullGitCommitsResponse, Awaitable[dataform.PullGitCommitsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def sync_workspace_refs(
+        self,
+    ) -> Callable[
+        [dataform.SyncWorkspaceRefsRequest],
+        Union[
+            dataform.SyncWorkspaceRefsResponse,
+            Awaitable[dataform.SyncWorkspaceRefsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_workspace_branches(
+        self,
+    ) -> Callable[
+        [dataform.FetchWorkspaceBranchesRequest],
+        Union[
+            dataform.FetchWorkspaceBranchesResponse,
+            Awaitable[dataform.FetchWorkspaceBranchesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_branch(
+        self,
+    ) -> Callable[
+        [dataform.DeleteBranchRequest],
+        Union[dataform.DeleteBranchResponse, Awaitable[dataform.DeleteBranchResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def checkout_workspace_branch(
+        self,
+    ) -> Callable[
+        [dataform.CheckoutWorkspaceBranchRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_current_workspace_branch(
+        self,
+    ) -> Callable[
+        [dataform.FetchCurrentWorkspaceBranchRequest],
+        Union[
+            dataform.FetchCurrentWorkspaceBranchResponse,
+            Awaitable[dataform.FetchCurrentWorkspaceBranchResponse],
         ],
     ]:
         raise NotImplementedError()

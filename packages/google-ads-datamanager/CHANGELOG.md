@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-ads-datamanager/#history
 
+## [0.9.4](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.9.3...google-ads-datamanager-v0.9.4) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+* update API sources and regenerate ([#18513](https://github.com/googleapis/google-cloud-python/issues/18513)) ([7d7adca](https://github.com/googleapis/google-cloud-python/commit/7d7adcaee688603077ea53abec678130045c20ed))
+
+## [0.9.3](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.9.2...google-ads-datamanager-v0.9.3) (2026-09-17)
+
+
+### Features
+
+* update API sources and regenerate ([#18396](https://github.com/googleapis/google-cloud-python/issues/18396)) ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+* update API sources and regenerate. ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+
+## [0.9.2](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.9.1...google-ads-datamanager-v0.9.2) (2026-08-21)
+
+
+### Features
+
+* update googleapis and regenerate ([#18087](https://github.com/googleapis/google-cloud-python/issues/18087)) ([db1622a](https://github.com/googleapis/google-cloud-python/commit/db1622a9cfac112b40c93842737d7a5deeb3e8bd))
+
 ## [0.9.1](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.9.0...google-ads-datamanager-v0.9.1) (2026-06-25)
 
 

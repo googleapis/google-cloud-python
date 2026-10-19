@@ -410,6 +410,44 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["list_clusters"]
 
     @property
+    def list_acl_policies(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListAclPoliciesRequest],
+        Awaitable[cloud_redis_cluster.ListAclPoliciesResponse],
+    ]:
+        r"""Return a callable for the list acl policies method over gRPC.
+
+        Lists all ACL policies owned by a project in either the
+        specified location (region) or all locations.
+
+        The location should have the following format:
+
+        - ``projects/{project_id}/locations/{location_id}``
+
+        If ``location_id`` is specified as ``-`` (wildcard), then all
+        regions available to the project are queried, and the results
+        are aggregated.
+
+        Returns:
+            Callable[[~.ListAclPoliciesRequest],
+                    Awaitable[~.ListAclPoliciesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_acl_policies" not in self._stubs:
+            self._stubs["list_acl_policies"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/ListAclPolicies",
+                request_serializer=cloud_redis_cluster.ListAclPoliciesRequest.serialize,
+                response_deserializer=cloud_redis_cluster.ListAclPoliciesResponse.deserialize,
+            )
+        return self._stubs["list_acl_policies"]
+
+    @property
     def get_cluster(
         self,
     ) -> Callable[
@@ -436,6 +474,36 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
                 response_deserializer=cloud_redis_cluster.Cluster.deserialize,
             )
         return self._stubs["get_cluster"]
+
+    @property
+    def get_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetAclPolicyRequest],
+        Awaitable[cloud_redis_cluster.AclPolicy],
+    ]:
+        r"""Return a callable for the get acl policy method over gRPC.
+
+        Gets the details of a specific Redis Cluster ACL
+        policy.
+
+        Returns:
+            Callable[[~.GetAclPolicyRequest],
+                    Awaitable[~.AclPolicy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_acl_policy" not in self._stubs:
+            self._stubs["get_acl_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetAclPolicy",
+                request_serializer=cloud_redis_cluster.GetAclPolicyRequest.serialize,
+                response_deserializer=cloud_redis_cluster.AclPolicy.deserialize,
+            )
+        return self._stubs["get_acl_policy"]
 
     @property
     def update_cluster(
@@ -471,6 +539,46 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["update_cluster"]
 
     @property
+    def update_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.UpdateAclPolicyRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update acl policy method over gRPC.
+
+        Updates the ACL policy.
+
+        The operation applies the updated ACL policy to all of
+        the linked clusters. If Memorystore can apply the policy
+        to all clusters, then the operation returns a SUCCESS
+        status. If Memorystore can't apply the policy to all
+        clusters, then to ensure eventual consistency,
+        Memorystore uses reconciliation to apply the policy to
+        the failed clusters.
+
+        Completed longrunning.Operation will contain the new ACL
+        policy object in the response field.
+
+        Returns:
+            Callable[[~.UpdateAclPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_acl_policy" not in self._stubs:
+            self._stubs["update_acl_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/UpdateAclPolicy",
+                request_serializer=cloud_redis_cluster.UpdateAclPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_acl_policy"]
+
+    @property
     def delete_cluster(
         self,
     ) -> Callable[
@@ -498,6 +606,96 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_cluster"]
+
+    @property
+    def delete_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.DeleteAclPolicyRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete acl policy method over gRPC.
+
+        Deletes a specific ACL policy. This action will
+        delete the ACL policy and all the rules associated with
+        it. An ACL policy cannot be deleted if it is attached to
+        a cluster.
+
+        Returns:
+            Callable[[~.DeleteAclPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_acl_policy" not in self._stubs:
+            self._stubs["delete_acl_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/DeleteAclPolicy",
+                request_serializer=cloud_redis_cluster.DeleteAclPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_acl_policy"]
+
+    @property
+    def get_acl_policy_revision(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetAclPolicyRevisionRequest],
+        Awaitable[cloud_redis_cluster.AclPolicyRevision],
+    ]:
+        r"""Return a callable for the get acl policy revision method over gRPC.
+
+        Gets details of a specific ACL policy revision.
+
+        Returns:
+            Callable[[~.GetAclPolicyRevisionRequest],
+                    Awaitable[~.AclPolicyRevision]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_acl_policy_revision" not in self._stubs:
+            self._stubs["get_acl_policy_revision"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetAclPolicyRevision",
+                request_serializer=cloud_redis_cluster.GetAclPolicyRevisionRequest.serialize,
+                response_deserializer=cloud_redis_cluster.AclPolicyRevision.deserialize,
+            )
+        return self._stubs["get_acl_policy_revision"]
+
+    @property
+    def list_acl_policy_revisions(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListAclPolicyRevisionsRequest],
+        Awaitable[cloud_redis_cluster.ListAclPolicyRevisionsResponse],
+    ]:
+        r"""Return a callable for the list acl policy revisions method over gRPC.
+
+        Lists all ACL policy revisions in a given ACL policy.
+
+        Returns:
+            Callable[[~.ListAclPolicyRevisionsRequest],
+                    Awaitable[~.ListAclPolicyRevisionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_acl_policy_revisions" not in self._stubs:
+            self._stubs["list_acl_policy_revisions"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/ListAclPolicyRevisions",
+                request_serializer=cloud_redis_cluster.ListAclPolicyRevisionsRequest.serialize,
+                response_deserializer=cloud_redis_cluster.ListAclPolicyRevisionsResponse.deserialize,
+            )
+        return self._stubs["list_acl_policy_revisions"]
 
     @property
     def create_cluster(
@@ -535,6 +733,37 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_cluster"]
+
+    @property
+    def create_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.CreateAclPolicyRequest],
+        Awaitable[cloud_redis_cluster.AclPolicy],
+    ]:
+        r"""Return a callable for the create acl policy method over gRPC.
+
+        Creates an ACL policy.
+        The creation is executed synchronously and the policy is
+        available for use immediately after the RPC returns.
+
+        Returns:
+            Callable[[~.CreateAclPolicyRequest],
+                    Awaitable[~.AclPolicy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_acl_policy" not in self._stubs:
+            self._stubs["create_acl_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/CreateAclPolicy",
+                request_serializer=cloud_redis_cluster.CreateAclPolicyRequest.serialize,
+                response_deserializer=cloud_redis_cluster.AclPolicy.deserialize,
+            )
+        return self._stubs["create_acl_policy"]
 
     @property
     def get_cluster_certificate_authority(
@@ -860,8 +1089,18 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.list_acl_policies: self._wrap_method(
+                self.list_acl_policies,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.get_cluster: self._wrap_method(
                 self.get_cluster,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_acl_policy: self._wrap_method(
+                self.get_acl_policy,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
@@ -870,13 +1109,38 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.update_acl_policy: self._wrap_method(
+                self.update_acl_policy,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.delete_cluster: self._wrap_method(
                 self.delete_cluster,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.delete_acl_policy: self._wrap_method(
+                self.delete_acl_policy,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_acl_policy_revision: self._wrap_method(
+                self.get_acl_policy_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_acl_policy_revisions: self._wrap_method(
+                self.list_acl_policy_revisions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_cluster: self._wrap_method(
                 self.create_cluster,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.create_acl_policy: self._wrap_method(
+                self.create_acl_policy,
                 default_timeout=600.0,
                 client_info=client_info,
             ),

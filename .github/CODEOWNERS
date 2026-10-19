@@ -28,7 +28,6 @@
 # Catch all. @googleapis/cloud-sdk-python-team is notified on every change for packages not owned by other teams.
 *                                             @googleapis/cloud-sdk-python-team
 
-/packages/bigframes/                          @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/bigquery-magics/                    @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/db-dtypes/                          @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/django-google-spanner/              @googleapis/spanner-team
@@ -38,7 +37,7 @@
 /packages/google-cloud-firestore/             @googleapis/firestore-team
 /packages/google-cloud-pubsub/                @googleapis/pubsub-team
 /packages/google-cloud-spanner/               @googleapis/spanner-team
-/packages/google-cloud-storage/               @googleapis/gcs-team
+/packages/google-cloud-storage/               @googleapis/gcs-team @googleapis/gcs-fs-team
 /packages/google-resumable-media/             @googleapis/gcs-team @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/pandas-gbq/                         @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/sqlalchemy-bigquery/                @googleapis/bigquery-team @googleapis/bigquery-dataframe-team

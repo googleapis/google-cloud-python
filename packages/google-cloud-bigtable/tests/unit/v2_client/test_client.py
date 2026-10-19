@@ -174,16 +174,15 @@ def test_client_constructor_w_emulator_host():
     import grpc
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-    from google.cloud.bigtable.client import (
-        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-        _GRPC_CHANNEL_OPTIONS,
-    )
+    from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
         channel = grpc.insecure_channel("no-host")
-        with mock.patch("grpc.insecure_channel", return_value=channel) as factory:
-            factory.return_value = channel
+        with mock.patch(
+            "google.cloud.bigtable.data._sync_autogen.client.insecure_channel",
+            return_value=channel,
+        ) as factory:
             client = _make_client()
             # don't test local_composite_credentials
             # client._local_composite_credentials = lambda: credentials
@@ -193,22 +192,23 @@ def test_client_constructor_w_emulator_host():
 
     assert client._emulator_host == emulator_host
     assert client.project == _DEFAULT_BIGTABLE_EMULATOR_CLIENT
-    factory.assert_called_once_with(
-        emulator_host,
-        options=_GRPC_CHANNEL_OPTIONS,
-    )
+    factory.assert_called_once_with(emulator_host)
+
+    assert client._table_data_client._emulator_host == emulator_host
+    assert client._table_data_client.project == _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 
 
 def test_client_constructor_w_emulator_host_w_project():
     import grpc
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-    from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
-
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
         channel = grpc.insecure_channel("no-host")
-        with mock.patch("grpc.insecure_channel", return_value=channel) as factory:
+        with mock.patch(
+            "google.cloud.bigtable.data._sync_autogen.client.insecure_channel",
+            return_value=channel,
+        ) as factory:
             client = _make_client(project=PROJECT)
             # channels are formed when needed, so access a client
             # create a gapic channel
@@ -216,26 +216,26 @@ def test_client_constructor_w_emulator_host_w_project():
 
     assert client._emulator_host == emulator_host
     assert client.project == PROJECT
-    factory.assert_called_once_with(
-        emulator_host,
-        options=_GRPC_CHANNEL_OPTIONS,
-    )
+    factory.assert_called_once_with(emulator_host)
+
+    assert client._table_data_client._emulator_host == emulator_host
+    assert client._table_data_client.project == PROJECT
 
 
 def test_client_constructor_w_emulator_host_w_credentials():
     import grpc
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-    from google.cloud.bigtable.client import (
-        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-        _GRPC_CHANNEL_OPTIONS,
-    )
+    from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 
     emulator_host = "localhost:8081"
     credentials = _make_credentials()
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
         channel = grpc.insecure_channel("no-host")
-        with mock.patch("grpc.insecure_channel", return_value=channel) as factory:
+        with mock.patch(
+            "google.cloud.bigtable.data._sync_autogen.client.insecure_channel",
+            return_value=channel,
+        ) as factory:
             client = _make_client(credentials=credentials)
             # channels are formed when needed, so access a client
             # create a gapic channel
@@ -243,10 +243,10 @@ def test_client_constructor_w_emulator_host_w_credentials():
 
     assert client._emulator_host == emulator_host
     assert client.project == _DEFAULT_BIGTABLE_EMULATOR_CLIENT
-    factory.assert_called_once_with(
-        emulator_host,
-        options=_GRPC_CHANNEL_OPTIONS,
-    )
+    factory.assert_called_once_with(emulator_host)
+
+    assert client._table_data_client._emulator_host == emulator_host
+    assert client._table_data_client.project == _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 
 
 def test_client__get_scopes_default():
@@ -389,33 +389,61 @@ def test_client_project_path():
     assert client.project_path == project_name
 
 
-def test_client_table_data_client_not_initialized():
-    from google.cloud.bigtable_v2 import BigtableClient
+def test_client_veneer_data_client_not_initialized():
+    import copy
+
+    from google.cloud.bigtable import __version__
+    from google.cloud.bigtable.data import BigtableDataClient
 
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials)
 
-    table_data_client = client.table_data_client
-    assert isinstance(table_data_client, BigtableClient)
-    assert client._table_data_client is table_data_client
+    with mock.patch("copy.copy", wraps=copy.copy) as copy_mock:
+        data_client = client._veneer_data_client
+
+        assert isinstance(data_client, BigtableDataClient)
+        assert client._table_data_client is data_client
+
+    assert client._table_data_client._disable_background_refresh
+    assert (
+        client._table_data_client.client_info.client_library_version
+        == f"{__version__}-data-shim"
+    )
+    copy_mock.assert_called_once_with(client._client_info)
 
 
-def test_client_table_data_client_not_initialized_w_client_info():
-    from google.cloud.bigtable_v2 import BigtableClient
+def test_client_veneer_data_client_not_initialized_w_client_info():
+    import copy
+
+    from google.api_core.gapic_v1.client_info import ClientInfo
+
+    from google.cloud.bigtable import __version__
 
     credentials = _make_credentials()
-    client_info = mock.Mock()
+    client_info = ClientInfo(gapic_version="1.2.3", user_agent="test-client-")
     client = _make_client(
         project=PROJECT, credentials=credentials, client_info=client_info
     )
 
-    table_data_client = client.table_data_client
-    assert isinstance(table_data_client, BigtableClient)
+    with mock.patch("copy.copy", wraps=copy.copy) as copy_mock:
+        data_client = client._veneer_data_client
+
+        assert client._table_data_client is data_client
+
     assert client._client_info is client_info
-    assert client._table_data_client is table_data_client
+    assert client._table_data_client.client_info is not client_info
+    assert (
+        client._table_data_client.client_info.gapic_version == client_info.gapic_version
+    )
+    assert client._table_data_client._disable_background_refresh
+    assert (
+        client._table_data_client.client_info.client_library_version
+        == f"{__version__}-data-shim"
+    )
+    copy_mock.assert_called_once_with(client_info)
 
 
-def test_client_table_data_client_not_initialized_w_client_options():
+def test_client_veneer_data_client_not_initialized_w_client_options():
     from google.api_core.client_options import ClientOptions
 
     credentials = _make_credentials()
@@ -424,27 +452,148 @@ def test_client_table_data_client_not_initialized_w_client_options():
         project=PROJECT, credentials=credentials, client_options=client_options
     )
 
-    patch = mock.patch("google.cloud.bigtable_v2.BigtableClient")
-    with patch as mocked:
+    data_client = client._veneer_data_client
+    assert client._table_data_client is data_client
+    assert client._table_data_client._disable_background_refresh
+    assert client._table_data_client._gapic_client._client_options == client_options
+
+
+def test_client_veneer_data_client_initialized():
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+
+    already = client._table_data_client = object()
+    assert client._veneer_data_client is already
+
+
+def test_client_veneer_data_client_metrics_exporter_credential_scopes():
+    """
+    The legacy client pins service account credentials to bigtable-only scopes.
+    The veneer data client must not pass those on to its Cloud Monitoring
+    metrics exporter as-is, or every metrics export fails with UNAUTHENTICATED.
+    """
+    import google.auth.crypt
+    from google.oauth2 import service_account
+
+    from google.cloud.bigtable.client import ADMIN_SCOPE, DATA_SCOPE
+    from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+        BigtableMetricsExporter,
+    )
+
+    monitoring_write_scope = "https://www.googleapis.com/auth/monitoring.write"
+    credentials = service_account.Credentials(
+        mock.Mock(spec=google.auth.crypt.Signer),
+        "sa@example.iam.gserviceaccount.com",
+        "https://oauth2.googleapis.com/token",
+    )
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    # the legacy client narrows the credentials to bigtable scopes
+    assert tuple(client._credentials.scopes) == (DATA_SCOPE, ADMIN_SCOPE)
+
+    with mock.patch.object(BigtableMetricsExporter, "_batch_write"):
+        data_client = client._veneer_data_client
+        try:
+            exporter = data_client._metrics.handlers[0]._exporter
+            exporter_credentials = exporter.client._transport._credentials
+            # the exporter gets a copy of the credentials that can write metrics
+            assert exporter_credentials is not client._credentials
+            assert list(exporter_credentials.scopes) == [monitoring_write_scope]
+            assert (
+                exporter_credentials.service_account_email
+                == credentials.service_account_email
+            )
+            # bigtable traffic keeps using the narrowly scoped credentials
+            assert tuple(data_client._credentials.scopes) == (DATA_SCOPE, ADMIN_SCOPE)
+            assert tuple(data_client.transport._credentials.scopes) == (
+                DATA_SCOPE,
+                ADMIN_SCOPE,
+            )
+        finally:
+            data_client.close()
+
+
+def test_client_data_gapic_client_not_initialized():
+    from google.cloud.bigtable_v2 import BigtableClient
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials)
+
+    table_data_client = client.table_data_client
+    assert isinstance(table_data_client, BigtableClient)
+    assert client._table_data_client._gapic_client is table_data_client
+
+
+def test_client_data_gapic_client_not_initialized_w_client_info():
+    from google.cloud.bigtable_v2 import BigtableClient
+
+    credentials = _make_credentials()
+    client_info = mock.Mock()
+    client = _make_client(
+        project=PROJECT, credentials=credentials, client_info=client_info
+    )
+
+    mock_gapic_client = mock.MagicMock(spec=BigtableClient)
+    mock_gapic_client.universe_domain = BigtableClient._DEFAULT_UNIVERSE
+
+    with mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.GapicClient",
+        return_value=mock_gapic_client,
+    ) as gapic_mock:
+        with mock.patch("copy.copy") as copy_mock:
+            table_data_client = client.table_data_client
+
+    assert isinstance(table_data_client, BigtableClient)
+    assert client._client_info is client_info
+    assert client._table_data_client._gapic_client is table_data_client
+
+    copy_mock.assert_called_once_with(client._client_info)
+    gapic_mock.assert_called_once_with(
+        client_info=copy_mock.return_value,
+        credentials=mock.ANY,
+        transport=mock.ANY,
+        client_options=mock.ANY,
+    )
+
+
+def test_client_data_gapic_client_not_initialized_w_client_options():
+    from google.api_core.client_options import ClientOptions
+
+    from google.cloud.bigtable_v2 import BigtableClient
+
+    credentials = _make_credentials()
+    client_options = ClientOptions(quota_project_id="QUOTA-PROJECT", api_endpoint="xyz")
+    client = _make_client(
+        project=PROJECT, credentials=credentials, client_options=client_options
+    )
+
+    mock_gapic_client = mock.MagicMock()
+    mock_gapic_client.universe_domain = BigtableClient._DEFAULT_UNIVERSE
+
+    with mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.GapicClient",
+        return_value=mock_gapic_client,
+    ) as gapic_mock:
         table_data_client = client.table_data_client
 
-    assert table_data_client is mocked.return_value
-    assert client._table_data_client is table_data_client
+    assert client._table_data_client._gapic_client is table_data_client
 
-    mocked.assert_called_once_with(
-        client_info=client._client_info,
-        credentials=None,
+    gapic_mock.assert_called_once_with(
+        client_info=mock.ANY,
+        credentials=mock.ANY,
         transport=mock.ANY,
         client_options=client_options,
     )
 
 
 def test_client_table_data_client_initialized():
+    from google.cloud.bigtable.data import BigtableDataClient
+
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials, admin=True)
 
-    already = client._table_data_client = object()
-    assert client.table_data_client is already
+    already = client._table_data_client = mock.Mock(spec=BigtableDataClient)
+    already._gapic_client = mock.Mock()
+    assert client.table_data_client is already._gapic_client
 
 
 def test_client_table_admin_client_not_initialized_no_admin_flag():

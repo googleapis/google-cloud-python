@@ -112,12 +112,26 @@ class BigQueryTableReferences(proto.Message):
     Attributes:
         table_references (MutableSequence[google.cloud.geminidataanalytics_v1.types.BigQueryTableReference]):
             Optional. References to BigQuery tables.
+        property_graph_references (MutableSequence[google.cloud.geminidataanalytics_v1.types.BigQueryPropertyGraphReference]):
+            Optional. References to BigQuery graphs.
+
+            Note: "property graph" is the former name for
+            BigQuery Graph. The field and message names
+            retain the original term for backward
+            compatibility; both refer to the same resource.
     """
 
     table_references: MutableSequence["BigQueryTableReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BigQueryTableReference",
+    )
+    property_graph_references: MutableSequence["BigQueryPropertyGraphReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BigQueryPropertyGraphReference",
+        )
     )
 
 

@@ -49,7 +49,11 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     StatementType,
 )
 from google.cloud.spanner_dbapi.transaction_helper import CursorStatementType
-from google.cloud.spanner_dbapi.utils import PeekIterator, StreamedManyResultSets
+from google.cloud.spanner_dbapi.utils import (
+    BufferedIterator,
+    PeekIterator,
+    StreamedManyResultSets,
+)
 from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 
@@ -99,6 +103,31 @@ class Cursor(object):
         self._in_retry_mode = False
         self._batch_dml_rows_count = None
         self._request_tag = None
+        self._timeout = None
+
+    @property
+    def timeout(self):
+        """The timeout (in seconds) that will be applied to statements on this
+        cursor. Defaults to the connection's timeout if not set on the cursor.
+
+        Returns:
+            Optional[float]: The timeout (in seconds) for statements on this
+                 cursor.
+        """
+        return (
+            self._timeout
+            if self._timeout is not None
+            else getattr(self.connection, "timeout", None)
+        )
+
+    @timeout.setter
+    def timeout(self, value):
+        """Sets the timeout (in seconds) for statements on this cursor.
+
+        Args:
+            value (Optional[float]): The timeout (in seconds) for statements.
+        """
+        self._timeout = value
 
     @property
     def request_tag(self):
@@ -228,13 +257,18 @@ class Cursor(object):
         """This function should only be used in autocommit mode."""
         self.connection._transaction = transaction
         self.connection._snapshot = None
+        kwargs = {
+            "params": params,
+            "param_types": get_param_types(params),
+            "last_statement": True,
+        }
+        if self.timeout is not None:
+            kwargs["timeout"] = self.timeout
         self._result_set = transaction.execute_sql(
             sql,
-            params=params,
-            param_types=get_param_types(params),
-            last_statement=True,
+            **kwargs,
         )
-        self._itr = PeekIterator(self._result_set)
+        self._itr = BufferedIterator(self._result_set)
         self._row_count = None
 
     def _batch_DDLs(self, sql):
@@ -304,6 +338,11 @@ class Cursor(object):
                         self._itr = PeekIterator(self._result_set)
             elif self.connection._batch_mode == BatchMode.DML:
                 self.connection.execute_batch_dml_statement(self._parsed_statement)
+            elif (
+                self._parsed_statement.statement_type == StatementType.QUERY
+                and self.connection.auto_partition_mode
+            ):
+                self._handle_auto_partition_query(sql, args or None)
             elif self.connection.read_only or (
                 not self.connection._client_transaction_started
                 and self._parsed_statement.statement_type == StatementType.QUERY
@@ -344,7 +383,14 @@ class Cursor(object):
             raise
 
         finally:
-            if not self._in_retry_mode and not call_from_execute_many:
+            if (
+                not self._in_retry_mode
+                and not call_from_execute_many
+                and not (
+                    self._parsed_statement is not None
+                    and self._parsed_statement.statement_type == StatementType.DDL
+                )
+            ):
                 self.transaction_helper.add_execute_statement_for_retry(
                     self, sql, args, exception, False
                 )
@@ -360,7 +406,7 @@ class Cursor(object):
             while True:
                 try:
                     self._result_set = self.connection.run_statement(
-                        statement, self.request_options
+                        statement, self.request_options, self.timeout
                     )
                     self._itr = PeekIterator(self._result_set)
                     return
@@ -542,11 +588,14 @@ class Cursor(object):
         return rows
 
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
+        kwargs = {"request_options": self.request_options}
+        if self.timeout is not None:
+            kwargs["timeout"] = self.timeout
         self._result_set = snapshot.execute_sql(
             sql,
             params,
             get_param_types(params),
-            request_options=self.request_options,
+            **kwargs,
         )
         # Read the first element so that the StreamedResultSet can
         # return the metadata after a DQL statement.
@@ -576,6 +625,27 @@ class Cursor(object):
                 self.connection._snapshot = snapshot
                 self.connection._transaction = None
                 self._handle_DQL_with_snapshot(snapshot, sql, params)
+
+    def _handle_auto_partition_query(self, sql, params):
+        if self.connection.database is None:
+            raise ValueError("Database needs to be passed for this operation")
+        if (
+            not self.connection.read_only
+            and self.connection._client_transaction_started
+        ):
+            raise ProgrammingError(
+                "Partitioned query is not supported, because the connection is in a read/write transaction."
+            )
+        sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
+        batch_snapshot = self.connection.database.batch_snapshot()
+        self._result_set = batch_snapshot.run_partitioned_query(
+            sql,
+            params=params,
+            param_types=get_param_types(params),
+            data_boost_enabled=self.connection.data_boost_enabled,
+        )
+        self._itr = self._result_set
+        self._row_count = None
 
     def __enter__(self):
         return self
@@ -614,8 +684,12 @@ class Cursor(object):
             raise ValueError("Database needs to be passed for this operation")
         self.connection.run_prior_DDL_statements()
 
+        kwargs = {}
+        if self.timeout is not None:
+            kwargs["timeout"] = self.timeout
+
         with self.connection.database.snapshot() as snapshot:
-            return list(snapshot.execute_sql(sql, params, param_types))
+            return list(snapshot.execute_sql(sql, params, param_types, **kwargs))
 
     def get_table_column_schema(self, table_name, schema_name=""):
         rows = self.run_sql_in_snapshot(

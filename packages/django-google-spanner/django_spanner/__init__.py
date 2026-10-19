@@ -38,7 +38,7 @@ RANDOM_ID_GENERATION_ENABLED_SETTING = "RANDOM_ID_GENERATION_ENABLED"
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
-SUPPORTED_DJANGO_VERSIONS = [(5, 2)]
+SUPPORTED_DJANGO_VERSIONS = [(6, 0), (5, 2)]
 
 check_django_compatability(SUPPORTED_DJANGO_VERSIONS)
 
@@ -74,7 +74,7 @@ def autofield_init(self, *args, **kwargs):
             == "true"
         ):
             self.default = gen_rand_int64
-            self.db_returning = False
+            self.db_returning = True
             self.validators = []
             break
 

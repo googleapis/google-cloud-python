@@ -17,13 +17,14 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
+    TypeCode,
 )
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_select1_result,
     add_singer_query_result,
-    add_update_count,
+    add_single_result,
 )
 from tests.mockserver_tests.models import Singer
 from tests.settings import DATABASES
@@ -78,11 +79,14 @@ class TestBasics(MockServerTestBase):
         self.assertIsInstance(requests[2], ExecuteSqlRequest)
 
     def test_insert_singer(self):
-        add_update_count(
+        add_single_result(
             "INSERT INTO tests_singer "
             "(id, first_name, last_name) "
-            "VALUES (@a0, @a1, @a2)",
-            1,
+            "VALUES (@a0, @a1, @a2) "
+            "THEN RETURN id",
+            "id",
+            TypeCode.INT64,
+            [("1",)],
         )
         singer = Singer(first_name="test", last_name="test")
         singer.save()
@@ -110,11 +114,14 @@ class TestBasics(MockServerTestBase):
             last_name = models.CharField(max_length=200)
 
         try:
-            add_update_count(
+            add_single_result(
                 "INSERT INTO tests_localsinger "
                 "(first_name, last_name) "
-                "VALUES (@a0, @a1)",
-                1,
+                "VALUES (@a0, @a1) "
+                "THEN RETURN id",
+                "id",
+                TypeCode.INT64,
+                [("1",)],
             )
             singer = LocalSinger(first_name="test", last_name="test")
             singer.save()

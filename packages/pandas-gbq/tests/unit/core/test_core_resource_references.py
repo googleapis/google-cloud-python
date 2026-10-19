@@ -67,6 +67,11 @@ def test_parse_table_id_valid(table_id, expected):
         ".my_dataset.my_table",
         "my-project.my_dataset.",
         "my-project..my_table",
+        # A backtick would close the identifier quoting in the generated SQL and
+        # let the rest of the string run as SQL, so it must be rejected here.
+        "my-project.my_dataset.my_table` ORDER BY (SELECT 1) -- ",
+        "my-project.my_catalog.my_namespace.evil` UNION ALL SELECT 1 -- ",
+        "my-project.my_dataset.`",
     ],
 )
 def test_parse_table_id_invalid(table_id):

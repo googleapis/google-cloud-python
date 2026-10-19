@@ -434,6 +434,7 @@ def delete(key, options):
     use_global_cache = context._use_global_cache(key, options)
     use_datastore = context._use_datastore(key, options)
     transaction = context.transaction
+    lock = None
 
     if use_global_cache:
         cache_key = _cache.global_cache_key(key)
@@ -450,17 +451,18 @@ def delete(key, options):
         yield batch.delete(key)
 
     if use_global_cache:
-        if transaction:
+        if lock is not None:
+            if transaction:
 
-            def callback():
-                _cache.global_unlock_for_write(cache_key, lock).result()
+                def callback():
+                    _cache.global_unlock_for_write(cache_key, lock).result()
 
-            context.call_on_transaction_complete(callback)
+                context.call_on_transaction_complete(callback)
 
-        elif use_datastore:
-            yield _cache.global_unlock_for_write(cache_key, lock)
+            else:
+                yield _cache.global_unlock_for_write(cache_key, lock)
 
-        else:
+        elif not use_datastore:
             yield _cache.global_delete(cache_key)
 
 

@@ -32,6 +32,7 @@ from google.apps.chat_v1.types import (
 )
 from google.apps.chat_v1.types import attachment as gc_attachment
 from google.apps.chat_v1.types import deletion_metadata as gc_deletion_metadata
+from google.apps.chat_v1.types import markup_syntax as gc_markup_syntax
 from google.apps.chat_v1.types import matched_url as gc_matched_url
 from google.apps.chat_v1.types import slash_command as gc_slash_command
 from google.apps.chat_v1.types import space as gc_space
@@ -89,9 +90,12 @@ class Message(proto.Message):
             Output only. The user who created the message. If your Chat
             app `authenticates as a
             user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-            the output populates the
+            the output only populates the
             `user <https://developers.google.com/workspace/chat/api/reference/rest/v1/User>`__
-            ``name`` and ``type``.
+            ``name`` and ``type`` fields for both internal and external
+            users, unless they are members of the space or have a prior
+            affinity, like a direct message (DM) conversation, with the
+            calling user.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Immutable. For spaces created in
             Chat, the time at which the message was created.
@@ -161,10 +165,15 @@ class Message(proto.Message):
             Optional. An array of
             `cards <https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>`__.
 
-            Only Chat apps can create cards. If your Chat app
-            `authenticates as a
+            Chat apps can create cards with `app
+            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
+            As part of the `Developer Preview
+            Program <https://developers.google.com/workspace/preview>`__,
+            if your Chat app `authenticates as a
             user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-            the messages can't contain cards.
+            it can create card messages. If your Chat app is not part of
+            Developer Preview Program, it can't create cards with user
+            authentication.
 
             To learn how to create a message that contains cards, see
             `Send a
@@ -274,6 +283,9 @@ class Message(proto.Message):
             Creating a message with accessory widgets requires [app
             authentication]
             (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies how the server interprets the message
+            ``text`` field content.
     """
 
     name: str = proto.Field(
@@ -406,6 +418,11 @@ class Message(proto.Message):
         proto.MESSAGE,
         number=44,
         message="AccessoryWidget",
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=47,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
 
 
@@ -785,11 +802,19 @@ class GetMessageRequest(proto.Message):
             value from the ``clientAssignedMessageId`` field for
             ``{message}``. For details, see [Name a message]
             (https://developers.google.com/workspace/chat/create-messages#name_a_created_message).
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies the desired output syntax for the Chat
+            message ``formatted_text`` field.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
 
 
@@ -899,10 +924,26 @@ class CreateMessageRequest(proto.Message):
             usage, see `Start or reply to a message
             thread <https://developers.google.com/workspace/chat/create-messages#create-message-thread>`__.
         request_id (str):
-            Optional. A unique request ID for this
-            message. Specifying an existing request ID
-            returns the message created with that ID instead
-            of creating a new message.
+            Optional. A unique ID for this request. A random UUID is
+            recommended. Specifying a request ID makes the request
+            idempotent, which ensures that multiple identical requests
+            with the same request ID result in only a single message
+            being created. Subsequent requests with the same request ID
+            return the existing message and do not update the message,
+            even if the requested details differ from the current state.
+
+            To use this field effectively:
+
+            - Ensure that subsequent requests are identical and use the
+              same authentication credentials as the original request.
+            - If a message was already created with the provided request
+              ID, the request returns that message. Note that the
+              returned message might not be fully populated; the API
+              echoes the message in your request with the
+              system-assigned resource names populated. To retrieve the
+              latest metadata for the message, call ``GetMessage``.
+            - Reusing an existing request ID with a different
+              authenticated user results in an error.
         message_reply_option (google.apps.chat_v1.types.CreateMessageRequest.MessageReplyOption):
             Optional. Specifies whether a message starts a thread or
             replies to one. Only supported in named spaces.
@@ -1135,6 +1176,9 @@ class ListMessagesRequest(proto.Message):
             messages. Deleted messages include deleted time
             and metadata about their deletion, but message
             content is unavailable.
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies the desired output syntax for the Chat
+            message ``formatted_text`` field.
     """
 
     parent: str = proto.Field(
@@ -1160,6 +1204,11 @@ class ListMessagesRequest(proto.Message):
     show_deleted: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
 
 
@@ -1247,10 +1296,18 @@ class CardWithId(proto.Message):
     `card <https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>`__
     in a Google Chat message.
 
-    Only Chat apps can create cards. If your Chat app `authenticates as
-    a
+    Chat apps can create cards with `app
+    authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
+    As part of the `Developer Preview
+    Program <https://developers.google.com/workspace/preview>`__, if
+    your Chat app `authenticates as a
     user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-    the message can't contain cards.
+    it can create card messages. If your Chat app is not part of
+    Developer Preview Program, it can't create cards with user
+    authentication.
+
+    To learn how to create a message that contains cards, see `Send a
+    message <https://developers.google.com/workspace/chat/create-messages>`__.
 
     `Card builder <https://addons.gsuite.google.com/uikit/builder>`__
 
@@ -1316,6 +1373,11 @@ class SearchMessagesRequest(proto.Message):
               matches. For example, ``space.display_name:Project``
               searches for messages in the top five spaces that contain
               the word "Project" in their display names.
+            - ``space.space_type``: The type of the space. Only supports
+              ``=``. For example, ``space.space_type="DIRECT_MESSAGE"``
+              returns only messages from direct messages. The possible
+              values are ``DIRECT_MESSAGE``, ``GROUP_CHAT``, and
+              ``SPACE``.
             - ``attachment``: Supports the operator ``:*`` (has any) to
               check for the presence of attachments. If ``attachment:*``
               is specified, only messages that have at least one
@@ -1340,9 +1402,9 @@ class SearchMessagesRequest(proto.Message):
             - ``is_unread()``: Filters out messages that have been read
               by the calling user.
 
-            Using the ``space.display_name`` filter requires that the
-            calling credentials include one of the following
-            `authorization
+            Using the ``space.display_name`` or the ``space.space_type``
+            filters requires that the calling credentials include one of
+            the following `authorization
             scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
             - ``https://www.googleapis.com/auth/chat.spaces.readonly``
@@ -1384,6 +1446,9 @@ class SearchMessagesRequest(proto.Message):
               ``space.display_name:Project OR space.display_name:Tasks``
               returns messages that are in spaces with display names
               containing either ``Project`` or ``Tasks`` or both.
+            - ``space.space_type`` supports only the ``OR`` operator,
+              for example:
+              ``space.space_type = "DIRECT_MESSAGE" OR space.space_type = "GROUP_CHAT"``.
             - ``annotations.user_mentions.user.name`` supports the
               operators ``AND`` and ``OR``, but not a mix of both. For
               example:
@@ -1460,6 +1525,9 @@ class SearchMessagesRequest(proto.Message):
             order per query (``create_time`` or ``relevance``) is
             supported. Only descending order (``desc``) is supported,
             and it must be specified after the order attribute.
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies the desired output syntax for the Chat
+            message ``formatted_text`` field.
         view (google.apps.chat_v1.types.SearchMessagesRequest.SearchMessagesView):
             Optional. Specifies what kind of search results view to
             return. The default is ``SEARCH_MESSAGES_VIEW_BASIC``.
@@ -1505,6 +1573,11 @@ class SearchMessagesRequest(proto.Message):
     order_by: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
     view: SearchMessagesView = proto.Field(
         proto.ENUM,
