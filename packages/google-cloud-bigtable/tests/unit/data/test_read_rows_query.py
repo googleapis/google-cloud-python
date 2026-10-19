@@ -676,8 +676,6 @@ class TestReadRowsQuery:
         """Assert that identical ranges are deduplicated, but distinct ranges are kept."""
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
-        query = self._make_one()
-
         # Create two identical ranges
         r1 = RowRange(start_key="a", end_key="b")
         r2 = RowRange(start_key="a", end_key="b")
@@ -685,10 +683,11 @@ class TestReadRowsQuery:
         # Create a distinct range
         r3 = RowRange(start_key="c", end_key="d")
 
-        # Add all three ranges
-        query.add_range(r1)
-        query.add_range(r2)  # Duplicate, should be ignored
+        # Seed r1 via __init__, then add r2 (duplicate) and r3 (distinct)
+        query = self._make_one(row_ranges=[r1])
+        query.add_range(r2)  # Duplicate of constructor-seeded r1, should be ignored
         query.add_range(r3)  # Distinct, should be kept
+        query.add_range(RowRange(start_key="c", end_key="d"))  # Duplicate of r3, should be ignored
 
         # Assert that only r1 and r3 are in the final query
         assert len(query.row_ranges) == 2
