@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.62.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.61.0...google-auth-v2.62.0) (2026-10-12)
+
+
+### Features
+
+* **auth:** enable bound ID tokens by default on Cloud Run ([#18635](https://github.com/googleapis/google-cloud-python/issues/18635)) ([8b625c4](https://github.com/googleapis/google-cloud-python/commit/8b625c4927371992f4569962292299eced040047))
+
+## [2.61.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.60.0...google-auth-v2.61.0) (2026-10-07)
+
+
+### Features
+
+* **auth:** support bound access and ID tokens for GKE ([#18594](https://github.com/googleapis/google-cloud-python/issues/18594)) ([9f5fd7b](https://github.com/googleapis/google-cloud-python/commit/9f5fd7bdf0707a17c363482b094ccd70a4358389))
+
 ## [2.60.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.1...google-auth-v2.60.0) (2026-10-02)
 
 

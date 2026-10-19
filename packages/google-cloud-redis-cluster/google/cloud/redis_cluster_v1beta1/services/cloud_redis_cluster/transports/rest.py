@@ -82,11 +82,27 @@ class CloudRedisClusterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_acl_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_acl_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_create_cluster(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_acl_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_acl_policy(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -111,6 +127,22 @@ class CloudRedisClusterRestInterceptor:
                 return request, metadata
 
             def post_export_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_acl_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_acl_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_acl_policy_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_acl_policy_revision(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -154,6 +186,22 @@ class CloudRedisClusterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_acl_policies(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_acl_policies(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_acl_policy_revisions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_acl_policy_revisions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_backup_collections(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -183,6 +231,14 @@ class CloudRedisClusterRestInterceptor:
                 return request, metadata
 
             def post_reschedule_cluster_maintenance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_acl_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_acl_policy(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -249,6 +305,55 @@ class CloudRedisClusterRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_acl_policy(
+        self,
+        request: cloud_redis_cluster.CreateAclPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.CreateAclPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_acl_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_create_acl_policy(
+        self, response: cloud_redis_cluster.AclPolicy
+    ) -> cloud_redis_cluster.AclPolicy:
+        """Post-rpc interceptor for create_acl_policy
+
+        DEPRECATED. Please use the `post_create_acl_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code. This `post_create_acl_policy` interceptor runs
+        before the `post_create_acl_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_acl_policy_with_metadata(
+        self,
+        response: cloud_redis_cluster.AclPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_redis_cluster.AclPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_acl_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_create_acl_policy_with_metadata`
+        interceptor in new development instead of the `post_create_acl_policy` interceptor.
+        When both interceptors are used, this `post_create_acl_policy_with_metadata` interceptor runs after the
+        `post_create_acl_policy` interceptor. The (possibly modified) response returned by
+        `post_create_acl_policy` will be passed to
+        `post_create_acl_policy_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_cluster(
         self,
         request: cloud_redis_cluster.CreateClusterRequest,
@@ -295,6 +400,55 @@ class CloudRedisClusterRestInterceptor:
         `post_create_cluster` interceptor. The (possibly modified) response returned by
         `post_create_cluster` will be passed to
         `post_create_cluster_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_acl_policy(
+        self,
+        request: cloud_redis_cluster.DeleteAclPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.DeleteAclPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_acl_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_delete_acl_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_acl_policy
+
+        DEPRECATED. Please use the `post_delete_acl_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code. This `post_delete_acl_policy` interceptor runs
+        before the `post_delete_acl_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_acl_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_acl_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_delete_acl_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_acl_policy` interceptor.
+        When both interceptors are used, this `post_delete_acl_policy_with_metadata` interceptor runs after the
+        `post_delete_acl_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_acl_policy` will be passed to
+        `post_delete_acl_policy_with_metadata`.
         """
         return response, metadata
 
@@ -440,6 +594,105 @@ class CloudRedisClusterRestInterceptor:
         `post_export_backup` interceptor. The (possibly modified) response returned by
         `post_export_backup` will be passed to
         `post_export_backup_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_acl_policy(
+        self,
+        request: cloud_redis_cluster.GetAclPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.GetAclPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_acl_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_get_acl_policy(
+        self, response: cloud_redis_cluster.AclPolicy
+    ) -> cloud_redis_cluster.AclPolicy:
+        """Post-rpc interceptor for get_acl_policy
+
+        DEPRECATED. Please use the `post_get_acl_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code. This `post_get_acl_policy` interceptor runs
+        before the `post_get_acl_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_acl_policy_with_metadata(
+        self,
+        response: cloud_redis_cluster.AclPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_redis_cluster.AclPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_acl_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_get_acl_policy_with_metadata`
+        interceptor in new development instead of the `post_get_acl_policy` interceptor.
+        When both interceptors are used, this `post_get_acl_policy_with_metadata` interceptor runs after the
+        `post_get_acl_policy` interceptor. The (possibly modified) response returned by
+        `post_get_acl_policy` will be passed to
+        `post_get_acl_policy_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_acl_policy_revision(
+        self,
+        request: cloud_redis_cluster.GetAclPolicyRevisionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.GetAclPolicyRevisionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_acl_policy_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_get_acl_policy_revision(
+        self, response: cloud_redis_cluster.AclPolicyRevision
+    ) -> cloud_redis_cluster.AclPolicyRevision:
+        """Post-rpc interceptor for get_acl_policy_revision
+
+        DEPRECATED. Please use the `post_get_acl_policy_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code. This `post_get_acl_policy_revision` interceptor runs
+        before the `post_get_acl_policy_revision_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_acl_policy_revision_with_metadata(
+        self,
+        response: cloud_redis_cluster.AclPolicyRevision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.AclPolicyRevision, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_acl_policy_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_get_acl_policy_revision_with_metadata`
+        interceptor in new development instead of the `post_get_acl_policy_revision` interceptor.
+        When both interceptors are used, this `post_get_acl_policy_revision_with_metadata` interceptor runs after the
+        `post_get_acl_policy_revision` interceptor. The (possibly modified) response returned by
+        `post_get_acl_policy_revision` will be passed to
+        `post_get_acl_policy_revision_with_metadata`.
         """
         return response, metadata
 
@@ -694,6 +947,110 @@ class CloudRedisClusterRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_acl_policies(
+        self,
+        request: cloud_redis_cluster.ListAclPoliciesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListAclPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_acl_policies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_list_acl_policies(
+        self, response: cloud_redis_cluster.ListAclPoliciesResponse
+    ) -> cloud_redis_cluster.ListAclPoliciesResponse:
+        """Post-rpc interceptor for list_acl_policies
+
+        DEPRECATED. Please use the `post_list_acl_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code. This `post_list_acl_policies` interceptor runs
+        before the `post_list_acl_policies_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_acl_policies_with_metadata(
+        self,
+        response: cloud_redis_cluster.ListAclPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListAclPoliciesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_acl_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_list_acl_policies_with_metadata`
+        interceptor in new development instead of the `post_list_acl_policies` interceptor.
+        When both interceptors are used, this `post_list_acl_policies_with_metadata` interceptor runs after the
+        `post_list_acl_policies` interceptor. The (possibly modified) response returned by
+        `post_list_acl_policies` will be passed to
+        `post_list_acl_policies_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_acl_policy_revisions(
+        self,
+        request: cloud_redis_cluster.ListAclPolicyRevisionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListAclPolicyRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_acl_policy_revisions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_list_acl_policy_revisions(
+        self, response: cloud_redis_cluster.ListAclPolicyRevisionsResponse
+    ) -> cloud_redis_cluster.ListAclPolicyRevisionsResponse:
+        """Post-rpc interceptor for list_acl_policy_revisions
+
+        DEPRECATED. Please use the `post_list_acl_policy_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code. This `post_list_acl_policy_revisions` interceptor runs
+        before the `post_list_acl_policy_revisions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_acl_policy_revisions_with_metadata(
+        self,
+        response: cloud_redis_cluster.ListAclPolicyRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListAclPolicyRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_acl_policy_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_list_acl_policy_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_acl_policy_revisions` interceptor.
+        When both interceptors are used, this `post_list_acl_policy_revisions_with_metadata` interceptor runs after the
+        `post_list_acl_policy_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_acl_policy_revisions` will be passed to
+        `post_list_acl_policy_revisions_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_backup_collections(
         self,
         request: cloud_redis_cluster.ListBackupCollectionsRequest,
@@ -893,6 +1250,55 @@ class CloudRedisClusterRestInterceptor:
         `post_reschedule_cluster_maintenance` interceptor. The (possibly modified) response returned by
         `post_reschedule_cluster_maintenance` will be passed to
         `post_reschedule_cluster_maintenance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_acl_policy(
+        self,
+        request: cloud_redis_cluster.UpdateAclPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.UpdateAclPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_acl_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_update_acl_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_acl_policy
+
+        DEPRECATED. Please use the `post_update_acl_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code. This `post_update_acl_policy` interceptor runs
+        before the `post_update_acl_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_acl_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_acl_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_update_acl_policy_with_metadata`
+        interceptor in new development instead of the `post_update_acl_policy` interceptor.
+        When both interceptors are used, this `post_update_acl_policy_with_metadata` interceptor runs after the
+        `post_update_acl_policy` interceptor. The (possibly modified) response returned by
+        `post_update_acl_policy` will be passed to
+        `post_update_acl_policy_with_metadata`.
         """
         return response, metadata
 
@@ -1404,6 +1810,154 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 )
             return resp
 
+    class _CreateAclPolicy(
+        _BaseCloudRedisClusterRestTransport._BaseCreateAclPolicy,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.CreateAclPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.CreateAclPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.AclPolicy:
+            r"""Call the create acl policy method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.CreateAclPolicyRequest):
+                    The request object. Request for ``CreateAclPolicy``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.AclPolicy:
+                    The ACL policy resource.
+            """
+
+            http_options = _BaseCloudRedisClusterRestTransport._BaseCreateAclPolicy._get_http_options()
+            request, metadata = self._interceptor.pre_create_acl_policy(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisClusterRestTransport._BaseCreateAclPolicy,
+                    "_BaseCreateAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.CreateAclPolicy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "CreateAclPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._CreateAclPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.AclPolicy()
+            pb_resp = cloud_redis_cluster.AclPolicy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_acl_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_acl_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis_cluster.AclPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.create_acl_policy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "CreateAclPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateCluster(
         _BaseCloudRedisClusterRestTransport._BaseCreateCluster,
         CloudRedisClusterRestStub,
@@ -1545,6 +2099,153 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     extra={
                         "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
                         "rpcName": "CreateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteAclPolicy(
+        _BaseCloudRedisClusterRestTransport._BaseDeleteAclPolicy,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.DeleteAclPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.DeleteAclPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete acl policy method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.DeleteAclPolicyRequest):
+                    The request object. Request for ``DeleteAclPolicy``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseCloudRedisClusterRestTransport._BaseDeleteAclPolicy._get_http_options()
+            request, metadata = self._interceptor.pre_delete_acl_policy(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisClusterRestTransport._BaseDeleteAclPolicy,
+                    "_BaseDeleteAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.DeleteAclPolicy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "DeleteAclPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._DeleteAclPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_acl_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_acl_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.delete_acl_policy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "DeleteAclPolicy",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1980,6 +2681,299 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     extra={
                         "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
                         "rpcName": "ExportBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetAclPolicy(
+        _BaseCloudRedisClusterRestTransport._BaseGetAclPolicy, CloudRedisClusterRestStub
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.GetAclPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.GetAclPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.AclPolicy:
+            r"""Call the get acl policy method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.GetAclPolicyRequest):
+                    The request object. Request for ``GetAclPolicy``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.AclPolicy:
+                    The ACL policy resource.
+            """
+
+            http_options = _BaseCloudRedisClusterRestTransport._BaseGetAclPolicy._get_http_options()
+            request, metadata = self._interceptor.pre_get_acl_policy(request, metadata)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisClusterRestTransport._BaseGetAclPolicy,
+                    "_BaseGetAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.GetAclPolicy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetAclPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._GetAclPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.AclPolicy()
+            pb_resp = cloud_redis_cluster.AclPolicy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_acl_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_acl_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis_cluster.AclPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.get_acl_policy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetAclPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetAclPolicyRevision(
+        _BaseCloudRedisClusterRestTransport._BaseGetAclPolicyRevision,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.GetAclPolicyRevision")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.GetAclPolicyRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.AclPolicyRevision:
+            r"""Call the get acl policy revision method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.GetAclPolicyRevisionRequest):
+                    The request object. Request for ``GetAclPolicyRevision``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.AclPolicyRevision:
+                    The ACL policy revision resource.
+            """
+
+            http_options = _BaseCloudRedisClusterRestTransport._BaseGetAclPolicyRevision._get_http_options()
+            request, metadata = self._interceptor.pre_get_acl_policy_revision(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisClusterRestTransport._BaseGetAclPolicyRevision,
+                    "_BaseGetAclPolicyRevision__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.GetAclPolicyRevision",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetAclPolicyRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CloudRedisClusterRestTransport._GetAclPolicyRevision._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.AclPolicyRevision()
+            pb_resp = cloud_redis_cluster.AclPolicyRevision.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_acl_policy_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_acl_policy_revision_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis_cluster.AclPolicyRevision.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.get_acl_policy_revision",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetAclPolicyRevision",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2738,6 +3732,306 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 )
             return resp
 
+    class _ListAclPolicies(
+        _BaseCloudRedisClusterRestTransport._BaseListAclPolicies,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.ListAclPolicies")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.ListAclPoliciesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.ListAclPoliciesResponse:
+            r"""Call the list acl policies method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.ListAclPoliciesRequest):
+                    The request object. Request for ``ListAclPolicies``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.ListAclPoliciesResponse:
+                    Response for ``ListAclPolicies``.
+            """
+
+            http_options = _BaseCloudRedisClusterRestTransport._BaseListAclPolicies._get_http_options()
+            request, metadata = self._interceptor.pre_list_acl_policies(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisClusterRestTransport._BaseListAclPolicies,
+                    "_BaseListAclPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.ListAclPolicies",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListAclPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._ListAclPolicies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.ListAclPoliciesResponse()
+            pb_resp = cloud_redis_cluster.ListAclPoliciesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_acl_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_acl_policies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_redis_cluster.ListAclPoliciesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.list_acl_policies",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListAclPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListAclPolicyRevisions(
+        _BaseCloudRedisClusterRestTransport._BaseListAclPolicyRevisions,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.ListAclPolicyRevisions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.ListAclPolicyRevisionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.ListAclPolicyRevisionsResponse:
+            r"""Call the list acl policy revisions method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.ListAclPolicyRevisionsRequest):
+                    The request object. Request for ``ListAclPolicyRevisions``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.ListAclPolicyRevisionsResponse:
+                    Response for ``ListAclPolicyRevisions``.
+            """
+
+            http_options = _BaseCloudRedisClusterRestTransport._BaseListAclPolicyRevisions._get_http_options()
+            request, metadata = self._interceptor.pre_list_acl_policy_revisions(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisClusterRestTransport._BaseListAclPolicyRevisions,
+                    "_BaseListAclPolicyRevisions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.ListAclPolicyRevisions",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListAclPolicyRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CloudRedisClusterRestTransport._ListAclPolicyRevisions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.ListAclPolicyRevisionsResponse()
+            pb_resp = cloud_redis_cluster.ListAclPolicyRevisionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_acl_policy_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_acl_policy_revisions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_redis_cluster.ListAclPolicyRevisionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.list_acl_policy_revisions",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListAclPolicyRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListBackupCollections(
         _BaseCloudRedisClusterRestTransport._BaseListBackupCollections,
         CloudRedisClusterRestStub,
@@ -3335,6 +4629,155 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 )
             return resp
 
+    class _UpdateAclPolicy(
+        _BaseCloudRedisClusterRestTransport._BaseUpdateAclPolicy,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.UpdateAclPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.UpdateAclPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update acl policy method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.UpdateAclPolicyRequest):
+                    The request object. Request for ``UpdateAclPolicy``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseCloudRedisClusterRestTransport._BaseUpdateAclPolicy._get_http_options()
+            request, metadata = self._interceptor.pre_update_acl_policy(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisClusterRestTransport._BaseUpdateAclPolicy,
+                    "_BaseUpdateAclPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.UpdateAclPolicy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "UpdateAclPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._UpdateAclPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_acl_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_acl_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.update_acl_policy",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "UpdateAclPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateCluster(
         _BaseCloudRedisClusterRestTransport._BaseUpdateCluster,
         CloudRedisClusterRestStub,
@@ -3491,12 +4934,32 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
         return self._BackupCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.CreateAclPolicyRequest], cloud_redis_cluster.AclPolicy
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAclPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_cluster(
         self,
     ) -> Callable[[cloud_redis_cluster.CreateClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.DeleteAclPolicyRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAclPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_backup(
@@ -3521,6 +4984,27 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetAclPolicyRequest], cloud_redis_cluster.AclPolicy
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAclPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_acl_policy_revision(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetAclPolicyRevisionRequest],
+        cloud_redis_cluster.AclPolicyRevision,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAclPolicyRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_backup(
@@ -3576,6 +5060,30 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
         )  # type: ignore
 
     @property
+    def list_acl_policies(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListAclPoliciesRequest],
+        cloud_redis_cluster.ListAclPoliciesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAclPolicies(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_acl_policy_revisions(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListAclPolicyRevisionsRequest],
+        cloud_redis_cluster.ListAclPolicyRevisionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAclPolicyRevisions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def list_backup_collections(
         self,
     ) -> Callable[
@@ -3620,6 +5128,16 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
         return self._RescheduleClusterMaintenance(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def update_acl_policy(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.UpdateAclPolicyRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAclPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_cluster(

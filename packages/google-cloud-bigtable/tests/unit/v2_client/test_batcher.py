@@ -329,3 +329,43 @@ class _AtexitMock:
 
     def unregister(self, func):
         self._functions.remove(func)
+
+
+def test_mutations_batcher_atexit_flushes_after_explicit_flush(_setup_batcher, recwarn):
+    import atexit
+
+    table, operation_mock = _setup_batcher
+    registered_callbacks = []
+    with (
+        mock.patch.object(atexit, "register", side_effect=registered_callbacks.append),
+        mock.patch.object(
+            atexit,
+            "unregister",
+            side_effect=lambda fn: registered_callbacks.remove(fn)
+            if fn in registered_callbacks
+            else None,
+        ),
+    ):
+        mutation_batcher = MutationsBatcher(table=table)
+
+        row1 = DirectRow(row_key=b"row_key_1")
+        row1.set_cell("cf1", b"c1", b"1")
+        mutation_batcher.mutate(row1)
+        mutation_batcher.flush()
+        assert operation_mock.call_count == 1
+
+        row2 = DirectRow(row_key=b"row_key_2")
+        row2.set_cell("cf1", b"c1", b"2")
+        mutation_batcher.mutate(row2)
+        assert operation_mock.call_count == 1
+
+        # Simulate interpreter shutdown: ThreadPoolExecutors are shut down by
+        # threading._shutdown() before atexit callbacks run in LIFO order.
+        mutation_batcher._batcher._sync_flush_executor.shutdown(wait=True)
+        mutation_batcher._batcher._sync_rpc_executor.shutdown(wait=True)
+        for cb in list(reversed(registered_callbacks)):
+            if cb in registered_callbacks:
+                cb()
+
+        assert operation_mock.call_count == 2
+        assert len(recwarn) == 0

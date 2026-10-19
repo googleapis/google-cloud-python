@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/db-dtypes/#history
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.7.2...db-dtypes-v1.8.0) (2026-10-15)
+
+
+### Features
+
+* **db-dtypes:** support pandas 3.1 ([#18590](https://github.com/googleapis/google-cloud-python/issues/18590)) ([f18a11e](https://github.com/googleapis/google-cloud-python/commit/f18a11eb4308b9a8889166ea3c1246fb8306a906))
+
 ## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.7.1...db-dtypes-v1.7.2) (2026-10-01)
 
 

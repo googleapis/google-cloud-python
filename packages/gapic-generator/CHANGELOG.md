@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.43.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.43.0...gapic-generator-v1.43.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* **gapic-generator:** do not emit empty routing metadata on client-streaming RPCs ([#18591](https://github.com/googleapis/google-cloud-python/issues/18591)) ([bbdd643](https://github.com/googleapis/google-cloud-python/commit/bbdd643b91665b749da3fe3d5b39d2450caec2c2))
+* **gapic-generator:** resolve showcase-mypy incompatible redefinition ([7032a89](https://github.com/googleapis/google-cloud-python/commit/7032a895a891172b01844b805ac4fe4bd9ffa424))
+* **gapic-generator:** resolve showcase-mypy incompatible redefinition and add canary CI job ([#18701](https://github.com/googleapis/google-cloud-python/issues/18701)) ([7032a89](https://github.com/googleapis/google-cloud-python/commit/7032a895a891172b01844b805ac4fe4bd9ffa424))
+
+## [1.43.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.42.0...gapic-generator-v1.43.0) (2026-10-08)
+
+
+### Features
+
+* **gapic-generator:** generate code samples for resumable upload RPCs ([#18501](https://github.com/googleapis/google-cloud-python/issues/18501)) ([c8926ab](https://github.com/googleapis/google-cloud-python/commit/c8926ab89d240239fee0c82be2373c752d3507c0))
+* generate client, transport, and unit test templates for resumable uploads ([#18495](https://github.com/googleapis/google-cloud-python/issues/18495)) ([3f8d00b](https://github.com/googleapis/google-cloud-python/commit/3f8d00bf5d95337a97268bcbdd7ef1ee155f7516))
+* **observability:** implement universal 4-path OpenTelemetry tracing ([#18433](https://github.com/googleapis/google-cloud-python/issues/18433)) ([7d18b25](https://github.com/googleapis/google-cloud-python/commit/7d18b2575c5170518df0ba0e425d87a41f0eba56))
+
 ## [1.42.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.41.0...gapic-generator-v1.42.0) (2026-10-01)
 
 

@@ -204,7 +204,10 @@ class MutationsBatcher(object):
             * :exc:`~batcher.MutationsBatchError` if there's any error in the mutations.
         """
         self._close_batcher()
+        # Set atexit registration after internal batcher.
+        atexit.unregister(self.close)
         self._init_batcher()
+        atexit.register(self.close)
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         """Clean up resources. Flush and shutdown the ThreadPoolExecutor."""
