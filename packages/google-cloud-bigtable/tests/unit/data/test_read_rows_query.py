@@ -633,10 +633,13 @@ class TestReadRowsQuery:
 
         # When adding keys that are already present in the query, add_key must
         # short-circuit via _key_set without accessing _row_set.row_keys.
-        with mock.patch.object(query, "_row_set", wraps=query._row_set) as mock_row_set:
+        mock_row_set = mock.MagicMock()
+        row_keys_prop = mock.PropertyMock()
+        type(mock_row_set).row_keys = row_keys_prop
+        with mock.patch.object(query, "_row_set", mock_row_set):
             query.add_key(b"k0")
             query.add_key("k0")
-            assert not mock_row_set.row_keys.called
+            row_keys_prop.assert_not_called()
 
         assert query.row_keys == [b"k0"]
 
@@ -731,8 +734,9 @@ class TestReadRowsQuery:
         r1 = RowRange(start_key=b"a", end_key=b"b")
         query.add_range(r1)
 
-        # Mutate the caller's RowRange wrapper reference after insertion.
-        r1._pb = RowRange(start_key=b"x", end_key=b"y")._pb
+        # Mutate the caller's underlying RowRangePB in place after insertion.
+        r1._pb.start_key_closed = b"x"
+        r1._pb.end_key_open = b"y"
 
         # Adding a new RowRange with the original ("a", "b") bounds must still be
         # detected as a duplicate of the previously added range.
