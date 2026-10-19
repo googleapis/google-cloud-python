@@ -431,7 +431,7 @@ class MutationsBatcherAsync:
                 list of FailedMutationEntryError objects for mutations that failed.
                 FailedMutationEntryError objects will not contain index information
         """
-        statuses = [status_pb2.Status(code=code_pb2.UNKNOWN) for _ in range(len(batch))]
+        statuses: list[status_pb2.Status] | None = None
         try:
             operation = CrossSync._MutateRowsOperation(
                 self._target.client._gapic_client,
@@ -444,14 +444,18 @@ class MutationsBatcherAsync:
             )
             await operation.start()
         except MutationsExceptionGroup as e:
-            statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
+            if self._user_batch_completed_callback is not None:
+                statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
 
             # strip index information from exceptions, since it is not useful in a batch context
             for subexc in e.exceptions:
                 subexc.index = None
             return list(e.exceptions)
         else:
-            statuses = [status_pb2.Status(code=code_pb2.OK) for _ in range(len(batch))]
+            if self._user_batch_completed_callback is not None:
+                statuses = [
+                    status_pb2.Status(code=code_pb2.OK) for _ in range(len(batch))
+                ]
         finally:
             # mark batch as complete in flow control
             await self._flow_control.remove_from_flow(batch)
@@ -460,6 +464,11 @@ class MutationsBatcherAsync:
             # This is an internal callback used by the legacy synchronous shim,
             # though async callbacks are awaited when running in async mode.
             if self._user_batch_completed_callback:
+                if statuses is None:
+                    statuses = [
+                        status_pb2.Status(code=code_pb2.UNKNOWN)
+                        for _ in range(len(batch))
+                    ]
                 try:
                     result = self._user_batch_completed_callback(statuses)
                     if CrossSync.is_async:
@@ -605,10 +614,10 @@ class MutationsBatcherAsync:
             return []
         exceptions: list[FailedMutationEntryError] = []
         for task, batch in tasks:
-            if CrossSync.is_async:
-                # futures don't need to be awaited in sync mode
-                await task
             try:
+                if CrossSync.is_async:
+                    # futures don't need to be awaited in sync mode
+                    await task
                 exc_list = task.result()
                 if exc_list:
                     # expect a list of FailedMutationEntryError objects

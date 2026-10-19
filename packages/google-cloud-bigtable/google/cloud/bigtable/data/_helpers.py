@@ -33,6 +33,7 @@ from typing import (
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
+from google.protobuf import any_pb2, message
 from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data.exceptions import (
@@ -291,10 +292,22 @@ def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
         isinstance(exc, core_exceptions.GoogleAPICallError)
         and exc.grpc_status_code is not None
     ):
-        return status_pb2.Status(  # type: ignore[unreachable]
+        details: list[any_pb2.Any] = []  # type: ignore[unreachable]
+        for detail in exc.details or ():
+            if isinstance(detail, any_pb2.Any):
+                details.append(detail)
+            elif isinstance(detail, message.Message):
+                packed = any_pb2.Any()
+                packed.Pack(detail)
+                details.append(packed)
+            elif isinstance(getattr(detail, "_pb", None), message.Message):
+                packed = any_pb2.Any()
+                packed.Pack(detail._pb)
+                details.append(packed)
+        return status_pb2.Status(
             code=exc.grpc_status_code.value[0],
             message=exc.message,
-            details=exc.details,
+            details=details,
         )
 
     return status_pb2.Status(
@@ -337,11 +350,18 @@ def _get_error_type(
 
     Args:
       - call_code: Exception type or gRPC status code.
+    Raises:
+      - ValueError: if call_code is not a valid retryable gRPC error status code
+        or exception type.
     """
     if isinstance(call_code, type):
         return call_code
-    else:
-        return type(core_exceptions.from_grpc_status(call_code, ""))
+    if isinstance(call_code, bool):
+        raise ValueError(f"Invalid gRPC error status code: {call_code!r}")
+    error_type = type(core_exceptions.from_grpc_status(call_code, ""))
+    if error_type is core_exceptions.GoogleAPICallError:
+        raise ValueError(f"Invalid gRPC error status code: {call_code!r}")
+    return error_type
 
 
 def _get_retryable_errors(
