@@ -429,7 +429,9 @@ def unit(session, test_type):
         test_type == "mockserver"
         and session.python != DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20
     ):
-        session.skip(f"mockserver tests only run on python {DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20}")
+        session.skip(
+            f"mockserver tests only run on python {DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20}"
+        )
 
     if test_type == "mockserver":
         mockserver(session)
