@@ -687,7 +687,9 @@ class TestReadRowsQuery:
         query = self._make_one(row_ranges=[r1])
         query.add_range(r2)  # Duplicate of constructor-seeded r1, should be ignored
         query.add_range(r3)  # Distinct, should be kept
-        query.add_range(RowRange(start_key="c", end_key="d"))  # Duplicate of r3, should be ignored
+        query.add_range(
+            RowRange(start_key="c", end_key="d")
+        )  # Duplicate of r3, should be ignored
 
         # Assert that only r1 and r3 are in the final query
         assert len(query.row_ranges) == 2
