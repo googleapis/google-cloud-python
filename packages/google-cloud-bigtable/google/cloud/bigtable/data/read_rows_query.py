@@ -572,7 +572,9 @@ class ReadRowsQuery:
 
     def __copy__(self) -> ReadRowsQuery:
         new_query = ReadRowsQuery(limit=self.limit, row_filter=self.filter)
-        new_query._row_set = copy.deepcopy(self._row_set)
+        type(self._row_set).pb(new_query._row_set).CopyFrom(
+            type(self._row_set).pb(self._row_set)
+        )
         new_query._key_set = self._key_set.copy()
         new_query._range_signatures = self._range_signatures.copy()
         return new_query

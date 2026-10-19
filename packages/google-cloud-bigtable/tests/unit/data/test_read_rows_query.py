@@ -895,3 +895,30 @@ class TestReadRowsQuery:
 
         assert len(query.row_ranges) == 1
         assert query.row_ranges[0] == RowRange(start_key=b"a", end_key=b"b")
+
+    def test_copy_query_uses_protobuf_copy_from_without_deepcopy(self):
+        """
+        Verify that ReadRowsQuery.__copy__ clones _row_set using native
+        protobuf CopyFrom via type(_row_set).pb() rather than copy.deepcopy().
+        """
+        import copy
+
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
+
+        r1 = RowRange(start_key=b"a", end_key=b"b")
+        original = self._make_one(row_keys=[b"k1"], row_ranges=[r1], limit=10)
+
+        with (
+            mock.patch("copy.deepcopy", wraps=copy.deepcopy) as mock_deepcopy,
+            mock.patch.object(RowSetPB, "pb", wraps=RowSetPB.pb) as mock_pb,
+        ):
+            copied = copy.copy(original)
+            mock_deepcopy.assert_not_called()
+            mock_pb.assert_any_call(original._row_set)
+            mock_pb.assert_any_call(copied._row_set)
+
+        assert copied == original
+        assert copied._row_set is not original._row_set
+        assert copied.row_keys == [b"k1"]
+        assert copied.row_ranges == [r1]
