@@ -82,7 +82,7 @@ class _ReadRowsOperation:
 
     def __init__(
         self,
-        query: ReadRowsQuery,
+        query: ReadRowsQuery | dict[str, object],
         target: TargetType,
         operation_timeout: float,
         attempt_timeout: float,
@@ -93,6 +93,10 @@ class _ReadRowsOperation:
             attempt_timeout, operation_timeout
         )
         self.operation_timeout = operation_timeout
+        # ReadRowsQuery defines __slots__, which gives it a C-level memory layout
+        # disjoint from dict. Consequently, `query` must be explicitly typed as
+        # `ReadRowsQuery | dict[str, object]` in the signature above; otherwise,
+        # mypy flags this runtime `isinstance(query, dict)` branch as unreachable.
         if isinstance(query, dict):
             self.request = ReadRowsRequestPB(
                 **query, **target._request_path, app_profile_id=target.app_profile_id
