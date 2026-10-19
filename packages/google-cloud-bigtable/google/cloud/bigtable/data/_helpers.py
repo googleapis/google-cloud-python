@@ -305,7 +305,7 @@ def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
                     details.append(packed)
             return status_pb2.Status(
                 code=grpc_code.value[0],
-                message=exc.message,
+                message=exc.message or "",
                 details=details,
             )
 

@@ -606,9 +606,9 @@ class MutationsBatcherAsync:
         for task, batch in tasks:
             try:
                 if CrossSync.is_async:
-                    # futures don't need to be awaited in sync mode
-                    await task
-                exc_list = task.result()
+                    exc_list = await task
+                else:
+                    exc_list = task.result()
                 if exc_list:
                     # expect a list of FailedMutationEntryError objects
                     for exc in exc_list:
