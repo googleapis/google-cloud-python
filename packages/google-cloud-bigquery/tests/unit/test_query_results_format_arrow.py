@@ -794,6 +794,8 @@ def test_wait_or_cancel_sets_arrow_serialization_options():
         client=mock.MagicMock(), api_request=mock.MagicMock(), path=None, schema=()
     )
 
+    expected = dict(_DEFAULT_QUERY_OPTIONS)
+
     rows = _job_helpers._wait_or_cancel(
         job,
         api_timeout=None,
@@ -806,7 +808,7 @@ def test_wait_or_cancel_sets_arrow_serialization_options():
     )
 
     assert rows._query_results_format == "ARROW"
-    assert rows._arrow_serialization_options == _DEFAULT_QUERY_OPTIONS
+    assert rows._arrow_serialization_options == expected
 
 
 def test_query_and_wait_arrow_jobs_insert_omits_arrow_fields():

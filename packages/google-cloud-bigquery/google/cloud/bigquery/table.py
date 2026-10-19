@@ -1941,6 +1941,7 @@ class RowIterator(HTTPIterator):
         started: Optional[datetime.datetime] = None,
         ended: Optional[datetime.datetime] = None,
         query_results_format: Optional[str] = None,
+        *,
         arrow_serialization_options: Optional[Dict[str, str]] = None,
     ):
         super(RowIterator, self).__init__(
