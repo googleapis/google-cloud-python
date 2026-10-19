@@ -297,6 +297,7 @@ class GraphServer:
         self.port = None
         self.url = None
         self._server = None
+        self._server_ready = threading.Event()
 
     def build_route(self, endpoint):
         """
@@ -317,7 +318,11 @@ class GraphServer:
 
         with ThreadedTCPServer(("127.0.0.1", self.port), GraphServerHandler) as httpd:
             self._server = httpd
-            self._server.serve_forever()
+            self._server_ready.set()
+            try:
+                self._server.serve_forever()
+            finally:
+                self._server_ready.clear()
 
     def init(self):
         """
@@ -327,9 +332,11 @@ class GraphServer:
 
         self.port = portpicker.pick_unused_port()
         self.url = f"{GraphServer.host}:{self.port}"
+        self._server_ready.clear()
 
         server_thread = threading.Thread(target=self._start_server)
         server_thread.start()
+        self._server_ready.wait()
         return server_thread
 
     def stop_server(self):
