@@ -336,7 +336,13 @@ class GraphServer:
 
         server_thread = threading.Thread(target=self._start_server)
         server_thread.start()
-        self._server_ready.wait()
+        for _ in range(50):
+            if self._server_ready.wait(timeout=0.1):
+                break
+            if not server_thread.is_alive():
+                raise RuntimeError("GraphServer thread terminated unexpectedly during startup.")
+        else:
+            raise RuntimeError("Timed out waiting for GraphServer to start.")
         return server_thread
 
     def stop_server(self):
