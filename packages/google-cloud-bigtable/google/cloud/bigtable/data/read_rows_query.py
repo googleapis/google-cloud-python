@@ -14,6 +14,7 @@
 #
 from __future__ import annotations
 
+import copy
 from bisect import bisect_left, bisect_right
 from collections import defaultdict
 from typing import TYPE_CHECKING, Any
@@ -243,7 +244,13 @@ class ReadRowsQuery:
         row_filter: a RowFilter to apply to the query
     """
 
-    slots = ("_limit", "_filter", "_row_set")
+    __slots__ = (
+        "_limit",
+        "_filter",
+        "_row_set",
+        "_key_set",
+        "_range_signatures",
+    )
 
     def __init__(
         self,
@@ -260,9 +267,11 @@ class ReadRowsQuery:
             row_ranges = [row_ranges]
         if not isinstance(row_keys, list):
             row_keys = [row_keys]
-        row_keys = [key.encode() if isinstance(key, str) else key for key in row_keys]
-        self._row_set = RowSetPB(row_keys=row_keys)
+        self._row_set = RowSetPB()
+        self._key_set: set[bytes] = set()
         self._range_signatures: set[tuple[bytes, bytes, bytes, bytes]] = set()
+        for k in row_keys:
+            self.add_key(k)
         for r in row_ranges:
             self.add_range(r)
         self.limit = limit or None
@@ -351,7 +360,8 @@ class ReadRowsQuery:
             row_key = row_key.encode()
         elif not isinstance(row_key, bytes):
             raise ValueError("row_key must be string or bytes")
-        if row_key not in self._row_set.row_keys:
+        if row_key not in self._key_set:
+            self._key_set.add(row_key)
             self._row_set.row_keys.append(row_key)
 
     def add_range(
@@ -512,6 +522,13 @@ class ReadRowsQuery:
             **table._request_path,
         )
 
+    def __copy__(self) -> ReadRowsQuery:
+        new_query = ReadRowsQuery(limit=self.limit, row_filter=self.filter)
+        new_query._row_set = copy.deepcopy(self._row_set)
+        new_query._key_set = self._key_set.copy()
+        new_query._range_signatures = self._range_signatures.copy()
+        return new_query
+
     def __eq__(self, other):
         """
         RowRanges are equal if they have the same row keys, row ranges,
@@ -526,24 +543,24 @@ class ReadRowsQuery:
         if not isinstance(other, ReadRowsQuery):
             return False
         # empty queries are equal
-        if len(self.row_keys) == 0 and len(other.row_keys) == 0:
-            this_range_empty = len(self.row_ranges) == 0 or all(
-                [bool(r) is False for r in self.row_ranges]
+        if len(self._key_set) == 0 and len(other._key_set) == 0:
+            empty_sig = (b"", b"", b"", b"")
+            this_range_empty = len(self._range_signatures) == 0 or (
+                self._range_signatures == {empty_sig}
             )
-            other_range_empty = len(other.row_ranges) == 0 or all(
-                [bool(r) is False for r in other.row_ranges]
+            other_range_empty = len(other._range_signatures) == 0 or (
+                other._range_signatures == {empty_sig}
             )
             if this_range_empty and other_range_empty:
                 return self.filter == other.filter and self.limit == other.limit
         # otherwise, sets should have same sizes
-        if len(self.row_keys) != len(other.row_keys):
+        if len(self._key_set) != len(other._key_set):
             return False
-        if len(self.row_ranges) != len(other.row_ranges):
+        if len(self._range_signatures) != len(other._range_signatures):
             return False
-        ranges_match = all([row in other.row_ranges for row in self.row_ranges])
         return (
-            self.row_keys == other.row_keys
-            and ranges_match
+            self._key_set == other._key_set
+            and self._range_signatures == other._range_signatures
             and self.filter == other.filter
             and self.limit == other.limit
         )

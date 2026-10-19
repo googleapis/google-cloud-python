@@ -621,6 +621,57 @@ class TestReadRowsQuery:
         # Verify that all ranges were successfully committed to the underlying protobuf
         assert len(query._row_set.row_ranges) == 100
 
+    def test_add_key_deduplicates_via_set_without_scanning_row_set(self):
+        """
+        Verify that ReadRowsQuery deduplicates row_keys in __init__ and add_key
+        using its internal O(1) key set without linearly scanning _row_set.row_keys.
+        """
+        # Duplicate keys passed to __init__ (even in mixed str/bytes forms)
+        # must be deduplicated on construction.
+        query = self._make_one(row_keys=["k0", b"k0"])
+        assert query.row_keys == [b"k0"]
+
+        # When adding keys that are already present in the query, add_key must
+        # short-circuit via _key_set without accessing _row_set.row_keys.
+        with mock.patch.object(query, "_row_set", wraps=query._row_set) as mock_row_set:
+            query.add_key(b"k0")
+            query.add_key("k0")
+            assert not mock_row_set.row_keys.called
+
+        assert query.row_keys == [b"k0"]
+
+    def test_query_equality_does_not_materialize_row_keys_or_ranges(self):
+        """
+        Verify that ReadRowsQuery.__eq__ compares keys and ranges in order-independent
+        O(N) time using internal sets without materializing row_keys or row_ranges lists.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        # Create two equivalent queries with identical keys and ranges inserted
+        # in opposite orders.
+        q1 = self._make_one(
+            row_keys=[f"k{i}" for i in range(50)],
+            row_ranges=[RowRange(f"a{i}", f"b{i}") for i in range(50)],
+        )
+        q2 = self._make_one(
+            row_keys=[f"k{i}" for i in reversed(range(50))],
+            row_ranges=[RowRange(f"a{i}", f"b{i}") for i in reversed(range(50))],
+        )
+
+        # Intercept the row_keys and row_ranges properties to verify that equality
+        # comparisons operate on internal sets without constructing wrapper lists.
+        with (
+            mock.patch.object(
+                type(q1), "row_keys", new_callable=mock.PropertyMock
+            ) as mock_keys,
+            mock.patch.object(
+                type(q1), "row_ranges", new_callable=mock.PropertyMock
+            ) as mock_ranges,
+        ):
+            assert q1 == q2
+            mock_keys.assert_not_called()
+            mock_ranges.assert_not_called()
+
     def test_add_range_deduplication_behavior(self):
         """Assert that identical ranges are deduplicated, but distinct ranges are kept."""
         from google.cloud.bigtable.data.read_rows_query import RowRange
@@ -688,3 +739,85 @@ class TestReadRowsQuery:
 
         assert len(query.row_ranges) == 1
         assert query.row_ranges[0] == RowRange(start_key=b"a", end_key=b"b")
+
+    def test_row_range_from_dict_does_not_call_init(self):
+        """
+        Verify that RowRange._from_dict constructs the wrapper instance directly
+        without invoking __init__ and allocating an unused intermediate protobuf.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        # Spy on RowRange.__init__ to ensure dictionary deserialization bypasses
+        # default constructor initialization and dummy protobuf creation.
+        with mock.patch.object(
+            RowRange, "__init__", wraps=RowRange.__init__
+        ) as mock_init:
+            row_range = RowRange._from_dict(
+                {"start_key_closed": b"a", "end_key_open": b"b"}
+            )
+            mock_init.assert_not_called()
+
+        # Verify the resulting RowRange exposes the expected boundaries and inclusivity.
+        assert row_range.start_key == b"a"
+        assert row_range.start_is_inclusive is True
+        assert row_range.end_key == b"b"
+        assert row_range.end_is_inclusive is False
+
+    def test_read_rows_query_enforces_slots(self):
+        """
+        Verify that ReadRowsQuery enforces __slots__ so instances do not allocate
+        a dynamic __dict__ or permit undeclared attributes.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        # Initialize a query with both keys and ranges so all internal attributes
+        # are populated on the instance.
+        query = self._make_one(
+            row_keys=[b"k1"],
+            row_ranges=[RowRange(start_key=b"a", end_key=b"b")],
+        )
+
+        # Enforcing __slots__ prevents creation of a per-instance __dict__.
+        assert not hasattr(query, "__dict__")
+
+        # Assigning an attribute not declared in __slots__ must raise AttributeError.
+        with pytest.raises(AttributeError):
+            query._undeclared_attribute = "invalid"
+
+    def test_copy_query_preserves_deduplication_isolation(self):
+        """
+        Verify that shallow-copying a ReadRowsQuery produces independent
+        deduplication tracking sets so mutations on the copy do not affect the
+        original query, and existing items remain deduplicated on the copy.
+        """
+        import copy
+
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        r1 = RowRange(start_key="a", end_key="b")
+        r2 = RowRange(start_key="c", end_key="d")
+
+        original = self._make_one(row_keys=[b"k1"], row_ranges=[r1])
+        copied = copy.copy(original)
+
+        # Re-adding existing items to the copy must be ignored as duplicates.
+        copied.add_key(b"k1")
+        copied.add_range(r1)
+        assert copied.row_keys == [b"k1"]
+        assert copied.row_ranges == [r1]
+
+        # Mutate only the copied query by adding a new key and range.
+        copied.add_key(b"k2")
+        copied.add_range(r2)
+
+        # Confirm the original query was not modified by operations on the copy.
+        assert original.row_keys == [b"k1"]
+        assert original.row_ranges == [r1]
+
+        # Adding the same new key and range to the original query must succeed
+        # because its internal deduplication sets are independent from the copy.
+        original.add_key(b"k2")
+        original.add_range(r2)
+
+        assert original.row_keys == [b"k1", b"k2"]
+        assert original.row_ranges == [r1, r2]
