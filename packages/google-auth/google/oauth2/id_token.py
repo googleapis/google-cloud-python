@@ -61,6 +61,7 @@ import http.client as http_client
 import json
 import os
 from typing import Any, Mapping, Union
+import warnings
 
 from google.auth import environment_vars, exceptions, jwt, transport
 
@@ -76,6 +77,7 @@ _GOOGLE_APIS_CERTS_URL = (
 )
 
 _GOOGLE_ISSUERS = ["accounts.google.com", "https://accounts.google.com"]
+_FIREBASE_ISSUER_PREFIX = "https://securetoken.google.com/"
 
 
 def _fetch_certs(request, certs_url):
@@ -226,14 +228,41 @@ def verify_firebase_token(id_token, request, audience=None, clock_skew_in_second
 
     Returns:
         Mapping[str, Any]: The decoded token.
+
+    Raises:
+        exceptions.InvalidValue: If the issuer or audience is invalid.
+        ValueError: If token verification fails.
     """
-    return verify_token(
+    if audience is None:
+        warnings.warn(
+            "Calling verify_firebase_token without an audience is insecure as "
+            "it accepts tokens from any Firebase project. Pass your Firebase "
+            "project ID as the 'audience' parameter.",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    idinfo = verify_token(
         id_token,
         request,
         audience=audience,
         certs_url=_GOOGLE_APIS_CERTS_URL,
         clock_skew_in_seconds=clock_skew_in_seconds,
     )
+
+    token_aud = idinfo.get("aud")
+    if not isinstance(token_aud, str) or not token_aud:
+        raise exceptions.InvalidValue(
+            "Token does not contain a valid 'aud' claim."
+        )
+
+    expected_issuer = "{}{}".format(_FIREBASE_ISSUER_PREFIX, token_aud)
+    if idinfo.get("iss") != expected_issuer:
+        raise exceptions.InvalidValue(
+            "Wrong issuer. 'iss' should be '{}'.".format(expected_issuer)
+        )
+
+    return idinfo
 
 
 def fetch_id_token_credentials(audience, request=None, bind_id_token=None):

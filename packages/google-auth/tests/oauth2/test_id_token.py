@@ -237,6 +237,10 @@ def test_verify_oauth2_token_invalid_iss(verify_token):
 
 @mock.patch("google.oauth2.id_token.verify_token", autospec=True)
 def test_verify_firebase_token(verify_token):
+    verify_token.return_value = {
+        "aud": "my-project-id",
+        "iss": "https://securetoken.google.com/my-project-id",
+    }
     result = id_token.verify_firebase_token(
         mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
     )
@@ -253,6 +257,10 @@ def test_verify_firebase_token(verify_token):
 
 @mock.patch("google.oauth2.id_token.verify_token", autospec=True)
 def test_verify_firebase_token_clock_skew(verify_token):
+    verify_token.return_value = {
+        "aud": "my-project-id",
+        "iss": "https://securetoken.google.com/my-project-id",
+    }
     result = id_token.verify_firebase_token(
         mock.sentinel.token,
         mock.sentinel.request,
@@ -268,6 +276,55 @@ def test_verify_firebase_token_clock_skew(verify_token):
         certs_url=id_token._GOOGLE_APIS_CERTS_URL,
         clock_skew_in_seconds=10,
     )
+
+
+@mock.patch("google.oauth2.id_token.verify_token", autospec=True)
+def test_verify_firebase_token_invalid_iss(verify_token):
+    verify_token.return_value = {
+        "aud": "my-project-id",
+        "iss": "https://securetoken.google.com/other-project-id",
+    }
+
+    with pytest.raises(exceptions.InvalidValue, match="Wrong issuer"):
+        id_token.verify_firebase_token(
+            mock.sentinel.token,
+            mock.sentinel.request,
+            audience=mock.sentinel.audience,
+        )
+
+
+@mock.patch("google.oauth2.id_token.verify_token", autospec=True)
+def test_verify_firebase_token_missing_aud(verify_token):
+    verify_token.return_value = {
+        "iss": "https://securetoken.google.com/",
+    }
+
+    with pytest.raises(
+        exceptions.InvalidValue, match="Token does not contain a valid 'aud' claim"
+    ):
+        id_token.verify_firebase_token(
+            mock.sentinel.token,
+            mock.sentinel.request,
+            audience=mock.sentinel.audience,
+        )
+
+
+@mock.patch("google.oauth2.id_token.verify_token", autospec=True)
+def test_verify_firebase_token_warns_without_audience(verify_token):
+    verify_token.return_value = {
+        "aud": "my-project-id",
+        "iss": "https://securetoken.google.com/my-project-id",
+    }
+
+    with pytest.warns(
+        UserWarning,
+        match="Calling verify_firebase_token without an audience is insecure",
+    ):
+        result = id_token.verify_firebase_token(
+            mock.sentinel.token, mock.sentinel.request
+        )
+
+    assert result == verify_token.return_value
 
 
 def test_fetch_id_token_credentials_optional_request(monkeypatch):
