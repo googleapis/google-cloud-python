@@ -152,6 +152,8 @@ class RowRange(_MappableAttributesMixin, BaseRowRange):
                   considered inclusive. The default is False (exclusive).
     """
 
+    __slots__ = ()
+
     _attribute_map = {
         "start_inclusive": "start_is_inclusive",
         "end_inclusive": "end_is_inclusive",

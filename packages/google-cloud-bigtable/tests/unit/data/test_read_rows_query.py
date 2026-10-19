@@ -789,6 +789,19 @@ class TestReadRowsQuery:
         with pytest.raises(AttributeError):
             query._undeclared_attribute = "invalid"
 
+    def test_legacy_row_range_enforces_slots(self):
+        """
+        Verify that legacy row_set.RowRange also defines __slots__ = () so it
+        inherits BaseRowRange's slotted layout without allocating a __dict__.
+        """
+        from google.cloud.bigtable.row_set import RowRange as LegacyRowRange
+
+        legacy_range = LegacyRowRange(start_key=b"a", end_key=b"b")
+        assert not hasattr(legacy_range, "__dict__")
+
+        with pytest.raises(AttributeError):
+            legacy_range._undeclared_attribute = "invalid"
+
     def test_copy_query_preserves_deduplication_isolation(self):
         """
         Verify that shallow-copying a ReadRowsQuery produces independent
