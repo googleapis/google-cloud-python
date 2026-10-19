@@ -36,7 +36,7 @@ import datetime
 from google.cloud import bigtable
 from google.cloud.bigtable import column_family
 
-from ..utils import create_table_cm
+from ...utils import create_table_cm
 
 
 def run_table_operations(project_id, instance_id, table_id):

@@ -150,6 +150,107 @@ class TestAsyncGrpcClient:
         mock_transport_cls.assert_called_once_with(channel=mock_channel)
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_metrics_properties(self, mock_async_storage_client):
+        from google.cloud.storage import _opentelemetry_metrics
+
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+
+        with mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=True,
+        ):
+            client = async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                enable_metrics=True,
+                enable_debug_metrics=True,
+            )
+            assert client.metrics_enabled is True
+            assert client.debug_metrics_enabled is True
+
+            client_base_false = async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                enable_metrics=False,
+                enable_debug_metrics=True,
+            )
+            assert client_base_false.metrics_enabled is False
+            assert client_base_false.debug_metrics_enabled is True
+
+            client_both_false = async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                enable_metrics=False,
+                enable_debug_metrics=False,
+            )
+            assert client_both_false.metrics_enabled is False
+            assert client_both_false.debug_metrics_enabled is False
+
+        with mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=False,
+        ):
+            client = async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                enable_metrics=True,
+                enable_debug_metrics=True,
+            )
+            assert client.metrics_enabled is False
+            assert client.debug_metrics_enabled is False
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_ctor_w_invalid_enable_metrics_raises_type_error(
+        self, mock_async_storage_client
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+
+        with pytest.raises(TypeError):
+            async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                enable_metrics="true",
+            )
+        with pytest.raises(TypeError):
+            async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                enable_debug_metrics="true",
+            )
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_ctor_metrics_defaults_and_env_fallback(self, mock_async_storage_client):
+        from google.cloud.storage import _opentelemetry_metrics
+
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+
+        with mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=True,
+        ):
+            with mock.patch.dict("os.environ", {}, clear=True):
+                client = async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
+                assert client._enable_metrics is None
+                assert client._enable_debug_metrics is None
+                assert client.metrics_enabled is False
+                assert client.debug_metrics_enabled is False
+
+            with mock.patch.dict(
+                "os.environ",
+                {
+                    "GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS": "true",
+                    "GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS": "true",
+                },
+                clear=True,
+            ):
+                client = async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
+                assert client.metrics_enabled is True
+                assert client.debug_metrics_enabled is True
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_grpc_client_property(self, mock_grpc_gapic_client):
         # Arrange
         mock_transport_cls = mock.MagicMock()
