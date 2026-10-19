@@ -288,27 +288,26 @@ def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
     Returns:
         status_pb2.Status: A Status proto object.
     """
-    if (
-        isinstance(exc, core_exceptions.GoogleAPICallError)
-        and exc.grpc_status_code is not None
-    ):
-        details: list[any_pb2.Any] = []  # type: ignore[unreachable]
-        for detail in exc.details or ():
-            if isinstance(detail, any_pb2.Any):
-                details.append(detail)
-            elif isinstance(detail, message.Message):
-                packed = any_pb2.Any()
-                packed.Pack(detail)
-                details.append(packed)
-            elif isinstance(getattr(detail, "_pb", None), message.Message):
-                packed = any_pb2.Any()
-                packed.Pack(detail._pb)
-                details.append(packed)
-        return status_pb2.Status(
-            code=exc.grpc_status_code.value[0],
-            message=exc.message,
-            details=details,
-        )
+    if isinstance(exc, core_exceptions.GoogleAPICallError):
+        grpc_code = exc.grpc_status_code
+        if grpc_code is not None:
+            details: list[any_pb2.Any] = []
+            for detail in exc.details or ():
+                if isinstance(detail, any_pb2.Any):
+                    details.append(detail)
+                elif isinstance(detail, message.Message):
+                    packed = any_pb2.Any()
+                    packed.Pack(detail)
+                    details.append(packed)
+                elif isinstance(getattr(detail, "_pb", None), message.Message):
+                    packed = any_pb2.Any()
+                    packed.Pack(detail._pb)
+                    details.append(packed)
+            return status_pb2.Status(
+                code=grpc_code.value[0],
+                message=exc.message,
+                details=details,
+            )
 
     return status_pb2.Status(
         code=code_pb2.UNKNOWN,
