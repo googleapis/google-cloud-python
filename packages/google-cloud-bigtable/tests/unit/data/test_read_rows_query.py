@@ -873,3 +873,25 @@ class TestReadRowsQuery:
         non_empty_query = self._make_one(row_ranges=[single_empty_key_range])
         empty_query = self._make_one()
         assert non_empty_query != empty_query
+
+    def test_add_range_pb_does_not_allocate_wrapper(self):
+        """
+        Verify that passing a RowRangePB directly to add_range computes the
+        deduplication signature via _signature_from_pb without allocating a
+        temporary RowRange wrapper via _from_pb.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+
+        query = self._make_one()
+        pb = RowRangePB(start_key_closed=b"a", end_key_open=b"b")
+
+        with mock.patch.object(
+            RowRange, "_from_pb", wraps=RowRange._from_pb
+        ) as mock_from_pb:
+            query.add_range(pb)
+            query.add_range(pb)
+            mock_from_pb.assert_not_called()
+
+        assert len(query.row_ranges) == 1
+        assert query.row_ranges[0] == RowRange(start_key=b"a", end_key=b"b")

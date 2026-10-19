@@ -418,11 +418,14 @@ class ReadRowsQuery:
             row_range: a range of row keys to add to this query
         """
         if isinstance(row_range, RowRangePB):
-            row_range = RowRange._from_pb(row_range)
-        sig = row_range._signature()
+            pb = row_range
+            sig = RowRange._signature_from_pb(pb)
+        else:
+            pb = row_range._pb
+            sig = row_range._signature()
         if sig not in self._range_signatures:
             self._range_signatures.add(sig)
-            self._row_set.row_ranges.append(row_range._pb)
+            self._row_set.row_ranges.append(pb)
 
     def shard(self, shard_keys: RowKeySamples) -> ShardedQuery:
         """
