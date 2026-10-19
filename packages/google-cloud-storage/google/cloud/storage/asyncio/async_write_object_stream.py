@@ -218,10 +218,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
 
     def _mark_closing_cleanly(self) -> None:
         """Marks the underlying gRPC call as closing cleanly for metrics."""
-        if self.socket_like_rpc is not None:
-            call = getattr(self.socket_like_rpc, "call", None)
-            if call is not None:
-                _mark_call_closing_cleanly(call)
+        _mark_call_closing_cleanly(getattr(self.socket_like_rpc, "call", None))
 
     async def close(self) -> None:
         """Closes the bidi-gRPC connection."""

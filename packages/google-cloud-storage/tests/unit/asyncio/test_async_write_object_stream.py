@@ -406,9 +406,7 @@ class TestAsyncWriteObjectStream:
         mock_rpc.send = AsyncMock()
         mock_rpc.recv = AsyncMock(
             side_effect=[
-                MagicMock(
-                    persisted_size=0, resource=None, write_handle=b"h1"
-                ),
+                MagicMock(persisted_size=0, resource=None, write_handle=b"h1"),
                 grpc.aio.EOF,
             ]
         )

@@ -22,11 +22,11 @@ import sys
 import types
 from unittest import mock
 
-from google.api_core import exceptions as api_exceptions
-from google.auth import exceptions as auth_exceptions
 import pytest
 import requests.exceptions
 import urllib3.exceptions
+from google.api_core import exceptions as api_exceptions
+from google.auth import exceptions as auth_exceptions
 
 from google.cloud.storage import _opentelemetry_metrics
 from google.cloud.storage import exceptions as storage_exceptions
@@ -56,6 +56,8 @@ def test_opentelemetry_import_error_on_load(monkeypatch):
                 )
                 is False
             )
+            assert _opentelemetry_metrics.get_meter(enable_metrics=True) is None
+            m.setattr(_opentelemetry_metrics, "HAS_OPENTELEMETRY_METRICS", True)
             assert _opentelemetry_metrics.get_meter(enable_metrics=True) is None
     finally:
         importlib.reload(_opentelemetry_metrics)
@@ -1243,6 +1245,34 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
     _, rpc_err_kwargs = recorder.errors_counter.add.call_args
     assert rpc_err_kwargs["attributes"]["error.type"] == "UNAVAILABLE"
     assert "rpc.response.status_code" not in rpc_err_kwargs["attributes"]
+
+    # Record outside of start_operation with status_code=None and callable .code() returning None
+    recorder.record_http_attempt(
+        duration=0.01,
+        http_method="GET",
+        url_template="/storage/v1/b",
+        status_code=None,
+        error_type="UNKNOWN",
+    )
+    recorder.record_rpc_attempt(
+        duration=0.01,
+        operation="google.storage.v2.Storage/GetObject",
+        status_code=None,
+        error_type="UNKNOWN",
+    )
+    recorder.record_request_body_size(64)
+
+    class _NoneCodeErr(Exception):
+        def code(self):
+            return None
+
+    assert _opentelemetry_metrics.classify_error_type(_NoneCodeErr()) == "UNKNOWN"
+    assert (
+        _opentelemetry_metrics.classify_error_type(
+            urllib3.exceptions.NewConnectionError(None, "conn err")
+        )
+        == "CONNECTIVITY"
+    )
 
     # Shutdown flushes custom meter_provider and swallows force_flush errors gracefully
     recorder.shutdown()

@@ -15,11 +15,8 @@
 """Manages OpenTelemetry metrics instruments and gating for GCS client."""
 
 import asyncio
-from collections import deque
 import concurrent.futures
 import contextlib
-from contextvars import ContextVar
-from dataclasses import dataclass
 import http.client
 import logging
 import os
@@ -27,6 +24,9 @@ import re
 import socket
 import ssl
 import time
+from collections import deque
+from contextvars import ContextVar
+from dataclasses import dataclass
 from typing import Any, Deque, Dict, Iterator, List, Optional, Set, Tuple
 from urllib.parse import urlsplit
 
@@ -85,6 +85,7 @@ try:
 
     HAS_OPENTELEMETRY_METRICS = True
 except ImportError:
+    metrics = None  # type: ignore[assignment]
     HAS_OPENTELEMETRY_METRICS = False
     logger.debug(
         "OpenTelemetry metrics package (opentelemetry-api >= 1.12.0) is not "
@@ -207,9 +208,12 @@ def get_meter(
         Optional[Any]: The OpenTelemetry Meter instance if standard or debug
             metrics are enabled, or None otherwise.
     """
-    if not (
-        is_metrics_enabled(enable_metrics)
-        or is_debug_metrics_enabled(enable_debug_metrics)
+    if (
+        not (
+            is_metrics_enabled(enable_metrics)
+            or is_debug_metrics_enabled(enable_debug_metrics)
+        )
+        or metrics is None
     ):
         return None
     return metrics.get_meter(
@@ -238,13 +242,13 @@ def _build_latency_buckets() -> Tuple[float, ...]:
         boundary += increment
 
     increment = 0.010
-    for i in range(150):
-        if boundary >= 300.0:
-            break
+    i = 0
+    while boundary < 300.0:
         if i != 0 and i % 10 == 0:
             increment *= 2
         boundaries.append(round(boundary, 6))
         boundary += increment
+        i += 1
 
     return tuple(boundaries)
 
@@ -452,11 +456,10 @@ def classify_error_type(
         if callable(code_attr):
             try:
                 rpc_status = code_attr()
-                if rpc_status is not None:
-                    name = getattr(rpc_status, "name", None)
-                    if name:
-                        return str(name)
-            except Exception:  # pragma: no cover
+                name = getattr(rpc_status, "name", None)
+                if name:
+                    return str(name)
+            except Exception:  # pragma: NO COVER
                 pass
 
         if _is_valid_status_code(code_attr):

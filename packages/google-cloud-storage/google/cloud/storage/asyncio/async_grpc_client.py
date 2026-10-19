@@ -15,9 +15,8 @@
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
 import asyncio
-from collections import deque
-import inspect
 import time
+from collections import deque
 from typing import Any, Optional, Tuple
 
 import grpc
@@ -64,11 +63,11 @@ def _resolve_status_and_error(exc: BaseException) -> Tuple[Optional[str], str]:
         if callable(code_attr):
             try:
                 rpc_status = code_attr()
-                if rpc_status is not None:
-                    name = getattr(rpc_status, "name", None)
-                    status_code = str(name) if name else str(rpc_status)
+                name = getattr(rpc_status, "name", None)
+                if name:
+                    status_code = str(name)
                     break
-            except Exception:  # pragma: no cover
+            except Exception:  # pragma: NO COVER
                 pass
 
     error_type = _opentelemetry_metrics.classify_error_type(exc)
@@ -92,14 +91,12 @@ def _resolve_network_path(
             peer_val = peer_fn()
             if isinstance(peer_val, bytes):
                 peer_val = peer_val.decode("utf-8", errors="replace")
-            if isinstance(peer_val, str) and peer_val:
-                if "2001:4860:8040:" in peer_val or peer_val.startswith(
-                    "ipv4:34.126."
-                ):
+            if isinstance(peer_val, str):
+                if "2001:4860:8040:" in peer_val or peer_val.startswith("ipv4:34.126."):
                     return "directpath"
                 if peer_val.startswith(("ipv4:", "ipv6:")):
                     return "cloudpath"
-        except Exception:  # pragma: no cover
+        except Exception:  # pragma: NO COVER
             pass
     return default_network_path
 
@@ -134,9 +131,8 @@ def _mark_call_closing_cleanly(call: Any) -> None:
         task = inst_dict.get("_interceptors_task")
         if task is not None and hasattr(task, "done") and task.done():
             try:
-                if not task.cancelled() and task.exception() is None:
-                    queue.append(task.result())
-            except Exception:  # pragma: no cover
+                queue.append(task.result())
+            except Exception:  # pragma: NO COVER
                 pass
 
 
@@ -156,22 +152,16 @@ class _TrackedCallBase:
         self._recorder = recorder
         self._operation = operation
         self._start_time = start_time
-        self._client_method = (
-            op_state.client_method if op_state is not None else None
-        )
+        self._client_method = op_state.client_method if op_state is not None else None
         self._network_path = network_path
         self._recorded = False
         self._closing_cleanly = False
 
-    def _record_once(
-        self, status_code: Optional[str], error_type: str
-    ) -> None:
+    def _record_once(self, status_code: Optional[str], error_type: str) -> None:
         if not self._recorded:
             self._recorded = True
             duration = max(0.0, time.perf_counter() - self._start_time)
-            resolved_path = _resolve_network_path(
-                self._call, self._network_path
-            )
+            resolved_path = _resolve_network_path(self._call, self._network_path)
             self._recorder.record_rpc_attempt(
                 duration=duration,
                 operation=self._operation,
@@ -261,9 +251,7 @@ class _TrackedStreamResponseMixin:
             if self._closing_cleanly:
                 self._record_once(status_code="OK", error_type="OK")
             else:
-                self._record_once(
-                    status_code="CANCELLED", error_type="CANCELLED"
-                )
+                self._record_once(status_code="CANCELLED", error_type="CANCELLED")
             raise
         except BaseException as exc:
             self._record_from_exception(exc)
@@ -354,12 +342,8 @@ class _MetricsUnaryUnaryInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
         self._recorder = recorder
         self._network_path = network_path
 
-    async def intercept_unary_unary(
-        self, continuation, client_call_details, request
-    ):
-        operation = _extract_rpc_operation(
-            getattr(client_call_details, "method", None)
-        )
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -399,12 +383,8 @@ class _MetricsUnaryStreamInterceptor(grpc.aio.UnaryStreamClientInterceptor):
         self._recorder = recorder
         self._network_path = network_path
 
-    async def intercept_unary_stream(
-        self, continuation, client_call_details, request
-    ):
-        operation = _extract_rpc_operation(
-            getattr(client_call_details, "method", None)
-        )
+    async def intercept_unary_stream(self, continuation, client_call_details, request):
+        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -447,9 +427,7 @@ class _MetricsStreamUnaryInterceptor(grpc.aio.StreamUnaryClientInterceptor):
     async def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
-        operation = _extract_rpc_operation(
-            getattr(client_call_details, "method", None)
-        )
+        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -492,9 +470,7 @@ class _MetricsStreamStreamInterceptor(grpc.aio.StreamStreamClientInterceptor):
     async def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
-        operation = _extract_rpc_operation(
-            getattr(client_call_details, "method", None)
-        )
+        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -759,11 +735,7 @@ class AsyncGrpcClient:
     async def close(self) -> None:
         """Closes the underlying gRPC transport and flushes pending metrics."""
         try:
-            transport = getattr(self._grpc_client, "transport", None)
-            if transport is not None and hasattr(transport, "close"):
-                res = transport.close()
-                if inspect.isawaitable(res):
-                    await res
+            await self._grpc_client.transport.close()
         finally:
             self._metrics_recorder.shutdown()
 

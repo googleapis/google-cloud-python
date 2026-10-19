@@ -672,7 +672,9 @@ class TestAsyncGrpcClient:
             enable_metrics=True,
         )
         assert client.metrics_enabled is True
-        assert client._metrics_recorder.server_address == "custom.storage.googleapis.com"
+        assert (
+            client._metrics_recorder.server_address == "custom.storage.googleapis.com"
+        )
         assert client._grpc_client._metrics_recorder is client._metrics_recorder
 
         create_channel_kwargs = mock_transport_cls.create_channel.call_args.kwargs
@@ -917,9 +919,7 @@ class TestAsyncGrpcClient:
             recorder.record_rpc_attempt.reset_mock()
             c = await s_s.intercept_stream_stream(
                 mock.AsyncMock(
-                    return_value=_StreamCall([_FakeRpcError()])
-                    if op_fn
-                    else err_call
+                    return_value=_StreamCall([_FakeRpcError()]) if op_fn else err_call
                 ),
                 details,
                 iter([]),
@@ -947,8 +947,30 @@ class TestAsyncGrpcClient:
             mock.AsyncMock(return_value=_StreamCall([])), details, iter([])
         )
         tracked_ss_cancel.cancel()
+        tracked_ss_cancel.cancel()  # second call is a no-op
         assert (
             recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "CANCELLED"
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                mock.MagicMock(peer=lambda: 123), "cloudpath"
+            )
+            == "cloudpath"
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                mock.MagicMock(peer=lambda: "unix:/tmp/sock"), "cloudpath"
+            )
+            == "cloudpath"
+        )
+
+        class _NoneCodeRpcErr(Exception):
+            def code(self):
+                return None
+
+        assert async_grpc_client._resolve_status_and_error(_NoneCodeRpcErr()) == (
+            "UNKNOWN",
+            "UNKNOWN",
         )
 
         # Early break from __aiter__ (clean vs cancelled) and peer() network_path detection

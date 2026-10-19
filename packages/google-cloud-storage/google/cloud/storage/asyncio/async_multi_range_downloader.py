@@ -311,7 +311,10 @@ class AsyncMultiRangeDownloader:
 
                 if self._routing_token:
                     current_metadata.append(
-                        ("x-goog-request-params", f"routing_token={self._routing_token}")
+                        (
+                            "x-goog-request-params",
+                            f"routing_token={self._routing_token}",
+                        )
                     )
                     self._routing_token = None
 
@@ -505,7 +508,9 @@ class AsyncMultiRangeDownloader:
                                 if attempt_count > 1
                                 else self._multiplexer.stream_generation
                             )
-                            stream_factory = self._create_stream_factory(state, metadata)
+                            stream_factory = self._create_stream_factory(
+                                state, metadata
+                            )
                             await self._multiplexer.reopen_stream(
                                 broken_gen, stream_factory
                             )
