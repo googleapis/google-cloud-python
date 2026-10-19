@@ -750,49 +750,53 @@ def test_convert_schema_shared_label():
     assert set(labels["Person"]["propertyDeclarationNames"]) == {"id", "name"}
 
 
-@pytest.mark.skipif(
-    graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-)
 def test_stop_server_immediately_after_init():
     """Verifies that GraphServer.init() waits until the underlying TCP server
     is initialized before returning, preventing a race condition with stop_server().
     """
-    server = graph_server.GraphServer()
-    server_thread = server.init()
+    # Mock portpicker to return port 0 (OS-assigned ephemeral port) so this test
+    # runs in all unit test environments, even when optional dependencies like
+    # `spanner-graph-notebook` and `portpicker` are not installed.
+    mock_portpicker = mock.MagicMock()
+    mock_portpicker.pick_unused_port.return_value = 0
 
-    try:
-        # 1. Immediately call stop_server() after init() without making any HTTP
-        #    requests. If init() returns before `self._server` is assigned in
-        #    _start_server(), `if self._server:` inside stop_server() evaluates to
-        #    False, making stop_server() a no-op.
-        server.stop_server()
+    with mock.patch.dict("sys.modules", {"portpicker": mock_portpicker}):
+        server = graph_server.GraphServer()
+        server_thread = server.init()
 
-        # 2. Wait up to 1.0 second for the background server thread to exit.
-        #    When properly synchronized, init() blocks until `self._server` is
-        #    assigned, so stop_server() calls `self._server.shutdown()` and the
-        #    thread exits almost immediately. If the shutdown signal is missed,
-        #    the background thread remains blocked in `serve_forever()`. Using
-        #    `timeout=1.0` prevents `join()` from hanging indefinitely.
-        server_thread.join(timeout=1.0)
-
-        # 3. Assert that the server thread actually terminated.
-        assert not server_thread.is_alive(), (
-            "GraphServer thread is still alive after stop_server(); "
-            "stop_server() likely raced with _start_server() before self._server was set."
-        )
-    finally:
-        # 4. Cleanup in case the assertion above fails:
-        #    Because `server_thread` is a non-daemon thread, Python's interpreter
-        #    shutdown (`threading._shutdown()`) will hang at the end of the pytest
-        #    run if `server_thread` is left running.
-        if server_thread.is_alive():
-            # Poll with a short `time.sleep()` (releasing the GIL so the background
-            # thread can finish binding the socket and setting `server._server`)
-            # up to a bounded deadline.
-            deadline = time.monotonic() + 5.0
-            while server._server is None and time.monotonic() < deadline:
-                time.sleep(0.01)
-
-            # Shut down the server so the background thread exits cleanly.
+        try:
+            # 1. Immediately call stop_server() after init() without making any HTTP
+            #    requests. If init() returns before `self._server` is assigned in
+            #    _start_server(), `if self._server:` inside stop_server() evaluates to
+            #    False, making stop_server() a no-op.
             server.stop_server()
-            server_thread.join(timeout=2.0)
+
+            # 2. Wait up to 1.0 second for the background server thread to exit.
+            #    When properly synchronized, init() blocks until `self._server` is
+            #    assigned, so stop_server() calls `self._server.shutdown()` and the
+            #    thread exits almost immediately. If the shutdown signal is missed,
+            #    the background thread remains blocked in `serve_forever()`. Using
+            #    `timeout=1.0` prevents `join()` from hanging indefinitely.
+            server_thread.join(timeout=1.0)
+
+            # 3. Assert that the server thread actually terminated.
+            assert not server_thread.is_alive(), (
+                "GraphServer thread is still alive after stop_server(); "
+                "stop_server() likely raced with _start_server() before self._server was set."
+            )
+        finally:
+            # 4. Cleanup in case the assertion above fails:
+            #    Because `server_thread` is a non-daemon thread, Python's interpreter
+            #    shutdown (`threading._shutdown()`) will hang at the end of the pytest
+            #    run if `server_thread` is left running.
+            if server_thread.is_alive():  # pragma: NO COVER
+                # Poll with a short `time.sleep()` (releasing the GIL so the background
+                # thread can finish binding the socket and setting `server._server`)
+                # up to a bounded deadline.
+                deadline = time.monotonic() + 5.0
+                while server._server is None and time.monotonic() < deadline:
+                    time.sleep(0.01)
+
+                # Shut down the server so the background thread exits cleanly.
+                server.stop_server()
+                server_thread.join(timeout=2.0)
