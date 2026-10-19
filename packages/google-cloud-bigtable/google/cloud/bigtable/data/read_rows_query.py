@@ -366,7 +366,7 @@ class ReadRowsQuery:
 
     def add_range(
         self,
-        row_range: RowRange,
+        row_range: RowRange | RowRangePB,
     ):
         """
         Add a range of row keys to this query.
@@ -374,6 +374,8 @@ class ReadRowsQuery:
         Args:
             row_range: a range of row keys to add to this query
         """
+        if isinstance(row_range, RowRangePB):
+            row_range = RowRange._from_pb(row_range)
         sig = row_range._signature()
         if sig not in self._range_signatures:
             self._range_signatures.add(sig)
