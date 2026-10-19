@@ -1266,7 +1266,21 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
         def code(self):
             return None
 
+    class _NonTupleArgsErr(Exception):
+        args = 123  # type: ignore[assignment]
+
     assert _opentelemetry_metrics.classify_error_type(_NoneCodeErr()) == "UNKNOWN"
+    assert _opentelemetry_metrics.classify_error_type(_NonTupleArgsErr()) == "UNKNOWN"
+    assert (
+        _opentelemetry_metrics.classify_error_type(concurrent.futures.CancelledError())
+        == "CANCELLED"
+    )
+    assert (
+        _opentelemetry_metrics._is_subclass_by_module(
+            mock.MagicMock(__mro__=123), "google.cloud.storage", {"DataCorruption"}
+        )
+        is False
+    )
     assert (
         _opentelemetry_metrics.classify_error_type(
             urllib3.exceptions.NewConnectionError(None, "conn err")
