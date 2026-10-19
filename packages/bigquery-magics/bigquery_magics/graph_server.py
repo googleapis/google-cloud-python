@@ -319,10 +319,7 @@ class GraphServer:
         with ThreadedTCPServer(("127.0.0.1", self.port), GraphServerHandler) as httpd:
             self._server = httpd
             self._server_ready.set()
-            try:
-                self._server.serve_forever()
-            finally:
-                self._server_ready.clear()
+            self._server.serve_forever()
 
     def init(self):
         """
@@ -336,15 +333,7 @@ class GraphServer:
 
         server_thread = threading.Thread(target=self._start_server)
         server_thread.start()
-        for _ in range(50):
-            if self._server_ready.wait(timeout=0.1):
-                break
-            if not server_thread.is_alive():
-                raise RuntimeError(
-                    "GraphServer thread terminated unexpectedly during startup."
-                )
-        else:
-            raise RuntimeError("Timed out waiting for GraphServer to start.")
+        self._server_ready.wait()
         return server_thread
 
     def stop_server(self):
