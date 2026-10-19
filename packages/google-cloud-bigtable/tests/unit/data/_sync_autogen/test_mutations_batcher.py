@@ -1052,8 +1052,8 @@ class TestMutationsBatcher:
             with self._make_one(table) as instance:
                 instance._user_batch_completed_callback = async_callback
                 batch = [self._make_mutation()]
-                result = instance._execute_mutate_rows(batch, mock.Mock())
-                assert result == []
+                with pytest.raises(TypeError, match="_user_batch_completed_callback must be a synchronous callable"):
+                    instance._execute_mutate_rows(batch, mock.Mock())
                 assert called_with == []
 
     def test__execute_mutate_rows_batch_completed_callback_unexpected_error(self):

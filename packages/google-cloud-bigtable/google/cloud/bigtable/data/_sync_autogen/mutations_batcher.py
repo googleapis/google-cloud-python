@@ -391,7 +391,7 @@ class MutationsBatcher:
             list[FailedMutationEntryError]:
                 list of FailedMutationEntryError objects for mutations that failed.
                 FailedMutationEntryError objects will not contain index information"""
-        statuses: list[status_pb2.Status] | None = None
+        statuses = [status_pb2.Status(code=code_pb2.UNKNOWN) for _ in range(len(batch))]
         try:
             operation = CrossSync._Sync_Impl._MutateRowsOperation(
                 self._target.client._gapic_client,
@@ -404,24 +404,15 @@ class MutationsBatcher:
             )
             operation.start()
         except MutationsExceptionGroup as e:
-            if self._user_batch_completed_callback is not None:
-                statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
+            statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
             for subexc in e.exceptions:
                 subexc.index = None
             return list(e.exceptions)
         else:
-            if self._user_batch_completed_callback is not None:
-                statuses = [
-                    status_pb2.Status(code=code_pb2.OK) for _ in range(len(batch))
-                ]
+            statuses = [status_pb2.Status(code=code_pb2.OK) for _ in range(len(batch))]
         finally:
             self._flow_control.remove_from_flow(batch)
             if self._user_batch_completed_callback:
-                if statuses is None:
-                    statuses = [
-                        status_pb2.Status(code=code_pb2.UNKNOWN)
-                        for _ in range(len(batch))
-                    ]
                 result = None
                 try:
                     result = self._user_batch_completed_callback(statuses)
