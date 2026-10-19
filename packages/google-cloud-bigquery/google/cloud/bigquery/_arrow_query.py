@@ -152,6 +152,9 @@ def download_arrow_from_job(
 
     # Step 2: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
+        # Keep the first page on the iterator so the result can be read
+        # again. The row pager clears its own copy in
+        # RowIterator._get_next_page_response().
         first_page = row_iterator._first_page_response
 
         job_complete = bool(first_page.get("jobComplete", False))

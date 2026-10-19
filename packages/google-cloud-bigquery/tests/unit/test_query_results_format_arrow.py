@@ -1078,5 +1078,47 @@ def test_query_and_wait_without_arrow_waits_with_page_size():
     assert wait_or_cancel.call_args.kwargs["page_size"] == 10
 
 
+def test_to_arrow_iterable_reads_inline_result_twice():
+    # With JOB_CREATION_OPTIONAL and every row inline there's no job to
+    # stream from, so the first page has to stay on the iterator for the
+    # result to be read again.
+    pyarrow = pytest.importorskip("pyarrow")
+    batch = pyarrow.record_batch([pyarrow.array([1, 2, 3])], names=["x"])
+    first_page = {
+        "jobComplete": True,
+        "totalRows": "3",
+        "pageRowCount": "3",
+        "arrowSchema": {
+            "serializedSchema": base64.b64encode(
+                batch.schema.serialize().to_pybytes()
+            ).decode()
+        },
+        "arrowRecordBatch": {
+            "serializedRecordBatch": base64.b64encode(
+                batch.serialize().to_pybytes()
+            ).decode()
+        },
+    }
+    iterator = RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        first_page_response=first_page,
+        project="p",
+        location="US",
+        job_id=None,
+        query_results_format="ARROW",
+    )
+    bqstorage_client = mock.MagicMock()
+
+    first_read = list(iterator.to_arrow_iterable(bqstorage_client=bqstorage_client))
+    second_read = list(iterator.to_arrow_iterable(bqstorage_client=bqstorage_client))
+
+    assert first_read == [batch]
+    assert second_read == [batch]
+    bqstorage_client.read_rows.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()
