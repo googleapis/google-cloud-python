@@ -822,3 +822,37 @@ class TestReadRowsQuery:
 
         assert original.row_keys == [b"k1", b"k2"]
         assert original.row_ranges == [r1, r2]
+
+    def test_row_range_signature_distinguishes_empty_bytes_and_inclusivity(self):
+        """
+        Verify that unset bounds (None), inclusive empty-byte bounds (b""),
+        and exclusive empty-byte bounds (b"") produce distinct signatures
+        and are not conflated during deduplication or query equality.
+        """
+        from google.cloud.bigtable.data.read_rows_query import RowRange
+
+        unbounded_start = RowRange(start_key=None, end_key=b"z")
+        closed_empty_start = RowRange._from_dict(
+            {"start_key_closed": b"", "end_key_open": b"z"}
+        )
+        open_empty_start = RowRange._from_dict(
+            {"start_key_open": b"", "end_key_open": b"z"}
+        )
+        # All three ranges are semantically distinct and must not collide
+        assert unbounded_start != closed_empty_start
+        assert closed_empty_start != open_empty_start
+        assert unbounded_start._signature() != closed_empty_start._signature()
+        assert closed_empty_start._signature() != open_empty_start._signature()
+
+        query = self._make_one(
+            row_ranges=[unbounded_start, closed_empty_start, open_empty_start]
+        )
+        assert len(query.row_ranges) == 3
+
+        # A range targeting the single row b"" must NOT compare equal to an empty query
+        single_empty_key_range = RowRange._from_dict(
+            {"start_key_closed": b"", "end_key_closed": b""}
+        )
+        non_empty_query = self._make_one(row_ranges=[single_empty_key_range])
+        empty_query = self._make_one()
+        assert non_empty_query != empty_query

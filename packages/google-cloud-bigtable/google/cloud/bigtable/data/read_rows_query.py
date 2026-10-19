@@ -88,14 +88,55 @@ class RowRange:
                 init_dict["end_key_open"] = end_key
         self._pb = RowRangePB(**init_dict)
 
-    def _signature(self) -> tuple[bytes, bytes, bytes, bytes]:
-        pb = self._pb
-        return (
-            pb.start_key_closed,
-            pb.start_key_open,
-            pb.end_key_closed,
-            pb.end_key_open,
-        )
+    @staticmethod
+    def _signature_from_pb(
+        pb: RowRangePB,
+    ) -> tuple[bytes | None, bool, bytes | None, bool]:
+        raw_pb = pb._pb
+
+        # Fast path: non-empty keys bypass HasField and proto-plus overhead
+        start_closed = raw_pb.start_key_closed
+        if start_closed:
+            start_key: bytes | None = start_closed
+            start_is_inclusive = True
+        else:
+            start_open = raw_pb.start_key_open
+            if start_open:
+                start_key = start_open
+                start_is_inclusive = False
+            elif raw_pb.HasField("start_key_closed"):
+                start_key = b""
+                start_is_inclusive = True
+            elif raw_pb.HasField("start_key_open"):
+                start_key = b""
+                start_is_inclusive = False
+            else:
+                start_key = None
+                start_is_inclusive = True
+
+        end_open = raw_pb.end_key_open
+        if end_open:
+            end_key: bytes | None = end_open
+            end_is_inclusive = False
+        else:
+            end_closed = raw_pb.end_key_closed
+            if end_closed:
+                end_key = end_closed
+                end_is_inclusive = True
+            elif raw_pb.HasField("end_key_open"):
+                end_key = b""
+                end_is_inclusive = False
+            elif raw_pb.HasField("end_key_closed"):
+                end_key = b""
+                end_is_inclusive = True
+            else:
+                end_key = None
+                end_is_inclusive = False
+
+        return (start_key, start_is_inclusive, end_key, end_is_inclusive)
+
+    def _signature(self) -> tuple[bytes | None, bool, bytes | None, bool]:
+        return self._signature_from_pb(self._pb)
 
     def __hash__(self) -> int:
         return hash(self._signature())
@@ -269,7 +310,9 @@ class ReadRowsQuery:
             row_keys = [row_keys]
         self._row_set = RowSetPB()
         self._key_set: set[bytes] = set()
-        self._range_signatures: set[tuple[bytes, bytes, bytes, bytes]] = set()
+        self._range_signatures: set[tuple[bytes | None, bool, bytes | None, bool]] = (
+            set()
+        )
         for k in row_keys:
             self.add_key(k)
         for r in row_ranges:
@@ -546,7 +589,7 @@ class ReadRowsQuery:
             return False
         # empty queries are equal
         if len(self._key_set) == 0 and len(other._key_set) == 0:
-            empty_sig = (b"", b"", b"", b"")
+            empty_sig = (None, True, None, False)
             this_range_empty = len(self._range_signatures) == 0 or (
                 self._range_signatures == {empty_sig}
             )
