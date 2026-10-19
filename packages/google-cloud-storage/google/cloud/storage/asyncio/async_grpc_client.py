@@ -157,6 +157,9 @@ class _TrackedCallBase:
         self._recorded = False
         self._closing_cleanly = False
 
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._call, name)
+
     def _record_once(self, status_code: Optional[str], error_type: str) -> None:
         if not self._recorded:
             self._recorded = True

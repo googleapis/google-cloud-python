@@ -804,9 +804,11 @@ class TestAsyncGrpcClient:
                 return self._coro().__await__()
 
         raw_uu = _AwaitableCall(result="resp")
+        raw_uu.custom_attr = "delegated_val"
         tracked_uu = await u_u.intercept_unary_unary(
             mock.AsyncMock(return_value=raw_uu), details, "req"
         )
+        assert tracked_uu.custom_attr == "delegated_val"
         await tracked_uu.wait_for_connection()
         assert tracked_uu.cancelled() is False
         assert tracked_uu.done() is True
