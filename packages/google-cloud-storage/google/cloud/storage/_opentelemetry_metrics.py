@@ -362,21 +362,25 @@ def _iter_exception_chain(exc: BaseException) -> Iterator[BaseException]:
                 visited.add(id(nested))
                 queue.append(nested)
 
-        for arg in getattr(current, "args", ()):
-            if isinstance(arg, BaseException) and id(arg) not in visited:
-                visited.add(id(arg))
-                queue.append(arg)
+        args = getattr(current, "args", ())
+        if isinstance(args, (tuple, list)):
+            for arg in args:
+                if isinstance(arg, BaseException) and id(arg) not in visited:
+                    visited.add(id(arg))
+                    queue.append(arg)
 
 
 def _is_subclass_by_module(
-    cls: type, module_prefix: str, class_names: Optional[Set[str]] = None
+    cls: type, module_prefix: str, class_names: Set[str]
 ) -> bool:
     """Checks whether ``cls`` or any of its base classes match module/name criteria."""
-    for base in getattr(cls, "__mro__", ()):
-        mod = getattr(base, "__module__", "") or ""
-        if mod.startswith(module_prefix):
-            if class_names is None or base.__name__ in class_names:
-                return True
+    mro = getattr(cls, "__mro__", None)
+    if isinstance(mro, tuple):
+        for base in mro:
+            mod = getattr(base, "__module__", "") or ""
+            if mod == module_prefix or mod.startswith(module_prefix + "."):
+                if getattr(base, "__name__", None) in class_names:
+                    return True
     return False
 
 
@@ -426,7 +430,9 @@ def classify_error_type(
 
     # 3. Cancellation
     for item in chain:
-        if isinstance(item, asyncio.CancelledError):
+        if isinstance(
+            item, (asyncio.CancelledError, concurrent.futures.CancelledError)
+        ):
             return "CANCELLED"
 
     # 4. HTTP response status code on exception (checked before grpc_status_code so
@@ -457,8 +463,8 @@ def classify_error_type(
             try:
                 rpc_status = code_attr()
                 name = getattr(rpc_status, "name", None)
-                if name:
-                    return str(name)
+                if isinstance(name, str) and name:
+                    return name
             except Exception:  # pragma: NO COVER
                 pass
 
