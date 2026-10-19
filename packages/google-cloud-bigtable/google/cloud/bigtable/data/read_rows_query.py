@@ -14,7 +14,6 @@
 #
 from __future__ import annotations
 
-import copy
 from bisect import bisect_left, bisect_right
 from collections import defaultdict
 from typing import TYPE_CHECKING, Any
