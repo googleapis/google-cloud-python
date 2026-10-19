@@ -402,17 +402,18 @@ class MutationsBatcher:
                         status_pb2.Status(code=code_pb2.UNKNOWN)
                         for _ in range(len(batch))
                     ]
+                result = None
                 try:
                     result = self._user_batch_completed_callback(statuses)
-                    if inspect.isawaitable(result):
-                        if inspect.iscoroutine(result):
-                            result.close()
-                        raise TypeError(
-                            "_user_batch_completed_callback must be a synchronous callable"
-                        )
                 except Exception as exc:
                     _LOGGER.warning(
                         f"Exception raised in user batch completion callback: {exc}"
+                    )
+                if inspect.isawaitable(result):
+                    if inspect.iscoroutine(result):
+                        result.close()
+                    raise TypeError(
+                        "_user_batch_completed_callback must be a synchronous callable"
                     )
         return []
 
