@@ -840,39 +840,47 @@ class TestReadRowsQuery:
         assert original.row_keys == [b"k1", b"k2"]
         assert original.row_ranges == [r1, r2]
 
-    def test_row_range_signature_distinguishes_empty_bytes_and_inclusivity(self):
+    def test_row_range_signature_collapses_falsy_keys_to_none(self):
         """
-        Verify that unset bounds (None), inclusive empty-byte bounds (b""),
-        and exclusive empty-byte bounds (b"") produce distinct signatures
-        and are not conflated during deduplication or query equality.
+        Verify that falsy empty-byte bounds (b"") in a RowRange protobuf are
+        collapsed into unbounded (None) bounds in _signature_from_pb, matching
+        RowRange.__init__, RowRange properties, and bool(RowRange).
         """
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
         unbounded_start = RowRange(start_key=None, end_key=b"z")
+        empty_init_start = RowRange(start_key=b"", end_key=b"z")
         closed_empty_start = RowRange._from_dict(
             {"start_key_closed": b"", "end_key_open": b"z"}
         )
         open_empty_start = RowRange._from_dict(
             {"start_key_open": b"", "end_key_open": b"z"}
         )
-        # All three ranges are semantically distinct and must not collide
-        assert unbounded_start != closed_empty_start
-        assert closed_empty_start != open_empty_start
-        assert unbounded_start._signature() != closed_empty_start._signature()
-        assert closed_empty_start._signature() != open_empty_start._signature()
+
+        # All four represent the same unbounded-start range [None, b"z")
+        expected_sig = (None, True, b"z", False)
+        assert unbounded_start._signature() == expected_sig
+        assert empty_init_start._signature() == expected_sig
+        assert closed_empty_start._signature() == expected_sig
+        assert open_empty_start._signature() == expected_sig
 
         query = self._make_one(
-            row_ranges=[unbounded_start, closed_empty_start, open_empty_start]
+            row_ranges=[
+                unbounded_start,
+                empty_init_start,
+                closed_empty_start,
+                open_empty_start,
+            ]
         )
-        assert len(query.row_ranges) == 3
+        assert len(query.row_ranges) == 1
 
-        # A range targeting the single row b"" must NOT compare equal to an empty query
-        single_empty_key_range = RowRange._from_dict(
+        # A range with only empty-byte bounds has bool(r) is False and must
+        # compare equal to an empty query.
+        empty_key_range = RowRange._from_dict(
             {"start_key_closed": b"", "end_key_closed": b""}
         )
-        non_empty_query = self._make_one(row_ranges=[single_empty_key_range])
-        empty_query = self._make_one()
-        assert non_empty_query != empty_query
+        assert bool(empty_key_range) is False
+        assert self._make_one(row_ranges=[empty_key_range]) == self._make_one()
 
     def test_add_range_pb_does_not_allocate_wrapper(self):
         """

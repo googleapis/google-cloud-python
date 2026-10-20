@@ -93,7 +93,7 @@ class RowRange:
     ) -> tuple[bytes | None, bool, bytes | None, bool]:
         raw_pb = pb._pb
 
-        # Fast path: non-empty keys bypass HasField and proto-plus overhead
+        # Bigtable treats falsy/empty keys as unbounded (None).
         start_closed = raw_pb.start_key_closed
         if start_closed:
             start_key: bytes | None = start_closed
@@ -102,12 +102,6 @@ class RowRange:
             start_open = raw_pb.start_key_open
             if start_open:
                 start_key = start_open
-                start_is_inclusive = False
-            elif raw_pb.HasField("start_key_closed"):
-                start_key = b""
-                start_is_inclusive = True
-            elif raw_pb.HasField("start_key_open"):
-                start_key = b""
                 start_is_inclusive = False
             else:
                 start_key = None
@@ -121,12 +115,6 @@ class RowRange:
             end_closed = raw_pb.end_key_closed
             if end_closed:
                 end_key = end_closed
-                end_is_inclusive = True
-            elif raw_pb.HasField("end_key_open"):
-                end_key = b""
-                end_is_inclusive = False
-            elif raw_pb.HasField("end_key_closed"):
-                end_key = b""
                 end_is_inclusive = True
             else:
                 end_key = None
