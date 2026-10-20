@@ -76,35 +76,33 @@ class AcceleratorBreaker:
       worse outcome than the slow calls it avoided.
 
     Keeping the two flags separate is what makes that safe: :meth:`set_degraded`
-    can never resurrect an accelerator that :meth:`trip` has given up on.
+    can never resurrect an accelerator that :meth:`trip` has given up on. Each
+    flag is its own :class:`threading.Event`, so :meth:`bypass` — which runs on
+    every routed RPC — stays a pair of lock-free reads. The two are never read
+    as a pair: either one being set already means bypass.
     """
 
     def __init__(self):
-        self._tripped = False
-        self._degraded = False
-        self._lock = threading.Lock()
+        self._tripped = threading.Event()
+        self._degraded = threading.Event()
 
     def bypass(self) -> bool:
         """Whether the accelerator should be skipped for calls made right now."""
-        with self._lock:
-            return self._tripped or self._degraded
+        return self._tripped.is_set() or self._degraded.is_set()
 
     def trip(self) -> None:
         """Permanently bypass the accelerator (e.g. the daemon process died)."""
-        with self._lock:
-            self._tripped = True
+        self._tripped.set()
 
     @property
     def is_tripped(self) -> bool:
         """Whether the accelerator has been permanently abandoned."""
-        with self._lock:
-            return self._tripped
+        return self._tripped.is_set()
 
     @property
     def is_degraded(self) -> bool:
         """Whether the accelerator is currently being skipped for poor health."""
-        with self._lock:
-            return self._degraded
+        return self._degraded.is_set()
 
     def set_degraded(self, degraded: bool) -> None:
         """Start or stop bypassing the accelerator for poor health.
@@ -112,8 +110,10 @@ class AcceleratorBreaker:
         Reversible, and orthogonal to :meth:`trip`: clearing it does not undo a
         permanent trip.
         """
-        with self._lock:
-            self._degraded = degraded
+        if degraded:
+            self._degraded.set()
+        else:
+            self._degraded.clear()
 
 
 def _grpc_code(exc: BaseException) -> StatusCode | None:
