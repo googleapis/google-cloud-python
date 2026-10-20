@@ -205,6 +205,17 @@ def _no_cleanup_crash(monkeypatch, tmp_path):
     yield
 
 
+@pytest.fixture
+def no_af_unix(monkeypatch):
+    """Make the socket module look the way CPython's does on Windows.
+
+    The family is simply absent there — the OS and gRPC's C-core support
+    AF_UNIX, the socket module just never exposed it — so every branch keyed on
+    ``hasattr(socket, "AF_UNIX")`` is reachable from a POSIX test run.
+    """
+    monkeypatch.delattr(_daemon.socket, "AF_UNIX", raising=False)
+
+
 # ---------------------------------------------------------------------------
 # Properties before/after start
 # ---------------------------------------------------------------------------
@@ -257,6 +268,17 @@ class TestResolveBinaryPath:
         with unittest.mock.patch("os.path.isfile", return_value=False):
             with pytest.raises(FileNotFoundError, match="Accelerator binary not found"):
                 _resolve_binary_path()
+
+    @pytest.mark.parametrize(
+        "is_windows,expected",
+        [(False, "bin/accelerator"), (True, "bin/accelerator.exe")],
+    )
+    def test_binary_name_follows_platform(self, monkeypatch, is_windows, expected):
+        """Windows wheels stage the binary under the .exe name Go gives it."""
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", is_windows)
+        with unittest.mock.patch("os.path.isfile", return_value=True):
+            resolved = _daemon._resolve_binary_path()
+        assert resolved.endswith(expected)
 
 
 # ---------------------------------------------------------------------------
@@ -315,23 +337,10 @@ class TestStartFailures:
         with pytest.raises(RuntimeError, match="did not become ready"):
             d.start()
 
-    def test_no_af_unix_raises_os_error(self, tmp_path, monkeypatch):
-        import socket as _socket
-
-        monkeypatch.delattr(_socket, "AF_UNIX", raising=False)
-        # Reload the attribute check in _daemon
-        monkeypatch.setattr(_daemon.socket, "AF_UNIX", None, raising=False)
-        # Simpler: just check that hasattr(socket, "AF_UNIX") guards the call.
-        with (
-            unittest.mock.patch.object(_daemon.socket, "AF_UNIX", None, create=True),
-            unittest.mock.patch(
-                "google.cloud.bigtable.data._accelerator._daemon.hasattr",
-                return_value=False,
-            ),
-        ):
-            d = _make_daemon(tmp_path)
-            with pytest.raises(OSError, match="AF_UNIX"):
-                d.start()
+    def test_no_af_unix_raises_os_error(self, tmp_path, monkeypatch, no_af_unix):
+        d = _make_daemon(tmp_path)
+        with pytest.raises(OSError, match="AF_UNIX"):
+            d.start()
 
 
 # ---------------------------------------------------------------------------
@@ -728,3 +737,69 @@ class TestSocketIsLive:
         sock.close()
         assert os.path.exists(path)
         assert _daemon._socket_is_live(path) is False
+
+
+# ---------------------------------------------------------------------------
+# Windows (win_amd64 / win32)
+# ---------------------------------------------------------------------------
+
+
+class TestWindows:
+    """Windows reaches the daemon over the same AF_UNIX socket as every other
+    platform. What differs is that CPython's socket module does not expose the
+    family, so anything the other platforms answer with a probe connection has
+    to be read off the filesystem instead."""
+
+    def test_start_is_not_blocked_by_missing_af_unix(
+        self, tmp_path, monkeypatch, no_af_unix
+    ):
+        """The AF_UNIX guard must not fire on Windows: a missing family there
+        says something about CPython, not about the platform."""
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", True)
+
+        def fake_popen(argv, **kwargs):
+            raise _StopStart()
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
+        d = _make_daemon(tmp_path)
+        # Reaching Popen means the guard let us through.
+        with pytest.raises(_StopStart):
+            d.start()
+
+    def test_socket_is_live_falls_back_to_path_existence(self, tmp_path, no_af_unix):
+        sock = tmp_path / _daemon._SOCKET_FILENAME
+        assert _daemon._socket_is_live(str(sock)) is False
+        sock.touch()
+        assert _daemon._socket_is_live(str(sock)) is True
+
+    def test_uds_target_accepts_a_windows_path(self):
+        """The channel target must survive a drive-lettered path.
+
+        ``unix://`` opens a URI authority component, so ``unix://C:\\...``
+        parses ``C:`` as the authority and gRPC refuses to build the channel at
+        all — the accelerator would start, verify, and then fail every routed
+        RPC. Constructing the channel is the assertion; it raises on a bad
+        target before any connection is attempted.
+        """
+        import grpc
+
+        from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
+            _uds_target,
+        )
+
+        win_path = r"C:\Users\me\AppData\Local\Temp\bt-accel-abc123\sock"
+        assert _uds_target(win_path) == "unix:" + win_path
+        channel = grpc.insecure_channel(_uds_target(win_path))
+        try:
+            stub = channel.unary_unary(
+                "/google.bigtable.v2.Bigtable/MutateRow",
+                request_serializer=lambda _: b"",
+                response_deserializer=lambda payload: payload,
+            )
+            with pytest.raises(grpc.RpcError) as exc_info:
+                stub(None, timeout=0.5)
+        finally:
+            channel.close()
+        # UNAVAILABLE means the target resolved and nothing was listening, which
+        # is the expected outcome. A malformed target fails earlier, as UNKNOWN.
+        assert exc_info.value.code() == grpc.StatusCode.UNAVAILABLE
