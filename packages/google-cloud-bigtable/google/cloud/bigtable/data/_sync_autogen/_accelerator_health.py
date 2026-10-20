@@ -178,7 +178,8 @@ class _AcceleratorHealthMonitor:
         """Stop polling. Does not clear a degraded flag already set."""
         self._closed.set()
         if self._task is not None:
-            self._task.cancel()
-            self._task = None
+            task, self._task = (self._task, None)
+            task.cancel()
+            task.add_done_callback(lambda t: None if t.cancelled() else t.exception())
         if self._sync_executor is not None:
             self._sync_executor.shutdown(wait=False)
