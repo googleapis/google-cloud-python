@@ -81,10 +81,9 @@ def _check_dependencies() -> None:
     _versions_helpers.BQ_STORAGE_VERSIONS.try_import(raise_if_error=True)
     if not _versions_helpers.BQ_STORAGE_VERSIONS.supports_arrow_serialization_options:
         raise exceptions.LegacyBigQueryStorageError(
-            "query_results_format=ARROW needs a google-cloud-bigquery-storage "
-            "release whose BigQueryReadClient.read_rows() accepts "
-            "arrow_serialization_options, please upgrade it "
-            "(`pip install --upgrade google-cloud-bigquery-storage`) "
+            "query_results_format=ARROW needs a newer google-cloud-bigquery-storage, "
+            "please upgrade it "
+            '(`pip install "google-cloud-bigquery[bqstorage]"`) '
             "(version found: "
             f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
         )
