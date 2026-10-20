@@ -369,6 +369,7 @@ class ReadRowsQuery:
         Args:
             row_range: a range of row keys to add to this query
         """
+        # Insert as dict key to deduplicate in O(1) while preserving insertion order
         self._row_ranges[row_range] = None
 
     def shard(self, shard_keys: RowKeySamples) -> ShardedQuery:
