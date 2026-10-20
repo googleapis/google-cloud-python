@@ -208,6 +208,7 @@ def _no_cleanup_crash(monkeypatch, tmp_path):
 # Properties before/after start
 # ---------------------------------------------------------------------------
 
+
 class TestPropertiesBeforeStart:
     def test_uds_path_before_start_raises(self, tmp_path):
         d = _make_daemon(tmp_path)
@@ -247,6 +248,7 @@ class TestPropertiesBeforeStart:
 # Binary resolution
 # ---------------------------------------------------------------------------
 
+
 class TestResolveBinaryPath:
     def test_missing_binary_raises_file_not_found(self, tmp_path):
         from google.cloud.bigtable.data._accelerator._daemon import _resolve_binary_path
@@ -259,6 +261,7 @@ class TestResolveBinaryPath:
 # ---------------------------------------------------------------------------
 # start() failure modes
 # ---------------------------------------------------------------------------
+
 
 class TestStartFailures:
     def test_called_twice_raises(self, tmp_path, monkeypatch):
@@ -288,9 +291,7 @@ class TestStartFailures:
         proc_mock.poll.return_value = 1  # exited immediately
         proc_mock.stdin = unittest.mock.Mock()
 
-        monkeypatch.setattr(
-            _daemon.subprocess, "Popen", lambda *a, **kw: proc_mock
-        )
+        monkeypatch.setattr(_daemon.subprocess, "Popen", lambda *a, **kw: proc_mock)
         # _cleanup_tempdir is already a no-op via autouse fixture, but
         # _force_kill is too — that's fine, we just need the start to raise.
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.1")
@@ -305,9 +306,7 @@ class TestStartFailures:
         proc_mock.poll.return_value = None  # alive but UDS never arrives
         proc_mock.stdin = unittest.mock.Mock()
 
-        monkeypatch.setattr(
-            _daemon.subprocess, "Popen", lambda *a, **kw: proc_mock
-        )
+        monkeypatch.setattr(_daemon.subprocess, "Popen", lambda *a, **kw: proc_mock)
         # Make os.path.exists always False so UDS never appears.
         monkeypatch.setattr(_daemon.os.path, "exists", lambda p: False)
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.05")
@@ -317,15 +316,17 @@ class TestStartFailures:
 
     def test_no_af_unix_raises_os_error(self, tmp_path, monkeypatch):
         import socket as _socket
+
         monkeypatch.delattr(_socket, "AF_UNIX", raising=False)
         # Reload the attribute check in _daemon
         monkeypatch.setattr(_daemon.socket, "AF_UNIX", None, raising=False)
         # Simpler: just check that hasattr(socket, "AF_UNIX") guards the call.
-        with unittest.mock.patch.object(
-            _daemon.socket, "AF_UNIX", None, create=True
-        ), unittest.mock.patch(
-            "google.cloud.bigtable.data._accelerator._daemon.hasattr",
-            return_value=False,
+        with (
+            unittest.mock.patch.object(_daemon.socket, "AF_UNIX", None, create=True),
+            unittest.mock.patch(
+                "google.cloud.bigtable.data._accelerator._daemon.hasattr",
+                return_value=False,
+            ),
         ):
             d = _make_daemon(tmp_path)
             with pytest.raises(OSError, match="AF_UNIX"):
@@ -335,6 +336,7 @@ class TestStartFailures:
 # ---------------------------------------------------------------------------
 # close() lifecycle
 # ---------------------------------------------------------------------------
+
 
 class TestClose:
     def test_close_before_start_is_noop(self, tmp_path):
@@ -351,8 +353,10 @@ class TestClose:
         d = _make_daemon(tmp_path)
         d._proc = proc_mock
 
-        with unittest.mock.patch.object(d, "_wait_for_exit", return_value=True), \
-             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+        with (
+            unittest.mock.patch.object(d, "_wait_for_exit", return_value=True),
+            unittest.mock.patch.object(d, "_cleanup_tempdir"),
+        ):
             d.close()
 
         proc_mock.stdin.close.assert_called_once()
@@ -370,8 +374,10 @@ class TestClose:
 
         wait_results = iter([False, True])  # stdin wait fails, sigterm wait succeeds
 
-        with unittest.mock.patch.object(d, "_wait_for_exit", side_effect=wait_results), \
-             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+        with (
+            unittest.mock.patch.object(d, "_wait_for_exit", side_effect=wait_results),
+            unittest.mock.patch.object(d, "_cleanup_tempdir"),
+        ):
             d.close()
 
         proc_mock.terminate.assert_called_once()
@@ -389,8 +395,10 @@ class TestClose:
         # Both stdin and sigterm waits fail → sigkill.
         wait_results = iter([False, False, True])
 
-        with unittest.mock.patch.object(d, "_wait_for_exit", side_effect=wait_results), \
-             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+        with (
+            unittest.mock.patch.object(d, "_wait_for_exit", side_effect=wait_results),
+            unittest.mock.patch.object(d, "_cleanup_tempdir"),
+        ):
             d.close()
 
         proc_mock.terminate.assert_called_once()
@@ -405,8 +413,10 @@ class TestClose:
         d = _make_daemon(tmp_path)
         d._proc = proc_mock
 
-        with unittest.mock.patch.object(d, "_wait_for_exit", return_value=True), \
-             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+        with (
+            unittest.mock.patch.object(d, "_wait_for_exit", return_value=True),
+            unittest.mock.patch.object(d, "_cleanup_tempdir"),
+        ):
             d.close()
 
         assert d._proc is None
@@ -415,6 +425,7 @@ class TestClose:
 # ---------------------------------------------------------------------------
 # _cleanup_tempdir: state clearing
 # ---------------------------------------------------------------------------
+
 
 class TestCleanupTempdir:
     def test_clears_all_state_fields(self, tmp_path):
@@ -450,6 +461,7 @@ class TestCleanupTempdir:
 # Context manager
 # ---------------------------------------------------------------------------
 
+
 class TestContextManager:
     def test_enter_calls_start_and_returns_self(self, tmp_path, monkeypatch):
         def fake_popen(argv, **kwargs):
@@ -457,8 +469,10 @@ class TestContextManager:
 
         monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
         d = _make_daemon(tmp_path)
-        with unittest.mock.patch.object(d, "start") as start_mock, \
-             unittest.mock.patch.object(d, "close"):
+        with (
+            unittest.mock.patch.object(d, "start") as start_mock,
+            unittest.mock.patch.object(d, "close"),
+        ):
             result = d.__enter__()
         start_mock.assert_called_once()
         assert result is d
@@ -473,6 +487,7 @@ class TestContextManager:
 # ---------------------------------------------------------------------------
 # _read_log_tail
 # ---------------------------------------------------------------------------
+
 
 class TestReadLogTail:
     def test_reads_tail_of_log(self, tmp_path):
@@ -506,6 +521,7 @@ class TestReadLogTail:
 # _wait_for_exit
 # ---------------------------------------------------------------------------
 
+
 class TestWaitForExit:
     def test_returns_true_when_no_proc(self, tmp_path):
         d = _make_daemon(tmp_path)
@@ -513,6 +529,7 @@ class TestWaitForExit:
 
     def test_returns_true_when_proc_exits_in_time(self, tmp_path):
         import subprocess
+
         proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
         proc_mock.wait.return_value = 0  # exited
         d = _make_daemon(tmp_path)
@@ -521,6 +538,7 @@ class TestWaitForExit:
 
     def test_returns_false_on_timeout(self, tmp_path):
         import subprocess
+
         proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
         proc_mock.wait.side_effect = subprocess.TimeoutExpired(cmd="x", timeout=0.1)
         d = _make_daemon(tmp_path)
@@ -531,6 +549,7 @@ class TestWaitForExit:
 # ---------------------------------------------------------------------------
 # read_identity: corrupt JSON
 # ---------------------------------------------------------------------------
+
 
 class TestReadIdentityCorruptJson:
     def test_corrupt_json_raises_runtime_error(self, tmp_path):
@@ -562,6 +581,7 @@ class TestReadIdentityCorruptJson:
 # CLI flags passed to Popen
 # ---------------------------------------------------------------------------
 
+
 class TestCliFlags:
     def test_cli_flags_appended_to_argv(self, tmp_path, monkeypatch):
         captured = {}
@@ -574,9 +594,12 @@ class TestCliFlags:
         d = _make_daemon(
             tmp_path,
             cli_flags=[
-                "--project", "proj",
-                "--instance", "inst",
-                "--app-profile", "prof",
+                "--project",
+                "proj",
+                "--instance",
+                "inst",
+                "--app-profile",
+                "prof",
             ],
         )
         with pytest.raises(_StopStart):
@@ -595,6 +618,7 @@ class TestCliFlags:
 # ---------------------------------------------------------------------------
 # Startup timeout env variable (_resolve_startup_timeout)
 # ---------------------------------------------------------------------------
+
 
 class TestResolveStartupTimeout:
     """Tests for the BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT env-var override.
@@ -717,13 +741,18 @@ class TestSweepStaleTempdirs:
 
     def test_removes_stale_dir(self, tmp_root):
         # Expired deadline + old log + dead spawner PID → should be reaped.
-        import subprocess, sys
+        import subprocess
+        import sys
 
         proc = subprocess.Popen([sys.executable, "-c", ""])
         dead_pid = proc.pid
         proc.wait()
         d = self._make_leftover(
-            tmp_root, "bt-accel-dead", age_seconds=120, deadline_offset=-70, pid=dead_pid
+            tmp_root,
+            "bt-accel-dead",
+            age_seconds=120,
+            deadline_offset=-70,
+            pid=dead_pid,
         )
         _daemon._sweep_stale_tempdirs()
         assert not d.exists()
@@ -754,7 +783,10 @@ class TestSweepStaleTempdirs:
     def test_keeps_dir_with_live_pid(self, tmp_root):
         # Past deadline but spawning process is still alive → must not be reaped.
         d = self._make_leftover(
-            tmp_root, "bt-accel-live", age_seconds=120, deadline_offset=-70,
+            tmp_root,
+            "bt-accel-live",
+            age_seconds=120,
+            deadline_offset=-70,
             pid=os.getpid(),
         )
         _daemon._sweep_stale_tempdirs()

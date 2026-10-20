@@ -25,18 +25,16 @@ import asyncio
 from types import SimpleNamespace
 from unittest import mock
 
+import grpc as _grpc
 import pytest
-from grpc import StatusCode
-
 from google.api_core import exceptions as core_exceptions
+from grpc import StatusCode
 
 from google.cloud.bigtable.data._accelerator._fallback import (
     AcceleratorBreaker,
     _AcceleratorFallback,
 )
 from google.cloud.bigtable.data._accelerator._routing import is_supported
-import grpc as _grpc
-
 from google.cloud.bigtable.data._async.client import (
     _AcceleratorIdentityError,
     _DataApiTargetAsync,
@@ -63,6 +61,7 @@ class _FakeRpcError(_grpc.RpcError):
 # ---------------------------------------------------------------------------
 # Minimal concrete _DataApiTargetAsync that skips __init__
 # ---------------------------------------------------------------------------
+
 
 class _ConcreteTarget(_DataApiTargetAsync):
     """Minimal subclass to make the abstract class instantiable."""
@@ -116,6 +115,7 @@ def _bare_target(
 # _use_accelerator predicate
 # ---------------------------------------------------------------------------
 
+
 class TestUseAccelerator:
     def test_returns_true_when_all_conditions_met(self):
         t = _bare_target(accel_client=mock.Mock())
@@ -149,6 +149,7 @@ class TestUseAccelerator:
 # _mutate_row_via_accelerator
 # ---------------------------------------------------------------------------
 
+
 class TestMutateRowViaAccelerator:
     def _run(self, coro):
         return asyncio.get_event_loop().run_until_complete(coro)
@@ -164,12 +165,17 @@ class TestMutateRowViaAccelerator:
             self._run(t._mutate_row_via_accelerator(req, 30.0))
 
     def test_returns_response_on_success(self):
-        from google.cloud.bigtable_v2.types.bigtable import MutateRowResponse, MutateRowRequest
+        from google.cloud.bigtable_v2.types.bigtable import (
+            MutateRowRequest,
+            MutateRowResponse,
+        )
 
         resp = MutateRowResponse()
         client_mock = mock.AsyncMock()
         client_mock.mutate_row.return_value = resp
-        t = _bare_target(accel_client=client_mock, accel_daemon=mock.Mock(is_running=True))
+        t = _bare_target(
+            accel_client=client_mock, accel_daemon=mock.Mock(is_running=True)
+        )
 
         req = MutateRowRequest()
         result = self._run(t._mutate_row_via_accelerator(req, 30.0))
@@ -236,6 +242,7 @@ class TestMutateRowViaAccelerator:
 # ---------------------------------------------------------------------------
 # _read_row_via_accelerator
 # ---------------------------------------------------------------------------
+
 
 class TestReadRowViaAccelerator:
     def _run(self, coro):
@@ -310,6 +317,7 @@ class TestReadRowViaAccelerator:
 # read_row: accelerator dispatch and fallback to native
 # ---------------------------------------------------------------------------
 
+
 class TestReadRowAcceleratorDispatch:
     """Test read_row() routing without spinning up a real client.
 
@@ -329,8 +337,12 @@ class TestReadRowAcceleratorDispatch:
         async def fake_accel(query, op_timeout, att_timeout):
             return expected_row
 
-        with mock.patch.object(t, "_use_accelerator", return_value=True), \
-             mock.patch.object(t, "_read_row_via_accelerator", side_effect=fake_accel) as accel_mock:
+        with (
+            mock.patch.object(t, "_use_accelerator", return_value=True),
+            mock.patch.object(
+                t, "_read_row_via_accelerator", side_effect=fake_accel
+            ) as accel_mock,
+        ):
             result = self._run(t.read_row(b"key1"))
 
         assert result == expected_row
@@ -352,12 +364,16 @@ class TestReadRowAcceleratorDispatch:
         native_row_merger = mock.Mock()
         native_row_merger.start_operation.return_value = _row_gen()
 
-        with mock.patch.object(t, "_use_accelerator", return_value=True), \
-             mock.patch.object(t, "_read_row_via_accelerator", side_effect=fake_accel_fallback), \
-             mock.patch(
+        with (
+            mock.patch.object(t, "_use_accelerator", return_value=True),
+            mock.patch.object(
+                t, "_read_row_via_accelerator", side_effect=fake_accel_fallback
+            ),
+            mock.patch(
                 "google.cloud.bigtable.data._async.client.CrossSync._ReadRowsOperation",
                 return_value=native_row_merger,
-             ):
+            ),
+        ):
             result = self._run(t.read_row(b"key1"))
 
         assert result == expected_row
@@ -365,7 +381,9 @@ class TestReadRowAcceleratorDispatch:
     def test_uses_native_directly_when_accelerator_disabled(self):
         from google.cloud.bigtable.data.row import Row
 
-        t = _bare_target()  # _accelerator_client is None → _use_accelerator returns False
+        t = (
+            _bare_target()
+        )  # _accelerator_client is None → _use_accelerator returns False
         expected_row = Row(b"key1", cells={})
 
         async def _row_gen():
@@ -374,11 +392,13 @@ class TestReadRowAcceleratorDispatch:
         native_row_merger = mock.Mock()
         native_row_merger.start_operation.return_value = _row_gen()
 
-        with mock.patch.object(t, "_use_accelerator", return_value=False), \
-             mock.patch(
+        with (
+            mock.patch.object(t, "_use_accelerator", return_value=False),
+            mock.patch(
                 "google.cloud.bigtable.data._async.client.CrossSync._ReadRowsOperation",
                 return_value=native_row_merger,
-             ):
+            ),
+        ):
             result = self._run(t.read_row(b"key1"))
 
         assert result == expected_row
@@ -398,11 +418,13 @@ class TestReadRowAcceleratorDispatch:
         native_row_merger = mock.Mock()
         native_row_merger.start_operation.return_value = _empty_gen()
 
-        with mock.patch.object(t, "_use_accelerator", return_value=False), \
-             mock.patch(
+        with (
+            mock.patch.object(t, "_use_accelerator", return_value=False),
+            mock.patch(
                 "google.cloud.bigtable.data._async.client.CrossSync._ReadRowsOperation",
                 return_value=native_row_merger,
-             ):
+            ),
+        ):
             result = self._run(t.read_row(b"missing"))
 
         assert result is None
@@ -411,6 +433,7 @@ class TestReadRowAcceleratorDispatch:
 # ---------------------------------------------------------------------------
 # mutate_row: accelerator dispatch and fallback to native
 # ---------------------------------------------------------------------------
+
 
 class TestMutateRowAcceleratorDispatch:
     def _run(self, coro):
@@ -428,8 +451,12 @@ class TestMutateRowAcceleratorDispatch:
 
         mutations = [SetCell("cf", "col", b"val", timestamp_micros=1000)]
 
-        with mock.patch.object(t, "_use_accelerator", return_value=True), \
-             mock.patch.object(t, "_mutate_row_via_accelerator", side_effect=fake_accel) as accel_mock:
+        with (
+            mock.patch.object(t, "_use_accelerator", return_value=True),
+            mock.patch.object(
+                t, "_mutate_row_via_accelerator", side_effect=fake_accel
+            ) as accel_mock,
+        ):
             result = self._run(t.mutate_row(b"key1", mutations))
 
         assert result == resp
@@ -450,12 +477,16 @@ class TestMutateRowAcceleratorDispatch:
 
         mutations = [SetCell("cf", "col", b"val", timestamp_micros=1000)]
 
-        with mock.patch.object(t, "_use_accelerator", return_value=True), \
-             mock.patch.object(t, "_mutate_row_via_accelerator", side_effect=fake_accel_fallback), \
-             mock.patch(
+        with (
+            mock.patch.object(t, "_use_accelerator", return_value=True),
+            mock.patch.object(
+                t, "_mutate_row_via_accelerator", side_effect=fake_accel_fallback
+            ),
+            mock.patch(
                 "google.cloud.bigtable.data._async.client.tracked_retry",
                 side_effect=fake_native_mutate,
-             ):
+            ),
+        ):
             result = self._run(t.mutate_row(b"key1", mutations))
 
         assert result == native_resp
@@ -471,11 +502,13 @@ class TestMutateRowAcceleratorDispatch:
         async def fake_native_mutate(*args, **kwargs):
             return native_resp
 
-        with mock.patch.object(t, "_use_accelerator", return_value=False), \
-             mock.patch(
+        with (
+            mock.patch.object(t, "_use_accelerator", return_value=False),
+            mock.patch(
                 "google.cloud.bigtable.data._async.client.tracked_retry",
                 side_effect=fake_native_mutate,
-             ):
+            ),
+        ):
             result = self._run(t.mutate_row(b"key1", mutations))
 
         assert result == native_resp
@@ -489,6 +522,7 @@ class TestMutateRowAcceleratorDispatch:
 # ---------------------------------------------------------------------------
 # _start_accelerator: startup lifecycle
 # ---------------------------------------------------------------------------
+
 
 class TestStartAccelerator:
     """Tests for _start_accelerator() — the method that spawns the daemon and
@@ -506,13 +540,17 @@ class TestStartAccelerator:
         fake_daemon.auth_secret = "secret-token"
         fake_client = mock.Mock()
 
-        with mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
-            return_value=fake_daemon,
-        ), mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorClientType",
-            return_value=fake_client,
-        ), mock.patch.object(t, "_verify_daemon_identity"):
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
+                return_value=fake_daemon,
+            ),
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorClientType",
+                return_value=fake_client,
+            ),
+            mock.patch.object(t, "_verify_daemon_identity"),
+        ):
             t._start_accelerator()
 
         fake_daemon.start.assert_called_once()
@@ -529,10 +567,13 @@ class TestStartAccelerator:
         fake_daemon = mock.Mock(spec=AcceleratorDaemon)
         fake_daemon.start.side_effect = RuntimeError("binary missing")
 
-        with mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
-            return_value=fake_daemon,
-        ), pytest.raises(RuntimeError, match="binary missing"):
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
+                return_value=fake_daemon,
+            ),
+            pytest.raises(RuntimeError, match="binary missing"),
+        ):
             t._start_accelerator()
 
         fake_daemon.close.assert_called_once()
@@ -554,14 +595,18 @@ class TestStartAccelerator:
         fake_daemon.uds_path = "/tmp/fake-sock"
         fake_daemon.auth_secret = "secret-token"
 
-        with mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
-            return_value=fake_daemon,
-        ), mock.patch.object(
-            t,
-            "_verify_daemon_identity",
-            side_effect=_AcceleratorIdentityError("mismatch"),
-        ), pytest.raises(_AcceleratorIdentityError, match="mismatch"):
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
+                return_value=fake_daemon,
+            ),
+            mock.patch.object(
+                t,
+                "_verify_daemon_identity",
+                side_effect=_AcceleratorIdentityError("mismatch"),
+            ),
+            pytest.raises(_AcceleratorIdentityError, match="mismatch"),
+        ):
             t._start_accelerator()
 
         fake_daemon.close.assert_called_once()
@@ -587,12 +632,16 @@ class TestStartAccelerator:
             captured["extra_env"] = kwargs.get("extra_env", {})
             return fake_daemon
 
-        with mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
-            side_effect=capture_daemon,
-        ), mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorClientType",
-        ), mock.patch.object(t, "_verify_daemon_identity"):
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
+                side_effect=capture_daemon,
+            ),
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorClientType",
+            ),
+            mock.patch.object(t, "_verify_daemon_identity"),
+        ):
             t._start_accelerator()
 
         flags = captured["cli_flags"]
@@ -621,12 +670,16 @@ class TestStartAccelerator:
             captured["cli_flags"] = list(cli_flags)
             return fake_daemon
 
-        with mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
-            side_effect=capture_daemon,
-        ), mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorClientType",
-        ), mock.patch.object(t, "_verify_daemon_identity"):
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
+                side_effect=capture_daemon,
+            ),
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorClientType",
+            ),
+            mock.patch.object(t, "_verify_daemon_identity"),
+        ):
             t._start_accelerator()
 
         flags = captured["cli_flags"]
@@ -653,12 +706,16 @@ class TestStartAccelerator:
             captured["cli_flags"] = list(cli_flags)
             return fake_daemon
 
-        with mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
-            side_effect=capture_daemon,
-        ), mock.patch(
-            "google.cloud.bigtable.data._async.client.AcceleratorClientType",
-        ), mock.patch.object(t, "_verify_daemon_identity"):
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorDaemon",
+                side_effect=capture_daemon,
+            ),
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.AcceleratorClientType",
+            ),
+            mock.patch.object(t, "_verify_daemon_identity"),
+        ):
             t._start_accelerator()
 
         assert "--app-profile" not in captured["cli_flags"]
@@ -667,6 +724,7 @@ class TestStartAccelerator:
 # ---------------------------------------------------------------------------
 # Event loop fixture so run_until_complete works
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(autouse=True)
 def _event_loop():

@@ -24,10 +24,10 @@ from google.auth import compute_engine
 
 import google.cloud.bigtable
 from google.cloud.bigtable.data._async.client import (
+    _UNSET,
     BigtableDataClientAsync,
     _AcceleratorIdentityError,
     _DataApiTargetAsync,
-    _UNSET,
 )
 
 

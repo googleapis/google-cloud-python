@@ -47,6 +47,13 @@ from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message
 from grpc import Channel, insecure_channel, intercept_channel
 
+from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
+from google.cloud.bigtable.data._accelerator._fallback import (
+    AcceleratorBreaker,
+    _AcceleratorFallback,
+    handle_accelerator_error,
+)
+from google.cloud.bigtable.data._accelerator._routing import is_supported
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _CONCURRENCY_LIMIT,
@@ -72,6 +79,9 @@ from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     GoogleCloudMetricsHandler,
 )
 from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
+from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
+    _AcceleratorClient as AcceleratorClientType,
+)
 from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
     SwappableChannel as SwappableChannelType,
 )
@@ -103,11 +113,11 @@ from google.cloud.bigtable.data.row_filters import (
     RowFilterChain,
     StripValueTransformerFilter,
 )
+from google.cloud.bigtable_v2._compat import DEFAULT_UNIVERSE as _DEFAULT_UNIVERSE
 from google.cloud.bigtable_v2.services.bigtable import BigtableClient as GapicClient
 from google.cloud.bigtable_v2.services.bigtable.transports import (
     BigtableGrpcTransport as TransportType,
 )
-from google.cloud.bigtable_v2._compat import DEFAULT_UNIVERSE as _DEFAULT_UNIVERSE
 from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
@@ -117,16 +127,6 @@ from google.cloud.bigtable_v2.types.bigtable import (
     PingAndWarmRequest,
     ReadModifyWriteRowRequest,
     SampleRowKeysRequest,
-)
-from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
-from google.cloud.bigtable.data._accelerator._fallback import (
-    AcceleratorBreaker,
-    _AcceleratorFallback,
-    handle_accelerator_error,
-)
-from google.cloud.bigtable.data._accelerator._routing import is_supported
-from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
-    _AcceleratorClient as AcceleratorClientType,
 )
 
 if TYPE_CHECKING:
@@ -346,6 +346,7 @@ class BigtableDataClient(ClientWithProject):
                 self._accelerator_env["GOOGLE_APPLICATION_CREDENTIALS"] = (
                     credentials_file
                 )
+
     def _resolve_principal(self) -> str | None:
         """Resolve this client's identity to a principal.
 
@@ -1343,9 +1344,7 @@ class _DataApiTarget(abc.ABC):
             retryable_exceptions=(),
         )
         try:
-            stream = client.read_rows(
-                row_merger.request, timeout=operation_timeout
-            )
+            stream = client.read_rows(row_merger.request, timeout=operation_timeout)
             chunked_stream = row_merger.chunk_stream(stream)
             results = [a for a in row_merger.merge_rows(chunked_stream)]
         except Exception as exc:

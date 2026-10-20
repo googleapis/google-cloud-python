@@ -35,7 +35,6 @@ import threading
 import time
 from typing import Any, Mapping, Sequence
 
-
 # Environment variable that overrides the daemon startup readiness timeout, in
 # seconds (float). Lets a deployment tune the cold-start budget without a code
 # change or rebuild — e.g. raise it on a very constrained/gVisor host, or (when
@@ -98,7 +97,6 @@ def _resolve_binary_path() -> str:
             "Accelerator binary not found. Install a wheel that bundles the binary."
         )
     return bundled
-
 
 
 def _resolve_startup_timeout() -> float:
@@ -234,7 +232,9 @@ class AcceleratorDaemon:
         Raises:
             FileNotFoundError: the bundled binary is not present in this wheel.
         """
-        self._binary_path = binary_path if binary_path is not None else _resolve_binary_path()
+        self._binary_path = (
+            binary_path if binary_path is not None else _resolve_binary_path()
+        )
         self._cli_flags = list(cli_flags)
         # ``None`` (the default) defers to the env var / module default; an
         # explicit float overrides both. Resolved here, not as a signature
