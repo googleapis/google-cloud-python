@@ -175,6 +175,8 @@ _BQSTORAGE_KEEPALIVE_TIME_MS = 60 * 1000
 _BQSTORAGE_KEEPALIVE_TIMEOUT_MS = 60 * 1000
 
 
+# TODO(https://github.com/googleapis/google-cloud-python/issues/18784): Use the
+# default transport once google-cloud-bigquery-storage sets keepalive itself.
 def _create_bqstorage_transport(**kwargs):
     """Create a BigQuery Storage gRPC transport whose channel sends keepalive
     pings.
@@ -749,7 +751,9 @@ class Client(ClientWithProject):
 
         The client is created on first use, with this client's credentials and
         universe domain and a gRPC channel that sends keepalive pings.
-        :meth:`close` closes it, and the next call creates a new one.
+        :meth:`close` closes it, and the next call creates a new one. Callers
+        must not close it, unlike the clients from
+        :meth:`_ensure_bqstorage_client`, which each caller owns.
 
         Returns:
             A BigQuery Storage API client, or ``None`` if
