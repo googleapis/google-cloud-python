@@ -176,6 +176,7 @@ class _ReadRowsOperationAsync:
         Yields:
             ReadRowsResponsePB.CellChunk: the next chunk in the stream
         """
+        current_key = None
         async for resp in await stream:
             # extract proto from proto-plus wrapper
             resp = resp._pb
@@ -190,12 +191,11 @@ class _ReadRowsOperationAsync:
                     raise InvalidChunk("last scanned out of order")
                 self._last_yielded_row_key = resp.last_scanned_row_key
 
-            current_key = None
             # process each chunk in the response
             for c in resp.chunks:
                 if current_key is None:
                     current_key = c.row_key
-                    if current_key is None:
+                    if not current_key:
                         raise InvalidChunk("first chunk is missing a row key")
                     elif (
                         self._last_yielded_row_key

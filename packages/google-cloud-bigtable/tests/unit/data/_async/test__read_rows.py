@@ -391,3 +391,53 @@ class TestReadRowsOperationAsync:
         with pytest.raises(InvalidChunk) as exc:
             await stream.__anext__()
         assert "row keys should be strictly increasing" in str(exc.value)
+
+    @CrossSync.pytest
+    @CrossSync.convert(replace_symbols={"__anext__": "__next__"})
+    async def test_chunk_stream_cross_response_row_key(self):
+        """
+        A row spanning multiple ReadRowsResponse messages must not clobber
+        _last_yielded_row_key with b"" when the continuation chunk omits
+        row_key (protobuf default). Regression test for the bug where
+        current_key was reset to None at the start of each response.
+        """
+        from google.cloud.bigtable_v2.types import ReadRowsResponse
+
+        row_key = b"row1"
+
+        async def mock_awaitable_stream():
+            async def mock_stream():
+                # First response: row starts but does not commit
+                yield ReadRowsResponse(
+                    chunks=[
+                        ReadRowsResponse.CellChunk(
+                            row_key=row_key,
+                            family_name="f",
+                            qualifier=b"q",
+                            value=b"part1",
+                        )
+                    ]
+                )
+                # Second response: continuation chunk commits; row_key is omitted (b"")
+                yield ReadRowsResponse(
+                    chunks=[
+                        ReadRowsResponse.CellChunk(
+                            value=b"part2",
+                            commit_row=True,
+                        )
+                    ]
+                )
+
+            return mock_stream()
+
+        instance = mock.Mock()
+        instance._last_yielded_row_key = None
+        instance._remaining_count = None
+        stream = self._get_target_class().chunk_stream(
+            instance, mock_awaitable_stream()
+        )
+        # consume both chunks
+        async for _ in stream:
+            pass
+        # _last_yielded_row_key must be the actual row key, not b""
+        assert instance._last_yielded_row_key == row_key
