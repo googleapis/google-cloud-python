@@ -1299,41 +1299,41 @@ def test__create_row_request_row_range_row_set_conflict():
 
 
 def test__create_row_request_row_range_start_key():
+    from google.cloud.bigtable.data.read_rows_query import RowRange
     from google.cloud.bigtable.table import _create_row_request
-    from google.cloud.bigtable_v2.types import RowRange
 
     start_key = b"begin_key"
     result = _create_row_request(start_key=start_key)
-    expected_result = ReadRowsQuery(row_ranges=RowRange(start_key_closed=start_key))
+    expected_result = ReadRowsQuery(row_ranges=RowRange(start_key=start_key))
     assert result == expected_result
 
 
 def test__create_row_request_row_range_end_key():
+    from google.cloud.bigtable.data.read_rows_query import RowRange
     from google.cloud.bigtable.table import _create_row_request
-    from google.cloud.bigtable_v2.types import RowRange
 
     end_key = b"begin_key"
     result = _create_row_request(end_key=end_key)
-    expected_result = ReadRowsQuery(row_ranges=RowRange(end_key_open=end_key))
+    expected_result = ReadRowsQuery(row_ranges=RowRange(end_key=end_key))
     assert result == expected_result
 
 
 def test__create_row_request_row_range_both_keys():
+    from google.cloud.bigtable.data.read_rows_query import RowRange
     from google.cloud.bigtable.table import _create_row_request
-    from google.cloud.bigtable_v2.types import RowRange
 
     start_key = b"begin_key"
     end_key = b"end_key"
     result = _create_row_request(start_key=start_key, end_key=end_key)
     expected_result = ReadRowsQuery(
-        row_ranges=RowRange(start_key_closed=start_key, end_key_open=end_key)
+        row_ranges=RowRange(start_key=start_key, end_key=end_key)
     )
     assert result == expected_result
 
 
 def test__create_row_request_row_range_both_keys_inclusive():
+    from google.cloud.bigtable.data.read_rows_query import RowRange
     from google.cloud.bigtable.table import _create_row_request
-    from google.cloud.bigtable_v2.types import RowRange
 
     start_key = b"begin_key"
     end_key = b"end_key"
@@ -1341,7 +1341,7 @@ def test__create_row_request_row_range_both_keys_inclusive():
         start_key=start_key, end_key=end_key, end_inclusive=True
     )
     expected_result = ReadRowsQuery(
-        row_ranges=RowRange(start_key_closed=start_key, end_key_closed=end_key)
+        row_ranges=RowRange(start_key=start_key, end_key=end_key, end_is_inclusive=True)
     )
     assert result == expected_result
 
