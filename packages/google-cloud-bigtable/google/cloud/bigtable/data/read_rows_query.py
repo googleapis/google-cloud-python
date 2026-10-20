@@ -200,7 +200,7 @@ class RowRange:
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, RowRange):
             return NotImplemented
-        return self._pb == other._pb
+        return self._key() == other._key()
 
     def __str__(self) -> str:
         """
