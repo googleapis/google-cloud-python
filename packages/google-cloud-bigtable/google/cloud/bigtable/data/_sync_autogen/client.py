@@ -1141,9 +1141,6 @@ class _DataApiTarget(abc.ABC):
                 server.uds_path, server.auth_secret
             )
             self._accelerator_daemon = server
-        except _AcceleratorIdentityError:
-            server.close()
-            raise
         except BaseException:
             server.close()
             raise
@@ -1944,12 +1941,6 @@ class _DataApiTarget(abc.ABC):
 
     def close(self):
         """Called to close the Table instance and release any resources held by it."""
-        self._metrics.close()
-        if self._register_instance_future:
-            self._register_instance_future.cancel()
-        self.client._remove_instance_registration(
-            self.instance_id, self.app_profile_id, id(self)
-        )
         if self._accelerator_health is not None:
             try:
                 self._accelerator_health.close()
@@ -1971,6 +1962,11 @@ class _DataApiTarget(abc.ABC):
                 _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
             finally:
                 self._accelerator_daemon = None
+        if self._register_instance_future:
+            self._register_instance_future.cancel()
+        self.client._remove_instance_registration(
+            self.instance_id, self.app_profile_id, id(self)
+        )
 
     def __enter__(self):
         """Implement async context manager protocol
@@ -1978,7 +1974,7 @@ class _DataApiTarget(abc.ABC):
         Ensure registration task has time to run, so that
         grpc channels will be warmed for the specified instance"""
         if self._register_instance_future:
-            self._register_instance_future.result()
+            self._register_instance_future
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
