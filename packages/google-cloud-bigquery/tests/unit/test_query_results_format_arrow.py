@@ -436,7 +436,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_first_page_batch_without_schema_raises(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         b64_batch = base64.b64encode(b"batch_bytes").decode("ascii")
         iterator = RowIterator(
@@ -464,7 +464,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_read_rows_batch_without_schema_raises(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         iterator = RowIterator(
             client=mock_client,
