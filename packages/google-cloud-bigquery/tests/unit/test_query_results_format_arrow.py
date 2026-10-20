@@ -480,13 +480,16 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_response = mock.MagicMock()
         mock_response.arrow_schema = None
         mock_response.arrow_record_batch.serialized_record_batch = b"batch_bytes"
-        mock_bqstorage.read_rows.return_value = [mock_response]
+        reader = mock.MagicMock()
+        reader.__iter__.return_value = iter([mock_response])
+        mock_bqstorage.read_rows.return_value = reader
 
         with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             with self.assertRaisesRegex(ValueError, "before its schema"):
                 list(iterator._download_arrow_from_job_id(timeout=5.0))
 
         mock_pyarrow.ipc.read_record_batch.assert_not_called()
+        reader.cancel.assert_called_once_with()
 
     def test_empty_row_iterator_to_arrow_iterable_checks_pyarrow(self):
         iterator = _EmptyRowIterator(query_results_format="ARROW")
