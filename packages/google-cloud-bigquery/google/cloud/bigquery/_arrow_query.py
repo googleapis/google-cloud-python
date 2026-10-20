@@ -83,7 +83,7 @@ def _check_dependencies() -> None:
         raise exceptions.LegacyBigQueryStorageError(
             "query_results_format=ARROW needs a newer google-cloud-bigquery-storage, "
             "please upgrade it "
-            '(`pip install --upgrade "google-cloud-bigquery[bqstorage]"`) '
+            '(`pip install "google-cloud-bigquery[bqstorage]"`) '
             "(version found: "
             f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
         )
