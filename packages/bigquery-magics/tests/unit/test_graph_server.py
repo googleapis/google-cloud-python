@@ -750,6 +750,9 @@ def test_convert_schema_shared_label():
     assert set(labels["Person"]["propertyDeclarationNames"]) == {"id", "name"}
 
 
+@pytest.mark.skipif(
+    graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+)
 class TestGraphServerHostHeader(unittest.TestCase):
     def setUp(self):
         self.server = graph_server.GraphServer()
@@ -762,25 +765,21 @@ class TestGraphServerHostHeader(unittest.TestCase):
     def _route(self):
         return self.server.build_route(graph_server.GraphServer.endpoints["get_ping"])
 
-    @pytest.mark.skipif(
-        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-    )
     def test_loopback_host_allowed(self):
         response = requests.get(self._route())
         self.assertEqual(response.status_code, 200)
 
-    @pytest.mark.skipif(
-        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-    )
+    def test_loopback_host_allowed_post(self):
+        route = self.server.build_route(graph_server.GraphServer.endpoints["post_ping"])
+        response = requests.post(route, json={"data": "ping"})
+        self.assertEqual(response.status_code, 200)
+
     def test_non_loopback_host_rejected(self):
         # A DNS-rebinding page reaches the loopback socket but carries the
         # attacker's hostname in the Host header.
         response = requests.get(self._route(), headers={"Host": "attacker.example"})
         self.assertEqual(response.status_code, 403)
 
-    @pytest.mark.skipif(
-        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-    )
     def test_non_loopback_host_rejected_post(self):
         route = self.server.build_route(graph_server.GraphServer.endpoints["post_ping"])
         response = requests.post(
@@ -788,39 +787,25 @@ class TestGraphServerHostHeader(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
-    @pytest.mark.skipif(
-        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-    )
     def test_missing_host_rejected(self):
         handler = mock.Mock(spec=graph_server.GraphServerHandler)
         handler.headers = {}
         self.assertFalse(graph_server.GraphServerHandler._is_request_safe(handler))
 
-    @pytest.mark.skipif(
-        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-    )
     def test_malformed_host_rejected(self):
         # An unterminated IPv6 literal makes urlsplit raise ValueError.
         handler = mock.Mock(spec=graph_server.GraphServerHandler)
         handler.headers = {"Host": "[::1"}
         self.assertFalse(graph_server.GraphServerHandler._is_request_safe(handler))
 
-    @pytest.mark.skipif(
-        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-    )
     def test_non_loopback_origin_rejected(self):
         # Host header is valid (loopback), but Origin is a malicious third-party site.
-        # Without Origin checks, the host-only check is bypassed and CORS wildcard headers are returned.
         response = requests.get(
             self._route(),
             headers={"Host": "localhost", "Origin": "http://attacker.example.com"},
         )
-        # Without the fix, this evaluates to 200 OK. We want it to be rejected.
         self.assertEqual(response.status_code, 403)
 
-    @pytest.mark.skipif(
-        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-    )
     def test_non_loopback_referer_rejected(self):
         # Host header is valid (loopback), but Referer reveals a malicious third-party origin.
         response = requests.get(
@@ -830,7 +815,32 @@ class TestGraphServerHostHeader(unittest.TestCase):
                 "Referer": "http://attacker.example.com/exploit-page",
             },
         )
-        # Without the fix, this evaluates to 200 OK. We want it to be rejected.
+        self.assertEqual(response.status_code, 403)
+
+    def test_malformed_origin_rejected(self):
+        # An unterminated IPv6 literal in Origin makes urlsplit raise ValueError.
+        handler = mock.Mock(spec=graph_server.GraphServerHandler)
+        handler.headers = {"Host": "localhost", "Origin": "http://[::1"}
+        self.assertFalse(graph_server.GraphServerHandler._is_request_safe(handler))
+
+    def test_loopback_origin_and_referer_allowed(self):
+        response = requests.get(
+            self._route(),
+            headers={
+                "Host": "localhost",
+                "Origin": "http://localhost:8080",
+                "Referer": "http://127.0.0.1:8080/notebook",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_null_origin_rejected(self):
+        # Sandboxed iframes and data: URIs send "Origin: null", where
+        # urlsplit("null").hostname is None.
+        response = requests.get(
+            self._route(),
+            headers={"Host": "localhost", "Origin": "null"},
+        )
         self.assertEqual(response.status_code, 403)
 
 

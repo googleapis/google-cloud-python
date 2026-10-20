@@ -364,7 +364,7 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-    def _is_request_safe(self):
+    def _is_request_safe(self) -> bool:
         """Return True if the request targets and originates from loopback.
 
         The Host header guards against DNS rebinding: legitimate widget traffic
@@ -392,7 +392,7 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
                 origin_hostname = urllib.parse.urlsplit(value.strip()).hostname
             except ValueError:
                 return False
-            if origin_hostname and origin_hostname not in _LOOPBACK_HOSTS:
+            if origin_hostname not in _LOOPBACK_HOSTS:
                 return False
 
         return True
