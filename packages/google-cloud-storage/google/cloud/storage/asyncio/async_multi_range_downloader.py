@@ -78,6 +78,56 @@ def _is_read_retryable(exc):
     )
 
 
+class _BytesWriter:
+    """Ensures a ``write()`` destination always receives ``bytes``."""
+
+    __slots__ = ("_buffer",)
+
+    def __init__(self, buffer):
+        self._buffer = buffer
+
+    def write(self, data):
+        return self._buffer.write(data if isinstance(data, bytes) else bytes(data))
+
+
+class _BufferWriter:
+    """Copies chunks directly into a writable buffer supporting the buffer protocol."""
+
+    __slots__ = ("_view", "_pos")
+
+    def __init__(self, buffer, length: int):
+        if length <= 0:
+            raise ValueError("A writable buffer destination requires bytes_to_read > 0")
+        view = memoryview(buffer)
+        if view.readonly or not view.c_contiguous:
+            view.release()
+            raise ValueError(
+                "Buffer destination must be a writable, C-contiguous buffer"
+            )
+        nbytes = view.nbytes
+        if nbytes < length:
+            view.release()
+            raise ValueError(
+                f"Buffer destination ({nbytes} bytes) is smaller than "
+                f"bytes_to_read ({length})"
+            )
+        self._view = view.cast("B")
+        self._pos = 0
+
+    def write(self, data):
+        n = len(data)
+        end = self._pos + n
+        self._view[self._pos : end] = data
+        self._pos = end
+        return n
+
+
+def _wrap_user_buffer(user_buffer, length: int):
+    if hasattr(user_buffer, "write"):
+        return _BytesWriter(user_buffer)
+    return _BufferWriter(user_buffer, length)
+
+
 class AsyncMultiRangeDownloader:
     """Provides an interface for downloading multiple ranges of a GCS ``Object``
     concurrently.
@@ -120,7 +170,6 @@ class AsyncMultiRangeDownloader:
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
-        zero_copy: Optional[bool] = None,
         **kwargs,
     ) -> AsyncMultiRangeDownloader:
         """Initializes a MultiRangeDownloader and opens the underlying bidi-gRPC
@@ -149,16 +198,6 @@ class AsyncMultiRangeDownloader:
         :type metadata: List[Tuple[str, str]]
         :param metadata: (Optional) The metadata to be sent with the ``open`` request.
 
-        :type zero_copy: bool
-        :param zero_copy: (Optional) Parse responses in place over the gRPC
-                          buffer. ``download_ranges`` then passes each chunk
-                          to ``buffer.write()`` as a ``memoryview`` instead of
-                          ``bytes``. ``None`` (the default) defers to the
-                          ``GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ``
-                          environment variable; ``False`` keeps the generated
-                          parser regardless of it. Ignored when the installed
-                          ``google-crc32c`` cannot hash ``memoryview`` inputs.
-
         :rtype: :class:`~google.cloud.storage.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader`
         :returns: An initialized AsyncMultiRangeDownloader instance for reading.
         """
@@ -168,7 +207,6 @@ class AsyncMultiRangeDownloader:
             object_name,
             generation=generation,
             read_handle=read_handle,
-            zero_copy=zero_copy,
             **kwargs,
         )
         await mrd.open(retry_policy=retry_policy, metadata=metadata)
@@ -181,7 +219,6 @@ class AsyncMultiRangeDownloader:
         object_name: str,
         generation: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
-        zero_copy: Optional[bool] = None,
         **kwargs,
     ) -> None:
         """Constructor for AsyncMultiRangeDownloader, clients are not adviced to
@@ -202,9 +239,6 @@ class AsyncMultiRangeDownloader:
 
         :type read_handle: _storage_v2.BidiReadHandle
         :param read_handle: (Optional) An existing read handle.
-
-        :type zero_copy: bool
-        :param zero_copy: (Optional) See :meth:`create_mrd`.
         """
         if "generation_number" in kwargs:
             if generation is not None:
@@ -223,7 +257,6 @@ class AsyncMultiRangeDownloader:
         self.object_name = object_name
         self.generation = generation
         self.read_handle: Optional[_storage_v2.BidiReadHandle] = read_handle
-        self.zero_copy: Optional[bool] = zero_copy
         self.read_obj_str: Optional[_AsyncReadObjectStream] = None
         self._is_stream_open: bool = False
         self._routing_token: Optional[str] = None
@@ -309,7 +342,6 @@ class AsyncMultiRangeDownloader:
                 object_name=self.object_name,
                 generation_number=self.generation,
                 read_handle=self.read_handle,
-                zero_copy=self.zero_copy,
                 client_info=getattr(self.client, "_client_info", None),
             )
 
@@ -350,7 +382,6 @@ class AsyncMultiRangeDownloader:
                 object_name=self.object_name,
                 generation_number=self.generation,
                 read_handle=current_handle,
-                zero_copy=self.zero_copy,
                 client_info=getattr(self.client, "_client_info", None),
             )
 
@@ -397,17 +428,20 @@ class AsyncMultiRangeDownloader:
             to be provided by the user, and user has to make sure appropriate
             memory is available in the application to avoid out-of-memory crash.
 
-            Each chunk is passed to ``writeable_buffer.write()`` as ``bytes``,
-            or as a read-only ``memoryview`` when the downloader was created
-            with ``zero_copy`` on. Such a view references the received gRPC
-            message, which is immutable and stays alive for as long as the view
-            does, so a buffer may keep the view and copy from it after
-            ``write()`` returns; a buffer that needs ``bytes`` must call
-            ``bytes(data)``.
+            If ``writeable_buffer`` has a ``write()`` method (e.g.
+            :class:`io.BytesIO`, an open file, or a custom stream), each
+            chunk is passed to ``writeable_buffer.write()`` as ``bytes``.
+            Otherwise, ``writeable_buffer`` must be a writable, C-contiguous
+            buffer supporting the buffer protocol (e.g. :class:`bytearray`
+            or a writable :class:`memoryview` slice) of at least
+            ``bytes_to_read`` bytes (with ``bytes_to_read > 0``), and the SDK
+            copies each chunk directly into it in place from the gRPC
+            response buffer without an intermediate ``bytes`` allocation.
 
             Special cases:
             if the value of `bytes_to_read` is 0, it'll be interpreted as
-            download all contents until the end of the file from `start_byte`.
+            download all contents until the end of the file from `start_byte`
+            (requires a ``write()`` destination).
             Examples:
                 * (0, 0, buffer) : downloads 0 to end , i.e. entire object.
                 * (100, 0, buffer) : downloads from 100 to end.
@@ -462,7 +496,7 @@ class AsyncMultiRangeDownloader:
             download_states[read_id] = _DownloadState(
                 initial_offset=offset,
                 initial_length=length,
-                user_buffer=user_buffer,
+                user_buffer=_wrap_user_buffer(user_buffer, length),
                 is_full_object_read=is_full_object_read,
             )
 

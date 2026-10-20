@@ -36,6 +36,15 @@ from google.cloud.storage.asyncio.async_read_object_stream import (
 )
 
 PAYLOAD = bytes(range(256)) * 8
+_orig_crc32c_value = google_crc32c.value
+
+
+@pytest.fixture(autouse=True)
+def _crc32c_accepts_memoryview(monkeypatch):
+    monkeypatch.setattr(
+        google_crc32c, "value", lambda data: _orig_crc32c_value(bytes(data))
+    )
+
 
 # Field numbers from google/storage/v2/storage.proto.
 _RESPONSE_METADATA, _RESPONSE_RANGES, _RESPONSE_HANDLE = 4, 6, 7
@@ -168,33 +177,10 @@ def test_deserialize_data_response_round_trip():
     assert range_data.checksummed_data.crc32c == crc
 
 
-def test_deserialize_matches_proto_plus_serialization():
-    message = _storage_v2.BidiReadObjectResponse(
-        object_data_ranges=[
-            _storage_v2.ObjectRangeData(
-                checksummed_data=_storage_v2.ChecksummedData(
-                    content=PAYLOAD, crc32c=google_crc32c.value(PAYLOAD)
-                ),
-                read_range=_storage_v2.ReadRange(
-                    read_offset=4096, read_length=len(PAYLOAD), read_id=7
-                ),
-                range_end=True,
-            )
-        ],
-        read_handle=_storage_v2.BidiReadHandle(handle=b"opaque"),
-    )
-    _assert_same_as_generated(_storage_v2.BidiReadObjectResponse.serialize(message))
-
-
 def test_deserialize_content_is_a_view_of_the_wire_buffer():
     buf = _data_response()
     content = _zero_copy_bidi_read.deserialize(buf).object_data_ranges[0]
     assert content.checksummed_data.content.obj is buf
-
-
-def test_deserialize_without_crc32c_reports_no_field():
-    response = _assert_same_as_generated(_data_response())
-    assert response.object_data_ranges[0].checksummed_data.HasField("crc32c") is False
 
 
 def test_deserialize_read_handle_is_a_bidi_read_handle():
@@ -206,67 +192,98 @@ def test_deserialize_read_handle_is_a_bidi_read_handle():
     assert spec.read_handle.handle == b"opaque"
 
 
-def test_deserialize_multiple_ranges():
-    buf = _response(
-        _range_data(_checksummed(b"first"), _read_range(0, 5, 1), range_end=False),
-        _range_data(_checksummed(b"second"), _read_range(5, 6, 2)),
-    )
-    response = _assert_same_as_generated(buf)
-    assert [bytes(r.checksummed_data.content) for r in response.object_data_ranges] == [
-        b"first",
-        b"second",
-    ]
+_UNKNOWN_FIELDS = (
+    _varint_field(_UNKNOWN, 1)
+    + _i64_field(_UNKNOWN, 2)
+    + _i32_field(_UNKNOWN, 3)
+    + _len_field(_UNKNOWN, b"ignored")
+)
 
 
-def test_deserialize_empty_message():
-    response = _assert_same_as_generated(b"")
-    assert response.object_data_ranges == []
-    assert response.read_handle is None
-
-
-def test_deserialize_range_without_read_range_exposes_proto_defaults():
-    # _StreamMultiplexer reads ``data_range.read_range.read_id`` without a
-    # HasField check, so the absent sub-message must look like an empty one.
-    response = _assert_same_as_generated(_response(_range_data(_checksummed())))
-    [range_data] = response.object_data_ranges
-    assert range_data.HasField("read_range") is False
-    assert range_data.read_range.read_id == 0
-
-
-def test_deserialize_range_without_checksummed_data_exposes_proto_defaults():
-    response = _assert_same_as_generated(
-        _response(_range_data(read_range=_read_range()))
-    )
-    [range_data] = response.object_data_ranges
-    assert range_data.HasField("checksummed_data") is False
-    assert bytes(range_data.checksummed_data.content) == b""
-
-
-def test_deserialize_skips_unknown_top_level_fields():
-    buf = _data_response() + (
-        _varint_field(_UNKNOWN, 1)
-        + _i64_field(_UNKNOWN, 2)
-        + _i32_field(_UNKNOWN, 3)
-        + _len_field(_UNKNOWN, b"ignored")
-    )
-    _assert_same_as_generated(buf)
-
-
-def test_deserialize_skips_unknown_nested_fields():
-    unknown = (
-        _varint_field(_UNKNOWN, 1)
-        + _i64_field(_UNKNOWN, 2)
-        + _i32_field(_UNKNOWN, 3)
-        + _len_field(_UNKNOWN, b"ignored")
-    )
-    buf = _response(
-        _range_data(
-            _checksummed(extra=unknown),
-            _read_range(extra=unknown),
-            extra=unknown,
+@pytest.mark.parametrize(
+    "buf",
+    [
+        pytest.param(
+            _storage_v2.BidiReadObjectResponse.serialize(
+                _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=PAYLOAD, crc32c=google_crc32c.value(PAYLOAD)
+                            ),
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=4096, read_length=len(PAYLOAD), read_id=7
+                            ),
+                            range_end=True,
+                        )
+                    ],
+                    read_handle=_storage_v2.BidiReadHandle(handle=b"opaque"),
+                )
+            ),
+            id="proto_plus_serialization",
         ),
-        handle=_len_field(_HANDLE_HANDLE, b"opaque") + unknown,
-    )
+        pytest.param(_data_response(), id="without_crc32c"),
+        pytest.param(
+            _response(
+                _range_data(
+                    _checksummed(b"first"), _read_range(0, 5, 1), range_end=False
+                ),
+                _range_data(_checksummed(b"second"), _read_range(5, 6, 2)),
+            ),
+            id="multiple_ranges",
+        ),
+        pytest.param(b"", id="empty_message"),
+        pytest.param(
+            _response(_range_data(_checksummed())), id="range_without_read_range"
+        ),
+        pytest.param(
+            _response(_range_data(read_range=_read_range())),
+            id="range_without_checksummed_data",
+        ),
+        pytest.param(_data_response() + _UNKNOWN_FIELDS, id="unknown_top_level_fields"),
+        pytest.param(
+            _response(
+                _range_data(
+                    _checksummed(extra=_UNKNOWN_FIELDS),
+                    _read_range(extra=_UNKNOWN_FIELDS),
+                    extra=_UNKNOWN_FIELDS,
+                ),
+                handle=_len_field(_HANDLE_HANDLE, b"opaque") + _UNKNOWN_FIELDS,
+            ),
+            id="unknown_nested_fields",
+        ),
+        pytest.param(
+            _response(
+                _range_data(
+                    read_range=_tag(_READ_RANGE_ID, 0) + (b"\xff" * 9 + b"\x7f")
+                )
+            ),
+            id="over_long_varint_keeps_low_64_bits",
+        ),
+        pytest.param(
+            _response(
+                _range_data(
+                    extra=_len_field(
+                        _RANGE_READ_RANGE, _varint_field(_READ_RANGE_OFFSET, 4096)
+                    )
+                    + _len_field(_RANGE_READ_RANGE, _varint_field(_READ_RANGE_ID, 7))
+                    + _len_field(
+                        _RANGE_CHECKSUMMED,
+                        _len_field(_CHECKSUMMED_CONTENT, PAYLOAD),
+                    )
+                    + _len_field(
+                        _RANGE_CHECKSUMMED,
+                        _i32_field(_CHECKSUMMED_CRC32C, 1234),
+                    )
+                ),
+                handle=_len_field(_HANDLE_HANDLE, b"opaque"),
+            )
+            + _len_field(_RESPONSE_HANDLE, b""),
+            id="merges_split_sub_messages",
+        ),
+    ],
+)
+def test_deserialize_matches_generated_parser(buf):
     _assert_same_as_generated(buf)
 
 
@@ -299,39 +316,6 @@ def test_deserialize_signed_int64_read_range(offset, length, read_id):
         length,
         read_id,
     )
-
-
-def test_deserialize_over_long_varint_keeps_low_64_bits():
-    # A ten-byte varint may carry up to 70 bits; the generated parser keeps
-    # the low 64 and interprets them as the field's type.
-    over_long = b"\xff" * 9 + b"\x7f"
-    read_range = _tag(_READ_RANGE_ID, 0) + over_long
-    response = _assert_same_as_generated(_response(_range_data(read_range=read_range)))
-    assert response.object_data_ranges[0].read_range.read_id == -1
-
-
-def test_deserialize_merges_split_sub_messages():
-    # A singular embedded message that occurs twice is merged, so the second
-    # occurrence must not reset fields set by the first.
-    read_range = _len_field(
-        _RANGE_READ_RANGE, _varint_field(_READ_RANGE_OFFSET, 4096)
-    ) + _len_field(_RANGE_READ_RANGE, _varint_field(_READ_RANGE_ID, 7))
-    checksummed = _len_field(
-        _RANGE_CHECKSUMMED, _len_field(_CHECKSUMMED_CONTENT, PAYLOAD)
-    ) + _len_field(_RANGE_CHECKSUMMED, _i32_field(_CHECKSUMMED_CRC32C, 1234))
-    buf = _response(
-        _range_data(extra=read_range + checksummed),
-        handle=_len_field(_HANDLE_HANDLE, b"opaque"),
-    ) + _len_field(_RESPONSE_HANDLE, b"")
-
-    response = _assert_same_as_generated(buf)
-
-    [range_data] = response.object_data_ranges
-    assert range_data.read_range.read_offset == 4096
-    assert range_data.read_range.read_id == 7
-    assert bytes(range_data.checksummed_data.content) == PAYLOAD
-    assert range_data.checksummed_data.crc32c == 1234
-    assert response.read_handle.handle == b"opaque"
 
 
 def test_deserialize_metadata_response_uses_generated_parser():
@@ -460,40 +444,29 @@ def test_is_supported_requires_crc32c_to_accept_memoryview(monkeypatch):
     assert _zero_copy_bidi_read.is_supported() is True
 
 
-@pytest.mark.parametrize("value", [None, "", "0", "false", "No", " off "])
-def test_is_enabled_defaults_to_off(monkeypatch, value):
-    assert _zero_copy_bidi_read._ENV_VAR == "GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ"
-    probed = []
-    monkeypatch.setattr(google_crc32c, "value", lambda data: probed.append(data) or 0)
+def test_deserialize_slices_bytes_when_memoryview_crc32c_not_supported(monkeypatch):
+    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: False)
+    response = _zero_copy_bidi_read.deserialize(_data_response(crc32c=1))
+    assert isinstance(response, _zero_copy_bidi_read._ZeroCopyBidiReadObjectResponse)
+    content = response.object_data_ranges[0].checksummed_data.content
+    assert type(content) is bytes
+    assert content == PAYLOAD
+
+
+@pytest.mark.parametrize("value", [None, "", "1", "true", "Yes", " on "])
+def test_is_enabled_defaults_to_on(monkeypatch, value):
+    assert _zero_copy_bidi_read._ENV_VAR == "GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ"
     if value is None:
         monkeypatch.delenv(_zero_copy_bidi_read._ENV_VAR, raising=False)
     else:
         monkeypatch.setenv(_zero_copy_bidi_read._ENV_VAR, value)
-    assert _zero_copy_bidi_read.is_enabled() is False
-    assert _zero_copy_bidi_read.is_enabled(None) is False
-    assert probed == []
-
-
-@pytest.mark.parametrize("value", ["1", "true", "Yes", " on "])
-def test_is_enabled_by_environment_when_supported(monkeypatch, value):
-    monkeypatch.setenv(_zero_copy_bidi_read._ENV_VAR, value)
-    monkeypatch.setattr(google_crc32c, "value", lambda data: len(data))
     assert _zero_copy_bidi_read.is_enabled() is True
-    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: False)
+
+
+@pytest.mark.parametrize("value", ["0", "false", "No", " off "])
+def test_is_enabled_disabled_by_environment(monkeypatch, value):
+    monkeypatch.setenv(_zero_copy_bidi_read._ENV_VAR, value)
     assert _zero_copy_bidi_read.is_enabled() is False
-
-
-@pytest.mark.parametrize("env", [None, "0", "1"])
-def test_is_enabled_argument_overrides_environment(monkeypatch, env):
-    if env is None:
-        monkeypatch.delenv(_zero_copy_bidi_read._ENV_VAR, raising=False)
-    else:
-        monkeypatch.setenv(_zero_copy_bidi_read._ENV_VAR, env)
-    monkeypatch.setattr(google_crc32c, "value", lambda data: len(data))
-    assert _zero_copy_bidi_read.is_enabled(True) is True
-    assert _zero_copy_bidi_read.is_enabled(False) is False
-    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: False)
-    assert _zero_copy_bidi_read.is_enabled(True) is False
 
 
 @pytest.mark.parametrize("wrap", [bytearray, memoryview])
@@ -516,28 +489,23 @@ def _transport(target, client_info=None):
 
 
 def test_wrapped_rpc_ignores_transports_it_does_not_know(monkeypatch):
-    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: True)
-    assert _zero_copy_bidi_read.wrapped_rpc(object(), True) is None
+    monkeypatch.delenv(_zero_copy_bidi_read._ENV_VAR, raising=False)
+    assert _zero_copy_bidi_read.wrapped_rpc(object()) is None
 
 
 @pytest.mark.asyncio
 async def test_wrapped_rpc_returns_none_when_not_enabled(monkeypatch):
-    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: True)
-    monkeypatch.delenv(_zero_copy_bidi_read._ENV_VAR, raising=False)
+    monkeypatch.setenv(_zero_copy_bidi_read._ENV_VAR, "0")
     transport = _transport("localhost:1")
     try:
         assert _zero_copy_bidi_read.wrapped_rpc(transport) is None
-        assert _zero_copy_bidi_read.wrapped_rpc(transport, False) is None
-        monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: False)
-        assert _zero_copy_bidi_read.wrapped_rpc(transport, True) is None
     finally:
         await transport.close()
 
 
 @pytest.mark.asyncio
 async def test_wrapped_rpc_is_built_once_per_transport(monkeypatch):
-    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: True)
-    monkeypatch.setenv(_zero_copy_bidi_read._ENV_VAR, "1")
+    monkeypatch.delenv(_zero_copy_bidi_read._ENV_VAR, raising=False)
     transport = _transport("localhost:1")
     other = _transport("localhost:1")
     try:
@@ -545,7 +513,6 @@ async def test_wrapped_rpc_is_built_once_per_transport(monkeypatch):
         assert rpc is not None
         assert rpc is not transport._wrapped_methods[transport.bidi_read_object]
         assert _zero_copy_bidi_read.wrapped_rpc(transport) is rpc
-        assert _zero_copy_bidi_read.wrapped_rpc(transport, True) is rpc
         assert _zero_copy_bidi_read.wrapped_rpc(other) is not rpc
     finally:
         await transport.close()
@@ -598,11 +565,12 @@ def keep_google_logger_propagation(monkeypatch):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("supported", [True, False])
+@pytest.mark.parametrize("enabled", [True, False])
 async def test_read_object_stream_end_to_end(
-    monkeypatch, keep_google_logger_propagation, supported
+    monkeypatch, keep_google_logger_propagation, enabled
 ):
     monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: True)
+    monkeypatch.setenv(_zero_copy_bidi_read._ENV_VAR, "1" if enabled else "0")
     crc = google_crc32c.value(PAYLOAD)
     first = _storage_v2.BidiReadObjectResponse.serialize(
         _storage_v2.BidiReadObjectResponse(
@@ -622,7 +590,6 @@ async def test_read_object_stream_end_to_end(
             client=client,
             bucket_name="b",
             object_name="o",
-            zero_copy=supported,
             client_info=client_info,
         )
         try:
@@ -647,13 +614,13 @@ async def test_read_object_stream_end_to_end(
 
     [range_data] = response.object_data_ranges
     content = range_data.checksummed_data.content
-    assert isinstance(content, memoryview if supported else bytes)
+    assert isinstance(content, memoryview if enabled else bytes)
     assert bytes(content) == PAYLOAD
     assert range_data.checksummed_data.crc32c == crc
     assert range_data.read_range.read_id == 7
     assert (
         isinstance(response, _zero_copy_bidi_read._ZeroCopyBidiReadObjectResponse)
-        is supported
+        is enabled
     )
 
     assert server.requests[0].read_object_spec.object_ == "o"

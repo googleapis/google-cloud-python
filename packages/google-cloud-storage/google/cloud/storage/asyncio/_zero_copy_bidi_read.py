@@ -18,15 +18,16 @@ The generated gRPC stub parses every response with proto-plus over upb, which
 copies each data chunk twice (into the upb arena, then into a Python ``bytes``
 for ``checksummed_data.content``) on the event-loop thread. Data responses are
 structurally tiny apart from the chunk itself, so this module walks the wire
-format directly and exposes ``content`` as a ``memoryview`` of the raw message.
-Responses carrying object metadata (the first message of a stream opened
-without a read handle) or anything unexpected fall back to the generated
-parser, so callers never see a difference other than the type of ``content``.
+format directly and exposes ``content`` as a ``memoryview`` of the raw message
+when :func:`is_supported` holds (or a single ``bytes`` slice when the installed
+``google-crc32c`` only accepts ``bytes``). Responses carrying object metadata
+(the first message of a stream opened without a read handle) or anything
+unexpected fall back to the generated parser, so callers never see a difference
+other than the type of ``content``.
 
 :func:`wrapped_rpc` builds the matching ``BidiReadObject`` callable for a
 transport; :class:`~google.cloud.storage.asyncio.async_read_object_stream._AsyncReadObjectStream`
-prefers it over the generated one whenever :func:`is_enabled` holds for the
-downloader's ``zero_copy`` argument.
+prefers it over the generated one whenever :func:`is_enabled` holds.
 """
 
 import os
@@ -34,6 +35,7 @@ import weakref
 
 import google_crc32c
 from google.api_core import gapic_v1
+from google.protobuf.message import DecodeError
 
 from google.cloud import _storage_v2
 from google.cloud._storage_v2.services.storage.transports.base import (
@@ -43,23 +45,16 @@ from google.cloud._storage_v2.services.storage.transports.grpc_asyncio import (
     StorageGrpcAsyncIOTransport,
 )
 
-# Process-wide default for downloaders created without an explicit ``zero_copy``
-# argument. Accepted spellings match ``_opentelemetry_tracing._parse_bool_env``.
-_ENV_VAR = "GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ"
-_ENABLED_VALUES = ("1", "true", "yes", "on")
+# Set ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=0`` (or ``false``, ``no``, ``off``)
+# to disable the wire parser and use the generated parser instead.
+_ENV_VAR = "GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ"
+_DISABLED_VALUES = ("0", "false", "no", "off")
 
 # Protobuf wire types (low 3 bits of a field tag): varint, 8-byte fixed,
 # length-delimited, 4-byte fixed. Groups (3, 4) are left to the generated parser.
 _WT_VARINT, _WT_I64, _WT_LEN, _WT_I32 = 0, 1, 2, 5
 
-
-class _ReadRange:
-    __slots__ = ("read_offset", "read_length", "read_id")
-
-    def __init__(self):
-        self.read_offset = 0
-        self.read_length = 0
-        self.read_id = 0
+_ReadRangePb = _storage_v2.ReadRange.pb()
 
 
 class _ChecksummedData:
@@ -87,7 +82,7 @@ class _ObjectRangeData:
 
     def __init__(self):
         self.checksummed_data = _ChecksummedData()
-        self.read_range = _ReadRange()
+        self.read_range = _ReadRangePb()
         self.range_end = False
         self._has_checksummed_data = False
         self._has_read_range = False
@@ -159,11 +154,6 @@ def _varint(buf, i, end):
     return result & _UINT64_MASK, i
 
 
-def _int64(value):
-    """Reinterpret the low 64 bits of a varint as a signed integer."""
-    return value - (1 << 64) if value >> 63 else value
-
-
 def _tag(buf, i, end):
     """Decode a field tag at ``buf[i]`` into ``(field_number, wire_type, i)``.
 
@@ -207,27 +197,12 @@ def _skip(buf, i, wt, end):
 # parser does, instead of replacing what the earlier occurrence set.
 
 
-def _parse_read_range(rr, buf, i, end):
-    while i < end:
-        f, wt, i = _tag(buf, i, end)
-        if wt == _WT_VARINT:
-            v, i = _varint(buf, i, end)
-            if f == 1:
-                rr.read_offset = _int64(v)
-            elif f == 2:
-                rr.read_length = _int64(v)
-            elif f == 3:
-                rr.read_id = _int64(v)
-        else:
-            i = _skip(buf, i, wt, end)
-
-
 def _parse_checksummed(cd, buf, mv, i, end):
     while i < end:
         f, wt, i = _tag(buf, i, end)
         if f == 1 and wt == _WT_LEN:
             start, i = _length_prefixed(buf, i, end)
-            cd.content = mv[start:i]
+            cd.content = mv[start:i] if mv is not None else buf[start:i]
         elif f == 2 and wt == _WT_I32:
             if i + 4 > end:
                 raise _Malformed("crc32c runs past its enclosing message")
@@ -248,7 +223,7 @@ def _parse_range_data(buf, mv, i, end):
                 _parse_checksummed(rd.checksummed_data, buf, mv, start, i)
                 rd._has_checksummed_data = True
             elif f == 2:
-                _parse_read_range(rd.read_range, buf, start, i)
+                rd.read_range.MergeFromString(buf[start:i])
                 rd._has_read_range = True
         elif f == 3 and wt == _WT_VARINT:
             v, i = _varint(buf, i, end)
@@ -256,17 +231,6 @@ def _parse_range_data(buf, mv, i, end):
         else:
             i = _skip(buf, i, wt, end)
     return rd
-
-
-def _parse_handle(handle, buf, i, end):
-    while i < end:
-        f, wt, i = _tag(buf, i, end)
-        if f == 1 and wt == _WT_LEN:
-            start, i = _length_prefixed(buf, i, end)
-            handle = bytes(buf[start:i])
-        else:
-            i = _skip(buf, i, wt, end)
-    return handle
 
 
 _generated_deserialize = _storage_v2.BidiReadObjectResponse.deserialize
@@ -284,7 +248,7 @@ def deserialize(buf):
     if type(buf) is not bytes:
         return _generated_deserialize(buf)
     try:
-        mv = memoryview(buf)
+        mv = memoryview(buf) if is_supported() else None
         n = len(buf)
         i = 0
         ranges = []
@@ -296,29 +260,26 @@ def deserialize(buf):
                 if f == 6:
                     ranges.append(_parse_range_data(buf, mv, start, end))
                 elif f == 7:
-                    handle = _parse_handle(handle or b"", buf, start, end)
+                    if handle is None:
+                        handle = _storage_v2.BidiReadHandle()
+                    handle._pb.MergeFromString(buf[start:end])
                 elif f == 4:
                     return _generated_deserialize(buf)
                 i = end
             else:
                 i = _skip(buf, i, wt, n)
-        if handle is not None:
-            # A real message: the handle is stored and passed back in the
-            # BidiReadObjectSpec of the next open, which only accepts the
-            # proto type.
-            handle = _storage_v2.BidiReadHandle(handle=handle)
         return _ZeroCopyBidiReadObjectResponse(ranges, handle)
-    except Exception:
+    except (_Malformed, IndexError, DecodeError):
         return _generated_deserialize(buf)
 
 
 def is_supported():
     """Whether the installed ``google_crc32c`` can hash ``memoryview`` inputs.
 
-    The parser hands chunk payloads to the read path as ``memoryview`` objects
-    and checksum verification feeds them to ``google_crc32c``; releases that
-    only accept ``bytes`` would fail on them, so the parser is never used
-    without this capability.
+    When true, :func:`deserialize` exposes chunk payloads as ``memoryview``
+    slices of the gRPC wire buffer; when false, it slices ``bytes`` instead so
+    checksum verification remains compatible with older ``google_crc32c``
+    releases while still avoiding the intermediate upb arena copy.
     """
     try:
         google_crc32c.value(memoryview(b"\0"))
@@ -327,36 +288,30 @@ def is_supported():
     return True
 
 
-def is_enabled(zero_copy=None):
+def is_enabled():
     """Whether a stream should use the zero-copy parser.
 
-    ``zero_copy`` is the downloader's argument: ``True`` asks for the parser,
-    ``False`` keeps the generated one, ``None`` defers to the
-    ``GOOGLE_CLOUD_STORAGE_ZERO_COPY_BIDI_READ`` environment variable. Either
-    way the parser is used only when :func:`is_supported` holds.
+    Enabled by default; set ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=0``
+    (or ``false``, ``no``, ``off``) to keep the generated parser.
     """
-    if zero_copy is None:
-        zero_copy = os.environ.get(_ENV_VAR, "").strip().lower() in _ENABLED_VALUES
-    return bool(zero_copy) and is_supported()
+    return os.environ.get(_ENV_VAR, "").strip().lower() not in _DISABLED_VALUES
 
 
 _rpcs = weakref.WeakKeyDictionary()
 
 
-def wrapped_rpc(transport, zero_copy=None, client_info=None):
+def wrapped_rpc(transport, client_info=None):
     """Return the zero-copy ``BidiReadObject`` callable for ``transport``.
 
     The callable is the generated transport's stub with :func:`deserialize`
     swapped in, wrapped exactly like ``transport._wrapped_methods`` entries
     (error mapping, no default retry or timeout, the ``x-goog-api-client``
     header from ``client_info``, the transport's own by default). Returns
-    ``None`` when :func:`is_enabled` is false for ``zero_copy`` or
-    ``transport`` is not the generated grpc_asyncio transport, in which case
-    callers should use the generated wrapped method.
+    ``None`` when :func:`is_enabled` is false or ``transport`` is not the
+    generated grpc_asyncio transport, in which case callers should use the
+    generated wrapped method.
     """
-    if not isinstance(transport, StorageGrpcAsyncIOTransport) or not is_enabled(
-        zero_copy
-    ):
+    if not isinstance(transport, StorageGrpcAsyncIOTransport) or not is_enabled():
         return None
     rpc = _rpcs.get(transport)
     if rpc is None:
