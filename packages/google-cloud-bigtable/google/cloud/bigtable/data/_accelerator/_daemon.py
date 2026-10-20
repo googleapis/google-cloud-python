@@ -64,6 +64,11 @@ _LOG_FILENAME = "daemon.log"
 # different BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT, so the sweep cannot rely on
 # its own env value when judging another process's tempdir.
 _STARTUP_DEADLINE_FILENAME = "startup_deadline"
+# PID of the Python process that spawned the daemon, written at start().  The
+# sweep sends signal 0 to this PID to check liveness: if the spawner is alive
+# the daemon is alive; if the spawner is dead (ESRCH) the daemon's stdin is
+# closed and it will exit (or has already exited).
+_PID_FILENAME = "daemon.pid"
 
 # How long to wait for the daemon to start listening on its UDS before giving
 # up at startup. Cold, constrained environments (e.g. Cloud Run's gVisor
@@ -143,8 +148,11 @@ def _sweep_stale_tempdirs() -> None:
     ``daemon.log`` marker file we write inside each one: a directory is a
     candidate only if it actually contains that log. This avoids deleting an
     unrelated directory that merely shares the tempdir prefix. A candidate is
-    removed only when its socket no longer accepts connections *and* it is old
-    enough that a daemon still mid-startup would already have bound (or died).
+    removed only when the spawning Python process (tracked via ``daemon.pid``)
+    is no longer alive *and* the tempdir is old enough that a daemon still
+    mid-startup would already have bound or died. ``os.kill(pid, 0)`` is
+    instant and kernel-guaranteed: the lock is implicitly released the moment
+    the process exits for any reason, including SIGKILL.
 
     All failures are swallowed — sweeping is opportunistic and must never break
     startup.
@@ -173,17 +181,18 @@ def _sweep_stale_tempdirs() -> None:
                 deadline = os.path.getmtime(log_path) + _STALE_SWEEP_MIN_AGE_SECONDS
             if now < deadline + _STALE_SWEEP_MIN_AGE_SECONDS:
                 continue
-            sock_path = os.path.join(path, _SOCKET_FILENAME)
-            if os.path.exists(sock_path):
-                try:
-                    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
-                        probe.settimeout(0.25)
-                        probe.connect(sock_path)
-                    continue  # connected → daemon is alive
-                except (ConnectionRefusedError, FileNotFoundError):
-                    pass  # definitive: nothing is listening
-                # Any other OSError (ENOBUFS, EAGAIN, …) is transient.
-                # Fall through to the outer except to skip this directory.
+            pid_path = os.path.join(path, _PID_FILENAME)
+            try:
+                with open(pid_path) as _f:
+                    pid = int(_f.read().strip())
+                os.kill(pid, 0)
+                continue  # spawning process alive → daemon alive → skip
+            except ProcessLookupError:
+                pass  # ESRCH: spawner is dead → stdin closed → daemon exiting
+            except (OSError, ValueError):
+                # No PID file (tempdir predates this change) or EPERM (process
+                # exists but unreadable) → assume alive and skip.
+                continue
         except OSError:
             continue
         shutil.rmtree(path, ignore_errors=True)
@@ -307,6 +316,8 @@ class AcceleratorDaemon:
         # what BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT the sweeping process has.
         with open(os.path.join(self._tempdir, _STARTUP_DEADLINE_FILENAME), "w") as _f:
             _f.write(repr(time.time() + self._startup_timeout))
+        with open(os.path.join(self._tempdir, _PID_FILENAME), "w") as _f:
+            _f.write(str(os.getpid()))
 
         # Redirect the daemon's stdout/stderr to a log file rather than
         # subprocess.PIPE. Nothing drains those pipes for the daemon's

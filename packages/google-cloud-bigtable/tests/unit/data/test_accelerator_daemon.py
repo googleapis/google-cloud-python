@@ -675,12 +675,22 @@ class TestSweepStaleTempdirs:
     daemon.log marker, without touching live or too-young ones."""
 
     @staticmethod
-    def _make_leftover(root, name, *, with_log=True, age_seconds=0.0, deadline_offset=None):
+    def _make_leftover(
+        root,
+        name,
+        *,
+        with_log=True,
+        age_seconds=0.0,
+        deadline_offset=None,
+        pid=None,
+    ):
         """Create a fake leftover daemon tempdir.
 
         deadline_offset: seconds relative to now for the startup deadline file.
         Negative = deadline already passed (stale); positive = still in future
         (mid-startup). None = omit the file (tests the fallback heuristic).
+        pid: if given, write a daemon.pid file with this PID.  Pass a dead PID
+        to simulate a crashed/exited spawner; pass os.getpid() for "alive".
         """
         d = root / name
         d.mkdir()
@@ -693,6 +703,8 @@ class TestSweepStaleTempdirs:
         if deadline_offset is not None:
             dl = d / _daemon._STARTUP_DEADLINE_FILENAME
             dl.write_text(repr(time.time() + deadline_offset))
+        if pid is not None:
+            (d / _daemon._PID_FILENAME).write_text(str(pid))
         return d
 
     @pytest.fixture
@@ -704,9 +716,14 @@ class TestSweepStaleTempdirs:
         return root
 
     def test_removes_stale_dir(self, tmp_root):
-        # Expired deadline + old log + no live socket → should be reaped.
+        # Expired deadline + old log + dead spawner PID → should be reaped.
+        import subprocess, sys
+
+        proc = subprocess.Popen([sys.executable, "-c", ""])
+        dead_pid = proc.pid
+        proc.wait()
         d = self._make_leftover(
-            tmp_root, "bt-accel-dead", age_seconds=120, deadline_offset=-70
+            tmp_root, "bt-accel-dead", age_seconds=120, deadline_offset=-70, pid=dead_pid
         )
         _daemon._sweep_stale_tempdirs()
         assert not d.exists()
@@ -734,21 +751,20 @@ class TestSweepStaleTempdirs:
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 
-    def test_keeps_dir_with_live_socket(self, tmp_root, monkeypatch):
+    def test_keeps_dir_with_live_pid(self, tmp_root):
+        # Past deadline but spawning process is still alive → must not be reaped.
         d = self._make_leftover(
-            tmp_root, "bt-accel-live", age_seconds=120, deadline_offset=-70
+            tmp_root, "bt-accel-live", age_seconds=120, deadline_offset=-70,
+            pid=os.getpid(),
         )
-        sock_path = d / _daemon._SOCKET_FILENAME
-        sock_path.touch()  # make os.path.exists() return True
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
 
-        # Simulate a successful connect without binding a real UDS (path may
-        # exceed the 104-char macOS limit under pytest's tmp_path).
-        mock_sock = unittest.mock.MagicMock()
-        mock_sock.__enter__ = lambda s: s
-        mock_sock.__exit__ = unittest.mock.MagicMock(return_value=False)
-        mock_sock.connect.return_value = None  # success → daemon alive
-        monkeypatch.setattr(_daemon.socket, "socket", lambda *a, **kw: mock_sock)
-
+    def test_keeps_dir_without_pid_file(self, tmp_root):
+        # No PID file (tempdir predates this change) → conservative: keep it.
+        d = self._make_leftover(
+            tmp_root, "bt-accel-nopid", age_seconds=120, deadline_offset=-70
+        )
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 
