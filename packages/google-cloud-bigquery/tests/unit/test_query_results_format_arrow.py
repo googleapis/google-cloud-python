@@ -431,6 +431,61 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
                 b"batch_bytes", "fake_schema"
             )
 
+    def test_download_arrow_from_job_id_first_page_batch_without_schema_raises(self):
+        mock_client = mock.MagicMock()
+        mock_bqstorage = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+
+        b64_batch = base64.b64encode(b"batch_bytes").decode("ascii")
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-no-schema",
+            query_results_format="ARROW",
+            first_page_response={
+                "jobComplete": True,
+                "arrowRecordBatch": {"serializedRecordBatch": b64_batch},
+            },
+        )
+
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
+            with self.assertRaisesRegex(ValueError, "before its schema"):
+                list(iterator._download_arrow_from_job_id(timeout=5.0))
+
+        mock_pyarrow.ipc.read_record_batch.assert_not_called()
+        mock_bqstorage.read_rows.assert_not_called()
+
+    def test_download_arrow_from_job_id_read_rows_batch_without_schema_raises(self):
+        mock_client = mock.MagicMock()
+        mock_bqstorage = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-no-schema",
+            query_results_format="ARROW",
+        )
+
+        mock_response = mock.MagicMock()
+        mock_response.arrow_schema = None
+        mock_response.arrow_record_batch.serialized_record_batch = b"batch_bytes"
+        mock_bqstorage.read_rows.return_value = [mock_response]
+
+        with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
+            with self.assertRaisesRegex(ValueError, "before its schema"):
+                list(iterator._download_arrow_from_job_id(timeout=5.0))
+
+        mock_pyarrow.ipc.read_record_batch.assert_not_called()
+
     def test_empty_row_iterator_to_arrow_iterable_checks_pyarrow(self):
         iterator = _EmptyRowIterator(query_results_format="ARROW")
         with mock.patch("google.cloud.bigquery.table.pyarrow", None):

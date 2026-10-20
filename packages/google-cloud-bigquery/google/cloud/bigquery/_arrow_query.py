@@ -37,6 +37,8 @@ _NO_PYARROW_ERROR = (
     "pyarrow to use the to_arrow() function."
 )
 
+_NO_ARROW_SCHEMA_ERROR = "Got an Arrow record batch before its schema."
+
 
 def validate_query(
     query_results_format: Optional[str],
@@ -169,9 +171,11 @@ def download_arrow_from_job(
                 pa_schema = pyarrow.ipc.read_schema(pyarrow.py_buffer(schema_bytes))
 
         arrow_batch_json = first_page.get("arrowRecordBatch")
-        if isinstance(arrow_batch_json, dict) and pa_schema is not None:
+        if isinstance(arrow_batch_json, dict):
             batch_bytes = arrow_batch_json.get("serializedRecordBatch")
             if batch_bytes:
+                if pa_schema is None:
+                    raise ValueError(_NO_ARROW_SCHEMA_ERROR)
                 if isinstance(batch_bytes, str):
                     batch_bytes = base64.b64decode(batch_bytes)
                 batch = pyarrow.ipc.read_record_batch(
@@ -215,8 +219,9 @@ def download_arrow_from_job(
         if (
             response.arrow_record_batch
             and response.arrow_record_batch.serialized_record_batch
-            and pa_schema is not None
         ):
+            if pa_schema is None:
+                raise ValueError(_NO_ARROW_SCHEMA_ERROR)
             batch = pyarrow.ipc.read_record_batch(
                 pyarrow.py_buffer(response.arrow_record_batch.serialized_record_batch),
                 pa_schema,
