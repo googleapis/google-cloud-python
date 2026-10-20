@@ -50,7 +50,8 @@ def _int_from_env(name: str, default: int) -> int:
 # GIL-release threshold, so offloaded hashes over ``bytes``-backed chunks
 # (received chunks are) always run with the GIL released.
 _CRC32C_OFFLOAD_MIN_BYTES = _int_from_env(
-    "GOOGLE_CLOUD_STORAGE_CRC32C_OFFLOAD_MIN_BYTES", 1024 * 1024
+    "GCS_PYTHON_CLIENT_CRC32C_OFFLOAD_MIN_BYTES",
+    getattr(google_crc32c, "GIL_RELEASE_THRESHOLD", 1024 * 1024),
 )
 # Upper bound on chunks held for verification per download_ranges() call.
 # Chunks are written only once their checksum matches, so this keeps a slow
@@ -97,7 +98,7 @@ class _PendingChunk(NamedTuple):
     server_checksum: Optional[int]
     # Worker-side CRC32C of ``data``; None if it was verified (or needs no
     # verification) on receipt and only waits for the chunks ahead of it.
-    checksum: Optional[concurrent.futures.Future]
+    checksum_future: Optional[concurrent.futures.Future]
 
 
 class _DownloadState:
@@ -208,12 +209,13 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             checksummed_data = object_data_range.checksummed_data
             data = checksummed_data.content
             server_checksum = None
-            checksum = None
+            checksum_future = None
 
             if checksum_enabled and checksummed_data.HasField("crc32c"):
                 server_checksum = checksummed_data.crc32c
                 if (
-                    0 < _CRC32C_OFFLOAD_MIN_BYTES <= len(data)
+                    _CRC32C_OFFLOAD_MIN_BYTES > 0
+                    and len(data) >= _CRC32C_OFFLOAD_MIN_BYTES
                     and read_state.rolling_checksum is None
                 ):
                     # Hash off the loop thread; the chunk is written by
@@ -221,8 +223,8 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                     # Full-object reads are excluded: they already fold every
                     # chunk into rolling_checksum on this thread, so a second
                     # hash on a worker would only add CPU work.
-                    checksum = _submit_crc32c(data)
-                if checksum is None:
+                    checksum_future = _submit_crc32c(data)
+                if checksum_future is None:
                     client_checksum = google_crc32c.value(data)
                     if server_checksum != client_checksum:
                         raise DataCorruption(
@@ -238,10 +240,10 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                 object_data_range.range_end,
                 response,
                 server_checksum,
-                checksum,
+                checksum_future,
             )
             pending = state.get("pending_checksums")
-            if checksum is None and not pending:
+            if checksum_future is None and not pending:
                 self._write_chunk(state, chunk)
             else:
                 # Hold the chunk; chunks are written in arrival order.
@@ -317,13 +319,13 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         pending = state.get("pending_checksums")
         while pending:
             chunk = pending[0]
-            if chunk.checksum is not None:
+            if chunk.checksum_future is not None:
                 try:
-                    if not chunk.checksum.done():
+                    if not chunk.checksum_future.done():
                         if len(pending) <= max_pending:
                             return
-                        await asyncio.wrap_future(chunk.checksum)
-                    client_checksum = chunk.checksum.result()
+                        await asyncio.wrap_future(chunk.checksum_future)
+                    client_checksum = chunk.checksum_future.result()
                 except BaseException:
                     self.discard_pending_checksums(state)
                     raise
@@ -346,8 +348,8 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         pending = state.get("pending_checksums")
         if pending:
             for chunk in pending:
-                if chunk.checksum is not None:
-                    chunk.checksum.cancel()
+                if chunk.checksum_future is not None:
+                    chunk.checksum_future.cancel()
             pending.clear()
         for read_state in state["download_states"].values():
             read_state.next_expected_offset = (

@@ -380,6 +380,7 @@ class TestReadResumptionStrategy(unittest.TestCase):
         self.assertFalse(read_state.is_complete)
         self.assertEqual(read_state.next_expected_offset, len(content))
         self.assertEqual(len(self.state["pending_checksums"]), 1)
+        self.assertIs(self.state["pending_checksums"][0].checksum_future, future)
 
         future.set_result(google_crc32c.value(content))
         asyncio.run(self.strategy.verify_pending_checksums(self.state))

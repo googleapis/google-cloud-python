@@ -91,7 +91,7 @@ class AsyncMultiRangeDownloader:
         mrd = await AsyncMultiRangeDownloader.create_mrd(
             client, bucket_name="chandrasiri-rs", object_name="test_open9"
         )
-        my_buff1 = open('my_fav_file.txt', 'wb')
+        my_buff1 = open("my_fav_file.txt", "wb")
         my_buff2 = BytesIO()
         my_buff3 = BytesIO()
         my_buff4 = any_object_which_provides_BytesIO_like_interface()
@@ -395,11 +395,13 @@ class AsyncMultiRangeDownloader:
 
         :type enable_checksum: bool
         :param enable_checksum: (Optional) If True, checksums are verified for downloaded data. Defaults to True.
-            Chunks of 1 MiB or more are verified on a worker thread and written
-            to their buffer once the checksum matches; chunks still waiting are
+            Chunks of ``GCS_PYTHON_CLIENT_CRC32C_OFFLOAD_MIN_BYTES`` bytes or
+            more (default 1 MiB) are verified on a worker thread and written to
+            their buffer once the checksum matches; chunks still waiting are
             discarded if the call is cancelled or a mismatch is found, and a
-            retry requests them again. ``GOOGLE_CLOUD_STORAGE_CRC32C_OFFLOAD_MIN_BYTES``
-            changes the size threshold; ``0`` verifies every chunk inline.
+            retry requests them again. Setting
+            ``GCS_PYTHON_CLIENT_CRC32C_OFFLOAD_MIN_BYTES=0`` verifies every
+            chunk inline.
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
@@ -553,8 +555,11 @@ class AsyncMultiRangeDownloader:
                 except DataCorruption:
                     raise
                 except Exception:
-                    # Write the chunks received before the failure; a corrupt
-                    # one is reported instead, as it would have been inline.
+                    # Chunks received before the stream error still have
+                    # in-flight checksum futures in initial_state. Verify them
+                    # before raising the stream error so an earlier corrupt
+                    # chunk raises DataCorruption (matching inline verification)
+                    # and valid chunks already received are written.
                     await strategy.verify_pending_checksums(initial_state)
                     raise
                 await strategy.verify_pending_checksums(initial_state)
