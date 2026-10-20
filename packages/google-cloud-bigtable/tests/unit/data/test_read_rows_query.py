@@ -715,6 +715,8 @@ class TestReadRowsQuery:
         # Equal RowRange objects must produce identical hashes so set membership
         # operates consistently across base and legacy types.
         assert base_range == legacy_range
+        assert LegacyRowRange._key is RowRange._key
+        assert LegacyRowRange.__hash__ is RowRange.__hash__
         assert hash(base_range) == hash(legacy_range)
 
         # Adding an equivalent legacy range to a query initialized with a base range
@@ -840,11 +842,11 @@ class TestReadRowsQuery:
         assert original.row_keys == [b"k1", b"k2"]
         assert original.row_ranges == [r1, r2]
 
-    def test_row_range_signature_collapses_falsy_keys_to_none(self):
+    def test_row_range_key_collapses_falsy_keys_to_none(self):
         """
         Verify that falsy empty-byte bounds (b"") in a RowRange protobuf are
-        collapsed into unbounded (None) bounds in _signature_from_pb, matching
-        RowRange.__init__, RowRange properties, and bool(RowRange).
+        collapsed into unbounded (None) bounds in _key(), matching RowRange.__init__,
+        RowRange properties, and bool(RowRange).
         """
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
@@ -858,12 +860,11 @@ class TestReadRowsQuery:
         )
 
         # All four represent the same unbounded-start range [None, b"z")
-        expected_sig = (None, True, b"z", False)
-        assert unbounded_start._signature() == expected_sig
-        assert empty_init_start._signature() == expected_sig
-        assert closed_empty_start._signature() == expected_sig
-        assert open_empty_start._signature() == expected_sig
-
+        expected_key = (None, b"z", True, False)
+        assert unbounded_start._key() == expected_key
+        assert empty_init_start._key() == expected_key
+        assert closed_empty_start._key() == expected_key
+        assert open_empty_start._key() == expected_key
         query = self._make_one(
             row_ranges=[
                 unbounded_start,
@@ -881,28 +882,6 @@ class TestReadRowsQuery:
         )
         assert bool(empty_key_range) is False
         assert self._make_one(row_ranges=[empty_key_range]) == self._make_one()
-
-    def test_add_range_pb_does_not_allocate_wrapper(self):
-        """
-        Verify that passing a RowRangePB directly to add_range computes the
-        deduplication signature via _signature_from_pb without allocating a
-        temporary RowRange wrapper via _from_pb.
-        """
-        from google.cloud.bigtable.data.read_rows_query import RowRange
-        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
-
-        query = self._make_one()
-        pb = RowRangePB(start_key_closed=b"a", end_key_open=b"b")
-
-        with mock.patch.object(
-            RowRange, "_from_pb", wraps=RowRange._from_pb
-        ) as mock_from_pb:
-            query.add_range(pb)
-            query.add_range(pb)
-            mock_from_pb.assert_not_called()
-
-        assert len(query.row_ranges) == 1
-        assert query.row_ranges[0] == RowRange(start_key=b"a", end_key=b"b")
 
     def test_copy_query_uses_protobuf_copy_from_without_deepcopy(self):
         """

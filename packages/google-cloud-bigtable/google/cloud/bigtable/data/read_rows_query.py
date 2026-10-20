@@ -87,46 +87,18 @@ class RowRange:
                 init_dict["end_key_open"] = end_key
         self._pb = RowRangePB(**init_dict)
 
-    @staticmethod
-    def _signature_from_pb(
-        pb: RowRangePB,
-    ) -> tuple[bytes | None, bool, bytes | None, bool]:
-        raw_pb = pb._pb
-
-        # Bigtable treats falsy/empty keys as unbounded (None).
-        start_closed = raw_pb.start_key_closed
-        if start_closed:
-            start_key: bytes | None = start_closed
-            start_is_inclusive = True
-        else:
-            start_open = raw_pb.start_key_open
-            if start_open:
-                start_key = start_open
-                start_is_inclusive = False
-            else:
-                start_key = None
-                start_is_inclusive = True
-
-        end_open = raw_pb.end_key_open
-        if end_open:
-            end_key: bytes | None = end_open
-            end_is_inclusive = False
-        else:
-            end_closed = raw_pb.end_key_closed
-            if end_closed:
-                end_key = end_closed
-                end_is_inclusive = True
-            else:
-                end_key = None
-                end_is_inclusive = False
-
-        return (start_key, start_is_inclusive, end_key, end_is_inclusive)
-
-    def _signature(self) -> tuple[bytes | None, bool, bytes | None, bool]:
-        return self._signature_from_pb(self._pb)
+    def _key(
+        self,
+    ) -> tuple[bytes | None, bytes | None, bool | None, bool | None]:
+        return (
+            self.start_key,
+            self.end_key,
+            self.start_is_inclusive,
+            self.end_is_inclusive,
+        )
 
     def __hash__(self) -> int:
-        return hash(self._signature())
+        return hash(self._key())
 
     @property
     def start_key(self) -> bytes | None:
@@ -297,9 +269,9 @@ class ReadRowsQuery:
             row_keys = [row_keys]
         self._row_set = RowSetPB()
         self._key_set: set[bytes] = set()
-        self._range_signatures: set[tuple[bytes | None, bool, bytes | None, bool]] = (
-            set()
-        )
+        self._range_signatures: set[
+            tuple[bytes | None, bytes | None, bool | None, bool | None]
+        ] = set()
         for k in row_keys:
             self.add_key(k)
         for r in row_ranges:
@@ -396,7 +368,7 @@ class ReadRowsQuery:
 
     def add_range(
         self,
-        row_range: RowRange | RowRangePB,
+        row_range: RowRange,
     ):
         """
         Add a range of row keys to this query.
@@ -404,15 +376,10 @@ class ReadRowsQuery:
         Args:
             row_range: a range of row keys to add to this query
         """
-        if isinstance(row_range, RowRangePB):
-            pb = row_range
-            sig = RowRange._signature_from_pb(pb)
-        else:
-            pb = row_range._pb
-            sig = row_range._signature()
+        sig = row_range._key()
         if sig not in self._range_signatures:
             self._range_signatures.add(sig)
-            self._row_set.row_ranges.append(pb)
+            self._row_set.row_ranges.append(row_range._pb)
 
     def shard(self, shard_keys: RowKeySamples) -> ShardedQuery:
         """
@@ -581,7 +548,7 @@ class ReadRowsQuery:
             return False
         # empty queries are equal
         if len(self._key_set) == 0 and len(other._key_set) == 0:
-            empty_sig = (None, True, None, False)
+            empty_sig = (None, None, True, True)
             this_range_empty = len(self._range_signatures) == 0 or (
                 self._range_signatures == {empty_sig}
             )
