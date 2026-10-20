@@ -335,7 +335,6 @@ class Client(ClientWithProject):
 
         # ARROW query results share one BigQuery Storage client. It's created
         # the first time a query needs a stream, and close() closes it.
-        self._universe_domain = _get_client_universe(client_options)
         self._shared_bqstorage_client: Optional[
             "google.cloud.bigquery_storage.BigQueryReadClient"
         ] = None
@@ -761,13 +760,7 @@ class Client(ClientWithProject):
         """
         with self._shared_bqstorage_client_lock:
             if self._shared_bqstorage_client is None:
-                client_options = None
-                if self._universe_domain != _DEFAULT_UNIVERSE:
-                    client_options = google.api_core.client_options.ClientOptions(
-                        universe_domain=self._universe_domain
-                    )
                 self._shared_bqstorage_client = self._ensure_bqstorage_client(
-                    client_options=client_options,
                     transport=_create_bqstorage_transport,
                 )
             return self._shared_bqstorage_client

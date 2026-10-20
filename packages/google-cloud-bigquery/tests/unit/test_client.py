@@ -1145,9 +1145,7 @@ class TestClient(unittest.TestCase):
             self.assertIsNone(client._get_shared_bqstorage_client())
             self.assertIsNone(client._get_shared_bqstorage_client())
 
-        expected = mock.call(
-            client_options=None, transport=client_module._create_bqstorage_transport
-        )
+        expected = mock.call(transport=client_module._create_bqstorage_transport)
         self.assertEqual(ensure.call_args_list, [expected, expected])
 
     def test_get_shared_bqstorage_client_creates_one_client_across_threads(self):
@@ -1178,7 +1176,7 @@ class TestClient(unittest.TestCase):
                 thread.join()
 
         ensure.assert_called_once_with(
-            client_options=None, transport=client_module._create_bqstorage_transport
+            transport=client_module._create_bqstorage_transport
         )
         self.assertEqual(len(results), 5)
         self.assertTrue(all(result is results[0] for result in results))
