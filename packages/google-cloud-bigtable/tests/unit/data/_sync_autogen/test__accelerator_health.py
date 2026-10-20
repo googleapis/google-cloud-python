@@ -29,6 +29,8 @@ literals are what protobuf itself produces is established in
 ``tests/unit/data/test_accelerator_health.py``.
 """
 
+import pathlib
+import tempfile
 import threading
 import time
 from concurrent import futures
@@ -56,6 +58,13 @@ _WIRE_BY_STATUS = {
     ServingStatus.NOT_SERVING: b"\x08\x02",
     ServingStatus.SERVICE_UNKNOWN: b"\x08\x03",
 }
+
+
+@pytest.fixture
+def tmp_path():
+    """Short UDS directory directly under the system temp root."""
+    with tempfile.TemporaryDirectory(prefix="bt-accel-") as d:
+        yield pathlib.Path(d)
 
 
 class _FakeDaemonHealthServer:

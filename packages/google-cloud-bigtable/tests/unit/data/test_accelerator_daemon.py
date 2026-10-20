@@ -783,12 +783,16 @@ class TestWindows:
         """
         import grpc
 
+        from google.cloud.bigtable.data._async._accelerator_client import (
+            _uds_target as _async_uds_target,
+        )
         from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
             _uds_target,
         )
 
         win_path = r"C:\Users\me\AppData\Local\Temp\bt-accel-abc123\sock"
         assert _uds_target(win_path) == "unix:" + win_path
+        assert _async_uds_target(win_path) == _uds_target(win_path)
         channel = grpc.insecure_channel(_uds_target(win_path))
         try:
             stub = channel.unary_unary(
