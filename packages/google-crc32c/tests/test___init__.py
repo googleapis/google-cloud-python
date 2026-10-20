@@ -275,6 +275,11 @@ def test_value_w_str(_crc32c):
         _crc32c.value("DEADBEEF")
 
 
+def test_gil_release_threshold(_crc32c):
+    assert _crc32c.GIL_RELEASE_THRESHOLD == 1024 * 1024
+    assert google_crc32c.GIL_RELEASE_THRESHOLD == 1024 * 1024
+
+
 # Larger than the 1 MiB threshold above which the C extension releases the
 # GIL for chunks backed by bytes. CRC from the pure-Python implementation.
 LARGE = ISCSI_BYTES * (2 * 1024 * 1024 // ISCSI_LENGTH + 1)

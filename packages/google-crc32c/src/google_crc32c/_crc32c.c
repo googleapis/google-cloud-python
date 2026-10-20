@@ -8,13 +8,8 @@ static const Py_ssize_t gil_threshold = 1024 * 1024;
 static int
 _should_release_gil(const Py_buffer *chunk)
 {
-    /* Release the GIL only for chunks large enough to benefit and whose memory
-     * is immutable: a bytes object, or a memoryview (incl. slices) of one.
-     * Read-only views of mutable memory (memoryview(bytearray).toreadonly(),
-     * numpy arrays with writeable=False) can still be written through their
-     * owner, so the GIL stays held for them as for any other exporter. The
-     * buffer stays exported while the checksum is computed, so it cannot be
-     * resized or freed. */
+    /* Release the GIL only for chunks of at least gil_threshold bytes backed
+     * by an immutable bytes object (a bytes instance or a memoryview of one). */
     PyObject *owner = chunk->obj;
 
     if (chunk->len < gil_threshold || owner == NULL) {
@@ -102,5 +97,13 @@ static struct PyModuleDef crc32cmodule = {
 PyMODINIT_FUNC
 PyInit__crc32c(void)
 {
-    return PyModule_Create(&crc32cmodule);
+    PyObject *m = PyModule_Create(&crc32cmodule);
+    if (m == NULL) {
+        return NULL;
+    }
+    if (PyModule_AddIntConstant(m, "GIL_RELEASE_THRESHOLD", (long)gil_threshold) < 0) {
+        Py_DECREF(m);
+        return NULL;
+    }
+    return m;
 }

@@ -16,6 +16,8 @@ import array
 
 from google_crc32c._checksum import CommonChecksum
 
+GIL_RELEASE_THRESHOLD = 1024 * 1024
+
 
 def extend(crc, chunk):
     """Update an existing CRC checksum with new chunk of data.
@@ -69,7 +71,7 @@ class Checksum(CommonChecksum):
         """Update the checksum with a new chunk of data.
 
         Args:
-            chunk (Optional[bytes-like]): a chunk of data used to extend
+            data (Optional[bytes-like]): a chunk of data used to extend
                 the CRC32C checksum.
         """
         try:
