@@ -177,9 +177,10 @@ async def verify_firebase_token(
         id_token (Union[str, bytes]): The encoded token.
         request (google.auth.transport.Request): The object used to make
             HTTP requests. This must be an aiohttp request.
-        audience (str): The audience that this token is intended for. This is
-            typically your Firebase application ID. If None then the audience
-            is not verified.
+        audience (Optional[Union[str, Iterable[str]]]): The audience that this
+            token is intended for. This is your Firebase project ID. If
+            ``None``, a ``UserWarning`` is issued because tokens from any
+            Firebase project will be accepted.
         clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
             validation.
 
@@ -209,13 +210,9 @@ async def verify_firebase_token(
 
     token_aud = idinfo.get("aud")
     if not isinstance(token_aud, str) or not token_aud:
-        raise exceptions.InvalidValue(
-            "Token does not contain a valid 'aud' claim."
-        )
+        raise exceptions.InvalidValue("Token does not contain a valid 'aud' claim.")
 
-    expected_issuer = "{}{}".format(
-        sync_id_token._FIREBASE_ISSUER_PREFIX, token_aud
-    )
+    expected_issuer = "{}{}".format(sync_id_token._FIREBASE_ISSUER_PREFIX, token_aud)
     if idinfo.get("iss") != expected_issuer:
         raise exceptions.InvalidValue(
             "Wrong issuer. 'iss' should be '{}'.".format(expected_issuer)

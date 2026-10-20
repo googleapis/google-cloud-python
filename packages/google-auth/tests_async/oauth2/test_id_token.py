@@ -14,6 +14,7 @@
 
 import json
 import os
+import warnings
 from unittest import mock
 
 import pytest  # type: ignore
@@ -178,9 +179,11 @@ async def test_verify_firebase_token(verify_token):
         "aud": "my-project-id",
         "iss": "https://securetoken.google.com/my-project-id",
     }
-    result = await id_token.verify_firebase_token(
-        mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
-    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", UserWarning)
+        result = await id_token.verify_firebase_token(
+            mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
+        )
 
     assert result == verify_token.return_value
     verify_token.assert_called_once_with(
@@ -216,13 +219,20 @@ async def test_verify_firebase_token_clock_skew(verify_token):
     )
 
 
+@pytest.mark.parametrize(
+    "invalid_payload",
+    [
+        {"aud": "my-project-id"},
+        {
+            "aud": "my-project-id",
+            "iss": "https://securetoken.google.com/other-project-id",
+        },
+    ],
+)
 @mock.patch("google.oauth2._id_token_async.verify_token", autospec=True)
 @pytest.mark.asyncio
-async def test_verify_firebase_token_invalid_iss(verify_token):
-    verify_token.return_value = {
-        "aud": "my-project-id",
-        "iss": "https://securetoken.google.com/other-project-id",
-    }
+async def test_verify_firebase_token_invalid_iss(verify_token, invalid_payload):
+    verify_token.return_value = invalid_payload
 
     with pytest.raises(exceptions.InvalidValue, match="Wrong issuer"):
         await id_token.verify_firebase_token(
@@ -232,12 +242,21 @@ async def test_verify_firebase_token_invalid_iss(verify_token):
         )
 
 
+@pytest.mark.parametrize(
+    "invalid_payload",
+    [
+        {"iss": "https://securetoken.google.com/"},
+        {"aud": "", "iss": "https://securetoken.google.com/"},
+        {
+            "aud": ["my-project-id"],
+            "iss": "https://securetoken.google.com/my-project-id",
+        },
+    ],
+)
 @mock.patch("google.oauth2._id_token_async.verify_token", autospec=True)
 @pytest.mark.asyncio
-async def test_verify_firebase_token_missing_aud(verify_token):
-    verify_token.return_value = {
-        "iss": "https://securetoken.google.com/",
-    }
+async def test_verify_firebase_token_missing_aud(verify_token, invalid_payload):
+    verify_token.return_value = invalid_payload
 
     with pytest.raises(
         exceptions.InvalidValue, match="Token does not contain a valid 'aud' claim"
@@ -260,12 +279,21 @@ async def test_verify_firebase_token_warns_without_audience(verify_token):
     with pytest.warns(
         UserWarning,
         match="Calling verify_firebase_token without an audience is insecure",
-    ):
+    ) as record:
         result = await id_token.verify_firebase_token(
             mock.sentinel.token, mock.sentinel.request
         )
 
+    assert len(record) == 1
+    assert record[0].filename == __file__
     assert result == verify_token.return_value
+    verify_token.assert_called_once_with(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=None,
+        certs_url=sync_id_token._GOOGLE_APIS_CERTS_URL,
+        clock_skew_in_seconds=0,
+    )
 
 
 @pytest.mark.asyncio
