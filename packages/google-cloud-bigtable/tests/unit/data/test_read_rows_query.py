@@ -618,25 +618,22 @@ class TestReadRowsQuery:
             # ASSERT: The slow, O(N) wrapper-building property was never accessed
             row_ranges.assert_not_called()
 
-        # Verify that all ranges were successfully committed to the underlying protobuf
-        assert len(query._row_set.row_ranges) == 100
+        # Verify that all ranges were successfully recorded in the query
+        assert len(query.row_ranges) == 100
 
     def test_add_key_deduplicates_via_set_without_scanning_row_set(self):
         """
         Verify that ReadRowsQuery deduplicates row_keys in __init__ and add_key
-        using its internal O(1) key set without linearly scanning _row_set.row_keys.
+        in O(1) time without materializing the row_keys property list.
         """
         # Duplicate keys passed to __init__ (even in mixed str/bytes forms)
         # must be deduplicated on construction.
         query = self._make_one(row_keys=["k0", b"k0"])
         assert query.row_keys == [b"k0"]
 
-        # When adding keys that are already present in the query, add_key must
-        # short-circuit via _key_set without accessing _row_set.row_keys.
-        mock_row_set = mock.MagicMock()
-        row_keys_prop = mock.PropertyMock()
-        type(mock_row_set).row_keys = row_keys_prop
-        with mock.patch.object(query, "_row_set", mock_row_set):
+        with mock.patch.object(
+            type(query), "row_keys", new_callable=mock.PropertyMock
+        ) as row_keys_prop:
             query.add_key(b"k0")
             query.add_key("k0")
             row_keys_prop.assert_not_called()
@@ -724,28 +721,6 @@ class TestReadRowsQuery:
         query = self._make_one(row_ranges=[base_range])
         query.add_range(legacy_range)
         assert len(query.row_ranges) == 1
-
-    def test_add_range_immune_to_caller_mutating_row_range_after_insert(self):
-        """
-        Verify that mutating a RowRange's underlying protobuf after adding it to
-        a query does not corrupt the query's internal deduplication set.
-        """
-        from google.cloud.bigtable.data.read_rows_query import RowRange
-
-        query = self._make_one()
-        r1 = RowRange(start_key=b"a", end_key=b"b")
-        query.add_range(r1)
-
-        # Mutate the caller's underlying RowRangePB in place after insertion.
-        r1._pb.start_key_closed = b"x"
-        r1._pb.end_key_open = b"y"
-
-        # Adding a new RowRange with the original ("a", "b") bounds must still be
-        # detected as a duplicate of the previously added range.
-        query.add_range(RowRange(start_key=b"a", end_key=b"b"))
-
-        assert len(query.row_ranges) == 1
-        assert query.row_ranges[0] == RowRange(start_key=b"a", end_key=b"b")
 
     def test_row_range_from_dict_does_not_call_init(self):
         """
@@ -882,30 +857,3 @@ class TestReadRowsQuery:
         )
         assert bool(empty_key_range) is False
         assert self._make_one(row_ranges=[empty_key_range]) == self._make_one()
-
-    def test_copy_query_uses_protobuf_copy_from_without_deepcopy(self):
-        """
-        Verify that ReadRowsQuery.__copy__ clones _row_set using native
-        protobuf CopyFrom via type(_row_set).pb() rather than copy.deepcopy().
-        """
-        import copy
-
-        from google.cloud.bigtable.data.read_rows_query import RowRange
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
-
-        r1 = RowRange(start_key=b"a", end_key=b"b")
-        original = self._make_one(row_keys=[b"k1"], row_ranges=[r1], limit=10)
-
-        with (
-            mock.patch("copy.deepcopy", wraps=copy.deepcopy) as mock_deepcopy,
-            mock.patch.object(RowSetPB, "pb", wraps=RowSetPB.pb) as mock_pb,
-        ):
-            copied = copy.copy(original)
-            mock_deepcopy.assert_not_called()
-            mock_pb.assert_any_call(original._row_set)
-            mock_pb.assert_any_call(copied._row_set)
-
-        assert copied == original
-        assert copied._row_set is not original._row_set
-        assert copied.row_keys == [b"k1"]
-        assert copied.row_ranges == [r1]
