@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import base64
-from typing import Iterator, Optional, TYPE_CHECKING
+from typing import Dict, Iterator, Optional, TYPE_CHECKING
 
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import enums
@@ -42,6 +42,7 @@ def validate_query(
     query_results_format: Optional[str],
     *,
     compression_codec: Optional[str] = None,
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
 ) -> None:
     """Raise before sending a query whose ``ARROW`` results can't be read.
 
@@ -50,10 +51,13 @@ def validate_query(
             ``query_and_wait()``.
         compression_codec: The ``compression_codec`` passed to
             ``query_and_wait()``.
+        timestamp_precision: The ``timestamp_precision`` passed to
+            ``query_and_wait()``.
 
     Raises:
         ValueError:
-            If ``compression_codec`` is set without ``ARROW``.
+            If ``compression_codec`` or ``timestamp_precision`` is set
+            without ``ARROW``.
         google.cloud.bigquery.exceptions.BigQueryError:
             If pyarrow or google-cloud-bigquery-storage is missing or too old
             to read ``ARROW`` results.
@@ -61,6 +65,8 @@ def validate_query(
     if query_results_format != enums.QueryResultsFormat.ARROW:
         if compression_codec is not None:
             raise ValueError("compression_codec requires query_results_format=ARROW.")
+        if timestamp_precision is not None:
+            raise ValueError("timestamp_precision requires query_results_format=ARROW.")
         return
 
     # Check before the query runs, so a query doesn't succeed while its
@@ -82,6 +88,39 @@ def _check_dependencies() -> None:
             "(version found: "
             f"{_versions_helpers.BQ_STORAGE_VERSIONS.installed_version})."
         )
+
+
+def serialization_options(
+    compression_codec: Optional[str],
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
+) -> Dict[str, str]:
+    """Build the ``arrowSerializationOptions`` sent on ``jobs.query``.
+
+    ``ReadRows`` gets the same options. Options the caller didn't set are sent
+    with their defaults, so every batch uses one encoding, whatever each
+    endpoint would default to.
+    """
+    return {
+        "bufferCompression": getattr(compression_codec, "value", compression_codec)
+        or "COMPRESSION_UNSPECIFIED",
+        # Picosecond values come back as ISO 8601 strings at full precision,
+        # so there's no need to offer nanoseconds.
+        "picosTimestampPrecision": (
+            "TIMESTAMP_PRECISION_PICOS"
+            if timestamp_precision == enums.TimestampPrecision.PICOSECOND
+            else "TIMESTAMP_PRECISION_MICROS"
+        ),
+    }
+
+
+def _read_rows_options(options: Optional[Dict[str, str]]) -> Dict[str, str]:
+    """Convert ``jobs.query`` ``arrowSerializationOptions`` to the
+    ``ArrowSerializationOptions`` fields that ``ReadRows`` takes."""
+    options = options or serialization_options(None)
+    return {
+        "buffer_compression": options["bufferCompression"],
+        "picos_timestamp_precision": options["picosTimestampPrecision"],
+    }
 
 
 def download_arrow_from_job(
@@ -108,17 +147,18 @@ def download_arrow_from_job(
 
     offset = 0
     pa_schema = None
-    total_rows = row_iterator.total_rows
+    page_token = None
     job_complete = False
 
     # Step 2: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
+        # Keep the first page on the iterator so the result can be read
+        # again. The row pager clears its own copy in
+        # RowIterator._get_next_page_response().
         first_page = row_iterator._first_page_response
-        row_iterator._first_page_response = None
 
         job_complete = bool(first_page.get("jobComplete", False))
-        if job_complete:
-            total_rows = int(first_page.get("totalRows", 0))
+        page_token = first_page.get("pageToken")
 
         arrow_schema_json = first_page.get("arrowSchema")
         if isinstance(arrow_schema_json, dict):
@@ -141,8 +181,10 @@ def download_arrow_from_job(
                 offset += batch.num_rows
                 yield batch
 
-    # Step 3: Return early if all results were delivered in the first page response.
-    if job_complete and offset >= total_rows:
+    # Step 3: Return early if all results were delivered in the first page
+    # response. Only a pageToken says rows remain: totalRows is 0 when cached
+    # results are too large to return inline.
+    if job_complete and page_token is None:
         return
 
     # Step 4: Stream remaining Arrow record batches from the job default stream.
@@ -153,7 +195,14 @@ def download_arrow_from_job(
         row_iterator.client.location if row_iterator.client else None
     )
     stream_name = f"projects/{project}/locations/{location}/jobs/{row_iterator._job_id}/streams/_default"
-    reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
+    reader = bqstorage_client.read_rows(
+        stream_name,
+        offset=offset,
+        timeout=timeout,
+        arrow_serialization_options=_read_rows_options(
+            row_iterator._arrow_serialization_options
+        ),
+    )
     for response in reader:
         if (
             response.arrow_schema
