@@ -147,17 +147,18 @@ def download_arrow_from_job(
 
     offset = 0
     pa_schema = None
-    total_rows = row_iterator.total_rows
+    page_token = None
     job_complete = False
 
     # Step 2: Process initial inline Arrow response from jobs.query if available.
     if row_iterator._first_page_response:
+        # Keep the first page on the iterator so the result can be read
+        # again. The row pager clears its own copy in
+        # RowIterator._get_next_page_response().
         first_page = row_iterator._first_page_response
-        row_iterator._first_page_response = None
 
         job_complete = bool(first_page.get("jobComplete", False))
-        if job_complete:
-            total_rows = int(first_page.get("totalRows", 0))
+        page_token = first_page.get("pageToken")
 
         arrow_schema_json = first_page.get("arrowSchema")
         if isinstance(arrow_schema_json, dict):
@@ -180,8 +181,10 @@ def download_arrow_from_job(
                 offset += batch.num_rows
                 yield batch
 
-    # Step 3: Return early if all results were delivered in the first page response.
-    if job_complete and offset >= total_rows:
+    # Step 3: Return early if all results were delivered in the first page
+    # response. Only a pageToken says rows remain: totalRows is 0 when cached
+    # results are too large to return inline.
+    if job_complete and page_token is None:
         return
 
     # Step 4: Stream remaining Arrow record batches from the job default stream.
