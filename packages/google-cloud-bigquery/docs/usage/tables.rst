@@ -187,8 +187,8 @@ Column Data Policies
 ^^^^^^^^^^^^^^^^^^^^
 
 Use :class:`~google.cloud.bigquery.schema.SchemaField` to represent data policies
-attached directly to a column. Pass the policy resource names as
-``data_policies``:
+attached directly to a column. Pass :class:`~google.cloud.bigquery.schema.DataPolicy`
+objects as the keyword argument ``data_policies``:
 
 .. code-block:: python
 
@@ -197,13 +197,20 @@ attached directly to a column. Pass the policy resource names as
     field = bigquery.SchemaField(
         "ssn",
         "STRING",
-        data_policies=["projects/my-project/locations/us/dataPolicies/mask_ssn"],
+        data_policies=[
+            bigquery.DataPolicy(
+                name="projects/my-project/locations/us/dataPolicies/mask_ssn"
+            )
+        ],
     )
 
-The ``data_policies`` property returns a tuple of resource names, or ``None``
-when the property is unset. The client serializes these names as ``dataPolicies``
-objects in the table schema. Omitting the argument leaves that property out of
-the API representation; an empty iterable produces an empty array.
+The ``data_policies`` property returns a tuple of ``DataPolicy`` objects, or
+``None`` when the property is unset. Each object's ``name`` property contains
+the resource name. Its ``to_api_repr()`` method preserves all properties from
+the REST representation, including any not yet exposed by the client.
+The client serializes the objects as ``dataPolicies`` in the table schema.
+Omitting the argument leaves that property out of the API representation;
+``None`` produces ``null`` and an empty iterable produces an empty array.
 
 This property represents ``dataPolicies``, not the separate ``dataPolicyList``
 REST field. When ``dataPolicyList`` is present, BigQuery uses it as the source of

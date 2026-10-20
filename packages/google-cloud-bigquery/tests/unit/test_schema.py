@@ -20,7 +20,7 @@ import pytest
 
 from google.cloud import bigquery
 from google.cloud.bigquery import enums, schema
-from google.cloud.bigquery.schema import PolicyTagList
+from google.cloud.bigquery.schema import DataPolicy, PolicyTagList
 from google.cloud.bigquery.standard_sql import StandardSqlStructType
 
 
@@ -769,23 +769,79 @@ class TestSchemaField(unittest.TestCase):
 
 
 class TestSchemaFieldDataPolicies:
-    POLICY_ONE = "projects/project/locations/us/dataPolicies/one"
-    POLICY_TWO = "projects/project/locations/us/dataPolicies/two"
+    POLICY_ONE = DataPolicy("projects/project/locations/us/dataPolicies/one")
+    POLICY_TWO = DataPolicy("projects/project/locations/us/dataPolicies/two")
+
+    def test_constructor_preserves_legacy_positional_arguments(self):
+        arguments = {
+            "name": "test",
+            "field_type": "TIMESTAMP",
+            "mode": "REQUIRED",
+            "default_value_expression": "CURRENT_TIMESTAMP()",
+            "description": "Description",
+            "fields": (),
+            "policy_tags": None,
+            "precision": 10,
+            "scale": 2,
+            "max_length": 128,
+            "range_element_type": "DATE",
+            "rounding_mode": enums.RoundingMode.ROUND_HALF_EVEN,
+            "foreign_type_definition": "foreign",
+            "timestamp_precision": enums.TimestampPrecision.PICOSECOND,
+        }
+        positional = schema.SchemaField(
+            *arguments.values(), data_policies=[self.POLICY_ONE]
+        )
+        keyword = schema.SchemaField(**arguments, data_policies=[self.POLICY_ONE])
+
+        assert positional.to_api_repr() == keyword.to_api_repr()
+        with pytest.raises(TypeError):
+            schema.SchemaField(*arguments.values(), [self.POLICY_ONE])
 
     @pytest.mark.parametrize(
-        "names, expected",
+        "policy", [POLICY_ONE.name, {"name": POLICY_ONE.name}, None]
+    )
+    def test_constructor_rejects_non_policy_items(self, policy):
+        with pytest.raises(TypeError, match="DataPolicy"):
+            schema.SchemaField("ssn", "STRING", data_policies=[policy])
+
+    def test_policy_objects_preserve_unknown_api_properties(self):
+        resource = {
+            "name": "ssn",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "dataPolicies": [
+                {
+                    "name": self.POLICY_ONE.name,
+                    "futureOption": {"values": ["one", "two"]},
+                }
+            ],
+        }
+        original = copy.deepcopy(resource)
+        field = schema.SchemaField.from_api_repr(resource)
+        policies = field.data_policies
+
+        assert isinstance(policies[0], DataPolicy)
+        assert policies[0].name == self.POLICY_ONE.name
+        assert policies[0].to_api_repr() == original["dataPolicies"][0]
+        assert field.to_api_repr() == original
+        rebuilt = schema.SchemaField("ssn", "STRING", data_policies=policies)
+        assert rebuilt.to_api_repr() == original
+
+    @pytest.mark.parametrize(
+        "policies, expected",
         [
             (None, None),
             ([], []),
-            ([POLICY_ONE], [{"name": POLICY_ONE}]),
+            ([POLICY_ONE], [{"name": POLICY_ONE.name}]),
             (
                 [POLICY_ONE, POLICY_TWO],
-                [{"name": POLICY_ONE}, {"name": POLICY_TWO}],
+                [{"name": POLICY_ONE.name}, {"name": POLICY_TWO.name}],
             ),
         ],
     )
-    def test_constructor_and_round_trip(self, names, expected):
-        field = schema.SchemaField("ssn", "STRING", data_policies=names)
+    def test_constructor_and_round_trip(self, policies, expected):
+        field = schema.SchemaField("ssn", "STRING", data_policies=policies)
         resource = {
             "name": "ssn",
             "type": "STRING",
@@ -794,7 +850,7 @@ class TestSchemaFieldDataPolicies:
         }
 
         assert field.to_api_repr() == resource
-        assert field.data_policies == (None if names is None else tuple(names))
+        assert field.data_policies == (None if policies is None else tuple(policies))
         restored = schema.SchemaField.from_api_repr(copy.deepcopy(resource))
         assert restored == field
         assert hash(restored) == hash(field)
@@ -807,9 +863,14 @@ class TestSchemaFieldDataPolicies:
             ({}, None),
             ({"dataPolicies": None}, None),
             ({"dataPolicies": []}, ()),
-            ({"dataPolicies": [{"name": POLICY_ONE}]}, (POLICY_ONE,)),
+            ({"dataPolicies": [{"name": POLICY_ONE.name}]}, (POLICY_ONE,)),
             (
-                {"dataPolicies": [{"name": POLICY_ONE}, {"name": POLICY_TWO}]},
+                {
+                    "dataPolicies": [
+                        {"name": POLICY_ONE.name},
+                        {"name": POLICY_TWO.name},
+                    ]
+                },
                 (POLICY_ONE, POLICY_TWO),
             ),
         ],
@@ -826,24 +887,26 @@ class TestSchemaFieldDataPolicies:
 
     @pytest.mark.parametrize("container", [list, tuple, iter])
     def test_constructor_accepts_iterables(self, container):
-        names = container([self.POLICY_ONE, self.POLICY_TWO])
-        field = schema.SchemaField("ssn", "STRING", data_policies=names)
+        policies = container([self.POLICY_ONE, self.POLICY_TWO])
+        field = schema.SchemaField("ssn", "STRING", data_policies=policies)
 
         assert field.data_policies == (self.POLICY_ONE, self.POLICY_TWO)
         assert field.to_api_repr()["dataPolicies"] == [
-            {"name": self.POLICY_ONE},
-            {"name": self.POLICY_TWO},
+            {"name": self.POLICY_ONE.name},
+            {"name": self.POLICY_TWO.name},
         ]
 
-    @pytest.mark.parametrize("names", [POLICY_ONE, POLICY_ONE.encode(), "", b""])
-    def test_constructor_rejects_strings_and_bytes(self, names):
+    @pytest.mark.parametrize(
+        "policies", [POLICY_ONE.name, POLICY_ONE.name.encode(), "", b""]
+    )
+    def test_constructor_rejects_strings_and_bytes(self, policies):
         with pytest.raises(TypeError, match="data_policies must be an iterable"):
-            schema.SchemaField("ssn", "STRING", data_policies=names)
+            schema.SchemaField("ssn", "STRING", data_policies=policies)
 
-    def test_constructor_copies_names(self):
-        names = [self.POLICY_ONE]
-        field = schema.SchemaField("ssn", "STRING", data_policies=names)
-        names.append(self.POLICY_TWO)
+    def test_constructor_copies_policy_list(self):
+        policies = [self.POLICY_ONE]
+        field = schema.SchemaField("ssn", "STRING", data_policies=policies)
+        policies.append(self.POLICY_TWO)
 
         assert field.data_policies == (self.POLICY_ONE,)
 
@@ -862,11 +925,15 @@ class TestSchemaFieldDataPolicies:
         assert field._key().data_policies == (self.POLICY_ONE, self.POLICY_TWO)
         # Comparing fields must not reorder the API representation.
         assert other.data_policies == (self.POLICY_TWO, self.POLICY_ONE)
+        assert other.to_api_repr()["dataPolicies"] == [
+            {"name": self.POLICY_TWO.name},
+            {"name": self.POLICY_ONE.name},
+        ]
 
-    @pytest.mark.parametrize("other_names", [None, [], [POLICY_TWO]])
-    def test_different_policies_are_not_equal(self, other_names):
+    @pytest.mark.parametrize("other_policies", [None, [], [POLICY_TWO]])
+    def test_different_policies_are_not_equal(self, other_policies):
         field = schema.SchemaField("ssn", "STRING", data_policies=[self.POLICY_ONE])
-        other = schema.SchemaField("ssn", "STRING", data_policies=other_names)
+        other = schema.SchemaField("ssn", "STRING", data_policies=other_policies)
 
         assert field != other
         assert len({field, other}) == 2
@@ -897,7 +964,7 @@ class TestSchemaFieldDataPolicies:
                     "name": "ssn",
                     "type": "STRING",
                     "mode": "NULLABLE",
-                    "dataPolicies": [{"name": self.POLICY_ONE}],
+                    "dataPolicies": [{"name": self.POLICY_ONE.name}],
                 }
             ],
         }
@@ -931,13 +998,17 @@ class TestSchemaFieldDataPolicies:
         assert "policyTags" not in fields[1].to_api_repr()
         assert fields[1].data_policies == (self.POLICY_ONE,)
 
-    @pytest.mark.parametrize("names", [[], [POLICY_ONE], [POLICY_TWO, POLICY_ONE]])
-    def test_repr(self, names):
-        field = schema.SchemaField("ssn", "STRING", data_policies=names)
+    @pytest.mark.parametrize("policies", [[], [POLICY_ONE], [POLICY_TWO, POLICY_ONE]])
+    def test_repr(self, policies):
+        field = schema.SchemaField("ssn", "STRING", data_policies=policies)
 
-        restored = eval(repr(field), {"SchemaField": schema.SchemaField})
+        restored = eval(
+            repr(field), {"SchemaField": schema.SchemaField, "DataPolicy": DataPolicy}
+        )
         assert restored == field
-        assert restored.data_policies == tuple(sorted(names))
+        assert restored.data_policies == tuple(
+            sorted(policies, key=lambda policy: policy.name)
+        )
 
     def test_repr_with_nested_fields(self):
         field = schema.SchemaField(
@@ -953,11 +1024,66 @@ class TestSchemaFieldDataPolicies:
 
         restored = eval(
             repr(field),
-            {"SchemaField": schema.SchemaField, "PolicyTagList": PolicyTagList},
+            {
+                "SchemaField": schema.SchemaField,
+                "PolicyTagList": PolicyTagList,
+                "DataPolicy": DataPolicy,
+            },
         )
         assert restored == field
         assert restored.fields[0].policy_tags == field.fields[0].policy_tags
         assert restored.fields[1].data_policies == (self.POLICY_ONE,)
+
+
+class TestDataPolicy:
+    NAME = "projects/project/locations/us/dataPolicies/one"
+
+    def test_public_export(self):
+        assert bigquery.DataPolicy is DataPolicy
+        assert "DataPolicy" in bigquery.__all__
+
+    def test_constructor(self):
+        policy = DataPolicy(name=self.NAME)
+
+        assert policy.name == self.NAME
+        assert policy.to_api_repr() == {"name": self.NAME}
+
+    def test_from_api_repr_preserves_unknown_properties(self):
+        resource = {
+            "name": self.NAME,
+            "futureOption": {"values": ["one", "two"]},
+        }
+        original = copy.deepcopy(resource)
+        policy = DataPolicy.from_api_repr(resource)
+
+        assert policy.name == self.NAME
+        assert policy.to_api_repr() == original
+        assert policy.to_api_repr() is resource
+        assert DataPolicy.from_api_repr(policy.to_api_repr()).to_api_repr() == original
+
+    def test_equality_and_hash(self):
+        policy = DataPolicy(self.NAME)
+        equal = DataPolicy(self.NAME)
+        different = DataPolicy("projects/project/locations/us/dataPolicies/two")
+
+        assert policy == equal
+        assert not policy != equal
+        assert policy != different
+        assert hash(policy) == hash(equal)
+        assert len({policy, equal, different}) == 2
+
+    def test_equality_with_other_types(self):
+        policy = DataPolicy(self.NAME)
+
+        assert policy != object()
+        assert policy == mock.ANY
+        assert policy.__eq__(object()) is NotImplemented
+
+    def test_repr(self):
+        policy = DataPolicy(self.NAME)
+
+        assert repr(policy) == f"DataPolicy(name={self.NAME!r})"
+        assert eval(repr(policy), {"DataPolicy": DataPolicy}) == policy
 
 
 class TestFieldElementType(unittest.TestCase):
