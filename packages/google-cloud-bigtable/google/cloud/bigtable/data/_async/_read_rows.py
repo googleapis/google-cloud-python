@@ -99,10 +99,6 @@ class _ReadRowsOperationAsync:
             attempt_timeout, operation_timeout
         )
         self.operation_timeout = operation_timeout
-        # ReadRowsQuery defines __slots__, which gives it a C-level memory layout
-        # disjoint from dict. Consequently, `query` must be explicitly typed as
-        # `ReadRowsQuery | dict[str, object]` in the signature above; otherwise,
-        # mypy flags this runtime `isinstance(query, dict)` branch as unreachable.
         if isinstance(query, dict):
             self.request = ReadRowsRequestPB(
                 **query,
