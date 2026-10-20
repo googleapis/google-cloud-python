@@ -296,6 +296,7 @@ class Client(ClientWithProject):
             _validate_universe(client_universe, self._credentials)
 
         self._connection = Connection(self, **kw_args)
+        self._universe_domain = _get_client_universe(client_options)
         self._location = location
         self._default_load_job_config = copy.deepcopy(default_load_job_config)
         self.default_job_creation_mode = default_job_creation_mode
@@ -609,7 +610,8 @@ class Client(ClientWithProject):
                 instance is created and returned.
             client_options:
                 Custom options used with a new BigQuery Storage client instance
-                if one is created.
+                if one is created. If ``None``, the new client uses this
+                client's universe domain.
             client_info:
                 The client info used with a new BigQuery Storage client
                 instance if one is created.
@@ -676,6 +678,11 @@ class Client(ClientWithProject):
             )
 
         if bqstorage_client is None:
+            if client_options is None and self._universe_domain != _DEFAULT_UNIVERSE:
+                # Without this, the BigQuery Storage client uses googleapis.com.
+                client_options = google.api_core.client_options.ClientOptions(
+                    universe_domain=self._universe_domain
+                )
             bqstorage_client = bigquery_storage.BigQueryReadClient(
                 credentials=self._credentials,
                 client_options=client_options,
