@@ -1468,9 +1468,6 @@ class _DataApiTargetAsync(abc.ABC):
                 server.uds_path, server.auth_secret
             )
             self._accelerator_daemon = server
-        except _AcceleratorIdentityError:
-            server.close()
-            raise
         except BaseException:
             server.close()
             raise
@@ -2374,13 +2371,9 @@ class _DataApiTargetAsync(abc.ABC):
         """
         Called to close the Table instance and release any resources held by it.
         """
-        self._metrics.close()
-        if self._register_instance_future:
-            self._register_instance_future.cancel()
-        self.client._remove_instance_registration(
-            self.instance_id, self.app_profile_id, id(self)
-        )
-        # Stop the monitor before the channel it probes over goes away.
+        # Accelerator teardown goes first, so that nothing that can raise runs
+        # ahead of it and strands the daemon subprocess. Within it, the monitor
+        # stops before the channel it probes over goes away.
         if self._accelerator_health is not None:
             try:
                 await self._accelerator_health.close()
@@ -2402,6 +2395,11 @@ class _DataApiTargetAsync(abc.ABC):
                 _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
             finally:
                 self._accelerator_daemon = None
+        if self._register_instance_future:
+            self._register_instance_future.cancel()
+        self.client._remove_instance_registration(
+            self.instance_id, self.app_profile_id, id(self)
+        )
 
     @CrossSync.convert(sync_name="__enter__")
     async def __aenter__(self):
