@@ -46,6 +46,16 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen._accelerator_c
 _MUTATE_ROW_METHOD = "/google.bigtable.v2.Bigtable/MutateRow"
 _READ_ROWS_METHOD = "/google.bigtable.v2.Bigtable/ReadRows"
 
+# Inbound message cap on the UDS channel. gRPC defaults this to 4 MiB, a limit
+# meant for a channel that crosses a network. This one doesn't leave the
+# machine: the daemon has already paid the cost of pulling the response off the
+# wire, and all the cap does on this hop is turn an otherwise-fine read into
+# RESOURCE_EXHAUSTED. Raise it well past anything the service itself produces so
+# the UDS leg is never the narrower of the two.
+_MAX_RECEIVE_MESSAGE_LENGTH = 256 * 1024 * 1024
+
+_CHANNEL_OPTIONS = (("grpc.max_receive_message_length", _MAX_RECEIVE_MESSAGE_LENGTH),)
+
 
 @CrossSync.convert_class(sync_name="_AcceleratorClient")
 class _AsyncAcceleratorClient:
@@ -59,7 +69,9 @@ class _AsyncAcceleratorClient:
     def __init__(self, uds_path: str, auth_secret: str):
         self._uds_path = uds_path
         self._metadata = (("x-accelerator-token", auth_secret),)
-        self._channel = insecure_channel(_uds_target(uds_path))
+        self._channel = insecure_channel(
+            _uds_target(uds_path), options=_CHANNEL_OPTIONS
+        )
         self._mutate_row_stub = self._channel.unary_unary(
             _MUTATE_ROW_METHOD,
             request_serializer=MutateRowRequest.serialize,
