@@ -21,6 +21,7 @@ from typing import TYPE_CHECKING, Any
 from google.cloud.bigtable.data.row_filters import RowFilter
 from google.cloud.bigtable_v2.types import ReadRowsRequest as ReadRowsRequestPB
 from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data import RowKeySamples, ShardedQuery
@@ -509,7 +510,10 @@ class ReadRowsQuery:
             app_profile_id=table.app_profile_id,
             filter=self.filter._to_pb() if self.filter else None,
             rows_limit=self.limit or 0,
-            rows=self._row_set,
+            rows=RowSetPB(
+                row_keys=list(self._row_keys.keys()),
+                row_ranges=[r._pb for r in self._row_ranges.keys()],
+            ),
             **table._request_path,
         )
 
