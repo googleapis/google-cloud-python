@@ -30,10 +30,18 @@ import secrets
 import shutil
 import socket
 import subprocess
+import sys
 import tempfile
 import threading
 import time
 from typing import Any, Mapping, Sequence
+
+# Windows differs from every other supported platform in two ways that matter
+# here, so it gets a named constant rather than scattered ``sys.platform``
+# checks: the daemon binary carries a ``.exe`` suffix, and CPython's socket
+# module exposes no ``AF_UNIX`` even though the OS and gRPC's C-core both speak
+# it (see ``_socket_is_live``).
+_IS_WINDOWS = sys.platform == "win32"
 
 # Environment variable that overrides the daemon startup readiness timeout, in
 # seconds (float). Lets a deployment tune the cold-start budget without a code
@@ -43,7 +51,10 @@ from typing import Any, Mapping, Sequence
 _STARTUP_TIMEOUT_ENV_VAR = "BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT"
 
 # Wheels ship the binary at this path relative to the `_accelerator/` package.
+# The Windows wheels (win_amd64, win32) stage it under the ``.exe`` name Go
+# gives it, so the suffix is appended there.
 _DEFAULT_BIN_RELATIVE_PATH = "bin/accelerator"
+_WINDOWS_BIN_SUFFIX = ".exe"
 
 # The daemon writes the principal it resolved to this file in its tempdir
 # (alongside the socket) before binding, so the client can verify it matches
@@ -91,7 +102,8 @@ _STALE_SWEEP_MIN_AGE_SECONDS = 60.0
 
 def _resolve_binary_path() -> str:
     """Return the path of the bundled daemon binary, raising if it is absent."""
-    bundled = os.path.join(os.path.dirname(__file__), _DEFAULT_BIN_RELATIVE_PATH)
+    relative = _DEFAULT_BIN_RELATIVE_PATH + (_WINDOWS_BIN_SUFFIX if _IS_WINDOWS else "")
+    bundled = os.path.join(os.path.dirname(__file__), relative)
     if not os.path.isfile(bundled):
         raise FileNotFoundError(
             "Accelerator binary not found. Install a wheel that bundles the binary."
@@ -127,6 +139,23 @@ def _socket_is_live(uds_path: str) -> bool:
     """Return True if something is currently accepting connections on the UDS."""
     if not os.path.exists(uds_path):
         return False
+    if not hasattr(socket, "AF_UNIX"):
+        # Windows. The OS (10 1803+ / Server 2019+) and gRPC's C-core both
+        # support AF_UNIX, which is why the accelerator runs here at all, but
+        # CPython's socket module still does not expose the family, so we
+        # cannot open a probe connection from Python. The gate is
+        # ``HAVE_SYS_UN_H``: ``PC/pyconfig.h`` leaves it commented out and
+        # ``Modules/socketmodule.h`` responds with ``#undef AF_UNIX``, so the
+        # attribute is absent on every current CPython for Windows. Testing
+        # the attribute rather than the platform keeps this correct for any
+        # other build that lacks the family, and is what lets the tests
+        # exercise this branch from a POSIX run.
+        #
+        # Fall back to the bind artifact: the daemon's
+        # ``net.Listen("unix", ...)`` creates this file and puts the socket in
+        # the listen backlog inside one call, so the path existing means the
+        # listener is up.
+        return True
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
         probe.settimeout(0.25)
         try:
@@ -154,8 +183,18 @@ def _sweep_stale_tempdirs() -> None:
 
     All failures are swallowed — sweeping is opportunistic and must never break
     startup.
+
+    Skipped entirely on Windows: see the guard below.
     """
-    if not hasattr(socket, "AF_UNIX"):
+    if _IS_WINDOWS:
+        # The liveness check below is ``os.kill(pid, 0)``, which is a probe
+        # only on POSIX. On Windows os.kill routes every signal that is not a
+        # console control event to TerminateProcess, so that same call would
+        # *kill* the spawning Python process it is supposed to be asking
+        # about — someone else's live application. Porting it needs an
+        # OpenProcess/WaitForSingleObject check instead, which is left for a
+        # follow-up; until then the safe failure is to leave the tempdirs
+        # alone. They are four small files under the per-user %TEMP%.
         return
     root = tempfile.gettempdir()
     try:
@@ -300,7 +339,12 @@ class AcceleratorDaemon:
         if self._proc is not None:
             raise RuntimeError("AcceleratorDaemon.start() called twice")
 
-        if not hasattr(socket, "AF_UNIX"):
+        # The daemon only listens on AF_UNIX, so a platform without it cannot
+        # run the accelerator at all. Windows is the one case where a missing
+        # ``socket.AF_UNIX`` says nothing about the platform — the OS and
+        # gRPC's C-core both support the family, only CPython's socket module
+        # does not — so it is excluded from the check.
+        if not hasattr(socket, "AF_UNIX") and not _IS_WINDOWS:
             raise OSError(
                 "Unix domain sockets (AF_UNIX) are not supported on this platform."
             )
@@ -310,6 +354,11 @@ class AcceleratorDaemon:
         # daemon thread so it never blocks startup (sweep probes dead sockets
         # with a 0.25 s timeout each).
         threading.Thread(target=_sweep_stale_tempdirs, daemon=True).start()
+        # mkdtemp is what confines the socket to this user: 0700 on POSIX, and
+        # on Windows an inherited ACL from the per-user %TEMP% tree. The latter
+        # is the only access control the socket gets there — Windows has no
+        # umask and chmod only toggles the read-only bit — so the daemon
+        # deliberately relies on the directory we pick here.
         self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
         self._uds_path = os.path.join(self._tempdir, _SOCKET_FILENAME)
         # Write the absolute time by which startup must complete. The sweep
@@ -405,7 +454,12 @@ class AcceleratorDaemon:
                     except OSError:
                         pass
                 if not self._wait_for_exit(_STDIN_GRACE_SECONDS):
-                    # Step 2: SIGTERM.
+                    # Step 2: SIGTERM. On Windows this is TerminateProcess, so
+                    # steps 2 and 3 are the same hard kill and the daemon's one
+                    # chance to shut down cleanly is the stdin EOF above —
+                    # which is also the signal it uses there to notice the
+                    # parent died, since a ppid watchdog cannot work on
+                    # Windows.
                     try:
                         proc.terminate()
                     except OSError:

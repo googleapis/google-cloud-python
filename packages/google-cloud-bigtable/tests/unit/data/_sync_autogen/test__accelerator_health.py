@@ -85,7 +85,7 @@ class _FakeDaemonHealthServer:
             self._server.add_generic_rpc_handlers(
                 (grpc.method_handlers_generic_handler(service, {method: handler}),)
             )
-        self._server.add_insecure_port(f"unix://{uds_path}")
+        self._server.add_insecure_port(f"unix:{uds_path}")
         self._server.start()
 
     def _check(self, request, context):
