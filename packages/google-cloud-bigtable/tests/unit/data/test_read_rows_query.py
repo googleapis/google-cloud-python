@@ -611,8 +611,6 @@ class TestReadRowsQuery:
         Verify that ReadRowsQuery deduplicates row_keys in __init__ and add_key
         in O(1) time without materializing the row_keys property list.
         """
-        # Duplicate keys passed to __init__ (even in mixed str/bytes forms)
-        # must be deduplicated on construction.
         query = self._make_one(row_keys=["k0", b"k0"])
         assert query.row_keys == [b"k0"]
 
@@ -632,8 +630,6 @@ class TestReadRowsQuery:
         """
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
-        # Create two equivalent queries with identical keys and ranges inserted
-        # in opposite orders.
         q1 = self._make_one(
             row_keys=[f"k{i}" for i in range(50)],
             row_ranges=[RowRange(f"a{i}", f"b{i}") for i in range(50)],
@@ -642,9 +638,6 @@ class TestReadRowsQuery:
             row_keys=[f"k{i}" for i in reversed(range(50))],
             row_ranges=[RowRange(f"a{i}", f"b{i}") for i in reversed(range(50))],
         )
-
-        # Intercept the row_keys and row_ranges properties to verify that equality
-        # comparisons operate on internal sets without constructing wrapper lists.
         with (
             mock.patch.object(
                 type(q1), "row_keys", new_callable=mock.PropertyMock
@@ -661,22 +654,16 @@ class TestReadRowsQuery:
         """Assert that identical ranges are deduplicated, but distinct ranges are kept."""
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
-        # Create two identical ranges
         r1 = RowRange(start_key="a", end_key="b")
         r2 = RowRange(start_key="a", end_key="b")
 
-        # Create a distinct range
         r3 = RowRange(start_key="c", end_key="d")
 
-        # Seed r1 via __init__, then add r2 (duplicate) and r3 (distinct)
         query = self._make_one(row_ranges=[r1])
-        query.add_range(r2)  # Duplicate of constructor-seeded r1, should be ignored
-        query.add_range(r3)  # Distinct, should be kept
-        query.add_range(
-            RowRange(start_key="c", end_key="d")
-        )  # Duplicate of r3, should be ignored
+        query.add_range(r2)
+        query.add_range(r3)
+        query.add_range(RowRange(start_key="c", end_key="d"))
 
-        # Assert that only r1 and r3 are in the final query
         assert len(query.row_ranges) == 2
         assert query.row_ranges[0] == r1
         assert query.row_ranges[1] == r3
@@ -690,19 +677,12 @@ class TestReadRowsQuery:
         from google.cloud.bigtable.data.read_rows_query import RowRange
         from google.cloud.bigtable.row_set import RowRange as LegacyRowRange
 
-        # Instantiate equivalent ranges using both the data API and legacy classes.
         base_range = RowRange(b"a", b"b")
         legacy_range = LegacyRowRange(b"a", b"b")
-
-        # Equal RowRange objects must produce identical hashes so set membership
-        # operates consistently across base and legacy types.
         assert base_range == legacy_range
         assert LegacyRowRange._key is RowRange._key
         assert LegacyRowRange.__hash__ is RowRange.__hash__
         assert hash(base_range) == hash(legacy_range)
-
-        # Adding an equivalent legacy range to a query initialized with a base range
-        # should be recognized as a duplicate and ignored.
         query = self._make_one(row_ranges=[base_range])
         query.add_range(legacy_range)
         assert len(query.row_ranges) == 1
@@ -714,17 +694,11 @@ class TestReadRowsQuery:
         """
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
-        # Initialize a query with both keys and ranges so all internal attributes
-        # are populated on the instance.
         query = self._make_one(
             row_keys=[b"k1"],
             row_ranges=[RowRange(start_key=b"a", end_key=b"b")],
         )
-
-        # Enforcing __slots__ prevents creation of a per-instance __dict__.
         assert not hasattr(query, "__dict__")
-
-        # Assigning an attribute not declared in __slots__ must raise AttributeError.
         with pytest.raises(AttributeError):
             query._undeclared_attribute = "invalid"
 
@@ -744,22 +718,16 @@ class TestReadRowsQuery:
         original = self._make_one(row_keys=[b"k1"], row_ranges=[r1])
         copied = copy.copy(original)
 
-        # Re-adding existing items to the copy must be ignored as duplicates.
         copied.add_key(b"k1")
         copied.add_range(r1)
         assert copied.row_keys == [b"k1"]
         assert copied.row_ranges == [r1]
 
-        # Mutate only the copied query by adding a new key and range.
         copied.add_key(b"k2")
         copied.add_range(r2)
-
-        # Confirm the original query was not modified by operations on the copy.
         assert original.row_keys == [b"k1"]
         assert original.row_ranges == [r1]
 
-        # Adding the same new key and range to the original query must succeed
-        # because its internal deduplication sets are independent from the copy.
         original.add_key(b"k2")
         original.add_range(r2)
 

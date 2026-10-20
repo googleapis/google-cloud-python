@@ -199,7 +199,7 @@ class RowRange:
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, RowRange):
             return NotImplemented
-        return self._key() == other._key()
+        return self._pb == other._pb
 
     def __str__(self) -> str:
         """
@@ -282,7 +282,7 @@ class ReadRowsQuery:
         Returns:
             list[bytes]: the row keys in this query
         """
-        return list(self._row_keys.keys())
+        return list(self._row_keys)
 
     @property
     def row_ranges(self) -> list[RowRange]:
@@ -292,7 +292,7 @@ class ReadRowsQuery:
         Returns:
             list[RowRange]: the row ranges in this query
         """
-        return list(self._row_ranges.keys())
+        return list(self._row_ranges)
 
     @property
     def limit(self) -> int | None:
