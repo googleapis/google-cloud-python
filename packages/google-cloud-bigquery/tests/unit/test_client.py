@@ -844,6 +844,59 @@ class TestClient(unittest.TestCase):
             f"legacy-gcb/{version.__version__}", kwargs["client_info"].user_agent
         )
 
+    def test_ensure_bqstorage_client_default_universe(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ):
+            client._ensure_bqstorage_client()
+
+        _, kwargs = mock_client.call_args
+        self.assertIsNone(kwargs["client_options"])
+
+    def test_ensure_bqstorage_client_uses_client_universe(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_options={"universe_domain": "foo.com"},
+        )
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ):
+            client._ensure_bqstorage_client()
+
+        _, kwargs = mock_client.call_args
+        self.assertEqual(kwargs["client_options"].universe_domain, "foo.com")
+
+    def test_ensure_bqstorage_client_keeps_given_client_options(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_options={"universe_domain": "foo.com"},
+        )
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ):
+            client._ensure_bqstorage_client(client_options=mock.sentinel.client_options)
+
+        _, kwargs = mock_client.call_args
+        self.assertIs(kwargs["client_options"], mock.sentinel.client_options)
+
     def test_ensure_bqstorage_client_pandas_gbq_installed(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
         import sys
