@@ -774,7 +774,7 @@ def test_check_dependencies_requires_read_rows_arrow_options(supported):
         else:
             with pytest.raises(
                 exceptions.LegacyBigQueryStorageError,
-                match=r"pip install --upgrade google-cloud-bigquery-storage.*"
+                match=r'pip install --upgrade "google-cloud-bigquery\[bqstorage\]".*'
                 r"\(version found: 2\.42\.0\)",
             ):
                 _check_dependencies()
