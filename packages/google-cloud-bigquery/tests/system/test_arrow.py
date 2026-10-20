@@ -807,11 +807,24 @@ def test_query_and_wait_arrow_queries_share_one_bqstorage_client():
 def test_query_and_wait_arrow_ending_a_read_early_cancels_only_its_stream():
     from google.cloud.bigquery_storage_v1 import reader
 
-    # Wrap ReadRowsStream.cancel() to count calls without changing it.
+    # Wrap ReadRowsStream.cancel() to record calls without changing it.
     cancel_stream = reader.ReadRowsStream.cancel
+    cancelled_open = []
+
+    def record_open_cancel(stream):
+        # google-cloud-bigquery-storage 2.43.0's __del__ also calls cancel()
+        # on finished streams, which does nothing. Count only cancels of a
+        # stream that's still open.
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/18785):
+        # Count every cancel() once the bqstorage extra requires a release
+        # whose __del__ skips finished streams.
+        if stream._wrapped is not None:
+            cancelled_open.append(stream)
+        return cancel_stream(stream)
+
     with bigquery.Client() as client, mock.patch.object(
-        reader.ReadRowsStream, "cancel", autospec=True, side_effect=cancel_stream
-    ) as cancel:
+        reader.ReadRowsStream, "cancel", autospec=True, side_effect=record_open_cancel
+    ):
         ended_early_rows = _query_arrow(client, 100000)
         ended_early = ended_early_rows.to_arrow_iterable()
         read_fully = _query_arrow(client, 100000).to_arrow_iterable()
@@ -824,8 +837,7 @@ def test_query_and_wait_arrow_ending_a_read_early_cancels_only_its_stream():
         ended_early.close()
         rows.extend(read_fully)
 
-    (stream,) = cancel.call_args.args
-    cancel.assert_called_once_with(stream)
+    (stream,) = cancelled_open
     assert stream._name.endswith(f"/jobs/{ended_early_rows.job_id}/streams/_default")
     table = pyarrow.Table.from_batches(rows)
     assert table.column("x").to_pylist() == list(range(1, 100001))
