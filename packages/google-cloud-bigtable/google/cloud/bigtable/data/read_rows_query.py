@@ -512,8 +512,8 @@ class ReadRowsQuery:
             filter=self.filter._to_pb() if self.filter else None,
             rows_limit=self.limit or 0,
             rows=RowSetPB(
-                row_keys=list(self._row_keys.keys()),
-                row_ranges=[r._pb for r in self._row_ranges.keys()],
+                row_keys=self.row_keys,
+                row_ranges=[r._pb for r in self._row_ranges],
             ),
             **table._request_path,
         )
@@ -539,12 +539,11 @@ class ReadRowsQuery:
             return False
         # empty queries are equal
         if len(self._row_keys) == 0 and len(other._row_keys) == 0:
-            empty_range = RowRange()
             this_range_empty = len(self._row_ranges) == 0 or (
-                self._row_ranges.keys() == {empty_range}
+                [bool(r) is False for r in self._row_ranges]
             )
             other_range_empty = len(other._row_ranges) == 0 or (
-                other._row_ranges.keys() == {empty_range}
+                [bool(r) is False for r in other._row_ranges]
             )
             if this_range_empty and other_range_empty:
                 return self.filter == other.filter and self.limit == other.limit
