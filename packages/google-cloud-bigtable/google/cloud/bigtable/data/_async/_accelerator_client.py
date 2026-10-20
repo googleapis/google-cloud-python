@@ -46,6 +46,18 @@ _MUTATE_ROW_METHOD = "/google.bigtable.v2.Bigtable/MutateRow"
 _READ_ROWS_METHOD = "/google.bigtable.v2.Bigtable/ReadRows"
 
 
+def _uds_target(uds_path: str) -> str:
+    """Build the gRPC target for the daemon's socket at ``uds_path``.
+
+    Must be the single-colon form. ``unix://`` opens an *authority* component,
+    which gRPC only accepts when the rest is an absolute POSIX path; hand it a
+    Windows path and ``C:`` parses as the authority, so channel construction
+    fails outright with "authority-based URIs not supported by the unix
+    scheme". ``unix:`` takes the remainder as a plain path on every platform.
+    """
+    return f"unix:{uds_path}"
+
+
 @CrossSync.convert_class(sync_name="_AcceleratorClient")
 class _AsyncAcceleratorClient:
     """Thin gRPC client bound to the daemon's UDS.
@@ -58,7 +70,7 @@ class _AsyncAcceleratorClient:
     def __init__(self, uds_path: str, auth_secret: str):
         self._uds_path = uds_path
         self._metadata = (("x-accelerator-token", auth_secret),)
-        self._channel = insecure_channel(f"unix://{uds_path}")
+        self._channel = insecure_channel(_uds_target(uds_path))
         self._mutate_row_stub = self._channel.unary_unary(
             _MUTATE_ROW_METHOD,
             request_serializer=MutateRowRequest.serialize,
