@@ -739,8 +739,8 @@ class TestResolveStartupTimeout:
 
 
 @pytest.mark.skipif(
-    not hasattr(_daemon.socket, "AF_UNIX"),
-    reason="Unix domain sockets (AF_UNIX) are not supported on this platform",
+    _daemon._IS_WINDOWS or not hasattr(_daemon.socket, "AF_UNIX"),
+    reason="Stale tempdir sweep is skipped on Windows and platforms without AF_UNIX",
 )
 class TestSweepStaleTempdirs:
     """_sweep_stale_tempdirs reaps leftover daemon tempdirs, keyed on the
@@ -905,11 +905,8 @@ class TestWindows:
         """The AF_UNIX guard must not fire on Windows: a missing family there
         says something about CPython, not about the platform."""
         monkeypatch.setattr(_daemon, "_IS_WINDOWS", True)
-        # The sweep is not under test here, and leaving it to run would put a
-        # background thread in Windows mode racing this test's teardown: once
-        # monkeypatch restores gettempdir the thread reaps against the real
-        # /tmp, where (AF_UNIX gone) the Windows branch's "the OS will refuse
-        # to unlink a live daemon's log" assumption does not hold.
+        # The sweep is not under test here; stub it out so start() does not
+        # spawn a background thread for it.
         monkeypatch.setattr(_daemon, "_sweep_stale_tempdirs", lambda: None)
 
         def fake_popen(argv, **kwargs):
@@ -961,12 +958,16 @@ class TestWindows:
         """
         import grpc
 
+        from google.cloud.bigtable.data._async._accelerator_client import (
+            _uds_target as _async_uds_target,
+        )
         from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
             _uds_target,
         )
 
         win_path = r"C:\Users\me\AppData\Local\Temp\bt-accel-abc123\sock"
         assert _uds_target(win_path) == "unix:" + win_path
+        assert _async_uds_target(win_path) == _uds_target(win_path)
         channel = grpc.insecure_channel(_uds_target(win_path))
         try:
             stub = channel.unary_unary(
