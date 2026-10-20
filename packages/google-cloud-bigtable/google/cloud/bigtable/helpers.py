@@ -43,8 +43,6 @@ class _MappableAttributesMixin:
     Attributes are remapped and redefined in __init__ as well as getattr/setattr.
     """
 
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         new_kwargs = {self._attribute_map.get(k, k): v for (k, v) in kwargs.items()}
         super(_MappableAttributesMixin, self).__init__(*args, **new_kwargs)

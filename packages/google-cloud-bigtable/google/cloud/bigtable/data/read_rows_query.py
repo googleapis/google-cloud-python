@@ -159,8 +159,7 @@ class RowRange:
         Returns:
             RowRange: The converted RowRange
         """
-        # Skip __init__ to avoid allocating an unused RowRangePB
-        instance = cls.__new__(cls)
+        instance = cls()
         instance._pb = data
         return instance
 
@@ -177,8 +176,7 @@ class RowRange:
         formatted_data = {
             k: v.encode() if isinstance(v, str) else v for k, v in data.items()
         }
-        # Skip __init__ to avoid allocating an unused RowRangePB
-        instance = cls.__new__(cls)
+        instance = cls()
         instance._pb = RowRangePB(**formatted_data)
         return instance
 
@@ -265,6 +263,7 @@ class ReadRowsQuery:
             row_ranges = [row_ranges]
         if not isinstance(row_keys, list):
             row_keys = [row_keys]
+        # Use dicts as ordered sets to preserve insertion order with O(1) deduplication
         self._row_keys: dict[bytes, None] = {}
         self._row_ranges: dict[RowRange, None] = {}
         for k in row_keys:

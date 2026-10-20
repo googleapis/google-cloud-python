@@ -591,37 +591,22 @@ class TestReadRowsQuery:
 
     def test_add_range_does_not_materialize_row_ranges(self):
         """
-        Ensures add_range scales in O(1) time and does not trigger O(N) scans.
-
-        The legacy implementation called the `row_ranges` property helper during
-        membership checks, which dynamically re-allocated and materialized brand
-        new Python RowRange wrapper objects for every element in the array on
-        each insertion. This led to an accidental O(N^2) memory and CPU leak.
-
-        This test mocks out the `row_ranges` property on the class and asserts
-        that it is never accessed during batch additions, proving we bypass the
-        quadratic evaluation path entirely.
+        Verify that add_range deduplicates in O(1) time without accessing the
+        row_ranges property list.
         """
         from google.cloud.bigtable.data.read_rows_query import RowRange
 
         query = self._make_one()
 
-        # Intercept the `row_ranges` class property with a mock to track accesses
         with mock.patch.object(
             type(query), "row_ranges", new_callable=mock.PropertyMock
         ) as row_ranges:
             for i in range(100):
-                # Add unique sequential ranges. Utilizing our fast O(1) set signature lookup
-                # should never touch the slow wrapper-materialization properties.
                 query.add_range(RowRange(f"k{i:03d}", f"k{i + 1:03d}"))
-
-            # ASSERT: The slow, O(N) wrapper-building property was never accessed
             row_ranges.assert_not_called()
-
-        # Verify that all ranges were successfully recorded in the query
         assert len(query.row_ranges) == 100
 
-    def test_add_key_deduplicates_via_set_without_scanning_row_set(self):
+    def test_add_key_does_not_materialize_row_keys(self):
         """
         Verify that ReadRowsQuery deduplicates row_keys in __init__ and add_key
         in O(1) time without materializing the row_keys property list.
@@ -722,29 +707,6 @@ class TestReadRowsQuery:
         query.add_range(legacy_range)
         assert len(query.row_ranges) == 1
 
-    def test_row_range_from_dict_does_not_call_init(self):
-        """
-        Verify that RowRange._from_dict constructs the wrapper instance directly
-        without invoking __init__ and allocating an unused intermediate protobuf.
-        """
-        from google.cloud.bigtable.data.read_rows_query import RowRange
-
-        # Spy on RowRange.__init__ to ensure dictionary deserialization bypasses
-        # default constructor initialization and dummy protobuf creation.
-        with mock.patch.object(
-            RowRange, "__init__", wraps=RowRange.__init__
-        ) as mock_init:
-            row_range = RowRange._from_dict(
-                {"start_key_closed": b"a", "end_key_open": b"b"}
-            )
-            mock_init.assert_not_called()
-
-        # Verify the resulting RowRange exposes the expected boundaries and inclusivity.
-        assert row_range.start_key == b"a"
-        assert row_range.start_is_inclusive is True
-        assert row_range.end_key == b"b"
-        assert row_range.end_is_inclusive is False
-
     def test_read_rows_query_enforces_slots(self):
         """
         Verify that ReadRowsQuery enforces __slots__ so instances do not allocate
@@ -765,19 +727,6 @@ class TestReadRowsQuery:
         # Assigning an attribute not declared in __slots__ must raise AttributeError.
         with pytest.raises(AttributeError):
             query._undeclared_attribute = "invalid"
-
-    def test_legacy_row_range_enforces_slots(self):
-        """
-        Verify that legacy row_set.RowRange also defines __slots__ = () so it
-        inherits BaseRowRange's slotted layout without allocating a __dict__.
-        """
-        from google.cloud.bigtable.row_set import RowRange as LegacyRowRange
-
-        legacy_range = LegacyRowRange(start_key=b"a", end_key=b"b")
-        assert not hasattr(legacy_range, "__dict__")
-
-        with pytest.raises(AttributeError):
-            legacy_range._undeclared_attribute = "invalid"
 
     def test_copy_query_preserves_deduplication_isolation(self):
         """
