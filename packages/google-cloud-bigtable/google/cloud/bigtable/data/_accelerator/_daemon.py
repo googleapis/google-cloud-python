@@ -172,7 +172,8 @@ def _sweep_stale_tempdirs() -> None:
             # started the daemon being evaluated.
             deadline_path = os.path.join(path, _STARTUP_DEADLINE_FILENAME)
             try:
-                deadline = float(open(deadline_path).read())
+                with open(deadline_path) as _f:
+                    deadline = float(_f.read())
             except (OSError, ValueError):
                 # Older daemon without a deadline file: fall back to a simple
                 # age heuristic relative to the log's mtime.
