@@ -160,9 +160,9 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
             arrow_serialization_options (Optional[Union[dict, \
                 ~google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions \
             ]]):
-                [Private Preview] Arrow serialization options, such as buffer
-                compression, to send on every ``ReadRows`` request, including
-                after a reconnect. Only job default streams
+                [Beta] Arrow serialization options, such as buffer compression,
+                to send on every ``ReadRows`` request, including after a
+                reconnect. Only job default streams
                 (``projects/{project}/locations/{location}/jobs/{job}/streams/_default``)
                 accept them.
 
