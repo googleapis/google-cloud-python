@@ -45,8 +45,9 @@ class _AcceleratorClient:
     (``_accelerator/_routing.py``) decides which calls reach this object.
     """
 
-    def __init__(self, uds_path: str):
+    def __init__(self, uds_path: str, auth_secret: str):
         self._uds_path = uds_path
+        self._metadata = (("x-accelerator-token", auth_secret),)
         self._channel = insecure_channel(f"unix://{uds_path}")
         self._mutate_row_stub = self._channel.unary_unary(
             _MUTATE_ROW_METHOD,
@@ -66,7 +67,7 @@ class _AcceleratorClient:
     def mutate_row(
         self, request: MutateRowRequest, *, timeout: float | None = None
     ) -> MutateRowResponse:
-        return self._mutate_row_stub(request, timeout=timeout)
+        return self._mutate_row_stub(request, timeout=timeout, metadata=self._metadata)
 
     def read_rows(self, request: ReadRowsRequest, *, timeout: float | None = None):
         """Open the server-streaming ReadRows RPC against the daemon.
@@ -75,7 +76,7 @@ class _AcceleratorClient:
         in async, ``for`` in sync) to consume ``ReadRowsResponse`` messages.
         Shape matches what ``_gapic_client.read_rows`` returns so the existing
         chunk-merging machinery in ``_read_rows.py`` works unchanged."""
-        return self._read_rows_stub(request, timeout=timeout)
+        return self._read_rows_stub(request, timeout=timeout, metadata=self._metadata)
 
     def close(self) -> None:
         self._channel.close()
