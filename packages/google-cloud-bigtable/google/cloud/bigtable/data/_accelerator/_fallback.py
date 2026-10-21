@@ -36,9 +36,8 @@ import logging
 import threading
 from typing import TYPE_CHECKING
 
-from grpc import RpcError, StatusCode
-
 from google.api_core import exceptions as core_exceptions
+from grpc import RpcError, StatusCode
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon

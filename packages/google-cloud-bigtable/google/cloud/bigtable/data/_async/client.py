@@ -53,6 +53,13 @@ from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message
 from grpc import Channel
 
+from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
+from google.cloud.bigtable.data._accelerator._fallback import (
+    AcceleratorBreaker,
+    _AcceleratorFallback,
+    handle_accelerator_error,
+)
+from google.cloud.bigtable.data._accelerator._routing import is_supported
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _CONCURRENCY_LIMIT,
@@ -113,13 +120,6 @@ from google.cloud.bigtable_v2.types.bigtable import (
     ReadModifyWriteRowRequest,
     SampleRowKeysRequest,
 )
-from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
-from google.cloud.bigtable.data._accelerator._fallback import (
-    AcceleratorBreaker,
-    _AcceleratorFallback,
-    handle_accelerator_error,
-)
-from google.cloud.bigtable.data._accelerator._routing import is_supported
 
 if CrossSync.is_async:
     from grpc.aio import insecure_channel
