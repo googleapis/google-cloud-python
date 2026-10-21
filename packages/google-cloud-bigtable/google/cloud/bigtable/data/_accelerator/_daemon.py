@@ -209,19 +209,25 @@ class AcceleratorDaemon:
         # Mint a 256-bit secret and write it to the daemon's stdin before it
         # binds the socket. The daemon reads this line synchronously before
         # accepting connections, then validates it on every RPC via metadata.
-        self._auth_secret = secrets.token_urlsafe(32)
+        # Check the pipe exists before minting — a secret is only worth
+        # generating if there is a process to send it to.
         if self._proc is None or self._proc.stdin is None:
-            self._force_kill()
-            self._cleanup_tempdir()
+            try:
+                self._force_kill()
+            finally:
+                self._cleanup_tempdir()
             raise RuntimeError(
                 "Accelerator daemon process or its stdin is not initialized."
             )
+        self._auth_secret = secrets.token_urlsafe(32)
         try:
             self._proc.stdin.write(f"{self._auth_secret}\n".encode())
             self._proc.stdin.flush()
         except (OSError, ValueError) as exc:
-            self._force_kill()
-            self._cleanup_tempdir()
+            try:
+                self._force_kill()
+            finally:
+                self._cleanup_tempdir()
             raise RuntimeError(
                 "Failed to send auth secret to accelerator daemon (process died): "
                 f"{exc}"
@@ -230,8 +236,10 @@ class AcceleratorDaemon:
         try:
             self._wait_until_ready(self._startup_timeout)
         except BaseException:
-            self._force_kill()
-            self._cleanup_tempdir()
+            try:
+                self._force_kill()
+            finally:
+                self._cleanup_tempdir()
             raise
 
     def close(self) -> None:
