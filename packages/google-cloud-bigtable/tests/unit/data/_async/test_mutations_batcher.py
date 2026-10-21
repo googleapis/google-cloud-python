@@ -297,6 +297,43 @@ class Test_FlowControlAsync:
         ]
         assert len(count_results) == 1
 
+    @CrossSync.pytest
+    async def test_add_to_flow_with_metrics_throttling(self):
+        from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+
+        instance = self._make_one()
+        target = mock.Mock()
+        target._create_operation.side_effect = ActiveOperationMetric
+        mutations = [self._make_mutation(), self._make_mutation()]
+        with mock.patch("time.monotonic_ns", return_value=100) as clock:
+
+            async def flow(entries):
+                clock.return_value = 125
+                yield entries[:1]
+                clock.return_value = 240
+                yield entries[1:]
+
+            with mock.patch.object(instance, "add_to_flow", side_effect=flow):
+                results = []
+                async for batch, metric in instance.add_to_flow_with_metrics(
+                    mutations, target
+                ):
+                    # Complete without starting again, preserving the start time.
+                    metric.end_with_status(0)
+                    results.append((batch, metric))
+                    clock.return_value = 200
+
+        assert len(results) == 2
+        assert target._create_operation.call_count == 2
+        assert ActiveOperationMetric.from_context() is None
+        assert results[0][0] == mutations[:1]
+        assert results[1][0] == mutations[1:]
+        assert results[0][1] is not results[1][1]
+        assert results[0][1].start_time_ns == 100
+        assert results[0][1].flow_throttling_time_ns == 25
+        assert results[1][1].start_time_ns == 200
+        assert results[1][1].flow_throttling_time_ns == 40
+
 
 @CrossSync.convert_class(sync_name="TestMutationsBatcher")
 class TestMutationsBatcherAsync:
@@ -322,6 +359,7 @@ class TestMutationsBatcherAsync:
                 ServiceUnavailable,
             )
             table.client._metrics = BigtableClientSideMetricsController([])
+            table._create_operation.side_effect = table.client._metrics.create_operation
 
         return self._get_target_class()(table, **kwargs)
 
@@ -816,6 +854,45 @@ class TestMutationsBatcherAsync:
                     assert flow_mock.call_count == 1
                     instance._oldest_exceptions.clear()
                     instance._newest_exceptions.clear()
+
+    @CrossSync.pytest
+    @pytest.mark.parametrize("app_profile_id", [None, "test-profile"])
+    @pytest.mark.parametrize("authorized_view", [False, True])
+    async def test_flush_metric_resource_labels(self, app_profile_id, authorized_view):
+        from google.cloud.bigtable.data._metrics import (
+            BigtableClientSideMetricsController,
+            OperationType,
+        )
+
+        client = mock.Mock(project="test-project")
+        client._metrics = BigtableClientSideMetricsController([])
+        with mock.patch.object(CrossSync, "create_task"):
+            if authorized_view:
+                target = CrossSync.AuthorizedView(
+                    client, "test-instance", "test-table", "test-view", app_profile_id
+                )
+            else:
+                target = CrossSync.Table(
+                    client, "test-instance", "test-table", app_profile_id
+                )
+
+        with mock.patch.object(CrossSync, "_MutateRowsOperation") as operation:
+            operation.return_value.start = CrossSync.Mock()
+            async with self._make_one(
+                target, flush_interval=None, flow_control_max_mutation_count=1
+            ) as instance:
+                await instance.append(self._make_mutation())
+                await instance.append(self._make_mutation())
+
+        assert operation.call_count == 2
+        metrics = [call.kwargs["metric"] for call in operation.call_args_list]
+        assert metrics[0] is not metrics[1]
+        for metric in metrics:
+            assert metric.op_type == OperationType.BULK_MUTATE_ROWS
+            assert metric.project_id == "test-project"
+            assert metric.instance_id == "test-instance"
+            assert metric.table_id == "test-table"
+            assert metric.app_profile_id == app_profile_id
 
     @CrossSync.pytest
     async def test_flush_clears_job_list(self):
