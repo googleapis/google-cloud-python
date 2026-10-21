@@ -167,12 +167,13 @@ class _FlowControl:
     ):
         inner_generator = self.add_to_flow(mutations)
         while True:
-            metric = target._create_operation(OperationType.BULK_MUTATE_ROWS)
             flow_start_time = time.monotonic_ns()
             try:
                 value = inner_generator.__next__()
             except CrossSync._Sync_Impl.StopIteration:
                 return
+            metric = target._create_operation(OperationType.BULK_MUTATE_ROWS)
+            metric.start_time_ns = flow_start_time
             metric.flow_throttling_time_ns = time.monotonic_ns() - flow_start_time
             yield (value, metric)
 

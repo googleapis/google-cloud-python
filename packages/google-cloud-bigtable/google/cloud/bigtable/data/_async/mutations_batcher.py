@@ -197,13 +197,14 @@ class _FlowControlAsync:
     ):
         inner_generator = self.add_to_flow(mutations)
         while True:
-            # start a new metric
-            metric = target._create_operation(OperationType.BULK_MUTATE_ROWS)
             flow_start_time = time.monotonic_ns()
             try:
                 value = await inner_generator.__anext__()
             except CrossSync.StopIteration:
                 return
+            # Include flow-control waiting without creating a metric on exhaustion.
+            metric = target._create_operation(OperationType.BULK_MUTATE_ROWS)
+            metric.start_time_ns = flow_start_time
             metric.flow_throttling_time_ns = time.monotonic_ns() - flow_start_time
             yield value, metric
 

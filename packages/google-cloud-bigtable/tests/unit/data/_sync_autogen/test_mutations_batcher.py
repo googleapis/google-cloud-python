@@ -270,9 +270,12 @@ class Test_FlowControl:
                 for batch, metric in instance.add_to_flow_with_metrics(
                     mutations, target
                 ):
+                    metric.end_with_status(0)
                     results.append((batch, metric))
                     clock.return_value = 200
         assert len(results) == 2
+        assert target._create_operation.call_count == 2
+        assert ActiveOperationMetric.from_context() is None
         assert results[0][0] == mutations[:1]
         assert results[1][0] == mutations[1:]
         assert results[0][1] is not results[1][1]
