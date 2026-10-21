@@ -2608,9 +2608,12 @@ libraries:
   - name: google-shopping-merchant-reviews
     version: 0.6.1
     apis:
+      - path: google/shopping/merchant/reviews/v1
       - path: google/shopping/merchant/reviews/v1beta
     python:
       opt_args_by_api:
+        google/shopping/merchant/reviews/v1:
+          - proto-plus-deps=google.shopping.type
         google/shopping/merchant/reviews/v1beta:
           - proto-plus-deps=google.shopping.type
       default_version: v1beta
