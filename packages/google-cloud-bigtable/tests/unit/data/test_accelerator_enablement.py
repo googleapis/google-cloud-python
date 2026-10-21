@@ -19,11 +19,10 @@ conflicting emulator or a daemon that fails to start is a hard error. These
 exercise the pure enablement helpers on the async target without spinning up a
 full client or event loop."""
 
+import unittest.mock
 from types import SimpleNamespace
 
 import pytest
-
-import unittest.mock
 
 from google.cloud.bigtable.data._async.client import (
     _AcceleratorIdentityError,
