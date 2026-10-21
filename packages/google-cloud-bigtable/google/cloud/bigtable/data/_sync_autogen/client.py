@@ -23,7 +23,6 @@ import concurrent.futures
 import logging
 import os
 import random
-import sys
 import time
 import warnings
 from functools import partial
@@ -1080,12 +1079,6 @@ class _DataApiTarget(abc.ABC):
         ``use_accelerator=True``: a caller who required the accelerator gets a
         hard error rather than a silent fallback, both for the emulator (a
         genuine misconfiguration) and for a daemon that fails to start."""
-        if sys.platform == "win32":
-            if explicit:
-                raise RuntimeError(
-                    "use_accelerator=True is not supported on Windows; pass use_accelerator=False to use the native client."
-                )
-            return
         if self.client._emulator_host is not None:
             if explicit:
                 raise RuntimeError(

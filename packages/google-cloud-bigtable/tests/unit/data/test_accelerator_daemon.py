@@ -201,7 +201,27 @@ def _no_cleanup_crash(monkeypatch, tmp_path):
         return str(d)
 
     monkeypatch.setattr(_daemon.tempfile, "mkdtemp", fake_mkdtemp)
+
+    # start() also fires the stale-tempdir sweep on a background thread, and
+    # that reads gettempdir() directly rather than going through mkdtemp. Point
+    # it somewhere empty: the sweep deletes directories it judges abandoned, and
+    # a test has no business making that judgement about the real /tmp, where a
+    # developer's or another test's daemon may be running.
+    sweep_root = tmp_path / "sweep-root"
+    os.makedirs(sweep_root, exist_ok=True)
+    monkeypatch.setattr(_daemon.tempfile, "gettempdir", lambda: str(sweep_root))
     yield
+
+
+@pytest.fixture
+def no_af_unix(monkeypatch):
+    """Make the socket module look the way CPython's does on Windows.
+
+    The family is simply absent there — the OS and gRPC's C-core support
+    AF_UNIX, the socket module just never exposed it — so every branch keyed on
+    ``hasattr(socket, "AF_UNIX")`` is reachable from a POSIX test run.
+    """
+    monkeypatch.delattr(_daemon.socket, "AF_UNIX", raising=False)
 
 
 # ---------------------------------------------------------------------------
@@ -256,6 +276,17 @@ class TestResolveBinaryPath:
         with unittest.mock.patch("os.path.isfile", return_value=False):
             with pytest.raises(FileNotFoundError, match="Accelerator binary not found"):
                 _resolve_binary_path()
+
+    @pytest.mark.parametrize(
+        "is_windows,expected",
+        [(False, "bin/accelerator"), (True, "bin/accelerator.exe")],
+    )
+    def test_binary_name_follows_platform(self, monkeypatch, is_windows, expected):
+        """Windows wheels stage the binary under the .exe name Go gives it."""
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", is_windows)
+        with unittest.mock.patch("os.path.isfile", return_value=True):
+            resolved = _daemon._resolve_binary_path()
+        assert resolved.endswith(expected)
 
 
 # ---------------------------------------------------------------------------
@@ -314,23 +345,10 @@ class TestStartFailures:
         with pytest.raises(RuntimeError, match="did not become ready"):
             d.start()
 
-    def test_no_af_unix_raises_os_error(self, tmp_path, monkeypatch):
-        import socket as _socket
-
-        monkeypatch.delattr(_socket, "AF_UNIX", raising=False)
-        # Reload the attribute check in _daemon
-        monkeypatch.setattr(_daemon.socket, "AF_UNIX", None, raising=False)
-        # Simpler: just check that hasattr(socket, "AF_UNIX") guards the call.
-        with (
-            unittest.mock.patch.object(_daemon.socket, "AF_UNIX", None, create=True),
-            unittest.mock.patch(
-                "google.cloud.bigtable.data._accelerator._daemon.hasattr",
-                return_value=False,
-            ),
-        ):
-            d = _make_daemon(tmp_path)
-            with pytest.raises(OSError, match="AF_UNIX"):
-                d.start()
+    def test_no_af_unix_raises_os_error(self, tmp_path, monkeypatch, no_af_unix):
+        d = _make_daemon(tmp_path)
+        with pytest.raises(OSError, match="AF_UNIX"):
+            d.start()
 
 
 # ---------------------------------------------------------------------------
@@ -691,8 +709,8 @@ class TestResolveStartupTimeout:
 
 
 @pytest.mark.skipif(
-    not hasattr(_daemon.socket, "AF_UNIX"),
-    reason="Unix domain sockets (AF_UNIX) are not supported on this platform",
+    _daemon._IS_WINDOWS or not hasattr(_daemon.socket, "AF_UNIX"),
+    reason="Stale tempdir sweep is skipped on Windows and platforms without AF_UNIX",
 )
 class TestSweepStaleTempdirs:
     """_sweep_stale_tempdirs reaps leftover daemon tempdirs, keyed on the
@@ -818,3 +836,99 @@ class TestSweepStaleTempdirs:
         with pytest.raises(RuntimeError):
             daemon.start()
         assert done.wait(timeout=2.0), "sweep thread did not run within 2 s"
+
+
+# ---------------------------------------------------------------------------
+# Windows (win_amd64 / win32)
+# ---------------------------------------------------------------------------
+
+
+class TestWindows:
+    """Windows reaches the daemon over the same AF_UNIX socket as every other
+    platform. What differs is that CPython's socket module does not expose the
+    family, so anything the other platforms answer with a probe connection has
+    to be read off the filesystem instead."""
+
+    def test_start_is_not_blocked_by_missing_af_unix(
+        self, tmp_path, monkeypatch, no_af_unix
+    ):
+        """The AF_UNIX guard must not fire on Windows: a missing family there
+        says something about CPython, not about the platform."""
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", True)
+        # The sweep is not under test here; stub it out so start() does not
+        # spawn a background thread for it.
+        monkeypatch.setattr(_daemon, "_sweep_stale_tempdirs", lambda: None)
+
+        def fake_popen(argv, **kwargs):
+            raise _StopStart()
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
+        d = _make_daemon(tmp_path)
+        # Reaching Popen means the guard let us through.
+        with pytest.raises(_StopStart):
+            d.start()
+
+    def test_socket_is_live_falls_back_to_path_existence(self, tmp_path, no_af_unix):
+        sock = tmp_path / _daemon._SOCKET_FILENAME
+        assert _daemon._socket_is_live(str(sock)) is False
+        sock.touch()
+        assert _daemon._socket_is_live(str(sock)) is True
+
+    def test_sweep_is_skipped_on_windows(self, tmp_path, monkeypatch):
+        """The sweep's liveness check is ``os.kill(pid, 0)``, which terminates
+        the process on Windows rather than probing it. Until that is ported,
+        the sweep must not run there at all — leaking a tempdir is the safe
+        failure, killing the caller's Python process is not."""
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", True)
+        root = tmp_path / "tmproot"
+        root.mkdir()
+        monkeypatch.setattr(_daemon.tempfile, "gettempdir", lambda: str(root))
+        d = root / "bt-accel-dead"
+        d.mkdir()
+        (d / _daemon._LOG_FILENAME).write_bytes(b"hi")
+        (d / _daemon._STARTUP_DEADLINE_FILENAME).write_text(repr(time.time() - 70))
+        # A PID that is certainly not alive, so POSIX would reap this.
+        (d / _daemon._PID_FILENAME).write_text("999999999")
+
+        def fail_if_called(*args, **kwargs):
+            raise AssertionError("os.kill must never run on Windows")
+
+        monkeypatch.setattr(_daemon.os, "kill", fail_if_called)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_uds_target_accepts_a_windows_path(self):
+        """The channel target must survive a drive-lettered path.
+
+        ``unix://`` opens a URI authority component, so ``unix://C:\\...``
+        parses ``C:`` as the authority and gRPC refuses to build the channel at
+        all — the accelerator would start, verify, and then fail every routed
+        RPC. Constructing the channel is the assertion; it raises on a bad
+        target before any connection is attempted.
+        """
+        import grpc
+
+        from google.cloud.bigtable.data._async._accelerator_client import (
+            _uds_target as _async_uds_target,
+        )
+        from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
+            _uds_target,
+        )
+
+        win_path = r"C:\Users\me\AppData\Local\Temp\bt-accel-abc123\sock"
+        assert _uds_target(win_path) == "unix:" + win_path
+        assert _async_uds_target(win_path) == _uds_target(win_path)
+        channel = grpc.insecure_channel(_uds_target(win_path))
+        try:
+            stub = channel.unary_unary(
+                "/google.bigtable.v2.Bigtable/MutateRow",
+                request_serializer=lambda _: b"",
+                response_deserializer=lambda payload: payload,
+            )
+            with pytest.raises(grpc.RpcError) as exc_info:
+                stub(None, timeout=0.5)
+        finally:
+            channel.close()
+        # UNAVAILABLE means the target resolved and nothing was listening, which
+        # is the expected outcome. A malformed target fails earlier, as UNKNOWN.
+        assert exc_info.value.code() == grpc.StatusCode.UNAVAILABLE

@@ -26,6 +26,8 @@ literals are what protobuf itself produces is established in
 ``tests/unit/data/test_accelerator_health.py``.
 """
 
+import pathlib
+import tempfile
 import threading
 import time
 from concurrent import futures
@@ -68,6 +70,19 @@ _WIRE_BY_STATUS = {
 }
 
 
+# sockaddr_un.sun_path is 108 bytes on Linux and Windows (104 on macOS).
+# Pytest's built-in tmp_path nests pytest-of-<user>/pytest-N/<test>/ under
+# %TEMP%, which on Windows and macOS can exceed 107 chars and make
+# add_insecure_port fail to bind. Matching the daemon's own
+# tempfile.mkdtemp(prefix="bt-accel-") placement keeps the socket path well
+# under the limit on every platform.
+@pytest.fixture
+def tmp_path():
+    """Short UDS directory directly under the system temp root."""
+    with tempfile.TemporaryDirectory(prefix="bt-accel-") as d:
+        yield pathlib.Path(d)
+
+
 class _FakeDaemonHealthServer:
     """A real gRPC server standing in for the daemon's health service.
 
@@ -95,7 +110,9 @@ class _FakeDaemonHealthServer:
             self._server.add_generic_rpc_handlers(
                 (grpc.method_handlers_generic_handler(service, {method: handler}),)
             )
-        self._server.add_insecure_port(f"unix://{uds_path}")
+        # Single-colon form, same as the client — ``unix://`` cannot express a
+        # Windows path. See ``_accelerator_client._uds_target``.
+        self._server.add_insecure_port(f"unix:{uds_path}")
         self._server.start()
 
     def _check(self, request, context):
