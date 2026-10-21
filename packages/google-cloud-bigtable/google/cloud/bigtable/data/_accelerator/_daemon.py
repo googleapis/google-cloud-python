@@ -24,6 +24,7 @@ tearing the process down. It does NOT speak gRPC; that's the
 from __future__ import annotations
 
 import json
+import math
 import os
 import secrets
 import shutil
@@ -77,10 +78,10 @@ def _resolve_binary_path() -> str:
 def _resolve_startup_timeout() -> float:
     """Resolve the daemon startup timeout in seconds.
 
-    Precedence: an explicit constructor argument wins; otherwise the
-    ``BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT`` env var; otherwise the default.
-    A malformed or non-positive env value is a deployment misconfiguration, so
-    it is raised loudly rather than silently ignored.
+    Precedence: the ``BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT`` env var wins;
+    otherwise ``_DEFAULT_STARTUP_TIMEOUT``.
+    A malformed, non-positive, or non-finite env value is a deployment
+    misconfiguration, so it is raised loudly rather than silently ignored.
     """
     raw = os.environ.get(_STARTUP_TIMEOUT_ENV_VAR)
     if raw is None or raw == "":
@@ -91,9 +92,13 @@ def _resolve_startup_timeout() -> float:
         raise ValueError(
             f"{_STARTUP_TIMEOUT_ENV_VAR}={raw!r} is not a valid number of seconds"
         ) from exc
-    if value <= 0:
+    # `inf` clears `value <= 0` and would hang `_wait_until_ready` forever;
+    # `nan` clears it too (all NaN comparisons are False) and poisons the
+    # sleep loop's deadline arithmetic. Reject both.
+    if not math.isfinite(value) or value <= 0:
         raise ValueError(
-            f"{_STARTUP_TIMEOUT_ENV_VAR}={raw!r} must be a positive number of seconds"
+            f"{_STARTUP_TIMEOUT_ENV_VAR}={raw!r} must be a positive, finite "
+            "number of seconds"
         )
     return value
 

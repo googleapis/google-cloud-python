@@ -419,18 +419,15 @@ class BigtableDataClientAsync(ClientWithProject):
                 "client_cert_source (mTLS) cannot be forwarded to the "
                 "accelerator daemon"
             )
-        # User-Agent prefix always forwarded so the daemon can construct the full
-        # "python-v{ver}-go-accelerator-v{ver}" string even when the daemon is
-        # ultimately blocked (the flag is harmless when the daemon never starts).
-        import google.cloud.bigtable  # local import avoids circular dependency
+        if self._accelerator_blocked_reason:
+            return
 
+        # Identify this client to the daemon so it can construct the full
+        # "python-v{ver}-go-accelerator-v{ver}" User-Agent.
         self._accelerator_flags += [
             "--caller-user-agent",
             f"python-v{google.cloud.bigtable.__version__}",
         ]
-
-        if self._accelerator_blocked_reason:
-            return
 
         # Non-secret / path-style knobs the daemon can reproduce.
         scopes = getattr(client_options, "scopes", None) if client_options else None

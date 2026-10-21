@@ -631,17 +631,26 @@ class TestResolveStartupTimeout:
 
     def test_negative_value_raises_value_error(self, monkeypatch):
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "-1")
-        with pytest.raises(ValueError, match="must be a positive number of seconds"):
+        with pytest.raises(ValueError, match="must be a positive, finite "):
             _resolve_startup_timeout()
 
     def test_zero_raises_value_error(self, monkeypatch):
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0")
-        with pytest.raises(ValueError, match="must be a positive number of seconds"):
+        with pytest.raises(ValueError, match="must be a positive, finite "):
             _resolve_startup_timeout()
 
     def test_zero_float_raises_value_error(self, monkeypatch):
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.0")
-        with pytest.raises(ValueError, match="must be a positive number of seconds"):
+        with pytest.raises(ValueError, match="must be a positive, finite "):
+            _resolve_startup_timeout()
+
+    @pytest.mark.parametrize("raw", ["inf", "Infinity", "+inf", "-inf", "nan", "NaN"])
+    def test_non_finite_value_raises_value_error(self, monkeypatch, raw):
+        # float() happily parses these. "inf" clears the `> 0` check and would
+        # hang startup forever; "nan" clears it too (NaN comparisons are always
+        # False) and poisons the readiness loop's deadline arithmetic.
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, raw)
+        with pytest.raises(ValueError, match="must be a positive, finite "):
             _resolve_startup_timeout()
 
     def test_error_message_includes_env_var_name_and_value(self, monkeypatch):
