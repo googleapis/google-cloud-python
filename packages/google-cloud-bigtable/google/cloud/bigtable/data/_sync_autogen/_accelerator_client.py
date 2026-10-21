@@ -41,6 +41,8 @@ from google.cloud.bigtable_v2.types import (
 
 _MUTATE_ROW_METHOD = "/google.bigtable.v2.Bigtable/MutateRow"
 _READ_ROWS_METHOD = "/google.bigtable.v2.Bigtable/ReadRows"
+_MAX_RECEIVE_MESSAGE_LENGTH = 256 * 1024 * 1024
+_CHANNEL_OPTIONS = (("grpc.max_receive_message_length", _MAX_RECEIVE_MESSAGE_LENGTH),)
 
 
 def _uds_target(uds_path: str) -> str:
@@ -65,7 +67,9 @@ class _AcceleratorClient:
     def __init__(self, uds_path: str, auth_secret: str):
         self._uds_path = uds_path
         self._metadata = (("x-accelerator-token", auth_secret),)
-        self._channel = insecure_channel(_uds_target(uds_path))
+        self._channel = insecure_channel(
+            _uds_target(uds_path), options=_CHANNEL_OPTIONS
+        )
         self._mutate_row_stub = self._channel.unary_unary(
             _MUTATE_ROW_METHOD,
             request_serializer=MutateRowRequest.serialize,
