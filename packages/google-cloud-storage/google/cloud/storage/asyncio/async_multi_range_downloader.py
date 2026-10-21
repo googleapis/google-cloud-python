@@ -122,9 +122,9 @@ class _BufferWriter:
         return n
 
 
-def _wrap_user_buffer(user_buffer, length: int):
+def _wrap_user_buffer(user_buffer, length: int, accepts_memoryview: bool = False):
     if hasattr(user_buffer, "write"):
-        return _BytesWriter(user_buffer)
+        return user_buffer if accepts_memoryview else _BytesWriter(user_buffer)
     return _BufferWriter(user_buffer, length)
 
 
@@ -417,6 +417,7 @@ class AsyncMultiRangeDownloader:
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
         enable_checksum: bool = True,
+        accepts_memoryview: bool = False,
     ) -> None:
         """Downloads multiple byte ranges from the object into the buffers
         provided by user with automatic retries.
@@ -430,7 +431,8 @@ class AsyncMultiRangeDownloader:
 
             If ``writeable_buffer`` has a ``write()`` method (e.g.
             :class:`io.BytesIO`, an open file, or a custom stream), each
-            chunk is passed to ``writeable_buffer.write()`` as ``bytes``.
+            chunk is passed to ``writeable_buffer.write()`` as ``bytes``
+            (or as a ``memoryview`` when ``accepts_memoryview`` is True).
             Otherwise, ``writeable_buffer`` must be a writable, C-contiguous
             buffer supporting the buffer protocol (e.g. :class:`bytearray`
             or a writable :class:`memoryview` slice) of at least
@@ -457,6 +459,16 @@ class AsyncMultiRangeDownloader:
 
         :type enable_checksum: bool
         :param enable_checksum: (Optional) If True, checksums are verified for downloaded data. Defaults to True.
+
+        :type accepts_memoryview: bool
+        :param accepts_memoryview: (Optional) If True, ``write()`` destinations
+            may receive each chunk as a read-only :class:`memoryview` of the
+            received gRPC message instead of ``bytes``, which avoids copying
+            the chunk before the destination copies it where it wants. The
+            view stays valid after ``write()`` returns and keeps that message
+            alive until released. Destinations must still accept ``bytes``,
+            which they receive whenever the SDK uses the generated parser.
+            Has no effect on buffer destinations. Defaults to False.
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
@@ -496,7 +508,7 @@ class AsyncMultiRangeDownloader:
             download_states[read_id] = _DownloadState(
                 initial_offset=offset,
                 initial_length=length,
-                user_buffer=_wrap_user_buffer(user_buffer, length),
+                user_buffer=_wrap_user_buffer(user_buffer, length, accepts_memoryview),
                 is_full_object_read=is_full_object_read,
             )
 

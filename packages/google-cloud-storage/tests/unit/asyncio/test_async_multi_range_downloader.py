@@ -106,8 +106,16 @@ class TestAsyncMultiRangeDownloader:
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
-    async def test_download_ranges_converts_memoryview_for_write_destination(
-        self, mock_cls_async_read_object_stream, mock_random_int, monkeypatch
+    @pytest.mark.parametrize(
+        "accepts_memoryview, expected_type", [(False, bytes), (True, memoryview)]
+    )
+    async def test_download_ranges_write_destination_chunk_type(
+        self,
+        mock_cls_async_read_object_stream,
+        mock_random_int,
+        monkeypatch,
+        accepts_memoryview,
+        expected_type,
     ):
         from google.cloud.storage.asyncio import _zero_copy_bidi_read
 
@@ -156,9 +164,11 @@ class TestAsyncMultiRangeDownloader:
                 return len(chunk)
 
         sink = RecordingSink()
-        await mock_mrd.download_ranges([(0, 18, sink)])
+        await mock_mrd.download_ranges(
+            [(0, 18, sink)], accepts_memoryview=accepts_memoryview
+        )
 
-        assert seen_types == [bytes]
+        assert seen_types == [expected_type]
         assert b"".join(sink.chunks) == data
 
     @mock.patch(

@@ -320,8 +320,10 @@ def wrapped_rpc(transport, client_info=None):
             request_serializer=_storage_v2.BidiReadObjectRequest.serialize,
             response_deserializer=deserialize,
         )
+        if not hasattr(client_info, "to_grpc_metadata"):
+            client_info = DEFAULT_CLIENT_INFO
         rpc = gapic_v1.method_async.wrap_method(
-            stub, default_timeout=None, client_info=client_info or DEFAULT_CLIENT_INFO
+            stub, default_timeout=None, client_info=client_info
         )
         _rpcs[transport] = rpc
     return rpc

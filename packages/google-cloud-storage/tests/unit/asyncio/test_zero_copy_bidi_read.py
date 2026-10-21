@@ -19,6 +19,7 @@ import logging
 import google_crc32c
 import grpc
 import pytest
+from google.api_core import client_info as api_core_client_info
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.auth.credentials import AnonymousCredentials
 from google.protobuf.message import DecodeError
@@ -631,3 +632,49 @@ async def test_read_object_stream_end_to_end(
     # The header the caller's ClientInfo produces, on both parser paths.
     assert "gapic/9.9.9" in server.invocation_metadata["x-goog-api-client"]
     assert "custom-agent/1" in server.invocation_metadata["x-goog-api-client"]
+
+
+@pytest.mark.asyncio
+async def test_read_object_stream_with_base_client_info(
+    monkeypatch, keep_google_logger_propagation
+):
+    # AsyncGrpcClient accepts a google.api_core.client_info.ClientInfo, which
+    # (unlike the gapic_v1 subclass) cannot produce the x-goog-api-client
+    # header; the stream must still open and send the transport's default.
+    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: True)
+    monkeypatch.delenv(_zero_copy_bidi_read._ENV_VAR, raising=False)
+    base_client_info = api_core_client_info.ClientInfo(user_agent="gcsfs/1")
+    first = _storage_v2.BidiReadObjectResponse.serialize(
+        _storage_v2.BidiReadObjectResponse(
+            metadata=_storage_v2.Object(name="o", bucket="projects/_/buckets/b")
+        )
+    )
+
+    async with _FakeStorageServer([first, _data_response()]) as server:
+        transport = _transport(server.target)
+        client = _storage_v2.StorageAsyncClient(transport=transport)
+        stream = _AsyncReadObjectStream(
+            client=client,
+            bucket_name="b",
+            object_name="o",
+            client_info=base_client_info,
+        )
+        try:
+            await stream.open()
+            await stream.send(
+                _storage_v2.BidiReadObjectRequest(
+                    read_ranges=[_storage_v2.ReadRange(read_length=len(PAYLOAD))]
+                )
+            )
+            response = await stream.recv()
+            await stream.close()
+        finally:
+            await transport.close()
+
+    [range_data] = response.object_data_ranges
+    assert isinstance(range_data.checksummed_data.content, memoryview)
+    header = server.invocation_metadata["x-goog-api-client"]
+    # Token comparison: AsyncGrpcClient mutates DEFAULT_CLIENT_INFO.user_agent
+    # in place in other test modules, and gRPC collapses the extra spaces.
+    assert header.split() == DEFAULT_CLIENT_INFO.to_user_agent().split()
+    assert "gcsfs/1" not in header
