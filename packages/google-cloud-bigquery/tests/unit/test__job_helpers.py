@@ -19,6 +19,7 @@ import google.api_core.exceptions
 from google.api_core import retry as retries
 import pytest
 
+from google.cloud.bigquery import _arrow_query
 from google.cloud.bigquery import _job_helpers
 from google.cloud.bigquery import enums
 from google.cloud.bigquery import retry
@@ -561,18 +562,21 @@ def test_query_and_wait_job_creation_mode_for_arrow(
         },
         "jobComplete": True,
     }
-    _job_helpers.query_and_wait(
-        client,
-        query="SELECT 1",
-        location="request-location",
-        project="request-project",
-        job_config=None,
-        retry=None,
-        job_retry=None,
-        page_size=None,
-        max_results=None,
-        query_results_format=query_results_format,
-    )
+    # These tests check the request, not whether pyarrow and
+    # google-cloud-bigquery-storage are installed.
+    with mock.patch.object(_arrow_query, "_check_dependencies"):
+        _job_helpers.query_and_wait(
+            client,
+            query="SELECT 1",
+            location="request-location",
+            project="request-project",
+            job_config=None,
+            retry=None,
+            job_retry=None,
+            page_size=None,
+            max_results=None,
+            query_results_format=query_results_format,
+        )
 
     request_body = client._call_api.call_args.kwargs["data"]
     assert request_body.get("jobCreationMode") == expected
@@ -598,18 +602,21 @@ def test_query_and_wait_arrow_with_jobs_insert_creates_a_job():
     job_config = job_query.QueryJobConfig(
         destination="dest-project.dest_dset.dest_table",
     )
-    _job_helpers.query_and_wait(
-        client,
-        query="SELECT 1",
-        location="request-location",
-        project="request-project",
-        job_config=job_config,
-        retry=None,
-        job_retry=None,
-        page_size=None,
-        max_results=None,
-        query_results_format="ARROW",
-    )
+    # This test checks the request, not whether pyarrow and
+    # google-cloud-bigquery-storage are installed.
+    with mock.patch.object(_arrow_query, "_check_dependencies"):
+        _job_helpers.query_and_wait(
+            client,
+            query="SELECT 1",
+            location="request-location",
+            project="request-project",
+            job_config=job_config,
+            retry=None,
+            job_retry=None,
+            page_size=None,
+            max_results=None,
+            query_results_format="ARROW",
+        )
 
     first_call = client._call_api.call_args_list[0]
     assert first_call.kwargs["path"] == "/projects/request-project/jobs"
