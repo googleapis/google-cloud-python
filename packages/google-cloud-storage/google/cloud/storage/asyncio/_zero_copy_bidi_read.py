@@ -61,7 +61,9 @@ class _ChecksummedData:
     __slots__ = ("content", "crc32c", "_has_crc32c")
 
     def __init__(self):
-        self.content = memoryview(b"")
+        # An absent content field is b"" like the generated parser; the last
+        # message of a range that ends on a chunk boundary looks like that.
+        self.content = b""
         self.crc32c = 0
         self._has_crc32c = False
 
@@ -202,7 +204,8 @@ def _parse_checksummed(cd, buf, mv, i, end):
         f, wt, i = _tag(buf, i, end)
         if f == 1 and wt == _WT_LEN:
             start, i = _length_prefixed(buf, i, end)
-            cd.content = mv[start:i] if mv is not None else buf[start:i]
+            # Non-empty payloads alias the wire buffer; an empty one is b"".
+            cd.content = mv[start:i] if mv is not None and i > start else buf[start:i]
         elif f == 2 and wt == _WT_I32:
             if i + 4 > end:
                 raise _Malformed("crc32c runs past its enclosing message")

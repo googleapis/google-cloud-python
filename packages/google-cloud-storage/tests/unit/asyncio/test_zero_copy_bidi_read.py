@@ -153,7 +153,10 @@ def _assert_same_as_generated(buf):
         assert got.read_range.read_length == want.read_range.read_length
         assert got.read_range.read_id == want.read_range.read_id
         assert got.range_end == want.range_end
-        assert isinstance(got.checksummed_data.content, memoryview)
+        # Non-empty payloads are views of the wire buffer, empty ones b"".
+        assert type(got.checksummed_data.content) is (
+            memoryview if want.checksummed_data.content else bytes
+        )
         assert bytes(got.checksummed_data.content) == want.checksummed_data.content
         assert got.checksummed_data.HasField(
             "crc32c"
@@ -452,6 +455,26 @@ def test_deserialize_slices_bytes_when_memoryview_crc32c_not_supported(monkeypat
     content = response.object_data_ranges[0].checksummed_data.content
     assert type(content) is bytes
     assert content == PAYLOAD
+
+
+@pytest.mark.parametrize("supported", [False, True])
+def test_deserialize_empty_chunk_content_is_bytes(monkeypatch, supported):
+    # The last message of a read that ends on a chunk boundary carries a
+    # checksum and range_end but no content field; crc32c releases that do
+    # not take memoryview must still be able to hash it.
+    monkeypatch.setattr(_zero_copy_bidi_read, "is_supported", lambda: supported)
+    buf = _response(
+        _range_data(
+            _i32_field(_CHECKSUMMED_CRC32C, google_crc32c.value(b"")),
+            _read_range(length=0),
+        )
+    )
+    response = _zero_copy_bidi_read.deserialize(buf)
+    checksummed = response.object_data_ranges[0].checksummed_data
+    assert type(checksummed.content) is bytes
+    assert checksummed.content == b""
+    assert checksummed.HasField("crc32c")
+    _assert_same_as_generated(buf)
 
 
 @pytest.mark.parametrize("value", [None, "", "1", "true", "Yes", " on "])
