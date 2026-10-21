@@ -463,12 +463,12 @@ class AsyncMultiRangeDownloader:
         :type accepts_memoryview: bool
         :param accepts_memoryview: (Optional) If True, ``write()`` destinations
             may receive each chunk as a read-only :class:`memoryview` of the
-            received gRPC message instead of ``bytes``, which avoids copying
-            the chunk before the destination copies it where it wants. The
-            view stays valid after ``write()`` returns and keeps that message
-            alive until released. Destinations must still accept ``bytes``,
-            which they receive whenever the SDK uses the generated parser.
-            Has no effect on buffer destinations. Defaults to False.
+            received gRPC message instead of ``bytes``. The SDK drops its
+            reference after ``write()`` returns; the message (the chunk plus
+            a few bytes of framing) is freed when the destination drops the
+            view. Destinations must still accept ``bytes``, which the generated
+            parser produces. No effect on buffer destinations. Defaults to
+            False.
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
