@@ -537,6 +537,85 @@ def test_query_and_wait_sets_job_creation_mode():
     )
 
 
+@pytest.mark.parametrize(
+    ("default_job_creation_mode", "query_results_format", "expected"),
+    [
+        # ARROW skips creating a job by default.
+        (None, "ARROW", "JOB_CREATION_OPTIONAL"),
+        # A mode set on the client still wins.
+        ("JOB_CREATION_REQUIRED", "ARROW", "JOB_CREATION_REQUIRED"),
+        # Other formats keep sending no mode.
+        (None, None, None),
+    ],
+)
+def test_query_and_wait_job_creation_mode_for_arrow(
+    default_job_creation_mode, query_results_format, expected
+):
+    client = mock.create_autospec(Client)
+    client.default_job_creation_mode = default_job_creation_mode
+    client._call_api.return_value = {
+        "jobReference": {
+            "projectId": "response-project",
+            "jobId": "abc",
+            "location": "response-location",
+        },
+        "jobComplete": True,
+    }
+    _job_helpers.query_and_wait(
+        client,
+        query="SELECT 1",
+        location="request-location",
+        project="request-project",
+        job_config=None,
+        retry=None,
+        job_retry=None,
+        page_size=None,
+        max_results=None,
+        query_results_format=query_results_format,
+    )
+
+    request_body = client._call_api.call_args.kwargs["data"]
+    assert request_body.get("jobCreationMode") == expected
+
+
+def test_query_and_wait_arrow_with_jobs_insert_creates_a_job():
+    # jobs.query doesn't support destination, so this goes through jobs.insert,
+    # which always creates a job.
+    client = mock.create_autospec(Client)
+    client.default_job_creation_mode = None
+    client._call_api.return_value = {
+        "jobReference": {
+            "projectId": "response-project",
+            "jobId": "abc",
+            "location": "response-location",
+        },
+        "query": {
+            "query": "SELECT 1",
+        },
+        "status": {"state": "DONE"},
+        "jobComplete": True,
+    }
+    job_config = job_query.QueryJobConfig(
+        destination="dest-project.dest_dset.dest_table",
+    )
+    _job_helpers.query_and_wait(
+        client,
+        query="SELECT 1",
+        location="request-location",
+        project="request-project",
+        job_config=job_config,
+        retry=None,
+        job_retry=None,
+        page_size=None,
+        max_results=None,
+        query_results_format="ARROW",
+    )
+
+    first_call = client._call_api.call_args_list[0]
+    assert first_call.kwargs["path"] == "/projects/request-project/jobs"
+    assert "jobCreationMode" not in first_call.kwargs["data"]
+
+
 def test_query_and_wait_sets_location():
     client = mock.create_autospec(Client)
     client._call_api.return_value = {
