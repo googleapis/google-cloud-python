@@ -2318,7 +2318,8 @@ class RowIterator(HTTPIterator):
 
         Args:
             bqstorage_client (Optional[bigquery_storage.BigQueryReadClient]):
-                Client for BigQuery Storage Read API. If None, one will be created.
+                Client for BigQuery Storage Read API. If None, the BigQuery
+                Storage client that the BigQuery client shares is used.
             timeout (Optional[float]):
                 Timeout in seconds for read operations.
 
