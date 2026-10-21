@@ -794,9 +794,7 @@ def test_query_and_wait_arrow_queries_share_one_bqstorage_client():
 
     for table in tables:
         assert table.column("x").to_pylist() == list(range(1, 1001))
-    ensure.assert_called_once_with(
-        client_options=None, transport=client_module._create_bqstorage_transport
-    )
+    ensure.assert_called_once_with(transport=client_module._create_bqstorage_transport)
     assert shared is not None
     # Leaving the with block calls close(), which closes the shared channel.
     assert client._shared_bqstorage_client is None
