@@ -22,6 +22,7 @@ import pytest
 from google.api_core.client_options import ClientOptions
 from google.auth import compute_engine
 
+import google.cloud.bigtable
 from google.cloud.bigtable.data._async.client import (
     BigtableDataClientAsync,
     _AcceleratorIdentityError,
@@ -112,6 +113,21 @@ class TestInitAcceleratorConfig:
         )
         # The path is not a "secret" that blocks acceleration.
         assert c._accelerator_blocked_reason is None
+
+    def test_caller_user_agent_forwarded(self):
+        c = _bare_client()
+        c._init_accelerator_config(explicit_credentials=False, client_options=None)
+        flags = c._accelerator_flags
+        expected = f"python-v{google.cloud.bigtable.__version__}"
+        assert flags[flags.index("--caller-user-agent") + 1] == expected
+
+    def test_caller_user_agent_not_built_when_blocked(self):
+        # Blocked means the daemon never starts, so no flag list is ever
+        # consumed; building one would be dead work.
+        c = _bare_client()
+        c._init_accelerator_config(explicit_credentials=True, client_options=None)
+        assert c._accelerator_blocked_reason is not None
+        assert c._accelerator_flags == []
 
 
 class TestResolvePrincipal:

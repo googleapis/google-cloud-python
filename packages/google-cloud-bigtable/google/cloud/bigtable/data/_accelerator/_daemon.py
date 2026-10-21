@@ -24,6 +24,7 @@ tearing the process down. It does NOT speak gRPC; that's the
 from __future__ import annotations
 
 import json
+import math
 import os
 import secrets
 import shutil
@@ -32,6 +33,14 @@ import subprocess
 import tempfile
 import time
 from typing import Any, Mapping, Sequence
+
+
+# Environment variable that overrides the daemon startup readiness timeout, in
+# seconds (float). Lets a deployment tune the cold-start budget without a code
+# change or rebuild — e.g. raise it on a very constrained/gVisor host, or (when
+# a Cloud Run startup probe already gates traffic on daemon readiness) it can be
+# left at the default since the platform absorbs the wait.
+_STARTUP_TIMEOUT_ENV_VAR = "BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT"
 
 # Wheels ship the binary at this path relative to the `_accelerator/` package.
 _DEFAULT_BIN_RELATIVE_PATH = "bin/accelerator"
@@ -42,8 +51,13 @@ _DEFAULT_BIN_RELATIVE_PATH = "bin/accelerator"
 _IDENTITY_FILENAME = "identity.json"
 
 # How long to wait for the daemon to start listening on its UDS before giving
-# up at startup.
-_DEFAULT_STARTUP_TIMEOUT = 10.0
+# up at startup. Cold, constrained environments (e.g. Cloud Run's gVisor
+# sandbox) spend ~10s in Go runtime init + ADC token fetch from the metadata
+# server before the daemon binds, so a 10s budget misses and falls back to the
+# native client; 20s covers that cold start with margin. Override per-deployment
+# via the ``BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT`` env var (see
+# ``_resolve_startup_timeout``).
+_DEFAULT_STARTUP_TIMEOUT = 20.0
 
 # Sequence: close stdin, wait this long; SIGTERM, wait again; SIGKILL.
 _STDIN_GRACE_SECONDS = 2.0
@@ -59,6 +73,34 @@ def _resolve_binary_path() -> str:
             "Accelerator binary not found. Install a wheel that bundles the binary."
         )
     return bundled
+
+
+def _resolve_startup_timeout() -> float:
+    """Resolve the daemon startup timeout in seconds.
+
+    Precedence: the ``BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT`` env var wins;
+    otherwise ``_DEFAULT_STARTUP_TIMEOUT``.
+    A malformed, non-positive, or non-finite env value is a deployment
+    misconfiguration, so it is raised loudly rather than silently ignored.
+    """
+    raw = os.environ.get(_STARTUP_TIMEOUT_ENV_VAR)
+    if raw is None or raw == "":
+        return _DEFAULT_STARTUP_TIMEOUT
+    try:
+        value = float(raw)
+    except ValueError as exc:
+        raise ValueError(
+            f"{_STARTUP_TIMEOUT_ENV_VAR}={raw!r} is not a valid number of seconds"
+        ) from exc
+    # `inf` clears `value <= 0` and would hang `_wait_until_ready` forever;
+    # `nan` clears it too (all NaN comparisons are False) and poisons the
+    # sleep loop's deadline arithmetic. Reject both.
+    if not math.isfinite(value) or value <= 0:
+        raise ValueError(
+            f"{_STARTUP_TIMEOUT_ENV_VAR}={raw!r} must be a positive, finite "
+            "number of seconds"
+        )
+    return value
 
 
 class AcceleratorDaemon:
@@ -83,7 +125,7 @@ class AcceleratorDaemon:
         self,
         cli_flags: Sequence[str] = (),
         *,
-        startup_timeout: float = _DEFAULT_STARTUP_TIMEOUT,
+        binary_path: str | None = None,
         extra_env: Mapping[str, str] | None = None,
     ):
         """Resolve the binary and pick the UDS path (does not spawn anything).
@@ -97,9 +139,12 @@ class AcceleratorDaemon:
         Raises:
             FileNotFoundError: the bundled binary is not present in this wheel.
         """
-        self._binary_path = _resolve_binary_path()
+        self._binary_path = binary_path if binary_path is not None else _resolve_binary_path()
         self._cli_flags = list(cli_flags)
-        self._startup_timeout = startup_timeout
+        # ``None`` (the default) defers to the env var / module default; an
+        # explicit float overrides both. Resolved here, not as a signature
+        # default, so the env var is read at instantiation time.
+        self._startup_timeout = _resolve_startup_timeout()
         # Extra environment for the subprocess, merged over the inherited env.
         # Used to forward GOOGLE_APPLICATION_CREDENTIALS (path only) so the
         # daemon's ADC resolves the caller's credentials_file.

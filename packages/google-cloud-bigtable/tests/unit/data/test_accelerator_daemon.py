@@ -21,21 +21,27 @@ import pytest
 
 from google.cloud.bigtable.data._accelerator import _daemon
 from google.cloud.bigtable.data._accelerator._daemon import (
+    _DEFAULT_STARTUP_TIMEOUT,
     _IDENTITY_FILENAME,
+    _STARTUP_TIMEOUT_ENV_VAR,
     AcceleratorDaemon,
+    _resolve_startup_timeout,  # noqa: F401 (used indirectly by AcceleratorDaemon)
 )
 
 
 def _make_daemon(tmp_path, **kwargs):
-    # Patch _resolve_binary_path so the constructor doesn't require the bundled
-    # binary; tests that call start() monkeypatch Popen separately.
+    # Use binary_path= so the constructor doesn't require the bundled binary;
+    # tests that call start() monkeypatch Popen separately.
     fake_binary = tmp_path / "fake-binary"
     fake_binary.touch()
-    with unittest.mock.patch(
-        "google.cloud.bigtable.data._accelerator._daemon._resolve_binary_path",
-        return_value=str(fake_binary),
-    ):
-        return AcceleratorDaemon(**kwargs)
+    kwargs.setdefault("binary_path", str(fake_binary))
+    return AcceleratorDaemon(**kwargs)
+
+
+# Captured at import time, before the autouse fixture patches _cleanup_tempdir
+# to a no-op.  Tests that need to exercise the real implementation call this
+# directly as _real_cleanup_tempdir(daemon_instance).
+_real_cleanup_tempdir = AcceleratorDaemon._cleanup_tempdir
 
 
 class TestExtraEnv:
@@ -195,3 +201,474 @@ def _no_cleanup_crash(monkeypatch, tmp_path):
 
     monkeypatch.setattr(_daemon.tempfile, "mkdtemp", fake_mkdtemp)
     yield
+
+
+# ---------------------------------------------------------------------------
+# Properties before/after start
+# ---------------------------------------------------------------------------
+
+class TestPropertiesBeforeStart:
+    def test_uds_path_before_start_raises(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="has not been started"):
+            _ = d.uds_path
+
+    def test_log_path_before_start_raises(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="has not been started"):
+            _ = d.log_path
+
+    def test_pid_before_start_raises(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="has not been started"):
+            _ = d.pid
+
+    def test_is_running_before_start_is_false(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        assert d.is_running is False
+
+    def test_is_running_with_live_proc(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        proc_mock = unittest.mock.Mock()
+        proc_mock.poll.return_value = None  # still running
+        d._proc = proc_mock
+        assert d.is_running is True
+
+    def test_is_running_with_dead_proc(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        proc_mock = unittest.mock.Mock()
+        proc_mock.poll.return_value = 0  # exited
+        d._proc = proc_mock
+        assert d.is_running is False
+
+
+# ---------------------------------------------------------------------------
+# Binary resolution
+# ---------------------------------------------------------------------------
+
+class TestResolveBinaryPath:
+    def test_missing_binary_raises_file_not_found(self, tmp_path):
+        from google.cloud.bigtable.data._accelerator._daemon import _resolve_binary_path
+
+        with unittest.mock.patch("os.path.isfile", return_value=False):
+            with pytest.raises(FileNotFoundError, match="Accelerator binary not found"):
+                _resolve_binary_path()
+
+
+# ---------------------------------------------------------------------------
+# start() failure modes
+# ---------------------------------------------------------------------------
+
+class TestStartFailures:
+    def test_called_twice_raises(self, tmp_path, monkeypatch):
+        def fake_popen(argv, **kwargs):
+            raise _StopStart()
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
+        d = _make_daemon(tmp_path)
+        # Manually set _proc so it looks like it was already started.
+        d._proc = unittest.mock.Mock()
+        with pytest.raises(RuntimeError, match="called twice"):
+            d.start()
+
+    def test_popen_oserror_raises_runtime_error(self, tmp_path, monkeypatch):
+        def bad_popen(argv, **kwargs):
+            raise OSError("permission denied")
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", bad_popen)
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="Failed to spawn"):
+            d.start()
+
+    def test_process_exits_during_startup_raises(self, tmp_path, monkeypatch):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = 1  # exited immediately
+        proc_mock.stdin = unittest.mock.Mock()
+
+        monkeypatch.setattr(
+            _daemon.subprocess, "Popen", lambda *a, **kw: proc_mock
+        )
+        # _cleanup_tempdir is already a no-op via autouse fixture, but
+        # _force_kill is too — that's fine, we just need the start to raise.
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.1")
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="exited during startup"):
+            d.start()
+
+    def test_uds_never_appears_raises_timeout(self, tmp_path, monkeypatch):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = None  # alive but UDS never arrives
+        proc_mock.stdin = unittest.mock.Mock()
+
+        monkeypatch.setattr(
+            _daemon.subprocess, "Popen", lambda *a, **kw: proc_mock
+        )
+        # Make os.path.exists always False so UDS never appears.
+        monkeypatch.setattr(_daemon.os.path, "exists", lambda p: False)
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.05")
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="did not become ready"):
+            d.start()
+
+    def test_no_af_unix_raises_os_error(self, tmp_path, monkeypatch):
+        import socket as _socket
+        monkeypatch.delattr(_socket, "AF_UNIX", raising=False)
+        # Reload the attribute check in _daemon
+        monkeypatch.setattr(_daemon.socket, "AF_UNIX", None, raising=False)
+        # Simpler: just check that hasattr(socket, "AF_UNIX") guards the call.
+        with unittest.mock.patch.object(
+            _daemon.socket, "AF_UNIX", None, create=True
+        ), unittest.mock.patch(
+            "google.cloud.bigtable.data._accelerator._daemon.hasattr",
+            return_value=False,
+        ):
+            d = _make_daemon(tmp_path)
+            with pytest.raises(OSError, match="AF_UNIX"):
+                d.start()
+
+
+# ---------------------------------------------------------------------------
+# close() lifecycle
+# ---------------------------------------------------------------------------
+
+class TestClose:
+    def test_close_before_start_is_noop(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        d.close()  # should not raise
+
+    def test_close_graceful_via_stdin_eof(self, tmp_path):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = None
+        proc_mock.stdin = unittest.mock.Mock()
+        # First wait call returns True (exited after stdin close).
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+
+        with unittest.mock.patch.object(d, "_wait_for_exit", return_value=True), \
+             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+            d.close()
+
+        proc_mock.stdin.close.assert_called_once()
+        proc_mock.terminate.assert_not_called()
+        proc_mock.kill.assert_not_called()
+
+    def test_close_escalates_to_sigterm(self, tmp_path):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = None
+        proc_mock.stdin = unittest.mock.Mock()
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+
+        wait_results = iter([False, True])  # stdin wait fails, sigterm wait succeeds
+
+        with unittest.mock.patch.object(d, "_wait_for_exit", side_effect=wait_results), \
+             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+            d.close()
+
+        proc_mock.terminate.assert_called_once()
+        proc_mock.kill.assert_not_called()
+
+    def test_close_escalates_to_sigkill(self, tmp_path):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = None
+        proc_mock.stdin = unittest.mock.Mock()
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+
+        # Both stdin and sigterm waits fail → sigkill.
+        wait_results = iter([False, False, True])
+
+        with unittest.mock.patch.object(d, "_wait_for_exit", side_effect=wait_results), \
+             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+            d.close()
+
+        proc_mock.terminate.assert_called_once()
+        proc_mock.kill.assert_called_once()
+
+    def test_close_clears_proc_reference(self, tmp_path):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = None
+        proc_mock.stdin = unittest.mock.Mock()
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+
+        with unittest.mock.patch.object(d, "_wait_for_exit", return_value=True), \
+             unittest.mock.patch.object(d, "_cleanup_tempdir"):
+            d.close()
+
+        assert d._proc is None
+
+
+# ---------------------------------------------------------------------------
+# _cleanup_tempdir: state clearing
+# ---------------------------------------------------------------------------
+
+class TestCleanupTempdir:
+    def test_clears_all_state_fields(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        d._tempdir = str(tmp_path / "accel-tmp")
+        d._uds_path = str(tmp_path / "sock")
+        d._log_path = str(tmp_path / "daemon.log")
+        d._auth_secret = "super-secret"
+
+        _real_cleanup_tempdir(d)
+
+        assert d._tempdir is None
+        assert d._uds_path is None
+        assert d._log_path is None
+        assert d._auth_secret is None
+
+    def test_removes_tempdir_from_disk(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        td = tmp_path / "accel-tmp"
+        td.mkdir()
+        d._tempdir = str(td)
+
+        _real_cleanup_tempdir(d)
+
+        assert not td.exists()
+
+    def test_noop_when_tempdir_is_none(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        _real_cleanup_tempdir(d)  # should not raise
+
+
+# ---------------------------------------------------------------------------
+# Context manager
+# ---------------------------------------------------------------------------
+
+class TestContextManager:
+    def test_enter_calls_start_and_returns_self(self, tmp_path, monkeypatch):
+        def fake_popen(argv, **kwargs):
+            raise _StopStart()
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
+        d = _make_daemon(tmp_path)
+        with unittest.mock.patch.object(d, "start") as start_mock, \
+             unittest.mock.patch.object(d, "close"):
+            result = d.__enter__()
+        start_mock.assert_called_once()
+        assert result is d
+
+    def test_exit_calls_close(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        with unittest.mock.patch.object(d, "close") as close_mock:
+            d.__exit__(None, None, None)
+        close_mock.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
+# _read_log_tail
+# ---------------------------------------------------------------------------
+
+class TestReadLogTail:
+    def test_reads_tail_of_log(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        log = tmp_path / "daemon.log"
+        log.write_bytes(b"hello world")
+        d._log_path = str(log)
+        tail = d._read_log_tail()
+        assert "hello world" in tail
+
+    def test_truncates_to_max_bytes(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        log = tmp_path / "daemon.log"
+        log.write_bytes(b"x" * 8192)
+        d._log_path = str(log)
+        tail = d._read_log_tail(max_bytes=100)
+        assert len(tail) <= 100
+
+    def test_missing_log_returns_empty(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        d._log_path = str(tmp_path / "nonexistent.log")
+        assert d._read_log_tail() == ""
+
+    def test_no_log_path_returns_empty(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        d._log_path = None
+        assert d._read_log_tail() == ""
+
+
+# ---------------------------------------------------------------------------
+# _wait_for_exit
+# ---------------------------------------------------------------------------
+
+class TestWaitForExit:
+    def test_returns_true_when_no_proc(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        assert d._wait_for_exit(1.0) is True
+
+    def test_returns_true_when_proc_exits_in_time(self, tmp_path):
+        import subprocess
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.wait.return_value = 0  # exited
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+        assert d._wait_for_exit(1.0) is True
+
+    def test_returns_false_on_timeout(self, tmp_path):
+        import subprocess
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.wait.side_effect = subprocess.TimeoutExpired(cmd="x", timeout=0.1)
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+        assert d._wait_for_exit(0.1) is False
+
+
+# ---------------------------------------------------------------------------
+# read_identity: corrupt JSON
+# ---------------------------------------------------------------------------
+
+class TestReadIdentityCorruptJson:
+    def test_corrupt_json_raises_runtime_error(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        dd = tmp_path / "accel-tmp"
+        dd.mkdir(exist_ok=True)
+        d._tempdir = str(dd)
+        identity_path = dd / _IDENTITY_FILENAME
+        identity_path.write_text("{not valid json}")
+        with pytest.raises(RuntimeError, match="Failed to read"):
+            d.read_identity()
+
+    def test_read_identity_unlinks_even_on_error(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        dd = tmp_path / "accel-tmp2"
+        dd.mkdir(exist_ok=True)
+        d._tempdir = str(dd)
+        identity_path = dd / _IDENTITY_FILENAME
+        identity_path.write_text("{bad json}")
+        try:
+            d.read_identity()
+        except RuntimeError:
+            pass
+        # File should be unlinked regardless of the parse error.
+        assert not identity_path.exists()
+
+
+# ---------------------------------------------------------------------------
+# CLI flags passed to Popen
+# ---------------------------------------------------------------------------
+
+class TestCliFlags:
+    def test_cli_flags_appended_to_argv(self, tmp_path, monkeypatch):
+        captured = {}
+
+        def fake_popen(argv, **kwargs):
+            captured["argv"] = argv
+            raise _StopStart()
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
+        d = _make_daemon(
+            tmp_path,
+            cli_flags=[
+                "--project", "proj",
+                "--instance", "inst",
+                "--app-profile", "prof",
+            ],
+        )
+        with pytest.raises(_StopStart):
+            d.start()
+
+        argv = captured["argv"]
+        assert "--uds-path" in argv
+        assert "--project" in argv
+        assert argv[argv.index("--project") + 1] == "proj"
+        assert "--instance" in argv
+        assert argv[argv.index("--instance") + 1] == "inst"
+        assert "--app-profile" in argv
+        assert argv[argv.index("--app-profile") + 1] == "prof"
+
+
+# ---------------------------------------------------------------------------
+# Startup timeout env variable (_resolve_startup_timeout)
+# ---------------------------------------------------------------------------
+
+class TestResolveStartupTimeout:
+    """Tests for the BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT env-var override.
+
+    The remote implementation raises ValueError for invalid values rather than
+    warning and falling back — invalid env vars are deployment misconfigurations
+    and should surface loudly.
+    """
+
+    def test_no_env_var_returns_default(self, monkeypatch):
+        monkeypatch.delenv(_STARTUP_TIMEOUT_ENV_VAR, raising=False)
+        assert _resolve_startup_timeout() == _DEFAULT_STARTUP_TIMEOUT
+
+    def test_empty_string_returns_default(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "")
+        assert _resolve_startup_timeout() == _DEFAULT_STARTUP_TIMEOUT
+
+    def test_valid_integer_string_overrides(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "30")
+        assert _resolve_startup_timeout() == 30.0
+
+    def test_valid_float_string_overrides(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.5")
+        assert _resolve_startup_timeout() == 0.5
+
+    def test_non_numeric_string_raises_value_error(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "not-a-number")
+        with pytest.raises(ValueError, match="not a valid number of seconds"):
+            _resolve_startup_timeout()
+
+    def test_whitespace_only_raises_value_error(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "   ")
+        with pytest.raises(ValueError, match="not a valid number of seconds"):
+            _resolve_startup_timeout()
+
+    def test_negative_value_raises_value_error(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "-1")
+        with pytest.raises(ValueError, match="must be a positive, finite "):
+            _resolve_startup_timeout()
+
+    def test_zero_raises_value_error(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0")
+        with pytest.raises(ValueError, match="must be a positive, finite "):
+            _resolve_startup_timeout()
+
+    def test_zero_float_raises_value_error(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.0")
+        with pytest.raises(ValueError, match="must be a positive, finite "):
+            _resolve_startup_timeout()
+
+    @pytest.mark.parametrize("raw", ["inf", "Infinity", "+inf", "-inf", "nan", "NaN"])
+    def test_non_finite_value_raises_value_error(self, monkeypatch, raw):
+        # float() happily parses these. "inf" clears the `> 0` check and would
+        # hang startup forever; "nan" clears it too (NaN comparisons are always
+        # False) and poisons the readiness loop's deadline arithmetic.
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, raw)
+        with pytest.raises(ValueError, match="must be a positive, finite "):
+            _resolve_startup_timeout()
+
+    def test_error_message_includes_env_var_name_and_value(self, monkeypatch):
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "bad")
+        with pytest.raises(ValueError) as exc_info:
+            _resolve_startup_timeout()
+        msg = str(exc_info.value)
+        assert _STARTUP_TIMEOUT_ENV_VAR in msg
+        assert "bad" in msg
+
+    def test_daemon_constructor_picks_up_env_var(self, tmp_path, monkeypatch):
+        """End-to-end: env var flows into AcceleratorDaemon._startup_timeout."""
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "42")
+        d = _make_daemon(tmp_path)
+        assert d._startup_timeout == 42.0
+
+    def test_daemon_constructor_invalid_env_var_raises(self, tmp_path, monkeypatch):
+        """Invalid env var causes constructor to raise ValueError."""
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "xyz")
+        with pytest.raises(ValueError, match="not a valid number of seconds"):
+            _make_daemon(tmp_path)

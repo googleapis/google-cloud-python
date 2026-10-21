@@ -422,6 +422,13 @@ class BigtableDataClientAsync(ClientWithProject):
         if self._accelerator_blocked_reason:
             return
 
+        # Identify this client to the daemon so it can construct the full
+        # "python-v{ver}-go-accelerator-v{ver}" User-Agent.
+        self._accelerator_flags += [
+            "--caller-user-agent",
+            f"python-v{google.cloud.bigtable.__version__}",
+        ]
+
         # Non-secret / path-style knobs the daemon can reproduce.
         scopes = getattr(client_options, "scopes", None) if client_options else None
         # Forward the effective auth scopes so the daemon's token audience
@@ -484,14 +491,17 @@ class BigtableDataClientAsync(ClientWithProject):
                 # Request.__call__ passes timeout=120 to session.request, so
                 # inject our bound at the session level to always override it.
                 _auth_req = google_auth_requests.Request()
-                _http = _auth_req.session.request
+                try:
+                    _http = _auth_req.session.request
 
-                def _with_timeout(*args, **kwargs):
-                    kwargs["timeout"] = _PRINCIPAL_RESOLVE_TIMEOUT
-                    return _http(*args, **kwargs)
+                    def _with_timeout(*args, **kwargs):
+                        kwargs["timeout"] = _PRINCIPAL_RESOLVE_TIMEOUT
+                        return _http(*args, **kwargs)
 
-                _auth_req.session.request = _with_timeout
-                creds.refresh(_auth_req)
+                    _auth_req.session.request = _with_timeout
+                    creds.refresh(_auth_req)
+                finally:
+                    _auth_req.session.close()
             except Exception as exc:
                 _LOGGER.debug("Compute Engine credential refresh failed: %s", exc)
             email = getattr(creds, "service_account_email", None)
@@ -1402,9 +1412,6 @@ class _DataApiTargetAsync(abc.ABC):
         except _AcceleratorIdentityError as exc:
             if explicit:
                 raise
-            # Callers using gcloud user ADC (_resolve_principal returns None)
-            # consistently land here; fail-closed to the native client is
-            # intentional — user ADC is almost never what the daemon resolved.
             warnings.warn(
                 f"Accelerator disabled: {exc}",
                 RuntimeWarning,
@@ -1451,13 +1458,10 @@ class _DataApiTargetAsync(abc.ABC):
             self._accelerator_client = AcceleratorClientType(
                 server.uds_path, server.auth_secret
             )
-        except _AcceleratorIdentityError:
-            server.close()
-            raise
+            self._accelerator_daemon = server
         except BaseException:
             server.close()
             raise
-        self._accelerator_daemon = server
 
     def _use_accelerator(self, method_name: str) -> bool:
         """Whether this call should be routed through the accelerator daemon.
