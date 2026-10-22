@@ -84,7 +84,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: db-dtypes
-    version: 1.8.0
+    version: 1.9.0
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
