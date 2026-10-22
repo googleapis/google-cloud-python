@@ -26,6 +26,7 @@ from __future__ import annotations
 
 from grpc import insecure_channel
 
+from google.cloud.bigtable.data._accelerator._daemon import _uds_target
 from google.cloud.bigtable.data._accelerator._health import (
     HEALTH_CHECK_METHOD,
     ServingStatus,
@@ -54,7 +55,7 @@ class _AcceleratorClient:
     def __init__(self, uds_path: str, auth_secret: str):
         self._uds_path = uds_path
         self._metadata = (("x-accelerator-token", auth_secret),)
-        self._channel = insecure_channel(f"unix://{uds_path}")
+        self._channel = insecure_channel(_uds_target(uds_path))
         self._mutate_row_stub = self._channel.unary_unary(
             _MUTATE_ROW_METHOD,
             request_serializer=MutateRowRequest.serialize,

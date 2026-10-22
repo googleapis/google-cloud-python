@@ -16,9 +16,11 @@
 
 The daemon binary embeds an in-process Go Bigtable client and exposes the
 ``google.bigtable.v2.Bigtable`` service over a Unix domain socket. This module
-owns spawning the binary, waiting for the UDS to become connectable, and
-tearing the process down. It does NOT speak gRPC; that's the
-``_AcceleratorClient`` companion's job.
+owns spawning the binary, waiting for its gRPC server to come up, and tearing
+the process down. It issues no RPCs — that's the ``_AcceleratorClient``
+companion's job — but it does open a throwaway channel to decide when the
+daemon is ready, since on Windows that is the only probe available from
+Python (see ``_wait_until_ready``).
 """
 
 from __future__ import annotations
@@ -31,10 +33,20 @@ import secrets
 import shutil
 import socket
 import subprocess
+import sys
 import tempfile
 import threading
 import time
 from typing import Any, Mapping, Sequence
+
+import grpc
+
+# Windows differs from every other supported platform in two ways that matter
+# here, so it gets a named constant rather than scattered ``sys.platform``
+# checks: the daemon binary carries a ``.exe`` suffix, and CPython's socket
+# module exposes no ``AF_UNIX`` even though the OS and gRPC's C-core both speak
+# it (see ``start`` and ``_wait_until_ready``).
+_IS_WINDOWS = sys.platform == "win32"
 
 # Environment variable that overrides the daemon startup readiness timeout, in
 # seconds (float). Lets a deployment tune the cold-start budget without a code
@@ -44,7 +56,10 @@ from typing import Any, Mapping, Sequence
 _STARTUP_TIMEOUT_ENV_VAR = "BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT"
 
 # Wheels ship the binary at this path relative to the `_accelerator/` package.
+# The Windows wheels (win_amd64, win32) stage it under the ``.exe`` name Go
+# gives it, so the suffix is appended there.
 _DEFAULT_BIN_RELATIVE_PATH = "bin/accelerator"
+_WINDOWS_BIN_SUFFIX = ".exe"
 
 # The daemon writes the principal it resolved to this file in its tempdir
 # (alongside the socket) before binding, so the client can verify it matches
@@ -79,6 +94,10 @@ _PID_FILENAME = "daemon.pid"
 # ``_resolve_startup_timeout``).
 _DEFAULT_STARTUP_TIMEOUT = 20.0
 
+# How long each poll of the readiness future waits before the loop re-checks
+# that the daemon process is still alive. Doubles as the loop's sleep.
+_READY_POLL_SECONDS = 0.05
+
 # Sequence: close stdin, wait this long; SIGTERM, wait again; SIGKILL.
 _STDIN_GRACE_SECONDS = 2.0
 _SIGTERM_GRACE_SECONDS = 2.0
@@ -98,7 +117,8 @@ _SWEEP_BUDGET_SECONDS = 5.0
 
 def _resolve_binary_path() -> str:
     """Return the path of the bundled daemon binary, raising if it is absent."""
-    bundled = os.path.join(os.path.dirname(__file__), _DEFAULT_BIN_RELATIVE_PATH)
+    relative = _DEFAULT_BIN_RELATIVE_PATH + (_WINDOWS_BIN_SUFFIX if _IS_WINDOWS else "")
+    bundled = os.path.join(os.path.dirname(__file__), relative)
     if not os.path.isfile(bundled):
         raise FileNotFoundError(
             "Accelerator binary not found. Install a wheel that bundles the binary."
@@ -134,17 +154,16 @@ def _resolve_startup_timeout() -> float:
     return value
 
 
-def _socket_is_live(uds_path: str) -> bool:
-    """Return True if something is currently accepting connections on the UDS."""
-    if not os.path.exists(uds_path):
-        return False
-    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
-        probe.settimeout(0.25)
-        try:
-            probe.connect(uds_path)
-            return True
-        except OSError:
-            return False
+def _uds_target(uds_path: str) -> str:
+    """Build the gRPC target for the daemon's socket at ``uds_path``.
+
+    Must be the single-colon form. ``unix://`` opens an *authority* component,
+    which gRPC only accepts when the rest is an absolute POSIX path; hand it a
+    Windows path and ``C:`` parses as the authority, so channel construction
+    fails outright with "authority-based URIs not supported by the unix
+    scheme". ``unix:`` takes the remainder as a plain path on every platform.
+    """
+    return f"unix:{uds_path}"
 
 
 def _sweep_stale_tempdirs() -> None:
@@ -167,8 +186,18 @@ def _sweep_stale_tempdirs() -> None:
     startup. The walk also gives up after ``_SWEEP_BUDGET_SECONDS`` so the
     thread cannot linger on a pathological temp directory; whatever it did not
     reach is simply left for the next start().
+
+    Skipped entirely on Windows: see the guard below.
     """
-    if not hasattr(socket, "AF_UNIX"):
+    if _IS_WINDOWS:
+        # The liveness check below is ``os.kill(pid, 0)``, which is a probe
+        # only on POSIX. On Windows os.kill routes every signal that is not a
+        # console control event to TerminateProcess, so that same call would
+        # *kill* the spawning Python process it is supposed to be asking
+        # about — someone else's live application. Porting it needs an
+        # OpenProcess/WaitForSingleObject check instead, which is left for a
+        # follow-up; until then the safe failure is to leave the tempdirs
+        # alone. They are four small files under the per-user %TEMP%.
         return
     root = tempfile.gettempdir()
     try:
@@ -315,7 +344,12 @@ class AcceleratorDaemon:
         """
         if self._proc is not None:
             raise RuntimeError("AcceleratorDaemon.start() called twice")
-        if not hasattr(socket, "AF_UNIX"):
+        # The daemon only listens on AF_UNIX, so a platform without it cannot
+        # run the accelerator at all. Windows is the one case where a missing
+        # ``socket.AF_UNIX`` says nothing about the platform — the OS and
+        # gRPC's C-core both support the family, only CPython's socket module
+        # does not — so it is excluded from the check.
+        if not hasattr(socket, "AF_UNIX") and not _IS_WINDOWS:
             raise OSError(
                 "Unix domain sockets (AF_UNIX) are not supported on this platform."
             )
@@ -327,6 +361,11 @@ class AcceleratorDaemon:
         # client calls synchronously, on the event loop thread) must not wait
         # on it. The sweep bounds its own runtime; see _SWEEP_BUDGET_SECONDS.
         threading.Thread(target=_sweep_stale_tempdirs, daemon=True).start()
+        # mkdtemp is what confines the socket to this user: 0700 on POSIX, and
+        # on Windows an inherited ACL from the per-user %TEMP% tree. The latter
+        # is the only access control the socket gets there — Windows has no
+        # umask and chmod only toggles the read-only bit — so the daemon
+        # deliberately relies on the directory we pick here.
         self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
         self._uds_path = os.path.join(self._tempdir, _SOCKET_FILENAME)
         # Record the metadata the sweep needs to judge this tempdir later: the
@@ -444,7 +483,12 @@ class AcceleratorDaemon:
                     except OSError:
                         pass
                 if not self._wait_for_exit(_STDIN_GRACE_SECONDS):
-                    # Step 2: SIGTERM.
+                    # Step 2: SIGTERM. On Windows this is TerminateProcess, so
+                    # steps 2 and 3 are the same hard kill and the daemon's one
+                    # chance to shut down cleanly is the stdin EOF above —
+                    # which is also the signal it uses there to notice the
+                    # parent died, since a ppid watchdog cannot work on
+                    # Windows.
                     try:
                         proc.terminate()
                     except OSError:
@@ -494,25 +538,51 @@ class AcceleratorDaemon:
                 pass
 
     def _wait_until_ready(self, timeout: float) -> None:
-        """Poll until the UDS accepts a connection, the child dies, or timeout.
+        """Poll until the daemon's gRPC server is reachable, the child dies,
+        or timeout.
+
+        Readiness is a gRPC channel reaching ``READY``, not a bare socket
+        connect. Two reasons. It is the stronger signal: ``net.Listen`` puts
+        the socket in the listen backlog, so a raw connect succeeds before the
+        Go gRPC server has accepted anything, whereas ``READY`` means the
+        HTTP/2 handshake completed and an RPC would actually be served. And it
+        is the only signal available on Windows, where CPython's socket module
+        has no ``AF_UNIX`` (``PC/pyconfig.h`` leaves ``HAVE_SYS_UN_H``
+        commented out) even though the OS and gRPC's C-core both support the
+        family — which is why the accelerator runs there at all.
 
         Raises RuntimeError if the daemon exits during startup or does not
-        become connectable within ``timeout`` seconds.
+        become ready within ``timeout`` seconds.
         """
         if self._proc is None or self._uds_path is None:
             raise RuntimeError("AcceleratorDaemon._wait_until_ready() before spawn")
         deadline = time.monotonic() + timeout
-        while time.monotonic() < deadline:
-            exit_code = self._proc.poll()
-            if exit_code is not None:
-                log_tail = self._read_log_tail()
-                raise RuntimeError(
-                    "Accelerator daemon exited during startup "
-                    f"(exit code {exit_code}). log: {log_tail!r}"
-                )
-            if _socket_is_live(self._uds_path):
-                return
-            time.sleep(0.05)
+        # One channel for the whole wait. gRPC connects lazily and retries
+        # with backoff on its own, so the future below is re-polled rather
+        # than rebuilt; each short wait on it doubles as this loop's sleep.
+        channel = grpc.insecure_channel(_uds_target(self._uds_path))
+        ready = grpc.channel_ready_future(channel)
+        try:
+            while time.monotonic() < deadline:
+                exit_code = self._proc.poll()
+                if exit_code is not None:
+                    log_tail = self._read_log_tail()
+                    raise RuntimeError(
+                        "Accelerator daemon exited during startup "
+                        f"(exit code {exit_code}). log: {log_tail!r}"
+                    )
+                try:
+                    ready.result(timeout=_READY_POLL_SECONDS)
+                    return
+                except grpc.FutureTimeoutError:
+                    # Not up yet. Nothing distinguishes "still starting" from
+                    # "never will" here — a failed connect leaves the channel
+                    # in TRANSIENT_FAILURE and it keeps retrying — so the
+                    # deadline above is what ends the wait.
+                    continue
+        finally:
+            ready.cancel()
+            channel.close()
         log_tail = self._read_log_tail()
         raise RuntimeError(
             "Accelerator daemon did not become ready within "
