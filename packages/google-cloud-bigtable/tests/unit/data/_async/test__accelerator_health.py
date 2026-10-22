@@ -75,11 +75,15 @@ class _FakeDaemonHealthServer:
     health method locally on the UDS, and (like the daemon's auth interceptor,
     which runs before the ``isProxied`` gate) it sees the accelerator token on
     every request. ``serve_health=False`` registers nothing, so gRPC itself
-    answers ``UNIMPLEMENTED`` — the shape an older daemon presents.
+    answers ``UNIMPLEMENTED`` — the shape an older daemon presents. Setting
+    ``abort_unimplemented`` later produces the same status from a server that
+    was answering normally, which is how a daemon that was merely too starved
+    to reply in time looks once it recovers.
     """
 
     def __init__(self, uds_path, *, status=ServingStatus.SERVING, serve_health=True):
         self.status = status
+        self.abort_unimplemented = False
         self.delay = 0.0
         self.request_count = 0
         self.last_metadata = None
@@ -103,8 +107,11 @@ class _FakeDaemonHealthServer:
             self.request_count += 1
             self.last_metadata = dict(context.invocation_metadata())
             delay, status = self.delay, self.status
+            unimplemented = self.abort_unimplemented
         if delay:
             time.sleep(delay)
+        if unimplemented:
+            context.abort(grpc.StatusCode.UNIMPLEMENTED, "no health service")
         return _WIRE_BY_STATUS[status]
 
     def stop(self):
@@ -252,8 +259,72 @@ class TestAsyncAcceleratorHealthMonitor:
             # The loop exits outright rather than backing off, and — with an
             # unhealthy_threshold of 1, which would otherwise degrade on the
             # very first probe — leaves the breaker alone.
-            assert await self._wait_for(lambda: monitor._task.done())
+            assert await self._wait_for(lambda: not monitor.is_running)
             assert not breaker.bypass()
+        finally:
+            await monitor.close()
+            await client.close()
+            server.stop()
+
+    @CrossSync.pytest
+    async def test_unmonitorable_daemon_clears_an_earlier_degraded_flag(self, tmp_path):
+        # A daemon starved enough to miss the probe deadline degrades the
+        # breaker first; if it then recovers enough to answer UNIMPLEMENTED,
+        # the loop exits on the "can't be monitored" path. That return is the
+        # last thing the monitor ever does, so a degraded flag left set there
+        # would route this Table to the native client for the rest of its life
+        # against a daemon that is actually fine.
+        server = self._start_server(tmp_path, status=ServingStatus.NOT_SERVING)
+        client = self._make_client(tmp_path)
+        breaker = AcceleratorBreaker()
+        monitor = self._make_monitor(client, breaker, unhealthy_threshold=1)
+        try:
+            monitor.start()
+            assert await self._wait_for(lambda: breaker.is_degraded)
+            server.abort_unimplemented = True
+            assert await self._wait_for(lambda: not monitor.is_running)
+            assert not breaker.is_degraded
+            assert not breaker.bypass()
+        finally:
+            await monitor.close()
+            await client.close()
+            server.stop()
+
+    @CrossSync.pytest
+    async def test_close_waits_for_the_loop_to_finish(self, tmp_path):
+        # Table.close() closes the accelerator channel immediately after this
+        # returns, so a probe still in flight would fail against a half-torn-
+        # down client and log a "falling back" warning during orderly teardown.
+        server = self._start_server(tmp_path)
+        client = self._make_client(tmp_path)
+        monitor = self._make_monitor(client, AcceleratorBreaker())
+        try:
+            monitor.start()
+            assert await self._wait_for(lambda: server.request_count >= 1)
+            # Held across close(), which clears the attribute — asserting on
+            # monitor.is_running alone would pass even if nothing stopped.
+            handle = monitor._task
+            await monitor.close()
+            if CrossSync.is_async:
+                assert handle.done()
+            else:
+                assert not handle.is_alive()
+        finally:
+            await client.close()
+            server.stop()
+
+    @CrossSync.pytest
+    async def test_request_stop_ends_the_loop_without_close(self, tmp_path):
+        # What the weakref finalizer on a dropped Table calls: no await, no
+        # lock, just a flag the loop reads at its next wakeup.
+        server = self._start_server(tmp_path)
+        client = self._make_client(tmp_path)
+        monitor = self._make_monitor(client, AcceleratorBreaker())
+        try:
+            monitor.start()
+            assert await self._wait_for(lambda: server.request_count >= 1)
+            monitor.request_stop()
+            assert await self._wait_for(lambda: not monitor.is_running)
         finally:
             await monitor.close()
             await client.close()
@@ -269,7 +340,7 @@ class TestAsyncAcceleratorHealthMonitor:
             monitor.start()
             assert await self._wait_for(lambda: server.request_count >= 1)
             breaker.trip()
-            assert await self._wait_for(lambda: monitor._task.done())
+            assert await self._wait_for(lambda: not monitor.is_running)
         finally:
             await monitor.close()
             await client.close()

@@ -51,8 +51,9 @@ on every one of those would be worse than either steady state.
 
 from __future__ import annotations
 
-import concurrent.futures
 import logging
+import threading
+from typing import Any
 
 from grpc import StatusCode
 
@@ -61,7 +62,6 @@ from google.cloud.bigtable.data._accelerator._fallback import (
     _grpc_code,
 )
 from google.cloud.bigtable.data._accelerator._health import ServingStatus
-from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
     _AcceleratorClient as AcceleratorClientType,
 )
@@ -71,6 +71,7 @@ DEFAULT_PROBE_INTERVAL = 5.0
 DEFAULT_PROBE_TIMEOUT = 0.25
 DEFAULT_UNHEALTHY_THRESHOLD = 3
 DEFAULT_HEALTHY_THRESHOLD = 3
+_CLOSE_WAIT_SECONDS = 1.0
 
 
 class _AcceleratorHealthMonitor:
@@ -97,35 +98,47 @@ class _AcceleratorHealthMonitor:
         self._healthy_threshold = healthy_threshold
         self._consecutive_failures = 0
         self._consecutive_successes = 0
-        self._closed = CrossSync._Sync_Impl.Event()
-        self._task: CrossSync._Sync_Impl.Task[None] | None = None
-        self._sync_executor = (
-            concurrent.futures.ThreadPoolExecutor(
-                max_workers=1, thread_name_prefix="bigtable-accel-health"
-            )
-            if not CrossSync._Sync_Impl.is_async
-            else None
-        )
+        self._closed = threading.Event()
+        self._task: Any = None
 
     def start(self) -> None:
         """Launch the polling task. Idempotent."""
+        if self._task is not None:
+            return
+        self._task = threading.Thread(
+            target=self._run, name="bigtable-accelerator-health", daemon=True
+        )
+        self._task.start()
+
+    @property
+    def is_running(self) -> bool:
+        """Whether the polling loop is still alive."""
         if self._task is None:
-            self._task = CrossSync._Sync_Impl.create_task(
-                self._run,
-                sync_executor=self._sync_executor,
-                task_name="bigtable-accelerator-health",
-            )
+            return False
+        return self._task.is_alive()
+
+    def request_stop(self) -> None:
+        """Ask the loop to stop, without waiting for it to finish.
+
+        For callers that cannot await ``close()`` — notably a weakref finalizer
+        on the owning Table, which is what stops a monitor whose Table was
+        dropped without being closed. Setting a threading.Event is safe from
+        any thread and during interpreter shutdown. The sync loop wakes on it
+        immediately; the async loop sees it at its next wakeup, since only
+        ``close()`` can cancel the task outright."""
+        self._closed.set()
 
     def _run(self) -> None:
         """Poll until closed, or until monitoring turns out to be pointless."""
         while not self._closed.is_set():
-            CrossSync._Sync_Impl.event_wait(self._closed, timeout=self._interval)
+            self._closed.wait(timeout=self._interval)
             if self._closed.is_set():
                 return
             if self._breaker.is_tripped:
                 return
             healthy = self._probe()
             if healthy is None:
+                self._breaker.set_degraded(False)
                 _LOGGER.info(
                     "Accelerator daemon does not implement the gRPC health service; health-based fallback is disabled for this table."
                 )
@@ -175,11 +188,15 @@ class _AcceleratorHealthMonitor:
                 self._breaker.set_degraded(True)
 
     def close(self) -> None:
-        """Stop polling. Does not clear a degraded flag already set."""
+        """Stop polling and wait for the loop to finish.
+
+        Does not clear a degraded flag already set. Waiting is bounded by
+        ``_CLOSE_WAIT_SECONDS``: the caller is entitled to have the monitor
+        actually stopped when this returns, because the channel it probes over
+        is closed immediately afterwards, and a probe still running into that
+        would log an alarming "falling back" warning during orderly teardown."""
         self._closed.set()
-        if self._task is not None:
-            task, self._task = (self._task, None)
-            task.cancel()
-            task.add_done_callback(lambda t: None if t.cancelled() else t.exception())
-        if self._sync_executor is not None:
-            self._sync_executor.shutdown(wait=False)
+        task, self._task = (self._task, None)
+        if task is None:
+            return
+        task.join(timeout=_CLOSE_WAIT_SECONDS)

@@ -26,6 +26,7 @@ import random
 import sys
 import time
 import warnings
+import weakref
 from functools import partial
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Optional, Sequence, Set, cast
 
@@ -1147,6 +1148,7 @@ class _DataApiTarget(abc.ABC):
                 self._accelerator_client, self._accelerator_breaker
             )
             self._accelerator_health.start()
+            weakref.finalize(self, self._accelerator_health.request_stop)
         except Exception as exc:
             warnings.warn(
                 f"Could not start the accelerator health monitor; the accelerator will run without health-based fallback: {exc}",
