@@ -18,6 +18,9 @@
         }
       ]
     },
+    "packages/google-cloud-bigquery": {
+      "component": "google-cloud-bigquery"
+    },
     "packages/google-cloud-ftp": {
       "component": "google-cloud-ftp",
       "extra-files": [
@@ -103,6 +106,9 @@
           "type": "json"
         }
       ]
+    },
+    "packages/sqlalchemy-bigquery": {
+      "component": "sqlalchemy-bigquery"
     },
     "packages/sqlalchemy-spanner": {
       "component": "sqlalchemy-spanner"

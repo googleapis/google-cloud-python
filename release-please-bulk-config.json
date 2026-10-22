@@ -662,9 +662,6 @@
         }
       ]
     },
-    "packages/google-cloud-bigquery": {
-      "component": "google-cloud-bigquery"
-    },
     "packages/google-cloud-bigquery-analyticshub": {
       "component": "google-cloud-bigquery-analyticshub",
       "extra-files": [
@@ -3917,9 +3914,6 @@
     },
     "packages/proto-plus": {
       "component": "proto-plus"
-    },
-    "packages/sqlalchemy-bigquery": {
-      "component": "sqlalchemy-bigquery"
     }
   },
   "release-type": "python-librarian"

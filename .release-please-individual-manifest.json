@@ -1,6 +1,7 @@
 {
   "packages/google-auth": "2.62.0",
   "packages/google-cloud-apptopology": "0.1.0",
+  "packages/google-cloud-bigquery": "3.46.2",
   "packages/google-cloud-ftp": "0.1.0",
   "packages/google-cloud-spanner": "3.71.0",
   "packages/google-cloud-spanner-dbapi-driver": "0.0.0",
@@ -8,6 +9,7 @@
   "packages/google-cloud-workloadidentity": "0.1.0",
   "packages/google-crc32c": "1.9.0",
   "packages/google-shopping-merchant-loyaltycustomers": "0.1.1",
+  "packages/sqlalchemy-bigquery": "1.17.3",
   "packages/sqlalchemy-spanner": "1.20.1",
   "preview-packages/google-cloud-compute": "1.56.0-preview.1"
 }
