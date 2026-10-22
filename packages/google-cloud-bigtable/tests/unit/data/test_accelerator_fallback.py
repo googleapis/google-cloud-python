@@ -14,13 +14,12 @@
 """Unit tests for AcceleratorBreaker, _grpc_code, and handle_accelerator_error
 in google.cloud.bigtable.data._accelerator._fallback."""
 
-import pytest
 from unittest import mock
 
 import grpc
-from grpc import StatusCode
-
+import pytest
 from google.api_core import exceptions as core_exceptions
+from grpc import StatusCode
 
 from google.cloud.bigtable.data._accelerator._fallback import (
     AcceleratorBreaker,
@@ -29,10 +28,10 @@ from google.cloud.bigtable.data._accelerator._fallback import (
     handle_accelerator_error,
 )
 
-
 # ---------------------------------------------------------------------------
 # AcceleratorBreaker
 # ---------------------------------------------------------------------------
+
 
 class TestAcceleratorBreaker:
     def test_initially_not_bypassed(self):
@@ -59,6 +58,7 @@ class TestAcceleratorBreaker:
 
     def test_thread_safety(self):
         import threading
+
         b = AcceleratorBreaker()
         errors = []
 
@@ -80,6 +80,7 @@ class TestAcceleratorBreaker:
 # ---------------------------------------------------------------------------
 # _grpc_code
 # ---------------------------------------------------------------------------
+
 
 class TestGrpcCode:
     def test_rpc_error_with_code_method(self):
@@ -111,6 +112,7 @@ class TestGrpcCode:
 # ---------------------------------------------------------------------------
 # handle_accelerator_error
 # ---------------------------------------------------------------------------
+
 
 class _FakeRpcError(grpc.RpcError):
     """Minimal grpc.RpcError subclass for tests — passes isinstance checks.
