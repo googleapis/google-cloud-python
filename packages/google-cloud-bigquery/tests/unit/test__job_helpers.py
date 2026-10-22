@@ -539,33 +539,37 @@ def test_query_and_wait_sets_job_creation_mode():
 
 
 @pytest.mark.parametrize(
-    ("default_job_creation_mode", "query_results_format", "expected"),
+    ("default_job_creation_mode", "query_results_format", "expected", "job_id"),
     [
         # ARROW skips creating a job by default.
-        (None, "ARROW", "JOB_CREATION_OPTIONAL"),
+        (None, "ARROW", "JOB_CREATION_OPTIONAL", None),
         # A mode set on the client still wins.
-        ("JOB_CREATION_REQUIRED", "ARROW", "JOB_CREATION_REQUIRED"),
+        ("JOB_CREATION_REQUIRED", "ARROW", "JOB_CREATION_REQUIRED", "abc"),
         # Other formats keep sending no mode.
-        (None, None, None),
+        (None, None, None, "abc"),
     ],
 )
 def test_query_and_wait_job_creation_mode_for_arrow(
-    default_job_creation_mode, query_results_format, expected
+    default_job_creation_mode, query_results_format, expected, job_id
 ):
     client = mock.create_autospec(Client)
     client.default_job_creation_mode = default_job_creation_mode
-    client._call_api.return_value = {
-        "jobReference": {
-            "projectId": "response-project",
-            "jobId": "abc",
-            "location": "response-location",
-        },
+    response = {
+        "queryId": "qid-123",
         "jobComplete": True,
     }
+    if job_id is not None:
+        response["jobReference"] = {
+            "projectId": "response-project",
+            "jobId": job_id,
+            "location": "response-location",
+        }
+    client._call_api.return_value = response
+
     # These tests check the request, not whether pyarrow and
     # google-cloud-bigquery-storage are installed.
     with mock.patch.object(_arrow_query, "_check_dependencies"):
-        _job_helpers.query_and_wait(
+        rows = _job_helpers.query_and_wait(
             client,
             query="SELECT 1",
             location="request-location",
@@ -580,6 +584,8 @@ def test_query_and_wait_job_creation_mode_for_arrow(
 
     request_body = client._call_api.call_args.kwargs["data"]
     assert request_body.get("jobCreationMode") == expected
+    assert rows.query_id == "qid-123"
+    assert rows.job_id == job_id
 
 
 def test_query_and_wait_arrow_with_jobs_insert_creates_a_job():
