@@ -746,8 +746,11 @@ class TestBigtableMetricsExporter:
         )
         assert write_mock.call_count == 2
 
-    def test_export_not_skipped_after_partial_multi_project_failure(self):
-        """A partial failure across multiple projects doesn't count as a recent export"""
+    def test_export_retries_only_failed_project_after_partial_failure(self):
+        """
+        After a partial failure across projects, only the project that failed is
+        written again right away; the one that succeeded is too recent to rewrite
+        """
         instance = self._make_one()
         instance.client = mock.Mock()
         write_mock = instance.client.create_service_time_series
@@ -755,14 +758,40 @@ class TestBigtableMetricsExporter:
             None,
             api_exceptions.ServiceUnavailable("test"),
             None,
-            None,
         ]
 
         metrics_data = self._make_metrics_data(project_id="project1")
         metrics_data_2 = self._make_metrics_data(project_id="project2")
         metrics_data.resource_metrics.extend(metrics_data_2.resource_metrics)
 
-        assert instance.export(metrics_data) == MetricExportResult.FAILURE
-        # Immediate retry (< 30s) is not skipped because the previous export failed
-        assert instance.export(metrics_data) == MetricExportResult.SUCCESS
-        assert write_mock.call_count == 4
+        with mock.patch("time.monotonic", return_value=1000.0):
+            assert instance.export(metrics_data) == MetricExportResult.FAILURE
+        # Immediate retry (< 30s): project1 was just written, project2 failed
+        with mock.patch("time.monotonic", return_value=1010.0):
+            assert instance.export(metrics_data) == MetricExportResult.SUCCESS
+        assert write_mock.call_count == 3
+        written = [c.args[0].name for c in write_mock.call_args_list]
+        assert written == [
+            "projects/project1",
+            "projects/project2",
+            "projects/project2",
+        ]
+
+    def test_recent_export_to_one_project_does_not_skip_another(self):
+        """the 30 second check is per project"""
+        instance = self._make_one()
+        instance.client = mock.Mock()
+        write_mock = instance.client.create_service_time_series
+
+        with mock.patch("time.monotonic", return_value=1000.0):
+            assert instance.export(self._make_metrics_data(project_id="project1")) == (
+                MetricExportResult.SUCCESS
+            )
+        metrics_data = self._make_metrics_data(project_id="project1")
+        metrics_data_2 = self._make_metrics_data(project_id="project2")
+        metrics_data.resource_metrics.extend(metrics_data_2.resource_metrics)
+        # 10 seconds later: project1 is skipped, project2 is still written
+        with mock.patch("time.monotonic", return_value=1010.0):
+            assert instance.export(metrics_data) == MetricExportResult.SUCCESS
+        written = [c.args[0].name for c in write_mock.call_args_list]
+        assert written == ["projects/project1", "projects/project2"]
