@@ -20,7 +20,10 @@ import queue
 
 from google.api_core import exceptions as core_exceptions
 
-from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup, RetryExceptionGroup
+from google.cloud.bigtable.data.exceptions import (
+    MutationsExceptionGroup,
+    RetryExceptionGroup,
+)
 from google.cloud.bigtable.data.mutations import RowMutationEntry
 
 FLUSH_COUNT = 100  # after this many elements, send out the batch
