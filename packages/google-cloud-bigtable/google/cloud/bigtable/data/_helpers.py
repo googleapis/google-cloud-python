@@ -317,8 +317,30 @@ def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
 
     return status_pb2.Status(
         code=code_pb2.UNKNOWN,
-        message=str(exc) if exc else "An unknown error has occurred",
+        message=_exc_message(exc),
     )
+
+
+def _exc_message(exc: Optional[Exception]) -> str:
+    """
+    Helper function that renders an exception as a string, without raising.
+
+    ``GoogleAPICallError.__str__`` reads ``exc.details``, which raises if the
+    exception was built with a malformed ``details`` value, so fall back to the
+    raw message when that happens.
+
+    Args:
+        exc: The exception to render.
+    Returns:
+        str: A description of the exception.
+    """
+    if exc is None:
+        return "An unknown error has occurred"
+    try:
+        return str(exc)
+    except Exception:
+        raw_message = getattr(exc, "message", None)
+        return raw_message if isinstance(raw_message, str) else type(exc).__name__
 
 
 def _validate_timeouts(
