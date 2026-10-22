@@ -6,7 +6,6 @@
   "packages/google-cloud-bigquery": "3.46.2",
   "packages/google-cloud-bigquery-storage": "2.43.0",
   "packages/google-cloud-bigtable": "2.50.1",
-  "packages/google-cloud-compute": "1.56.0",
   "packages/google-cloud-datastore": "2.27.0",
   "packages/google-cloud-firestore": "2.34.1",
   "packages/google-cloud-logging": "3.17.0",
