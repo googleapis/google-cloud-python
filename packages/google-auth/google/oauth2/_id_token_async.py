@@ -195,7 +195,8 @@ async def verify_firebase_token(
         warnings.warn(
             "Calling verify_firebase_token without an audience is insecure as "
             "it accepts tokens from any Firebase project. Pass your Firebase "
-            "project ID as the 'audience' parameter.",
+            "project ID as the 'audience' parameter. The 'audience' parameter "
+            "will be required in a future release.",
             UserWarning,
             stacklevel=2,
         )
