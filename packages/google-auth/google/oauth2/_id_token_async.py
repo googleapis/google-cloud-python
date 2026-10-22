@@ -188,7 +188,7 @@ async def verify_firebase_token(
         Mapping[str, Any]: The decoded token.
 
     Raises:
-        exceptions.InvalidValue: If the issuer or audience is invalid.
+        exceptions.InvalidValue: If the issuer, audience, or subject is invalid.
         ValueError: If token verification fails.
     """
     if audience is None:
@@ -217,6 +217,10 @@ async def verify_firebase_token(
         raise exceptions.InvalidValue(
             "Wrong issuer. 'iss' should be '{}'.".format(expected_issuer)
         )
+
+    token_sub = idinfo.get("sub")
+    if not isinstance(token_sub, str) or not token_sub:
+        raise exceptions.InvalidValue("Token does not contain a valid 'sub' claim.")
 
     return idinfo
 

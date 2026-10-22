@@ -241,6 +241,7 @@ def test_verify_firebase_token(verify_token):
     verify_token.return_value = {
         "aud": "my-project-id",
         "iss": "https://securetoken.google.com/my-project-id",
+        "sub": "my-user-id",
     }
     with warnings.catch_warnings():
         warnings.simplefilter("error", UserWarning)
@@ -263,6 +264,7 @@ def test_verify_firebase_token_clock_skew(verify_token):
     verify_token.return_value = {
         "aud": "my-project-id",
         "iss": "https://securetoken.google.com/my-project-id",
+        "sub": "my-user-id",
     }
     result = id_token.verify_firebase_token(
         mock.sentinel.token,
@@ -328,11 +330,45 @@ def test_verify_firebase_token_missing_aud(verify_token, invalid_payload):
         )
 
 
+@pytest.mark.parametrize(
+    "invalid_payload",
+    [
+        {
+            "aud": "my-project-id",
+            "iss": "https://securetoken.google.com/my-project-id",
+        },
+        {
+            "aud": "my-project-id",
+            "iss": "https://securetoken.google.com/my-project-id",
+            "sub": "",
+        },
+        {
+            "aud": "my-project-id",
+            "iss": "https://securetoken.google.com/my-project-id",
+            "sub": 123,
+        },
+    ],
+)
+@mock.patch("google.oauth2.id_token.verify_token", autospec=True)
+def test_verify_firebase_token_invalid_sub(verify_token, invalid_payload):
+    verify_token.return_value = invalid_payload
+
+    with pytest.raises(
+        exceptions.InvalidValue, match="Token does not contain a valid 'sub' claim"
+    ):
+        id_token.verify_firebase_token(
+            mock.sentinel.token,
+            mock.sentinel.request,
+            audience=mock.sentinel.audience,
+        )
+
+
 @mock.patch("google.oauth2.id_token.verify_token", autospec=True)
 def test_verify_firebase_token_warns_without_audience(verify_token):
     verify_token.return_value = {
         "aud": "my-project-id",
         "iss": "https://securetoken.google.com/my-project-id",
+        "sub": "my-user-id",
     }
 
     with pytest.warns(
