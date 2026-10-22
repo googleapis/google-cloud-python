@@ -291,23 +291,29 @@ def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
     if isinstance(exc, core_exceptions.GoogleAPICallError):
         grpc_code = exc.grpc_status_code
         if grpc_code is not None:
-            details: list[any_pb2.Any] = []
-            for detail in exc.details or ():
-                if isinstance(detail, any_pb2.Any):
-                    details.append(detail)
-                elif isinstance(detail, message.Message):
-                    packed = any_pb2.Any()
-                    packed.Pack(detail)
-                    details.append(packed)
-                elif isinstance(getattr(detail, "_pb", None), message.Message):
-                    packed = any_pb2.Any()
-                    packed.Pack(detail._pb)
-                    details.append(packed)
-            return status_pb2.Status(
-                code=grpc_code.value[0],
-                message=exc.message or "",
-                details=details,
-            )
+            try:
+                details: list[any_pb2.Any] = []
+                for detail in exc.details or ():
+                    try:
+                        if isinstance(detail, any_pb2.Any):
+                            details.append(detail)
+                        elif isinstance(detail, message.Message):
+                            packed = any_pb2.Any()
+                            packed.Pack(detail)
+                            details.append(packed)
+                        elif isinstance(getattr(detail, "_pb", None), message.Message):
+                            packed = any_pb2.Any()
+                            packed.Pack(detail._pb)
+                            details.append(packed)
+                    except Exception:
+                        continue
+                return status_pb2.Status(
+                    code=grpc_code.value[0],
+                    message=exc.message or "",
+                    details=details,
+                )
+            except Exception:
+                pass
 
     return status_pb2.Status(
         code=code_pb2.UNKNOWN,

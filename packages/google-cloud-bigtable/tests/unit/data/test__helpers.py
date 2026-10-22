@@ -385,6 +385,39 @@ class TestGetStatusesFromMutationsExceptionGroup:
         assert status.details[2].Unpack(unpacked_debug_info)
         assert unpacked_debug_info == proto_plus_wrapper._pb
 
+    def test_get_status_handles_malformed_details_and_exceptions(self):
+        err_info = error_details_pb2.ErrorInfo(
+            reason="IAM_PERMISSION_DENIED",
+            domain="bigtable.googleapis.com",
+        )
+
+        class BrokenWrapper:
+            @property
+            def _pb(self):
+                raise RuntimeError("broken _pb property")
+
+        exc = core_exceptions.PermissionDenied(
+            None,
+            details=[BrokenWrapper(), err_info],
+        )
+        status = _helpers._get_status(exc)
+        assert status.code == code_pb2.PERMISSION_DENIED
+        assert status.message == ""
+        assert len(status.details) == 1
+
+        unpacked_err_info = error_details_pb2.ErrorInfo()
+        assert status.details[0].Unpack(unpacked_err_info)
+        assert unpacked_err_info == err_info
+
+        # Non-iterable details falls back to UNKNOWN without raising
+        malformed_exc = core_exceptions.PermissionDenied(
+            "Permission denied",
+            details=123,  # type: ignore[arg-type]
+        )
+        fallback_status = _helpers._get_status(malformed_exc)
+        assert fallback_status.code == code_pb2.UNKNOWN
+        assert "Permission denied" in fallback_status.message
+
 
 class TestGetRetryableErrors:
     @pytest.mark.parametrize(

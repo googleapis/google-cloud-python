@@ -1104,7 +1104,10 @@ class TestMutationsBatcherAsync:
                     assert result == []
                     assert called_with == [[status_pb2.Status(code=code_pb2.OK)]]
                 else:
-                    with pytest.raises(TypeError, match="_user_batch_completed_callback must be a synchronous callable"):
+                    with pytest.raises(
+                        TypeError,
+                        match="_user_batch_completed_callback must be a synchronous callable",
+                    ):
                         instance._execute_mutate_rows(batch, mock.Mock())
                     assert called_with == []
 
