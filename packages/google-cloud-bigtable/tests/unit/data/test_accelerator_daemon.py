@@ -284,6 +284,27 @@ class TestStartFailures:
         with pytest.raises(RuntimeError, match="Failed to spawn"):
             d.start()
 
+    def test_metadata_write_failure_cleans_up_and_raises(self, tmp_path, monkeypatch):
+        # An unwritable tempdir fails start() the same way a failed spawn does.
+        # The tempdir must not survive: it has no daemon.log yet, and the sweep
+        # keys off that marker, so a leftover here would never be reaped.
+        monkeypatch.setattr(
+            AcceleratorDaemon, "_cleanup_tempdir", _real_cleanup_tempdir
+        )
+        real_open = open
+
+        def bad_open(path, *args, **kwargs):
+            if os.path.basename(str(path)) == _daemon._PID_FILENAME:
+                raise OSError("no space left on device")
+            return real_open(path, *args, **kwargs)
+
+        monkeypatch.setattr(_daemon, "open", bad_open, raising=False)
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="Failed to write accelerator daemon"):
+            d.start()
+        assert d._tempdir is None
+        assert not (tmp_path / "accel-tmp").exists()
+
     def test_process_exits_during_startup_raises(self, tmp_path, monkeypatch):
         import subprocess
 
@@ -798,6 +819,26 @@ class TestSweepStaleTempdirs:
             deadline_offset=-70,
             pid=os.getpid(),
         )
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_budget_exhausted_leaves_dirs_for_next_sweep(self, tmp_root, monkeypatch):
+        # Same inputs as test_removes_stale_dir, but the time budget is already
+        # spent: the walk bails out rather than running long on a huge /tmp.
+        import subprocess
+        import sys
+
+        proc = subprocess.Popen([sys.executable, "-c", ""])
+        dead_pid = proc.pid
+        proc.wait()
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-dead",
+            age_seconds=120,
+            deadline_offset=-70,
+            pid=dead_pid,
+        )
+        monkeypatch.setattr(_daemon, "_SWEEP_BUDGET_SECONDS", -1.0)
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 

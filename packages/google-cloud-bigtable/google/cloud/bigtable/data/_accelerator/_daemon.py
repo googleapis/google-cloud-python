@@ -84,10 +84,16 @@ _STDIN_GRACE_SECONDS = 2.0
 _SIGTERM_GRACE_SECONDS = 2.0
 _SIGKILL_GRACE_SECONDS = 2.0
 
-# A freshly-created tempdir may not have bound its socket yet. Never sweep one
+# A freshly-created tempdir has not written its daemon.pid yet. Never sweep one
 # younger than this, so a daemon another client is mid-way through starting is
 # never mistaken for a stale leftover and reaped out from under it.
 _STALE_SWEEP_MIN_AGE_SECONDS = 60.0
+
+# Upper bound on how long a single sweep may spend walking candidates. The
+# sweep runs on a fire-and-forget thread, so nothing is waiting on it; this
+# only stops a pathological temp directory (thousands of leftovers, a slow
+# network filesystem) from keeping the thread alive indefinitely.
+_SWEEP_BUDGET_SECONDS = 5.0
 
 
 def _resolve_binary_path() -> str:
@@ -158,7 +164,9 @@ def _sweep_stale_tempdirs() -> None:
     the process exits for any reason, including SIGKILL.
 
     All failures are swallowed — sweeping is opportunistic and must never break
-    startup.
+    startup. The walk also gives up after ``_SWEEP_BUDGET_SECONDS`` so the
+    thread cannot linger on a pathological temp directory; whatever it did not
+    reach is simply left for the next start().
     """
     if not hasattr(socket, "AF_UNIX"):
         return
@@ -168,7 +176,10 @@ def _sweep_stale_tempdirs() -> None:
     except OSError:
         return
     now = time.time()
+    budget_ends = now + _SWEEP_BUDGET_SECONDS
     for log_path in logs:
+        if time.time() >= budget_ends:
+            return
         path = os.path.dirname(log_path)
         try:
             # Each tempdir records its own startup deadline so this sweep is
@@ -177,7 +188,8 @@ def _sweep_stale_tempdirs() -> None:
             # started the daemon being evaluated.
             deadline_path = os.path.join(path, _STARTUP_DEADLINE_FILENAME)
             try:
-                deadline = float(open(deadline_path).read())
+                with open(deadline_path) as _f:
+                    deadline = float(_f.read())
             except (OSError, ValueError):
                 # Older daemon without a deadline file: fall back to a simple
                 # age heuristic relative to the log's mtime.
@@ -303,7 +315,6 @@ class AcceleratorDaemon:
         """
         if self._proc is not None:
             raise RuntimeError("AcceleratorDaemon.start() called twice")
-
         if not hasattr(socket, "AF_UNIX"):
             raise OSError(
                 "Unix domain sockets (AF_UNIX) are not supported on this platform."
@@ -311,18 +322,34 @@ class AcceleratorDaemon:
 
         # Reap tempdirs leaked by daemons from prior runs that crashed or were
         # killed before close() could clean up after them. Fire-and-forget on a
-        # daemon thread so it never blocks startup (sweep probes dead sockets
-        # with a 0.25 s timeout each).
+        # daemon thread: the walk is only stat()s and signal-0 probes, but it
+        # scales with the number of leftovers, and start() (which the async
+        # client calls synchronously, on the event loop thread) must not wait
+        # on it. The sweep bounds its own runtime; see _SWEEP_BUDGET_SECONDS.
         threading.Thread(target=_sweep_stale_tempdirs, daemon=True).start()
         self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
         self._uds_path = os.path.join(self._tempdir, _SOCKET_FILENAME)
-        # Write the absolute time by which startup must complete. The sweep
-        # reads this per-directory so it uses the right deadline regardless of
-        # what BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT the sweeping process has.
-        with open(os.path.join(self._tempdir, _STARTUP_DEADLINE_FILENAME), "w") as _f:
-            _f.write(repr(time.time() + self._startup_timeout))
-        with open(os.path.join(self._tempdir, _PID_FILENAME), "w") as _f:
-            _f.write(str(os.getpid()))
+        # Record the metadata the sweep needs to judge this tempdir later: the
+        # absolute time by which startup must complete (read per-directory, so
+        # the sweep is right regardless of what
+        # BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT the *sweeping* process has) and
+        # the spawning PID. A failure here means the tempdir is unwritable, so
+        # the log file and daemon would fail next anyway: clean up and report
+        # it the same way a failed spawn does, rather than leaving behind a
+        # directory that has no daemon.log and so would never be swept.
+        try:
+            with open(
+                os.path.join(self._tempdir, _STARTUP_DEADLINE_FILENAME), "w"
+            ) as _f:
+                _f.write(repr(time.time() + self._startup_timeout))
+            with open(os.path.join(self._tempdir, _PID_FILENAME), "w") as _f:
+                _f.write(str(os.getpid()))
+        except OSError as exc:
+            tempdir = self._tempdir  # _cleanup_tempdir() clears the attribute.
+            self._cleanup_tempdir()
+            raise RuntimeError(
+                f"Failed to write accelerator daemon metadata to {tempdir}: {exc}"
+            ) from exc
 
         # Redirect the daemon's stdout/stderr to a log file rather than
         # subprocess.PIPE. Nothing drains those pipes for the daemon's
