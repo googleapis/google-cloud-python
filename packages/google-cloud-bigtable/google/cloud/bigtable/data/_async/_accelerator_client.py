@@ -21,6 +21,7 @@ uses and send V2 protos verbatim. No translation in either direction.
 
 from __future__ import annotations
 
+from google.cloud.bigtable.data._accelerator._daemon import _uds_target
 from google.cloud.bigtable.data._accelerator._health import (
     HEALTH_CHECK_METHOD,
     ServingStatus,
@@ -44,18 +45,6 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen._accelerator_c
 
 _MUTATE_ROW_METHOD = "/google.bigtable.v2.Bigtable/MutateRow"
 _READ_ROWS_METHOD = "/google.bigtable.v2.Bigtable/ReadRows"
-
-
-def _uds_target(uds_path: str) -> str:
-    """Build the gRPC target for the daemon's socket at ``uds_path``.
-
-    Must be the single-colon form. ``unix://`` opens an *authority* component,
-    which gRPC only accepts when the rest is an absolute POSIX path; hand it a
-    Windows path and ``C:`` parses as the authority, so channel construction
-    fails outright with "authority-based URIs not supported by the unix
-    scheme". ``unix:`` takes the remainder as a plain path on every platform.
-    """
-    return f"unix:{uds_path}"
 
 
 @CrossSync.convert_class(sync_name="_AcceleratorClient")

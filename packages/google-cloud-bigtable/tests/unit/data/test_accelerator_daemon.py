@@ -359,8 +359,8 @@ class TestStartFailures:
         proc_mock.stdin = unittest.mock.Mock()
 
         monkeypatch.setattr(_daemon.subprocess, "Popen", lambda *a, **kw: proc_mock)
-        # Make os.path.exists always False so UDS never appears.
-        monkeypatch.setattr(_daemon.os.path, "exists", lambda p: False)
+        # Nothing ever binds the socket, so the readiness channel stays in
+        # TRANSIENT_FAILURE and the deadline is what ends the wait.
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.05")
         d = _make_daemon(tmp_path)
         with pytest.raises(RuntimeError, match="did not become ready"):
@@ -896,8 +896,8 @@ class TestSweepStaleTempdirs:
 class TestWindows:
     """Windows reaches the daemon over the same AF_UNIX socket as every other
     platform. What differs is that CPython's socket module does not expose the
-    family, so anything the other platforms answer with a probe connection has
-    to be read off the filesystem instead."""
+    family, so nothing here may depend on ``socket.AF_UNIX`` — readiness goes
+    through gRPC's C-core, which does speak it."""
 
     def test_start_is_not_blocked_by_missing_af_unix(
         self, tmp_path, monkeypatch, no_af_unix
@@ -918,11 +918,46 @@ class TestWindows:
         with pytest.raises(_StopStart):
             d.start()
 
-    def test_socket_is_live_falls_back_to_path_existence(self, tmp_path, no_af_unix):
+    def test_readiness_does_not_touch_socket_af_unix(
+        self, tmp_path, monkeypatch, no_af_unix
+    ):
+        """Readiness must work with no ``socket.AF_UNIX`` at all.
+
+        This is the whole reason the probe is a gRPC channel: with the family
+        absent, the wait still has to reach its timeout honestly rather than
+        raise AttributeError or shortcut to "ready" off the bind artifact.
+        """
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = None  # alive, but never binds
+        proc_mock.stdin = unittest.mock.Mock()
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", True)
+        monkeypatch.setattr(_daemon.subprocess, "Popen", lambda *a, **kw: proc_mock)
+        monkeypatch.setattr(_daemon, "_sweep_stale_tempdirs", lambda: None)
+        monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "0.05")
+        d = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="did not become ready"):
+            d.start()
+
+    def test_readiness_reaches_a_real_grpc_server(self, tmp_path):
+        """And the positive case: a server that completes the HTTP/2 handshake
+        is what READY means, so the probe returns rather than timing out."""
+        from concurrent import futures
+
+        import grpc
+
         sock = tmp_path / _daemon._SOCKET_FILENAME
-        assert _daemon._socket_is_live(str(sock)) is False
-        sock.touch()
-        assert _daemon._socket_is_live(str(sock)) is True
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+        server.add_insecure_port(_daemon._uds_target(str(sock)))
+        server.start()
+        try:
+            d = _make_daemon(tmp_path)
+            d._proc = unittest.mock.Mock(**{"poll.return_value": None})
+            d._uds_path = str(sock)
+            d._wait_until_ready(10.0)  # returns, or the test times out
+        finally:
+            server.stop(None)
 
     def test_sweep_is_skipped_on_windows(self, tmp_path, monkeypatch):
         """The sweep's liveness check is ``os.kill(pid, 0)``, which terminates
