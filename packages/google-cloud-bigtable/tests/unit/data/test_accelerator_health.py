@@ -176,3 +176,44 @@ class TestMonitorStateMachine:
         monitor = self._make_one(breaker, healthy=1)
         monitor._record(True)
         assert breaker.bypass()
+
+
+class TestSyncMonitorThread:
+    """The sync monitor's thread, which has no counterpart in the async one."""
+
+    @staticmethod
+    def _make_one(**kwargs):
+        kwargs.setdefault("interval", 0.01)
+        return _AcceleratorHealthMonitor(
+            accelerator_client=None, breaker=AcceleratorBreaker(), **kwargs
+        )
+
+    def test_loop_runs_on_a_daemon_thread(self):
+        # Not a ThreadPoolExecutor worker: concurrent.futures joins its
+        # non-daemon workers at interpreter exit, and this loop only ends on
+        # close(), so a Table left unclosed would hang the process on the way
+        # out. A daemon thread cannot hold exit up.
+        monitor = self._make_one(interval=60.0)
+        thread = None
+        try:
+            monitor.start()
+            thread = monitor._task
+            assert thread.daemon
+            assert monitor.is_running
+        finally:
+            monitor.close()
+        assert not thread.is_alive()
+
+    def test_request_stop_ends_the_loop(self):
+        # The weakref-finalizer path: sets a flag, waits for nothing, and the
+        # loop notices at its next wakeup.
+        monitor = self._make_one()
+        monitor.start()
+        thread = monitor._task
+        try:
+            monitor.request_stop()
+            thread.join(timeout=10.0)
+            assert not thread.is_alive()
+            assert not monitor.is_running
+        finally:
+            monitor.close()

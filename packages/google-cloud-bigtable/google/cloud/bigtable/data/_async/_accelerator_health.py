@@ -48,8 +48,9 @@ on every one of those would be worse than either steady state.
 
 from __future__ import annotations
 
-import concurrent.futures
 import logging
+import threading
+from typing import Any
 
 from grpc import StatusCode
 
@@ -96,6 +97,11 @@ DEFAULT_PROBE_TIMEOUT = 0.25
 DEFAULT_UNHEALTHY_THRESHOLD = 3
 DEFAULT_HEALTHY_THRESHOLD = 3
 
+#: How long ``close()`` waits for the polling loop to finish. It is already
+#: cancelled (async) or signalled (sync) by then, so the only thing this covers
+#: is a probe in flight, bounded by the probe timeout.
+_CLOSE_WAIT_SECONDS = 1.0
+
 
 @CrossSync.convert_class(sync_name="_AcceleratorHealthMonitor")
 class _AsyncAcceleratorHealthMonitor:
@@ -122,33 +128,71 @@ class _AsyncAcceleratorHealthMonitor:
         self._healthy_threshold = healthy_threshold
         self._consecutive_failures = 0
         self._consecutive_successes = 0
-        self._closed = CrossSync.Event()
-        self._task: CrossSync.Task[None] | None = None
-        # A dedicated worker rather than the client's shared pool: this task
-        # runs for the life of the Table, so it must not occupy a slot other
-        # work is queued behind.
-        self._sync_executor = (
-            concurrent.futures.ThreadPoolExecutor(
-                max_workers=1, thread_name_prefix="bigtable-accel-health"
-            )
-            if not CrossSync.is_async
-            else None
-        )
+        # A threading.Event in both variants, deliberately not CrossSync.Event:
+        # an asyncio.Event may only be set from the loop thread, and this one
+        # is also set by a weakref finalizer running on whatever thread the
+        # collection happened on. Nothing ever *awaits* it — the sync loop
+        # blocks on it, the async loop only reads it between sleeps — so it
+        # needs no loop affinity. See _run() and request_stop().
+        self._closed = threading.Event()
+        # An asyncio.Task when async; a daemon thread when sync. See start().
+        self._task: Any = None
 
     def start(self) -> None:
         """Launch the polling task. Idempotent."""
-        if self._task is None:
+        if self._task is not None:
+            return
+        if CrossSync.is_async:
             self._task = CrossSync.create_task(
-                self._run,
-                sync_executor=self._sync_executor,
-                task_name="bigtable-accelerator-health",
+                self._run, task_name="bigtable-accelerator-health"
             )
+        else:
+            # A dedicated daemon thread rather than a ThreadPoolExecutor
+            # worker: the loop runs for the life of the Table, and
+            # concurrent.futures *joins* its (non-daemon) workers at
+            # interpreter exit, so a Table that is never closed would hang the
+            # process on the way out. A dedicated thread also keeps the loop
+            # out of a pool slot other work is queued behind.
+            self._task = threading.Thread(
+                target=self._run,
+                name="bigtable-accelerator-health",
+                daemon=True,
+            )
+            self._task.start()
+
+    @property
+    def is_running(self) -> bool:
+        """Whether the polling loop is still alive."""
+        if self._task is None:
+            return False
+        if CrossSync.is_async:
+            return not self._task.done()
+        return self._task.is_alive()
+
+    def request_stop(self) -> None:
+        """Ask the loop to stop, without waiting for it to finish.
+
+        For callers that cannot await ``close()`` — notably a weakref finalizer
+        on the owning Table, which is what stops a monitor whose Table was
+        dropped without being closed. Setting a threading.Event is safe from
+        any thread and during interpreter shutdown. The sync loop wakes on it
+        immediately; the async loop sees it at its next wakeup, since only
+        ``close()`` can cancel the task outright.
+        """
+        self._closed.set()
 
     @CrossSync.convert
     async def _run(self) -> None:
         """Poll until closed, or until monitoring turns out to be pointless."""
         while not self._closed.is_set():
-            await CrossSync.event_wait(self._closed, timeout=self._interval)
+            if CrossSync.is_async:
+                # Sleep rather than wait on the event: it is a threading.Event
+                # (see __init__), so there is nothing here to await. close()
+                # cancels this task, which interrupts the sleep, and
+                # request_stop() is picked up by the check below.
+                await CrossSync.sleep(self._interval)
+            else:
+                self._closed.wait(timeout=self._interval)
             if self._closed.is_set():
                 return
             if self._breaker.is_tripped:
@@ -158,9 +202,17 @@ class _AsyncAcceleratorHealthMonitor:
             healthy = await self._probe()
             if healthy is None:
                 # The daemon does not serve health checks at all. Stop probing
-                # and leave the breaker alone: an unmonitorable daemon is not a
-                # degraded one, and treating it as one would disable the
+                # and leave the breaker undegraded: an unmonitorable daemon is
+                # not a degraded one, and treating it as one would disable the
                 # accelerator against every daemon older than this feature.
+                #
+                # Clearing is not redundant. An earlier streak of probes can
+                # have degraded the breaker already — a daemon too starved to
+                # answer even UNIMPLEMENTED before the deadline looks exactly
+                # like an unhealthy one — and this return is the last thing
+                # that runs, so a flag left set here is never cleared by
+                # anyone. (A permanent trip is handled above and stays.)
+                self._breaker.set_degraded(False)
                 _LOGGER.info(
                     "Accelerator daemon does not implement the gRPC health "
                     "service; health-based fallback is disabled for this table."
@@ -221,14 +273,24 @@ class _AsyncAcceleratorHealthMonitor:
 
     @CrossSync.convert
     async def close(self) -> None:
-        """Stop polling. Does not clear a degraded flag already set."""
+        """Stop polling and wait for the loop to finish.
+
+        Does not clear a degraded flag already set. Waiting is bounded by
+        ``_CLOSE_WAIT_SECONDS``: the caller is entitled to have the monitor
+        actually stopped when this returns, because the channel it probes over
+        is closed immediately afterwards, and a probe still running into that
+        would log an alarming "falling back" warning during orderly teardown.
+        """
         self._closed.set()
-        if self._task is not None:
-            task, self._task = self._task, None
+        task, self._task = self._task, None
+        if task is None:
+            return
+        if CrossSync.is_async:
             task.cancel()
-            # Retrieve any exception so asyncio doesn't log "Task exception was never retrieved"
+            # Retrieve any exception so asyncio doesn't log "Task exception was
+            # never retrieved" — as a callback too, in case the wait times out
+            # and the task completes after we stop looking.
             task.add_done_callback(lambda t: None if t.cancelled() else t.exception())
-        if self._sync_executor is not None:
-            # Don't wait: a probe in flight holds the worker for up to the probe
-            # timeout, and closing a Table should not block on that.
-            self._sync_executor.shutdown(wait=False)
+            await CrossSync.wait([task], timeout=_CLOSE_WAIT_SECONDS)
+        else:
+            task.join(timeout=_CLOSE_WAIT_SECONDS)
