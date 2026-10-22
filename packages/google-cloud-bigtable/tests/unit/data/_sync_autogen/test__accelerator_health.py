@@ -65,11 +65,15 @@ class _FakeDaemonHealthServer:
     health method locally on the UDS, and (like the daemon's auth interceptor,
     which runs before the ``isProxied`` gate) it sees the accelerator token on
     every request. ``serve_health=False`` registers nothing, so gRPC itself
-    answers ``UNIMPLEMENTED`` — the shape an older daemon presents.
+    answers ``UNIMPLEMENTED`` — the shape an older daemon presents. Setting
+    ``abort_unimplemented`` later produces the same status from a server that
+    was answering normally, which is how a daemon that was merely too starved
+    to reply in time looks once it recovers.
     """
 
     def __init__(self, uds_path, *, status=ServingStatus.SERVING, serve_health=True):
         self.status = status
+        self.abort_unimplemented = False
         self.delay = 0.0
         self.request_count = 0
         self.last_metadata = None
@@ -93,8 +97,11 @@ class _FakeDaemonHealthServer:
             self.request_count += 1
             self.last_metadata = dict(context.invocation_metadata())
             delay, status = (self.delay, self.status)
+            unimplemented = self.abort_unimplemented
         if delay:
             time.sleep(delay)
+        if unimplemented:
+            context.abort(grpc.StatusCode.UNIMPLEMENTED, "no health service")
         return _WIRE_BY_STATUS[status]
 
     def stop(self):
@@ -217,8 +224,53 @@ class TestAcceleratorHealthMonitor:
         monitor = self._make_monitor(client, breaker, unhealthy_threshold=1)
         try:
             monitor.start()
-            assert self._wait_for(lambda: monitor._task.done())
+            assert self._wait_for(lambda: not monitor.is_running)
             assert not breaker.bypass()
+        finally:
+            monitor.close()
+            client.close()
+            server.stop()
+
+    def test_unmonitorable_daemon_clears_an_earlier_degraded_flag(self, tmp_path):
+        server = self._start_server(tmp_path, status=ServingStatus.NOT_SERVING)
+        client = self._make_client(tmp_path)
+        breaker = AcceleratorBreaker()
+        monitor = self._make_monitor(client, breaker, unhealthy_threshold=1)
+        try:
+            monitor.start()
+            assert self._wait_for(lambda: breaker.is_degraded)
+            server.abort_unimplemented = True
+            assert self._wait_for(lambda: not monitor.is_running)
+            assert not breaker.is_degraded
+            assert not breaker.bypass()
+        finally:
+            monitor.close()
+            client.close()
+            server.stop()
+
+    def test_close_waits_for_the_loop_to_finish(self, tmp_path):
+        server = self._start_server(tmp_path)
+        client = self._make_client(tmp_path)
+        monitor = self._make_monitor(client, AcceleratorBreaker())
+        try:
+            monitor.start()
+            assert self._wait_for(lambda: server.request_count >= 1)
+            handle = monitor._task
+            monitor.close()
+            assert not handle.is_alive()
+        finally:
+            client.close()
+            server.stop()
+
+    def test_request_stop_ends_the_loop_without_close(self, tmp_path):
+        server = self._start_server(tmp_path)
+        client = self._make_client(tmp_path)
+        monitor = self._make_monitor(client, AcceleratorBreaker())
+        try:
+            monitor.start()
+            assert self._wait_for(lambda: server.request_count >= 1)
+            monitor.request_stop()
+            assert self._wait_for(lambda: not monitor.is_running)
         finally:
             monitor.close()
             client.close()
@@ -233,7 +285,7 @@ class TestAcceleratorHealthMonitor:
             monitor.start()
             assert self._wait_for(lambda: server.request_count >= 1)
             breaker.trip()
-            assert self._wait_for(lambda: monitor._task.done())
+            assert self._wait_for(lambda: not monitor.is_running)
         finally:
             monitor.close()
             client.close()

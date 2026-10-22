@@ -23,6 +23,7 @@ import random
 import sys
 import time
 import warnings
+import weakref
 from functools import partial
 from typing import (
     TYPE_CHECKING,
@@ -1476,6 +1477,12 @@ class _DataApiTargetAsync(abc.ABC):
                 self._accelerator_client, self._accelerator_breaker
             )
             self._accelerator_health.start()
+            # close() is the orderly stop, but a Table dropped without it would
+            # otherwise leave the loop probing for the life of the event loop,
+            # holding the monitor and through it the accelerator channel. The
+            # finalizer is bound to the monitor, not to self, so it does not
+            # keep this Table alive; it only flips a flag the loop reads.
+            weakref.finalize(self, self._accelerator_health.request_stop)
         except Exception as exc:
             # Monitoring is an optimization on top of a working accelerator, so
             # failing to start it must not take the accelerator down with it —
