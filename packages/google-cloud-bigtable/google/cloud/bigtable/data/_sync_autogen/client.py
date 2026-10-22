@@ -26,6 +26,7 @@ import random
 import sys
 import time
 import warnings
+import weakref
 from functools import partial
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Optional, Sequence, Set, cast
 
@@ -81,6 +82,9 @@ from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
 from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
     _AcceleratorClient as AcceleratorClientType,
+)
+from google.cloud.bigtable.data._sync_autogen._accelerator_health import (
+    _AcceleratorHealthMonitor as AcceleratorHealthMonitorType,
 )
 from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
     SwappableChannel as SwappableChannelType,
@@ -1060,6 +1064,7 @@ class _DataApiTarget(abc.ABC):
             ) from e
         self._accelerator_daemon: AcceleratorDaemon | None = None
         self._accelerator_client: AcceleratorClientType | None = None
+        self._accelerator_health: AcceleratorHealthMonitorType | None = None
         self._accelerator_breaker = AcceleratorBreaker()
         if self.client._use_accelerator is not False:
             self._maybe_start_accelerator(explicit=self.client._use_accelerator is True)
@@ -1138,6 +1143,19 @@ class _DataApiTarget(abc.ABC):
         except BaseException:
             server.close()
             raise
+        try:
+            self._accelerator_health = AcceleratorHealthMonitorType(
+                self._accelerator_client, self._accelerator_breaker
+            )
+            self._accelerator_health.start()
+            weakref.finalize(self, self._accelerator_health.request_stop)
+        except Exception as exc:
+            warnings.warn(
+                f"Could not start the accelerator health monitor; the accelerator will run without health-based fallback: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            self._accelerator_health = None
 
     def _use_accelerator(self, method_name: str) -> bool:
         """Whether this call should be routed through the accelerator daemon.
@@ -1923,6 +1941,13 @@ class _DataApiTarget(abc.ABC):
 
     def close(self):
         """Called to close the Table instance and release any resources held by it."""
+        if self._accelerator_health is not None:
+            try:
+                self._accelerator_health.close()
+            except Exception as exc:
+                _LOGGER.warning("Failed to close accelerator health monitor: %s", exc)
+            finally:
+                self._accelerator_health = None
         if self._accelerator_client is not None:
             try:
                 self._accelerator_client.close()
