@@ -133,10 +133,10 @@ class ReadRowsStream(object):
             request_template (Optional[Union[dict, \
                 ~google.cloud.bigquery_storage_v1.types.ReadRowsRequest \
             ]]):
-                Request fields, such as ``arrow_serialization_options``, to
-                send on every ``ReadRows`` request, including after a
-                reconnect. ``read_stream`` and ``offset`` are set from
-                ``name`` and the current stream offset.
+                Request fields, such as ``arrow_serialization_options``
+                ([Beta]), to send on every ``ReadRows`` request, including
+                after a reconnect. ``read_stream`` and ``offset`` are set
+                from ``name`` and the current stream offset.
 
         Returns:
             Iterable[ \
