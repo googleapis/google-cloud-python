@@ -13,7 +13,6 @@
   "packages/google-apps-events-subscriptions": "0.6.1",
   "packages/google-apps-meet": "0.5.2",
   "packages/google-apps-script-type": "0.8.1",
-  "packages/google-area120-tables": "0.15.1",
   "packages/google-auth-httplib2": "0.4.4",
   "packages/google-auth-oauthlib": "1.5.0",
   "packages/google-backstory": "0.1.1",
