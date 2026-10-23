@@ -237,13 +237,6 @@ libraries:
           - python-gapic-name=slides
       metadata_name_override: type
       default_version: apiVersion
-  - name: google-area120-tables
-    version: 0.15.1
-    apis:
-      - path: google/area120/tables/v1alpha1
-    python:
-      metadata_name_override: area120tables
-      default_version: v1alpha1
   - name: google-auth
     version: 2.62.0
     python:
