@@ -84,6 +84,7 @@ class TestAsyncMultiRangeDownloader:
             object_name=_TEST_OBJECT_NAME,
             generation_number=_TEST_GENERATION_NUMBER,
             read_handle=_TEST_READ_HANDLE,
+            client_info=mock_client._client_info,
         )
 
         mrd.read_obj_str.open.assert_called_once()
@@ -97,6 +98,168 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.is_stream_open
         assert mrd.object_metadata == mrd.read_obj_str.object_metadata
         assert mrd._open_retries == 0
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "accepts_memoryview, expected_type", [(False, bytes), (True, memoryview)]
+    )
+    async def test_download_ranges_write_destination_chunk_type(
+        self,
+        mock_cls_async_read_object_stream,
+        mock_random_int,
+        monkeypatch,
+        accepts_memoryview,
+        expected_type,
+    ):
+        from google.cloud.storage.asyncio import _zero_copy_bidi_read
+
+        orig_crc32c = google_crc32c.value
+        monkeypatch.setattr(
+            google_crc32c, "value", lambda data: orig_crc32c(bytes(data))
+        )
+        data = b"these_are_18_chars"
+        crc32c_int = google_crc32c.value(data)
+
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456]
+
+        wire = _storage_v2.BidiReadObjectResponse.serialize(
+            _storage_v2.BidiReadObjectResponse(
+                object_data_ranges=[
+                    _storage_v2.ObjectRangeData(
+                        checksummed_data=_storage_v2.ChecksummedData(
+                            content=data, crc32c=crc32c_int
+                        ),
+                        range_end=True,
+                        read_range=_storage_v2.ReadRange(
+                            read_offset=0, read_length=18, read_id=456
+                        ),
+                    )
+                ]
+            )
+        )
+        zero_copy_resp = _zero_copy_bidi_read.deserialize(wire)
+        assert isinstance(
+            zero_copy_resp.object_data_ranges[0].checksummed_data.content, memoryview
+        )
+
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[zero_copy_resp, None])
+
+        seen_types = []
+
+        class RecordingSink:
+            def __init__(self):
+                self.chunks = []
+
+            def write(self, chunk):
+                seen_types.append(type(chunk))
+                self.chunks.append(chunk)
+                return len(chunk)
+
+        sink = RecordingSink()
+        await mock_mrd.download_ranges(
+            [(0, 18, sink)], accepts_memoryview=accepts_memoryview
+        )
+
+        assert seen_types == [expected_type]
+        assert b"".join(sink.chunks) == data
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_writes_into_writable_buffer(
+        self, mock_cls_async_read_object_stream, mock_random_int, monkeypatch
+    ):
+        from google.cloud.storage.asyncio import _zero_copy_bidi_read
+
+        orig_crc32c = google_crc32c.value
+        monkeypatch.setattr(
+            google_crc32c, "value", lambda data: orig_crc32c(bytes(data))
+        )
+        data = b"these_are_18_chars"
+        crc1 = google_crc32c.value(data[:10])
+        crc2 = google_crc32c.value(data[10:])
+
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456, 789]
+
+        resp = _zero_copy_bidi_read.deserialize(
+            _storage_v2.BidiReadObjectResponse.serialize(
+                _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data[:10], crc32c=crc1
+                            ),
+                            range_end=False,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=0, read_length=10, read_id=456
+                            ),
+                        ),
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data[10:], crc32c=crc2
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=10, read_length=8, read_id=456
+                            ),
+                        ),
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data[10:], crc32c=crc2
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=10, read_length=8, read_id=789
+                            ),
+                        ),
+                    ]
+                )
+            )
+        )
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[resp, None])
+
+        raw = bytearray(18)
+        backing = bytearray(b"." * 12)
+        slice_view = memoryview(backing)[2:10]
+
+        await mock_mrd.download_ranges([(0, 18, raw), (10, 8, slice_view)])
+
+        assert bytes(raw) == data
+        assert bytes(backing) == b".." + data[10:] + b".."
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "length, buf, match",
+        [
+            (0, bytearray(10), "requires bytes_to_read > 0"),
+            (4, memoryview(b"abcd"), "writable, C-contiguous"),
+            (4, memoryview(bytearray(8))[::2], "writable, C-contiguous"),
+            (10, bytearray(4), "smaller than bytes_to_read"),
+        ],
+    )
+    async def test_download_ranges_rejects_invalid_writable_buffer(
+        self, mock_cls_async_read_object_stream, length, buf, match
+    ):
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        with pytest.raises(ValueError, match=match):
+            await mock_mrd.download_ranges([(0, length, buf)])
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"

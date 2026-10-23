@@ -126,6 +126,7 @@ class AsyncGrpcClient:
         agent_version = f"gcloud-python/{__version__}"
         if agent_version not in client_info.user_agent:
             client_info.user_agent += f" {agent_version} "
+        self._client_info = client_info
 
         use_dp_interconnect = _resolve_direct_path_interconnect(
             attempt_direct_path_xds_over_interconnect
