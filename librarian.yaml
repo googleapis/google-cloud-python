@@ -2665,7 +2665,7 @@ libraries:
       metadata_name_override: grpc-iam
       default_version: apiVersion
   - name: pandas-gbq
-    version: 0.35.2
+    version: 0.35.3
     python:
       library_type: INTEGRATION
   - name: proto-plus
