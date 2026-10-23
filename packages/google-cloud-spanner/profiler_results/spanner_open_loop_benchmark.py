@@ -44,6 +44,7 @@ import argparse
 import contextlib
 import copy
 import functools
+import glob
 import hashlib
 import itertools
 import json
@@ -1483,6 +1484,63 @@ def run_orchestrator(args):
     runs_dir = os.path.join(args.output_dir, "runs")
     os.makedirs(runs_dir, exist_ok=True)
 
+    if args.report_only:
+        run_files = sorted(glob.glob(os.path.join(runs_dir, "*_rep*.json")))
+        if not run_files:
+            print(f"[!] No run results found in {runs_dir}")
+            return 1
+        runs = []
+        for rf in run_files:
+            try:
+                with open(rf, "r", encoding="utf-8") as f:
+                    runs.append(json.load(f))
+            except Exception as e:
+                print(f"[!] Warning: failed to load {rf}: {e}")
+        if not runs:
+            print(f"[!] No valid run results found in {runs_dir}")
+            return 1
+        ppath = os.path.join(runs_dir, "parity.json")
+        parity = None
+        if os.path.exists(ppath):
+            with contextlib.suppress(Exception):
+                with open(ppath, "r", encoding="utf-8") as f:
+                    parity = json.load(f)
+        meta = {
+            "host": socket.gethostname(),
+            "cpu_count": os.cpu_count(),
+            "python": platform.python_version(),
+            "platform": platform.platform(),
+            "started_at": time.strftime("%Y-%m-%d %H:%M:%S %Z"),
+            "target": f"projects/{PROJECT}/instances/{INSTANCE}/databases/{DATABASE}",
+            "heavy_sql": heavy_sql_for(args.heavy_limit),
+            "arrival": args.arrival,
+            "warmup_s": args.warmup,
+            "duration_s": args.duration,
+            "repeats": args.repeats,
+            "clients": list(dict.fromkeys(r["client"] for r in runs if "client" in r)),
+        }
+        res_json = os.path.join(args.output_dir, "open_loop_results.json")
+        if os.path.exists(res_json):
+            with contextlib.suppress(Exception):
+                with open(res_json, "r", encoding="utf-8") as f:
+                    prev = json.load(f)
+                    if isinstance(prev, dict):
+                        if "meta" in prev and isinstance(prev["meta"], dict):
+                            meta.update(prev["meta"])
+                        if not parity and "parity" in prev:
+                            parity = prev["parity"]
+        agg = aggregate_runs(runs)
+        meta["finished_at"] = time.strftime("%Y-%m-%d %H:%M:%S %Z")
+        json_path = os.path.join(args.output_dir, "open_loop_results.json")
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump({"meta": meta, "parity": parity, "aggregated": agg, "runs": runs}, f, indent=2, default=str)
+        md_path = os.path.join(args.output_dir, "open_loop_summary.md")
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(summarize_markdown(meta, parity, agg, args.repeats))
+        print_report(agg, args.repeats)
+        print(f"\n[+] Results regenerated: {json_path}\n[+] Summary regenerated: {md_path}")
+        return 0
+
     if any(c in IPC_CLIENTS for c in clients):
         ensure_ipc_artifacts(force=args.rebuild_ipc)
     if "ffi" in clients and not os.path.exists(FFI_LIB):
@@ -1572,38 +1630,62 @@ def run_orchestrator(args):
             print("  ", item)
         return 0
 
-    runs = []
-    for n_run, (rep, w, q, c) in enumerate(plan, 1):
-        name = f"{w}_{q:g}qps_{c}_rep{rep}"
-        rpath = os.path.join(runs_dir, f"{name}.json")
-        ch = channels[(w, q)]
-        print(f"\n[{n_run}/{len(plan)}] rep {rep + 1}/{args.repeats}: {WORKLOAD_LABELS[w]} @ {q:g} QPS — {CLIENT_LABELS[c]} "
-              f"({ch} channel(s))", flush=True)
-        worker_args = [
-            "--_worker", "--client", c, "--workload", w, "--qps", str(q), "--channels", str(ch),
-            "--max-inflight", str(inflight[(w, q)]), "--warmup", str(args.warmup), "--duration", str(args.duration),
-            "--seed", str(args.seed + int(q) + 1000 * rep), "--rep", str(rep), "--_result-path", rpath,
-        ] + common
-        rc = spawn(worker_args, os.path.join(runs_dir, f"{name}.log"), args.warmup + args.duration + args.run_timeout)
-        if os.path.exists(rpath):
-            with open(rpath, "r", encoding="utf-8") as f:
-                res = json.load(f)
-        else:
-            res = {"client": c, "workload": w, "offered_qps": q, "channels": ch, "rep": rep, "ok": False,
-                   "error": f"worker exited rc={rc} without results (see {name}.log)"}
-        runs.append(res)
-        if args.cooldown > 0 and n_run < len(plan):
-            time.sleep(args.cooldown)
+    def write_summary(current_runs, is_final=False):
+        if not current_runs:
+            return None
+        agg = aggregate_runs(current_runs)
+        m = copy.deepcopy(meta)
+        m["finished_at"] = time.strftime("%Y-%m-%d %H:%M:%S %Z")
+        m["completed_runs"] = len(current_runs)
+        m["total_planned_runs"] = len(plan)
+        m["is_partial"] = not is_final
+        json_path = os.path.join(args.output_dir, "open_loop_results.json")
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump({"meta": m, "parity": parity, "aggregated": agg, "runs": current_runs}, f, indent=2, default=str)
+        md_path = os.path.join(args.output_dir, "open_loop_summary.md")
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(summarize_markdown(m, parity, agg, args.repeats))
+        return agg
 
-    agg = aggregate_runs(runs)
-    meta["finished_at"] = time.strftime("%Y-%m-%d %H:%M:%S %Z")
+    runs = []
+    try:
+        for n_run, (rep, w, q, c) in enumerate(plan, 1):
+            name = f"{w}_{q:g}qps_{c}_rep{rep}"
+            rpath = os.path.join(runs_dir, f"{name}.json")
+            ch = channels[(w, q)]
+            print(f"\n[{n_run}/{len(plan)}] rep {rep + 1}/{args.repeats}: {WORKLOAD_LABELS[w]} @ {q:g} QPS — {CLIENT_LABELS[c]} "
+                  f"({ch} channel(s))", flush=True)
+            worker_args = [
+                "--_worker", "--client", c, "--workload", w, "--qps", str(q), "--channels", str(ch),
+                "--max-inflight", str(inflight[(w, q)]), "--warmup", str(args.warmup), "--duration", str(args.duration),
+                "--seed", str(args.seed + int(q) + 1000 * rep), "--rep", str(rep), "--_result-path", rpath,
+            ] + common
+            rc = spawn(worker_args, os.path.join(runs_dir, f"{name}.log"), args.warmup + args.duration + args.run_timeout)
+            if os.path.exists(rpath):
+                with open(rpath, "r", encoding="utf-8") as f:
+                    res = json.load(f)
+            else:
+                res = {"client": c, "workload": w, "offered_qps": q, "channels": ch, "rep": rep, "ok": False,
+                       "error": f"worker exited rc={rc} without results (see {name}.log)"}
+            runs.append(res)
+            write_summary(runs, is_final=(n_run == len(plan)))
+            if args.cooldown > 0 and n_run < len(plan):
+                time.sleep(args.cooldown)
+    except KeyboardInterrupt:
+        print("\n\n[!] Benchmark interrupted by user (Ctrl+C). Saving summary for completed runs so far...", flush=True)
+        agg = write_summary(runs, is_final=False)
+        if agg:
+            print_report(agg, args.repeats)
+        json_path = os.path.join(args.output_dir, "open_loop_results.json")
+        md_path = os.path.join(args.output_dir, "open_loop_summary.md")
+        print(f"\n[+] Partial Results ({len(runs)}/{len(plan)} runs): {json_path}\n[+] Partial Summary: {md_path}")
+        return 130
+
+    agg = write_summary(runs, is_final=True)
+    if agg:
+        print_report(agg, args.repeats)
     json_path = os.path.join(args.output_dir, "open_loop_results.json")
-    with open(json_path, "w", encoding="utf-8") as f:
-        json.dump({"meta": meta, "parity": parity, "aggregated": agg, "runs": runs}, f, indent=2, default=str)
     md_path = os.path.join(args.output_dir, "open_loop_summary.md")
-    with open(md_path, "w", encoding="utf-8") as f:
-        f.write(summarize_markdown(meta, parity, agg, args.repeats))
-    print_report(agg, args.repeats)
     print(f"\n[+] Results: {json_path}\n[+] Summary: {md_path}")
     return 0 if all(r.get("ok") for r in runs) else 1
 
@@ -1636,6 +1718,8 @@ def main():
     p.add_argument("--no-thread-stats", dest="thread_stats", action="store_false",
                    help="Skip per-thread /proc attribution at the window edges")
     p.add_argument("--list-plan", action="store_true")
+    p.add_argument("--report-only", action="store_true",
+                   help="Regenerate summary table and JSON from existing runs/*.json without running new benchmarks")
     p.add_argument("--smoke", action="store_true", help="Quick sanity run: qps 10,50, warmup 2 s, window 4 s")
     # Internal (worker / parity / probe subprocess) flags.
     p.add_argument("--_worker", action="store_true", help=argparse.SUPPRESS)
