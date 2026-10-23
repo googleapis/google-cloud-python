@@ -1,0 +1,2 @@
+SPANNER_GO_IPC_READY pid=3207580 socket=/tmp/spanner_ipc_9bc6r3gh/core.sock go=go1.22.4 gomaxprocs=1 lock_os_thread=true
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)

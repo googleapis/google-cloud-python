@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "sidecar_info": {
+    "deps": {
+      "cloud.google.com/go/compute/metadata": "v0.3.0",
+      "cloud.google.com/go/spanner": "v1.60.0",
+      "github.com/felixge/httpsnoop": "v1.0.4",
+      "github.com/go-logr/logr": "v1.4.1",
+      "github.com/go-logr/stdr": "v1.2.2",
+      "github.com/golang/groupcache": "v0.0.0-20210331224755-41bb18bfe9da",
+      "github.com/golang/protobuf": "v1.5.4",
+      "github.com/google/s2a-go": "v0.1.7",
+      "github.com/googleapis/enterprise-certificate-proxy": "v0.3.2",
+      "github.com/googleapis/gax-go/v2": "v2.12.2",
+      "go.opencensus.io": "v0.24.0",
+      "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc": "v0.49.0",
+      "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp": "v0.49.0",
+      "go.opentelemetry.io/otel": "v1.24.0",
+      "go.opentelemetry.io/otel/metric": "v1.24.0",
+      "go.opentelemetry.io/otel/trace": "v1.24.0",
+      "golang.org/x/crypto": "v0.22.0",
+      "golang.org/x/net": "v0.24.0",
+      "golang.org/x/oauth2": "v0.19.0",
+      "golang.org/x/sync": "v0.6.0",
+      "golang.org/x/sys": "v0.19.0",
+      "golang.org/x/text": "v0.14.0",
+      "golang.org/x/time": "v0.5.0",
+      "google.golang.org/api": "v0.169.0",
+      "google.golang.org/genproto/googleapis/api": "v0.0.0-20240311132316-a219d84964c2",
+      "google.golang.org/genproto/googleapis/rpc": "v0.0.0-20240415180920-8c6c420018be",
+      "google.golang.org/grpc": "v1.63.2",
+      "google.golang.org/protobuf": "v1.33.0"
+    },
+    "go_version": "go1.22.4",
+    "gomaxprocs": 1,
+    "lock_os_thread": true,
+    "main_module": "cloud.google.com/go/spanner-native-core",
+    "num_cpu": 1,
+    "pid": 3102351,
+    "sockbuf": 0
+  },
+  "point_ids_checked": 20,
+  "point_ffi_vs_ipc_mismatches": [],
+  "heavy_rows": {
+    "ffi": 1000,
+    "ipc": 1000,
+    "python": 1000
+  },
+  "heavy_ffi_equals_ipc": true,
+  "heavy_python_equals_go_core_str_normalized": true,
+  "point_python_equals_go_core_str_normalized": true,
+  "hooked_snapshot_rows": {
+    "ffi": 1000,
+    "ipc": 1000
+  },
+  "ipc_heavy_bytes": 1183929,
+  "ipc_heavy_recv_hops": 34,
+  "ipc_point_bytes": 1228,
+  "ipc_point_recv_hops": 1,
+  "point_rtt_ms_min": 3.0997516587376595,
+  "point_rtt_ms_median": 3.8594244979321957
+}

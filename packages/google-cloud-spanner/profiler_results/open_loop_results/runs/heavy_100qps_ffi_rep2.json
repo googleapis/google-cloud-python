@@ -1,0 +1,214 @@
+{
+  "client": "ffi",
+  "workload": "heavy",
+  "offered_qps": 100.0,
+  "channels": 1,
+  "max_inflight": 100,
+  "arrival": "uniform",
+  "warmup_s": 8.0,
+  "duration_s": 20.0,
+  "rep": 2,
+  "sql": "SELECT * FROM AsyncBenchmarkTable LIMIT 1000",
+  "pid": 3207618,
+  "window_s": 20.0,
+  "cpu_window_s": 19.90824817214161,
+  "scheduled_in_window": 2000,
+  "completed": 1474,
+  "errors": 0,
+  "error_samples": [],
+  "dropped_unstarted": 526,
+  "completions_in_window": 1545,
+  "latency_ms": {
+    "n": 2000,
+    "p50": 4260.175561066717,
+    "p90": 6391.417281888425,
+    "p99": 7300.0014123972505,
+    "p999": 7436.268418443389,
+    "max": 7470.181700773537,
+    "mean": 4108.195546647068
+  },
+  "latency_completed_ms": {
+    "n": 1474,
+    "p50": 4837.532361038029,
+    "p90": 6576.174965407699,
+    "p99": 7329.233355876058,
+    "p999": 7436.275949302129,
+    "max": 7470.181700773537,
+    "mean": 4623.448587566731
+  },
+  "service_ms": {
+    "n": 1474,
+    "p50": 1164.2080550082028,
+    "p90": 2520.8834849298,
+    "p99": 3083.9689138717945,
+    "p999": 4247.538987533194,
+    "max": 4366.82425159961,
+    "mean": 1350.0199924226915
+  },
+  "queue_ms": {
+    "n": 1474,
+    "p50": 3595.3326863236725,
+    "p90": 5165.983590111136,
+    "p99": 5938.49083038047,
+    "p999": 6041.793791186996,
+    "max": 6054.57279086113,
+    "mean": 3273.428595144039
+  },
+  "dispatch_lag_ms": {
+    "n": 2000,
+    "p50": 171.8498794361949,
+    "p90": 1174.9057441018526,
+    "p99": 1668.2072674203664,
+    "p999": 1818.0956590138373,
+    "max": 1838.059863075614,
+    "mean": 397.65076003130525
+  },
+  "pool_wait_ms": {
+    "n": 1474,
+    "p50": 3082.495893817395,
+    "p90": 4562.24841568619,
+    "p99": 5938.41810231097,
+    "p999": 6041.723725558259,
+    "max": 6054.499385878444,
+    "mean": 2942.013651634891
+  },
+  "latency_p50_first_half_ms": 3913.2192744873464,
+  "latency_p50_second_half_ms": 6219.834200106561,
+  "rows_per_query": 1000.0,
+  "drain_s": 1.3871693350374699,
+  "threads_peak": 100,
+  "achieved_qps": 77.25,
+  "goodput_qps": 73.7,
+  "offered_rate_in_window": 100.0,
+  "latency_drift_ratio": 1.5894417776835146,
+  "saturated": true,
+  "pool_cap_hit": true,
+  "non_stationary": true,
+  "flags": "SPN",
+  "cpu": {
+    "client_s": 17.164835,
+    "server_s": 0.0,
+    "total_s": 17.164835,
+    "client_user_s": 14.293789,
+    "client_sys_s": 2.8710459999999998,
+    "server_user_s": 0.0,
+    "server_sys_s": 0.0,
+    "cores_used": 0.8621971582622434,
+    "client_cores": 0.8621971582622434,
+    "server_cores": 0.0,
+    "util_pct_of_machine": 86.21971582622434,
+    "ms_per_query": 11.109925566343042,
+    "client_ms_per_query": 11.109925566343042,
+    "server_ms_per_query": 0.0,
+    "client_vol_ctx_switches": 233503,
+    "client_invol_ctx_switches": 59236,
+    "server_vol_ctx_switches": 0,
+    "server_invol_ctx_switches": 0,
+    "vol_ctx_switches_per_query": 151.13462783171522,
+    "client_vol_ctx_switches_per_query": 151.13462783171522,
+    "server_vol_ctx_switches_per_query": 0.0
+  },
+  "threads": {
+    "client": {
+      "threads_active": 116,
+      "cpu_ms_total": 17055.999291999997,
+      "vol_cs_total": 231202,
+      "top_waker_vol_cs_per_query": 36.78381877022654,
+      "top_waker_cpu_us_per_vol_cs": 8.19994598018687,
+      "top_by_vol_cs": [
+        {
+          "tid": 3207657,
+          "comm": "python3",
+          "cpu_ms": 466.01113,
+          "vol_cs": 56831,
+          "invol_cs": 3,
+          "cpu_us_per_vol_cs": 8.19994598018687
+        },
+        {
+          "tid": 3207656,
+          "comm": "python3",
+          "cpu_ms": 636.005649,
+          "vol_cs": 3932,
+          "invol_cs": 1457,
+          "cpu_us_per_vol_cs": 161.75118234994912
+        },
+        {
+          "tid": 3207658,
+          "comm": "python3",
+          "cpu_ms": 383.575562,
+          "vol_cs": 3605,
+          "invol_cs": 1685,
+          "cpu_us_per_vol_cs": 106.40098807212205
+        },
+        {
+          "tid": 3207618,
+          "comm": "python3",
+          "cpu_ms": 81.035796,
+          "vol_cs": 3251,
+          "invol_cs": 64,
+          "cpu_us_per_vol_cs": 24.926421408797292
+        },
+        {
+          "tid": 3207765,
+          "comm": "python3",
+          "cpu_ms": 198.75799,
+          "vol_cs": 2696,
+          "invol_cs": 554,
+          "cpu_us_per_vol_cs": 73.72329005934718
+        }
+      ],
+      "top_by_cpu": [
+        {
+          "tid": 3207656,
+          "comm": "python3",
+          "cpu_ms": 636.005649,
+          "vol_cs": 3932,
+          "invol_cs": 1457,
+          "cpu_us_per_vol_cs": 161.75118234994912
+        },
+        {
+          "tid": 3207657,
+          "comm": "python3",
+          "cpu_ms": 466.01113,
+          "vol_cs": 56831,
+          "invol_cs": 3,
+          "cpu_us_per_vol_cs": 8.19994598018687
+        },
+        {
+          "tid": 3207766,
+          "comm": "python3",
+          "cpu_ms": 454.060598,
+          "vol_cs": 2581,
+          "invol_cs": 1293,
+          "cpu_us_per_vol_cs": 175.92429213483146
+        },
+        {
+          "tid": 3207658,
+          "comm": "python3",
+          "cpu_ms": 383.575562,
+          "vol_cs": 3605,
+          "invol_cs": 1685,
+          "cpu_us_per_vol_cs": 106.40098807212205
+        },
+        {
+          "tid": 3207668,
+          "comm": "python3",
+          "cpu_ms": 351.609978,
+          "vol_cs": 2353,
+          "invol_cs": 848,
+          "cpu_us_per_vol_cs": 149.43050488737782
+        }
+      ]
+    }
+  },
+  "go_core": {
+    "calls": 1490,
+    "chunks_per_call": 1.0,
+    "req_build_marshal_us_per_call": 16.63431677852349,
+    "proto_unmarshal_us_per_call": 5603.9904577181205,
+    "chunk_assemble_us_per_call": 164.72665906040268,
+    "arena_encode_us_per_call": 645.7438818791946
+  },
+  "python_decode_us_per_call": 992.8215161073824,
+  "ok": true
+}

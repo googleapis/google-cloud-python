@@ -1,0 +1,306 @@
+{
+  "client": "ipc",
+  "workload": "point",
+  "offered_qps": 50.0,
+  "channels": 1,
+  "max_inflight": 50,
+  "arrival": "uniform",
+  "warmup_s": 8.0,
+  "duration_s": 20.0,
+  "rep": 0,
+  "sql": "SELECT * FROM AsyncBenchmarkTable WHERE id = @id",
+  "pid": 3103122,
+  "window_s": 20.0,
+  "cpu_window_s": 19.999998239800334,
+  "scheduled_in_window": 1000,
+  "completed": 1000,
+  "errors": 0,
+  "error_samples": [],
+  "dropped_unstarted": 0,
+  "completions_in_window": 1000,
+  "latency_ms": {
+    "n": 1000,
+    "p50": 5.950857885181904,
+    "p90": 6.985614076256752,
+    "p99": 10.65614629536867,
+    "p999": 12.329391119070339,
+    "max": 12.85218633711338,
+    "mean": 6.126073449850082
+  },
+  "latency_completed_ms": {
+    "n": 1000,
+    "p50": 5.950857885181904,
+    "p90": 6.985614076256752,
+    "p99": 10.65614629536867,
+    "p999": 12.329391119070339,
+    "max": 12.85218633711338,
+    "mean": 6.126073449850082
+  },
+  "service_ms": {
+    "n": 1000,
+    "p50": 5.723240785300732,
+    "p90": 6.7405227571725845,
+    "p99": 10.42501122690737,
+    "p999": 12.103267117403435,
+    "max": 12.654162012040615,
+    "mean": 5.9009432112798095
+  },
+  "queue_ms": {
+    "n": 1000,
+    "p50": 0.2182675525546074,
+    "p90": 0.25757234543561935,
+    "p99": 0.3167940303683281,
+    "p999": 0.4425137527286424,
+    "max": 2.902025356888771,
+    "mean": 0.22513023857027292
+  },
+  "dispatch_lag_ms": {
+    "n": 1000,
+    "p50": 0.12763496488332748,
+    "p90": 0.16405805945396423,
+    "p99": 0.21704967133700848,
+    "p999": 0.36608005780720887,
+    "max": 2.80972383916378,
+    "mean": 0.13625314086675644
+  },
+  "pool_wait_ms": {
+    "n": 1000,
+    "p50": 0.0848802737891674,
+    "p90": 0.1084466464817524,
+    "p99": 0.1378773711621761,
+    "p999": 0.16841047909110762,
+    "max": 0.1780632883310318,
+    "mean": 0.08887709770351648
+  },
+  "latency_p50_first_half_ms": 5.938960704952478,
+  "latency_p50_second_half_ms": 5.970946047455072,
+  "rows_per_query": 1.0,
+  "drain_s": 0.0038796309381723404,
+  "threads_peak": 2,
+  "achieved_qps": 50.0,
+  "goodput_qps": 50.0,
+  "offered_rate_in_window": 50.0,
+  "latency_drift_ratio": 1.0053856801032413,
+  "saturated": false,
+  "pool_cap_hit": false,
+  "non_stationary": false,
+  "flags": "",
+  "cpu": {
+    "client_s": 0.40846799999999983,
+    "server_s": 0.686221,
+    "total_s": 1.0946889999999998,
+    "client_user_s": 0.19699,
+    "client_sys_s": 0.211478,
+    "server_user_s": 0.531077,
+    "server_sys_s": 0.155144,
+    "cores_used": 0.054734454817178445,
+    "client_cores": 0.020423401797463242,
+    "server_cores": 0.0343110530197152,
+    "util_pct_of_machine": 5.473445481717844,
+    "ms_per_query": 1.0946889999999998,
+    "client_ms_per_query": 0.40846799999999983,
+    "server_ms_per_query": 0.686221,
+    "client_vol_ctx_switches": 5107,
+    "client_invol_ctx_switches": 59,
+    "server_vol_ctx_switches": 16378,
+    "server_invol_ctx_switches": 9434,
+    "vol_ctx_switches_per_query": 21.485,
+    "client_vol_ctx_switches_per_query": 5.107,
+    "server_vol_ctx_switches_per_query": 16.378
+  },
+  "threads": {
+    "client": {
+      "threads_active": 8,
+      "cpu_ms_total": 408.46008800000004,
+      "vol_cs_total": 5107,
+      "top_waker_vol_cs_per_query": 2.013,
+      "top_waker_cpu_us_per_vol_cs": 74.1703437655241,
+      "top_by_vol_cs": [
+        {
+          "tid": 3103171,
+          "comm": "python3",
+          "cpu_ms": 149.304902,
+          "vol_cs": 2013,
+          "invol_cs": 7,
+          "cpu_us_per_vol_cs": 74.1703437655241
+        },
+        {
+          "tid": 3103170,
+          "comm": "python3",
+          "cpu_ms": 149.016121,
+          "vol_cs": 2012,
+          "invol_cs": 13,
+          "cpu_us_per_vol_cs": 74.06367842942346
+        },
+        {
+          "tid": 3103122,
+          "comm": "python3",
+          "cpu_ms": 107.259294,
+          "vol_cs": 1002,
+          "invol_cs": 39,
+          "cpu_us_per_vol_cs": 107.04520359281436
+        },
+        {
+          "tid": 3103149,
+          "comm": "grpc_global_tim",
+          "cpu_ms": 0.895253,
+          "vol_cs": 20,
+          "invol_cs": 0,
+          "cpu_us_per_vol_cs": 44.76265
+        },
+        {
+          "tid": 3103151,
+          "comm": "event_engine",
+          "cpu_ms": 1.083657,
+          "vol_cs": 20,
+          "invol_cs": 0,
+          "cpu_us_per_vol_cs": 54.182849999999995
+        }
+      ],
+      "top_by_cpu": [
+        {
+          "tid": 3103171,
+          "comm": "python3",
+          "cpu_ms": 149.304902,
+          "vol_cs": 2013,
+          "invol_cs": 7,
+          "cpu_us_per_vol_cs": 74.1703437655241
+        },
+        {
+          "tid": 3103170,
+          "comm": "python3",
+          "cpu_ms": 149.016121,
+          "vol_cs": 2012,
+          "invol_cs": 13,
+          "cpu_us_per_vol_cs": 74.06367842942346
+        },
+        {
+          "tid": 3103122,
+          "comm": "python3",
+          "cpu_ms": 107.259294,
+          "vol_cs": 1002,
+          "invol_cs": 39,
+          "cpu_us_per_vol_cs": 107.04520359281436
+        },
+        {
+          "tid": 3103151,
+          "comm": "event_engine",
+          "cpu_ms": 1.083657,
+          "vol_cs": 20,
+          "invol_cs": 0,
+          "cpu_us_per_vol_cs": 54.182849999999995
+        },
+        {
+          "tid": 3103149,
+          "comm": "grpc_global_tim",
+          "cpu_ms": 0.895253,
+          "vol_cs": 20,
+          "invol_cs": 0,
+          "cpu_us_per_vol_cs": 44.76265
+        }
+      ]
+    },
+    "sidecar": {
+      "threads_active": 4,
+      "cpu_ms_total": 686.223553,
+      "vol_cs_total": 16378,
+      "top_waker_vol_cs_per_query": 10.737,
+      "top_waker_cpu_us_per_vol_cs": 9.523602123498184,
+      "top_by_vol_cs": [
+        {
+          "tid": 3103159,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 102.254916,
+          "vol_cs": 10737,
+          "invol_cs": 1,
+          "cpu_us_per_vol_cs": 9.523602123498184
+        },
+        {
+          "tid": 3103163,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 226.731622,
+          "vol_cs": 2263,
+          "invol_cs": 3463,
+          "cpu_us_per_vol_cs": 100.19073000441891
+        },
+        {
+          "tid": 3103169,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 219.315966,
+          "vol_cs": 2081,
+          "invol_cs": 3688,
+          "cpu_us_per_vol_cs": 105.38970014416145
+        },
+        {
+          "tid": 3103161,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 137.921049,
+          "vol_cs": 1297,
+          "invol_cs": 2282,
+          "cpu_us_per_vol_cs": 106.33851117964534
+        }
+      ],
+      "top_by_cpu": [
+        {
+          "tid": 3103163,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 226.731622,
+          "vol_cs": 2263,
+          "invol_cs": 3463,
+          "cpu_us_per_vol_cs": 100.19073000441891
+        },
+        {
+          "tid": 3103169,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 219.315966,
+          "vol_cs": 2081,
+          "invol_cs": 3688,
+          "cpu_us_per_vol_cs": 105.38970014416145
+        },
+        {
+          "tid": 3103161,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 137.921049,
+          "vol_cs": 1297,
+          "invol_cs": 2282,
+          "cpu_us_per_vol_cs": 106.33851117964534
+        },
+        {
+          "tid": 3103159,
+          "comm": "spanner_ipc_ser",
+          "cpu_ms": 102.254916,
+          "vol_cs": 10737,
+          "invol_cs": 1,
+          "cpu_us_per_vol_cs": 9.523602123498184
+        }
+      ]
+    }
+  },
+  "go_core": {
+    "calls": 1000,
+    "chunks_per_call": 1.0,
+    "req_build_marshal_us_per_call": 48.761571,
+    "proto_unmarshal_us_per_call": 44.015292,
+    "chunk_assemble_us_per_call": 3.704248,
+    "arena_encode_us_per_call": 12.393182000000001
+  },
+  "python_decode_us_per_call": 11.064377,
+  "ipc": {
+    "requests": 1000,
+    "bytes_sent_per_query": 247.932,
+    "bytes_recv_per_query": 1228.9,
+    "send_calls_per_query": 1.001,
+    "recv_hops_per_query": 1.0,
+    "large_response_ratio": 0.0,
+    "new_connections_in_window": 0,
+    "server_goroutines": 14
+  },
+  "sidecar": {
+    "go_version": "go1.22.4",
+    "gomaxprocs": 1,
+    "num_cpu": 1,
+    "sockbuf": 0,
+    "lock_os_thread": true
+  },
+  "ok": true
+}

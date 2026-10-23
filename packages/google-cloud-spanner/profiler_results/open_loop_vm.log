@@ -1,0 +1,456 @@
+==============================================================================================================
+Spanner Go Shared Core open-loop benchmark: FFI vs IPC vs pure Python
+  clients=['python', 'ffi', 'ipc'] workloads=['point', 'heavy'] qps=[10, 50, 100, 500] arrival=uniform repeats=3
+  warmup=8.0s (ramped) window=20.0s build parity: OK (same Go toolchain, module graph and build settings)
+  output: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/open_loop_results
+==============================================================================================================
+[*] host wake cost: 7.7 us CPU per 20 us sleep/wake cycle
+[parity] verifying FFI vs IPC vs pure-Python results ...
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[parity] {"ok": true, "point_ids_checked": 20, "point_ffi_vs_ipc_mismatches": [], "heavy_rows": {"ffi": 1000, "ipc": 1000, "python": 1000}, "heavy_ffi_equals_ipc": true, "heavy_python_equals_go_core_str_normalized": true, "point_python_equals_go_core_str_normalized": true, "hooked_snapshot_rows": {"ffi": 1000, "ipc": 1000}, "ipc_heavy_bytes": 1183929, "ipc_heavy_recv_hops": 34, "ipc_point_bytes": 1228, "ipc_point_recv_hops": 1, "point_rtt_ms_min": 3.0997516587376595, "point_rtt_ms_median": 3.8594244979321957}
+[*] RTT estimate: 3.10 ms -> channels per (workload, QPS): point@10=1, point@50=1, point@100=1, point@500=4, heavy@10=1, heavy@50=1, heavy@100=1, heavy@500=4
+[*] max in-flight per (workload, QPS): point@10=32, point@50=50, point@100=100, point@500=256, heavy@10=32, heavy@50=50, heavy@100=100, heavy@500=128
+
+[1/72] rep 1/3: Point select @ 10 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/10qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/10qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[python/point/10qps/1ch/rep0] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 8.13 p99 10.21 ms | CPU 0.035 cores, 3.51 ms/q | errors 0 dropped 0 flags []
+
+[2/72] rep 1/3: Point select @ 10 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/10qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/10qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ffi/point/10qps/1ch/rep0] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 5.20 p99 8.89 ms | CPU 0.010 cores, 1.05 ms/q | errors 0 dropped 0 flags []
+
+[3/72] rep 1/3: Point select @ 10 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/10qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/10qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ipc/point/10qps/1ch/rep0] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 5.39 p99 8.88 ms | CPU 0.011 cores, 1.14 ms/q | errors 0 dropped 0 flags []
+
+[4/72] rep 1/3: Point select @ 50 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/50qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/50qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ffi/point/50qps/1ch/rep0] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 5.25 p99 11.25 ms | CPU 0.048 cores, 0.97 ms/q | errors 0 dropped 0 flags []
+
+[5/72] rep 1/3: Point select @ 50 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/50qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/50qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ipc/point/50qps/1ch/rep0] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 5.95 p99 10.66 ms | CPU 0.055 cores, 1.09 ms/q | errors 0 dropped 0 flags []
+
+[6/72] rep 1/3: Point select @ 50 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/50qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/50qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[python/point/50qps/1ch/rep0] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 6.68 p99 9.84 ms | CPU 0.153 cores, 3.05 ms/q | errors 0 dropped 0 flags []
+
+[7/72] rep 1/3: Point select @ 100 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/100qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/100qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ipc/point/100qps/1ch/rep0] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 4.56 p99 6.18 ms | CPU 0.083 cores, 0.83 ms/q | errors 0 dropped 0 flags []
+
+[8/72] rep 1/3: Point select @ 100 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/100qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/100qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[python/point/100qps/1ch/rep0] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 6.46 p99 8.08 ms | CPU 0.253 cores, 2.53 ms/q | errors 0 dropped 0 flags []
+
+[9/72] rep 1/3: Point select @ 100 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/100qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/100qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ffi/point/100qps/1ch/rep0] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 5.54 p99 9.23 ms | CPU 0.081 cores, 0.81 ms/q | errors 0 dropped 0 flags []
+
+[10/72] rep 1/3: Point select @ 500 QPS — Pure Python (stock client) (4 channel(s))
+[python/point/500qps/4ch/rep0] pre-warming 8 sequential requests (connects all 4 channel(s))
+[python/point/500qps/4ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[python/point/500qps/4ch/rep0] done: goodput 500.0 / achieved 497.8 / offered 500.0 QPS | p50 9.02 p99 119.1 ms | CPU 0.896 cores, 1.80 ms/q | errors 0 dropped 0 flags []
+
+[11/72] rep 1/3: Point select @ 500 QPS — Go core FFI (unchanged) (4 channel(s))
+[ffi/point/500qps/4ch/rep0] pre-warming 8 sequential requests (connects all 4 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/500qps/4ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[ffi/point/500qps/4ch/rep0] done: goodput 500.0 / achieved 499.9 / offered 500.0 QPS | p50 4.46 p99 10.45 ms | CPU 0.254 cores, 0.51 ms/q | errors 0 dropped 0 flags []
+
+[12/72] rep 1/3: Point select @ 500 QPS — Go core IPC (sidecar, locked-thread calls) (4 channel(s))
+[ipc/point/500qps/4ch/rep0] pre-warming 8 sequential requests (connects all 4 channel(s))
+[ipc/point/500qps/4ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[ipc/point/500qps/4ch/rep0] done: goodput 500.0 / achieved 500.1 / offered 500.0 QPS | p50 4.57 p99 8.02 ms | CPU 0.272 cores, 0.54 ms/q | errors 0 dropped 0 flags []
+
+[13/72] rep 1/3: Heavy read @ 10 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/10qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/10qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ffi/heavy/10qps/1ch/rep0] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 22.81 p99 27.65 ms | CPU 0.138 cores, 13.81 ms/q | errors 0 dropped 0 flags []
+
+[14/72] rep 1/3: Heavy read @ 10 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/10qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/10qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ipc/heavy/10qps/1ch/rep0] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 23.86 p99 55.91 ms | CPU 0.142 cores, 14.18 ms/q | errors 0 dropped 0 flags []
+
+[15/72] rep 1/3: Heavy read @ 10 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/10qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/10qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[python/heavy/10qps/1ch/rep0] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 25.58 p99 68.41 ms | CPU 0.204 cores, 20.38 ms/q | errors 0 dropped 0 flags []
+
+[16/72] rep 1/3: Heavy read @ 50 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/50qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/50qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ipc/heavy/50qps/1ch/rep0] done: goodput 50.0 / achieved 49.8 / offered 50.0 QPS | p50 30.07 p99 112.9 ms | CPU 0.663 cores, 13.33 ms/q | errors 0 dropped 0 flags []
+
+[17/72] rep 1/3: Heavy read @ 50 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/50qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/50qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[python/heavy/50qps/1ch/rep0] done: goodput 50.0 / achieved 47.4 / offered 50.0 QPS | p50 242.6 p99 1380 ms | CPU 0.973 cores, 20.64 ms/q | errors 0 dropped 0 flags [SPN]
+
+[18/72] rep 1/3: Heavy read @ 50 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/50qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/50qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ffi/heavy/50qps/1ch/rep0] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 36.15 p99 98.68 ms | CPU 0.643 cores, 12.87 ms/q | errors 0 dropped 0 flags []
+
+[19/72] rep 1/3: Heavy read @ 100 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/100qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/100qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[python/heavy/100qps/1ch/rep0] done: goodput 31.2 / achieved 41.6 / offered 100.0 QPS | p50 8967 p99 15831 ms | CPU 0.987 cores, 23.71 ms/q | errors 0 dropped 1375 flags [SPN]
+
+[20/72] rep 1/3: Heavy read @ 100 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/100qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/100qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ffi/heavy/100qps/1ch/rep0] done: goodput 70.5 / achieved 75.3 / offered 100.0 QPS | p50 5229 p99 7793 ms | CPU 0.849 cores, 11.27 ms/q | errors 0 dropped 589 flags [SPN]
+
+[21/72] rep 1/3: Heavy read @ 100 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/100qps/1ch/rep0] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/100qps/1ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ipc/heavy/100qps/1ch/rep0] done: goodput 98.2 / achieved 95.8 / offered 100.0 QPS | p50 1231 p99 1622 ms | CPU 0.983 cores, 10.25 ms/q | errors 0 dropped 37 flags [SPN]
+
+[22/72] rep 1/3: Heavy read @ 500 QPS — Go core FFI (unchanged) (4 channel(s))
+[ffi/heavy/500qps/4ch/rep0] pre-warming 8 sequential requests (connects all 4 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/500qps/4ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[ffi/heavy/500qps/4ch/rep0] done: goodput 25.8 / achieved 54.3 / offered 500.0 QPS | p50 46288 p99 58153 ms | CPU 0.799 cores, 29.32 ms/q | errors 0 dropped 9484 flags [SPN]
+
+[23/72] rep 1/3: Heavy read @ 500 QPS — Go core IPC (sidecar, locked-thread calls) (4 channel(s))
+[ipc/heavy/500qps/4ch/rep0] pre-warming 8 sequential requests (connects all 4 channel(s))
+[ipc/heavy/500qps/4ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[ipc/heavy/500qps/4ch/rep0] done: goodput 0.0 / achieved 96.8 / offered 500.0 QPS | p50 10552 p99 20351 ms | CPU 0.999 cores, 10.32 ms/q | errors 0 dropped 10000 flags [SPN]
+
+[24/72] rep 1/3: Heavy read @ 500 QPS — Pure Python (stock client) (4 channel(s))
+[python/heavy/500qps/4ch/rep0] pre-warming 8 sequential requests (connects all 4 channel(s))
+[python/heavy/500qps/4ch/rep0]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[python/heavy/500qps/4ch/rep0] done: goodput 0.0 / achieved 36.3 / offered 500.0 QPS | p50 10176 p99 19975 ms | CPU 0.983 cores, 27.17 ms/q | errors 0 dropped 10000 flags [SPN]
+
+[25/72] rep 2/3: Point select @ 10 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/10qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/10qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ipc/point/10qps/1ch/rep1] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 5.83 p99 10.50 ms | CPU 0.012 cores, 1.16 ms/q | errors 0 dropped 0 flags []
+
+[26/72] rep 2/3: Point select @ 10 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/10qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/10qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[python/point/10qps/1ch/rep1] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 7.23 p99 9.50 ms | CPU 0.034 cores, 3.37 ms/q | errors 0 dropped 0 flags []
+
+[27/72] rep 2/3: Point select @ 10 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/10qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/10qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ffi/point/10qps/1ch/rep1] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 5.69 p99 7.30 ms | CPU 0.011 cores, 1.11 ms/q | errors 0 dropped 0 flags []
+
+[28/72] rep 2/3: Point select @ 50 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/50qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/50qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[python/point/50qps/1ch/rep1] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 7.70 p99 11.74 ms | CPU 0.161 cores, 3.22 ms/q | errors 0 dropped 0 flags []
+
+[29/72] rep 2/3: Point select @ 50 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/50qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/50qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ffi/point/50qps/1ch/rep1] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 5.10 p99 8.71 ms | CPU 0.053 cores, 1.06 ms/q | errors 0 dropped 0 flags []
+
+[30/72] rep 2/3: Point select @ 50 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/50qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/50qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ipc/point/50qps/1ch/rep1] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 5.45 p99 12.45 ms | CPU 0.057 cores, 1.15 ms/q | errors 0 dropped 0 flags []
+
+[31/72] rep 2/3: Point select @ 100 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/100qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/100qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ffi/point/100qps/1ch/rep1] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 4.86 p99 6.09 ms | CPU 0.082 cores, 0.82 ms/q | errors 0 dropped 0 flags []
+
+[32/72] rep 2/3: Point select @ 100 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/100qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/100qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ipc/point/100qps/1ch/rep1] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 4.51 p99 6.12 ms | CPU 0.095 cores, 0.95 ms/q | errors 0 dropped 0 flags []
+
+[33/72] rep 2/3: Point select @ 100 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/100qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/100qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[python/point/100qps/1ch/rep1] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 6.09 p99 9.31 ms | CPU 0.276 cores, 2.76 ms/q | errors 0 dropped 0 flags []
+
+[34/72] rep 2/3: Point select @ 500 QPS — Go core IPC (sidecar, locked-thread calls) (4 channel(s))
+[ipc/point/500qps/4ch/rep1] pre-warming 8 sequential requests (connects all 4 channel(s))
+[ipc/point/500qps/4ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[ipc/point/500qps/4ch/rep1] done: goodput 500.0 / achieved 500.0 / offered 500.0 QPS | p50 4.56 p99 6.87 ms | CPU 0.320 cores, 0.64 ms/q | errors 0 dropped 0 flags []
+
+[35/72] rep 2/3: Point select @ 500 QPS — Pure Python (stock client) (4 channel(s))
+[python/point/500qps/4ch/rep1] pre-warming 8 sequential requests (connects all 4 channel(s))
+[python/point/500qps/4ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[python/point/500qps/4ch/rep1] done: goodput 500.0 / achieved 499.5 / offered 500.0 QPS | p50 10.48 p99 149.2 ms | CPU 0.934 cores, 1.87 ms/q | errors 0 dropped 0 flags []
+
+[36/72] rep 2/3: Point select @ 500 QPS — Go core FFI (unchanged) (4 channel(s))
+[ffi/point/500qps/4ch/rep1] pre-warming 8 sequential requests (connects all 4 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/500qps/4ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[ffi/point/500qps/4ch/rep1] done: goodput 500.0 / achieved 500.0 / offered 500.0 QPS | p50 4.47 p99 7.03 ms | CPU 0.267 cores, 0.53 ms/q | errors 0 dropped 0 flags []
+
+[37/72] rep 2/3: Heavy read @ 10 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/10qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/10qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[python/heavy/10qps/1ch/rep1] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 28.89 p99 65.56 ms | CPU 0.199 cores, 19.95 ms/q | errors 0 dropped 0 flags []
+
+[38/72] rep 2/3: Heavy read @ 10 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/10qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/10qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ffi/heavy/10qps/1ch/rep1] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 21.93 p99 48.25 ms | CPU 0.136 cores, 13.57 ms/q | errors 0 dropped 0 flags []
+
+[39/72] rep 2/3: Heavy read @ 10 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/10qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/10qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ipc/heavy/10qps/1ch/rep1] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 25.28 p99 61.10 ms | CPU 0.145 cores, 14.49 ms/q | errors 0 dropped 0 flags []
+
+[40/72] rep 2/3: Heavy read @ 50 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/50qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/50qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ffi/heavy/50qps/1ch/rep1] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 38.72 p99 110.9 ms | CPU 0.630 cores, 12.62 ms/q | errors 0 dropped 0 flags []
+
+[41/72] rep 2/3: Heavy read @ 50 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/50qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/50qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ipc/heavy/50qps/1ch/rep1] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 29.71 p99 86.30 ms | CPU 0.660 cores, 13.19 ms/q | errors 0 dropped 0 flags []
+
+[42/72] rep 2/3: Heavy read @ 50 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/50qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/50qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[python/heavy/50qps/1ch/rep1] done: goodput 50.0 / achieved 48.5 / offered 50.0 QPS | p50 206.9 p99 874.7 ms | CPU 0.969 cores, 20.05 ms/q | errors 0 dropped 0 flags [N]
+
+[43/72] rep 2/3: Heavy read @ 100 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/100qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/100qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ipc/heavy/100qps/1ch/rep1] done: goodput 98.8 / achieved 96.7 / offered 100.0 QPS | p50 1145 p99 1526 ms | CPU 0.981 cores, 10.15 ms/q | errors 0 dropped 23 flags [SPN]
+
+[44/72] rep 2/3: Heavy read @ 100 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/100qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/100qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[python/heavy/100qps/1ch/rep1] done: goodput 33.1 / achieved 43.2 / offered 100.0 QPS | p50 8715 p99 15273 ms | CPU 0.984 cores, 22.78 ms/q | errors 0 dropped 1338 flags [SPN]
+
+[45/72] rep 2/3: Heavy read @ 100 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/100qps/1ch/rep1] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/100qps/1ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ffi/heavy/100qps/1ch/rep1] done: goodput 75.7 / achieved 76.0 / offered 100.0 QPS | p50 3574 p99 7328 ms | CPU 0.861 cores, 11.33 ms/q | errors 0 dropped 486 flags [SPN]
+
+[46/72] rep 2/3: Heavy read @ 500 QPS — Pure Python (stock client) (4 channel(s))
+[python/heavy/500qps/4ch/rep1] pre-warming 8 sequential requests (connects all 4 channel(s))
+[python/heavy/500qps/4ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[python/heavy/500qps/4ch/rep1] done: goodput 0.0 / achieved 37.2 / offered 500.0 QPS | p50 10465 p99 20264 ms | CPU 0.988 cores, 26.46 ms/q | errors 0 dropped 10000 flags [SPN]
+
+[47/72] rep 2/3: Heavy read @ 500 QPS — Go core FFI (unchanged) (4 channel(s))
+[ffi/heavy/500qps/4ch/rep1] pre-warming 8 sequential requests (connects all 4 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/500qps/4ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[ffi/heavy/500qps/4ch/rep1] done: goodput 24.8 / achieved 57.7 / offered 500.0 QPS | p50 34937 p99 51091 ms | CPU 0.789 cores, 17.27 ms/q | errors 0 dropped 9505 flags [SPN]
+
+[48/72] rep 2/3: Heavy read @ 500 QPS — Go core IPC (sidecar, locked-thread calls) (4 channel(s))
+[ipc/heavy/500qps/4ch/rep1] pre-warming 8 sequential requests (connects all 4 channel(s))
+[ipc/heavy/500qps/4ch/rep1]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[ipc/heavy/500qps/4ch/rep1] done: goodput 0.0 / achieved 95.3 / offered 500.0 QPS | p50 10423 p99 20222 ms | CPU 0.989 cores, 10.38 ms/q | errors 0 dropped 10000 flags [SPN]
+
+[49/72] rep 3/3: Point select @ 10 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/10qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/10qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ffi/point/10qps/1ch/rep2] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 5.24 p99 6.85 ms | CPU 0.011 cores, 1.09 ms/q | errors 0 dropped 0 flags []
+
+[50/72] rep 3/3: Point select @ 10 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/10qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/10qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ipc/point/10qps/1ch/rep2] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 6.12 p99 10.47 ms | CPU 0.013 cores, 1.26 ms/q | errors 0 dropped 0 flags []
+
+[51/72] rep 3/3: Point select @ 10 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/10qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/10qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[python/point/10qps/1ch/rep2] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 6.62 p99 7.84 ms | CPU 0.035 cores, 3.46 ms/q | errors 0 dropped 0 flags []
+
+[52/72] rep 3/3: Point select @ 50 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/50qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/50qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ipc/point/50qps/1ch/rep2] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 5.48 p99 7.63 ms | CPU 0.056 cores, 1.13 ms/q | errors 0 dropped 0 flags []
+
+[53/72] rep 3/3: Point select @ 50 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/50qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/50qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[python/point/50qps/1ch/rep2] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 7.26 p99 11.00 ms | CPU 0.156 cores, 3.11 ms/q | errors 0 dropped 0 flags []
+
+[54/72] rep 3/3: Point select @ 50 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/50qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/50qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ffi/point/50qps/1ch/rep2] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 5.19 p99 7.35 ms | CPU 0.050 cores, 1.00 ms/q | errors 0 dropped 0 flags []
+
+[55/72] rep 3/3: Point select @ 100 QPS — Pure Python (stock client) (1 channel(s))
+[python/point/100qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/point/100qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[python/point/100qps/1ch/rep2] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 6.17 p99 8.11 ms | CPU 0.260 cores, 2.60 ms/q | errors 0 dropped 0 flags []
+
+[56/72] rep 3/3: Point select @ 100 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/point/100qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/100qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ffi/point/100qps/1ch/rep2] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 4.24 p99 5.79 ms | CPU 0.083 cores, 0.83 ms/q | errors 0 dropped 0 flags []
+
+[57/72] rep 3/3: Point select @ 100 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/point/100qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/point/100qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ipc/point/100qps/1ch/rep2] done: goodput 100.0 / achieved 100.0 / offered 100.0 QPS | p50 4.84 p99 8.65 ms | CPU 0.084 cores, 0.84 ms/q | errors 0 dropped 0 flags []
+
+[58/72] rep 3/3: Point select @ 500 QPS — Go core FFI (unchanged) (4 channel(s))
+[ffi/point/500qps/4ch/rep2] pre-warming 8 sequential requests (connects all 4 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/point/500qps/4ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[ffi/point/500qps/4ch/rep2] done: goodput 500.0 / achieved 500.0 / offered 500.0 QPS | p50 4.68 p99 7.75 ms | CPU 0.257 cores, 0.51 ms/q | errors 0 dropped 0 flags []
+
+[59/72] rep 3/3: Point select @ 500 QPS — Go core IPC (sidecar, locked-thread calls) (4 channel(s))
+[ipc/point/500qps/4ch/rep2] pre-warming 8 sequential requests (connects all 4 channel(s))
+[ipc/point/500qps/4ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[ipc/point/500qps/4ch/rep2] done: goodput 500.0 / achieved 500.1 / offered 500.0 QPS | p50 4.27 p99 6.88 ms | CPU 0.297 cores, 0.59 ms/q | errors 0 dropped 0 flags []
+
+[60/72] rep 3/3: Point select @ 500 QPS — Pure Python (stock client) (4 channel(s))
+[python/point/500qps/4ch/rep2] pre-warming 8 sequential requests (connects all 4 channel(s))
+[python/point/500qps/4ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 256 in flight, uniform arrivals)
+[python/point/500qps/4ch/rep2] done: goodput 500.0 / achieved 499.9 / offered 500.0 QPS | p50 7.83 p99 106.0 ms | CPU 0.887 cores, 1.77 ms/q | errors 0 dropped 0 flags []
+
+[61/72] rep 3/3: Heavy read @ 10 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/10qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/10qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ipc/heavy/10qps/1ch/rep2] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 23.39 p99 32.37 ms | CPU 0.142 cores, 14.22 ms/q | errors 0 dropped 0 flags []
+
+[62/72] rep 3/3: Heavy read @ 10 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/10qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/10qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[python/heavy/10qps/1ch/rep2] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 23.89 p99 63.06 ms | CPU 0.196 cores, 19.55 ms/q | errors 0 dropped 0 flags []
+
+[63/72] rep 3/3: Heavy read @ 10 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/10qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/10qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 10 QPS (264 scheduled requests, <= 32 in flight, uniform arrivals)
+[ffi/heavy/10qps/1ch/rep2] done: goodput 10.0 / achieved 10.0 / offered 10.0 QPS | p50 22.06 p99 40.14 ms | CPU 0.136 cores, 13.58 ms/q | errors 0 dropped 0 flags []
+
+[64/72] rep 3/3: Heavy read @ 50 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/50qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/50qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[python/heavy/50qps/1ch/rep2] done: goodput 50.0 / achieved 48.5 / offered 50.0 QPS | p50 129.0 p99 931.3 ms | CPU 0.973 cores, 20.10 ms/q | errors 0 dropped 0 flags [N]
+
+[65/72] rep 3/3: Heavy read @ 50 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/50qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/50qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ffi/heavy/50qps/1ch/rep2] done: goodput 50.0 / achieved 48.8 / offered 50.0 QPS | p50 41.02 p99 466.0 ms | CPU 0.617 cores, 12.69 ms/q | errors 0 dropped 0 flags []
+
+[66/72] rep 3/3: Heavy read @ 50 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/50qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/50qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 50 QPS (1320 scheduled requests, <= 50 in flight, uniform arrivals)
+[ipc/heavy/50qps/1ch/rep2] done: goodput 50.0 / achieved 50.0 / offered 50.0 QPS | p50 30.68 p99 115.7 ms | CPU 0.669 cores, 13.38 ms/q | errors 0 dropped 0 flags []
+
+[67/72] rep 3/3: Heavy read @ 100 QPS — Go core FFI (unchanged) (1 channel(s))
+[ffi/heavy/100qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/100qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ffi/heavy/100qps/1ch/rep2] done: goodput 73.7 / achieved 77.2 / offered 100.0 QPS | p50 4260 p99 7300 ms | CPU 0.862 cores, 11.11 ms/q | errors 0 dropped 526 flags [SPN]
+
+[68/72] rep 3/3: Heavy read @ 100 QPS — Go core IPC (sidecar, locked-thread calls) (1 channel(s))
+[ipc/heavy/100qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[ipc/heavy/100qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[ipc/heavy/100qps/1ch/rep2] done: goodput 100.0 / achieved 97.8 / offered 100.0 QPS | p50 904.9 p99 1206 ms | CPU 0.981 cores, 10.02 ms/q | errors 0 dropped 1 flags [SP]
+
+[69/72] rep 3/3: Heavy read @ 100 QPS — Pure Python (stock client) (1 channel(s))
+[python/heavy/100qps/1ch/rep2] pre-warming 4 sequential requests (connects all 1 channel(s))
+[python/heavy/100qps/1ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 100 QPS (2640 scheduled requests, <= 100 in flight, uniform arrivals)
+[python/heavy/100qps/1ch/rep2] done: goodput 31.9 / achieved 42.0 / offered 100.0 QPS | p50 8823 p99 16107 ms | CPU 0.988 cores, 23.54 ms/q | errors 0 dropped 1362 flags [SPN]
+
+[70/72] rep 3/3: Heavy read @ 500 QPS — Go core IPC (sidecar, locked-thread calls) (4 channel(s))
+[ipc/heavy/500qps/4ch/rep2] pre-warming 8 sequential requests (connects all 4 channel(s))
+[ipc/heavy/500qps/4ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[ipc/heavy/500qps/4ch/rep2] done: goodput 0.0 / achieved 98.7 / offered 500.0 QPS | p50 10476 p99 20275 ms | CPU 1.000 cores, 10.14 ms/q | errors 0 dropped 10000 flags [SPN]
+
+[71/72] rep 3/3: Heavy read @ 500 QPS — Pure Python (stock client) (4 channel(s))
+[python/heavy/500qps/4ch/rep2] pre-warming 8 sequential requests (connects all 4 channel(s))
+[python/heavy/500qps/4ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[python/heavy/500qps/4ch/rep2] done: goodput 0.1 / achieved 36.6 / offered 500.0 QPS | p50 10254 p99 20049 ms | CPU 0.984 cores, 26.88 ms/q | errors 0 dropped 9997 flags [SPN]
+
+[72/72] rep 3/3: Heavy read @ 500 QPS — Go core FFI (unchanged) (4 channel(s))
+[ffi/heavy/500qps/4ch/rep2] pre-warming 8 sequential requests (connects all 4 channel(s))
+[Spanner-Go] Direct native cells encoding is ACTIVE (zero-copy C arena)
+[ffi/heavy/500qps/4ch/rep2]     warmup 8.0s (ramped) + measure 20.0s @ 500 QPS (13200 scheduled requests, <= 128 in flight, uniform arrivals)
+[ffi/heavy/500qps/4ch/rep2] done: goodput 0.0 / achieved 61.6 / offered 500.0 QPS | p50 14481 p99 24280 ms | CPU 0.826 cores, 11.82 ms/q | errors 0 dropped 10000 flags [SPN]
+
+================================================================================================================================================================================
+OPEN-LOOP RESULTS (median of 3 rep(s); latency from scheduled send time, dropped requests censored at window close; CPU = client process + IPC sidecar)
+Flags: S=saturated  P=worker-pool cap hit  N=non-stationary
+================================================================================================================================================================================
+Workload   QPS  Ch Client            Goodput Achieved    p50 ms    p90 ms    p99 ms  p99.9 ms CPU cores   (cli+side)  CPU ms/q   vcs/q  Err   Drop Flags       p50 range  CPU ms/q range
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+point       10   1 python               10.0     10.0      7.23      7.86      9.50     10.81     0.035                   3.46    30.3    0      0     -       6.62-8.13       3.37-3.51
+point       10   1 ffi                  10.0     10.0      5.24      5.92      7.30      9.42     0.011                   1.09    16.3    0      0     -       5.20-5.69       1.05-1.11
+point       10   1 ipc                  10.0     10.0      5.83      7.08     10.47     11.65     0.012  0.005+0.007      1.16    18.9    0      0     -       5.39-6.12       1.14-1.26
+point       50   1 python               50.0     50.0      7.26      8.07     11.00     13.11     0.156                   3.11    26.9    0      0     -       6.68-7.70       3.05-3.22
+point       50   1 ffi                  50.0     50.0      5.19      5.91      8.71     11.03     0.050                   1.00    17.6    0      0     -       5.10-5.25       0.97-1.06
+point       50   1 ipc                  50.0     50.0      5.48      6.26     10.66     12.33     0.056  0.021+0.034      1.13    21.1    0      0     -       5.45-5.95       1.09-1.15
+point      100   1 python              100.0    100.0      6.17      6.93      8.11     10.79     0.260                   2.60    25.8    0      0     -       6.09-6.46       2.53-2.76
+point      100   1 ffi                 100.0    100.0      4.86      5.43      6.09      7.50     0.082                   0.82    17.2    0      0     -       4.24-5.54       0.81-0.83
+point      100   1 ipc                 100.0    100.0      4.56      5.28      6.18      9.94     0.084  0.030+0.053      0.84    19.6    0      0     -       4.51-4.84       0.83-0.95
+point      500   4 python              500.0    499.5      9.02     19.99     119.1     209.7     0.896                   1.80    15.1    0      0     -      7.83-10.48       1.77-1.87
+point      500   4 ffi                 500.0    500.0      4.47      5.38      7.75     37.97     0.257                   0.51    14.3    0      0     -       4.46-4.68       0.51-0.53
+point      500   4 ipc                 500.0    500.1      4.56      5.27      6.88     35.79     0.297  0.101+0.196      0.59    17.3    0      0     -       4.27-4.57       0.54-0.64
+heavy       10   1 python               10.0     10.0     25.58     59.82     65.56     67.58     0.199                  19.95    79.7    0      0     -     23.89-28.89     19.55-20.38
+heavy       10   1 ffi                  10.0     10.0     22.06     24.17     40.14     56.85     0.136                  13.58    94.2    0      0     -     21.93-22.81     13.57-13.81
+heavy       10   1 ipc                  10.0     10.0     23.86     26.60     55.91     59.40     0.142  0.020+0.123     14.22   151.9    0      0     -     23.39-25.28     14.18-14.49
+heavy       50   1 python               50.0     48.5     206.9     647.2     931.3      1176     0.973                  20.10    78.7    0      0   SPN     129.0-242.6     20.05-20.64
+heavy       50   1 ffi                  50.0     50.0     38.72     68.40     110.9     140.8     0.630                  12.69    81.1    0      0     -     36.15-41.02     12.62-12.87
+heavy       50   1 ipc                  50.0     50.0     30.07     45.03     112.9     156.8     0.663  0.096+0.568     13.33   110.6    0      0     -     29.71-30.68     13.19-13.38
+heavy      100   1 python               31.9     42.0      8823     13585     15831     16244     0.987                  23.54   211.8    0   4075   SPN       8715-8967     22.78-23.71
+heavy      100   1 ffi                  73.7     76.0      4260      6391      7328      8004     0.861                  11.27   151.1    0   1601   SPN       3574-5229     11.11-11.33
+heavy      100   1 ipc                  98.8     96.7      1145      1351      1526      1637     0.981  0.168+0.815     10.15    83.1    0     61   SPN      904.9-1231     10.02-10.25
+heavy      500   4 python                0.0     36.6     10254     18249     20049     20229     0.984                  26.88   298.7    0  29997   SPN     10176-10465     26.46-27.17
+heavy      500   4 ffi                  24.8     57.7     34937     43910     51091     53425     0.799                  17.27   453.6    0  28989   SPN     14481-46288     11.82-29.32
+heavy      500   4 ipc                   0.0     96.8     10476     18476     20275     20455     0.999  0.185+0.813     10.32    49.2    0  30000   SPN     10423-10552     10.14-10.38
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+FFI vs IPC (identical Go Shared Core; only the boundary differs).  top-waker = busiest-waking thread (FFI: client process; IPC: sidecar), voluntary context switches per query
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Workload   QPS IPC client       p50 FFI   p50 IPC   p99 FFI   p99 IPC  CPU/q FFI  CPU/q IPC  IPC CPU ovh  vcs/q FFI  vcs/q IPC  top-waker F/I    IPC B/q  hops/q  unmarshal us F/I    flags
+point       10 ipc                 5.24      5.83      7.30     10.47       1.09       1.16         6.8%       16.3       18.9        9.6/9.2       1229    1.00         42.1/43.0      -/-
+point       50 ipc                 5.19      5.48      8.71     10.66       1.00       1.13        12.2%       17.6       21.1      10.0/10.7       1229    1.00         39.0/42.2      -/-
+point      100 ipc                 4.86      4.56      6.09      6.18       0.82       0.84         1.8%       17.2       19.6       9.7/10.0       1229    1.00         34.1/35.5      -/-
+point      500 ipc                 4.47      4.56      7.75      6.88       0.51       0.59        15.5%       14.3       17.3        6.4/7.6       1229    1.00         26.1/26.3      -/-
+heavy       10 ipc                22.06     23.86     40.14     55.91      13.58      14.22         4.7%       94.2      151.9      70.2/87.6    1183929   34.00     6361.1/6486.5      -/-
+heavy       50 ipc                38.72     30.07     110.9     112.9      12.69      13.33         5.0%       81.1      110.6      60.1/58.4    1183929   33.89     6611.1/6380.6      -/-
+heavy      100 ipc                 4260      1145      7328      1526      11.27      10.15        -9.9%      151.1       83.1       36.2/3.4    1183929   33.97     5546.8/5051.0  SPN/SPN
+heavy      500 ipc                34937     10476     51091     20275      17.27      10.32       -40.3%      453.6       49.2       85.3/2.7    1183929   33.94     6291.5/5126.4  SPN/SPN
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vs pure Python (CPU ms/query; speedup = python CPU / client CPU; p50 latency)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+point       10  python 3.46 ms/q p50 7.23  |  ffi 1.09 ms/q (3.2x) p50 5.24  |  ipc 1.16 ms/q (3.0x) p50 5.83
+point       50  python 3.11 ms/q p50 7.26  |  ffi 1.00 ms/q (3.1x) p50 5.19  |  ipc 1.13 ms/q (2.8x) p50 5.48
+point      100  python 2.60 ms/q p50 6.17  |  ffi 0.82 ms/q (3.2x) p50 4.86  |  ipc 0.84 ms/q (3.1x) p50 4.56
+point      500  python 1.80 ms/q p50 9.02  |  ffi 0.51 ms/q (3.5x) p50 4.47  |  ipc 0.59 ms/q (3.0x) p50 4.56
+heavy       10  python 19.95 ms/q p50 25.58  |  ffi 13.58 ms/q (1.5x) p50 22.06  |  ipc 14.22 ms/q (1.4x) p50 23.86
+heavy       50  python 20.10 ms/q p50 206.9  |  ffi 12.69 ms/q (1.6x) p50 38.72  |  ipc 13.33 ms/q (1.5x) p50 30.07
+heavy      100  python 23.54 ms/q p50 8823  |  ffi 11.27 ms/q (2.1x) p50 4260  |  ipc 10.15 ms/q (2.3x) p50 1145
+heavy      500  python 26.88 ms/q p50 10254  |  ffi 17.27 ms/q (1.6x) p50 34937  |  ipc 10.32 ms/q (2.6x) p50 10476
+================================================================================================================================================================================
+
+[+] Results: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/open_loop_results/open_loop_results.json
+[+] Summary: /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/open_loop_results/open_loop_summary.md
