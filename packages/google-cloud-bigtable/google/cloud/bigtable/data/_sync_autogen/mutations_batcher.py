@@ -301,16 +301,14 @@ class MutationsBatcher:
         Raises:
             RuntimeError: if batcher is closed
             ValueError: if an invalid mutation type is added"""
-        if self._closed.is_set():
-            raise RuntimeError("Cannot append to closed MutationsBatcher")
-        if isinstance(cast(Mutation, mutation_entry), Mutation):
-            raise ValueError(
-                f"invalid mutation type: {type(mutation_entry).__name__}. Only RowMutationEntry objects are supported by batcher"
-            )
         should_flush = False
         with self._stage_lock:
             if self._closed.is_set():
                 raise RuntimeError("Cannot append to closed MutationsBatcher")
+            if isinstance(cast(Mutation, mutation_entry), Mutation):
+                raise ValueError(
+                    f"invalid mutation type: {type(mutation_entry).__name__}. Only RowMutationEntry objects are supported by batcher"
+                )
             self._staged_entries.append(mutation_entry)
             self._staged_count += len(mutation_entry.mutations)
             self._staged_bytes += mutation_entry.size()
@@ -449,24 +447,25 @@ class MutationsBatcher:
 
         Raises:
             MutationsExceptionGroup: exception group with all unreported exceptions"""
-        if self._oldest_exceptions or self._newest_exceptions:
-            oldest, self._oldest_exceptions = (self._oldest_exceptions, [])
-            newest = list(self._newest_exceptions)
-            self._newest_exceptions.clear()
-            entry_count, self._entries_processed_since_last_raise = (
-                self._entries_processed_since_last_raise,
-                0,
-            )
-            exc_count, self._exceptions_since_last_raise = (
-                self._exceptions_since_last_raise,
-                0,
-            )
-            raise MutationsExceptionGroup.from_truncated_lists(
-                first_list=oldest,
-                last_list=newest,
-                total_excs=exc_count,
-                entry_count=entry_count,
-            )
+        with self._stage_lock:
+            if self._oldest_exceptions or self._newest_exceptions:
+                oldest, self._oldest_exceptions = (self._oldest_exceptions, [])
+                newest = list(self._newest_exceptions)
+                self._newest_exceptions.clear()
+                entry_count, self._entries_processed_since_last_raise = (
+                    self._entries_processed_since_last_raise,
+                    0,
+                )
+                exc_count, self._exceptions_since_last_raise = (
+                    self._exceptions_since_last_raise,
+                    0,
+                )
+                raise MutationsExceptionGroup.from_truncated_lists(
+                    first_list=oldest,
+                    last_list=newest,
+                    total_excs=exc_count,
+                    entry_count=entry_count,
+                )
 
     def __enter__(self):
         """Allow use of context manager API"""
