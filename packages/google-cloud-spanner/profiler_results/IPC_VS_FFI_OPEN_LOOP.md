@@ -1,12 +1,13 @@
 # IPC vs FFI vs pure-Python: open-loop benchmark for the Spanner Go Shared Core
 
-This directory contains two ways to reach the same Go Shared Core from Python, plus the stock client:
+This directory contains three ways to reach the same Go Shared Core from Python, plus the stock client:
 
 | Client (`--clients`) | Boundary | Python entry | Go code that runs |
 | :-- | :-- | :-- | :-- |
 | `ffi` (unchanged) | In-process cgo call | `spanner_go_ext.execute_streaming_sql(handle, session, sql, param)` | `libspanner_go.so` → `ExecuteStreamingSqlSync` → `executeStreamingSqlInternal` → `buildCBatch` |
-| `ipc` (new, default) | Unix domain socket to a sidecar process | `spanner_ipc_ext.execute_streaming_sql(handle, session, sql, param)` | `spanner_ipc_server -lock-os-thread` → `executeStreamingSqlInternal` → `buildCBatch` (same code) |
-| `ipc_goroutine` (optional) | Same socket protocol | same as `ipc` | `spanner_ipc_server` running calls on plain goroutines |
+| `ipc` (Fast IPC, default) | Unix domain socket + C-extension (`spanner_ipc_ext.so`) + `CSpannerCell` binary arena | `spanner_ipc_ext.execute_streaming_sql(handle, session, sql, param)` | `spanner_ipc_server -lock-os-thread` → `executeStreamingSqlInternal` → `buildCBatch` (same code) |
+| `ipc_lowmaint` (Low-Maint IPC, default) | Unix domain socket + 100% pure-Python stdlib (`spanner_ipc_lowmaint.py`, zero C-extension / zero wheel binary) + UTF-8 JSON row batches | `spanner_ipc_lowmaint.execute_streaming_sql(handle, session, sql, param)` | `spanner_ipc_server` (`ipcOpExecuteLowMaint`) → `ipcExecuteStreamingSqlPureGo` → `ipcAppendJSONBatch` (100% pure Go, zero `C.malloc`/`unsafe`, lifeline pipe) |
+| `ipc_goroutine` (optional) | Same socket protocol as `ipc` | same as `ipc` | `spanner_ipc_server` running calls on plain goroutines |
 | `python` | none | stock `Snapshot.execute_sql` (GAPIC + grpcio + proto-plus) | – |
 | `python_nometrics` (optional) | none | same as `python` with `SPANNER_DISABLE_BUILTIN_METRICS=true` | – |
 | `null` (optional) | none | harness baseline: each request is a `sleep()`, no Spanner | – |
@@ -15,8 +16,9 @@ This directory contains two ways to reach the same Go Shared Core from Python, p
 
 | File | Purpose |
 | :-- | :-- |
-| [`spanner_go_core/ipc/spanner_ipc_server.go`](spanner_go_core/ipc/spanner_ipc_server.go) | Sidecar entry point (`//go:build spanner_ipc_server`, excluded from the FFI build). |
-| [`spanner_go_core/ipc/c_ext/spanner_ipc_ext.c`](spanner_go_core/ipc/c_ext/spanner_ipc_ext.c) | CPython abi3 IPC client; same call shape and row materialization as the FFI extension. |
+| [`spanner_go_core/ipc/spanner_ipc_server.go`](spanner_go_core/ipc/spanner_ipc_server.go) | Sidecar entry point (`//go:build spanner_ipc_server`, excluded from the FFI build). Supports both Fast IPC (`op=1`) and Low-Maint IPC (`op=11`). |
+| [`spanner_go_core/ipc/c_ext/spanner_ipc_ext.c`](spanner_go_core/ipc/c_ext/spanner_ipc_ext.c) | CPython abi3 IPC client for Fast IPC (`ipc`); same call shape and row materialization as the FFI extension. |
+| [`spanner_go_core/ipc/spanner_ipc_lowmaint.py`](spanner_go_core/ipc/spanner_ipc_lowmaint.py) | 100% pure-Python stdlib IPC client for Low-Maint IPC (`ipc_lowmaint`); zero C code, zero `.so` files in the Python wheel (`py3-none-any.whl`). |
 | [`spanner_go_core/build_ipc_core.sh`](spanner_go_core/build_ipc_core.sh) | Builds the IPC artifacts and verifies toolchain, module and function-level parity with `libspanner_go.so`. |
 | [`spanner_open_loop_benchmark.py`](spanner_open_loop_benchmark.py) | Open-loop benchmark, result parity check, per-thread CPU attribution. |
 
@@ -133,14 +135,25 @@ The Go core skips Python-side work that the stock client does:
 It also uses fixed 4/16 MiB flow-control windows without keepalive, while grpcio uses BDP-probed windows
 and a 120 s keepalive. Use `python_nometrics` to see the stock client without built-in metrics.
 
+## Low-Maintenance IPC (`ipc_lowmaint`) vs Fast IPC (`ipc`) vs FFI (`ffi`)
+
+`ipc_lowmaint` isolates what happens when we remove the maintenance burdens of FFI and Fast IPC:
+
+| Maintenance Dimension | `ffi` (cgo Shared Library) | `ipc` (Fast IPC) | `ipc_lowmaint` (Low-Maintenance IPC) |
+| :-- | :-- | :-- | :-- |
+| **Python Package Binary / Wheel Matrix** | Ships `libspanner_go.so` (21.3 MB) + `spanner_go_ext.so` (18 KB); platform-specific wheels required | Ships `spanner_ipc_ext.so` (27 KB) C-extension; platform-specific wheels or `gcc` + `Python.h` required | **100% pure Python (`py3-none-any.whl`)** — `0` lines of C, `0` `.so` files in the Python package, **0 KB wheel download size increase** |
+| **Cross-Boundary Memory Management** | `C.malloc` / `FreeSpannerBatch` across cgo; pointer bugs segfault Python | `C.malloc` / `C.free` inside sidecar + `CSpannerCell*` struct casting in C extension | **100% memory-safe** — zero `C.malloc`, zero `C.free`, zero `unsafe` in Go (`ipcExecuteStreamingSqlPureGo`); stdlib `json.loads()` on `bytearray` in Python |
+| **Debuggability & Profiling** | Go steals signal handlers; C/Go heap invisible to `tracemalloc` | C extension heap (`conn->rbuf`) invisible to `tracemalloc` | **100% standard tooling** — Python side is 100% visible to `tracemalloc`/`pdb`; Go sidecar is a pure-Go process with `pprof` |
+| **Lifecycle, `fork()` & Security** | Fatal hang if Python `fork()`s (`gunicorn`/`multiprocessing`) | Poll-based parent check; no `at_fork` cleanup; 16 MiB per-thread buffer retention | **Hardened** — instant kernel lifeline pipe (`-lifeline-fd`), `start_new_session=True`, `0700` dir + `0600` socket, `os.register_at_fork`, `<= 2 MiB` buffer cap, `defer recover()` |
+
 ## Running
 
 ```bash
 cd packages/google-cloud-spanner/profiler_results
-python3 spanner_open_loop_benchmark.py --smoke                                   # ~3-5 min sanity run
-python3 spanner_open_loop_benchmark.py                                           # python, ffi, ipc x point, heavy x 10/50/100/500 QPS
-python3 spanner_open_loop_benchmark.py --repeats 3 --clients python,ffi,ipc,ipc_goroutine
-python3 spanner_open_loop_benchmark.py --clients ffi,ipc --workloads heavy --qps 50,100 --duration 30 --go-pprof
+python3 spanner_open_loop_benchmark.py --smoke                                   # ~3-5 min sanity run (python, ffi, ipc, ipc_lowmaint)
+python3 spanner_open_loop_benchmark.py                                           # python, ffi, ipc, ipc_lowmaint x point, heavy x 10/50/100/500 QPS
+python3 spanner_open_loop_benchmark.py --repeats 3 --clients python,ffi,ipc,ipc_lowmaint
+python3 spanner_open_loop_benchmark.py --clients ffi,ipc,ipc_lowmaint --workloads heavy --qps 50,100 --duration 30 --go-pprof
 ```
 
 Results go to `open_loop_results/`: `open_loop_results.json` (per-run and aggregated metrics),

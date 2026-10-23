@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Builds the IPC flow of the Spanner Go Shared Core prototype:
-#   ipc/spanner_ipc_server   - Go sidecar executable (serves ExecuteStreamingSql over AF_UNIX)
-#   ipc/spanner_ipc_ext.so   - CPython abi3 client extension for the sidecar
+# Builds the IPC flows of the Spanner Go Shared Core prototype:
+#   ipc/spanner_ipc_server      - Go sidecar executable (serves ExecuteStreamingSql over AF_UNIX)
+#   ipc/spanner_ipc_ext.so      - CPython abi3 client extension for the Fast IPC flow
+#   ipc/spanner_ipc_lowmaint.py - Pure-Python stdlib client for the Low-Maintenance IPC flow
 #
 # The FFI flow is NOT touched: libspanner_go.so, spanner_go_ext.so, c_ext/spanner_go_ext.c and the
 # shared-core Go sources are only read. The sidecar is compiled from a temporary staged copy of the
@@ -60,7 +61,7 @@ echo "[*] Building ipc/spanner_ipc_server (-buildmode=pie, -tags spanner_ipc_ser
 echo "[+] Built $IPC_DIR/spanner_ipc_server"
 
 # 4. Record which sources the IPC artifacts were built from (content hashes, checked by the benchmark).
-(cd "$SCRIPT_DIR" && sha256sum "${CORE_SOURCES[@]}" go.mod go.sum ipc/spanner_ipc_server.go ipc/c_ext/spanner_ipc_ext.c) \
+(cd "$SCRIPT_DIR" && sha256sum "${CORE_SOURCES[@]}" go.mod go.sum ipc/spanner_ipc_server.go ipc/c_ext/spanner_ipc_ext.c ipc/spanner_ipc_lowmaint.py) \
     > "$IPC_DIR/ipc_build_sources.sha256"
 
 # 5. Build the CPython abi3 IPC client extension with the same compiler flags as spanner_go_ext.so.

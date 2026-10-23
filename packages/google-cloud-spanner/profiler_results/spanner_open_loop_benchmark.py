@@ -10,9 +10,12 @@ run in a fresh process:
   python           : stock Python client (GAPIC + grpcio + proto-plus + StreamedResultSet), N channels
   python_nometrics : same, with SPANNER_DISABLE_BUILTIN_METRICS=true (optional)
   ffi              : Snapshot.execute_sql -> spanner_go_ext (UNCHANGED in-process cgo FFI flow)
-  ipc              : Snapshot.execute_sql -> spanner_ipc_ext (AF_UNIX) -> Go Shared Core sidecar whose
-                     calls run on locked OS threads, like the FFI cgo callback (default IPC client)
-  ipc_goroutine    : same sidecar using plain goroutines (optional)
+  ipc              : Snapshot.execute_sql -> spanner_ipc_ext (AF_UNIX C-extension + CSpannerCell binary arena) ->
+                     Go Shared Core sidecar (Fast IPC)
+  ipc_lowmaint     : Snapshot.execute_sql -> spanner_ipc_lowmaint (100% pure-Python stdlib socket + json.loads,
+                     zero C-extension / zero wheel binary) -> Go Shared Core sidecar (100% pure-Go execution +
+                     zero-reflection UTF-8 JSON wire format, zero C.malloc/unsafe, lifeline pipe)
+  ipc_goroutine    : Fast IPC sidecar using plain goroutines (optional)
   null             : harness-overhead baseline, no Spanner (optional)
 
 FFI and IPC run byte-identical Go Shared Core code (same sources, toolchain and module versions; see
@@ -86,16 +89,17 @@ DATABASE = os.environ.get("SPANNER_BENCH_DATABASE", "benchmark_db_async")
 TABLE = os.environ.get("SPANNER_BENCH_TABLE", "AsyncBenchmarkTable")
 POINT_SELECT_SQL = f"SELECT * FROM {TABLE} WHERE id = @id"
 
-CLIENTS = ("python", "python_nometrics", "ffi", "ipc", "ipc_goroutine", "null")
-DEFAULT_CLIENTS = ("python", "ffi", "ipc")
-IPC_CLIENTS = ("ipc", "ipc_goroutine")
+CLIENTS = ("python", "python_nometrics", "ffi", "ipc", "ipc_lowmaint", "ipc_goroutine", "null")
+DEFAULT_CLIENTS = ("python", "ffi", "ipc", "ipc_lowmaint")
+IPC_CLIENTS = ("ipc", "ipc_lowmaint", "ipc_goroutine")
 SPANNER_FREE_CLIENTS = ("null",)
 CLIENT_LABELS = {
     "python": "Pure Python (stock client)",
     "python_nometrics": "Pure Python, built-in metrics disabled",
     "ffi": "Go core FFI (unchanged)",
-    "ipc": "Go core IPC (sidecar, locked-thread calls)",
-    "ipc_goroutine": "Go core IPC (sidecar, plain goroutines)",
+    "ipc": "Go core Fast IPC (C-ext + CSpannerCell arena)",
+    "ipc_lowmaint": "Go core Low-Maint IPC (pure-Py stdlib + pure-Go JSON)",
+    "ipc_goroutine": "Go core Fast IPC (sidecar, plain goroutines)",
     "null": "Harness baseline (sleep only, no Spanner)",
 }
 WORKLOADS = ("point", "heavy")
@@ -344,6 +348,12 @@ def load_ipc_ext():
     return spanner_ipc_ext
 
 
+def load_ipc_lowmaint():
+    import spanner_ipc_lowmaint  # noqa: WPS433
+
+    return spanner_ipc_lowmaint
+
+
 # =============================================================================================
 # Workloads (identical for every client)
 # =============================================================================================
@@ -559,14 +569,17 @@ def attach_pooled_spanner_api(database, channel_count):
 # IPC sidecar process
 # =============================================================================================
 class IpcSidecar:
-    def __init__(self, sockbuf, log_path, lock_os_thread=True):
+    def __init__(self, sockbuf, log_path, lock_os_thread=True, use_lifeline_pipe=False):
         self.sockbuf = int(sockbuf)
         self.lock_os_thread = bool(lock_os_thread)
+        self.use_lifeline_pipe = bool(use_lifeline_pipe)
         self.log_path = log_path
         self.tmpdir = tempfile.mkdtemp(prefix="spanner_ipc_")
+        os.chmod(self.tmpdir, 0o700)
         self.socket_path = os.path.join(self.tmpdir, "core.sock")
         self.proc = None
         self._log = None
+        self._lifeline_w = None
 
     def start(self, ipc_ext, timeout_s=30.0):
         os.makedirs(os.path.dirname(self.log_path) or ".", exist_ok=True)
@@ -575,8 +588,27 @@ class IpcSidecar:
                "-parent-pid", str(os.getpid())]
         if self.lock_os_thread:
             cmd.append("-lock-os-thread")
-        self.proc = subprocess.Popen(cmd, stdout=self._log, stderr=subprocess.STDOUT, env=os.environ.copy(),
-                                     close_fds=True)
+        pass_fds = ()
+        r_fd = None
+        if self.use_lifeline_pipe:
+            r_fd, w_fd = os.pipe()
+            self._lifeline_w = w_fd
+            cmd.extend(["-lifeline-fd", str(r_fd)])
+            pass_fds = (r_fd,)
+        try:
+            self.proc = subprocess.Popen(
+                cmd,
+                stdout=self._log,
+                stderr=subprocess.STDOUT,
+                env=os.environ.copy(),
+                close_fds=True,
+                pass_fds=pass_fds,
+                start_new_session=self.use_lifeline_pipe,
+            )
+        finally:
+            if r_fd is not None:
+                with contextlib.suppress(OSError):
+                    os.close(r_fd)
         deadline = time.monotonic() + timeout_s
         while time.monotonic() < deadline:
             if self.proc.poll() is not None:
@@ -590,6 +622,10 @@ class IpcSidecar:
         if self.proc is not None and self.proc.poll() is None:
             with contextlib.suppress(Exception):
                 ipc_ext.shutdown_server(self.socket_path)
+            if self._lifeline_w is not None:
+                with contextlib.suppress(OSError):
+                    os.close(self._lifeline_w)
+                self._lifeline_w = None
             try:
                 self.proc.wait(timeout=5)
             except subprocess.TimeoutExpired:
@@ -598,6 +634,10 @@ class IpcSidecar:
                     self.proc.wait(timeout=5)
                 except subprocess.TimeoutExpired:
                     self.proc.kill()
+        if self._lifeline_w is not None:
+            with contextlib.suppress(OSError):
+                os.close(self._lifeline_w)
+            self._lifeline_w = None
         if self._log:
             self._log.close()
         shutil.rmtree(self.tmpdir, ignore_errors=True)
@@ -730,17 +770,21 @@ class FfiFlow:
 
 
 class IpcFlow:
-    """IPC client. lock_os_thread=True (client 'ipc') runs every Go Shared Core call in the sidecar on
-    a goroutine locked to its OS thread, like the FFI cgo callback goroutine. lock_os_thread=False
-    (client 'ipc_goroutine') is the natural plain-goroutine sidecar."""
+    """IPC client.
+    - 'ipc' (Fast IPC): C-extension client (`spanner_ipc_ext.so`) + CSpannerCell binary arena over AF_UNIX.
+    - 'ipc_lowmaint' (Low-Maint IPC): 100% pure-Python stdlib client (`spanner_ipc_lowmaint.py`, zero C-extension /
+      zero wheel binary) + 100% pure-Go sidecar path (zero C.malloc/unsafe, UTF-8 JSON row batches) + lifeline pipe.
+    - 'ipc_goroutine': Fast IPC sidecar using plain goroutines (`lock_os_thread=False`).
+    """
 
     name = "ipc"
 
-    def __init__(self, database, channels, sockbuf=0, log_path=None, lock_os_thread=True, **_):
+    def __init__(self, database, channels, sockbuf=0, log_path=None, lock_os_thread=True, low_maint=False, **_):
         self.database = database
         self.channels = channels
         self.sockbuf = sockbuf
         self.lock_os_thread = lock_os_thread
+        self.low_maint = bool(low_maint)
         self.log_path = log_path or os.path.join(tempfile.gettempdir(), "spanner_ipc_server.log")
         self.ipc = None
         self.sidecar = None
@@ -749,8 +793,13 @@ class IpcFlow:
         self._hook = None
 
     def start(self):
-        self.ipc = load_ipc_ext()
-        self.sidecar = IpcSidecar(self.sockbuf, self.log_path, lock_os_thread=self.lock_os_thread)
+        self.ipc = load_ipc_lowmaint() if self.low_maint else load_ipc_ext()
+        self.sidecar = IpcSidecar(
+            self.sockbuf,
+            self.log_path,
+            lock_os_thread=self.lock_os_thread,
+            use_lifeline_pipe=self.low_maint,
+        )
         self.sidecar.start(self.ipc)
         session_name = extract_multiplexed_session_name(self.database)
         self.handle = self.ipc.open_client(self.sidecar.socket_path, self.channels, self.sockbuf)
@@ -818,8 +867,9 @@ FLOWS = {
     "python": PythonFlow,
     "python_nometrics": PythonFlow,
     "ffi": FfiFlow,
-    "ipc": functools.partial(IpcFlow, lock_os_thread=True),
-    "ipc_goroutine": functools.partial(IpcFlow, lock_os_thread=False),
+    "ipc": functools.partial(IpcFlow, lock_os_thread=True, low_maint=False),
+    "ipc_lowmaint": functools.partial(IpcFlow, lock_os_thread=False, low_maint=True),
+    "ipc_goroutine": functools.partial(IpcFlow, lock_os_thread=False, low_maint=False),
     "null": NullFlow,
 }
 
@@ -1100,34 +1150,43 @@ def run_worker(args):
 
 
 # =============================================================================================
-# Parity check (FFI vs IPC rows identical; Python rows equal after str normalization) + RTT probe
+# Parity check (FFI vs IPC vs Low-Maint IPC rows identical; Python rows equal after str normalization) + RTT probe
 # =============================================================================================
 def run_parity(args):
     from google.cloud import spanner
     from google.cloud.spanner_v1 import param_types
 
-    print("[parity] verifying FFI vs IPC vs pure-Python results ...", flush=True)
+    print("[parity] verifying FFI vs Fast IPC vs Low-Maint IPC vs pure-Python results ...", flush=True)
     database = spanner.Client(project=PROJECT).instance(INSTANCE).database(DATABASE)
     go_ext = load_ffi_ext()
     ipc = load_ipc_ext()
-    sidecar = IpcSidecar(args.ipc_sockbuf, os.path.join(args.output_dir, "runs", "sidecar_parity.log"), lock_os_thread=True)
+    ipc_lm = load_ipc_lowmaint()
+    sidecar = IpcSidecar(
+        args.ipc_sockbuf,
+        os.path.join(args.output_dir, "runs", "sidecar_parity.log"),
+        lock_os_thread=True,
+        use_lifeline_pipe=True,
+    )
     sidecar.start(ipc)
     report = {"ok": False}
-    cid = handle = None
+    cid = handle = handle_lm = None
     try:
         session_name = extract_multiplexed_session_name(database)
         cid = go_ext.init_client(1)
         handle = ipc.open_client(sidecar.socket_path, 1, args.ipc_sockbuf)
+        handle_lm = ipc_lm.open_client(sidecar.socket_path, 1, args.ipc_sockbuf)
         report["sidecar_info"] = json.loads(ipc.server_info(handle))
 
         ids = [f"user-{i}" for i in range(20)]
-        point_mismatch, rtts = [], []
+        point_mismatch, point_lm_mismatch, rtts = [], [], []
         for uid in ids:
             t = time.perf_counter()
             a = go_ext.execute_streaming_sql(cid, session_name, POINT_SELECT_SQL, uid)
             rtts.append(time.perf_counter() - t)
             if a != ipc.execute_streaming_sql(handle, session_name, POINT_SELECT_SQL, uid):
                 point_mismatch.append(uid)
+            if a != ipc_lm.execute_streaming_sql(handle_lm, session_name, POINT_SELECT_SQL, uid):
+                point_lm_mismatch.append(uid)
         ordered_heavy = f"SELECT * FROM {TABLE} ORDER BY id LIMIT {int(args.heavy_limit)}"
         ffi_heavy = go_ext.execute_streaming_sql(cid, session_name, ordered_heavy, "")
         ipc.reset_client_stats()
@@ -1136,6 +1195,13 @@ def run_parity(args):
         ipc.reset_client_stats()
         ipc_point = ipc.execute_streaming_sql(handle, session_name, POINT_SELECT_SQL, "user-1")
         point_stats = ipc.client_stats()
+
+        ipc_lm.reset_client_stats()
+        lm_heavy = ipc_lm.execute_streaming_sql(handle_lm, session_name, ordered_heavy, "")
+        lm_heavy_stats = ipc_lm.client_stats()
+        ipc_lm.reset_client_stats()
+        lm_point = ipc_lm.execute_streaming_sql(handle_lm, session_name, POINT_SELECT_SQL, "user-1")
+        lm_point_stats = ipc_lm.client_stats()
 
         def norm(rows):
             return [[None if v is None else str(v) for v in row] for row in rows]
@@ -1149,35 +1215,55 @@ def run_parity(args):
             hooked_ffi = run_heavy_read_query_sync(database, ordered_heavy)
         with go_core_snapshot_hook(functools.partial(ipc.execute_streaming_sql, handle), session_name):
             hooked_ipc = run_heavy_read_query_sync(database, ordered_heavy)
+        with go_core_snapshot_hook(functools.partial(ipc_lm.execute_streaming_sql, handle_lm), session_name):
+            hooked_lm = run_heavy_read_query_sync(database, ordered_heavy)
 
         report.update(
             {
                 "point_ids_checked": len(ids),
                 "point_ffi_vs_ipc_mismatches": point_mismatch,
-                "heavy_rows": {"ffi": len(ffi_heavy), "ipc": len(ipc_heavy), "python": len(py_heavy)},
+                "point_ffi_vs_ipc_lowmaint_mismatches": point_lm_mismatch,
+                "heavy_rows": {
+                    "ffi": len(ffi_heavy),
+                    "ipc": len(ipc_heavy),
+                    "ipc_lowmaint": len(lm_heavy),
+                    "python": len(py_heavy),
+                },
                 "heavy_ffi_equals_ipc": ffi_heavy == ipc_heavy,
+                "heavy_ffi_equals_ipc_lowmaint": ffi_heavy == lm_heavy,
                 "heavy_python_equals_go_core_str_normalized": norm(py_heavy) == norm(ffi_heavy),
-                "point_python_equals_go_core_str_normalized": norm(py_point) == norm(ipc_point),
-                "hooked_snapshot_rows": {"ffi": hooked_ffi, "ipc": hooked_ipc},
+                "point_python_equals_go_core_str_normalized": (
+                    norm(py_point) == norm(ipc_point) == norm(lm_point)
+                ),
+                "hooked_snapshot_rows": {"ffi": hooked_ffi, "ipc": hooked_ipc, "ipc_lowmaint": hooked_lm},
                 "ipc_heavy_bytes": heavy_stats[2],
                 "ipc_heavy_recv_hops": heavy_stats[4],
                 "ipc_point_bytes": point_stats[2],
                 "ipc_point_recv_hops": point_stats[4],
+                "ipc_lowmaint_heavy_bytes": lm_heavy_stats[2],
+                "ipc_lowmaint_heavy_recv_hops": lm_heavy_stats[4],
+                "ipc_lowmaint_point_bytes": lm_point_stats[2],
+                "ipc_lowmaint_point_recv_hops": lm_point_stats[4],
                 "point_rtt_ms_min": min(rtts) * 1e3,
                 "point_rtt_ms_median": statistics.median(rtts) * 1e3,
             }
         )
         report["ok"] = bool(
             not point_mismatch
+            and not point_lm_mismatch
             and report["heavy_ffi_equals_ipc"]
+            and report["heavy_ffi_equals_ipc_lowmaint"]
             and report["heavy_python_equals_go_core_str_normalized"]
             and report["point_python_equals_go_core_str_normalized"]
-            and hooked_ffi == hooked_ipc == len(ffi_heavy) == len(py_heavy)
+            and hooked_ffi == hooked_ipc == hooked_lm == len(ffi_heavy) == len(py_heavy)
         )
     except Exception as exc:  # noqa: BLE001
         report["error"] = f"{type(exc).__name__}: {exc}"
         report["traceback"] = traceback.format_exc()
     finally:
+        with contextlib.suppress(Exception):
+            if handle_lm:
+                ipc_lm.close_client(handle_lm)
         with contextlib.suppress(Exception):
             if handle:
                 ipc.close_client(handle)
@@ -1249,7 +1335,8 @@ AGG_FIELDS = [
     "latency_ms.max", "cpu.cores_used", "cpu.client_cores", "cpu.server_cores", "cpu.ms_per_query",
     "cpu.client_ms_per_query", "cpu.server_ms_per_query", "cpu.vol_ctx_switches_per_query",
     "cpu.client_vol_ctx_switches_per_query", "cpu.server_vol_ctx_switches_per_query", "ipc.bytes_recv_per_query",
-    "ipc.recv_hops_per_query", "go_core.proto_unmarshal_us_per_call", "python_decode_us_per_call", "rows_per_query",
+    "ipc.recv_hops_per_query", "go_core.proto_unmarshal_us_per_call", "go_core.arena_encode_us_per_call",
+    "python_decode_us_per_call", "rows_per_query",
     "threads.client.top_waker_vol_cs_per_query", "threads.client.top_waker_cpu_us_per_vol_cs",
     "threads.sidecar.top_waker_vol_cs_per_query", "threads.sidecar.top_waker_cpu_us_per_vol_cs",
 ]
@@ -1339,7 +1426,7 @@ def vs_python_rows(agg):
             if not base:
                 continue
             row = {"workload": w, "qps": q, "python": base}
-            for c in ("python_nometrics", "ffi", "ipc", "ipc_goroutine"):
+            for c in ("python_nometrics", "ffi", "ipc", "ipc_lowmaint", "ipc_goroutine"):
                 row[c] = idx.get((w, q, c))
             rows.append(row)
     return rows
@@ -1401,7 +1488,7 @@ def print_report(agg, repeats):
         print("-" * width)
         for row in vrows:
             parts = []
-            for c in ("python_nometrics", "ffi", "ipc", "ipc_goroutine"):
+            for c in ("python_nometrics", "ffi", "ipc", "ipc_lowmaint", "ipc_goroutine"):
                 r = row.get(c)
                 if r:
                     cp, cc = row["python"]["cpu"]["ms_per_query"], r["cpu"]["ms_per_query"]
@@ -1693,7 +1780,7 @@ def run_orchestrator(args):
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--clients", default=",".join(DEFAULT_CLIENTS),
-                   help="Comma list of " + ",".join(CLIENTS) + " (default: python,ffi,ipc)")
+                   help="Comma list of " + ",".join(CLIENTS) + " (default: python,ffi,ipc,ipc_lowmaint)")
     p.add_argument("--workloads", default=",".join(WORKLOADS), help="Comma list of point,heavy (default: both)")
     p.add_argument("--qps", default=",".join(str(q) for q in DEFAULT_QPS), help="Offered QPS levels (default: 10,50,100,500)")
     p.add_argument("--duration", type=float, default=20.0, help="Measurement window per run in seconds (default 20)")

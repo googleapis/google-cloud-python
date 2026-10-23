@@ -51,11 +51,19 @@ import (
 	"os/signal"
 	"runtime"
 	"runtime/debug"
+	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"syscall"
 	"time"
 	"unsafe"
+
+	spannerpb "cloud.google.com/go/spanner/apiv1/spannerpb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 const (
@@ -65,24 +73,28 @@ const (
 	ipcRespHdrSize        = 48
 	ipcMaxBody            = 16 << 20
 
-	ipcOpExecute    uint16 = 1
-	ipcOpInit       uint16 = 2
-	ipcOpClose      uint16 = 3
-	ipcOpStats      uint16 = 4
-	ipcOpResetStats uint16 = 5
-	ipcOpPing       uint16 = 6
-	ipcOpShutdown   uint16 = 7
-	ipcOpProfStart  uint16 = 8
-	ipcOpProfStop   uint16 = 9
-	ipcOpInfo       uint16 = 10
+	ipcOpExecute         uint16 = 1
+	ipcOpInit            uint16 = 2
+	ipcOpClose           uint16 = 3
+	ipcOpStats           uint16 = 4
+	ipcOpResetStats      uint16 = 5
+	ipcOpPing            uint16 = 6
+	ipcOpShutdown        uint16 = 7
+	ipcOpProfStart       uint16 = 8
+	ipcOpProfStop        uint16 = 9
+	ipcOpInfo            uint16 = 10
+	ipcOpExecuteLowMaint uint16 = 11 // Low-maintenance pure-Go JSON flow (zero C.malloc/unsafe, plain goroutines)
 
 	ipcStatusProtocolError int32 = -1
 	ipcStatusInitFailed    int32 = -2
 	ipcStatusUnsupported   int32 = -3
+	ipcStatusPanic         int32 = -4
 
 	// Must match CellKind / CSpannerBatch.format in main.go's cgo preamble.
 	ipcCellKindString         = 3
 	ipcBatchFormatNativeCells = 1
+
+	ipcHex = "0123456789abcdef"
 )
 
 var (
@@ -91,7 +103,302 @@ var (
 	ipcListener     *net.UnixListener
 	ipcClosing      atomic.Bool
 	ipcShutdownOnce sync.Once
+	ipcJSONBufPool  = sync.Pool{
+		New: func() interface{} {
+			b := make([]byte, 0, 4096)
+			return &b
+		},
+	}
 )
+
+func ipcAppendJSONString(dst []byte, s string) []byte {
+	dst = append(dst, '"')
+	start := 0
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		if c >= 0x20 && c != '"' && c != '\\' {
+			continue
+		}
+		if start < i {
+			dst = append(dst, s[start:i]...)
+		}
+		switch c {
+		case '"', '\\':
+			dst = append(dst, '\\', c)
+		case '\b':
+			dst = append(dst, '\\', 'b')
+		case '\f':
+			dst = append(dst, '\\', 'f')
+		case '\n':
+			dst = append(dst, '\\', 'n')
+		case '\r':
+			dst = append(dst, '\\', 'r')
+		case '\t':
+			dst = append(dst, '\\', 't')
+		default:
+			dst = append(dst, '\\', 'u', '0', '0', ipcHex[c>>4], ipcHex[c&0x0f])
+		}
+		start = i + 1
+	}
+	if start < len(s) {
+		dst = append(dst, s[start:]...)
+	}
+	return append(dst, '"')
+}
+
+func ipcAppendJSONValue(dst []byte, val *structpb.Value, fieldType *spannerpb.Type) []byte {
+	if val == nil {
+		return append(dst, "null"...)
+	}
+	switch k := val.Kind.(type) {
+	case *structpb.Value_NullValue:
+		return append(dst, "null"...)
+	case *structpb.Value_BoolValue:
+		if k.BoolValue {
+			return append(dst, "true"...)
+		}
+		return append(dst, "false"...)
+	case *structpb.Value_NumberValue:
+		return strconv.AppendFloat(dst, k.NumberValue, 'f', -1, 64)
+	case *structpb.Value_StringValue:
+		return ipcAppendJSONString(dst, k.StringValue)
+	case *structpb.Value_ListValue:
+		if k.ListValue == nil {
+			return append(dst, "[]"...)
+		}
+		var elemType *spannerpb.Type
+		if fieldType != nil {
+			elemType = fieldType.ArrayElementType
+		}
+		dst = append(dst, '[')
+		for i, v := range k.ListValue.Values {
+			if i > 0 {
+				dst = append(dst, ',')
+			}
+			dst = ipcAppendJSONValue(dst, v, elemType)
+		}
+		return append(dst, ']')
+	case *structpb.Value_StructValue:
+		if k.StructValue == nil {
+			return append(dst, "{}"...)
+		}
+		dst = append(dst, '{')
+		first := true
+		if fieldType != nil && fieldType.StructType != nil {
+			for _, f := range fieldType.StructType.Fields {
+				if !first {
+					dst = append(dst, ',')
+				}
+				first = false
+				dst = ipcAppendJSONString(dst, f.Name)
+				dst = append(dst, ':')
+				if v, ok := k.StructValue.Fields[f.Name]; ok {
+					dst = ipcAppendJSONValue(dst, v, f.Type)
+				} else {
+					dst = append(dst, "null"...)
+				}
+			}
+		} else {
+			for fName, fVal := range k.StructValue.Fields {
+				if !first {
+					dst = append(dst, ',')
+				}
+				first = false
+				dst = ipcAppendJSONString(dst, fName)
+				dst = append(dst, ':')
+				dst = ipcAppendJSONValue(dst, fVal, nil)
+			}
+		}
+		return append(dst, '}')
+	default:
+		return append(dst, "null"...)
+	}
+}
+
+func ipcAppendJSONBatch(dst []byte, batch [][]*structpb.Value, rowType []*spannerpb.StructType_Field) []byte {
+	dst = append(dst, '[')
+	for r, row := range batch {
+		if r > 0 {
+			dst = append(dst, ',')
+		}
+		dst = append(dst, '[')
+		for c, val := range row {
+			if c > 0 {
+				dst = append(dst, ',')
+			}
+			var ft *spannerpb.Type
+			if c < len(rowType) {
+				ft = rowType[c].Type
+			}
+			dst = ipcAppendJSONValue(dst, val, ft)
+		}
+		dst = append(dst, ']')
+	}
+	return append(dst, ']')
+}
+
+// ipcExecuteStreamingSqlPureGo executes the exact same Spanner gRPC stream, retry loop, and
+// chunk assembly as executeStreamingSqlInternal, but encodes the result batch into pure-Go JSON
+// bytes (dst) with zero C.malloc, zero C.free, and zero unsafe pointers.
+func ipcExecuteStreamingSqlPureGo(
+	handle uintptr,
+	sessionStr string,
+	sqlStr string,
+	paramIdStr string,
+	dst []byte,
+) (jsonOut []byte, rowCount int, colCount int, attemptCount int, errCode int, errMsg string) {
+	client := getClient(handle)
+	if client == nil {
+		return dst[:0], 0, 0, 1, int(codes.InvalidArgument), "Invalid or closed CoreClient handle"
+	}
+
+	dbPrefix := sessionStr
+	if idx := strings.Index(sessionStr, "/sessions/"); idx != -1 {
+		dbPrefix = sessionStr[:idx]
+	}
+
+	var lastResumeToken []byte
+	var rowType []*spannerpb.StructType_Field
+	var pendingValue *structpb.Value
+	var currentRow []*structpb.Value
+	batch := make([][]*structpb.Value, 0, 16)
+
+	for {
+		attemptCount++
+		token, err := client.GetToken()
+		if err != nil {
+			return dst[:0], 0, 0, attemptCount, int(codes.Unauthenticated), fmt.Sprintf("Failed to get GCP auth token: %v", err)
+		}
+
+		tReq0 := goThreadCPUTimeNs()
+		req := spannerpb.ExecuteSqlRequest{
+			Session: sessionStr,
+			Sql:     sqlStr,
+		}
+		if paramIdStr != "" {
+			req.Params = &structpb.Struct{
+				Fields: map[string]*structpb.Value{
+					"id": structpb.NewStringValue(paramIdStr),
+				},
+			}
+			req.ParamTypes = map[string]*spannerpb.Type{
+				"id": {Code: spannerpb.TypeCode_STRING},
+			}
+		}
+		if len(lastResumeToken) > 0 {
+			req.ResumeToken = lastResumeToken
+		}
+
+		md := metadata.Pairs(
+			"google-cloud-resource-prefix", dbPrefix,
+			"x-goog-request-params", "session="+sessionStr,
+		)
+		if token != nil && token.AccessToken != "" {
+			md.Set("authorization", "Bearer "+token.AccessToken)
+		}
+
+		ctx := metadata.NewOutgoingContext(client.ctx, md)
+		tReq1 := goThreadCPUTimeNs()
+		if tReq1 >= tReq0 {
+			atomic.AddUint64(&statReqBuildNs, tReq1-tReq0)
+		}
+
+		stream, err := client.ExecuteStreamingSql(ctx, &req)
+		if err != nil {
+			st, _ := status.FromError(err)
+			if (st.Code() == codes.Unavailable || st.Code() == codes.Internal) && len(lastResumeToken) > 0 {
+				continue
+			}
+			return dst[:0], 0, 0, attemptCount, int(st.Code()), st.Message()
+		}
+
+		shouldRetry := false
+		for {
+			chunk, err := stream.Recv()
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				st, _ := status.FromError(err)
+				if (st.Code() == codes.Unavailable || st.Code() == codes.Internal) && len(lastResumeToken) > 0 {
+					shouldRetry = true
+					break
+				}
+				return dst[:0], 0, 0, attemptCount, int(st.Code()), st.Message()
+			}
+
+			tAsm0 := goThreadCPUTimeNs()
+			atomic.AddUint64(&statChunkCount, 1)
+
+			if len(chunk.ResumeToken) > 0 {
+				lastResumeToken = chunk.ResumeToken
+			}
+			if rowType == nil && chunk.Metadata != nil && chunk.Metadata.RowType != nil {
+				rowType = chunk.Metadata.RowType.Fields
+			}
+
+			numFields := len(rowType)
+			vals := chunk.Values
+
+			if pendingValue != nil {
+				if len(vals) > 0 {
+					first := vals[0]
+					vals = vals[1:]
+					merged := mergeProtoValues(pendingValue, first)
+					pendingValue = nil
+					currentRow = append(currentRow, merged)
+					if numFields > 0 && len(currentRow) == numFields {
+						batch = append(batch, currentRow)
+						currentRow = make([]*structpb.Value, 0, numFields)
+					}
+				}
+			}
+
+			if chunk.ChunkedValue && len(vals) > 0 {
+				pendingValue = vals[len(vals)-1]
+				vals = vals[:len(vals)-1]
+			}
+
+			for _, val := range vals {
+				currentRow = append(currentRow, val)
+				if numFields > 0 && len(currentRow) == numFields {
+					batch = append(batch, currentRow)
+					currentRow = make([]*structpb.Value, 0, numFields)
+				}
+			}
+			tAsm1 := goThreadCPUTimeNs()
+			if tAsm1 >= tAsm0 {
+				atomic.AddUint64(&statChunkAssembleNs, tAsm1-tAsm0)
+			}
+		}
+
+		if shouldRetry {
+			continue
+		}
+
+		tEnc0 := goThreadCPUTimeNs()
+		if pendingValue != nil {
+			currentRow = append(currentRow, pendingValue)
+			pendingValue = nil
+		}
+		if len(currentRow) > 0 {
+			batch = append(batch, currentRow)
+			currentRow = nil
+		}
+
+		rowCount = len(batch)
+		if rowCount > 0 {
+			colCount = len(batch[0])
+		}
+		jsonOut = ipcAppendJSONBatch(dst[:0], batch, rowType)
+		tEnc1 := goThreadCPUTimeNs()
+		if tEnc1 >= tEnc0 {
+			atomic.AddUint64(&statArenaEncodeNs, tEnc1-tEnc0)
+		}
+		atomic.AddUint64(&statCallCount, 1)
+		return jsonOut, rowCount, colCount, attemptCount, 0, ""
+	}
+}
 
 func ipcPutRespHeader(h []byte, op uint16, status, rows, cols, attempts int32,
 	cellsBytes, arenaBytes uint64, extraBytes, cellSize uint32) {
@@ -138,6 +445,12 @@ func ipcServeConn(conn *net.UnixConn) {
 	var reqHdr [ipcReqHdrSize]byte
 	respHdr := make([]byte, ipcRespHdrSize)
 	var body []byte
+	defer func() {
+		if r := recover(); r != nil {
+			msg := fmt.Sprintf("Spanner Go IPC sidecar recovered panic: %v", r)
+			_ = ipcWriteSimple(conn, respHdr, 0, ipcStatusPanic, []byte(msg))
+		}
+	}()
 
 	for {
 		if _, err := io.ReadFull(br, reqHdr[:]); err != nil {
@@ -235,6 +548,35 @@ func ipcServeConn(conn *net.UnixConn) {
 			}
 			FreeSpannerBatch(batch)
 
+		case ipcOpExecuteLowMaint:
+			// Low-Maintenance IPC path: 100% pure-Go execution + zero-reflection JSON encoding into a
+			// pooled byte slice (zero C.malloc, zero C.free, zero unsafe C structs, plain goroutines).
+			session := string(body[:sessLen])
+			sql := string(body[sessLen : sessLen+sqlLen])
+			param := string(body[sessLen+sqlLen:])
+
+			bufPtr := ipcJSONBufPool.Get().(*[]byte)
+			jsonBytes, rows, cols, attempts, errCode, errMsg := ipcExecuteStreamingSqlPureGo(
+				uintptr(handle), session, sql, param, (*bufPtr)[:0],
+			)
+			if errCode != 0 {
+				if errMsg == "" {
+					errMsg = "Unknown Spanner Go Shared Core error"
+				}
+				ipcPutRespHeader(respHdr, op, int32(errCode), 0, 0, int32(attempts), 0, 0, uint32(len(errMsg)), 0)
+				bufs := net.Buffers{respHdr, []byte(errMsg)}
+				_, err = bufs.WriteTo(conn)
+			} else {
+				ipcPutRespHeader(respHdr, op, 0, int32(rows), int32(cols), int32(attempts),
+					0, uint64(len(jsonBytes)), 0, 0)
+				bufs := net.Buffers{respHdr, jsonBytes}
+				_, err = bufs.WriteTo(conn)
+			}
+			if cap(jsonBytes) <= 2<<20 {
+				*bufPtr = jsonBytes[:0]
+				ipcJSONBufPool.Put(bufPtr)
+			}
+
 		case ipcOpInit:
 			h := uint64(InitGoCoreClient(C.int(int32(aux))))
 			var extra [8]byte
@@ -320,6 +662,9 @@ func ipcServeConn(conn *net.UnixConn) {
 		default:
 			err = ipcWriteSimple(conn, respHdr, op, ipcStatusProtocolError, []byte("unknown op"))
 		}
+		if cap(body) > 64<<10 {
+			body = nil // do not permanently retain large request buffers on idle connections
+		}
 		if err != nil {
 			return
 		}
@@ -329,6 +674,7 @@ func ipcServeConn(conn *net.UnixConn) {
 func main() {
 	socketPath := flag.String("socket", "", "Unix domain socket path to listen on")
 	parentPid := flag.Int("parent-pid", 0, "exit when this process is no longer our parent (0 = disabled)")
+	lifelineFD := flag.Int("lifeline-fd", -1, "inherited pipe FD: exit when parent process closes all write ends (portable, process-level)")
 	flag.IntVar(&ipcSockBuf, "sockbuf", 0, "SO_SNDBUF/SO_RCVBUF bytes for accepted connections (0 = OS default)")
 	flag.BoolVar(&ipcLockOSThread, "lock-os-thread", false,
 		"run each Go Shared Core call with runtime.LockOSThread (FFI-equivalent execution model)")
@@ -337,12 +683,25 @@ func main() {
 		fmt.Fprintln(os.Stderr, "spanner_ipc_server: -socket is required")
 		os.Exit(2)
 	}
-	// Terminate together with the benchmark process that spawned us (no orphaned sidecars). The
-	// getppid() check closes the race where the parent died before PR_SET_PDEATHSIG took effect.
-	_, _, _ = syscall.RawSyscall(syscall.SYS_PRCTL, syscall.PR_SET_PDEATHSIG, uintptr(syscall.SIGTERM), 0)
-	if *parentPid > 0 && os.Getppid() != *parentPid {
-		fmt.Fprintln(os.Stderr, "spanner_ipc_server: parent already exited")
-		os.Exit(3)
+	if *lifelineFD >= 0 {
+		// Portable, process-level parent lifecycle monitor: EOF triggers only when the entire parent
+		// process exits (even on SIGKILL), avoiding the Linux PR_SET_PDEATHSIG worker-thread-exit trap.
+		lf := os.NewFile(uintptr(*lifelineFD), "lifeline")
+		go func() {
+			var b [1]byte
+			_, _ = lf.Read(b[:])
+			_ = lf.Close()
+			ipcShutdown()
+			os.Exit(0)
+		}()
+	} else {
+		// Terminate together with the benchmark process that spawned us (no orphaned sidecars). The
+		// getppid() check closes the race where the parent died before PR_SET_PDEATHSIG took effect.
+		_, _, _ = syscall.RawSyscall(syscall.SYS_PRCTL, syscall.PR_SET_PDEATHSIG, uintptr(syscall.SIGTERM), 0)
+		if *parentPid > 0 && os.Getppid() != *parentPid {
+			fmt.Fprintln(os.Stderr, "spanner_ipc_server: parent already exited")
+			os.Exit(3)
+		}
 	}
 
 	_ = os.Remove(*socketPath)
@@ -351,6 +710,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "spanner_ipc_server: listen %s: %v\n", *socketPath, err)
 		os.Exit(1)
 	}
+	_ = os.Chmod(*socketPath, 0600)
 	ln.SetUnlinkOnClose(true)
 	ipcListener = ln
 
