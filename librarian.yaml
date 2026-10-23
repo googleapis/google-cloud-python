@@ -80,7 +80,7 @@ default:
     library_type: GAPIC_AUTO
 libraries:
   - name: bigquery-magics
-    version: 0.15.1
+    version: 0.15.2
     python:
       library_type: INTEGRATION
   - name: db-dtypes
