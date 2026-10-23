@@ -3049,13 +3049,8 @@ class Client(ClientWithProject):
                     )
 
             else:
-                dataframe.to_csv(
-                    tmppath,
-                    index=False,
-                    header=False,
-                    encoding="utf-8",
-                    float_format="%.17g",
-                    date_format="%Y-%m-%d %H:%M:%S.%f",
+                _pandas_helpers.dataframe_to_csv(
+                    dataframe, new_job_config.schema, tmppath
                 )
 
             with open(tmppath, "rb") as tmpfile:
