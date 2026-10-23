@@ -262,7 +262,7 @@
   "packages/google-shopping-merchant-promotions": "1.5.0",
   "packages/google-shopping-merchant-quota": "1.6.0",
   "packages/google-shopping-merchant-reports": "1.6.0",
-  "packages/google-shopping-merchant-reviews": "0.6.1",
+  "packages/google-shopping-merchant-reviews": "0.6.2",
   "packages/google-shopping-type": "1.6.0",
   "packages/googleapis-common-protos": "1.76.0",
   "packages/grafeas": "1.25.0",
