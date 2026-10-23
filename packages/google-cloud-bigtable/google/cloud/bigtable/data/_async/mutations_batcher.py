@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import atexit
 import concurrent.futures
+import contextlib
 import inspect
 import logging
 import threading
@@ -264,7 +265,9 @@ class MutationsBatcherAsync:
         )
 
         self._closed = CrossSync.Event()
-        self._stage_lock = threading.RLock()
+        self._stage_lock: contextlib.AbstractContextManager[Any] = (
+            threading.RLock() if not CrossSync.is_async else contextlib.nullcontext()
+        )
         self._target = table
         self._staged_entries: list[RowMutationEntry] = []
         self._staged_count, self._staged_bytes = 0, 0
