@@ -2606,7 +2606,7 @@ libraries:
           - proto-plus-deps=google.shopping.type
       default_version: v1
   - name: google-shopping-merchant-reviews
-    version: 0.6.1
+    version: 0.6.2
     apis:
       - path: google/shopping/merchant/reviews/v1
       - path: google/shopping/merchant/reviews/v1beta
