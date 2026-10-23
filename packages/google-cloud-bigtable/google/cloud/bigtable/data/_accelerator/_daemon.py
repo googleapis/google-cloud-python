@@ -64,10 +64,12 @@ _LOG_FILENAME = "daemon.log"
 # different BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT, so the sweep cannot rely on
 # its own env value when judging another process's tempdir.
 _STARTUP_DEADLINE_FILENAME = "startup_deadline"
-# PID of the Python process that spawned the daemon, written at start().  The
-# sweep sends signal 0 to this PID to check liveness: if the spawner is alive
-# the daemon is alive; if the spawner is dead (ESRCH) the daemon's stdin is
-# closed and it will exit (or has already exited).
+# Identity of the Python process that spawned the daemon, written at start()
+# as ``"<pid> <pid-namespace>"``. The sweep signals this PID to decide whether
+# the spawner is still alive: if it is, the daemon's stdin is open and the
+# daemon is (or is about to be) serving; if it is gone, the daemon's stdin is
+# closed and it has exited or is exiting. See ``_sweep_stale_tempdirs`` for
+# why the namespace is recorded next to the number.
 _PID_FILENAME = "daemon.pid"
 
 # How long to wait for the daemon to start listening on its UDS before giving
@@ -84,10 +86,22 @@ _STDIN_GRACE_SECONDS = 2.0
 _SIGTERM_GRACE_SECONDS = 2.0
 _SIGKILL_GRACE_SECONDS = 2.0
 
-# A freshly-created tempdir has not written its daemon.pid yet. Never sweep one
-# younger than this, so a daemon another client is mid-way through starting is
-# never mistaken for a stale leftover and reaped out from under it.
+# Grace period past a tempdir's startup deadline before the sweep will judge
+# it. A daemon that has not bound by its own deadline has failed, but give it
+# this much slack anyway so a daemon another client is mid-way through
+# starting is never mistaken for a stale leftover and reaped out from under it.
 _STALE_SWEEP_MIN_AGE_SECONDS = 60.0
+
+# Written in place of the PID namespace on platforms that do not have one to
+# report (no /proc, e.g. macOS). Comparing "none" against "none" is a match --
+# where namespaces do not exist, PIDs cannot be ambiguous between them.
+_NO_PID_NAMESPACE = "-"
+
+# How long a single connect() probe of a daemon's socket may take. A UDS
+# connect against a listening socket completes in the kernel without the
+# daemon doing anything, so this only ever elapses on a badly overloaded
+# host — where the honest answer is "I cannot tell", not "it is dead".
+_SOCKET_PROBE_TIMEOUT_SECONDS = 0.25
 
 # Upper bound on how long a single sweep may spend walking candidates. The
 # sweep runs on a fire-and-forget thread, so nothing is waiting on it; this
@@ -135,11 +149,17 @@ def _resolve_startup_timeout() -> float:
 
 
 def _socket_is_live(uds_path: str) -> bool:
-    """Return True if something is currently accepting connections on the UDS."""
+    """Return True if something is currently accepting connections on the UDS.
+
+    Used by ``_wait_until_ready`` to poll for the daemon coming up, so every
+    failure simply answers "not yet" and the caller tries again. Note that
+    this is a *measurement*, which is why the sweep does not use it to decide
+    whether a daemon has died -- see ``_sweep_stale_tempdirs``.
+    """
     if not os.path.exists(uds_path):
         return False
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
-        probe.settimeout(0.25)
+        probe.settimeout(_SOCKET_PROBE_TIMEOUT_SECONDS)
         try:
             probe.connect(uds_path)
             return True
@@ -147,70 +167,130 @@ def _socket_is_live(uds_path: str) -> bool:
             return False
 
 
+def _pid_namespace() -> str:
+    """Identify the PID namespace this process's PIDs are numbered in.
+
+    A PID is only meaningful inside the namespace that issued it, but the
+    tempdir holding it can be shared across namespaces -- two containers with
+    the same ``/tmp`` volume, or a host ``/tmp`` bind-mounted into one. The
+    sweep records this alongside the PID so it can tell whether a number it
+    reads is one it is entitled to interpret.
+
+    Returns ``_NO_PID_NAMESPACE`` where there is nothing to report, which
+    compares equal to itself: on a platform with no PID namespaces, PIDs
+    cannot be ambiguous between them.
+    """
+    try:
+        st = os.stat("/proc/self/ns/pid")
+    except OSError:
+        return _NO_PID_NAMESPACE
+    return f"{st.st_dev}:{st.st_ino}"
+
+
+def _write_metadata_file(path: str, contents: str) -> None:
+    """Write ``contents`` to ``path`` so a reader never sees a partial file.
+
+    The sweep reads these files out of *other* processes' tempdirs, possibly
+    while they are still being written. A half-written pid file would be
+    unreadable or, worse, parse as some other process's PID, and a truncated
+    deadline could parse as a plausible but wrong time. Writing to a sibling
+    temp name and renaming into place makes the swap atomic: a reader sees
+    either no file at all or the complete contents. A leftover ``.tmp`` from
+    a process killed mid-write goes away with the tempdir.
+    """
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "w") as _f:
+        _f.write(contents)
+    os.replace(tmp_path, path)
+
+
 def _sweep_stale_tempdirs() -> None:
     """Best-effort reaping of leftover daemon tempdirs at startup.
 
-    A clean ``close()`` removes its own tempdir, but a crash or ``SIGKILL``
-    leaves the socket and log behind. We reap those on the next start.
+    A clean ``close()`` removes its own tempdir; a crash or ``SIGKILL`` leaves
+    the socket and log behind. We tidy those up on the next start.
 
-    Rather than treating any ``bt-accel-*`` directory as ours, we key off the
-    ``daemon.log`` marker file we write inside each one: a directory is a
-    candidate only if it actually contains that log. This avoids deleting an
-    unrelated directory that merely shares the tempdir prefix. A candidate is
-    removed only when the spawning Python process (tracked via ``daemon.pid``)
-    is no longer alive *and* the tempdir is old enough that a daemon still
-    mid-startup would already have bound or died. ``os.kill(pid, 0)`` is
-    instant and kernel-guaranteed: the lock is implicitly released the moment
-    the process exits for any reason, including SIGKILL.
+    Best-effort in both directions, and that is the whole design:
 
-    All failures are swallowed — sweeping is opportunistic and must never break
-    startup. The walk also gives up after ``_SWEEP_BUDGET_SECONDS`` so the
-    thread cannot linger on a pathological temp directory; whatever it did not
-    reach is simply left for the next start().
+    * It never breaks startup. Every failure is swallowed, the walk abandons
+      whatever it has not reached once ``_SWEEP_BUDGET_SECONDS`` is up, and it
+      runs on a thread nobody waits on.
+    * It never deletes without proof. The only door to ``rmtree`` is
+      ``ProcessLookupError`` from ``os.kill(pid, 0)`` -- the kernel stating no
+      such process exists. Everything else (unreadable file, truncated write,
+      ``EPERM``, a PID from another namespace) means "could not establish
+      death", and skips.
+
+    The asymmetry is deliberate: a missed leftover costs a few KB of /tmp
+    until the next start() looks again, while deleting a live daemon's
+    directory destroys the socket it is serving on with no way back. So two
+    leaks are accepted on purpose -- a recycled PID reads as alive and pins
+    its directory forever, and a pid file truncated mid-write is skipped
+    forever. Both are cheap; neither is worth a heuristic that can delete a
+    live daemon.
+
+    Mechanically: candidates are ``bt-accel-*`` directories containing our
+    ``daemon.log`` marker, so an unrelated directory sharing the prefix is
+    never touched. The spawning Python process is the liveness signal --
+    while it lives the daemon's stdin is open and the daemon is serving; when
+    it dies the daemon sees EOF and exits. Each tempdir also records the PID
+    namespace that numbered it (see :func:`_pid_namespace`), since a shared
+    ``/tmp`` can cross namespaces and a foreign PID would otherwise give a
+    confident wrong answer; and its own startup deadline, which covers the
+    window before the pid file exists and keeps the sweep correct whatever
+    ``BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT`` the sweeping process has.
     """
     if not hasattr(socket, "AF_UNIX"):
         return
-    root = tempfile.gettempdir()
-    try:
-        logs = glob.glob(os.path.join(root, _TEMPDIR_PREFIX + "*", _LOG_FILENAME))
-    except OSError:
-        return
+    # Start the clock before the glob: on the pathological temp directory this
+    # budget exists for, enumerating it is itself the slow part.
     now = time.time()
     budget_ends = now + _SWEEP_BUDGET_SECONDS
-    for log_path in logs:
-        if time.time() >= budget_ends:
-            return
-        path = os.path.dirname(log_path)
-        try:
-            # Each tempdir records its own startup deadline so this sweep is
-            # correct even when the sweeping process has a different
-            # BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT than the process that
-            # started the daemon being evaluated.
-            deadline_path = os.path.join(path, _STARTUP_DEADLINE_FILENAME)
+    own_namespace = _pid_namespace()
+    root = tempfile.gettempdir()
+    try:
+        logs = glob.iglob(os.path.join(root, _TEMPDIR_PREFIX + "*", _LOG_FILENAME))
+        for log_path in logs:
+            if time.time() >= budget_ends:
+                return
+            path = os.path.dirname(log_path)
             try:
-                with open(deadline_path) as _f:
-                    deadline = float(_f.read())
-            except (OSError, ValueError):
-                # Older daemon without a deadline file: fall back to a simple
-                # age heuristic relative to the log's mtime.
-                deadline = os.path.getmtime(log_path) + _STALE_SWEEP_MIN_AGE_SECONDS
-            if now < deadline + _STALE_SWEEP_MIN_AGE_SECONDS:
+                deadline_path = os.path.join(path, _STARTUP_DEADLINE_FILENAME)
+                try:
+                    with open(deadline_path) as _f:
+                        deadline = float(_f.read())
+                except (OSError, ValueError):
+                    # Older tempdir without a deadline file, or one we could
+                    # not read: fall back to a simple age heuristic relative
+                    # to the log's mtime. This gate only decides *when* to
+                    # look; the pid check below still has to prove death.
+                    deadline = os.path.getmtime(log_path) + _STALE_SWEEP_MIN_AGE_SECONDS
+                if now < deadline + _STALE_SWEEP_MIN_AGE_SECONDS:
+                    continue
+                pid_path = os.path.join(path, _PID_FILENAME)
+                try:
+                    with open(pid_path) as _f:
+                        fields = _f.read().split()
+                    pid = int(fields[0])
+                    if fields[1] != own_namespace:
+                        # Someone else's numbering. IndexError lands in the
+                        # same place: a tempdir written before the namespace
+                        # was recorded cannot be checked either.
+                        continue
+                    os.kill(pid, 0)
+                    continue  # spawner alive → daemon alive → skip
+                except ProcessLookupError:
+                    pass  # ESRCH: spawner is dead → stdin closed → daemon gone
+                except (OSError, ValueError, IndexError):
+                    # Missing, unreadable, empty or truncated pid file, or
+                    # EPERM from os.kill (the PID exists, it just is not ours
+                    # to signal). None of these is proof of death.
+                    continue
+            except OSError:
                 continue
-            pid_path = os.path.join(path, _PID_FILENAME)
-            try:
-                with open(pid_path) as _f:
-                    pid = int(_f.read().strip())
-                os.kill(pid, 0)
-                continue  # spawning process alive → daemon alive → skip
-            except ProcessLookupError:
-                pass  # ESRCH: spawner is dead → stdin closed → daemon exiting
-            except (OSError, ValueError):
-                # No PID file (tempdir predates this change) or EPERM (process
-                # exists but unreadable) → assume alive and skip.
-                continue
-        except OSError:
-            continue
-        shutil.rmtree(path, ignore_errors=True)
+            shutil.rmtree(path, ignore_errors=True)
+    except OSError:
+        return
 
 
 class AcceleratorDaemon:
@@ -326,30 +406,15 @@ class AcceleratorDaemon:
         # scales with the number of leftovers, and start() (which the async
         # client calls synchronously, on the event loop thread) must not wait
         # on it. The sweep bounds its own runtime; see _SWEEP_BUDGET_SECONDS.
-        threading.Thread(target=_sweep_stale_tempdirs, daemon=True).start()
+        # Even spawning the thread is best-effort: a process already at its
+        # thread ceiling should still get a working client, not an exception
+        # from the one step of startup that exists purely to tidy up /tmp.
+        try:
+            threading.Thread(target=_sweep_stale_tempdirs, daemon=True).start()
+        except RuntimeError:
+            pass
         self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
         self._uds_path = os.path.join(self._tempdir, _SOCKET_FILENAME)
-        # Record the metadata the sweep needs to judge this tempdir later: the
-        # absolute time by which startup must complete (read per-directory, so
-        # the sweep is right regardless of what
-        # BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT the *sweeping* process has) and
-        # the spawning PID. A failure here means the tempdir is unwritable, so
-        # the log file and daemon would fail next anyway: clean up and report
-        # it the same way a failed spawn does, rather than leaving behind a
-        # directory that has no daemon.log and so would never be swept.
-        try:
-            with open(
-                os.path.join(self._tempdir, _STARTUP_DEADLINE_FILENAME), "w"
-            ) as _f:
-                _f.write(repr(time.time() + self._startup_timeout))
-            with open(os.path.join(self._tempdir, _PID_FILENAME), "w") as _f:
-                _f.write(str(os.getpid()))
-        except OSError as exc:
-            tempdir = self._tempdir  # _cleanup_tempdir() clears the attribute.
-            self._cleanup_tempdir()
-            raise RuntimeError(
-                f"Failed to write accelerator daemon metadata to {tempdir}: {exc}"
-            ) from exc
 
         # Redirect the daemon's stdout/stderr to a log file rather than
         # subprocess.PIPE. Nothing drains those pipes for the daemon's
@@ -363,13 +428,46 @@ class AcceleratorDaemon:
         # The log file handle only needs to live long enough for Popen to dup
         # it into the child, so it stays local to start() rather than being an
         # attribute. Startup failures read the tail back from the path.
-        argv = [self._binary_path, "--uds-path", self._uds_path, *self._cli_flags]
         log_file = None
+        try:
+            # Create the log before anything else can fail. It is the marker
+            # the sweep keys on, so a crash from here on still leaves a
+            # directory that a later sweep can recognise and reap.
+            log_file = open(self._log_path, "wb")
+            # Record the absolute time by which startup must complete. The
+            # sweep reads this per-directory, so it judges correctly however
+            # the *sweeping* process has BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT
+            # set. Written atomically, since a sweep in another process may
+            # read it at any moment.
+            _write_metadata_file(
+                os.path.join(self._tempdir, _STARTUP_DEADLINE_FILENAME),
+                repr(time.time() + self._startup_timeout),
+            )
+            # Record who owns this tempdir, as "<pid> <pid-namespace>". The
+            # namespace qualifies the number: a sweep running where that PID
+            # would mean something else entirely can see that and decline to
+            # judge, rather than confidently signalling an unrelated process.
+            _write_metadata_file(
+                os.path.join(self._tempdir, _PID_FILENAME),
+                f"{os.getpid()} {_pid_namespace()}",
+            )
+        except OSError as exc:
+            if log_file is not None:
+                try:
+                    log_file.close()
+                except OSError:
+                    pass
+            tempdir = self._tempdir  # _cleanup_tempdir() clears the attribute.
+            self._cleanup_tempdir()
+            raise RuntimeError(
+                f"Failed to write accelerator daemon metadata to {tempdir}: {exc}"
+            ) from exc
+
+        argv = [self._binary_path, "--uds-path", self._uds_path, *self._cli_flags]
         env = None
         if self._extra_env:
             env = {**os.environ, **self._extra_env}
         try:
-            log_file = open(self._log_path, "wb")
             self._proc = subprocess.Popen(
                 argv,
                 stdin=subprocess.PIPE,

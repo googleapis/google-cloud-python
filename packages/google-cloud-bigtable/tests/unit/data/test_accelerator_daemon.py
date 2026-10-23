@@ -14,7 +14,14 @@
 
 import json
 import os
+import pathlib
 import re
+import shutil
+import socket
+import subprocess
+import sys
+import tempfile
+import threading
 import time
 import unittest.mock
 
@@ -43,6 +50,17 @@ def _make_daemon(tmp_path, **kwargs):
 # to a no-op.  Tests that need to exercise the real implementation call this
 # directly as _real_cleanup_tempdir(daemon_instance).
 _real_cleanup_tempdir = AcceleratorDaemon._cleanup_tempdir
+
+# Likewise for tempfile.mkdtemp/gettempdir, which the autouse fixture
+# redirects into pytest's tmp_path.  The sweep tests need real, short /tmp
+# paths: they bind Unix sockets, whose paths are capped at ~107 bytes, and
+# pytest's per-test directory names alone eat most of that budget.
+_real_mkdtemp = tempfile.mkdtemp
+_real_gettempdir = tempfile.gettempdir
+
+# Distinguishes "caller did not ask for a namespace stamp" (use our own, the
+# ordinary case) from "caller asked for no stamp at all" (None).
+_UNSET = object()
 
 
 class TestExtraEnv:
@@ -201,6 +219,12 @@ def _no_cleanup_crash(monkeypatch, tmp_path):
         return str(d)
 
     monkeypatch.setattr(_daemon.tempfile, "mkdtemp", fake_mkdtemp)
+
+    # start() kicks off _sweep_stale_tempdirs on a background thread, and the
+    # sweep reads gettempdir() rather than going through mkdtemp. Without this
+    # the suite would glob — and rmtree — real bt-accel-* directories in the
+    # developer's or CI machine's /tmp, including live ones.
+    monkeypatch.setattr(_daemon.tempfile, "gettempdir", lambda: str(tmp_path))
     yield
 
 
@@ -284,17 +308,30 @@ class TestStartFailures:
         with pytest.raises(RuntimeError, match="Failed to spawn"):
             d.start()
 
-    def test_metadata_write_failure_cleans_up_and_raises(self, tmp_path, monkeypatch):
-        # An unwritable tempdir fails start() the same way a failed spawn does.
-        # The tempdir must not survive: it has no daemon.log yet, and the sweep
-        # keys off that marker, so a leftover here would never be reaped.
+    @pytest.mark.parametrize(
+        "doomed",
+        [
+            _daemon._LOG_FILENAME,
+            _daemon._STARTUP_DEADLINE_FILENAME,
+            _daemon._PID_FILENAME,
+        ],
+    )
+    def test_metadata_write_failure_cleans_up_and_raises(
+        self, tmp_path, monkeypatch, doomed
+    ):
+        # An unwritable tempdir fails start() the same way a failed spawn
+        # does, whichever of the files start() lays down hits the error. The
+        # tempdir must not survive a failure before daemon.log exists, since
+        # the sweep keys off that marker and would never reap it.
         monkeypatch.setattr(
             AcceleratorDaemon, "_cleanup_tempdir", _real_cleanup_tempdir
         )
         real_open = open
 
         def bad_open(path, *args, **kwargs):
-            if os.path.basename(str(path)) == _daemon._PID_FILENAME:
+            # The deadline file is written to a ".tmp" sibling and renamed, so
+            # match on the prefix rather than the final name.
+            if os.path.basename(str(path)).startswith(doomed):
                 raise OSError("no space left on device")
             return real_open(path, *args, **kwargs)
 
@@ -726,7 +763,24 @@ class TestResolveStartupTimeout:
 )
 class TestSweepStaleTempdirs:
     """_sweep_stale_tempdirs reaps leftover daemon tempdirs, keyed on the
-    daemon.log marker, without touching live or too-young ones."""
+    daemon.log marker, and deletes only on proof that the spawner is gone."""
+
+    @pytest.fixture
+    def tmp_root(self, monkeypatch):
+        # Point the sweep's tempdir root at an isolated directory of our own.
+        # dir= is explicit because mkdtemp would otherwise resolve its default
+        # through the gettempdir() the autouse fixture has already patched.
+        root = pathlib.Path(_real_mkdtemp(prefix="bt-sweep-", dir=_real_gettempdir()))
+        monkeypatch.setattr(_daemon.tempfile, "gettempdir", lambda: str(root))
+        yield root
+        shutil.rmtree(root, ignore_errors=True)
+
+    @staticmethod
+    def _dead_pid():
+        """A PID that is guaranteed not to resolve to a running process."""
+        proc = subprocess.Popen([sys.executable, "-c", ""])
+        proc.wait()
+        return proc.pid
 
     @staticmethod
     def _make_leftover(
@@ -737,14 +791,19 @@ class TestSweepStaleTempdirs:
         age_seconds=0.0,
         deadline_offset=None,
         pid=None,
+        namespace=_UNSET,
     ):
         """Create a fake leftover daemon tempdir.
 
         deadline_offset: seconds relative to now for the startup deadline file.
         Negative = deadline already passed (stale); positive = still in future
         (mid-startup). None = omit the file (tests the fallback heuristic).
-        pid: if given, write a daemon.pid file with this PID.  Pass a dead PID
-        to simulate a crashed/exited spawner; pass os.getpid() for "alive".
+        pid: if given, write a daemon.pid naming this PID. Pass a dead PID to
+        simulate a crashed spawner, or os.getpid() for "alive".
+        namespace: what to stamp next to the PID. Defaults to this process's
+        own, so the sweep accepts it; pass something else to simulate a
+        tempdir written in a different PID namespace, or None to omit the
+        stamp entirely (a tempdir predating it).
         """
         d = root / name
         d.mkdir()
@@ -758,44 +817,176 @@ class TestSweepStaleTempdirs:
             dl = d / _daemon._STARTUP_DEADLINE_FILENAME
             dl.write_text(repr(time.time() + deadline_offset))
         if pid is not None:
-            (d / _daemon._PID_FILENAME).write_text(str(pid))
+            if namespace is _UNSET:
+                namespace = _daemon._pid_namespace()
+            stamp = str(pid) if namespace is None else f"{pid} {namespace}"
+            (d / _daemon._PID_FILENAME).write_text(stamp)
         return d
 
-    @pytest.fixture
-    def tmp_root(self, tmp_path, monkeypatch):
-        # Point the sweep's tempdir root at an isolated dir under pytest's tmp.
-        root = tmp_path / "tmproot"
-        root.mkdir()
-        monkeypatch.setattr(_daemon.tempfile, "gettempdir", lambda: str(root))
-        return root
+    # -- the one path that deletes -------------------------------------------
 
     def test_removes_stale_dir(self, tmp_root):
-        # Expired deadline + old log + dead spawner PID → should be reaped.
-        import subprocess
-        import sys
-
-        proc = subprocess.Popen([sys.executable, "-c", ""])
-        dead_pid = proc.pid
-        proc.wait()
+        # Expired deadline, old log, and the kernel says the spawner's PID
+        # does not resolve to any process. That ESRCH is the only thing that
+        # may lead to a delete.
         d = self._make_leftover(
             tmp_root,
             "bt-accel-dead",
             age_seconds=120,
             deadline_offset=-70,
-            pid=dead_pid,
+            pid=self._dead_pid(),
         )
         _daemon._sweep_stale_tempdirs()
         assert not d.exists()
 
+    def test_removes_stale_dir_without_deadline_file(self, tmp_root):
+        # A tempdir predating the deadline file still gets judged, via the
+        # log-mtime fallback -- but only because the pid check proves death.
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-nodl",
+            age_seconds=120,
+            deadline_offset=None,
+            pid=self._dead_pid(),
+        )
+        _daemon._sweep_stale_tempdirs()
+        assert not d.exists()
+
+    # -- everything else keeps ------------------------------------------------
+
+    def test_keeps_dir_with_live_spawner(self, tmp_root):
+        # Well past every age gate, but the spawning process is alive, so its
+        # daemon is alive and the directory is not a leftover.
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-live",
+            age_seconds=86400,
+            deadline_offset=-86400,
+            pid=os.getpid(),
+        )
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_live_dir_from_an_older_client(self, tmp_root):
+        # A tempdir written by a previously released client has a daemon.log
+        # and no metadata at all. There is no owner to probe, so there is no
+        # proof of death, so it must survive -- its daemon may well be
+        # serving. Mixed versions share one /tmp whenever two virtualenvs (or
+        # a rolling restart) run side by side.
+        d = self._make_leftover(
+            tmp_root, "bt-accel-legacy", age_seconds=86400, deadline_offset=None
+        )
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_from_another_pid_namespace(self, tmp_root):
+        # Containers sharing a /tmp volume have separate PID numbering, so a
+        # PID written over there means something else (or nothing) here.
+        # Signalling it would give a confident, repeatable wrong answer, so
+        # the sweep declines to judge. The dead PID makes the point: without
+        # the namespace check this directory would be deleted.
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-otherns",
+            age_seconds=86400,
+            deadline_offset=-86400,
+            pid=self._dead_pid(),
+            namespace="4:4026531999",
+        )
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_with_unstamped_pid_file(self, tmp_root):
+        # A pid file written before the namespace was recorded cannot be
+        # checked either, for the same reason.
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-nostamp",
+            age_seconds=86400,
+            deadline_offset=-86400,
+            pid=self._dead_pid(),
+            namespace=None,
+        )
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    @pytest.mark.parametrize("contents", ["", "   ", "not-a-pid", "garbage stamp"])
+    def test_keeps_dir_with_unusable_pid_file(self, tmp_root, contents):
+        # A crash mid-write can leave the pid file empty or truncated. That is
+        # a deliberate, permanent leak: unreadable is not proof of death.
+        d = self._make_leftover(
+            tmp_root, "bt-accel-badpid", age_seconds=86400, deadline_offset=-86400
+        )
+        (d / _daemon._PID_FILENAME).write_text(contents)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_when_pid_file_is_unreadable(self, tmp_root, monkeypatch):
+        # An OSError other than "missing" tells us nothing about the owner.
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-unreadable",
+            age_seconds=86400,
+            deadline_offset=-86400,
+            pid=self._dead_pid(),
+        )
+        real_open = open
+
+        def bad_open(path, *args, **kwargs):
+            if os.path.basename(str(path)) == _daemon._PID_FILENAME:
+                raise PermissionError("EACCES")
+            return real_open(path, *args, **kwargs)
+
+        monkeypatch.setattr(_daemon, "open", bad_open, raising=False)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_when_pid_is_not_ours_to_signal(self, tmp_root, monkeypatch):
+        # EPERM from os.kill means the PID exists under another user: alive.
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-eperm",
+            age_seconds=86400,
+            deadline_offset=-86400,
+            pid=os.getpid(),
+        )
+
+        def eperm(pid, sig):
+            raise PermissionError("EPERM")
+
+        monkeypatch.setattr(_daemon.os, "kill", eperm)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_whose_pid_was_recycled(self, tmp_root):
+        # A recycled PID now belonging to some unrelated long-lived process
+        # reads as alive, so the directory is pinned forever. That leak is the
+        # accepted cost of never deleting a live daemon; detecting reuse means
+        # a heuristic, and a wrong "recycled" verdict deletes a live daemon.
+        d = self._make_leftover(
+            tmp_root,
+            "bt-accel-recycled",
+            age_seconds=86400,
+            deadline_offset=-86400,
+            pid=os.getpid(),
+        )
+        pid_file = d / _daemon._PID_FILENAME
+        old = time.time() - 86400
+        os.utime(pid_file, (old, old))
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
     def test_keeps_young_dir(self, tmp_root):
         # No deadline file: fallback uses log mtime + buffer; log is fresh.
-        d = self._make_leftover(tmp_root, "bt-accel-young", age_seconds=0)
+        d = self._make_leftover(
+            tmp_root, "bt-accel-young", age_seconds=0, pid=self._dead_pid()
+        )
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 
     def test_keeps_dir_with_future_deadline(self, tmp_root):
-        # Log is old (simulating a long-timeout override) but deadline hasn't
-        # passed yet — this is the case a per-directory deadline file fixes.
+        # Log is old (a long-timeout override) but the daemon is still inside
+        # its own startup budget, when the pid file may not be written yet.
         d = self._make_leftover(
             tmp_root, "bt-accel-slow", age_seconds=120, deadline_offset=+200
         )
@@ -810,49 +1001,45 @@ class TestSweepStaleTempdirs:
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 
-    def test_keeps_dir_with_live_pid(self, tmp_root):
-        # Past deadline but spawning process is still alive → must not be reaped.
-        d = self._make_leftover(
-            tmp_root,
-            "bt-accel-live",
-            age_seconds=120,
-            deadline_offset=-70,
-            pid=os.getpid(),
-        )
-        _daemon._sweep_stale_tempdirs()
-        assert d.exists()
-
     def test_budget_exhausted_leaves_dirs_for_next_sweep(self, tmp_root, monkeypatch):
         # Same inputs as test_removes_stale_dir, but the time budget is already
         # spent: the walk bails out rather than running long on a huge /tmp.
-        import subprocess
-        import sys
-
-        proc = subprocess.Popen([sys.executable, "-c", ""])
-        dead_pid = proc.pid
-        proc.wait()
         d = self._make_leftover(
             tmp_root,
             "bt-accel-dead",
             age_seconds=120,
             deadline_offset=-70,
-            pid=dead_pid,
+            pid=self._dead_pid(),
         )
         monkeypatch.setattr(_daemon, "_SWEEP_BUDGET_SECONDS", -1.0)
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 
-    def test_keeps_dir_without_pid_file(self, tmp_root):
-        # No PID file (tempdir predates this change) → conservative: keep it.
+    def test_glob_failure_is_swallowed(self, tmp_root, monkeypatch):
+        # Enumeration can fail outright (a vanished or unreadable /tmp). The
+        # sweep is opportunistic, so that must not propagate to start().
+        def boom(*args, **kwargs):
+            raise OSError("EIO")
+
+        monkeypatch.setattr(_daemon.glob, "iglob", boom)
+        _daemon._sweep_stale_tempdirs()
+
+    def test_no_af_unix_is_a_noop(self, tmp_root, monkeypatch):
+        # Without AF_UNIX the accelerator cannot have run here at all.
         d = self._make_leftover(
-            tmp_root, "bt-accel-nopid", age_seconds=120, deadline_offset=-70
+            tmp_root,
+            "bt-accel-dead",
+            age_seconds=120,
+            deadline_offset=-70,
+            pid=self._dead_pid(),
         )
+        monkeypatch.delattr(_daemon.socket, "AF_UNIX")
         _daemon._sweep_stale_tempdirs()
         assert d.exists()
 
-    def test_start_invokes_sweep(self, tmp_path, monkeypatch):
-        import threading
+    # -- wiring into start() --------------------------------------------------
 
+    def test_start_invokes_sweep(self, tmp_path, monkeypatch):
         done = threading.Event()
 
         def _fake_sweep():
@@ -868,3 +1055,135 @@ class TestSweepStaleTempdirs:
         with pytest.raises(RuntimeError):
             daemon.start()
         assert done.wait(timeout=2.0), "sweep thread did not run within 2 s"
+
+    def test_start_survives_sweep_thread_failure(self, tmp_path, monkeypatch):
+        # At the process thread ceiling, Thread.start() raises. Tidying /tmp
+        # is the least important thing start() does; it must not be the thing
+        # that costs the caller a working client.
+        class NoThreads:
+            def __init__(self, *args, **kwargs):
+                pass
+
+            def start(self):
+                raise RuntimeError("can't start new thread")
+
+        monkeypatch.setattr(_daemon.threading, "Thread", NoThreads)
+        popen_called = []
+
+        def boom(*args, **kwargs):
+            popen_called.append(True)
+            raise OSError("refusing to spawn in test")
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", boom)
+        daemon = _make_daemon(tmp_path)
+        # Reaches Popen and fails there, rather than at Thread.start().
+        with pytest.raises(RuntimeError, match="Failed to spawn"):
+            daemon.start()
+        assert popen_called
+
+    def test_start_stamps_pid_and_namespace(self, tmp_path, monkeypatch):
+        # The file start() writes must be the one the sweep knows how to read.
+        def boom(*args, **kwargs):
+            raise OSError("refusing to spawn in test")
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", boom)
+        monkeypatch.setattr(AcceleratorDaemon, "_cleanup_tempdir", lambda self: None)
+        daemon = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="Failed to spawn"):
+            daemon.start()
+        written = (pathlib.Path(daemon._tempdir) / _daemon._PID_FILENAME).read_text()
+        assert written.split() == [str(os.getpid()), _daemon._pid_namespace()]
+
+
+class TestPidNamespace:
+    """_pid_namespace identifies the namespace a process's PIDs belong to."""
+
+    @pytest.mark.skipif(
+        not os.path.exists("/proc/self/ns/pid"), reason="requires Linux namespaces"
+    )
+    def test_reports_own_namespace(self):
+        ns = _daemon._pid_namespace()
+        assert ns != _daemon._NO_PID_NAMESPACE
+        # Stable for the life of the process, and shared with our children.
+        assert ns == _daemon._pid_namespace()
+        child = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                "import os;st=os.stat('/proc/self/ns/pid');"
+                "print(f'{st.st_dev}:{st.st_ino}')",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        assert child.stdout.strip() == ns
+
+    def test_falls_back_when_proc_is_absent(self, monkeypatch):
+        # macOS and friends have no /proc, and also no PID namespaces, so the
+        # sentinel compares equal to itself and the check is a no-op there.
+        def no_proc(path, *args, **kwargs):
+            raise FileNotFoundError(path)
+
+        monkeypatch.setattr(_daemon.os, "stat", no_proc)
+        assert _daemon._pid_namespace() == _daemon._NO_PID_NAMESPACE
+
+
+@pytest.mark.skipif(not hasattr(_daemon.socket, "AF_UNIX"), reason="requires AF_UNIX")
+class TestSocketIsLive:
+    """_socket_is_live backs the _wait_until_ready poll: is the daemon up?"""
+
+    def test_true_while_listening(self, tmp_path):
+        path = str(tmp_path / "sock")
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+            sock.bind(path)
+            sock.listen(1)
+            assert _daemon._socket_is_live(path) is True
+
+    def test_false_when_path_is_absent(self, tmp_path):
+        assert _daemon._socket_is_live(str(tmp_path / "nope")) is False
+
+    def test_false_for_socket_file_whose_owner_exited(self, tmp_path):
+        # The socket file outlives the process that bound it; nothing is
+        # accepting, so the daemon is not up yet (or any more).
+        path = str(tmp_path / "sock")
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        sock.bind(path)
+        sock.listen(1)
+        sock.close()
+        assert os.path.exists(path)
+        assert _daemon._socket_is_live(path) is False
+
+
+class TestWriteMetadataFile:
+    """_write_metadata_file swaps contents in atomically."""
+
+    def test_writes_contents(self, tmp_path):
+        target = tmp_path / "daemon.pid"
+        _daemon._write_metadata_file(str(target), "1234")
+        assert target.read_text() == "1234"
+        # The staging file must not be left behind on success.
+        assert not (tmp_path / "daemon.pid.tmp").exists()
+
+    def test_target_is_absent_until_contents_are_complete(self, tmp_path):
+        # A reader racing the write sees no file rather than a truncated one:
+        # everything lands in the ".tmp" sibling and is complete and closed by
+        # the time the rename publishes it under the real name.
+        target = tmp_path / "daemon.pid"
+        observed = {}
+        real_replace = _daemon.os.replace
+
+        def spy_replace(src, dst):
+            observed["target_existed"] = target.exists()
+            observed["staged"] = pathlib.Path(src).read_text()
+            return real_replace(src, dst)
+
+        with unittest.mock.patch.object(_daemon.os, "replace", spy_replace):
+            _daemon._write_metadata_file(str(target), "1234")
+        assert observed == {"target_existed": False, "staged": "1234"}
+        assert target.read_text() == "1234"
+
+    def test_overwrites_existing_file(self, tmp_path):
+        target = tmp_path / "daemon.pid"
+        target.write_text("stale-and-longer")
+        _daemon._write_metadata_file(str(target), "7")
+        assert target.read_text() == "7"
