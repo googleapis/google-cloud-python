@@ -1604,6 +1604,13 @@ libraries:
     python:
       metadata_name_override: notebooks
       default_version: v1
+  - name: google-cloud-observability
+    version: 0.0.0
+    apis:
+      - path: google/cloud/observability/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-optimization
     version: 1.16.0
     apis:
