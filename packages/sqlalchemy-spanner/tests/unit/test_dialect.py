@@ -165,6 +165,8 @@ class TestSpannerDialect(fixtures.TestBase):
 
         mock_snapshot.execute_sql.return_value = []
         eq_(dialect.get_unique_constraints(connection, "no_constraints"), [])
+
+    def test_max_size_exported(self):
         """Test MAX_SIZE export and int_from_size helper behavior."""
         from google.cloud.sqlalchemy_spanner import MAX_SIZE
         from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
