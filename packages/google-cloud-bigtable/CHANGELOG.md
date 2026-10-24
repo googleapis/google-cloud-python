@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.50.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.50.2...google-cloud-bigtable-v2.50.3) (2026-10-23)
+
+
+### Bug Fixes
+
+* **bigtable:** synchronize MutationsBatcher staging and flush scheduling ([#18827](https://github.com/googleapis/google-cloud-python/issues/18827)) ([38afa8a](https://github.com/googleapis/google-cloud-python/commit/38afa8ad35ebcfa64462dc5a8238a23f63ead4c0))
+
+
+### Documentation
+
+* **bigtable:** clarify that MutationsBatcher.flush defers exceptions to close ([#18825](https://github.com/googleapis/google-cloud-python/issues/18825)) ([371218d](https://github.com/googleapis/google-cloud-python/commit/371218dcd26981159ae9df2962da812a3bf204f1))
+
 ## [2.50.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.50.1...google-cloud-bigtable-v2.50.2) (2026-10-22)
 
 
