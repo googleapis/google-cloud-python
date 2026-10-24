@@ -1698,29 +1698,30 @@ WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
                 The schema is ``None`` if no schema is provided.
         """
         table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
-        schema_filter_query = " tc.table_schema = '{schema}' AND ".format(
+        schema_filter_query = " tc.TABLE_SCHEMA = '{schema}' AND ".format(
             schema=schema or ""
         )
         table_type_query = self._get_table_type_query(kind, True)
 
         sql = """
-            SELECT tc.table_schema, tc.table_name, tc.constraint_name, kcu.column_name
-            FROM information_schema.table_constraints AS tc
-            JOIN information_schema.key_column_usage AS kcu
-                ON  kcu.constraint_catalog = tc.constraint_catalog
-                AND kcu.constraint_schema = tc.constraint_schema
-                AND kcu.constraint_name = tc.constraint_name
-            JOIN information_schema.tables AS t
-                ON  t.table_catalog = tc.table_catalog
-                AND t.table_schema = tc.table_schema
-                AND t.table_name = tc.table_name
+            SELECT tc.TABLE_SCHEMA, tc.TABLE_NAME, tc.CONSTRAINT_NAME, kcu.COLUMN_NAME
+            FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
+            JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS kcu
+                ON  kcu.CONSTRAINT_CATALOG = tc.CONSTRAINT_CATALOG
+                AND kcu.CONSTRAINT_SCHEMA = tc.CONSTRAINT_SCHEMA
+                AND kcu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
+            JOIN INFORMATION_SCHEMA.TABLES AS t
+                ON  t.TABLE_CATALOG = tc.TABLE_CATALOG
+                AND t.TABLE_SCHEMA = tc.TABLE_SCHEMA
+                AND t.TABLE_NAME = tc.TABLE_NAME
             WHERE
                 {table_filter_query}
                 {table_type_query}
                 {schema_filter_query}
-                tc.constraint_type = "UNIQUE"
-            ORDER BY tc.table_catalog, tc.table_schema, tc.table_name,
-                     tc.constraint_name, kcu.ordinal_position
+                tc.CONSTRAINT_TYPE = "UNIQUE"
+                AND tc.CONSTRAINT_NAME IS NOT NULL
+            ORDER BY tc.TABLE_CATALOG, tc.TABLE_SCHEMA, tc.TABLE_NAME,
+                     tc.CONSTRAINT_NAME, kcu.ORDINAL_POSITION
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,

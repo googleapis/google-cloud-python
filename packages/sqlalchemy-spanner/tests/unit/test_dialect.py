@@ -138,10 +138,11 @@ class TestSpannerDialect(fixtures.TestBase):
 
         mock_snapshot.execute_sql.assert_called_once()
         executed_sql = mock_snapshot.execute_sql.call_args[0][0]
-        assert "information_schema.key_column_usage AS kcu" in executed_sql
-        assert "kcu.ordinal_position" in executed_sql
+        assert "INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS kcu" in executed_sql
+        assert "kcu.ORDINAL_POSITION" in executed_sql
         assert "tc.table_name = 'parent' OR tc.table_name = 'other'" in executed_sql
-        assert 'tc.constraint_type = "UNIQUE"' in executed_sql
+        assert 'tc.CONSTRAINT_TYPE = "UNIQUE"' in executed_sql
+        assert "tc.CONSTRAINT_NAME IS NOT NULL" in executed_sql
 
     def test_get_unique_constraints(self):
         """Test get_unique_constraints returns the constraints of one table."""
