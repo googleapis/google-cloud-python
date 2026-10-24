@@ -1459,11 +1459,10 @@ class SpannerDialect(DefaultDialect):
 
             for row in rows:
                 row[0] = row[0] or None
-                table_info = result_dict.get(
-                    (row[0], row[1]), {"name": row[3], "constrained_columns": []}
-                )
-                table_info["constrained_columns"].append(row[2])
-                result_dict[(row[0], row[1])] = table_info
+                key = (row[0], row[1])
+                if key not in result_dict:
+                    result_dict[key] = {"name": row[3], "constrained_columns": []}
+                result_dict[key]["constrained_columns"].append(row[2])
 
         return result_dict
 
