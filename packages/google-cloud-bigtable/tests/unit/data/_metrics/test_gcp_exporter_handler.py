@@ -129,6 +129,35 @@ class TestGoogleCloudMetricsHandler:
         GoogleCloudMetricsHandler.close(mock_instance)
         assert mock_instance.meter_provider.shutdown.call_count == 1
 
+    def test_close_soon_after_export(self):
+        """
+        Closing the handler right after a periodic export should not write
+        to Cloud Monitoring again, since the write would be rejected for being
+        more frequent than the metric's sample period
+
+        https://github.com/googleapis/google-cloud-python/issues/18576
+        """
+        with mock.patch("google.auth.default", return_value=(mock.Mock(), "project")):
+            exporter = BigtableMetricsExporter()
+        exporter.client = mock.Mock()
+        handler = self._make_one(exporter)
+        try:
+            counter = handler.meter_provider.get_meter("test").create_counter(
+                "retry_count"
+            )
+            attributes = {
+                "resource_project": "project",
+                "resource_instance": "instance",
+            }
+            counter.add(1, attributes)
+            # periodic export
+            assert handler.meter_provider.force_flush()
+            assert exporter.client.create_service_time_series.call_count == 1
+            counter.add(1, attributes)
+        finally:
+            handler.close()
+        assert exporter.client.create_service_time_series.call_count == 1
+
 
 BIGTABLE_DATA_SCOPE = "https://www.googleapis.com/auth/bigtable.data"
 BIGTABLE_ADMIN_SCOPE = "https://www.googleapis.com/auth/bigtable.admin"
@@ -676,3 +705,93 @@ class TestBigtableMetricsExporter:
         assert result == MetricExportResult.FAILURE
         to_point_mock.assert_not_called()
         instance._batch_write.assert_not_called()
+
+    def test_export_skipped_if_previous_export_too_recent(self):
+        """
+        Cloud Monitoring rejects points written more often than the sample period.
+        Exports within 30 seconds of the last successful write should be skipped
+        """
+        instance = self._make_one()
+        instance.client = mock.Mock()
+        write_mock = instance.client.create_service_time_series
+        with mock.patch("time.monotonic", return_value=1000.0):
+            assert instance.export(self._make_metrics_data()) == (
+                MetricExportResult.SUCCESS
+            )
+        assert write_mock.call_count == 1
+        # too soon: skipped without writing or failing
+        with mock.patch("time.monotonic", return_value=1029.0):
+            assert instance.export(self._make_metrics_data()) == (
+                MetricExportResult.SUCCESS
+            )
+        assert write_mock.call_count == 1
+        # enough time has passed: written again
+        with mock.patch("time.monotonic", return_value=1030.0):
+            assert instance.export(self._make_metrics_data()) == (
+                MetricExportResult.SUCCESS
+            )
+        assert write_mock.call_count == 2
+
+    def test_export_not_skipped_after_failed_export(self):
+        """a failed write doesn't count as a recent export"""
+        instance = self._make_one()
+        instance.client = mock.Mock()
+        write_mock = instance.client.create_service_time_series
+        write_mock.side_effect = [api_exceptions.ServiceUnavailable("test"), None]
+        assert instance.export(self._make_metrics_data()) == (
+            MetricExportResult.FAILURE
+        )
+        assert instance.export(self._make_metrics_data()) == (
+            MetricExportResult.SUCCESS
+        )
+        assert write_mock.call_count == 2
+
+    def test_export_retries_only_failed_project_after_partial_failure(self):
+        """
+        After a partial failure across projects, only the project that failed is
+        written again right away; the one that succeeded is too recent to rewrite
+        """
+        instance = self._make_one()
+        instance.client = mock.Mock()
+        write_mock = instance.client.create_service_time_series
+        write_mock.side_effect = [
+            None,
+            api_exceptions.ServiceUnavailable("test"),
+            None,
+        ]
+
+        metrics_data = self._make_metrics_data(project_id="project1")
+        metrics_data_2 = self._make_metrics_data(project_id="project2")
+        metrics_data.resource_metrics.extend(metrics_data_2.resource_metrics)
+
+        with mock.patch("time.monotonic", return_value=1000.0):
+            assert instance.export(metrics_data) == MetricExportResult.FAILURE
+        # Immediate retry (< 30s): project1 was just written, project2 failed
+        with mock.patch("time.monotonic", return_value=1010.0):
+            assert instance.export(metrics_data) == MetricExportResult.SUCCESS
+        assert write_mock.call_count == 3
+        written = [c.args[0].name for c in write_mock.call_args_list]
+        assert written == [
+            "projects/project1",
+            "projects/project2",
+            "projects/project2",
+        ]
+
+    def test_recent_export_to_one_project_does_not_skip_another(self):
+        """the 30 second check is per project"""
+        instance = self._make_one()
+        instance.client = mock.Mock()
+        write_mock = instance.client.create_service_time_series
+
+        with mock.patch("time.monotonic", return_value=1000.0):
+            assert instance.export(self._make_metrics_data(project_id="project1")) == (
+                MetricExportResult.SUCCESS
+            )
+        metrics_data = self._make_metrics_data(project_id="project1")
+        metrics_data_2 = self._make_metrics_data(project_id="project2")
+        metrics_data.resource_metrics.extend(metrics_data_2.resource_metrics)
+        # 10 seconds later: project1 is skipped, project2 is still written
+        with mock.patch("time.monotonic", return_value=1010.0):
+            assert instance.export(metrics_data) == MetricExportResult.SUCCESS
+        written = [c.args[0].name for c in write_mock.call_args_list]
+        assert written == ["projects/project1", "projects/project2"]

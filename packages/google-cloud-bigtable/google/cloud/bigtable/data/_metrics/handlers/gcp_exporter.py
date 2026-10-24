@@ -164,6 +164,12 @@ def _get_monitoring_credentials(
     return credentials
 
 
+# Cloud Monitoring rejects points written more often than the metric's sample
+# period (60s for Bigtable client metrics). Exports that come sooner than half of
+# that after the previous write (e.g. the final export on shutdown) are skipped
+_MIN_EXPORT_INTERVAL_SECONDS = 30
+
+
 class GoogleCloudMetricsHandler(OpenTelemetryMetricsHandler):
     """
     Maintains an internal set of OpenTelemetry metrics for the Bigtable client library,
@@ -228,6 +234,9 @@ class BigtableMetricsExporter(MetricExporter):
         # Once disabled, exports are skipped instead of failing (and logging)
         # on every export interval
         self._disabled = False
+        # time.monotonic() of the last successful write to Cloud Monitoring, per
+        # project, so a recent write to one project doesn't hold back the others
+        self._last_export_times: dict[str, float] = {}
 
     def export(
         self, metrics_data: MetricsData, timeout_millis: float = 10_000, **kwargs
@@ -285,12 +294,28 @@ class BigtableMetricsExporter(MetricExporter):
         # send all metrics to Cloud Monitoring
         try:
             for project_id, series_list in series_by_project.items():
+                last_export_time = self._last_export_times.get(project_id)
+                if (
+                    last_export_time is not None
+                    and time.monotonic() - last_export_time
+                    < _MIN_EXPORT_INTERVAL_SECONDS
+                ):
+                    # writing again this soon would be rejected by Cloud Monitoring.
+                    # Metrics are cumulative, so the next export still includes this data
+                    _LOGGER.debug(
+                        "Skipping metrics export for project %s: previous export "
+                        "was less than %d seconds ago",
+                        project_id,
+                        _MIN_EXPORT_INTERVAL_SECONDS,
+                    )
+                    continue
                 _LOGGER.debug(
                     "Exporting %d time series to Cloud Monitoring for project %s",
                     len(series_list),
                     project_id,
                 )
                 self._batch_write(project_id, series_list, deadline)
+                self._last_export_times[project_id] = time.monotonic()
             return MetricExportResult.SUCCESS
         except (Unauthenticated, PermissionDenied) as e:
             # authentication/authorization failures won't resolve on their own.
