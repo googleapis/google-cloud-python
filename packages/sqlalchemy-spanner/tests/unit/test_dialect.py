@@ -87,7 +87,84 @@ class TestSpannerDialect(fixtures.TestBase):
         index_info = res[("public", "my_table")][0]
         eq_(index_info["column_sorting"], {})
 
-    def test_max_size_exported(self):
+    def test_get_multi_unique_constraints_groups_columns(self):
+        """Test get_multi_unique_constraints groups the columns of each constraint."""
+        dialect = SpannerDialect()
+        connection = MagicMock()
+        mock_snapshot = MagicMock()
+        # Mock rows: schema, table, constraint_name, column_name, ordered by
+        # constraint and column position. The emulator repeats the rows of the
+        # backing unique constraint of a foreign key for each referencing key.
+        mock_snapshot.execute_sql.return_value = [
+            ["", "parent", "IDX_parent_a_b_U", "a"],
+            ["", "parent", "IDX_parent_a_b_U", "a"],
+            ["", "parent", "IDX_parent_a_b_U", "b"],
+            ["", "parent", "IDX_parent_a_b_U", "b"],
+            ["", "parent", "IDX_parent_c_U", "c"],
+            ["my_schema", "other", "IDX_other_x_U", "x"],
+        ]
+        connection.connection.database.snapshot.return_value.__enter__.return_value = (
+            mock_snapshot
+        )
+
+        res = dialect.get_multi_unique_constraints(connection)
+
+        eq_(
+            res,
+            {
+                (None, "parent"): [
+                    {"name": "IDX_parent_a_b_U", "column_names": ["a", "b"]},
+                    {"name": "IDX_parent_c_U", "column_names": ["c"]},
+                ],
+                ("my_schema", "other"): [
+                    {"name": "IDX_other_x_U", "column_names": ["x"]}
+                ],
+            },
+        )
+
+    def test_get_multi_unique_constraints_sql(self):
+        """Test get_multi_unique_constraints reads all tables in one query."""
+        dialect = SpannerDialect()
+        connection = MagicMock()
+        mock_snapshot = MagicMock()
+        mock_snapshot.execute_sql.return_value = []
+        connection.connection.database.snapshot.return_value.__enter__.return_value = (
+            mock_snapshot
+        )
+
+        dialect.get_multi_unique_constraints(
+            connection, filter_names=["parent", "other"]
+        )
+
+        mock_snapshot.execute_sql.assert_called_once()
+        executed_sql = mock_snapshot.execute_sql.call_args[0][0]
+        assert "information_schema.key_column_usage AS kcu" in executed_sql
+        assert "kcu.ordinal_position" in executed_sql
+        assert "tc.table_name = 'parent' OR tc.table_name = 'other'" in executed_sql
+        assert 'tc.constraint_type = "UNIQUE"' in executed_sql
+
+    def test_get_unique_constraints(self):
+        """Test get_unique_constraints returns the constraints of one table."""
+        dialect = SpannerDialect()
+        connection = MagicMock()
+        mock_snapshot = MagicMock()
+        mock_snapshot.execute_sql.return_value = [
+            ["", "parent", "IDX_parent_a_b_U", "a"],
+            ["", "parent", "IDX_parent_a_b_U", "b"],
+        ]
+        connection.connection.database.snapshot.return_value.__enter__.return_value = (
+            mock_snapshot
+        )
+
+        eq_(
+            dialect.get_unique_constraints(connection, "parent"),
+            [{"name": "IDX_parent_a_b_U", "column_names": ["a", "b"]}],
+        )
+        executed_sql = mock_snapshot.execute_sql.call_args[0][0]
+        assert "tc.table_name = 'parent'" in executed_sql
+
+        mock_snapshot.execute_sql.return_value = []
+        eq_(dialect.get_unique_constraints(connection, "no_constraints"), [])
         """Test MAX_SIZE export and int_from_size helper behavior."""
         from google.cloud.sqlalchemy_spanner import MAX_SIZE
         from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
