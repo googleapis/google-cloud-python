@@ -1252,7 +1252,7 @@ class SpannerDialect(DefaultDialect):
             end = str_repr.index(")")
             size = int_from_size(str_repr[6:end])
             return _type_map["BYTES"](length=size)
-        elif str_repr.startswith("ARRAY"):
+        elif str_repr.startswith("ARRAY<") and ">" in str_repr:
             # Vector columns append their length to the type, as in
             # ARRAY<FLOAT32>(vector_length=>128).
             end = str_repr.index(">")

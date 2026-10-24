@@ -138,6 +138,11 @@ class TestSpannerDialect(fixtures.TestBase):
         assert isinstance(col_type, types.ARRAY)
         assert isinstance(col_type.item_type, types.NullType)
 
+        # An array type without its closing ">" also falls back to NullType.
+        with expect_warnings("Did not recognize Spanner type 'ARRAY<FLOAT32'"):
+            col_type = dialect._designate_type("ARRAY<FLOAT32")
+        assert isinstance(col_type, types.NullType)
+
     def test_get_multi_columns_with_unrecognized_type(self):
         """Test a column of an unrecognized type doesn't break reflection."""
         dialect = SpannerDialect()
