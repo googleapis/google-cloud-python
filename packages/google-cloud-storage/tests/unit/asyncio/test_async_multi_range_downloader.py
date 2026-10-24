@@ -34,6 +34,8 @@ _TEST_OBJECT_NAME = "test-object"
 _TEST_OBJECT_SIZE = 1024 * 1024  # 1 MiB
 _TEST_GENERATION_NUMBER = 123456789
 _TEST_READ_HANDLE = b"test-handle"
+# Metadata tuple advertising MULTI_RANGE_DOWNLOADER (bit 0) on every MRD stream.
+_FEATURES_METADATA = ("x-goog-storage-python-features", "AAAAAQ==")
 
 
 class TestAsyncMultiRangeDownloader:
@@ -86,7 +88,7 @@ class TestAsyncMultiRangeDownloader:
             read_handle=_TEST_READ_HANDLE,
         )
 
-        mrd.read_obj_str.open.assert_called_once()
+        mrd.read_obj_str.open.assert_called_once_with(metadata=[_FEATURES_METADATA])
 
         assert mrd.client == mock_client
         assert mrd.bucket_name == _TEST_BUCKET_NAME
@@ -567,6 +569,74 @@ class TestAsyncMultiRangeDownloader:
             f"Error occurred while opening MRD: {exc}"
         )
 
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_open_sends_feature_tracking_metadata_with_user_metadata(
+        self, mock_cls_async_read_object_stream
+    ):
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+
+        mrd = AsyncMultiRangeDownloader(
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+        await mrd.open(metadata=[("x-goog-request-params", "a=b")])
+
+        mock_stream.open.assert_awaited_once_with(
+            metadata=[("x-goog-request-params", "a=b"), _FEATURES_METADATA]
+        )
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_open_sends_feature_tracking_metadata_on_redirect_reopen(
+        self, mock_cls_async_read_object_stream
+    ):
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.is_stream_open = False
+
+        redirect = _storage_v2.BidiReadObjectRedirectedError(
+            routing_token="redirect-token"
+        )
+        status = status_pb2.Status()
+        detail = status.details.add()
+        detail.type_url = (
+            "type.googleapis.com/google.storage.v2.BidiReadObjectRedirectedError"
+        )
+        detail.value = _storage_v2.BidiReadObjectRedirectedError.serialize(redirect)
+        grpc_error = mock.MagicMock()
+        grpc_error.trailing_metadata.return_value = [
+            ("grpc-status-details-bin", status.SerializeToString())
+        ]
+        mock_stream.open = AsyncMock(
+            side_effect=[exceptions.Aborted("redirect", errors=[grpc_error]), None]
+        )
+
+        mrd = AsyncMultiRangeDownloader(
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+        await mrd.open()
+
+        assert mock_stream.open.await_count == 2
+        # First attempt: features header only.
+        assert mock_stream.open.await_args_list[0] == mock.call(
+            metadata=[_FEATURES_METADATA]
+        )
+        # Re-open after redirect: features header plus routing token.
+        assert mock_stream.open.await_args_list[1] == mock.call(
+            metadata=[
+                _FEATURES_METADATA,
+                ("x-goog-request-params", "routing_token=redirect-token"),
+            ]
+        )
+
     @mock.patch("google.cloud.storage.asyncio.async_multi_range_downloader.logger")
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
@@ -836,7 +906,7 @@ class TestAsyncMultiRangeDownloader:
         assert buffer.getvalue() == b"data"
         assert mock_cls_async_read_object_stream.call_count == 2
         initial_stream.close.assert_awaited_once()
-        replacement_stream.open.assert_awaited_once()
+        replacement_stream.open.assert_awaited_once_with(metadata=[_FEATURES_METADATA])
         replacement_stream.send.assert_awaited_once_with(
             _storage_v2.BidiReadObjectRequest(
                 read_ranges=[

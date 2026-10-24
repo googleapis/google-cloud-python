@@ -23,7 +23,9 @@ from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
 
 from google.cloud import _storage_v2
+from google.cloud.storage._feature_tracking import features_metadata
 from google.cloud.storage._helpers import generate_random_56_bit_integer
+from google.cloud.storage._tracked_features import TrackedFeature
 from google.cloud.storage.asyncio._stream_multiplexer import (
     _StreamEnd,
     _StreamError,
@@ -56,6 +58,16 @@ _COMMON_READ_RETRYABLE_EXCEPTIONS = (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _mrd_features_metadata() -> List[Tuple[str, str]]:
+    """Return the feature-tracking metadata attached to every MRD stream.
+
+    ``AsyncMultiRangeDownloader`` currently opens a single BidiReadObject
+    stream per object, so this bit indicates that the multi-range downloader
+    was used (rather than multistream usage as in other SDKs).
+    """
+    return features_metadata(TrackedFeature.MULTI_RANGE_DOWNLOADER)
 
 
 def _is_open_retryable(exc):
@@ -273,6 +285,7 @@ class AsyncMultiRangeDownloader:
 
         async def _do_open():
             current_metadata = list(metadata) if metadata else []
+            current_metadata.extend(_mrd_features_metadata())
 
             # Cleanup stream from previous failed attempt, if any.
             if self.read_obj_str:
@@ -334,6 +347,7 @@ class AsyncMultiRangeDownloader:
             )
 
             current_metadata = list(metadata) if metadata else []
+            current_metadata.extend(_mrd_features_metadata())
             if current_token:
                 current_metadata.append(
                     (

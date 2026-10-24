@@ -168,6 +168,39 @@ async def test_open_with_read_handle(mock_client, mock_cls_async_bidi_rpc):
     "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
 )
 @pytest.mark.asyncio
+async def test_open_forwards_feature_tracking_metadata(
+    mock_client, mock_cls_async_bidi_rpc
+):
+    # arrange
+    read_obj_stream = await instantiate_read_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=False
+    )
+    features_metadata = ("x-goog-storage-python-features", "AAAAAQ==")
+
+    # act
+    await read_obj_stream.open(
+        metadata=[
+            features_metadata,
+            ("x-goog-request-params", "routing_token=token"),
+        ]
+    )
+
+    # assert
+    _, kwargs = mock_cls_async_bidi_rpc.call_args
+    assert kwargs["metadata"] == [
+        features_metadata,
+        (
+            "x-goog-request-params",
+            f"bucket=projects/_/buckets/{_TEST_BUCKET_NAME}&routing_token=token",
+        ),
+    ]
+
+
+@mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
+@mock.patch(
+    "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
 async def test_open_when_already_open_should_raise_error(
     mock_client, mock_cls_async_bidi_rpc
 ):
