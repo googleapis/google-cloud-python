@@ -1198,7 +1198,7 @@ def upload_chunks_concurrently(
 
     container = XMLMPUContainer(url, filename, headers=headers, retry=retry)
 
-    container.initiate(transport=transport, content_type=content_type)
+    container.initiate(transport=transport, content_type=content_type, timeout=timeout)
     upload_id = container.upload_id
 
     size = os.path.getsize(filename)
@@ -1228,6 +1228,7 @@ def upload_chunks_concurrently(
                     checksum=checksum,
                     headers=headers.copy(),
                     retry=retry,
+                    timeout=timeout,
                 )
             )
 
@@ -1241,9 +1242,9 @@ def upload_chunks_concurrently(
             part_number, etag = future.result()
             container.register_part(part_number, etag)
 
-        container.finalize(blob._get_transport(client))
+        container.finalize(blob._get_transport(client), timeout=timeout)
     except Exception:
-        container.cancel(blob._get_transport(client))
+        container.cancel(blob._get_transport(client), timeout=timeout)
         raise
 
 
@@ -1258,6 +1259,7 @@ def _upload_part(
     checksum,
     headers,
     retry,
+    timeout,
 ):
     """Helper function that runs inside a thread or subprocess to upload a part.
 
@@ -1280,7 +1282,7 @@ def _upload_part(
         headers=headers,
         retry=retry,
     )
-    part.upload(client._http)
+    part.upload(client._http, timeout=timeout)
     return (part_number, part.etag)
 
 
