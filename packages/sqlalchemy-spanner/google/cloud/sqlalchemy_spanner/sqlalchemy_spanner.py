@@ -1984,9 +1984,7 @@ if HAS_ALEMBIC_INSTALLED:
             storing = index.dialect_options.get("spanner", {}).get("storing") or ()
             if index.table is not None:
                 for col in storing:
-                    col_name = (
-                        col if isinstance(col, str) else getattr(col, "name", None)
-                    )
-                    if col_name and col_name not in index.table.c:
+                    col_name = col if isinstance(col, str) else col.name
+                    if col_name not in index.table.c:
                         index.table.append_column(Column(col_name, types.NullType))
             super().create_index(index, **kw)
