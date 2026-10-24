@@ -24,7 +24,7 @@ from google.rpc import status_pb2
 from google.cloud import _storage_v2
 from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
-from google.cloud.storage import Blob
+from google.cloud.storage import Blob, _opentelemetry_metrics
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
 )
@@ -46,6 +46,7 @@ from . import _utils
 
 _MAX_CHUNK_SIZE_BYTES = 2 * 1024 * 1024  # 2 MiB
 _DEFAULT_FLUSH_INTERVAL_BYTES = 16 * 1024 * 1024  # 16 MiB
+_BIDI_WRITE_OBJECT_RPC = "google.storage.v2.Storage/BidiWriteObject"
 _BIDI_WRITE_REDIRECTED_TYPE_URL = (
     "type.googleapis.com/google.storage.v2.BidiWriteObjectRedirectedError"
 )
@@ -219,6 +220,7 @@ class AsyncAppendableObjectWriter:
         self.object_resource: Optional[_storage_v2.Object] = None
         self._flush_count = 0
         self.blob: Optional[Blob] = None
+        self._suppress_append_body_size: bool = False
 
     @classmethod
     def from_blob(
@@ -283,17 +285,25 @@ class AsyncAppendableObjectWriter:
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
         """
-        if not self._is_stream_open:
-            raise ValueError("Stream is not open. Call open() before state_lookup().")
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.state_lookup",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
+        ):
+            if not self._is_stream_open:
+                raise ValueError(
+                    "Stream is not open. Call open() before state_lookup()."
+                )
 
-        await self.write_obj_stream.send(
-            _storage_v2.BidiWriteObjectRequest(
-                state_lookup=True,
+            await self.write_obj_stream.send(
+                _storage_v2.BidiWriteObjectRequest(
+                    state_lookup=True,
+                )
             )
-        )
-        response = await self.write_obj_stream.recv()
-        self.persisted_size = response.persisted_size
-        return self.persisted_size
+            response = await self.write_obj_stream.recv()
+            self.persisted_size = response.persisted_size
+            return self.persisted_size
 
     def _on_open_error(self, exc):
         """Extracts routing token and write handle on redirect error during open."""
@@ -340,59 +350,70 @@ class AsyncAppendableObjectWriter:
         :raises ValueError: If the stream is already open.
 
         """
-        if self._is_stream_open:
-            raise ValueError("Underlying bidi-gRPC stream is already open")
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.open",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
+        ):
+            if self._is_stream_open:
+                raise ValueError("Underlying bidi-gRPC stream is already open")
 
-        retry_policy = self._merge_retry_policy(retry_policy)
+            retry_policy = self._merge_retry_policy(retry_policy)
 
-        async def _do_open():
-            current_metadata = list(metadata) if metadata else []
+            async def _do_open():
+                current_metadata = list(metadata) if metadata else []
 
-            # Cleanup stream from previous failed attempt, if any.
-            if self.write_obj_stream:
-                if self.write_obj_stream.is_stream_open:
-                    try:
-                        await self.write_obj_stream.close()
-                    except Exception as e:
-                        logger.warning(
-                            f"Error closing previous write stream during open retry. Got exception: {e}"
+                # Cleanup stream from previous failed attempt, if any.
+                if self.write_obj_stream:
+                    if self.write_obj_stream.is_stream_open:
+                        try:
+                            await self.write_obj_stream.close()
+                        except Exception as e:
+                            logger.warning(
+                                f"Error closing previous write stream during open retry. Got exception: {e}"
+                            )
+                    self.write_obj_stream = None
+                    self._is_stream_open = False
+
+                self.write_obj_stream = _AsyncWriteObjectStream(
+                    client=self.client.grpc_client,
+                    bucket_name=self.bucket_name,
+                    object_name=self.object_name,
+                    blob=self.blob,
+                    generation_number=self.generation,
+                    write_handle=self.write_handle,
+                    routing_token=self._routing_token,
+                    storage_class=self.storage_class,
+                )
+                if recorder is not None:
+                    self.write_obj_stream._metrics_recorder = recorder
+
+                if self._routing_token:
+                    current_metadata.append(
+                        (
+                            "x-goog-request-params",
+                            f"routing_token={self._routing_token}",
                         )
-                self.write_obj_stream = None
-                self._is_stream_open = False
+                    )
 
-            self.write_obj_stream = _AsyncWriteObjectStream(
-                client=self.client.grpc_client,
-                bucket_name=self.bucket_name,
-                object_name=self.object_name,
-                blob=self.blob,
-                generation_number=self.generation,
-                write_handle=self.write_handle,
-                routing_token=self._routing_token,
-                storage_class=self.storage_class,
-            )
-
-            if self._routing_token:
-                current_metadata.append(
-                    ("x-goog-request-params", f"routing_token={self._routing_token}")
+                await self.write_obj_stream.open(
+                    metadata=current_metadata if current_metadata else None
                 )
 
-            await self.write_obj_stream.open(
-                metadata=current_metadata if current_metadata else None
-            )
+                if self.write_obj_stream.generation_number:
+                    self.generation = self.write_obj_stream.generation_number
+                if self.write_obj_stream.write_handle:
+                    self.write_handle = self.write_obj_stream.write_handle
+                if self.write_obj_stream.persisted_size is not None:
+                    self.persisted_size = self.write_obj_stream.persisted_size
+                    # set offset while opening
+                    self.offset = self.persisted_size
 
-            if self.write_obj_stream.generation_number:
-                self.generation = self.write_obj_stream.generation_number
-            if self.write_obj_stream.write_handle:
-                self.write_handle = self.write_obj_stream.write_handle
-            if self.write_obj_stream.persisted_size is not None:
-                self.persisted_size = self.write_obj_stream.persisted_size
-                # set offset while opening
-                self.offset = self.persisted_size
+                self._is_stream_open = True
+                self._routing_token = None
 
-            self._is_stream_open = True
-            self._routing_token = None
-
-        await retry_policy(_do_open)()
+            await retry_policy(_do_open)()
 
     async def append(
         self,
@@ -425,106 +446,118 @@ class AsyncAppendableObjectWriter:
 
         :raises ValueError: If the stream is not open.
         """
-        if not self._is_stream_open:
-            raise ValueError("Stream is not open. Call open() before append().")
-        if not data:
-            logger.debug("No data provided to append; returning without action.")
-            return
-
-        if retry_policy is None:
-            retry_policy = AsyncRetry(predicate=_is_write_retryable)
-
-        strategy = _WriteResumptionStrategy()
-        buffer = io.BytesIO(data)
-        attempt_count = 0
-
-        def send_and_recv_generator(
-            requests: List[BidiWriteObjectRequest],
-            state: Dict[str, _WriteState],
-            metadata: Optional[List[Tuple[str, str]]] = None,
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.append",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
-            async def generator():
-                nonlocal attempt_count
-                nonlocal requests
-                attempt_count += 1
-                resp = None
-                write_state = state["write_state"]
-                # If this is a retry or redirect, we must re-open the stream
-                if attempt_count > 1 or write_state.routing_token:
-                    logger.info(
-                        f"Re-opening the stream with attempt_count: {attempt_count}"
-                    )
+            if not self._is_stream_open:
+                raise ValueError("Stream is not open. Call open() before append().")
+            if not data:
+                logger.debug("No data provided to append; returning without action.")
+                return
 
-                    current_metadata = list(metadata) if metadata else []
-                    if write_state.routing_token:
-                        current_metadata.append(
-                            (
-                                "x-goog-request-params",
-                                f"routing_token={write_state.routing_token}",
-                            )
-                        )
-                        self._routing_token = write_state.routing_token
+            if retry_policy is None:
+                retry_policy = AsyncRetry(predicate=_is_write_retryable)
 
-                    self._is_stream_open = False
-                    await self.open(metadata=current_metadata)
+            strategy = _WriteResumptionStrategy()
+            buffer = io.BytesIO(data)
+            attempt_count = 0
 
-                    write_state.persisted_size = self.persisted_size
-                    write_state.write_handle = self.write_handle
-                    write_state.routing_token = None
-
-                    write_state.user_buffer.seek(write_state.persisted_size)
-                    write_state.bytes_sent = write_state.persisted_size
-                    write_state.bytes_since_last_flush = 0
-                    self.bytes_appended_since_last_flush = 0
-
-                    requests = strategy.generate_requests(state)
-
-                for chunk_req in requests:
-                    await self.write_obj_stream.send(chunk_req)
-                    if chunk_req.flush:
-                        self._flush_count += 1
-
+            def send_and_recv_generator(
+                requests: List[BidiWriteObjectRequest],
+                state: Dict[str, _WriteState],
+                metadata: Optional[List[Tuple[str, str]]] = None,
+            ):
+                async def generator():
+                    nonlocal attempt_count
+                    nonlocal requests
+                    attempt_count += 1
                     resp = None
-                    if chunk_req.state_lookup:
-                        # TODO: if there's error, it'll raise error
-                        # and will be handled by `recover_state_on_failure`
-                        resp = await self.write_obj_stream.recv()
+                    write_state = state["write_state"]
+                    # If this is a retry or redirect, we must re-open the stream
+                    if attempt_count > 1 or write_state.routing_token:
+                        logger.info(
+                            f"Re-opening the stream with attempt_count: {attempt_count}"
+                        )
 
-                    if resp:
-                        if resp.persisted_size is not None:
-                            self.persisted_size = resp.persisted_size
-                            state["write_state"].persisted_size = resp.persisted_size
-                            self.offset = self.persisted_size
-                        if resp.write_handle:
-                            self.write_handle = resp.write_handle
-                            state["write_state"].write_handle = resp.write_handle
+                        current_metadata = list(metadata) if metadata else []
+                        if write_state.routing_token:
+                            current_metadata.append(
+                                (
+                                    "x-goog-request-params",
+                                    f"routing_token={write_state.routing_token}",
+                                )
+                            )
+                            self._routing_token = write_state.routing_token
 
-                    yield resp
+                        self._is_stream_open = False
+                        await self.open(metadata=current_metadata)
 
-            return generator()
+                        write_state.persisted_size = self.persisted_size
+                        write_state.write_handle = self.write_handle
+                        write_state.routing_token = None
 
-        # State initialization
-        write_state = _WriteState(
-            _MAX_CHUNK_SIZE_BYTES,
-            buffer,
-            self.flush_interval,
-            enable_checksum=enable_checksum,
-        )
-        write_state.write_handle = self.write_handle
-        write_state.persisted_size = self.persisted_size
-        # offset is set during `open()` call.
-        write_state.bytes_sent = self.offset or 0
-        write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
+                        write_state.user_buffer.seek(write_state.persisted_size)
+                        write_state.bytes_sent = write_state.persisted_size
+                        write_state.bytes_since_last_flush = 0
+                        self.bytes_appended_since_last_flush = 0
 
-        retry_manager = _BidiStreamRetryManager(
-            _WriteResumptionStrategy(),
-            lambda r, s: send_and_recv_generator(r, s, metadata),
-        )
-        await retry_manager.execute({"write_state": write_state}, retry_policy)
+                        requests = strategy.generate_requests(state)
 
-        # Sync local markers
-        self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
-        self.offset = write_state.bytes_sent
+                    for chunk_req in requests:
+                        await self.write_obj_stream.send(chunk_req)
+                        if chunk_req.flush:
+                            self._flush_count += 1
+
+                        resp = None
+                        if chunk_req.state_lookup:
+                            # TODO: if there's error, it'll raise error
+                            # and will be handled by `recover_state_on_failure`
+                            resp = await self.write_obj_stream.recv()
+
+                        if resp:
+                            if resp.persisted_size is not None:
+                                self.persisted_size = resp.persisted_size
+                                state[
+                                    "write_state"
+                                ].persisted_size = resp.persisted_size
+                                self.offset = self.persisted_size
+                            if resp.write_handle:
+                                self.write_handle = resp.write_handle
+                                state["write_state"].write_handle = resp.write_handle
+
+                        yield resp
+
+                return generator()
+
+            # State initialization
+            write_state = _WriteState(
+                _MAX_CHUNK_SIZE_BYTES,
+                buffer,
+                self.flush_interval,
+                enable_checksum=enable_checksum,
+            )
+            write_state.write_handle = self.write_handle
+            write_state.persisted_size = self.persisted_size
+            # offset is set during `open()` call.
+            write_state.bytes_sent = self.offset or 0
+            write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
+
+            retry_manager = _BidiStreamRetryManager(
+                _WriteResumptionStrategy(),
+                lambda r, s: send_and_recv_generator(r, s, metadata),
+            )
+            await retry_manager.execute({"write_state": write_state}, retry_policy)
+
+            # Sync local markers
+            self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
+            self.offset = write_state.bytes_sent
+            if recorder is not None and not self._suppress_append_body_size:
+                recorder.record_request_body_size(
+                    len(data), operation=_BIDI_WRITE_OBJECT_RPC
+                )
 
     async def simple_flush(self) -> None:
         """Flushes the data to the server.
@@ -535,15 +568,23 @@ class AsyncAppendableObjectWriter:
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
         """
-        if not self._is_stream_open:
-            raise ValueError("Stream is not open. Call open() before simple_flush().")
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.simple_flush",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
+        ):
+            if not self._is_stream_open:
+                raise ValueError(
+                    "Stream is not open. Call open() before simple_flush()."
+                )
 
-        await self.write_obj_stream.send(
-            _storage_v2.BidiWriteObjectRequest(
-                flush=True,
+            await self.write_obj_stream.send(
+                _storage_v2.BidiWriteObjectRequest(
+                    flush=True,
+                )
             )
-        )
-        self.bytes_appended_since_last_flush = 0
+            self.bytes_appended_since_last_flush = 0
 
     async def flush(self) -> int:
         """Flushes the data to the server.
@@ -554,20 +595,26 @@ class AsyncAppendableObjectWriter:
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
         """
-        if not self._is_stream_open:
-            raise ValueError("Stream is not open. Call open() before flush().")
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.flush",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
+        ):
+            if not self._is_stream_open:
+                raise ValueError("Stream is not open. Call open() before flush().")
 
-        await self.write_obj_stream.send(
-            _storage_v2.BidiWriteObjectRequest(
-                flush=True,
-                state_lookup=True,
+            await self.write_obj_stream.send(
+                _storage_v2.BidiWriteObjectRequest(
+                    flush=True,
+                    state_lookup=True,
+                )
             )
-        )
-        response = await self.write_obj_stream.recv()
-        self.persisted_size = response.persisted_size
-        self.offset = self.persisted_size
-        self.bytes_appended_since_last_flush = 0
-        return self.persisted_size
+            response = await self.write_obj_stream.recv()
+            self.persisted_size = response.persisted_size
+            self.offset = self.persisted_size
+            self.bytes_appended_since_last_flush = 0
+            return self.persisted_size
 
     async def close(
         self,
@@ -612,51 +659,57 @@ class AsyncAppendableObjectWriter:
             server.
 
         """
-        if not self._is_stream_open:
-            raise ValueError("Stream is not open. Call open() before close().")
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.close",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
+        ):
+            if not self._is_stream_open:
+                raise ValueError("Stream is not open. Call open() before close().")
 
-        if full_object_checksum is not None and not finalize_on_close:
-            raise ValueError(
-                "full_object_checksum can only be provided when finalize_on_close is True."
-            )
-
-        if finalize_on_close:
-            return await self.finalize(
-                full_object_checksum=full_object_checksum,
-                retry_policy=retry_policy,
-            )
-
-        retry_policy = self._merge_retry_policy(retry_policy)
-
-        attempt_count = 0
-        expected_offset = self.offset
-
-        async def _do_close():
-            nonlocal attempt_count
-            attempt_count += 1
-
-            if attempt_count > 1:
-                logger.info(
-                    f"Re-opening the stream for close retry attempt: {attempt_count}"
+            if full_object_checksum is not None and not finalize_on_close:
+                raise ValueError(
+                    "full_object_checksum can only be provided when finalize_on_close is True."
                 )
-                self._is_stream_open = False
-                await self.open()
-                if (
-                    self.offset is not None
-                    and expected_offset is not None
-                    and self.offset != expected_offset
-                ):
-                    raise exceptions.InternalServerError(
-                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+
+            if finalize_on_close:
+                return await self.finalize(
+                    full_object_checksum=full_object_checksum,
+                    retry_policy=retry_policy,
+                )
+
+            retry_policy = self._merge_retry_policy(retry_policy)
+
+            attempt_count = 0
+            expected_offset = self.offset
+
+            async def _do_close():
+                nonlocal attempt_count
+                attempt_count += 1
+
+                if attempt_count > 1:
+                    logger.info(
+                        f"Re-opening the stream for close retry attempt: {attempt_count}"
                     )
+                    self._is_stream_open = False
+                    await self.open()
+                    if (
+                        self.offset is not None
+                        and expected_offset is not None
+                        and self.offset != expected_offset
+                    ):
+                        raise exceptions.InternalServerError(
+                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                        )
 
-            await self.write_obj_stream.close()
-            return self.persisted_size
+                await self.write_obj_stream.close()
+                return self.persisted_size
 
-        try:
-            return await retry_policy(_do_close)()
-        finally:
-            self._is_stream_open = False
+            try:
+                return await retry_policy(_do_close)()
+            finally:
+                self._is_stream_open = False
 
     async def finalize(
         self,
@@ -699,67 +752,75 @@ class AsyncAppendableObjectWriter:
             full_object_checksum does not match the checksum computed by the
             server.
         """
-        if not self._is_stream_open:
-            raise ValueError("Stream is not open. Call open() before finalize().")
-
-        if full_object_checksum is None:
-            finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
-        elif isinstance(full_object_checksum, bool) or not isinstance(
-            full_object_checksum, int
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.finalize",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
-            raise TypeError("full_object_checksum must be an integer.")
-        elif not (0 <= full_object_checksum <= 0xFFFFFFFF):
-            raise ValueError("full_object_checksum must be a 32-bit unsigned integer.")
-        else:
-            finalize_req = _storage_v2.BidiWriteObjectRequest(
-                finish_write=True,
-                object_checksums=_storage_v2.ObjectChecksums(
-                    crc32c=full_object_checksum
-                ),
-            )
+            if not self._is_stream_open:
+                raise ValueError("Stream is not open. Call open() before finalize().")
 
-        retry_policy = self._merge_retry_policy(retry_policy)
-
-        attempt_count = 0
-        expected_offset = self.offset
-
-        async def _do_finalize():
-            nonlocal attempt_count
-            attempt_count += 1
-
-            if attempt_count > 1:
-                logger.info(
-                    f"Re-opening the stream for finalize retry attempt: {attempt_count}"
+            if full_object_checksum is None:
+                finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
+            elif isinstance(full_object_checksum, bool) or not isinstance(
+                full_object_checksum, int
+            ):
+                raise TypeError("full_object_checksum must be an integer.")
+            elif not (0 <= full_object_checksum <= 0xFFFFFFFF):
+                raise ValueError(
+                    "full_object_checksum must be a 32-bit unsigned integer."
                 )
+            else:
+                finalize_req = _storage_v2.BidiWriteObjectRequest(
+                    finish_write=True,
+                    object_checksums=_storage_v2.ObjectChecksums(
+                        crc32c=full_object_checksum
+                    ),
+                )
+
+            retry_policy = self._merge_retry_policy(retry_policy)
+
+            attempt_count = 0
+            expected_offset = self.offset
+
+            async def _do_finalize():
+                nonlocal attempt_count
+                attempt_count += 1
+
+                if attempt_count > 1:
+                    logger.info(
+                        f"Re-opening the stream for finalize retry attempt: {attempt_count}"
+                    )
+                    self._is_stream_open = False
+                    await self.open()
+                    if (
+                        self.offset is not None
+                        and expected_offset is not None
+                        and self.offset != expected_offset
+                    ):
+                        raise exceptions.InternalServerError(
+                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                        )
+
+                await self.write_obj_stream.send(finalize_req)
+                response = await self.write_obj_stream.recv()
+                self.object_resource = response.resource
+                self.persisted_size = self.object_resource.size
+                return self.object_resource
+
+            try:
+                return await retry_policy(_do_finalize)()
+            finally:
+                if self.write_obj_stream:
+                    try:
+                        await self.write_obj_stream.close()
+                    except Exception as e:
+                        logger.debug(
+                            f"Stream close during finalize cleanup resulted in: {e}"
+                        )
                 self._is_stream_open = False
-                await self.open()
-                if (
-                    self.offset is not None
-                    and expected_offset is not None
-                    and self.offset != expected_offset
-                ):
-                    raise exceptions.InternalServerError(
-                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
-                    )
-
-            await self.write_obj_stream.send(finalize_req)
-            response = await self.write_obj_stream.recv()
-            self.object_resource = response.resource
-            self.persisted_size = self.object_resource.size
-            return self.object_resource
-
-        try:
-            return await retry_policy(_do_finalize)()
-        finally:
-            if self.write_obj_stream:
-                try:
-                    await self.write_obj_stream.close()
-                except Exception as e:
-                    logger.debug(
-                        f"Stream close during finalize cleanup resulted in: {e}"
-                    )
-            self._is_stream_open = False
-            self.offset = None
+                self.offset = None
 
     @property
     def is_stream_open(self) -> bool:
@@ -792,5 +853,22 @@ class AsyncAppendableObjectWriter:
         :param file_obj: A file handle opened in binary mode for reading.
 
         """
-        while block := file_obj.read(block_size):
-            await self.append(block)
+        recorder = _opentelemetry_metrics.get_active_recorder(self.client)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.append_from_file",
+            rpc_method=_BIDI_WRITE_OBJECT_RPC,
+        ):
+            total_bytes = 0
+            prev_suppress = self._suppress_append_body_size
+            self._suppress_append_body_size = True
+            try:
+                while block := file_obj.read(block_size):
+                    await self.append(block)
+                    total_bytes += len(block)
+            finally:
+                self._suppress_append_body_size = prev_suppress
+            if recorder is not None and total_bytes > 0:
+                recorder.record_request_body_size(
+                    total_bytes, operation=_BIDI_WRITE_OBJECT_RPC
+                )

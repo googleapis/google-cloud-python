@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 from unittest import mock
 
+import grpc
 import pytest
 from google.api_core import client_info as client_info_lib
 from google.api_core import client_options
 from google.auth import credentials as auth_credentials
 from google.auth.credentials import AnonymousCredentials
 
-from google.cloud.storage import __version__
+from google.cloud.storage import __version__, _opentelemetry_metrics
 from google.cloud.storage.asyncio import async_grpc_client
 
 
@@ -648,3 +650,372 @@ class TestAsyncGrpcClient:
         ):
             with pytest.raises(ValueError):
                 async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    @pytest.mark.asyncio
+    async def test_metrics_interceptors_and_client_lifecycle(
+        self, mock_async_storage_client, monkeypatch
+    ):
+        monkeypatch.setattr(_opentelemetry_metrics, "HAS_OPENTELEMETRY_METRICS", True)
+        monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
+
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_gapic_client = mock.AsyncMock()
+        mock_gapic_client.transport = mock.MagicMock()
+        mock_gapic_client.transport.close = mock.AsyncMock()
+        mock_async_storage_client.return_value = mock_gapic_client
+
+        client = async_grpc_client.AsyncGrpcClient(
+            credentials=_make_credentials(),
+            client_options={"api_endpoint": "custom.storage.googleapis.com:443"},
+            enable_metrics=True,
+        )
+        assert client.metrics_enabled is True
+        assert (
+            client._metrics_recorder.server_address == "custom.storage.googleapis.com"
+        )
+        assert client._grpc_client._metrics_recorder is client._metrics_recorder
+
+        create_channel_kwargs = mock_transport_cls.create_channel.call_args.kwargs
+        assert "interceptors" in create_channel_kwargs
+        assert len(create_channel_kwargs["interceptors"]) == 4
+
+        mock_recorder = mock.MagicMock()
+        mock_recorder.standard_enabled = True
+        client._metrics_recorder = mock_recorder
+
+        await client.delete_object("b", "o")
+        mock_recorder.record_logical_operation.assert_called_once()
+        _, del_kwargs = mock_recorder.record_logical_operation.call_args
+        assert (
+            del_kwargs["client_method"]
+            == "storage.asyncio.AsyncGrpcClient.delete_object"
+        )
+        assert del_kwargs["rpc_method"] == "google.storage.v2.Storage/DeleteObject"
+        assert del_kwargs["error_type"] == "OK"
+
+        mock_recorder.record_logical_operation.reset_mock()
+        await client.get_object("b", "o")
+        mock_recorder.record_logical_operation.assert_called_once()
+        _, get_kwargs = mock_recorder.record_logical_operation.call_args
+        assert (
+            get_kwargs["client_method"] == "storage.asyncio.AsyncGrpcClient.get_object"
+        )
+        assert get_kwargs["rpc_method"] == "google.storage.v2.Storage/GetObject"
+        assert get_kwargs["error_type"] == "OK"
+
+        async with client as entered:
+            assert entered is client
+        mock_gapic_client.transport.close.assert_awaited_once()
+        mock_recorder.shutdown.assert_called_once()
+
+    @mock.patch(
+        "google.cloud._storage_v2.services.storage.transports.StorageGrpcAsyncIOTransport"
+    )
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    @mock.patch("grpc.aio.insecure_channel")
+    def test_anonymous_client_with_metrics_enabled(
+        self,
+        mock_insecure_channel,
+        mock_async_storage_client,
+        mock_transport,
+        monkeypatch,
+    ):
+        monkeypatch.setattr(_opentelemetry_metrics, "HAS_OPENTELEMETRY_METRICS", True)
+        monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
+        opts = client_options.ClientOptions(api_endpoint="localhost:9000")
+        client = async_grpc_client.AsyncGrpcClient(
+            credentials=auth_credentials.AnonymousCredentials(),
+            client_options=opts,
+            enable_metrics=True,
+        )
+        assert client.metrics_enabled is True
+        _, kwargs = mock_insecure_channel.call_args
+        assert "interceptors" in kwargs
+        assert len(kwargs["interceptors"]) == 4
+
+    @pytest.mark.asyncio
+    async def test_tracked_calls_and_interceptors(self):
+        assert (
+            async_grpc_client._extract_rpc_operation(
+                b"/google.storage.v2.Storage/GetObject"
+            )
+            == "google.storage.v2.Storage/GetObject"
+        )
+        assert async_grpc_client._extract_rpc_operation(None) == "UNKNOWN"
+        assert async_grpc_client._extract_rpc_operation("/") == "UNKNOWN"
+
+        status_code, err_type = async_grpc_client._resolve_status_and_error(
+            asyncio.CancelledError()
+        )
+        assert (status_code, err_type) == ("CANCELLED", "CANCELLED")
+
+        class _FakeRpcError(Exception):
+            def code(self):
+                return grpc.StatusCode.UNAVAILABLE
+
+        assert async_grpc_client._resolve_status_and_error(_FakeRpcError()) == (
+            "UNAVAILABLE",
+            "UNAVAILABLE",
+        )
+
+        from google.api_core import exceptions as api_exceptions
+
+        assert async_grpc_client._resolve_status_and_error(
+            api_exceptions.NotFound("missing")
+        ) == ("NOT_FOUND", "NOT_FOUND")
+        assert async_grpc_client._resolve_status_and_error(
+            api_exceptions.Conflict("conflict")
+        ) == ("ABORTED", "ABORTED")
+
+        recorder = mock.MagicMock()
+        recorder.standard_enabled = True
+        u_u, u_s, s_u, s_s = async_grpc_client._create_metrics_interceptors(recorder)
+
+        details = mock.MagicMock(method="/google.storage.v2.Storage/GetObject")
+
+        # 1. Unary-Unary success and methods delegation
+        class _AwaitableCall:
+            def __init__(self, result=None, exc=None):
+                self._result = result
+                self._exc = exc
+                self._done_writing_flag = False
+                self.wait_for_connection = mock.AsyncMock()
+                self.cancel = mock.MagicMock(return_value=True)
+                self.cancelled = mock.MagicMock(return_value=False)
+                self.done = mock.MagicMock(return_value=True)
+                self.add_done_callback = mock.MagicMock()
+                self.time_remaining = mock.MagicMock(return_value=5.0)
+                self.initial_metadata = mock.AsyncMock(return_value=(("k", "v"),))
+                self.trailing_metadata = mock.AsyncMock(return_value=(("t", "v"),))
+                self.code = mock.AsyncMock(return_value=grpc.StatusCode.OK)
+                self.details = mock.AsyncMock(return_value="ok")
+                self.debug_error_string = mock.AsyncMock(return_value="dbg")
+                self.write = mock.AsyncMock()
+                self.done_writing = mock.AsyncMock()
+
+            async def _coro(self):
+                if self._exc:
+                    raise self._exc
+                return self._result
+
+            def __await__(self):
+                return self._coro().__await__()
+
+        raw_uu = _AwaitableCall(result="resp")
+        raw_uu.custom_attr = "delegated_val"
+        tracked_uu = await u_u.intercept_unary_unary(
+            mock.AsyncMock(return_value=raw_uu), details, "req"
+        )
+        assert tracked_uu.custom_attr == "delegated_val"
+        await tracked_uu.wait_for_connection()
+        assert tracked_uu.cancelled() is False
+        assert tracked_uu.done() is True
+        tracked_uu.add_done_callback(lambda c: None)
+        assert tracked_uu.time_remaining() == 5.0
+        assert await tracked_uu.initial_metadata() == (("k", "v"),)
+        assert await tracked_uu.trailing_metadata() == (("t", "v"),)
+        assert await tracked_uu.code() == grpc.StatusCode.OK
+        assert await tracked_uu.details() == "ok"
+        assert await tracked_uu.debug_error_string() == "dbg"
+        assert await tracked_uu == "resp"
+        recorder.record_rpc_attempt.assert_called_once()
+        assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+
+        # 2. Stream-Unary error and continuation error
+        recorder.record_rpc_attempt.reset_mock()
+        raw_su = _AwaitableCall(exc=_FakeRpcError())
+        tracked_su = await s_u.intercept_stream_unary(
+            mock.AsyncMock(return_value=raw_su), details, iter([])
+        )
+        tracked_su._done_writing_flag = True
+        assert tracked_su._done_writing_flag is True
+        await tracked_su.write("chunk")
+        await tracked_su.done_writing()
+        with pytest.raises(_FakeRpcError):
+            await tracked_su
+        assert (
+            recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "UNAVAILABLE"
+        )
+
+        for interceptor, method_name in (
+            (u_u, "intercept_unary_unary"),
+            (u_s, "intercept_unary_stream"),
+            (s_u, "intercept_stream_unary"),
+            (s_s, "intercept_stream_stream"),
+        ):
+            recorder.record_rpc_attempt.reset_mock()
+            with pytest.raises(_FakeRpcError):
+                await getattr(interceptor, method_name)(
+                    mock.AsyncMock(side_effect=_FakeRpcError()), details, "req"
+                )
+            recorder.record_rpc_attempt.assert_called_once()
+
+        # 3. Unary-Stream __aiter__ and Stream-Stream read() + clean close
+        class _StreamCall(_AwaitableCall):
+            def __init__(self, items):
+                super().__init__()
+                self._items = list(items)
+
+            def __aiter__(self):
+                async def _gen():
+                    for item in self._items:
+                        if isinstance(item, BaseException):
+                            raise item
+                        yield item
+
+                return _gen()
+
+            async def read(self):
+                if not self._items:
+                    return grpc.aio.EOF
+                item = self._items.pop(0)
+                if isinstance(item, BaseException):
+                    raise item
+                return item
+
+        recorder.record_rpc_attempt.reset_mock()
+        tracked_us = await u_s.intercept_unary_stream(
+            mock.AsyncMock(return_value=_StreamCall(["a", "b"])), details, "req"
+        )
+        collected = [x async for x in tracked_us]
+        assert collected == ["a", "b"]
+        assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+
+        recorder.record_rpc_attempt.reset_mock()
+        tracked_ss = await s_s.intercept_stream_stream(
+            mock.AsyncMock(return_value=_StreamCall(["x"])), details, iter([])
+        )
+        assert await tracked_ss.read() == "x"
+        assert await tracked_ss.read() == grpc.aio.EOF
+        assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+
+        # Clean close vs abnormal cancel (including _interceptors_task, cycle, and non-dict object)
+        recorder.record_rpc_attempt.reset_mock()
+        tracked_ss_clean = await s_s.intercept_stream_stream(
+            mock.AsyncMock(return_value=_StreamCall([])), details, iter([])
+        )
+        done_fut = asyncio.get_running_loop().create_future()
+        done_fut.set_result(tracked_ss_clean)
+        wrapper = mock.MagicMock(_call=42, _interceptors_task=done_fut)
+        wrapper._wrapped = wrapper  # cycle
+        async_grpc_client._mark_call_closing_cleanly(None)
+        async_grpc_client._mark_call_closing_cleanly(wrapper)
+        assert tracked_ss_clean._closing_cleanly is True
+        tracked_ss_clean.cancel()
+        assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+
+        # Error paths in wait_for_connection, read, write, done_writing
+        err_call = _StreamCall([_FakeRpcError()])
+        err_call.wait_for_connection = mock.AsyncMock(side_effect=_FakeRpcError())
+        err_call.write = mock.AsyncMock(side_effect=_FakeRpcError())
+        err_call.done_writing = mock.AsyncMock(side_effect=_FakeRpcError())
+
+        for op_fn in (
+            lambda c: c.wait_for_connection(),
+            lambda c: c.read(),
+            lambda c: c.write("x"),
+            lambda c: c.done_writing(),
+        ):
+            recorder.record_rpc_attempt.reset_mock()
+            c = await s_s.intercept_stream_stream(
+                mock.AsyncMock(
+                    return_value=_StreamCall([_FakeRpcError()]) if op_fn else err_call
+                ),
+                details,
+                iter([]),
+            )
+            c._call = err_call
+            err_call._items = [_FakeRpcError()]
+            with pytest.raises(_FakeRpcError):
+                await op_fn(c)
+            recorder.record_rpc_attempt.assert_called_once()
+
+        # CancelledError when _closing_cleanly is True records OK
+        recorder.record_rpc_attempt.reset_mock()
+        clean_cancel_call = await s_s.intercept_stream_stream(
+            mock.AsyncMock(return_value=_StreamCall([asyncio.CancelledError()])),
+            details,
+            iter([]),
+        )
+        clean_cancel_call._closing_cleanly = True
+        with pytest.raises(asyncio.CancelledError):
+            await clean_cancel_call.read()
+        assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+
+        recorder.record_rpc_attempt.reset_mock()
+        tracked_ss_cancel = await s_s.intercept_stream_stream(
+            mock.AsyncMock(return_value=_StreamCall([])), details, iter([])
+        )
+        tracked_ss_cancel.cancel()
+        tracked_ss_cancel.cancel()  # second call is a no-op
+        assert (
+            recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "CANCELLED"
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                mock.MagicMock(peer=lambda: 123), "cloudpath"
+            )
+            == "cloudpath"
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                mock.MagicMock(peer=lambda: "unix:/tmp/sock"), "cloudpath"
+            )
+            == "cloudpath"
+        )
+
+        class _NoneCodeRpcErr(Exception):
+            def code(self):
+                return None
+
+        assert async_grpc_client._resolve_status_and_error(_NoneCodeRpcErr()) == (
+            "UNKNOWN",
+            "UNKNOWN",
+        )
+
+        # Early break from __aiter__ (clean vs cancelled) and peer() network_path detection
+        recorder.record_rpc_attempt.reset_mock()
+        stream_with_peer = _StreamCall(["a", "b", "c"])
+        stream_with_peer.peer = lambda: b"ipv6:[2001:4860:8040::1]:443"
+        tracked_early = await u_s.intercept_unary_stream(
+            mock.AsyncMock(return_value=stream_with_peer), details, "req"
+        )
+        ait = tracked_early.__aiter__()
+        assert await ait.__anext__() == "a"
+        await ait.aclose()
+        assert (
+            recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "CANCELLED"
+        )
+        assert (
+            recorder.record_rpc_attempt.call_args.kwargs["network_path"] == "directpath"
+        )
+
+        recorder.record_rpc_attempt.reset_mock()
+        stream_cloud = _StreamCall(["a", "b"])
+        stream_cloud.peer = lambda: "ipv4:142.250.1.1:443"
+        tracked_early_clean = await u_s.intercept_unary_stream(
+            mock.AsyncMock(return_value=stream_cloud), details, "req"
+        )
+        tracked_early_clean._closing_cleanly = True
+        ait_clean = tracked_early_clean.__aiter__()
+        assert await ait_clean.__anext__() == "a"
+        await ait_clean.aclose()
+        assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+        assert (
+            recorder.record_rpc_attempt.call_args.kwargs["network_path"] == "cloudpath"
+        )
+
+        # Mid-iteration exception in __aiter__
+        recorder.record_rpc_attempt.reset_mock()
+        tracked_err_iter = await u_s.intercept_unary_stream(
+            mock.AsyncMock(return_value=_StreamCall(["a", _FakeRpcError()])),
+            details,
+            "req",
+        )
+        with pytest.raises(_FakeRpcError):
+            _ = [x async for x in tracked_err_iter]
+        assert (
+            recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "UNAVAILABLE"
+        )
