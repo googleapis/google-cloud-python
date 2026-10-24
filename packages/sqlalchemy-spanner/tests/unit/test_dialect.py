@@ -92,16 +92,13 @@ class TestSpannerDialect(fixtures.TestBase):
         dialect = SpannerDialect()
         connection = MagicMock()
         mock_snapshot = MagicMock()
-        # Mock rows: schema, table, constraint_name, column_name, ordered by
-        # constraint and column position. The emulator repeats the rows of the
-        # backing unique constraint of a foreign key for each referencing key.
+        # Mock rows: schema, table, constraint_name, column_names. The emulator
+        # repeats the columns of the backing unique constraint of a foreign key
+        # for each referencing foreign key.
         mock_snapshot.execute_sql.return_value = [
-            ["", "parent", "IDX_parent_a_b_U", "a"],
-            ["", "parent", "IDX_parent_a_b_U", "a"],
-            ["", "parent", "IDX_parent_a_b_U", "b"],
-            ["", "parent", "IDX_parent_a_b_U", "b"],
-            ["", "parent", "IDX_parent_c_U", "c"],
-            ["my_schema", "other", "IDX_other_x_U", "x"],
+            ["", "parent", "IDX_parent_a_b_U", ["a", "a", "b", "b"]],
+            ["", "parent", "IDX_parent_c_U", ["c"]],
+            ["my_schema", "other", "IDX_other_x_U", ["x"]],
         ]
         connection.connection.database.snapshot.return_value.__enter__.return_value = (
             mock_snapshot
@@ -139,7 +136,13 @@ class TestSpannerDialect(fixtures.TestBase):
         mock_snapshot.execute_sql.assert_called_once()
         executed_sql = mock_snapshot.execute_sql.call_args[0][0]
         assert "INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS kcu" in executed_sql
-        assert "kcu.ORDINAL_POSITION" in executed_sql
+        assert (
+            "ARRAY_AGG(kcu.COLUMN_NAME ORDER BY kcu.ORDINAL_POSITION)" in executed_sql
+        )
+        assert (
+            "GROUP BY tc.TABLE_SCHEMA, tc.TABLE_NAME, tc.CONSTRAINT_NAME"
+            in executed_sql
+        )
         assert "tc.table_name = 'parent' OR tc.table_name = 'other'" in executed_sql
         assert 'tc.CONSTRAINT_TYPE = "UNIQUE"' in executed_sql
         assert "tc.CONSTRAINT_NAME IS NOT NULL" in executed_sql
@@ -150,8 +153,7 @@ class TestSpannerDialect(fixtures.TestBase):
         connection = MagicMock()
         mock_snapshot = MagicMock()
         mock_snapshot.execute_sql.return_value = [
-            ["", "parent", "IDX_parent_a_b_U", "a"],
-            ["", "parent", "IDX_parent_a_b_U", "b"],
+            ["", "parent", "IDX_parent_a_b_U", ["a", "b"]],
         ]
         connection.connection.database.snapshot.return_value.__enter__.return_value = (
             mock_snapshot

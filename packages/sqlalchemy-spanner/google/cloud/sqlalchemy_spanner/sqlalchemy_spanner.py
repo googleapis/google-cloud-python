@@ -1704,7 +1704,11 @@ WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
         table_type_query = self._get_table_type_query(kind, True)
 
         sql = """
-            SELECT tc.TABLE_SCHEMA, tc.TABLE_NAME, tc.CONSTRAINT_NAME, kcu.COLUMN_NAME
+            SELECT
+                tc.TABLE_SCHEMA,
+                tc.TABLE_NAME,
+                tc.CONSTRAINT_NAME,
+                ARRAY_AGG(kcu.COLUMN_NAME ORDER BY kcu.ORDINAL_POSITION)
             FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
             JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS kcu
                 ON  kcu.CONSTRAINT_CATALOG = tc.CONSTRAINT_CATALOG
@@ -1720,8 +1724,7 @@ WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
                 {schema_filter_query}
                 tc.CONSTRAINT_TYPE = "UNIQUE"
                 AND tc.CONSTRAINT_NAME IS NOT NULL
-            ORDER BY tc.TABLE_CATALOG, tc.TABLE_SCHEMA, tc.TABLE_NAME,
-                     tc.CONSTRAINT_NAME, kcu.ORDINAL_POSITION
+            GROUP BY tc.TABLE_SCHEMA, tc.TABLE_NAME, tc.CONSTRAINT_NAME
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
@@ -1734,13 +1737,10 @@ WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
 
             for row in rows:
                 table_info = result_dict.setdefault((row[0] or None, row[1]), [])
-                if not table_info or table_info[-1]["name"] != row[2]:
-                    table_info.append({"name": row[2], "column_names": []})
-                column_names = table_info[-1]["column_names"]
                 # The emulator lists the backing unique constraint of a foreign
                 # key once per referencing foreign key, which repeats its columns.
-                if row[3] not in column_names:
-                    column_names.append(row[3])
+                column_names = list(dict.fromkeys(row[3]))
+                table_info.append({"name": row[2], "column_names": column_names})
 
         return result_dict
 
