@@ -53,7 +53,7 @@ class Test_should_retry(unittest.TestCase):
 
     def test_w_unstructured_requests_sslerror(self):
         exc = requests.exceptions.SSLError()
-        self.assertFalse(self._call_fut(exc))
+        self.assertTrue(self._call_fut(exc))
 
     def test_w_unstructured_requests_chunked_encoding_error(self):
         exc = requests.exceptions.ChunkedEncodingError()
@@ -160,3 +160,45 @@ def test_DEFAULT_JOB_RETRY_job_rate_limit_exceeded_retry_predicate():
     assert DEFAULT_JOB_RETRY._predicate(
         ClientError("fail", errors=[dict(reason="backendError")])
     )
+
+
+class Test_should_retry_insert_rows(unittest.TestCase):
+    def _call_fut(self, exc):
+        from google.cloud.bigquery.retry import _should_retry_insert_rows
+
+        return _should_retry_insert_rows(exc)
+
+    def test_w_sslerror(self):
+        exc = requests.exceptions.SSLError()
+        self.assertFalse(self._call_fut(exc))
+
+    def test_w_unstructured_connectionerror(self):
+        exc = requests.exceptions.ConnectionError()
+        self.assertTrue(self._call_fut(exc))
+
+    def test_w_rate_limited(self):
+        exc = mock.Mock(errors=[{"reason": "rateLimitExceeded"}], spec=["errors"])
+        self.assertTrue(self._call_fut(exc))
+
+
+class Test_insert_rows_default_retry(unittest.TestCase):
+    def test_insert_rows_json_defaults_to_scoped_retry(self):
+        from google.cloud.bigquery.retry import (
+            INSERT_ROWS_DEFAULT_RETRY,
+            _should_retry_insert_rows,
+        )
+
+        # The default retry object on insert_rows_json is the scoped one,
+        # so transient SSLErrors on polling paths stay retryable while the
+        # streaming-insert carve-out is preserved.
+        self.assertIs(
+            INSERT_ROWS_DEFAULT_RETRY._predicate,
+            _should_retry_insert_rows,
+        )
+
+    def test_scoped_predicate_keeps_connection_errors_retryable(self):
+        from google.cloud.bigquery.retry import _should_retry_insert_rows
+
+        self.assertTrue(
+            _should_retry_insert_rows(requests.exceptions.ConnectionError())
+        )
