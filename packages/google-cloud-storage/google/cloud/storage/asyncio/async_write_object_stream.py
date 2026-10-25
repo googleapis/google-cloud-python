@@ -28,9 +28,8 @@ from google.cloud.storage.asyncio.async_abstract_object_stream import (
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
     _mark_call_closing_cleanly,
+    _resolve_network_path,
 )
-
-_BIDI_WRITE_OBJECT_RPC = "google.storage.v2.Storage/BidiWriteObject"
 
 
 class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
@@ -189,9 +188,16 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             await self._close_socket_like_rpc()
             raise
         if self._metrics_recorder is not None:
+            net_path = self._get_network_path(received_server_response=True)
+            _opentelemetry_metrics.record_pending_retry(
+                self._metrics_recorder,
+                operation="WriteObject",
+                network_path=net_path,
+            )
             self._metrics_recorder.record_ttfb(
                 time.perf_counter() - attempt_start,
-                operation=_BIDI_WRITE_OBJECT_RPC,
+                operation="WriteObject",
+                network_path=net_path,
             )
         self._is_stream_open = True
 
@@ -215,6 +221,13 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             await self.socket_like_rpc.close()
         except Exception:
             pass
+
+    def _get_network_path(self, received_server_response: bool = True) -> str:
+        """Resolves ``network.path`` for the active gRPC stream call."""
+        return _resolve_network_path(
+            call=getattr(self.socket_like_rpc, "call", None),
+            received_server_response=received_server_response,
+        )
 
     def _mark_closing_cleanly(self) -> None:
         """Marks the underlying gRPC call as closing cleanly for metrics."""

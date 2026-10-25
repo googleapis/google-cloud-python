@@ -419,10 +419,8 @@ class TestAsyncWriteObjectStream:
         )
         await stream.open()
         mock_recorder.record_ttfb.assert_called_once()
-        assert (
-            mock_recorder.record_ttfb.call_args.kwargs["operation"]
-            == "google.storage.v2.Storage/BidiWriteObject"
-        )
+        assert mock_recorder.record_ttfb.call_args.kwargs["operation"] == "WriteObject"
+        assert "network_path" in mock_recorder.record_ttfb.call_args.kwargs
 
         await stream.close()
         assert mock_call._closing_cleanly is True

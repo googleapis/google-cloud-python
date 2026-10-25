@@ -26,6 +26,7 @@ from google.cloud.storage.asyncio.async_abstract_object_stream import (
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
     _mark_call_closing_cleanly,
+    _resolve_network_path,
 )
 
 logger = logging.getLogger(__name__)
@@ -166,10 +167,24 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             if response and response.read_handle:
                 self.read_handle = response.read_handle
 
+            if self._metrics_recorder is not None:
+                _opentelemetry_metrics.record_pending_retry(
+                    self._metrics_recorder,
+                    operation="ReadObject",
+                    network_path=self._get_network_path(received_server_response=True),
+                )
+
             self._is_stream_open = True
         except (asyncio.CancelledError, Exception):
             await self._close_socket_like_rpc()
             raise
+
+    def _get_network_path(self, received_server_response: bool = True) -> str:
+        """Resolves ``network.path`` for the active gRPC stream call."""
+        return _resolve_network_path(
+            call=getattr(self.socket_like_rpc, "call", None),
+            received_server_response=received_server_response,
+        )
 
     def _mark_closing_cleanly(self) -> None:
         """Marks the underlying gRPC call as closing cleanly for metrics."""

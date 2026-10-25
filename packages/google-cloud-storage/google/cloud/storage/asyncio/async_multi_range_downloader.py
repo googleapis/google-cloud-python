@@ -33,6 +33,8 @@ from google.cloud.storage.asyncio._stream_multiplexer import (
 )
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
+    _bind_call_to_operation,
+    _resolve_network_path,
 )
 from google.cloud.storage.asyncio.async_read_object_stream import (
     _AsyncReadObjectStream,
@@ -158,6 +160,7 @@ class AsyncMultiRangeDownloader:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncMultiRangeDownloader.create_mrd",
+            operation="ReadObject",
             rpc_method=_BIDI_READ_OBJECT_RPC,
         ):
             mrd = cls(
@@ -235,6 +238,21 @@ class AsyncMultiRangeDownloader:
         if self.is_stream_open:
             await self.close()
 
+    def _current_network_path(
+        self,
+        exc: Optional[BaseException] = None,
+        received_server_response: bool = True,
+    ) -> str:
+        """Resolves ``network.path`` from the underlying Bidi read stream call."""
+        call = getattr(
+            getattr(self.read_obj_str, "socket_like_rpc", None), "call", None
+        )
+        return _resolve_network_path(
+            call=call,
+            exc=exc,
+            received_server_response=received_server_response,
+        )
+
     def _on_open_error(self, exc):
         """Extracts routing token and read handle on redirect error during open."""
         logger.warning(f"Error occurred while opening MRD: {exc}")
@@ -254,6 +272,7 @@ class AsyncMultiRangeDownloader:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncMultiRangeDownloader.open",
+            operation="ReadObject",
             rpc_method=_BIDI_READ_OBJECT_RPC,
         ):
             if self._is_stream_open:
@@ -287,6 +306,10 @@ class AsyncMultiRangeDownloader:
                 )
 
             async def _do_open():
+                current_op = _opentelemetry_metrics.get_current_operation()
+                attempts_before = (
+                    current_op.recorded_attempts if current_op is not None else 0
+                )
                 current_metadata = list(metadata) if metadata else []
 
                 # Cleanup stream from previous failed attempt, if any.
@@ -308,6 +331,8 @@ class AsyncMultiRangeDownloader:
                     generation_number=self.generation,
                     read_handle=self.read_handle,
                 )
+                if recorder is not None:
+                    self.read_obj_str._metrics_recorder = recorder
 
                 if self._routing_token:
                     current_metadata.append(
@@ -318,9 +343,31 @@ class AsyncMultiRangeDownloader:
                     )
                     self._routing_token = None
 
-                await self.read_obj_str.open(
-                    metadata=current_metadata if current_metadata else None
-                )
+                try:
+                    await self.read_obj_str.open(
+                        metadata=current_metadata if current_metadata else None
+                    )
+                except Exception as exc:
+                    if recorder is not None:
+                        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+                            recorder,
+                            exc,
+                            attempts_before=attempts_before,
+                            will_retry=bool(retry_policy._predicate(exc)),
+                            network_path=self._current_network_path(
+                                exc=exc, received_server_response=False
+                            ),
+                        )
+                    raise
+
+                if recorder is not None:
+                    _opentelemetry_metrics.record_pending_retry(
+                        recorder,
+                        operation="ReadObject",
+                        network_path=self._current_network_path(
+                            received_server_response=True
+                        ),
+                    )
 
                 if self.read_obj_str.generation_number:
                     self.generation = self.read_obj_str.generation_number
@@ -336,7 +383,7 @@ class AsyncMultiRangeDownloader:
             await retry_policy(_do_open)()
             self._multiplexer = _StreamMultiplexer(self.read_obj_str)
 
-    def _create_stream_factory(self, state, metadata):
+    def _create_stream_factory(self, state, metadata, recorder=None):
         """Create a factory that opens a new stream with current routing state."""
 
         async def factory():
@@ -350,6 +397,8 @@ class AsyncMultiRangeDownloader:
                 generation_number=self.generation,
                 read_handle=current_handle,
             )
+            if recorder is not None:
+                stream._metrics_recorder = recorder
 
             current_metadata = list(metadata) if metadata else []
             if current_token:
@@ -423,6 +472,7 @@ class AsyncMultiRangeDownloader:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
+            operation="ReadObject",
             rpc_method=_BIDI_READ_OBJECT_RPC,
         ):
             if len(read_ranges) > 1000:
@@ -435,6 +485,13 @@ class AsyncMultiRangeDownloader:
 
             if not self._is_stream_open:
                 raise ValueError("Underlying bidi-gRPC stream is not open")
+
+            _bind_call_to_operation(
+                getattr(
+                    getattr(self.read_obj_str, "socket_like_rpc", None), "call", None
+                ),
+                _opentelemetry_metrics.get_current_operation(),
+            )
 
             if retry_policy is None:
                 retry_policy = AsyncRetry(predicate=_is_read_retryable)
@@ -509,7 +566,7 @@ class AsyncMultiRangeDownloader:
                                 else self._multiplexer.stream_generation
                             )
                             stream_factory = self._create_stream_factory(
-                                state, metadata
+                                state, metadata, recorder=recorder
                             )
                             await self._multiplexer.reopen_stream(
                                 broken_gen, stream_factory
@@ -557,7 +614,10 @@ class AsyncMultiRangeDownloader:
                                     ttfb_recorded = True
                                     recorder.record_ttfb(
                                         time.perf_counter() - attempt_start,
-                                        operation=_BIDI_READ_OBJECT_RPC,
+                                        operation="ReadObject",
+                                        network_path=self._current_network_path(
+                                            received_server_response=True
+                                        ),
                                     )
                                 for data_range in item.object_data_ranges:
                                     if data_range.range_end:
@@ -570,7 +630,12 @@ class AsyncMultiRangeDownloader:
 
                 strategy = _ReadResumptionStrategy()
                 retry_manager = _BidiStreamRetryManager(
-                    strategy, send_and_recv_via_multiplexer
+                    strategy,
+                    send_and_recv_via_multiplexer,
+                    recorder=recorder,
+                    network_path_getter=lambda: self._current_network_path(
+                        received_server_response=True
+                    ),
                 )
 
                 try:
@@ -585,7 +650,7 @@ class AsyncMultiRangeDownloader:
                         ds.bytes_written for ds in download_states.values()
                     )
                     recorder.record_response_body_size(
-                        total_bytes, operation=_BIDI_READ_OBJECT_RPC
+                        total_bytes, operation="ReadObject"
                     )
 
                 if initial_state.get("read_handle"):

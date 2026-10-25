@@ -26,8 +26,18 @@ import ssl
 import time
 from collections import deque
 from contextvars import ContextVar
-from dataclasses import dataclass
-from typing import Any, Deque, Dict, Iterator, List, Optional, Set, Tuple
+from dataclasses import dataclass, field
+from typing import (
+    Any,
+    Deque,
+    Dict,
+    FrozenSet,
+    Iterator,
+    List,
+    Optional,
+    Set,
+    Tuple,
+)
 from urllib.parse import urlsplit
 
 from google.cloud.storage.version import __version__
@@ -60,16 +70,17 @@ METRIC_HTTP_CLIENT_REQUEST_DURATION = "http.client.request.duration"
 METRIC_GCP_CLIENT_REQUEST_DURATION = "gcp.client.request.duration"
 METRIC_STORAGE_CLIENT_OPERATIONS = "gcp.storage.client.operations"
 METRIC_STORAGE_CLIENT_ATTEMPTS = "gcp.storage.client.attempts"
+METRIC_STORAGE_CLIENT_RETRIES = "gcp.storage.client.retries"
 METRIC_STORAGE_REQUEST_BODY_SIZE = "gcp.storage.client.request.body.size"
 METRIC_STORAGE_RESPONSE_BODY_SIZE = "gcp.storage.client.response.body.size"
-METRIC_STORAGE_OPERATION_TTFB = "gcp.storage.client.operation.ttfb"
+METRIC_STORAGE_CLIENT_TTFB = "gcp.storage.client.ttfb"
 METRIC_STORAGE_CLIENT_ERRORS = "gcp.storage.client.errors"
 
 _LATENCY_METRIC_NAMES = (
     METRIC_RPC_CLIENT_CALL_DURATION,
     METRIC_HTTP_CLIENT_REQUEST_DURATION,
     METRIC_GCP_CLIENT_REQUEST_DURATION,
-    METRIC_STORAGE_OPERATION_TTFB,
+    METRIC_STORAGE_CLIENT_TTFB,
 )
 
 _SIZE_METRIC_NAMES = (
@@ -179,7 +190,6 @@ def is_debug_metrics_enabled(
 _COMMON_ATTRIBUTES: Dict[str, Any] = {
     "gcp.client.service": "storage",
     "gcp.client.version": __version__,
-    "gcp.client.repo": "googleapis/google-cloud-python",
     "gcp.client.artifact": "google-cloud-storage",
 }
 
@@ -256,8 +266,9 @@ def _build_latency_buckets() -> Tuple[float, ...]:
 def _build_size_buckets() -> Tuple[int, ...]:
     """Builds the custom byte-size histogram bucket boundaries in bytes.
 
-    Uses 128 KiB resolution from 0 up to 4 MiB (33 buckets), then doubles every
-    bucket up to 16 GiB (12 buckets, 45 total buckets).
+    Uses 128 KiB increments up to 4 MiB, then doubles the increment on each
+    subsequent bucket while ``boundary <= 16 GiB`` (48 total buckets, matching
+    Go and Java SDKs).
     """
     kb = 1024
     mb = 1024 * kb
@@ -269,10 +280,9 @@ def _build_size_buckets() -> Tuple[int, ...]:
 
     while boundary <= 16 * gb:
         boundaries.append(boundary)
-        if boundary < 4 * mb:
-            boundary += increment
-        else:
-            boundary *= 2
+        boundary += increment
+        if boundary >= 4 * mb:
+            increment *= 2
 
     return tuple(boundaries)
 
@@ -362,12 +372,13 @@ def _iter_exception_chain(exc: BaseException) -> Iterator[BaseException]:
                 visited.add(id(nested))
                 queue.append(nested)
 
-        args = getattr(current, "args", ())
-        if isinstance(args, (tuple, list)):
-            for arg in args:
-                if isinstance(arg, BaseException) and id(arg) not in visited:
-                    visited.add(id(arg))
-                    queue.append(arg)
+        for seq_attr in ("args", "errors"):
+            seq = getattr(current, seq_attr, ())
+            if isinstance(seq, (tuple, list)):
+                for item in seq:
+                    if isinstance(item, BaseException) and id(item) not in visited:
+                        visited.add(id(item))
+                        queue.append(item)
 
 
 def _is_subclass_by_module(
@@ -725,15 +736,96 @@ def normalize_url_template(url_or_path: Optional[str]) -> str:
 
 
 # ---------------------------------------------------------------------------
-# 9. Logical Operation Context & Suppression (`ContextVar`)
+# 9. Logical Operation Normalization, Context & Suppression (`ContextVar`)
 # ---------------------------------------------------------------------------
-@dataclass(frozen=True)
+_GRPC_LOGICAL_OPERATION_OVERRIDES: Dict[str, str] = {
+    "BidiReadObject": "ReadObject",
+    "BidiWriteObject": "WriteObject",
+}
+
+_RPC_V2_METHODS: FrozenSet[str] = frozenset(
+    {
+        "BidiReadObject",
+        "BidiWriteObject",
+        "CancelResumableWrite",
+        "ComposeObject",
+        "CreateBucket",
+        "DeleteBucket",
+        "DeleteObject",
+        "GetBucket",
+        "GetIamPolicy",
+        "GetObject",
+        "ListBuckets",
+        "ListObjects",
+        "LockBucketRetentionPolicy",
+        "MoveObject",
+        "QueryWriteStatus",
+        "ReadObject",
+        "RestoreObject",
+        "RewriteObject",
+        "SetIamPolicy",
+        "StartResumableWrite",
+        "TestIamPermissions",
+        "UpdateBucket",
+        "UpdateObject",
+        "WriteObject",
+    }
+)
+
+
+def normalize_logical_operation(operation: Optional[str]) -> str:
+    """Normalizes an RPC path or method name into a short logical ``gcp.storage.operation``."""
+    if not operation or not isinstance(operation, str):
+        return "UNKNOWN"
+    cleaned = operation.strip().strip("/")
+    if not cleaned:
+        return "UNKNOWN"
+    short_name = cleaned.rsplit("/", 1)[-1] if "/" in cleaned else cleaned
+    return _GRPC_LOGICAL_OPERATION_OVERRIDES.get(short_name, short_name)
+
+
+def resolve_rpc_method(
+    operation: Optional[str], rpc_method: Optional[str] = None
+) -> str:
+    """Resolves the full RPC path (e.g. ``google.storage.v2.Storage/ReadObject``) for ``rpc.method``."""
+    raw = rpc_method if (rpc_method and isinstance(rpc_method, str)) else operation
+    if not raw or not isinstance(raw, str):
+        return "UNKNOWN"
+    cleaned = raw.strip().strip("/")
+    if not cleaned or cleaned == "UNKNOWN":
+        return "UNKNOWN"
+    if "/" in cleaned:
+        return cleaned
+    if cleaned in _RPC_V2_METHODS:
+        return f"google.storage.v2.Storage/{cleaned}"
+    if "." in cleaned:
+        return cleaned
+    return f"google.storage.v1.Storage/{cleaned}"
+
+
+@dataclass
 class _OperationState:
     """Represents the active logical GCS Veneer operation in the current context."""
 
     client_method: str
+    operation: str
     rpc_method: str
     suppressed: bool = False
+    start_time: float = field(default_factory=time.perf_counter)
+    finished: bool = False
+    last_failure_error_type: Optional[str] = None
+    recorded_attempts: int = 0
+
+    def mark_attempt_failed(self, error_type: str) -> None:
+        """Records the error type of a failed attempt for a subsequent retry."""
+        if error_type and error_type != "OK":
+            self.last_failure_error_type = error_type
+
+    def consume_retry_error(self) -> Optional[str]:
+        """Consumes and returns the prior failed attempt's error type, if any."""
+        prior = self.last_failure_error_type
+        self.last_failure_error_type = None
+        return prior
 
 
 _OP_STATE: ContextVar[Optional[_OperationState]] = ContextVar(
@@ -743,15 +835,19 @@ _OP_STATE: ContextVar[Optional[_OperationState]] = ContextVar(
 
 def get_current_operation() -> Optional[_OperationState]:
     """Returns the current logical `_OperationState` in this execution context, if any."""
-    return _OP_STATE.get()
+    op = _OP_STATE.get()
+    if op is not None and op.finished:
+        return None
+    return op
 
 
 @contextlib.contextmanager
 def start_operation(
     recorder: Optional["_MetricsRecorder"],
     client_method: str,
-    rpc_method: str,
+    operation: str,
     suppress: bool = False,
+    rpc_method: Optional[str] = None,
 ) -> Iterator[Optional[_OperationState]]:
     """Context manager tracking a logical user-facing GCS operation.
 
@@ -763,24 +859,30 @@ def start_operation(
         recorder: Optional `_MetricsRecorder` configured on the client.
         client_method: Fully qualified Python method name
             (e.g. ``"storage.Blob.download_to_filename"``).
-        rpc_method: Canonical GCS RPC operation name
-            (e.g. ``"storage.objects.get"``).
+        operation: Short logical GCS operation name
+            (e.g. ``"ReadObject"``, ``"GetObject"``).
         suppress: If True, suppresses logical operation and payload size
             emission for this context and any nested calls (used by
             ``transfer_manager`` workers and ``BlobReader`` prefetches).
+        rpc_method: Optional full RPC path
+            (e.g. ``"google.storage.v2.Storage/BidiReadObject"``). If omitted,
+            inferred from ``operation``.
     """
-    existing = _OP_STATE.get()
+    existing = get_current_operation()
     if existing is not None:
         if suppress and not existing.suppressed:
             suppressed_child = _OperationState(
                 client_method=existing.client_method,
+                operation=existing.operation,
                 rpc_method=existing.rpc_method,
                 suppressed=True,
+                start_time=existing.start_time,
             )
             child_token = _OP_STATE.set(suppressed_child)
             try:
                 yield suppressed_child
             finally:
+                suppressed_child.finished = True
                 _OP_STATE.reset(child_token)
         else:
             yield existing
@@ -793,13 +895,19 @@ def start_operation(
         yield None
         return
 
+    resolved_operation = normalize_logical_operation(operation)
+    resolved_rpc_method = resolve_rpc_method(
+        resolved_operation, rpc_method=rpc_method or operation
+    )
+    start_time = time.perf_counter()
     state = _OperationState(
         client_method=client_method,
-        rpc_method=rpc_method,
+        operation=resolved_operation,
+        rpc_method=resolved_rpc_method,
         suppressed=suppress,
+        start_time=start_time,
     )
     token = _OP_STATE.set(state)
-    start_time = time.perf_counter()
     error_type = "OK"
     try:
         yield state
@@ -807,15 +915,64 @@ def start_operation(
         error_type = classify_error_type(exc)
         raise
     finally:
+        state.finished = True
         duration = max(0.0, time.perf_counter() - start_time)
         _OP_STATE.reset(token)
         if recorder_active and not suppress and recorder is not None:
             recorder.record_logical_operation(
                 duration=duration,
                 client_method=client_method,
-                rpc_method=rpc_method,
+                operation=resolved_operation,
                 error_type=error_type,
+                rpc_method=resolved_rpc_method,
             )
+
+
+def record_pending_retry(
+    recorder: Optional["_MetricsRecorder"],
+    operation: Optional[str] = None,
+    network_path: Optional[str] = None,
+) -> None:
+    """Emits a pending ``gcp.storage.client.retries`` increment if a prior attempt failed."""
+    if recorder is None or not getattr(recorder, "standard_enabled", False):
+        return
+    current_op = get_current_operation()
+    if current_op is None:
+        return
+    prior_error = current_op.consume_retry_error()
+    if prior_error is not None:
+        recorder.record_retry(
+            operation=operation or current_op.operation,
+            error_type=prior_error,
+            network_path=network_path,
+        )
+
+
+def handle_unrecorded_retryable_failure(
+    recorder: Optional["_MetricsRecorder"],
+    exc: BaseException,
+    attempts_before: int,
+    will_retry: bool,
+    network_path: Optional[str] = None,
+) -> None:
+    """Tracks retry state when a failed attempt bypassed transport-level attempt recording."""
+    if recorder is None or not getattr(recorder, "standard_enabled", False):
+        return
+    current_op = get_current_operation()
+    if current_op is None:
+        return
+    if current_op.recorded_attempts > attempts_before:
+        return
+    current_op.recorded_attempts += 1
+    prior_error = current_op.consume_retry_error()
+    if prior_error is not None:
+        recorder.record_retry(
+            operation=current_op.operation,
+            error_type=prior_error,
+            network_path=network_path,
+        )
+    if will_retry:
+        current_op.mark_attempt_failed(classify_error_type(exc))
 
 
 def get_active_recorder(obj: Any) -> Optional["_MetricsRecorder"]:
@@ -899,6 +1056,11 @@ class _MetricsRecorder:
                 unit="{attempt}",
                 description="Number of physical network transport attempts executed.",
             )
+            self.retries_counter = self.meter.create_counter(
+                METRIC_STORAGE_CLIENT_RETRIES,
+                unit="{retry}",
+                description="Number of transport retries executed after a failed attempt.",
+            )
             self.request_body_size = self.meter.create_histogram(
                 METRIC_STORAGE_REQUEST_BODY_SIZE,
                 unit="By",
@@ -909,11 +1071,12 @@ class _MetricsRecorder:
                 unit="By",
                 description="Application payload bytes delivered to the caller.",
             )
-            self.operation_ttfb = self.meter.create_histogram(
-                METRIC_STORAGE_OPERATION_TTFB,
+            self.ttfb = self.meter.create_histogram(
+                METRIC_STORAGE_CLIENT_TTFB,
                 unit="s",
                 description="Time elapsed from attempt initiation to receipt of the first response byte.",
             )
+            self.operation_ttfb = self.ttfb
             self.errors_counter = self.meter.create_counter(
                 METRIC_STORAGE_CLIENT_ERRORS,
                 unit="{error}",
@@ -925,8 +1088,10 @@ class _MetricsRecorder:
             self.client_request_duration = None
             self.operations_counter = None
             self.attempts_counter = None
+            self.retries_counter = None
             self.request_body_size = None
             self.response_body_size = None
+            self.ttfb = None
             self.operation_ttfb = None
             self.errors_counter = None
 
@@ -943,13 +1108,13 @@ class _MetricsRecorder:
         """Builds base attributes enriched with current or explicit operation metadata."""
         attrs = self._base_attributes.copy()
         if current_op is None:
-            current_op = _OP_STATE.get()
-        resolved_op = operation or (current_op.rpc_method if current_op else None)
+            current_op = get_current_operation()
+        raw_op = operation or (current_op.operation if current_op else None)
         resolved_method = client_method or (
             current_op.client_method if current_op else None
         )
-        if resolved_op is not None:
-            attrs["gcp.storage.operation"] = resolved_op
+        if raw_op is not None:
+            attrs["gcp.storage.operation"] = normalize_logical_operation(raw_op)
         if resolved_method is not None:
             attrs["gcp.client.method"] = resolved_method
         return attrs
@@ -958,20 +1123,52 @@ class _MetricsRecorder:
         self,
         duration: float,
         client_method: str,
-        rpc_method: str,
+        operation: str,
         error_type: str = "OK",
+        rpc_method: Optional[str] = None,
     ) -> None:
         """Records end-to-end logical operation duration and count."""
         if not self.standard_enabled or self.meter is None:
             return
-        attrs = {
+        logical_op = normalize_logical_operation(operation)
+        full_rpc_method = resolve_rpc_method(
+            logical_op, rpc_method=rpc_method or operation
+        )
+        op_attrs = {
             **self._base_attributes,
-            "gcp.storage.operation": rpc_method,
+            "gcp.storage.operation": logical_op,
             "gcp.client.method": client_method,
             "error.type": error_type,
         }
-        self.client_request_duration.record(max(0.0, duration), attributes=attrs)
-        self.operations_counter.add(1, attributes=attrs)
+        duration_attrs = {
+            **op_attrs,
+            "rpc.method": full_rpc_method,
+        }
+        self.client_request_duration.record(
+            max(0.0, duration), attributes=duration_attrs
+        )
+        self.operations_counter.add(1, attributes=op_attrs)
+
+    def record_retry(
+        self,
+        operation: Optional[str] = None,
+        error_type: str = "UNKNOWN",
+        network_path: Optional[str] = None,
+    ) -> None:
+        """Records a transport retry attempt with the prior failed attempt's error type."""
+        if not self.standard_enabled or self.meter is None:
+            return
+        current_op = get_current_operation()
+        raw_op = operation or (current_op.operation if current_op else None)
+        retry_attrs: Dict[str, Any] = {
+            **self._base_attributes,
+            "error.type": error_type,
+        }
+        if raw_op is not None:
+            retry_attrs["gcp.storage.operation"] = normalize_logical_operation(raw_op)
+        if network_path is not None:
+            retry_attrs["network.path"] = network_path
+        self.retries_counter.add(1, attributes=retry_attrs)
 
     def record_http_attempt(
         self,
@@ -987,11 +1184,24 @@ class _MetricsRecorder:
         """Records a single physical HTTP request attempt."""
         if not self.standard_enabled or self.meter is None:
             return
-        current_op = _OP_STATE.get()
-        resolved_op = operation or (current_op.rpc_method if current_op else None)
-        resolved_method = client_method or (
-            current_op.client_method if current_op else None
+        del client_method
+        current_op = get_current_operation()
+        raw_op = operation or (current_op.operation if current_op else None)
+        resolved_op = (
+            normalize_logical_operation(raw_op) if raw_op is not None else None
         )
+        if current_op is not None:
+            current_op.recorded_attempts += 1
+            prior_error = current_op.consume_retry_error()
+            if prior_error is not None:
+                self.record_retry(
+                    operation=resolved_op,
+                    error_type=prior_error,
+                    network_path=network_path,
+                )
+            if error_type != "OK":
+                current_op.mark_attempt_failed(error_type)
+
         valid_code = (
             isinstance(status_code, int)
             and not isinstance(status_code, bool)
@@ -1033,29 +1243,47 @@ class _MetricsRecorder:
             }
             if resolved_op is not None:
                 error_attrs["gcp.storage.operation"] = resolved_op
-            if resolved_method is not None:
-                error_attrs["gcp.client.method"] = resolved_method
+            if network_path is not None:
+                error_attrs["network.path"] = network_path
             self.errors_counter.add(1, attributes=error_attrs)
 
     def record_rpc_attempt(
         self,
         duration: float,
-        operation: str,
+        operation: Optional[str] = None,
         status_code: Optional[str] = None,
         error_type: str = "OK",
-        client_method: Optional[str] = None,
+        rpc_method: Optional[str] = None,
         network_path: Optional[str] = None,
+        op_state: Optional[_OperationState] = None,
     ) -> None:
         """Records a single physical gRPC call attempt."""
         if not self.standard_enabled or self.meter is None:
             return
-        op_attrs = self._build_operation_attributes(
-            operation=operation, client_method=client_method
+        active_op = op_state if op_state is not None else get_current_operation()
+        raw_rpc = (
+            rpc_method or operation or (active_op.rpc_method if active_op else None)
         )
+        resolved_rpc_method = resolve_rpc_method(operation, rpc_method=raw_rpc)
+        raw_op = operation or rpc_method or (active_op.operation if active_op else None)
+        resolved_op = normalize_logical_operation(raw_op)
+
+        if active_op is not None:
+            active_op.recorded_attempts += 1
+            prior_error = active_op.consume_retry_error()
+            if prior_error is not None:
+                self.record_retry(
+                    operation=resolved_op,
+                    error_type=prior_error,
+                    network_path=network_path,
+                )
+            if error_type != "OK":
+                active_op.mark_attempt_failed(error_type)
 
         # 1. rpc.client.call.duration attributes
         rpc_attrs: Dict[str, Any] = {
-            **op_attrs,
+            **self._base_attributes,
+            "rpc.method": resolved_rpc_method,
             "error.type": error_type,
         }
         if status_code is not None:
@@ -1066,7 +1294,7 @@ class _MetricsRecorder:
         # 2. gcp.storage.client.attempts attributes
         attempt_attrs: Dict[str, Any] = {
             **self._base_attributes,
-            "gcp.storage.operation": operation,
+            "gcp.storage.operation": resolved_op,
             "error.type": error_type,
         }
         if status_code is not None:
@@ -1080,9 +1308,12 @@ class _MetricsRecorder:
         # 3. gcp.storage.client.errors attributes
         if error_type != "OK":
             error_attrs: Dict[str, Any] = {
-                **op_attrs,
+                **self._base_attributes,
+                "gcp.storage.operation": resolved_op,
                 "error.type": error_type,
             }
+            if network_path is not None:
+                error_attrs["network.path"] = network_path
             self.errors_counter.add(1, attributes=error_attrs)
 
     def record_request_body_size(
@@ -1096,7 +1327,7 @@ class _MetricsRecorder:
             return
         if not isinstance(size, int) or isinstance(size, bool):
             return
-        current_op = _OP_STATE.get()
+        current_op = get_current_operation()
         if current_op is not None and current_op.suppressed:
             return
         attrs = self._build_operation_attributes(
@@ -1115,7 +1346,7 @@ class _MetricsRecorder:
             return
         if not isinstance(size, int) or isinstance(size, bool):
             return
-        current_op = _OP_STATE.get()
+        current_op = get_current_operation()
         if current_op is not None and current_op.suppressed:
             return
         attrs = self._build_operation_attributes(
@@ -1127,18 +1358,21 @@ class _MetricsRecorder:
         self,
         duration: float,
         operation: Optional[str] = None,
-        client_method: Optional[str] = None,
+        network_path: Optional[str] = None,
     ) -> None:
         """Records time to first response byte (TTFB) in seconds."""
         if not self.standard_enabled or self.meter is None:
             return
-        current_op = _OP_STATE.get()
+        current_op = get_current_operation()
         if current_op is not None and current_op.suppressed:
             return
-        attrs = self._build_operation_attributes(
-            operation=operation, client_method=client_method, current_op=current_op
-        )
-        self.operation_ttfb.record(max(0.0, duration), attributes=attrs)
+        raw_op = operation or (current_op.operation if current_op else None)
+        attrs: Dict[str, Any] = self._base_attributes.copy()
+        if raw_op is not None:
+            attrs["gcp.storage.operation"] = normalize_logical_operation(raw_op)
+        if network_path is not None:
+            attrs["network.path"] = network_path
+        self.ttfb.record(max(0.0, duration), attributes=attrs)
 
     def shutdown(self) -> None:
         """Flushes pending metrics on a custom MeterProvider if configured."""

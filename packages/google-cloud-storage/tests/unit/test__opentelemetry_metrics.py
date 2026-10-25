@@ -230,9 +230,14 @@ def test_otel_missing_disables_metrics(monkeypatch):
 def test_get_common_attributes():
     """Verify common attributes conform to GCS OTel specification."""
     attrs = _opentelemetry_metrics.get_common_attributes()
+    assert set(attrs.keys()) == {
+        "gcp.client.service",
+        "gcp.client.version",
+        "gcp.client.artifact",
+    }
+    assert "gcp.client.repo" not in attrs
     assert attrs["gcp.client.service"] == "storage"
     assert attrs["gcp.client.version"] == __version__
-    assert attrs["gcp.client.repo"] == "googleapis/google-cloud-python"
     assert attrs["gcp.client.artifact"] == "google-cloud-storage"
 
     attrs["gcp.client.service"] = "mutated"
@@ -316,12 +321,13 @@ def test_histogram_bucket_boundaries():
     assert list(latency) == sorted(latency)
 
     sizes = _opentelemetry_metrics.SIZE_HISTOGRAM_BOUNDARIES
-    assert len(sizes) == 45
+    assert len(sizes) == 48
     assert sizes[0] == 0
     assert sizes[1] == 128 * 1024
     assert sizes[32] == 4 * 1024 * 1024
-    assert sizes[33] == 8 * 1024 * 1024
-    assert sizes[-1] == 16 * 1024 * 1024 * 1024
+    assert sizes[33] == int(4.25 * 1024 * 1024)
+    assert sizes[34] == int(4.75 * 1024 * 1024)
+    assert sizes[-1] == 8593866752
     assert list(sizes) == sorted(sizes)
 
 
@@ -1111,7 +1117,7 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
             "By",
             "Application payload bytes delivered to the caller.",
         ),
-        "gcp.storage.client.operation.ttfb": (
+        "gcp.storage.client.ttfb": (
             "s",
             "Time elapsed from attempt initiation to receipt of the first response byte.",
         ),
@@ -1129,6 +1135,10 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
             "{attempt}",
             "Number of physical network transport attempts executed.",
         ),
+        "gcp.storage.client.retries": (
+            "{retry}",
+            "Number of transport retries executed after a failed attempt.",
+        ),
         "gcp.storage.client.errors": (
             "{error}",
             "Number of physical network transport attempts terminating with a non-OK status.",
@@ -1137,7 +1147,10 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
 
     # Record within a logical operation context
     with _opentelemetry_metrics.start_operation(
-        recorder, "storage.Blob.upload_from_string", "storage.objects.insert"
+        recorder,
+        "storage.Blob.upload_from_string",
+        "WriteObject",
+        rpc_method="google.storage.v2.Storage/WriteObject",
     ):
         recorder.record_http_attempt(
             duration=0.05,
@@ -1153,10 +1166,30 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
             url_template="/upload/storage/v1/b/{bucket}/o",
             status_code=200,
             error_type="OK",
+            network_path="cloudpath",
         )
         recorder.record_request_body_size(1024)
         recorder.record_response_body_size(512)
-        recorder.record_ttfb(0.01)
+        recorder.record_ttfb(0.01, network_path="cloudpath")
+
+    # Logical operation metrics: duration has rpc.method; operations counter does not
+    recorder.client_request_duration.record.assert_called_once()
+    _, req_dur_kwargs = recorder.client_request_duration.record.call_args
+    assert req_dur_kwargs["attributes"]["gcp.storage.operation"] == "WriteObject"
+    assert (
+        req_dur_kwargs["attributes"]["rpc.method"]
+        == "google.storage.v2.Storage/WriteObject"
+    )
+    assert (
+        req_dur_kwargs["attributes"]["gcp.client.method"]
+        == "storage.Blob.upload_from_string"
+    )
+    assert req_dur_kwargs["attributes"]["error.type"] == "OK"
+
+    recorder.operations_counter.add.assert_called_once()
+    _, op_cnt_kwargs = recorder.operations_counter.add.call_args
+    assert op_cnt_kwargs["attributes"]["gcp.storage.operation"] == "WriteObject"
+    assert "rpc.method" not in op_cnt_kwargs["attributes"]
 
     assert recorder.http_request_duration.record.call_count == 2
     _, http_dur_kwargs = recorder.http_request_duration.record.call_args_list[0]
@@ -1173,78 +1206,100 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
 
     assert recorder.attempts_counter.add.call_count == 2
     _, attempt_kwargs = recorder.attempts_counter.add.call_args_list[0]
-    assert (
-        attempt_kwargs["attributes"]["gcp.storage.operation"]
-        == "storage.objects.insert"
-    )
+    assert attempt_kwargs["attributes"]["gcp.storage.operation"] == "WriteObject"
     assert attempt_kwargs["attributes"]["http.response.status_code"] == 503
     assert attempt_kwargs["attributes"]["error.type"] == "UNAVAILABLE"
     assert attempt_kwargs["attributes"]["network.path"] == "cloudpath"
     assert "url.template" not in attempt_kwargs["attributes"]
     assert "http.request.method" not in attempt_kwargs["attributes"]
+    assert "gcp.client.method" not in attempt_kwargs["attributes"]
 
-    # Only the 503 attempt records an error
+    # Retry counter incremented once for the second attempt after 503 UNAVAILABLE
+    recorder.retries_counter.add.assert_called_once()
+    _, http_retry_kwargs = recorder.retries_counter.add.call_args
+    assert http_retry_kwargs["attributes"]["gcp.storage.operation"] == "WriteObject"
+    assert http_retry_kwargs["attributes"]["error.type"] == "UNAVAILABLE"
+    assert http_retry_kwargs["attributes"]["network.path"] == "cloudpath"
+    assert "gcp.client.method" not in http_retry_kwargs["attributes"]
+
+    # Only the 503 attempt records an error (no gcp.client.method on errors)
     recorder.errors_counter.add.assert_called_once()
     _, err_kwargs = recorder.errors_counter.add.call_args
     assert err_kwargs["attributes"]["error.type"] == "UNAVAILABLE"
-    assert err_kwargs["attributes"]["gcp.storage.operation"] == "storage.objects.insert"
-    assert (
-        err_kwargs["attributes"]["gcp.client.method"]
-        == "storage.Blob.upload_from_string"
-    )
+    assert err_kwargs["attributes"]["gcp.storage.operation"] == "WriteObject"
+    assert err_kwargs["attributes"]["network.path"] == "cloudpath"
+    assert "gcp.client.method" not in err_kwargs["attributes"]
     assert "url.template" not in err_kwargs["attributes"]
     assert "http.response.status_code" not in err_kwargs["attributes"]
 
     recorder.request_body_size.record.assert_called_once()
     recorder.response_body_size.record.assert_called_once()
-    recorder.operation_ttfb.record.assert_called_once()
+    recorder.ttfb.record.assert_called_once()
+    _, ttfb_kwargs = recorder.ttfb.record.call_args
+    assert ttfb_kwargs["attributes"]["gcp.storage.operation"] == "WriteObject"
+    assert ttfb_kwargs["attributes"]["network.path"] == "cloudpath"
+    assert "gcp.client.method" not in ttfb_kwargs["attributes"]
 
-    # gRPC attempt recording (OK and non-OK)
+    # gRPC attempt recording (UNAVAILABLE -> OK retry sequence)
     recorder.errors_counter.add.reset_mock()
     recorder.attempts_counter.add.reset_mock()
-    recorder.record_rpc_attempt(
-        duration=0.02,
-        operation="google.storage.v2.Storage/BidiReadObject",
-        status_code="OK",
-        error_type="OK",
-        client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
-        network_path="directpath",
-    )
-    recorder.record_rpc_attempt(
-        duration=0.03,
-        operation="google.storage.v2.Storage/BidiReadObject",
-        status_code="UNAVAILABLE",
-        error_type="UNAVAILABLE",
-        client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
-    )
+    recorder.retries_counter.add.reset_mock()
+    with _opentelemetry_metrics.start_operation(
+        recorder,
+        "storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
+        "ReadObject",
+        rpc_method="google.storage.v2.Storage/BidiReadObject",
+    ):
+        recorder.record_rpc_attempt(
+            duration=0.03,
+            operation="ReadObject",
+            status_code="UNAVAILABLE",
+            error_type="UNAVAILABLE",
+            rpc_method="google.storage.v2.Storage/BidiReadObject",
+            network_path="directpath",
+        )
+        recorder.record_rpc_attempt(
+            duration=0.02,
+            operation="ReadObject",
+            status_code="OK",
+            error_type="OK",
+            rpc_method="google.storage.v2.Storage/BidiReadObject",
+            network_path="directpath",
+        )
     assert recorder.rpc_call_duration.record.call_count == 2
-    _, rpc_dur_kwargs = recorder.rpc_call_duration.record.call_args_list[0]
+    _, rpc_dur_kwargs = recorder.rpc_call_duration.record.call_args_list[1]
     assert (
-        rpc_dur_kwargs["attributes"]["gcp.storage.operation"]
+        rpc_dur_kwargs["attributes"]["rpc.method"]
         == "google.storage.v2.Storage/BidiReadObject"
-    )
-    assert (
-        rpc_dur_kwargs["attributes"]["gcp.client.method"]
-        == "storage.asyncio.AsyncMultiRangeDownloader.download_ranges"
     )
     assert rpc_dur_kwargs["attributes"]["rpc.response.status_code"] == "OK"
+    assert rpc_dur_kwargs["attributes"]["error.type"] == "OK"
     assert rpc_dur_kwargs["attributes"]["network.path"] == "directpath"
+    assert "gcp.storage.operation" not in rpc_dur_kwargs["attributes"]
+    assert "gcp.client.method" not in rpc_dur_kwargs["attributes"]
 
     assert recorder.attempts_counter.add.call_count == 2
-    _, rpc_attempt_kwargs = recorder.attempts_counter.add.call_args_list[0]
-    assert (
-        rpc_attempt_kwargs["attributes"]["gcp.storage.operation"]
-        == "google.storage.v2.Storage/BidiReadObject"
-    )
+    _, rpc_attempt_kwargs = recorder.attempts_counter.add.call_args_list[1]
+    assert rpc_attempt_kwargs["attributes"]["gcp.storage.operation"] == "ReadObject"
     assert rpc_attempt_kwargs["attributes"]["rpc.response.status_code"] == "OK"
     assert rpc_attempt_kwargs["attributes"]["error.type"] == "OK"
     assert rpc_attempt_kwargs["attributes"]["network.path"] == "directpath"
     assert "gcp.client.method" not in rpc_attempt_kwargs["attributes"]
+    assert "rpc.method" not in rpc_attempt_kwargs["attributes"]
 
     recorder.errors_counter.add.assert_called_once()
     _, rpc_err_kwargs = recorder.errors_counter.add.call_args
+    assert rpc_err_kwargs["attributes"]["gcp.storage.operation"] == "ReadObject"
     assert rpc_err_kwargs["attributes"]["error.type"] == "UNAVAILABLE"
+    assert rpc_err_kwargs["attributes"]["network.path"] == "directpath"
+    assert "gcp.client.method" not in rpc_err_kwargs["attributes"]
     assert "rpc.response.status_code" not in rpc_err_kwargs["attributes"]
+
+    recorder.retries_counter.add.assert_called_once()
+    _, rpc_retry_kwargs = recorder.retries_counter.add.call_args
+    assert rpc_retry_kwargs["attributes"]["gcp.storage.operation"] == "ReadObject"
+    assert rpc_retry_kwargs["attributes"]["error.type"] == "UNAVAILABLE"
+    assert rpc_retry_kwargs["attributes"]["network.path"] == "directpath"
 
     # Record outside of start_operation with status_code=None and callable .code() returning None
     recorder.record_http_attempt(
@@ -1334,9 +1389,205 @@ def test_metrics_recorder_disabled_no_ops(monkeypatch):
 
     # All recording methods are safe no-ops when disabled
     recorder.record_logical_operation(0.1, "m", "op")
+    recorder.record_retry("ReadObject", "UNAVAILABLE", "cloudpath")
     recorder.record_http_attempt(0.1, "GET", "/storage/v1/b")
     recorder.record_rpc_attempt(0.1, "google.storage.v2.Storage/ReadObject")
     recorder.record_request_body_size(100)
     recorder.record_response_body_size(100)
     recorder.record_ttfb(0.01)
     recorder.shutdown()
+
+
+def test_normalize_logical_operation_and_resolve_rpc_method():
+    assert _opentelemetry_metrics.normalize_logical_operation(None) == "UNKNOWN"
+    assert _opentelemetry_metrics.normalize_logical_operation("") == "UNKNOWN"
+    assert _opentelemetry_metrics.normalize_logical_operation(123) == "UNKNOWN"  # type: ignore[arg-type]
+    assert _opentelemetry_metrics.normalize_logical_operation("///") == "UNKNOWN"
+    assert (
+        _opentelemetry_metrics.normalize_logical_operation(
+            "google.storage.v2.Storage/BidiReadObject"
+        )
+        == "ReadObject"
+    )
+    assert (
+        _opentelemetry_metrics.normalize_logical_operation(
+            "/google.storage.v2.Storage/BidiWriteObject"
+        )
+        == "WriteObject"
+    )
+    assert (
+        _opentelemetry_metrics.normalize_logical_operation(
+            "google.storage.v2.Storage/GetObject"
+        )
+        == "GetObject"
+    )
+    assert (
+        _opentelemetry_metrics.normalize_logical_operation("GetNotificationConfig")
+        == "GetNotificationConfig"
+    )
+
+    assert _opentelemetry_metrics.resolve_rpc_method(None, None) == "UNKNOWN"
+    assert _opentelemetry_metrics.resolve_rpc_method("", "") == "UNKNOWN"
+    assert _opentelemetry_metrics.resolve_rpc_method("///", None) == "UNKNOWN"
+    assert _opentelemetry_metrics.resolve_rpc_method("UNKNOWN", None) == "UNKNOWN"
+    assert (
+        _opentelemetry_metrics.resolve_rpc_method(
+            "ReadObject", "google.storage.v2.Storage/BidiReadObject"
+        )
+        == "google.storage.v2.Storage/BidiReadObject"
+    )
+    assert (
+        _opentelemetry_metrics.resolve_rpc_method("ReadObject")
+        == "google.storage.v2.Storage/ReadObject"
+    )
+    assert (
+        _opentelemetry_metrics.resolve_rpc_method("GetNotificationConfig")
+        == "google.storage.v1.Storage/GetNotificationConfig"
+    )
+    assert (
+        _opentelemetry_metrics.resolve_rpc_method("storage.objects.get")
+        == "storage.objects.get"
+    )
+
+
+def test_iter_exception_chain_traverses_errors_list():
+    wrapped = api_exceptions.Aborted(
+        "aborted",
+        errors=[socket.timeout("nested timeout in errors")],
+    )
+    chain = list(_opentelemetry_metrics._iter_exception_chain(wrapped))
+    assert any(isinstance(item, socket.timeout) for item in chain)
+
+    class _NonSeqErrorsErr(Exception):
+        errors = 123
+
+    assert _opentelemetry_metrics.classify_error_type(_NonSeqErrorsErr()) == "UNKNOWN"
+
+
+def test_operation_state_and_retry_helpers(monkeypatch):
+    monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
+    mock_metrics = mock.Mock()
+    mock_meter = mock.Mock()
+    mock_meter.create_histogram.side_effect = lambda *a, **kw: mock.Mock()
+    mock_meter.create_counter.side_effect = lambda *a, **kw: mock.Mock()
+    mock_metrics.get_meter.return_value = mock_meter
+    monkeypatch.setattr(_opentelemetry_metrics, "metrics", mock_metrics, raising=False)
+
+    recorder = _opentelemetry_metrics._MetricsRecorder(
+        enable_metrics=True, rpc_system="grpc"
+    )
+    disabled_recorder = _opentelemetry_metrics._MetricsRecorder(enable_metrics=False)
+
+    # No-ops when recorder is None, disabled, or no active operation
+    _opentelemetry_metrics.record_pending_retry(None)
+    _opentelemetry_metrics.record_pending_retry(disabled_recorder)
+    _opentelemetry_metrics.record_pending_retry(recorder)
+    _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+        None, RuntimeError("e"), attempts_before=0, will_retry=True
+    )
+    _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+        disabled_recorder, RuntimeError("e"), attempts_before=0, will_retry=True
+    )
+    _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+        recorder, RuntimeError("e"), attempts_before=0, will_retry=True
+    )
+
+    # Standalone record_retry and record_ttfb outside start_operation without optional attrs
+    recorder.record_retry(operation=None, error_type="UNAVAILABLE", network_path=None)
+    _, retry_no_op_kw = recorder.retries_counter.add.call_args
+    assert "gcp.storage.operation" not in retry_no_op_kw["attributes"]
+    assert "network.path" not in retry_no_op_kw["attributes"]
+
+    recorder.record_ttfb(0.02, operation=None, network_path=None)
+    _, ttfb_no_op_kw = recorder.ttfb.record.call_args
+    assert "gcp.storage.operation" not in ttfb_no_op_kw["attributes"]
+    assert "network.path" not in ttfb_no_op_kw["attributes"]
+
+    recorder.retries_counter.add.reset_mock()
+    with _opentelemetry_metrics.start_operation(
+        recorder,
+        "storage.asyncio.AsyncMultiRangeDownloader.open",
+        "ReadObject",
+        rpc_method="google.storage.v2.Storage/BidiReadObject",
+    ) as op_state:
+        assert op_state is not None
+        op_state.mark_attempt_failed("OK")
+        op_state.mark_attempt_failed("")
+        assert op_state.last_failure_error_type is None
+
+        # Pending retry when no failure occurred is a no-op
+        _opentelemetry_metrics.record_pending_retry(recorder)
+        recorder.retries_counter.add.assert_not_called()
+
+        # When transport already recorded the attempt, handle_unrecorded_retryable_failure skips
+        op_state.recorded_attempts = 1
+        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+            recorder,
+            api_exceptions.ServiceUnavailable("503"),
+            attempts_before=0,
+            will_retry=True,
+            network_path="directpath",
+        )
+        assert op_state.recorded_attempts == 1
+        assert op_state.last_failure_error_type is None
+
+        # Unrecorded failure 1 (will_retry=True) -> marks failure, no retry yet
+        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+            recorder,
+            api_exceptions.ServiceUnavailable("503"),
+            attempts_before=1,
+            will_retry=True,
+            network_path="unknown",
+        )
+        assert op_state.recorded_attempts == 2
+        assert op_state.last_failure_error_type == "UNAVAILABLE"
+        recorder.retries_counter.add.assert_not_called()
+
+        # Consecutive unrecorded failure 2 (will_retry=True) -> emits retry for failure 1, marks failure 2
+        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+            recorder,
+            api_exceptions.DeadlineExceeded("timeout"),
+            attempts_before=2,
+            will_retry=True,
+            network_path="cloudpath",
+        )
+        assert op_state.recorded_attempts == 3
+        assert op_state.last_failure_error_type == "DEADLINE_EXCEEDED"
+        recorder.retries_counter.add.assert_called_once()
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "UNAVAILABLE"
+        )
+
+        # Unrecorded terminal failure 3 (will_retry=False) -> emits retry for failure 2, leaves error cleared
+        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+            recorder,
+            api_exceptions.PermissionDenied("403"),
+            attempts_before=3,
+            will_retry=False,
+            network_path="cloudpath",
+        )
+        assert op_state.recorded_attempts == 4
+        assert op_state.last_failure_error_type is None
+        assert recorder.retries_counter.add.call_count == 2
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "DEADLINE_EXCEEDED"
+        )
+
+        # Mark failure and consume via record_pending_retry
+        op_state.mark_attempt_failed("ABORTED")
+        _opentelemetry_metrics.record_pending_retry(recorder, network_path="directpath")
+        assert recorder.retries_counter.add.call_count == 3
+        _, pending_kw = recorder.retries_counter.add.call_args
+        assert pending_kw["attributes"]["gcp.storage.operation"] == "ReadObject"
+        assert pending_kw["attributes"]["error.type"] == "ABORTED"
+        assert pending_kw["attributes"]["network.path"] == "directpath"
+
+        import contextvars
+
+        copied_ctx = contextvars.copy_context()
+
+    # Once start_operation exits, state.finished is True even in copied contexts
+    assert op_state.finished is True
+    assert copied_ctx.run(_opentelemetry_metrics.get_current_operation) is None

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import types
 from unittest import mock
 
 import grpc
@@ -666,12 +667,16 @@ class TestAsyncGrpcClient:
         mock_gapic_client.transport.close = mock.AsyncMock()
         mock_async_storage_client.return_value = mock_gapic_client
 
+        mock_provider = mock.MagicMock()
         client = async_grpc_client.AsyncGrpcClient(
             credentials=_make_credentials(),
             client_options={"api_endpoint": "custom.storage.googleapis.com:443"},
             enable_metrics=True,
+            meter_provider=mock_provider,
         )
         assert client.metrics_enabled is True
+        assert client._meter_provider is mock_provider
+        assert client._metrics_recorder._meter_provider is mock_provider
         assert (
             client._metrics_recorder.server_address == "custom.storage.googleapis.com"
         )
@@ -692,6 +697,7 @@ class TestAsyncGrpcClient:
             del_kwargs["client_method"]
             == "storage.asyncio.AsyncGrpcClient.delete_object"
         )
+        assert del_kwargs["operation"] == "DeleteObject"
         assert del_kwargs["rpc_method"] == "google.storage.v2.Storage/DeleteObject"
         assert del_kwargs["error_type"] == "OK"
 
@@ -702,6 +708,7 @@ class TestAsyncGrpcClient:
         assert (
             get_kwargs["client_method"] == "storage.asyncio.AsyncGrpcClient.get_object"
         )
+        assert get_kwargs["operation"] == "GetObject"
         assert get_kwargs["rpc_method"] == "google.storage.v2.Storage/GetObject"
         assert get_kwargs["error_type"] == "OK"
 
@@ -955,15 +962,19 @@ class TestAsyncGrpcClient:
         )
         assert (
             async_grpc_client._resolve_network_path(
-                mock.MagicMock(peer=lambda: 123), "cloudpath"
+                mock.MagicMock(peer=lambda: 123),
+                direct_path_attempted=False,
+                received_server_response=True,
             )
             == "cloudpath"
         )
         assert (
             async_grpc_client._resolve_network_path(
-                mock.MagicMock(peer=lambda: "unix:/tmp/sock"), "cloudpath"
+                mock.MagicMock(peer=lambda: "unix:/tmp/sock"),
+                direct_path_attempted=False,
+                received_server_response=False,
             )
-            == "cloudpath"
+            == "unknown"
         )
 
         class _NoneCodeRpcErr(Exception):
@@ -1019,3 +1030,369 @@ class TestAsyncGrpcClient:
         assert (
             recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "UNAVAILABLE"
         )
+
+    def test_resolve_network_path_comprehensive(self):
+        # 1. _inspect_metadata edge cases
+        assert async_grpc_client._inspect_metadata(123) == (False, False)
+        assert async_grpc_client._inspect_metadata(()) == (False, False)
+        assert async_grpc_client._inspect_metadata([object()]) == (True, False)
+        assert async_grpc_client._inspect_metadata([()]) == (True, False)
+
+        # 2. GFE headers override direct_path_attempted=True -> "cloudpath"
+        call_cy_init = types.SimpleNamespace(
+            _cython_call=types.SimpleNamespace(
+                _initial_metadata=(
+                    types.SimpleNamespace(key="x-goog-gfe-service-time", value="10"),
+                ),
+                _trailing_metadata=None,
+                _status=None,
+            )
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                call=call_cy_init, direct_path_attempted=True
+            )
+            == "cloudpath"
+        )
+
+        call_cy_status_fn = types.SimpleNamespace(
+            _cython_call=types.SimpleNamespace(
+                _initial_metadata=(),
+                _trailing_metadata=None,
+                _status=types.SimpleNamespace(
+                    trailing_metadata=lambda: ((b"X-GUploader-UploadID", b"up1"),)
+                ),
+            )
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                call=call_cy_status_fn, direct_path_attempted=True
+            )
+            == "cloudpath"
+        )
+
+        call_cy_status_attr = types.SimpleNamespace(
+            _cython_call=types.SimpleNamespace(
+                _initial_metadata=None,
+                _trailing_metadata=None,
+                _status=types.SimpleNamespace(
+                    _trailing_metadata=(("x-goog-gfe-service-time", "1"),),
+                    _debug_error_string="no ip here",
+                ),
+            )
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                call=call_cy_status_attr, direct_path_attempted=True
+            )
+            == "cloudpath"
+        )
+
+        # Non-GFE server metadata sets has_server_metadata=True
+        call_non_gfe = types.SimpleNamespace(
+            _initial_metadata=[("x-custom-server", "ok")]
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                call=call_non_gfe,
+                direct_path_attempted=True,
+                received_server_response=False,
+            )
+            == "directpath"
+        )
+
+        # GFE metadata on RpcError (grpc.aio.Metadata) overrides direct_path_attempted=True
+        class _GfeRpcErr(Exception):
+            def initial_metadata(self):
+                return grpc.aio.Metadata()
+
+            def trailing_metadata(self):
+                return grpc.aio.Metadata(("x-goog-gfe-service-time", "5"))
+
+        assert (
+            async_grpc_client._resolve_network_path(
+                exc=_GfeRpcErr(), direct_path_attempted=True
+            )
+            == "cloudpath"
+        )
+
+        class _NonGfeAttrErr(Exception):
+            initial_metadata = None
+            trailing_metadata = [("x-server", "1")]
+            debug_error_string = "ipv4:142.250.10.1:443"
+
+        assert (
+            async_grpc_client._resolve_network_path(
+                exc=_NonGfeAttrErr(), direct_path_attempted=True
+            )
+            == "cloudpath"
+        )
+
+        # Wrapped call + chained exception when peer IP already detected on outer layer
+        inner_call = types.SimpleNamespace(peer=lambda: "ipv4:142.250.1.1:443")
+        outer_call_with_peer = types.SimpleNamespace(
+            peer=lambda: "ipv4:34.126.1.1:443", _call=inner_call
+        )
+        chained_exc = _NonGfeAttrErr("outer")
+        chained_exc.__cause__ = RuntimeError("inner")
+        assert (
+            async_grpc_client._resolve_network_path(
+                call=outer_call_with_peer, exc=chained_exc
+            )
+            == "directpath"
+        )
+
+        class _NonGfeNoIpErr(Exception):
+            initial_metadata = None
+            trailing_metadata = [("x-server", "1")]
+            debug_error_string = None
+
+        assert (
+            async_grpc_client._resolve_network_path(
+                exc=_NonGfeNoIpErr(), direct_path_attempted=True
+            )
+            == "directpath"
+        )
+
+        # 3. DirectPath IPv4 (/18) and IPv6 (/42) CIDR boundaries + IPv4-mapped IPv6
+        for peer_uri, expected in (
+            ("ipv4:34.126.0.1:443", "directpath"),
+            ("ipv4:34.126.63.255:443", "directpath"),
+            ("ipv4:34.126.64.1:443", "cloudpath"),
+            ("ipv6:[2001:4860:8040::1]:443", "directpath"),
+            ("ipv6:%5B2001:4860:8040:ffff::1%5D:443", "directpath"),
+            ("ipv6:2001:4860:8040::2", "directpath"),
+            ("ipv6:[2001:4860:8080::1]:443", "cloudpath"),
+            ("ipv6:[::ffff:34.126.1.2]:443", "directpath"),
+            ("ipv6:[::ffff:142.250.1.2]:443", "cloudpath"),
+        ):
+            c = types.SimpleNamespace(peer=lambda p=peer_uri: p)
+            assert async_grpc_client._resolve_network_path(call=c) == expected
+
+        # Invalid IP ignored -> falls back
+        invalid_ip_call = types.SimpleNamespace(peer=lambda: "ipv4:999.999.999.999:443")
+        assert (
+            async_grpc_client._resolve_network_path(
+                call=invalid_ip_call,
+                direct_path_attempted=False,
+                received_server_response=False,
+            )
+            == "unknown"
+        )
+
+        # 4. C-core debug_error_string (bytes & str, status & exc)
+        call_dbg_bytes = types.SimpleNamespace(
+            _cython_call=types.SimpleNamespace(
+                _initial_metadata=(),
+                _trailing_metadata=None,
+                _status=types.SimpleNamespace(
+                    trailing_metadata=lambda: (),
+                    debug_error_string=lambda: b'{"peer":"ipv4:34.126.5.5:443"}',
+                ),
+            )
+        )
+        assert (
+            async_grpc_client._resolve_network_path(call=call_dbg_bytes) == "directpath"
+        )
+
+        class _BytesDbgErr(Exception):
+            def debug_error_string(self):
+                return b"ipv6:%5b2001:4860:8040::9%5d:443"
+
+        assert (
+            async_grpc_client._resolve_network_path(exc=_BytesDbgErr()) == "directpath"
+        )
+
+        # 5. Fallback matrix & wrapped _TrackedCallBase discovery + >16 chain cap
+        assert (
+            async_grpc_client._resolve_network_path(
+                direct_path_attempted=True, received_server_response=True
+            )
+            == "directpath"
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                direct_path_attempted=True, received_server_response=False
+            )
+            == "unknown"
+        )
+        assert (
+            async_grpc_client._resolve_network_path(
+                direct_path_attempted=None, received_server_response=True
+            )
+            == "unknown"
+        )
+
+        tracked = async_grpc_client._TrackedUnaryUnaryCall(
+            types.SimpleNamespace(),
+            mock.MagicMock(),
+            "google.storage.v2.Storage/GetObject",
+            "GetObject",
+            0.0,
+            None,
+            direct_path_attempted=True,
+        )
+        outer = types.SimpleNamespace(_call=tracked)
+        assert (
+            async_grpc_client._resolve_network_path(
+                call=outer,
+                direct_path_attempted=None,
+                received_server_response=True,
+            )
+            == "directpath"
+        )
+
+        # Deep chain >16 steps terminates cleanly
+        head = types.SimpleNamespace()
+        cur = head
+        for _ in range(20):
+            nxt = types.SimpleNamespace()
+            cur._call = nxt
+            cur = nxt
+        assert len(list(async_grpc_client._iter_wrapped_calls(head))) == 16
+
+    @pytest.mark.asyncio
+    async def test_unary_retry_and_bidi_active_operation_metrics(self, monkeypatch):
+        from google.api_core import exceptions as api_exceptions
+        from google.api_core.retry_async import AsyncRetry
+
+        monkeypatch.setattr(_opentelemetry_metrics, "HAS_OPENTELEMETRY_METRICS", True)
+        monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
+        mock_metrics = mock.Mock()
+        mock_meter = mock.Mock()
+        mock_meter.create_histogram.side_effect = lambda *a, **kw: mock.Mock()
+        mock_meter.create_counter.side_effect = lambda *a, **kw: mock.Mock()
+        mock_metrics.get_meter.return_value = mock_meter
+        monkeypatch.setattr(
+            _opentelemetry_metrics, "metrics", mock_metrics, raising=False
+        )
+
+        recorder = _opentelemetry_metrics._MetricsRecorder(
+            enable_metrics=True, rpc_system="grpc"
+        )
+        u_u, _, _, s_s = async_grpc_client._create_metrics_interceptors(
+            recorder, direct_path_attempted=True
+        )
+        details = mock.MagicMock(method="/google.storage.v2.Storage/GetObject")
+
+        # 1. End-to-end Unary-Unary retry (UNAVAILABLE -> OK)
+        calls_made = 0
+
+        class _SimpleAwaitable:
+            def __init__(self, val=None, exc=None):
+                self._val = val
+                self._exc = exc
+
+            async def _run(self):
+                if self._exc:
+                    raise self._exc
+                return self._val
+
+            def __await__(self):
+                return self._run().__await__()
+
+        async def unary_continuation(_details, _req):
+            nonlocal calls_made
+            calls_made += 1
+            if calls_made == 1:
+                return _SimpleAwaitable(exc=api_exceptions.ServiceUnavailable("503"))
+            return _SimpleAwaitable(val="object_meta")
+
+        retry = AsyncRetry(
+            predicate=lambda e: isinstance(e, api_exceptions.ServiceUnavailable),
+            initial=0.001,
+            maximum=0.001,
+        )
+
+        async def invoke_rpc():
+            call = await u_u.intercept_unary_unary(unary_continuation, details, "req")
+            return await call
+
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncGrpcClient.get_object",
+            operation="GetObject",
+            rpc_method="google.storage.v2.Storage/GetObject",
+        ):
+            res = await retry(invoke_rpc)()
+
+        assert res == "object_meta"
+        assert recorder.attempts_counter.add.call_count == 2
+        assert recorder.errors_counter.add.call_count == 1
+        assert recorder.retries_counter.add.call_count == 1
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "UNAVAILABLE"
+        )
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"][
+                "gcp.storage.operation"
+            ]
+            == "GetObject"
+        )
+        assert recorder.operations_counter.add.call_count == 1
+        assert (
+            recorder.operations_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "OK"
+        )
+        assert (
+            recorder.client_request_duration.record.call_args.kwargs["attributes"][
+                "rpc.method"
+            ]
+            == "google.storage.v2.Storage/GetObject"
+        )
+
+        # 2. Bidi stream opened in open() op and failing mid-stream in download_ranges() op
+        bidi_details = mock.MagicMock(
+            method="/google.storage.v2.Storage/BidiReadObject"
+        )
+        raw_bidi = mock.MagicMock()
+        raw_bidi.read = mock.AsyncMock(
+            side_effect=api_exceptions.Aborted("Idle stream closed")
+        )
+
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncMultiRangeDownloader.open",
+            operation="ReadObject",
+            rpc_method="google.storage.v2.Storage/BidiReadObject",
+        ) as open_op:
+            tracked_bidi = await s_s.intercept_stream_stream(
+                mock.AsyncMock(return_value=raw_bidi), bidi_details, iter([])
+            )
+            # Simulate stream opened 100s ago
+            tracked_bidi._start_time -= 100.0
+
+        assert open_op.recorded_attempts == 0
+        assert open_op.finished is True
+        async_grpc_client._bind_call_to_operation(tracked_bidi, None)
+
+        recorder.rpc_call_duration.record.reset_mock()
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
+            operation="ReadObject",
+            rpc_method="google.storage.v2.Storage/BidiReadObject",
+        ) as dl_op:
+            with pytest.raises(api_exceptions.Aborted):
+                await tracked_bidi.read()
+            assert dl_op.recorded_attempts == 1
+            assert dl_op.last_failure_error_type == "ABORTED"
+        recorded_dur = recorder.rpc_call_duration.record.call_args.args[0]
+        assert recorded_dur < 10.0
+
+        # 3. _bind_call_to_operation for background recv loop task without active ContextVar
+        tracked_bg = await s_s.intercept_stream_stream(
+            mock.AsyncMock(return_value=mock.MagicMock()), bidi_details, iter([])
+        )
+        tracked_bg._start_time -= 100.0
+        wrapped_bg = types.SimpleNamespace(_call=tracked_bg)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
+            operation="ReadObject",
+            rpc_method="google.storage.v2.Storage/BidiReadObject",
+        ) as bg_op:
+            async_grpc_client._bind_call_to_operation(wrapped_bg, bg_op)
+            assert tracked_bg._op_state is bg_op
+            assert tracked_bg._start_time == bg_op.start_time

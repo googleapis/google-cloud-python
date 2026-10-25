@@ -15,9 +15,11 @@
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
 import asyncio
+import ipaddress
+import re
 import time
 from collections import deque
-from typing import Any, Optional, Tuple
+from typing import Any, Iterator, Optional, Tuple
 
 import grpc
 from google.auth import credentials as auth_credentials
@@ -34,9 +36,15 @@ from google.cloud.storage.grpc_client import (
 )
 
 _GRPC_STATUS_NAMES = {sc.name for sc in grpc.StatusCode}
+_DIRECTPATH_IPV4_NET = ipaddress.ip_network("34.126.0.0/18")
+_DIRECTPATH_IPV6_NET = ipaddress.ip_network("2001:4860:8040::/42")
+_GFE_METADATA_KEYS = frozenset({"x-goog-gfe-service-time", "x-guploader-uploadid"})
+_PEER_IP_RE = re.compile(
+    r"ipv4:([0-9.]+)|ipv6:(?:(?:\[|%5B|%5b)([0-9a-fA-F:.]+)(?:\]|%5D|%5d)|([0-9a-fA-F:]+))"
+)
 
 
-def _extract_rpc_operation(method_name: Any) -> str:
+def _extract_rpc_method(method_name: Any) -> str:
     """Normalizes a gRPC method path into ``package.Service/Method``."""
     if isinstance(method_name, bytes):
         method_name = method_name.decode("utf-8", errors="replace")
@@ -44,6 +52,14 @@ def _extract_rpc_operation(method_name: Any) -> str:
         return "UNKNOWN"
     normalized = method_name.strip().strip("/")
     return normalized if normalized else "UNKNOWN"
+
+
+_extract_rpc_operation = _extract_rpc_method
+
+
+def _extract_logical_operation(rpc_method: str) -> str:
+    """Extracts the short logical ``gcp.storage.operation`` from a gRPC method path."""
+    return _opentelemetry_metrics.normalize_logical_operation(rpc_method)
 
 
 def _resolve_status_and_error(exc: BaseException) -> Tuple[Optional[str], str]:
@@ -76,33 +92,48 @@ def _resolve_status_and_error(exc: BaseException) -> Tuple[Optional[str], str]:
     return status_code, error_type
 
 
-def _resolve_network_path(
-    call: Any, default_network_path: Optional[str] = None
-) -> Optional[str]:
-    """Resolves ``"directpath"`` or ``"cloudpath"`` from ``call.peer()`` or channel config.
-
-    Note: Python's ``grpc.aio.Call`` does not currently expose ``peer()`` on
-    C-core async calls; when ``peer()`` is unavailable, falls back to the
-    channel's configured ``default_network_path``.
-    """
-    peer_fn = getattr(call, "peer", None)
-    if callable(peer_fn):
+def _extract_peer_ip(text: str) -> Optional[str]:
+    """Extracts the last valid peer IPv4/IPv6 address from a gRPC peer or debug string."""
+    last_valid: Optional[str] = None
+    for match in _PEER_IP_RE.finditer(text):
+        candidate = match.group(1) or match.group(2) or match.group(3)
         try:
-            peer_val = peer_fn()
-            if isinstance(peer_val, bytes):
-                peer_val = peer_val.decode("utf-8", errors="replace")
-            if isinstance(peer_val, str):
-                if "2001:4860:8040:" in peer_val or peer_val.startswith("ipv4:34.126."):
-                    return "directpath"
-                if peer_val.startswith(("ipv4:", "ipv6:")):
-                    return "cloudpath"
-        except Exception:  # pragma: NO COVER
-            pass
-    return default_network_path
+            ipaddress.ip_address(candidate)
+            last_valid = candidate
+        except ValueError:
+            continue
+    return last_valid
 
 
-def _mark_call_closing_cleanly(call: Any) -> None:
-    """Marks a wrapped gRPC call as closing cleanly before normal cancellation."""
+def _classify_ip(ip_str: str) -> str:
+    """Classifies a validated IP address string into ``'directpath'`` or ``'cloudpath'``."""
+    addr = ipaddress.ip_address(ip_str)
+    if isinstance(addr, ipaddress.IPv6Address) and addr.ipv4_mapped is not None:
+        addr = addr.ipv4_mapped
+    if isinstance(addr, ipaddress.IPv4Address):
+        return "directpath" if addr in _DIRECTPATH_IPV4_NET else "cloudpath"
+    return "directpath" if addr in _DIRECTPATH_IPV6_NET else "cloudpath"
+
+
+def _inspect_metadata(md: Any) -> Tuple[bool, bool]:
+    """Inspects a gRPC metadata sequence for non-empty headers and GFE markers."""
+    if not isinstance(md, (tuple, list, grpc.aio.Metadata)):
+        return False, False
+    has_entries = False
+    for entry in md:
+        has_entries = True
+        key = getattr(entry, "key", None)
+        if key is None and isinstance(entry, (tuple, list)) and len(entry) >= 1:
+            key = entry[0]
+        if isinstance(key, bytes):
+            key = key.decode("utf-8", errors="replace")
+        if isinstance(key, str) and key.lower() in _GFE_METADATA_KEYS:
+            return True, True
+    return has_entries, False
+
+
+def _iter_wrapped_calls(call: Any) -> Iterator[Any]:
+    """Yields ``call`` and any inner wrapped gRPC call objects."""
     seen = set()
     queue = deque([call])
     steps = 0
@@ -112,11 +143,8 @@ def _mark_call_closing_cleanly(call: Any) -> None:
         if current is None or id(current) in seen:
             continue
         seen.add(id(current))
+        yield current
         inst_dict = getattr(current, "__dict__", None)
-        if isinstance(current, _TrackedCallBase) or (
-            isinstance(inst_dict, dict) and "_closing_cleanly" in inst_dict
-        ):
-            current._closing_cleanly = True
         if not isinstance(inst_dict, dict):
             continue
         for attr in (
@@ -136,6 +164,147 @@ def _mark_call_closing_cleanly(call: Any) -> None:
                 pass
 
 
+def _resolve_network_path(
+    call: Any = None,
+    exc: Optional[BaseException] = None,
+    direct_path_attempted: Optional[bool] = None,
+    received_server_response: bool = False,
+) -> str:
+    """Resolves per-call ``network.path`` (``'directpath'``, ``'cloudpath'``, or ``'unknown'``).
+
+    Detection priority:
+    1. GFE response metadata headers (``x-goog-gfe-service-time``,
+       ``x-guploader-uploadid``) on the Cython call or ``RpcError`` -> ``'cloudpath'``.
+    2. Remote peer IP from ``call.peer()`` or C-core ``debug_error_string()``
+       matched against DirectPath CIDRs ``34.126.0.0/18`` and
+       ``2001:4860:8040::/42`` -> ``'directpath'`` or ``'cloudpath'``.
+    3. Fallback when Python ``grpc.aio`` hides ``peer()`` and no GFE header is
+       present: if the server responded, ``'directpath'`` when DirectPath was
+       attempted on the channel else ``'cloudpath'``; if no server response was
+       received (e.g. DNS or pre-connection failure), ``'unknown'``.
+    """
+    has_server_metadata = False
+    detected_peer_ip: Optional[str] = None
+
+    if call is not None:
+        for current in _iter_wrapped_calls(call):
+            if direct_path_attempted is None and isinstance(current, _TrackedCallBase):
+                direct_path_attempted = current._direct_path_attempted
+
+            inst_dict = getattr(current, "__dict__", None)
+            cython_call = getattr(current, "_cython_call", None)
+            status_obj = (
+                getattr(cython_call, "_status", None)
+                if cython_call is not None
+                else None
+            )
+            status_trailing = None
+            if status_obj is not None:
+                trailing_fn = getattr(status_obj, "trailing_metadata", None)
+                status_trailing = (
+                    trailing_fn()
+                    if callable(trailing_fn)
+                    else getattr(status_obj, "_trailing_metadata", None)
+                )
+
+            md_candidates = [
+                getattr(cython_call, "_initial_metadata", None)
+                if cython_call is not None
+                else None,
+                getattr(cython_call, "_trailing_metadata", None)
+                if cython_call is not None
+                else None,
+                status_trailing,
+                inst_dict.get("_initial_metadata")
+                if isinstance(inst_dict, dict)
+                else None,
+                inst_dict.get("_trailing_metadata")
+                if isinstance(inst_dict, dict)
+                else None,
+            ]
+            for md in md_candidates:
+                entries, is_gfe = _inspect_metadata(md)
+                if is_gfe:
+                    return "cloudpath"
+                if entries:
+                    has_server_metadata = True
+
+            if detected_peer_ip is None:
+                peer_fn = getattr(current, "peer", None)
+                if callable(peer_fn):
+                    try:
+                        peer_val = peer_fn()
+                        if isinstance(peer_val, bytes):
+                            peer_val = peer_val.decode("utf-8", errors="replace")
+                        if isinstance(peer_val, str):
+                            detected_peer_ip = _extract_peer_ip(peer_val)
+                    except Exception:  # pragma: NO COVER
+                        pass
+
+            if detected_peer_ip is None and status_obj is not None:
+                dbg_fn = getattr(status_obj, "debug_error_string", None)
+                dbg_val = (
+                    dbg_fn()
+                    if callable(dbg_fn)
+                    else getattr(status_obj, "_debug_error_string", None)
+                )
+                if isinstance(dbg_val, bytes):
+                    dbg_val = dbg_val.decode("utf-8", errors="replace")
+                if isinstance(dbg_val, str):
+                    detected_peer_ip = _extract_peer_ip(dbg_val)
+
+    if exc is not None:
+        for item in _opentelemetry_metrics._iter_exception_chain(exc):
+            for md_attr in ("initial_metadata", "trailing_metadata"):
+                md_fn = getattr(item, md_attr, None)
+                md = md_fn() if callable(md_fn) else md_fn
+                entries, is_gfe = _inspect_metadata(md)
+                if is_gfe:
+                    return "cloudpath"
+                if entries:
+                    has_server_metadata = True
+
+            if detected_peer_ip is None:
+                dbg_fn = getattr(item, "debug_error_string", None)
+                dbg_val = dbg_fn() if callable(dbg_fn) else dbg_fn
+                if isinstance(dbg_val, bytes):
+                    dbg_val = dbg_val.decode("utf-8", errors="replace")
+                if isinstance(dbg_val, str):
+                    detected_peer_ip = _extract_peer_ip(dbg_val)
+
+    if detected_peer_ip is not None:
+        return _classify_ip(detected_peer_ip)
+
+    server_responded = received_server_response or has_server_metadata
+    if direct_path_attempted is False:
+        return "cloudpath" if server_responded else "unknown"
+    if direct_path_attempted is True:
+        return "directpath" if server_responded else "unknown"
+    return "unknown"
+
+
+def _mark_call_closing_cleanly(call: Any) -> None:
+    """Marks a wrapped gRPC call as closing cleanly before normal cancellation."""
+    for current in _iter_wrapped_calls(call):
+        inst_dict = getattr(current, "__dict__", None)
+        if isinstance(current, _TrackedCallBase) or (
+            isinstance(inst_dict, dict) and "_closing_cleanly" in inst_dict
+        ):
+            current._closing_cleanly = True
+
+
+def _bind_call_to_operation(
+    call: Any, op_state: Optional[_opentelemetry_metrics._OperationState]
+) -> None:
+    """Binds a long-lived gRPC stream call to the currently active operation."""
+    if op_state is None:
+        return
+    for current in _iter_wrapped_calls(call):
+        if isinstance(current, _TrackedCallBase):
+            current._op_state = op_state
+            current._start_time = op_state.start_time
+
+
 class _TrackedCallBase:
     """Base proxy for ``grpc.aio.Call`` objects that records attempt metrics once."""
 
@@ -143,43 +312,74 @@ class _TrackedCallBase:
         self,
         call: Any,
         recorder: _opentelemetry_metrics._MetricsRecorder,
-        operation: str,
+        rpc_method: str,
+        logical_operation: str,
         start_time: float,
         op_state: Optional[_opentelemetry_metrics._OperationState],
-        network_path: Optional[str] = None,
+        direct_path_attempted: bool = False,
     ) -> None:
         self._call = call
         self._recorder = recorder
-        self._operation = operation
+        self._rpc_method = rpc_method
+        self._logical_operation = logical_operation
         self._start_time = start_time
-        self._client_method = op_state.client_method if op_state is not None else None
-        self._network_path = network_path
+        self._op_state = op_state
+        self._direct_path_attempted = direct_path_attempted
+        self._received_response = False
         self._recorded = False
         self._closing_cleanly = False
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._call, name)
 
-    def _record_once(self, status_code: Optional[str], error_type: str) -> None:
+    def _record_once(
+        self,
+        status_code: Optional[str],
+        error_type: str,
+        exc: Optional[BaseException] = None,
+        received_response: bool = False,
+    ) -> None:
         if not self._recorded:
             self._recorded = True
-            duration = max(0.0, time.perf_counter() - self._start_time)
-            resolved_path = _resolve_network_path(self._call, self._network_path)
+            current_op = _opentelemetry_metrics.get_current_operation()
+            fallback_op = (
+                self._op_state
+                if (self._op_state is not None and not self._op_state.finished)
+                else None
+            )
+            active_op = current_op or fallback_op
+            effective_start = (
+                current_op.start_time
+                if (current_op is not None and current_op is not self._op_state)
+                else self._start_time
+            )
+            duration = max(0.0, time.perf_counter() - effective_start)
+            resolved_path = _resolve_network_path(
+                call=self._call,
+                exc=exc,
+                direct_path_attempted=self._direct_path_attempted,
+                received_server_response=received_response or self._received_response,
+            )
             self._recorder.record_rpc_attempt(
                 duration=duration,
-                operation=self._operation,
+                operation=self._logical_operation,
                 status_code=status_code,
                 error_type=error_type,
-                client_method=self._client_method,
+                rpc_method=self._rpc_method,
                 network_path=resolved_path,
+                op_state=active_op,
             )
 
     def _record_from_exception(self, exc: BaseException) -> None:
         if isinstance(exc, asyncio.CancelledError) and self._closing_cleanly:
-            self._record_once(status_code="OK", error_type="OK")
+            self._record_once(
+                status_code="OK",
+                error_type="OK",
+                received_response=self._received_response,
+            )
         else:
             status_code, error_type = _resolve_status_and_error(exc)
-            self._record_once(status_code=status_code, error_type=error_type)
+            self._record_once(status_code=status_code, error_type=error_type, exc=exc)
 
     async def wait_for_connection(self) -> None:
         try:
@@ -191,7 +391,11 @@ class _TrackedCallBase:
     def cancel(self) -> bool:
         result = self._call.cancel()
         if self._closing_cleanly:
-            self._record_once(status_code="OK", error_type="OK")
+            self._record_once(
+                status_code="OK",
+                error_type="OK",
+                received_response=self._received_response,
+            )
         else:
             self._record_once(status_code="CANCELLED", error_type="CANCELLED")
         return result
@@ -234,7 +438,8 @@ class _TrackedUnaryResponseMixin:
             self._record_from_exception(exc)
             raise
         else:
-            self._record_once(status_code="OK", error_type="OK")
+            self._received_response = True
+            self._record_once(status_code="OK", error_type="OK", received_response=True)
             return response
 
     def __await__(self):
@@ -248,11 +453,16 @@ class _TrackedStreamResponseMixin:
         completed_normally = False
         try:
             async for response in self._call:
+                self._received_response = True
                 yield response
             completed_normally = True
         except GeneratorExit:
             if self._closing_cleanly:
-                self._record_once(status_code="OK", error_type="OK")
+                self._record_once(
+                    status_code="OK",
+                    error_type="OK",
+                    received_response=self._received_response,
+                )
             else:
                 self._record_once(status_code="CANCELLED", error_type="CANCELLED")
             raise
@@ -261,7 +471,9 @@ class _TrackedStreamResponseMixin:
             raise
         finally:
             if completed_normally:
-                self._record_once(status_code="OK", error_type="OK")
+                self._record_once(
+                    status_code="OK", error_type="OK", received_response=True
+                )
 
     def __aiter__(self):
         return self._aiter_impl()
@@ -273,8 +485,11 @@ class _TrackedStreamResponseMixin:
             self._record_from_exception(exc)
             raise
         else:
+            self._received_response = True
             if response is grpc.aio.EOF or response == grpc.aio.EOF:
-                self._record_once(status_code="OK", error_type="OK")
+                self._record_once(
+                    status_code="OK", error_type="OK", received_response=True
+                )
             return response
 
 
@@ -340,13 +555,14 @@ class _MetricsUnaryUnaryInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
     def __init__(
         self,
         recorder: _opentelemetry_metrics._MetricsRecorder,
-        network_path: Optional[str] = None,
+        direct_path_attempted: bool = False,
     ) -> None:
         self._recorder = recorder
-        self._network_path = network_path
+        self._direct_path_attempted = direct_path_attempted
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
+        rpc_method = _extract_rpc_method(getattr(client_call_details, "method", None))
+        logical_operation = _extract_logical_operation(rpc_method)
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -354,24 +570,29 @@ class _MetricsUnaryUnaryInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
         except BaseException as exc:
             duration = max(0.0, time.perf_counter() - start_time)
             status_code, error_type = _resolve_status_and_error(exc)
+            resolved_path = _resolve_network_path(
+                exc=exc,
+                direct_path_attempted=self._direct_path_attempted,
+                received_server_response=False,
+            )
             self._recorder.record_rpc_attempt(
                 duration=duration,
-                operation=operation,
+                operation=logical_operation,
                 status_code=status_code,
                 error_type=error_type,
-                client_method=(
-                    op_state.client_method if op_state is not None else None
-                ),
-                network_path=self._network_path,
+                rpc_method=rpc_method,
+                network_path=resolved_path,
+                op_state=op_state,
             )
             raise
         return _TrackedUnaryUnaryCall(
             call,
             self._recorder,
-            operation,
+            rpc_method,
+            logical_operation,
             start_time,
             op_state,
-            network_path=self._network_path,
+            direct_path_attempted=self._direct_path_attempted,
         )
 
 
@@ -381,13 +602,14 @@ class _MetricsUnaryStreamInterceptor(grpc.aio.UnaryStreamClientInterceptor):
     def __init__(
         self,
         recorder: _opentelemetry_metrics._MetricsRecorder,
-        network_path: Optional[str] = None,
+        direct_path_attempted: bool = False,
     ) -> None:
         self._recorder = recorder
-        self._network_path = network_path
+        self._direct_path_attempted = direct_path_attempted
 
     async def intercept_unary_stream(self, continuation, client_call_details, request):
-        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
+        rpc_method = _extract_rpc_method(getattr(client_call_details, "method", None))
+        logical_operation = _extract_logical_operation(rpc_method)
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -395,24 +617,29 @@ class _MetricsUnaryStreamInterceptor(grpc.aio.UnaryStreamClientInterceptor):
         except BaseException as exc:
             duration = max(0.0, time.perf_counter() - start_time)
             status_code, error_type = _resolve_status_and_error(exc)
+            resolved_path = _resolve_network_path(
+                exc=exc,
+                direct_path_attempted=self._direct_path_attempted,
+                received_server_response=False,
+            )
             self._recorder.record_rpc_attempt(
                 duration=duration,
-                operation=operation,
+                operation=logical_operation,
                 status_code=status_code,
                 error_type=error_type,
-                client_method=(
-                    op_state.client_method if op_state is not None else None
-                ),
-                network_path=self._network_path,
+                rpc_method=rpc_method,
+                network_path=resolved_path,
+                op_state=op_state,
             )
             raise
         return _TrackedUnaryStreamCall(
             call,
             self._recorder,
-            operation,
+            rpc_method,
+            logical_operation,
             start_time,
             op_state,
-            network_path=self._network_path,
+            direct_path_attempted=self._direct_path_attempted,
         )
 
 
@@ -422,15 +649,16 @@ class _MetricsStreamUnaryInterceptor(grpc.aio.StreamUnaryClientInterceptor):
     def __init__(
         self,
         recorder: _opentelemetry_metrics._MetricsRecorder,
-        network_path: Optional[str] = None,
+        direct_path_attempted: bool = False,
     ) -> None:
         self._recorder = recorder
-        self._network_path = network_path
+        self._direct_path_attempted = direct_path_attempted
 
     async def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
-        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
+        rpc_method = _extract_rpc_method(getattr(client_call_details, "method", None))
+        logical_operation = _extract_logical_operation(rpc_method)
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -438,24 +666,29 @@ class _MetricsStreamUnaryInterceptor(grpc.aio.StreamUnaryClientInterceptor):
         except BaseException as exc:
             duration = max(0.0, time.perf_counter() - start_time)
             status_code, error_type = _resolve_status_and_error(exc)
+            resolved_path = _resolve_network_path(
+                exc=exc,
+                direct_path_attempted=self._direct_path_attempted,
+                received_server_response=False,
+            )
             self._recorder.record_rpc_attempt(
                 duration=duration,
-                operation=operation,
+                operation=logical_operation,
                 status_code=status_code,
                 error_type=error_type,
-                client_method=(
-                    op_state.client_method if op_state is not None else None
-                ),
-                network_path=self._network_path,
+                rpc_method=rpc_method,
+                network_path=resolved_path,
+                op_state=op_state,
             )
             raise
         return _TrackedStreamUnaryCall(
             call,
             self._recorder,
-            operation,
+            rpc_method,
+            logical_operation,
             start_time,
             op_state,
-            network_path=self._network_path,
+            direct_path_attempted=self._direct_path_attempted,
         )
 
 
@@ -465,15 +698,16 @@ class _MetricsStreamStreamInterceptor(grpc.aio.StreamStreamClientInterceptor):
     def __init__(
         self,
         recorder: _opentelemetry_metrics._MetricsRecorder,
-        network_path: Optional[str] = None,
+        direct_path_attempted: bool = False,
     ) -> None:
         self._recorder = recorder
-        self._network_path = network_path
+        self._direct_path_attempted = direct_path_attempted
 
     async def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
-        operation = _extract_rpc_operation(getattr(client_call_details, "method", None))
+        rpc_method = _extract_rpc_method(getattr(client_call_details, "method", None))
+        logical_operation = _extract_logical_operation(rpc_method)
         op_state = _opentelemetry_metrics.get_current_operation()
         start_time = time.perf_counter()
         try:
@@ -481,37 +715,50 @@ class _MetricsStreamStreamInterceptor(grpc.aio.StreamStreamClientInterceptor):
         except BaseException as exc:
             duration = max(0.0, time.perf_counter() - start_time)
             status_code, error_type = _resolve_status_and_error(exc)
+            resolved_path = _resolve_network_path(
+                exc=exc,
+                direct_path_attempted=self._direct_path_attempted,
+                received_server_response=False,
+            )
             self._recorder.record_rpc_attempt(
                 duration=duration,
-                operation=operation,
+                operation=logical_operation,
                 status_code=status_code,
                 error_type=error_type,
-                client_method=(
-                    op_state.client_method if op_state is not None else None
-                ),
-                network_path=self._network_path,
+                rpc_method=rpc_method,
+                network_path=resolved_path,
+                op_state=op_state,
             )
             raise
         return _TrackedStreamStreamCall(
             call,
             self._recorder,
-            operation,
+            rpc_method,
+            logical_operation,
             start_time,
             op_state,
-            network_path=self._network_path,
+            direct_path_attempted=self._direct_path_attempted,
         )
 
 
 def _create_metrics_interceptors(
     recorder: _opentelemetry_metrics._MetricsRecorder,
-    network_path: Optional[str] = None,
+    direct_path_attempted: bool = False,
 ) -> Tuple[grpc.aio.ClientInterceptor, ...]:
     """Creates the 4 ``grpc.aio`` client interceptors for ``recorder``."""
     return (
-        _MetricsUnaryUnaryInterceptor(recorder, network_path=network_path),
-        _MetricsUnaryStreamInterceptor(recorder, network_path=network_path),
-        _MetricsStreamUnaryInterceptor(recorder, network_path=network_path),
-        _MetricsStreamStreamInterceptor(recorder, network_path=network_path),
+        _MetricsUnaryUnaryInterceptor(
+            recorder, direct_path_attempted=direct_path_attempted
+        ),
+        _MetricsUnaryStreamInterceptor(
+            recorder, direct_path_attempted=direct_path_attempted
+        ),
+        _MetricsStreamUnaryInterceptor(
+            recorder, direct_path_attempted=direct_path_attempted
+        ),
+        _MetricsStreamStreamInterceptor(
+            recorder, direct_path_attempted=direct_path_attempted
+        ),
     )
 
 
@@ -572,6 +819,12 @@ class AsyncGrpcClient:
         metrics. If ``None``, falls back to the
         ``GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS`` environment variable,
         or ``False`` if unset.
+
+    :type meter_provider: :class:`~opentelemetry.metrics.MeterProvider` or None
+    :param meter_provider:
+        (Optional, Experimental) A custom OpenTelemetry ``MeterProvider``
+        instance used to create metric instruments. If ``None``, falls back to
+        the globally registered OpenTelemetry ``MeterProvider``.
     """
 
     def __init__(
@@ -584,9 +837,11 @@ class AsyncGrpcClient:
         attempt_direct_path_xds_over_interconnect=False,
         enable_metrics=None,
         enable_debug_metrics=None,
+        meter_provider=None,
     ):
         self._enable_metrics = enable_metrics
         self._enable_debug_metrics = enable_debug_metrics
+        self._meter_provider = meter_provider
         self._metrics_enabled = _opentelemetry_metrics.is_metrics_enabled(
             enable_metrics
         )
@@ -603,6 +858,7 @@ class AsyncGrpcClient:
         self._metrics_recorder = _opentelemetry_metrics._MetricsRecorder(
             enable_metrics=enable_metrics,
             enable_debug_metrics=enable_debug_metrics,
+            meter_provider=meter_provider,
             api_endpoint=api_endpoint,
             rpc_system="grpc",
         )
@@ -655,7 +911,7 @@ class AsyncGrpcClient:
             channel = grpc.aio.insecure_channel(
                 client_options.api_endpoint,
                 interceptors=_create_metrics_interceptors(
-                    self._metrics_recorder, network_path="cloudpath"
+                    self._metrics_recorder, direct_path_attempted=False
                 ),
             )
         else:
@@ -698,13 +954,12 @@ class AsyncGrpcClient:
 
         extra_channel_kwargs = {}
         if self._metrics_recorder.standard_enabled:
-            network_path = (
-                "directpath"
-                if (attempt_direct_path or attempt_direct_path_xds_over_interconnect)
-                else "cloudpath"
+            direct_path_attempted = bool(
+                attempt_direct_path or attempt_direct_path_xds_over_interconnect
             )
             extra_channel_kwargs["interceptors"] = _create_metrics_interceptors(
-                self._metrics_recorder, network_path=network_path
+                self._metrics_recorder,
+                direct_path_attempted=direct_path_attempted,
             )
 
         if attempt_direct_path_xds_over_interconnect:
@@ -815,6 +1070,7 @@ class AsyncGrpcClient:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncGrpcClient.delete_object",
+            operation="DeleteObject",
             rpc_method="google.storage.v2.Storage/DeleteObject",
         ):
             _validate_metadata(metadata)
@@ -901,6 +1157,7 @@ class AsyncGrpcClient:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncGrpcClient.get_object",
+            operation="GetObject",
             rpc_method="google.storage.v2.Storage/GetObject",
         ):
             _validate_metadata(metadata)

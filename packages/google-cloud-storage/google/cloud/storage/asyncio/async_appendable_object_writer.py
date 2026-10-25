@@ -27,6 +27,7 @@ from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
 from google.cloud.storage import Blob, _opentelemetry_metrics
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
+    _resolve_network_path,
 )
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
@@ -276,6 +277,21 @@ class AsyncAppendableObjectWriter:
         instance.blob = blob
         return instance
 
+    def _current_network_path(
+        self,
+        exc: Optional[BaseException] = None,
+        received_server_response: bool = True,
+    ) -> str:
+        """Resolves ``network.path`` from the underlying Bidi write stream call."""
+        call = getattr(
+            getattr(self.write_obj_stream, "socket_like_rpc", None), "call", None
+        )
+        return _resolve_network_path(
+            call=call,
+            exc=exc,
+            received_server_response=received_server_response,
+        )
+
     async def state_lookup(self) -> int:
         """Returns the persisted_size
 
@@ -289,6 +305,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.state_lookup",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             if not self._is_stream_open:
@@ -354,6 +371,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.open",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             if self._is_stream_open:
@@ -362,6 +380,10 @@ class AsyncAppendableObjectWriter:
             retry_policy = self._merge_retry_policy(retry_policy)
 
             async def _do_open():
+                current_op = _opentelemetry_metrics.get_current_operation()
+                attempts_before = (
+                    current_op.recorded_attempts if current_op is not None else 0
+                )
                 current_metadata = list(metadata) if metadata else []
 
                 # Cleanup stream from previous failed attempt, if any.
@@ -397,9 +419,31 @@ class AsyncAppendableObjectWriter:
                         )
                     )
 
-                await self.write_obj_stream.open(
-                    metadata=current_metadata if current_metadata else None
-                )
+                try:
+                    await self.write_obj_stream.open(
+                        metadata=current_metadata if current_metadata else None
+                    )
+                except Exception as exc:
+                    if recorder is not None:
+                        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+                            recorder,
+                            exc,
+                            attempts_before=attempts_before,
+                            will_retry=bool(retry_policy._predicate(exc)),
+                            network_path=self._current_network_path(
+                                exc=exc, received_server_response=False
+                            ),
+                        )
+                    raise
+
+                if recorder is not None:
+                    _opentelemetry_metrics.record_pending_retry(
+                        recorder,
+                        operation="WriteObject",
+                        network_path=self._current_network_path(
+                            received_server_response=True
+                        ),
+                    )
 
                 if self.write_obj_stream.generation_number:
                     self.generation = self.write_obj_stream.generation_number
@@ -450,6 +494,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.append",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             if not self._is_stream_open:
@@ -494,6 +539,14 @@ class AsyncAppendableObjectWriter:
 
                         self._is_stream_open = False
                         await self.open(metadata=current_metadata)
+                        if recorder is not None:
+                            _opentelemetry_metrics.record_pending_retry(
+                                recorder,
+                                operation="WriteObject",
+                                network_path=self._current_network_path(
+                                    received_server_response=True
+                                ),
+                            )
 
                         write_state.persisted_size = self.persisted_size
                         write_state.write_handle = self.write_handle
@@ -548,6 +601,10 @@ class AsyncAppendableObjectWriter:
             retry_manager = _BidiStreamRetryManager(
                 _WriteResumptionStrategy(),
                 lambda r, s: send_and_recv_generator(r, s, metadata),
+                recorder=recorder,
+                network_path_getter=lambda: self._current_network_path(
+                    received_server_response=True
+                ),
             )
             await retry_manager.execute({"write_state": write_state}, retry_policy)
 
@@ -555,9 +612,7 @@ class AsyncAppendableObjectWriter:
             self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
             self.offset = write_state.bytes_sent
             if recorder is not None and not self._suppress_append_body_size:
-                recorder.record_request_body_size(
-                    len(data), operation=_BIDI_WRITE_OBJECT_RPC
-                )
+                recorder.record_request_body_size(len(data), operation="WriteObject")
 
     async def simple_flush(self) -> None:
         """Flushes the data to the server.
@@ -572,6 +627,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.simple_flush",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             if not self._is_stream_open:
@@ -599,6 +655,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.flush",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             if not self._is_stream_open:
@@ -663,6 +720,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.close",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             if not self._is_stream_open:
@@ -687,23 +745,48 @@ class AsyncAppendableObjectWriter:
             async def _do_close():
                 nonlocal attempt_count
                 attempt_count += 1
+                current_op = _opentelemetry_metrics.get_current_operation()
+                attempts_before = (
+                    current_op.recorded_attempts if current_op is not None else 0
+                )
 
-                if attempt_count > 1:
-                    logger.info(
-                        f"Re-opening the stream for close retry attempt: {attempt_count}"
-                    )
-                    self._is_stream_open = False
-                    await self.open()
-                    if (
-                        self.offset is not None
-                        and expected_offset is not None
-                        and self.offset != expected_offset
-                    ):
-                        raise exceptions.InternalServerError(
-                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                try:
+                    if attempt_count > 1:
+                        logger.info(
+                            f"Re-opening the stream for close retry attempt: {attempt_count}"
                         )
+                        self._is_stream_open = False
+                        await self.open()
+                        if recorder is not None:
+                            _opentelemetry_metrics.record_pending_retry(
+                                recorder,
+                                operation="WriteObject",
+                                network_path=self._current_network_path(
+                                    received_server_response=True
+                                ),
+                            )
+                        if (
+                            self.offset is not None
+                            and expected_offset is not None
+                            and self.offset != expected_offset
+                        ):
+                            raise exceptions.InternalServerError(
+                                f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                            )
 
-                await self.write_obj_stream.close()
+                    await self.write_obj_stream.close()
+                except Exception as exc:
+                    if recorder is not None:
+                        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+                            recorder,
+                            exc,
+                            attempts_before=attempts_before,
+                            will_retry=bool(retry_policy._predicate(exc)),
+                            network_path=self._current_network_path(
+                                exc=exc, received_server_response=False
+                            ),
+                        )
+                    raise
                 return self.persisted_size
 
             try:
@@ -756,6 +839,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.finalize",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             if not self._is_stream_open:
@@ -787,24 +871,49 @@ class AsyncAppendableObjectWriter:
             async def _do_finalize():
                 nonlocal attempt_count
                 attempt_count += 1
+                current_op = _opentelemetry_metrics.get_current_operation()
+                attempts_before = (
+                    current_op.recorded_attempts if current_op is not None else 0
+                )
 
-                if attempt_count > 1:
-                    logger.info(
-                        f"Re-opening the stream for finalize retry attempt: {attempt_count}"
-                    )
-                    self._is_stream_open = False
-                    await self.open()
-                    if (
-                        self.offset is not None
-                        and expected_offset is not None
-                        and self.offset != expected_offset
-                    ):
-                        raise exceptions.InternalServerError(
-                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                try:
+                    if attempt_count > 1:
+                        logger.info(
+                            f"Re-opening the stream for finalize retry attempt: {attempt_count}"
                         )
+                        self._is_stream_open = False
+                        await self.open()
+                        if recorder is not None:
+                            _opentelemetry_metrics.record_pending_retry(
+                                recorder,
+                                operation="WriteObject",
+                                network_path=self._current_network_path(
+                                    received_server_response=True
+                                ),
+                            )
+                        if (
+                            self.offset is not None
+                            and expected_offset is not None
+                            and self.offset != expected_offset
+                        ):
+                            raise exceptions.InternalServerError(
+                                f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                            )
 
-                await self.write_obj_stream.send(finalize_req)
-                response = await self.write_obj_stream.recv()
+                    await self.write_obj_stream.send(finalize_req)
+                    response = await self.write_obj_stream.recv()
+                except Exception as exc:
+                    if recorder is not None:
+                        _opentelemetry_metrics.handle_unrecorded_retryable_failure(
+                            recorder,
+                            exc,
+                            attempts_before=attempts_before,
+                            will_retry=bool(retry_policy._predicate(exc)),
+                            network_path=self._current_network_path(
+                                exc=exc, received_server_response=False
+                            ),
+                        )
+                    raise
                 self.object_resource = response.resource
                 self.persisted_size = self.object_resource.size
                 return self.object_resource
@@ -857,6 +966,7 @@ class AsyncAppendableObjectWriter:
         with _opentelemetry_metrics.start_operation(
             recorder,
             client_method="storage.asyncio.AsyncAppendableObjectWriter.append_from_file",
+            operation="WriteObject",
             rpc_method=_BIDI_WRITE_OBJECT_RPC,
         ):
             total_bytes = 0
@@ -869,6 +979,4 @@ class AsyncAppendableObjectWriter:
             finally:
                 self._suppress_append_body_size = prev_suppress
             if recorder is not None and total_bytes > 0:
-                recorder.record_request_body_size(
-                    total_bytes, operation=_BIDI_WRITE_OBJECT_RPC
-                )
+                recorder.record_request_body_size(total_bytes, operation="WriteObject")
