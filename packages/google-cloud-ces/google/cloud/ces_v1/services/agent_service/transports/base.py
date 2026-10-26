@@ -16,10 +16,22 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.ces_v1 import gapic_version as package_version
+from google.cloud.ces_v1._compat import (
+    ASYNC_WRAP_METHOD_SUPPORTS_KIND as _ASYNC_WRAP_METHOD_SUPPORTS_KIND,
+)
+from google.cloud.ces_v1._compat import (
+    WRAP_METHOD_SUPPORTS_TRACING as _WRAP_METHOD_SUPPORTS_TRACING,
+)
+
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = _WRAP_METHOD_SUPPORTS_TRACING
+_WRAP_METHOD_SUPPORTS_KIND = _WRAP_METHOD_SUPPORTS_TRACING
+
 import google.api_core
 import google.auth  # type: ignore
 import google.protobuf
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
@@ -28,7 +40,6 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.ces_v1 import gapic_version as package_version
 from google.cloud.ces_v1.types import (
     agent,
     agent_service,
@@ -78,6 +89,7 @@ class AgentServiceTransport(abc.ABC):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -108,6 +120,9 @@ class AgentServiceTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -157,284 +172,417 @@ class AgentServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._client_options = client_options
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        """Wrap an RPC method with common client-level features.
+
+        Applies retry, timeout, metadata, and tracing wrappers to the
+        underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            try:
+                kind = self.kind
+            except NotImplementedError:
+                kind = None
+            if kind:
+                kwargs["kind"] = kind
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
+    def _wrap_async_method(self, func, *args, **kwargs):
+        """Wrap an async RPC method with common client-level features.
+
+        Applies asynchronous retry, timeout, metadata, and tracing wrappers
+        to the underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            try:
+                kind = self.kind
+            except NotImplementedError:
+                kind = None
+            if kind:
+                kwargs["kind"] = kind
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
+        """Precompute and cache wrapped methods for RPC dispatch."""
         self._wrapped_methods = {
-            self.list_apps: gapic_v1.method.wrap_method(
+            self.list_apps: self._wrap_method(
                 self.list_apps,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListApps",
             ),
-            self.get_app: gapic_v1.method.wrap_method(
+            self.get_app: self._wrap_method(
                 self.get_app,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetApp",
             ),
-            self.create_app: gapic_v1.method.wrap_method(
+            self.create_app: self._wrap_method(
                 self.create_app,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateApp",
             ),
-            self.update_app: gapic_v1.method.wrap_method(
+            self.update_app: self._wrap_method(
                 self.update_app,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/UpdateApp",
             ),
-            self.delete_app: gapic_v1.method.wrap_method(
+            self.delete_app: self._wrap_method(
                 self.delete_app,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteApp",
             ),
-            self.export_app: gapic_v1.method.wrap_method(
+            self.export_app: self._wrap_method(
                 self.export_app,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ExportApp",
             ),
-            self.import_app: gapic_v1.method.wrap_method(
+            self.import_app: self._wrap_method(
                 self.import_app,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ImportApp",
             ),
-            self.list_agents: gapic_v1.method.wrap_method(
+            self.list_agents: self._wrap_method(
                 self.list_agents,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListAgents",
             ),
-            self.get_agent: gapic_v1.method.wrap_method(
+            self.get_agent: self._wrap_method(
                 self.get_agent,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetAgent",
             ),
-            self.create_agent: gapic_v1.method.wrap_method(
+            self.create_agent: self._wrap_method(
                 self.create_agent,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateAgent",
             ),
-            self.update_agent: gapic_v1.method.wrap_method(
+            self.update_agent: self._wrap_method(
                 self.update_agent,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/UpdateAgent",
             ),
-            self.delete_agent: gapic_v1.method.wrap_method(
+            self.delete_agent: self._wrap_method(
                 self.delete_agent,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteAgent",
             ),
-            self.list_examples: gapic_v1.method.wrap_method(
+            self.list_examples: self._wrap_method(
                 self.list_examples,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListExamples",
             ),
-            self.get_example: gapic_v1.method.wrap_method(
+            self.get_example: self._wrap_method(
                 self.get_example,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetExample",
             ),
-            self.create_example: gapic_v1.method.wrap_method(
+            self.create_example: self._wrap_method(
                 self.create_example,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateExample",
             ),
-            self.update_example: gapic_v1.method.wrap_method(
+            self.update_example: self._wrap_method(
                 self.update_example,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/UpdateExample",
             ),
-            self.delete_example: gapic_v1.method.wrap_method(
+            self.delete_example: self._wrap_method(
                 self.delete_example,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteExample",
             ),
-            self.list_tools: gapic_v1.method.wrap_method(
+            self.list_tools: self._wrap_method(
                 self.list_tools,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListTools",
             ),
-            self.get_tool: gapic_v1.method.wrap_method(
+            self.get_tool: self._wrap_method(
                 self.get_tool,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetTool",
             ),
-            self.list_conversations: gapic_v1.method.wrap_method(
+            self.list_conversations: self._wrap_method(
                 self.list_conversations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListConversations",
             ),
-            self.get_conversation: gapic_v1.method.wrap_method(
+            self.get_conversation: self._wrap_method(
                 self.get_conversation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetConversation",
             ),
-            self.delete_conversation: gapic_v1.method.wrap_method(
+            self.delete_conversation: self._wrap_method(
                 self.delete_conversation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteConversation",
             ),
-            self.batch_delete_conversations: gapic_v1.method.wrap_method(
+            self.batch_delete_conversations: self._wrap_method(
                 self.batch_delete_conversations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/BatchDeleteConversations",
             ),
-            self.create_tool: gapic_v1.method.wrap_method(
+            self.create_tool: self._wrap_method(
                 self.create_tool,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateTool",
             ),
-            self.update_tool: gapic_v1.method.wrap_method(
+            self.update_tool: self._wrap_method(
                 self.update_tool,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/UpdateTool",
             ),
-            self.delete_tool: gapic_v1.method.wrap_method(
+            self.delete_tool: self._wrap_method(
                 self.delete_tool,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteTool",
             ),
-            self.list_guardrails: gapic_v1.method.wrap_method(
+            self.list_guardrails: self._wrap_method(
                 self.list_guardrails,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListGuardrails",
             ),
-            self.get_guardrail: gapic_v1.method.wrap_method(
+            self.get_guardrail: self._wrap_method(
                 self.get_guardrail,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetGuardrail",
             ),
-            self.create_guardrail: gapic_v1.method.wrap_method(
+            self.create_guardrail: self._wrap_method(
                 self.create_guardrail,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateGuardrail",
             ),
-            self.update_guardrail: gapic_v1.method.wrap_method(
+            self.update_guardrail: self._wrap_method(
                 self.update_guardrail,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/UpdateGuardrail",
             ),
-            self.delete_guardrail: gapic_v1.method.wrap_method(
+            self.delete_guardrail: self._wrap_method(
                 self.delete_guardrail,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteGuardrail",
             ),
-            self.list_deployments: gapic_v1.method.wrap_method(
+            self.list_deployments: self._wrap_method(
                 self.list_deployments,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListDeployments",
             ),
-            self.get_deployment: gapic_v1.method.wrap_method(
+            self.get_deployment: self._wrap_method(
                 self.get_deployment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetDeployment",
             ),
-            self.create_deployment: gapic_v1.method.wrap_method(
+            self.create_deployment: self._wrap_method(
                 self.create_deployment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateDeployment",
             ),
-            self.update_deployment: gapic_v1.method.wrap_method(
+            self.update_deployment: self._wrap_method(
                 self.update_deployment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/UpdateDeployment",
             ),
-            self.delete_deployment: gapic_v1.method.wrap_method(
+            self.delete_deployment: self._wrap_method(
                 self.delete_deployment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteDeployment",
             ),
-            self.list_toolsets: gapic_v1.method.wrap_method(
+            self.list_toolsets: self._wrap_method(
                 self.list_toolsets,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListToolsets",
             ),
-            self.get_toolset: gapic_v1.method.wrap_method(
+            self.get_toolset: self._wrap_method(
                 self.get_toolset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetToolset",
             ),
-            self.create_toolset: gapic_v1.method.wrap_method(
+            self.create_toolset: self._wrap_method(
                 self.create_toolset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateToolset",
             ),
-            self.update_toolset: gapic_v1.method.wrap_method(
+            self.update_toolset: self._wrap_method(
                 self.update_toolset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/UpdateToolset",
             ),
-            self.delete_toolset: gapic_v1.method.wrap_method(
+            self.delete_toolset: self._wrap_method(
                 self.delete_toolset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteToolset",
             ),
-            self.list_app_versions: gapic_v1.method.wrap_method(
+            self.list_app_versions: self._wrap_method(
                 self.list_app_versions,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListAppVersions",
             ),
-            self.get_app_version: gapic_v1.method.wrap_method(
+            self.get_app_version: self._wrap_method(
                 self.get_app_version,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetAppVersion",
             ),
-            self.create_app_version: gapic_v1.method.wrap_method(
+            self.create_app_version: self._wrap_method(
                 self.create_app_version,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/CreateAppVersion",
             ),
-            self.delete_app_version: gapic_v1.method.wrap_method(
+            self.delete_app_version: self._wrap_method(
                 self.delete_app_version,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/DeleteAppVersion",
             ),
-            self.restore_app_version: gapic_v1.method.wrap_method(
+            self.restore_app_version: self._wrap_method(
                 self.restore_app_version,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/RestoreAppVersion",
             ),
-            self.list_changelogs: gapic_v1.method.wrap_method(
+            self.list_changelogs: self._wrap_method(
                 self.list_changelogs,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/ListChangelogs",
             ),
-            self.get_changelog: gapic_v1.method.wrap_method(
+            self.get_changelog: self._wrap_method(
                 self.get_changelog,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1.AgentService/GetChangelog",
             ),
-            self.get_location: gapic_v1.method.wrap_method(
+            self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/GetLocation",
             ),
-            self.list_locations: gapic_v1.method.wrap_method(
+            self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/ListLocations",
             ),
-            self.cancel_operation: gapic_v1.method.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/CancelOperation",
             ),
-            self.delete_operation: gapic_v1.method.wrap_method(
+            self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/DeleteOperation",
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.list_operations: gapic_v1.method.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/ListOperations",
             ),
         }
 

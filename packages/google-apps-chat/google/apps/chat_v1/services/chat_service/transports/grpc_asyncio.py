@@ -13,17 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import inspect
 import json
 import logging as std_logging
 import pickle
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import (
+    TYPE_CHECKING,
+    Awaitable,
+    Callable,
+    Dict,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -32,6 +41,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
+from google.apps.chat_v1._compat import _observability, apply_async_channel_interceptors
 from google.apps.chat_v1.types import (
     attachment,
     availability,
@@ -215,6 +225,10 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
+        interceptors: Optional[
+            Sequence[Union[aio.ClientInterceptor, Callable[..., aio.ClientInterceptor]]]
+        ] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -266,6 +280,12 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            interceptors (Optional[Sequence[Union[aio.ClientInterceptor, Callable[..., aio.ClientInterceptor]]]]):
+                Additional interceptors (or callables that apply interceptors) to apply to the
+                gRPC channel.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -320,6 +340,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             api_audience=api_audience,
+            client_options=client_options,
         )
 
         if not self._grpc_channel:
@@ -341,12 +362,26 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ],
             )
 
+        # Wrap channel with user-specified and logging interceptors.
+        channel_interceptors = list(interceptors) if interceptors else []
         self._interceptor = _LoggingClientAIOInterceptor()
-        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
-        self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        channel_interceptors.append(self._interceptor)
+        self._grpc_channel = apply_async_channel_interceptors(
+            self._grpc_channel, channel_interceptors
         )
+
+        # Configure OpenTelemetry tracing and span suppression on the channel.
+        if _observability is not None and hasattr(
+            _observability, "apply_otel_async_channel_interceptors"
+        ):
+            # NOTE: Coverage tool ignores async interceptors in environments running
+            # legacy google-api-core (< 2.36.0) where OpenTelemetry is unavailable.
+            # TODO (Issue #18657): Remove once lowest constraints require google-api-core >= v2.43.0.
+            self._grpc_channel = _observability.apply_otel_async_channel_interceptors(
+                self._grpc_channel, self._client_options
+            )  # pragma: NO COVER
+
+        self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -2916,9 +2951,12 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["move_section_item"]
 
     def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """Precompute and cache wrapped methods for async RPC dispatch.
+
+        Overrides the base class method to use asynchronous wrappers and retries.
+        """
         self._wrapped_methods = {
-            self.create_message: self._wrap_method(
+            self.create_message: self._wrap_async_method(
                 self.create_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2931,8 +2969,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CreateMessage",
             ),
-            self.list_messages: self._wrap_method(
+            self.list_messages: self._wrap_async_method(
                 self.list_messages,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2945,8 +2984,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListMessages",
             ),
-            self.list_memberships: self._wrap_method(
+            self.list_memberships: self._wrap_async_method(
                 self.list_memberships,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2959,8 +2999,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListMemberships",
             ),
-            self.get_membership: self._wrap_method(
+            self.get_membership: self._wrap_async_method(
                 self.get_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2973,8 +3014,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetMembership",
             ),
-            self.get_message: self._wrap_method(
+            self.get_message: self._wrap_async_method(
                 self.get_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2987,8 +3029,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetMessage",
             ),
-            self.update_message: self._wrap_method(
+            self.update_message: self._wrap_async_method(
                 self.update_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3001,8 +3044,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UpdateMessage",
             ),
-            self.delete_message: self._wrap_method(
+            self.delete_message: self._wrap_async_method(
                 self.delete_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3015,8 +3059,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/DeleteMessage",
             ),
-            self.search_messages: self._wrap_method(
+            self.search_messages: self._wrap_async_method(
                 self.search_messages,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3029,8 +3074,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/SearchMessages",
             ),
-            self.get_attachment: self._wrap_method(
+            self.get_attachment: self._wrap_async_method(
                 self.get_attachment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3043,8 +3089,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetAttachment",
             ),
-            self.upload_attachment: self._wrap_method(
+            self.upload_attachment: self._wrap_async_method(
                 self.upload_attachment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3057,8 +3104,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UploadAttachment",
             ),
-            self.list_spaces: self._wrap_method(
+            self.list_spaces: self._wrap_async_method(
                 self.list_spaces,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3071,8 +3119,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListSpaces",
             ),
-            self.search_spaces: self._wrap_method(
+            self.search_spaces: self._wrap_async_method(
                 self.search_spaces,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3085,8 +3134,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/SearchSpaces",
             ),
-            self.get_space: self._wrap_method(
+            self.get_space: self._wrap_async_method(
                 self.get_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3099,8 +3149,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetSpace",
             ),
-            self.create_space: self._wrap_method(
+            self.create_space: self._wrap_async_method(
                 self.create_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3113,8 +3164,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CreateSpace",
             ),
-            self.set_up_space: self._wrap_method(
+            self.set_up_space: self._wrap_async_method(
                 self.set_up_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3127,8 +3179,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/SetUpSpace",
             ),
-            self.update_space: self._wrap_method(
+            self.update_space: self._wrap_async_method(
                 self.update_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3141,8 +3194,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UpdateSpace",
             ),
-            self.delete_space: self._wrap_method(
+            self.delete_space: self._wrap_async_method(
                 self.delete_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3155,8 +3209,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/DeleteSpace",
             ),
-            self.complete_import_space: self._wrap_method(
+            self.complete_import_space: self._wrap_async_method(
                 self.complete_import_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3169,8 +3224,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CompleteImportSpace",
             ),
-            self.find_direct_message: self._wrap_method(
+            self.find_direct_message: self._wrap_async_method(
                 self.find_direct_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3183,8 +3239,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/FindDirectMessage",
             ),
-            self.find_group_chats: self._wrap_method(
+            self.find_group_chats: self._wrap_async_method(
                 self.find_group_chats,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3197,8 +3254,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/FindGroupChats",
             ),
-            self.create_membership: self._wrap_method(
+            self.create_membership: self._wrap_async_method(
                 self.create_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3211,8 +3269,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CreateMembership",
             ),
-            self.update_membership: self._wrap_method(
+            self.update_membership: self._wrap_async_method(
                 self.update_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3225,8 +3284,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UpdateMembership",
             ),
-            self.delete_membership: self._wrap_method(
+            self.delete_membership: self._wrap_async_method(
                 self.delete_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3239,8 +3299,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/DeleteMembership",
             ),
-            self.create_reaction: self._wrap_method(
+            self.create_reaction: self._wrap_async_method(
                 self.create_reaction,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3253,8 +3314,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CreateReaction",
             ),
-            self.list_reactions: self._wrap_method(
+            self.list_reactions: self._wrap_async_method(
                 self.list_reactions,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3267,8 +3329,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListReactions",
             ),
-            self.delete_reaction: self._wrap_method(
+            self.delete_reaction: self._wrap_async_method(
                 self.delete_reaction,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3281,23 +3344,27 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/DeleteReaction",
             ),
-            self.list_message_pins: self._wrap_method(
+            self.list_message_pins: self._wrap_async_method(
                 self.list_message_pins,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListMessagePins",
             ),
-            self.create_message_pin: self._wrap_method(
+            self.create_message_pin: self._wrap_async_method(
                 self.create_message_pin,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CreateMessagePin",
             ),
-            self.delete_message_pin: self._wrap_method(
+            self.delete_message_pin: self._wrap_async_method(
                 self.delete_message_pin,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/DeleteMessagePin",
             ),
-            self.create_custom_emoji: self._wrap_method(
+            self.create_custom_emoji: self._wrap_async_method(
                 self.create_custom_emoji,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3310,8 +3377,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CreateCustomEmoji",
             ),
-            self.get_custom_emoji: self._wrap_method(
+            self.get_custom_emoji: self._wrap_async_method(
                 self.get_custom_emoji,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3324,8 +3392,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetCustomEmoji",
             ),
-            self.list_custom_emojis: self._wrap_method(
+            self.list_custom_emojis: self._wrap_async_method(
                 self.list_custom_emojis,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3338,8 +3407,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListCustomEmojis",
             ),
-            self.delete_custom_emoji: self._wrap_method(
+            self.delete_custom_emoji: self._wrap_async_method(
                 self.delete_custom_emoji,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3352,8 +3422,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/DeleteCustomEmoji",
             ),
-            self.get_space_read_state: self._wrap_method(
+            self.get_space_read_state: self._wrap_async_method(
                 self.get_space_read_state,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3366,8 +3437,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetSpaceReadState",
             ),
-            self.update_space_read_state: self._wrap_method(
+            self.update_space_read_state: self._wrap_async_method(
                 self.update_space_read_state,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3380,8 +3452,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UpdateSpaceReadState",
             ),
-            self.get_thread_read_state: self._wrap_method(
+            self.get_thread_read_state: self._wrap_async_method(
                 self.get_thread_read_state,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3394,8 +3467,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetThreadReadState",
             ),
-            self.get_availability: self._wrap_method(
+            self.get_availability: self._wrap_async_method(
                 self.get_availability,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3408,8 +3482,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetAvailability",
             ),
-            self.mark_as_active: self._wrap_method(
+            self.mark_as_active: self._wrap_async_method(
                 self.mark_as_active,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3422,8 +3497,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/MarkAsActive",
             ),
-            self.mark_as_away: self._wrap_method(
+            self.mark_as_away: self._wrap_async_method(
                 self.mark_as_away,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3436,8 +3512,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/MarkAsAway",
             ),
-            self.mark_as_do_not_disturb: self._wrap_method(
+            self.mark_as_do_not_disturb: self._wrap_async_method(
                 self.mark_as_do_not_disturb,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3450,8 +3527,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/MarkAsDoNotDisturb",
             ),
-            self.update_availability: self._wrap_method(
+            self.update_availability: self._wrap_async_method(
                 self.update_availability,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3464,8 +3542,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UpdateAvailability",
             ),
-            self.get_space_event: self._wrap_method(
+            self.get_space_event: self._wrap_async_method(
                 self.get_space_event,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3478,8 +3557,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetSpaceEvent",
             ),
-            self.list_space_events: self._wrap_method(
+            self.list_space_events: self._wrap_async_method(
                 self.list_space_events,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3492,8 +3572,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListSpaceEvents",
             ),
-            self.get_space_notification_setting: self._wrap_method(
+            self.get_space_notification_setting: self._wrap_async_method(
                 self.get_space_notification_setting,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3506,8 +3587,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/GetSpaceNotificationSetting",
             ),
-            self.update_space_notification_setting: self._wrap_method(
+            self.update_space_notification_setting: self._wrap_async_method(
                 self.update_space_notification_setting,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3520,8 +3602,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UpdateSpaceNotificationSetting",
             ),
-            self.create_section: self._wrap_method(
+            self.create_section: self._wrap_async_method(
                 self.create_section,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3534,8 +3617,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/CreateSection",
             ),
-            self.delete_section: self._wrap_method(
+            self.delete_section: self._wrap_async_method(
                 self.delete_section,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3548,8 +3632,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/DeleteSection",
             ),
-            self.update_section: self._wrap_method(
+            self.update_section: self._wrap_async_method(
                 self.update_section,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3562,8 +3647,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/UpdateSection",
             ),
-            self.list_sections: self._wrap_method(
+            self.list_sections: self._wrap_async_method(
                 self.list_sections,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3576,8 +3662,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListSections",
             ),
-            self.position_section: self._wrap_method(
+            self.position_section: self._wrap_async_method(
                 self.position_section,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3590,8 +3677,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/PositionSection",
             ),
-            self.list_section_items: self._wrap_method(
+            self.list_section_items: self._wrap_async_method(
                 self.list_section_items,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3604,8 +3692,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/ListSectionItems",
             ),
-            self.move_section_item: self._wrap_method(
+            self.move_section_item: self._wrap_async_method(
                 self.move_section_item,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3618,13 +3707,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.chat.v1.ChatService/MoveSectionItem",
             ),
         }
-
-    def _wrap_method(self, func, *args, **kwargs):
-        if self._wrap_with_kind:  # pragma: NO COVER
-            kwargs["kind"] = self.kind
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()

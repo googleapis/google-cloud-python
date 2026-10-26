@@ -16,10 +16,22 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.ces_v1beta import gapic_version as package_version
+from google.cloud.ces_v1beta._compat import (
+    ASYNC_WRAP_METHOD_SUPPORTS_KIND as _ASYNC_WRAP_METHOD_SUPPORTS_KIND,
+)
+from google.cloud.ces_v1beta._compat import (
+    WRAP_METHOD_SUPPORTS_TRACING as _WRAP_METHOD_SUPPORTS_TRACING,
+)
+
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = _WRAP_METHOD_SUPPORTS_TRACING
+_WRAP_METHOD_SUPPORTS_KIND = _WRAP_METHOD_SUPPORTS_TRACING
+
 import google.api_core
 import google.auth  # type: ignore
 import google.protobuf
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
@@ -28,7 +40,6 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.ces_v1beta import gapic_version as package_version
 from google.cloud.ces_v1beta.types import evaluation, evaluation_service
 from google.cloud.ces_v1beta.types import evaluation as gcc_evaluation
 
@@ -59,6 +70,7 @@ class EvaluationServiceTransport(abc.ABC):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -89,6 +101,9 @@ class EvaluationServiceTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -138,219 +153,339 @@ class EvaluationServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._client_options = client_options
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        """Wrap an RPC method with common client-level features.
+
+        Applies retry, timeout, metadata, and tracing wrappers to the
+        underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            try:
+                kind = self.kind
+            except NotImplementedError:
+                kind = None
+            if kind:
+                kwargs["kind"] = kind
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
+    def _wrap_async_method(self, func, *args, **kwargs):
+        """Wrap an async RPC method with common client-level features.
+
+        Applies asynchronous retry, timeout, metadata, and tracing wrappers
+        to the underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            try:
+                kind = self.kind
+            except NotImplementedError:
+                kind = None
+            if kind:
+                kwargs["kind"] = kind
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
+        """Precompute and cache wrapped methods for RPC dispatch."""
         self._wrapped_methods = {
-            self.run_evaluation: gapic_v1.method.wrap_method(
+            self.run_evaluation: self._wrap_method(
                 self.run_evaluation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/RunEvaluation",
             ),
-            self.upload_evaluation_audio: gapic_v1.method.wrap_method(
+            self.upload_evaluation_audio: self._wrap_method(
                 self.upload_evaluation_audio,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/UploadEvaluationAudio",
             ),
-            self.create_evaluation: gapic_v1.method.wrap_method(
+            self.create_evaluation: self._wrap_method(
                 self.create_evaluation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/CreateEvaluation",
             ),
-            self.generate_evaluation: gapic_v1.method.wrap_method(
+            self.generate_evaluation: self._wrap_method(
                 self.generate_evaluation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/GenerateEvaluation",
             ),
-            self.import_evaluations: gapic_v1.method.wrap_method(
+            self.import_evaluations: self._wrap_method(
                 self.import_evaluations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ImportEvaluations",
             ),
-            self.create_evaluation_dataset: gapic_v1.method.wrap_method(
+            self.create_evaluation_dataset: self._wrap_method(
                 self.create_evaluation_dataset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/CreateEvaluationDataset",
             ),
-            self.update_evaluation: gapic_v1.method.wrap_method(
+            self.update_evaluation: self._wrap_method(
                 self.update_evaluation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/UpdateEvaluation",
             ),
-            self.update_evaluation_dataset: gapic_v1.method.wrap_method(
+            self.update_evaluation_dataset: self._wrap_method(
                 self.update_evaluation_dataset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/UpdateEvaluationDataset",
             ),
-            self.delete_evaluation: gapic_v1.method.wrap_method(
+            self.delete_evaluation: self._wrap_method(
                 self.delete_evaluation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/DeleteEvaluation",
             ),
-            self.delete_evaluation_result: gapic_v1.method.wrap_method(
+            self.delete_evaluation_result: self._wrap_method(
                 self.delete_evaluation_result,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/DeleteEvaluationResult",
             ),
-            self.delete_evaluation_dataset: gapic_v1.method.wrap_method(
+            self.delete_evaluation_dataset: self._wrap_method(
                 self.delete_evaluation_dataset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/DeleteEvaluationDataset",
             ),
-            self.delete_evaluation_run: gapic_v1.method.wrap_method(
+            self.delete_evaluation_run: self._wrap_method(
                 self.delete_evaluation_run,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/DeleteEvaluationRun",
             ),
-            self.get_evaluation: gapic_v1.method.wrap_method(
+            self.get_evaluation: self._wrap_method(
                 self.get_evaluation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/GetEvaluation",
             ),
-            self.get_evaluation_result: gapic_v1.method.wrap_method(
+            self.get_evaluation_result: self._wrap_method(
                 self.get_evaluation_result,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/GetEvaluationResult",
             ),
-            self.get_evaluation_dataset: gapic_v1.method.wrap_method(
+            self.get_evaluation_dataset: self._wrap_method(
                 self.get_evaluation_dataset,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/GetEvaluationDataset",
             ),
-            self.get_evaluation_run: gapic_v1.method.wrap_method(
+            self.get_evaluation_run: self._wrap_method(
                 self.get_evaluation_run,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/GetEvaluationRun",
             ),
-            self.list_evaluations: gapic_v1.method.wrap_method(
+            self.list_evaluations: self._wrap_method(
                 self.list_evaluations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ListEvaluations",
             ),
-            self.list_evaluation_results: gapic_v1.method.wrap_method(
+            self.list_evaluation_results: self._wrap_method(
                 self.list_evaluation_results,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ListEvaluationResults",
             ),
-            self.list_evaluation_datasets: gapic_v1.method.wrap_method(
+            self.list_evaluation_datasets: self._wrap_method(
                 self.list_evaluation_datasets,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ListEvaluationDatasets",
             ),
-            self.list_evaluation_runs: gapic_v1.method.wrap_method(
+            self.list_evaluation_runs: self._wrap_method(
                 self.list_evaluation_runs,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ListEvaluationRuns",
             ),
-            self.list_evaluation_expectations: gapic_v1.method.wrap_method(
+            self.list_evaluation_expectations: self._wrap_method(
                 self.list_evaluation_expectations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ListEvaluationExpectations",
             ),
-            self.get_evaluation_expectation: gapic_v1.method.wrap_method(
+            self.get_evaluation_expectation: self._wrap_method(
                 self.get_evaluation_expectation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/GetEvaluationExpectation",
             ),
-            self.create_evaluation_expectation: gapic_v1.method.wrap_method(
+            self.create_evaluation_expectation: self._wrap_method(
                 self.create_evaluation_expectation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/CreateEvaluationExpectation",
             ),
-            self.update_evaluation_expectation: gapic_v1.method.wrap_method(
+            self.update_evaluation_expectation: self._wrap_method(
                 self.update_evaluation_expectation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/UpdateEvaluationExpectation",
             ),
-            self.delete_evaluation_expectation: gapic_v1.method.wrap_method(
+            self.delete_evaluation_expectation: self._wrap_method(
                 self.delete_evaluation_expectation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/DeleteEvaluationExpectation",
             ),
-            self.create_scheduled_evaluation_run: gapic_v1.method.wrap_method(
+            self.create_scheduled_evaluation_run: self._wrap_method(
                 self.create_scheduled_evaluation_run,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/CreateScheduledEvaluationRun",
             ),
-            self.get_scheduled_evaluation_run: gapic_v1.method.wrap_method(
+            self.get_scheduled_evaluation_run: self._wrap_method(
                 self.get_scheduled_evaluation_run,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/GetScheduledEvaluationRun",
             ),
-            self.list_scheduled_evaluation_runs: gapic_v1.method.wrap_method(
+            self.list_scheduled_evaluation_runs: self._wrap_method(
                 self.list_scheduled_evaluation_runs,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ListScheduledEvaluationRuns",
             ),
-            self.update_scheduled_evaluation_run: gapic_v1.method.wrap_method(
+            self.update_scheduled_evaluation_run: self._wrap_method(
                 self.update_scheduled_evaluation_run,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/UpdateScheduledEvaluationRun",
             ),
-            self.delete_scheduled_evaluation_run: gapic_v1.method.wrap_method(
+            self.delete_scheduled_evaluation_run: self._wrap_method(
                 self.delete_scheduled_evaluation_run,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/DeleteScheduledEvaluationRun",
             ),
-            self.test_persona_voice: gapic_v1.method.wrap_method(
+            self.test_persona_voice: self._wrap_method(
                 self.test_persona_voice,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/TestPersonaVoice",
             ),
-            self.export_evaluations: gapic_v1.method.wrap_method(
+            self.export_evaluations: self._wrap_method(
                 self.export_evaluations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ExportEvaluations",
             ),
-            self.export_evaluation_runs: gapic_v1.method.wrap_method(
+            self.export_evaluation_runs: self._wrap_method(
                 self.export_evaluation_runs,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ExportEvaluationRuns",
             ),
-            self.export_evaluation_results: gapic_v1.method.wrap_method(
+            self.export_evaluation_results: self._wrap_method(
                 self.export_evaluation_results,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/ExportEvaluationResults",
             ),
-            self.run_evaluation_result_metrics: gapic_v1.method.wrap_method(
+            self.run_evaluation_result_metrics: self._wrap_method(
                 self.run_evaluation_result_metrics,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.ces.v1beta.EvaluationService/RunEvaluationResultMetrics",
             ),
-            self.get_location: gapic_v1.method.wrap_method(
+            self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/GetLocation",
             ),
-            self.list_locations: gapic_v1.method.wrap_method(
+            self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/ListLocations",
             ),
-            self.cancel_operation: gapic_v1.method.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/CancelOperation",
             ),
-            self.delete_operation: gapic_v1.method.wrap_method(
+            self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/DeleteOperation",
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.list_operations: gapic_v1.method.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/ListOperations",
             ),
         }
 
