@@ -54,7 +54,10 @@ class MutationsBatcher(object):
     result in an in-memory change. Rows are sent to the service when a size
     limit is reached, when the ``flush_interval`` timer fires, when :func:`flush()`
     is called explicitly, or when the batcher is closed (:func:`close()` is also
-    registered to run at interpreter exit). As a result, if the process
+    registered to run at interpreter exit). Any errors encountered while
+    flushing batches are accumulated and raised as a
+    :exc:`~batcher.MutationsBatchError` only when :func:`close()` is called (or
+    when exiting a ``with`` block). As a result, if the process
     terminates abruptly -- e.g. a crash, ``SIGKILL``, or ``os._exit`` where the
     ``atexit`` handler never runs -- any :class:`DirectRow` still buffered in
     memory is silently dropped and never sent, even after :func:`mutate()`
@@ -193,15 +196,17 @@ class MutationsBatcher(object):
 
     def flush(self):
         """Sends the current batch to Cloud Bigtable synchronously.
+
+        Any errors encountered in the mutations are accumulated and will be
+        raised as a :exc:`~batcher.MutationsBatchError` when :func:`close()`
+        is called (or when exiting a ``with`` block).
+
         For example:
 
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_api_batcher_flush]
             :end-before: [END bigtable_api_batcher_flush]
             :dedent: 4
-
-        :raises:
-            * :exc:`~batcher.MutationsBatchError` if there's any error in the mutations.
         """
         self._close_batcher()
         # Set atexit registration after internal batcher.

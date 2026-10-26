@@ -65,6 +65,9 @@ from google.cloud.spanner_v1.database_sessions_manager import (
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+    SpannerMetricsTracerFactory,
+)
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.services.spanner.client import (
     SpannerClient as SpannerClient,
@@ -208,13 +211,26 @@ class Database(object):
     @property
     def _resource_info(self):
         """Resource information for metrics labels."""
-        return {
-            "project": self._instance._client.project
-            if self._instance and self._instance._client
-            else None,
-            "instance": self._instance.instance_id if self._instance else None,
-            "database": self.database_id,
-        }
+        cached = getattr(self, "_cached_resource_info", None)
+        if cached is None:
+            instance = self._instance
+            client = getattr(instance, "_client", None) if instance else None
+            project = getattr(client, "project", None) if client else None
+            instance_id = getattr(instance, "instance_id", None) if instance else None
+            database_id = self.database_id
+            try:
+                factory = SpannerMetricsTracerFactory()
+                cached = factory.create_resource_info(
+                    project=project, instance=instance_id, database=database_id
+                )
+            except Exception:
+                cached = {
+                    "project": project,
+                    "instance": instance_id,
+                    "database": database_id,
+                }
+            self._cached_resource_info = cached
+        return cached
 
     @classmethod
     def from_pb(cls, database_pb, instance, pool=None):

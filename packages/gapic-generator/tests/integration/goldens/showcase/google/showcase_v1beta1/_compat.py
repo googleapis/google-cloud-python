@@ -77,7 +77,11 @@ else:  # pragma: NO COVER
 
         record_http_error = record_error
 
-    def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/18657):
+    # mypy: Incompatible redefinition [misc] ignored because this fallback returns
+    # _FallbackTraceContext instead of google.api_core._observability._TraceContext.
+    # Remove once lowest constraints require google-api-core >= 2.36.0.
+    def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:  # type: ignore[misc]
         return _FallbackTraceContext()
 
 # The `kind` parameter in gapic_v1.method_async.wrap_method was introduced in

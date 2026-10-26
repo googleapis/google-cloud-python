@@ -141,6 +141,44 @@ class TestDatabase(_BaseTest):
         self.assertIsNone(database.database_role)
         self.assertTrue(database._route_to_leader_enabled, True)
 
+    def test_resource_info(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        database = self._make_one(self.DATABASE_ID, instance)
+
+        res_info = database._resource_info
+        self.assertEqual(res_info["project"], self.PROJECT_ID)
+        self.assertEqual(res_info["instance"], self.INSTANCE_ID)
+        self.assertEqual(res_info["database"], self.DATABASE_ID)
+        self.assertIsNotNone(getattr(res_info, "_client_attributes", None))
+        self.assertEqual(res_info._client_attributes["project_id"], self.PROJECT_ID)
+        self.assertEqual(res_info._client_attributes["instance_id"], self.INSTANCE_ID)
+        self.assertEqual(res_info._client_attributes["database"], self.DATABASE_ID)
+
+        # Caching check: second access returns identical instance
+        self.assertIs(database._resource_info, res_info)
+
+    def test_resource_info_fallback_on_exception(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        database = self._make_one(self.DATABASE_ID, instance)
+        database._cached_resource_info = None
+
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+
+        with mock.patch.object(
+            MetricsTracerFactory,
+            "create_resource_info",
+            side_effect=RuntimeError("Boom"),
+        ):
+            res_info = database._resource_info
+            self.assertEqual(res_info["project"], self.PROJECT_ID)
+            self.assertEqual(res_info["instance"], self.INSTANCE_ID)
+            self.assertEqual(res_info["database"], self.DATABASE_ID)
+            self.assertIsNone(getattr(res_info, "_client_attributes", None))
+
     def test_ctor_w_explicit_pool(self):
         instance = _Instance(self.INSTANCE_NAME)
         pool = _Pool()

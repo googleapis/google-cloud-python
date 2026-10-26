@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.46.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.1...google-cloud-bigquery-v3.46.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* **bigquery:** accept empty sourceFormat fields ([#18472](https://github.com/googleapis/google-cloud-python/issues/18472)) ([590e43d](https://github.com/googleapis/google-cloud-python/commit/590e43da42fea4f08be7b29b3bf63c3c3a33d112))
+* **bigquery:** drop startIndex whenever a page token is sent ([#18603](https://github.com/googleapis/google-cloud-python/issues/18603)) ([fc6eae3](https://github.com/googleapis/google-cloud-python/commit/fc6eae3bbcea47d00f190d4bab51bef80e838a3a))
+* **bigquery:** remove PendingDeprecationWarning from RowIterator.to_arrow ([#18684](https://github.com/googleapis/google-cloud-python/issues/18684)) ([9025061](https://github.com/googleapis/google-cloud-python/commit/9025061801cc8b4e8f2b7d25b3d598074388ba48))
+
 ## [3.46.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.0...google-cloud-bigquery-v3.46.1) (2026-10-02)
 
 
