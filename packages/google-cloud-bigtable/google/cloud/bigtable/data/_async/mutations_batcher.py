@@ -480,23 +480,22 @@ class MutationsBatcherAsync:
             # This is an internal callback used by the legacy synchronous shim,
             # though async callbacks are awaited when running in async mode.
             if self._user_batch_completed_callback:
-                result = None
                 try:
                     result = self._user_batch_completed_callback(statuses)
                     if CrossSync.is_async:
                         if inspect.isawaitable(result):
                             await result
+                    else:
+                        if inspect.isawaitable(result):
+                            if inspect.iscoroutine(result):
+                                result.close()
+                            raise TypeError(
+                                "_user_batch_completed_callback must be a synchronous callable"
+                            )
                 except Exception as exc:
                     _LOGGER.warning(
                         f"Exception raised in user batch completion callback: {exc}"
                     )
-                if not CrossSync.is_async:
-                    if inspect.isawaitable(result):
-                        if inspect.iscoroutine(result):
-                            result.close()
-                        raise TypeError(
-                            "_user_batch_completed_callback must be a synchronous callable"
-                        )
         return []
 
     def _add_exceptions(self, excs: list[FailedMutationEntryError]):

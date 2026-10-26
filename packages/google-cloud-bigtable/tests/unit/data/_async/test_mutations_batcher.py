@@ -1176,16 +1176,11 @@ class TestMutationsBatcherAsync:
             async with self._make_one(table) as instance:
                 instance._user_batch_completed_callback = async_callback
                 batch = [self._make_mutation()]
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
+                assert result == []
                 if CrossSync.is_async:
-                    result = await instance._execute_mutate_rows(batch, mock.Mock())
-                    assert result == []
                     assert called_with == [[status_pb2.Status(code=code_pb2.OK)]]
                 else:
-                    with pytest.raises(
-                        TypeError,
-                        match="_user_batch_completed_callback must be a synchronous callable",
-                    ):
-                        instance._execute_mutate_rows(batch, mock.Mock())
                     assert called_with == []
 
     @CrossSync.pytest
