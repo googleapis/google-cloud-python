@@ -305,16 +305,13 @@ class Transaction(_SnapshotBase, _BatchBase):
             )
             request_options = _merge_request_options(request_options, client_context)
 
-            if request_options is None:
-                request_options = RequestOptions()
-            elif type(request_options) is dict:
-                request_options = RequestOptions(request_options)
-
-            if self.transaction_tag is not None:
-                request_options.transaction_tag = self.transaction_tag
-
-            # Request tags are not supported for commit requests.
-            request_options.request_tag = None
+            if request_options is not None:
+                if self.transaction_tag is not None:
+                    request_options.transaction_tag = self.transaction_tag
+                # Request tags are not supported for commit requests.
+                request_options.request_tag = None
+            elif self.transaction_tag is not None:
+                request_options = RequestOptions(transaction_tag=self.transaction_tag)
 
             common_commit_request_args = {
                 "session": session.name,
@@ -526,11 +523,10 @@ class Transaction(_SnapshotBase, _BatchBase):
         )
         request_options = _merge_request_options(request_options, client_context)
 
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
-        request_options.transaction_tag = self.transaction_tag
+        if request_options is not None:
+            request_options.transaction_tag = self.transaction_tag
+        elif self.transaction_tag is not None:
+            request_options = RequestOptions(transaction_tag=self.transaction_tag)
 
         trace_attributes = {
             "db.statement": dml,
@@ -686,11 +682,10 @@ class Transaction(_SnapshotBase, _BatchBase):
         )
         request_options = _merge_request_options(request_options, client_context)
 
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
-        request_options.transaction_tag = self.transaction_tag
+        if request_options is not None:
+            request_options.transaction_tag = self.transaction_tag
+        elif self.transaction_tag is not None:
+            request_options = RequestOptions(transaction_tag=self.transaction_tag)
 
         trace_attributes = {
             # Get just the queries from the DML statement batch
