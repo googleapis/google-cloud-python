@@ -30,7 +30,7 @@ The matrix adheres strictly to Tidy Data guidelines:
 The engine operates across five distinct phases:
 
 1. Specification Matrix (`telemetry_requirements_matrix.csv`):
-   Defines the atomic contract for all 32 observability test rows across transports (gRPC, REST),
+   Defines the contract for observability test rows across transports (gRPC, REST),
    span tiers (T3 Logical Client vs. T4 Wire Attempt), attempt indices, error scenarios, and retries.
 
 2. Scenario Execution & Span Capture (`execute_scenario`):
