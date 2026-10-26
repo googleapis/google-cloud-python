@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.42.0...google-api-core-v2.43.0) (2026-10-22)
+
+
+### Features
+
+* **api_core:** support DirectPath over Interconnect with TLS composite credentials and ?force-xds ([#18431](https://github.com/googleapis/google-cloud-python/issues/18431)) ([fbd3188](https://github.com/googleapis/google-cloud-python/commit/fbd3188da49eee930a75d960fa57df12c4c9d32d))
+* **observability:** suppress redundant gRPC auto-instrumentation spans ([#18592](https://github.com/googleapis/google-cloud-python/issues/18592)) ([a597007](https://github.com/googleapis/google-cloud-python/commit/a5970072a0218060bc34857797c3008e0f30becf))
+
 ## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.41.0...google-api-core-v2.42.0) (2026-10-08)
 
 

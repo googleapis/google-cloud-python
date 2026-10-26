@@ -28795,6 +28795,8 @@ class Commitment(proto.Message):
                 CUD bucket for Z4DH machines.
             STORAGE_OPTIMIZED_Z4DS (35233733):
                 CUD bucket for Z4DS machines.
+            STORAGE_OPTIMIZED_Z4M (157002327):
+                CUD bucket for Z4M (bare metal) machines.
             TYPE_UNSPECIFIED (437714322):
                 Note for internal users: When adding a new enum Type for v1,
                 make sure to also add it in the comment for the
@@ -28849,6 +28851,7 @@ class Commitment(proto.Message):
         STORAGE_OPTIMIZED_Z4D4T = 18503022
         STORAGE_OPTIMIZED_Z4DH = 35233722
         STORAGE_OPTIMIZED_Z4DS = 35233733
+        STORAGE_OPTIMIZED_Z4M = 157002327
         TYPE_UNSPECIFIED = 437714322
 
     auto_renew: bool = proto.Field(
@@ -67422,6 +67425,9 @@ class Instance(proto.Message):
             UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE (0):
                 A value indicating that the enum field is not
                 set.
+            CMEK_ENCRYPTION (35518610):
+                The given VM will use customer-managed
+                encryption keys for encryption of Local SSDs.
             EPHEMERAL_KEY_ENCRYPTION (413047941):
                 The given VM will opt-in for using ephemeral
                 key for encryption of Local SSDs.
@@ -67438,6 +67444,7 @@ class Instance(proto.Message):
         """
 
         UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE = 0
+        CMEK_ENCRYPTION = 35518610
         EPHEMERAL_KEY_ENCRYPTION = 413047941
         LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED = 454655720
         STANDARD_ENCRYPTION = 269392453
@@ -73118,6 +73125,9 @@ class InstanceProperties(proto.Message):
             UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE (0):
                 A value indicating that the enum field is not
                 set.
+            CMEK_ENCRYPTION (35518610):
+                The given VM will use customer-managed
+                encryption keys for encryption of Local SSDs.
             EPHEMERAL_KEY_ENCRYPTION (413047941):
                 The given VM will opt-in for using ephemeral
                 key for encryption of Local SSDs.
@@ -73134,6 +73144,7 @@ class InstanceProperties(proto.Message):
         """
 
         UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE = 0
+        CMEK_ENCRYPTION = 35518610
         EPHEMERAL_KEY_ENCRYPTION = 413047941
         LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED = 454655720
         STANDARD_ENCRYPTION = 269392453

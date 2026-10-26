@@ -58,6 +58,7 @@ from tests._helpers import (
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
+_DEFAULT_EXPECTED_REQUEST_OPTIONS = object()
 SQL_QUERY = """\
 SELECT first_name, last_name, age FROM citizens ORDER BY age"""
 SQL_QUERY_WITH_PARAM = """
@@ -1643,6 +1644,9 @@ class Test_SnapshotBase(OpenTelemetryBase):
         directed_read_options=None,
         directed_read_options_at_client_level=None,
         use_multiplexed=False,
+        read_only=True,
+        transaction_tag=None,
+        expected_request_options=_DEFAULT_EXPECTED_REQUEST_OPTIONS,
     ):
         """Helper for testing _SnapshotBase.read(). Executes method and verifies
         transaction state, begin transaction API call, and span attributes and events.
@@ -1710,16 +1714,29 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.streaming_read.return_value = _MockIterator(*result_sets)
         session = _Session(database)
-        derived = _build_snapshot_derived(session, multi_use=multi_use)
+        derived = _build_snapshot_derived(
+            session, multi_use=multi_use, read_only=read_only
+        )
+        derived.transaction_tag = transaction_tag
         derived._read_request_count = count
 
         if not first:
             derived._transaction_id = TXN_ID
 
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
+        if expected_request_options is not _DEFAULT_EXPECTED_REQUEST_OPTIONS:
+            actual_expected_request_options = expected_request_options
+        elif request_options is not None:
+            actual_expected_request_options = RequestOptions(request_options)
+            if read_only:
+                actual_expected_request_options.transaction_tag = None
+            elif transaction_tag is not None:
+                actual_expected_request_options.transaction_tag = transaction_tag
+        elif not read_only and transaction_tag is not None:
+            actual_expected_request_options = RequestOptions(
+                transaction_tag=transaction_tag
+            )
+        else:
+            actual_expected_request_options = None
 
         transaction_selector_pb = derived._build_transaction_selector_pb()
 
@@ -1759,11 +1776,6 @@ class Test_SnapshotBase(OpenTelemetryBase):
         else:
             expected_limit = LIMIT
 
-        # Transaction tag is ignored for read request.
-        expected_request_options = RequestOptions(request_options)
-        if derived.transaction_tag:
-            expected_request_options.transaction_tag = derived.transaction_tag
-
         expected_directed_read_options = (
             directed_read_options
             if directed_read_options is not None
@@ -1779,19 +1791,19 @@ class Test_SnapshotBase(OpenTelemetryBase):
             index=INDEX,
             limit=expected_limit,
             partition_token=partition,
-            request_options=expected_request_options,
+            request_options=actual_expected_request_options,
             directed_read_options=expected_directed_read_options,
         )
         req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
+        expected_metadata = [
+            ("google-cloud-resource-prefix", database.name),
+        ]
+        if not read_only:
+            expected_metadata.append(("x-goog-spanner-route-to-leader", "true"))
+        expected_metadata.append(("x-goog-spanner-request-id", req_id))
         api.streaming_read.assert_called_once_with(
             request=expected_request,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                (
-                    "x-goog-spanner-request-id",
-                    req_id,
-                ),
-            ],
+            metadata=expected_metadata,
             retry=retry,
             timeout=timeout,
         )
@@ -1801,8 +1813,13 @@ class Test_SnapshotBase(OpenTelemetryBase):
             columns=tuple(COLUMNS),
             x_goog_spanner_request_id=req_id,
         )
-        if request_options and request_options.request_tag:
-            expected_attributes["request.tag"] = request_options.request_tag
+        request_tag = (
+            request_options.get("request_tag")
+            if isinstance(request_options, dict)
+            else getattr(request_options, "request_tag", None)
+        )
+        if request_tag:
+            expected_attributes["request.tag"] = request_tag
         self.assertSpanAttributes(
             "CloudSpanner._Derived.read", attributes=expected_attributes
         )
@@ -1826,7 +1843,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
     )
     def test_read_w_request_tag_success(self, mock_region):
         request_options = {"request_tag": "tag-1"}
-        self._execute_read(multi_use=False, request_options=request_options)
+        self._execute_read(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(request_tag="tag-1"),
+        )
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -1834,7 +1855,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
     )
     def test_read_w_transaction_tag_success(self, mock_region):
         request_options = {"transaction_tag": "tag-1-1"}
-        self._execute_read(multi_use=False, request_options=request_options)
+        self._execute_read(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(),
+        )
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -1842,7 +1867,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
     )
     def test_read_w_request_and_transaction_tag_success(self, mock_region):
         request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
-        self._execute_read(multi_use=False, request_options=request_options)
+        self._execute_read(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(request_tag="tag-1"),
+        )
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -1850,7 +1879,41 @@ class Test_SnapshotBase(OpenTelemetryBase):
     )
     def test_read_w_request_and_transaction_tag_dictionary_success(self, mock_region):
         request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
-        self._execute_read(multi_use=False, request_options=request_options)
+        self._execute_read(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(request_tag="tag-1"),
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_read_in_read_write_transaction_with_tag(self, mock_region):
+        self._execute_read(
+            multi_use=False,
+            read_only=False,
+            transaction_tag="tx-tag",
+            expected_request_options=RequestOptions(transaction_tag="tx-tag"),
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_read_in_read_write_transaction_caller_tag_preserved(self, mock_region):
+        self._execute_read(
+            multi_use=False,
+            read_only=False,
+            transaction_tag=None,
+            request_options={
+                "request_tag": "r-tag",
+                "transaction_tag": "caller-tx-tag",
+            },
+            expected_request_options=RequestOptions(
+                request_tag="r-tag", transaction_tag="caller-tx-tag"
+            ),
+        )
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -2011,6 +2074,9 @@ class Test_SnapshotBase(OpenTelemetryBase):
         directed_read_options=None,
         directed_read_options_at_client_level=None,
         use_multiplexed=False,
+        read_only=True,
+        transaction_tag=None,
+        expected_request_options=_DEFAULT_EXPECTED_REQUEST_OPTIONS,
     ):
         """Helper for testing _SnapshotBase.execute_sql(). Executes method and verifies
         transaction state, begin transaction API call, and span attributes and events.
@@ -2079,16 +2145,29 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.execute_streaming_sql.return_value = iterator
         session = _Session(database)
-        derived = _build_snapshot_derived(session, multi_use=multi_use)
+        derived = _build_snapshot_derived(
+            session, multi_use=multi_use, read_only=read_only
+        )
+        derived.transaction_tag = transaction_tag
         derived._read_request_count = count
         derived._execute_sql_request_count = sql_count
         if not first:
             derived._transaction_id = TXN_ID
 
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
+        if expected_request_options is not _DEFAULT_EXPECTED_REQUEST_OPTIONS:
+            actual_expected_request_options = expected_request_options
+        elif request_options is not None:
+            actual_expected_request_options = RequestOptions(request_options)
+            if read_only:
+                actual_expected_request_options.transaction_tag = None
+            elif transaction_tag is not None:
+                actual_expected_request_options.transaction_tag = transaction_tag
+        elif not read_only and transaction_tag is not None:
+            actual_expected_request_options = RequestOptions(
+                transaction_tag=transaction_tag
+            )
+        else:
+            actual_expected_request_options = None
 
         transaction_selector_pb = derived._build_transaction_selector_pb()
 
@@ -2121,12 +2200,6 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 expected_query_options, query_options
             )
 
-        expected_request_options = RequestOptions(request_options)
-        if derived.transaction_tag:
-            expected_request_options.transaction_tag = derived.transaction_tag
-        if not derived._read_only and request_options.request_tag:
-            expected_request_options.request_tag = request_options.request_tag
-
         expected_directed_read_options = (
             directed_read_options
             if directed_read_options is not None
@@ -2141,21 +2214,21 @@ class Test_SnapshotBase(OpenTelemetryBase):
             param_types=PARAM_TYPES,
             query_mode=MODE,
             query_options=expected_query_options,
-            request_options=expected_request_options,
+            request_options=actual_expected_request_options,
             partition_token=partition,
             seqno=sql_count,
             directed_read_options=expected_directed_read_options,
         )
         req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
+        expected_metadata = [
+            ("google-cloud-resource-prefix", database.name),
+        ]
+        if not read_only:
+            expected_metadata.append(("x-goog-spanner-route-to-leader", "true"))
+        expected_metadata.append(("x-goog-spanner-request-id", req_id))
         api.execute_streaming_sql.assert_called_once_with(
             request=expected_request,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                (
-                    "x-goog-spanner-request-id",
-                    req_id,
-                ),
-            ],
+            metadata=expected_metadata,
             timeout=timeout,
             retry=retry,
         )
@@ -2169,8 +2242,13 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 "x_goog_spanner_request_id": req_id,
             },
         )
-        if request_options and request_options.request_tag:
-            expected_attributes["request.tag"] = request_options.request_tag
+        request_tag = (
+            request_options.get("request_tag")
+            if isinstance(request_options, dict)
+            else getattr(request_options, "request_tag", None)
+        )
+        if request_tag:
+            expected_attributes["request.tag"] = request_tag
 
         self.assertSpanAttributes(
             "CloudSpanner._Derived.execute_sql",
@@ -2271,7 +2349,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
     )
     def test_execute_sql_w_request_tag_success(self, mock_region):
         request_options = {"request_tag": "tag-1"}
-        self._execute_sql_helper(multi_use=False, request_options=request_options)
+        self._execute_sql_helper(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(request_tag="tag-1"),
+        )
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -2279,7 +2361,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
     )
     def test_execute_sql_w_transaction_tag_success(self, mock_region):
         request_options = {"transaction_tag": "tag-1-1"}
-        self._execute_sql_helper(multi_use=False, request_options=request_options)
+        self._execute_sql_helper(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(),
+        )
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -2287,7 +2373,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
     )
     def test_execute_sql_w_request_and_transaction_tag_success(self, mock_region):
         request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
-        self._execute_sql_helper(multi_use=False, request_options=request_options)
+        self._execute_sql_helper(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(request_tag="tag-1"),
+        )
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
@@ -2297,7 +2387,43 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self, mock_region
     ):
         request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
-        self._execute_sql_helper(multi_use=False, request_options=request_options)
+        self._execute_sql_helper(
+            multi_use=False,
+            request_options=request_options,
+            expected_request_options=RequestOptions(request_tag="tag-1"),
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_execute_sql_in_read_write_transaction_with_tag(self, mock_region):
+        self._execute_sql_helper(
+            multi_use=False,
+            read_only=False,
+            transaction_tag="tx-tag",
+            expected_request_options=RequestOptions(transaction_tag="tx-tag"),
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_execute_sql_in_read_write_transaction_caller_tag_preserved(
+        self, mock_region
+    ):
+        self._execute_sql_helper(
+            multi_use=False,
+            read_only=False,
+            transaction_tag=None,
+            request_options={
+                "request_tag": "r-tag",
+                "transaction_tag": "caller-tx-tag",
+            },
+            expected_request_options=RequestOptions(
+                request_tag="r-tag", transaction_tag="caller-tx-tag"
+            ),
+        )
 
     def test_execute_sql_w_incorrect_tag_dictionary_error(self):
         request_options = {"incorrect_tag": "tag-1-1"}

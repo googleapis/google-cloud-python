@@ -1,2 +1,2 @@
-google-cloud-testutils==1.8.0
-pytest==9.0.3; python_version >= '3.9'
+google-cloud-testutils==1.10.1
+pytest==9.1.1; python_version >= '3.9'
