@@ -330,14 +330,18 @@ class _GapicCallable(object):
                     tracer = trace.get_tracer("google.api_core")
 
                 span_name, _, _ = _extract_rpc_identity(method_name)
+                endpoint_attrs = _observability._extract_endpoint_attributes(
+                    client_options
+                )
                 span_attributes = {
                     "rpc.system.name": "http" if kind.startswith("rest") else "grpc",
                     "rpc.method": span_name,
+                    **endpoint_attrs,
                 }
                 self._start_span_fn = functools.partial(
                     tracer.start_as_current_span,
                     span_name,
-                    kind=trace.SpanKind.CLIENT,
+                    kind=trace.SpanKind.INTERNAL,
                     attributes=span_attributes,
                 )
             except (ImportError, AttributeError, TypeError):

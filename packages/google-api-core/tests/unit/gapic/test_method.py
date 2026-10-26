@@ -354,6 +354,7 @@ def test__deduplicate_metadata_tokens(headers, expected):
 _DEFAULT_SPAN_ATTRIBUTES = {
     "rpc.system.name": "grpc",
     "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    "url.domain": "googleapis.com",
 }
 
 
@@ -456,10 +457,11 @@ def test_wrap_method_otel_tracing_enabled_success(mock_otel, kind):
     expected_attributes = {
         "rpc.system.name": "http" if kind == "rest" else "grpc",
         "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        "url.domain": "googleapis.com",
     }
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
+        kind="INTERNAL",
         attributes=expected_attributes,
     )
     mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
@@ -485,7 +487,7 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
     mock_provider.get_tracer.assert_called_once_with("google.api_core")
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
+        kind="INTERNAL",
         attributes=_DEFAULT_SPAN_ATTRIBUTES,
     )
     mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
@@ -511,7 +513,7 @@ def test_wrap_method_otel_tracing_dict_client_options(mock_otel):
     mock_provider.get_tracer.assert_called_once_with("google.api_core")
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
+        kind="INTERNAL",
         attributes=_DEFAULT_SPAN_ATTRIBUTES,
     )
     mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
@@ -695,7 +697,7 @@ def test_wrap_method_otel_tracing_attributes_deferred_gcp_client_omitted(mock_ot
     assert result == "success"
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
+        kind="INTERNAL",
         attributes=_DEFAULT_SPAN_ATTRIBUTES,
     )
 
@@ -714,10 +716,39 @@ def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
     assert result == "success"
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "ListSecrets",
-        kind="CLIENT",
+        kind="INTERNAL",
         attributes={
             **_DEFAULT_SPAN_ATTRIBUTES,
             "rpc.method": "ListSecrets",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_endpoint_attributes_from_client_options(
+    mock_otel,
+):
+    """Proves that T3 spans include url.domain, server.address, and server.port from client_options."""
+    mock_target = mock.Mock(return_value="ok")
+    options = client_options_lib.ClientOptions(
+        api_endpoint="localhost:7469",
+        universe_domain="custom.domain.com",
+    )
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        client_options=options,
+        method_name="/google.showcase.v1beta1.Echo/Echo",
+        kind="grpc",
+    )
+    assert wrapped() == "ok"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.showcase.v1beta1.Echo/Echo",
+        kind="INTERNAL",
+        attributes={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "url.domain": "custom.domain.com",
+            "server.address": "localhost",
+            "server.port": 7469,
         },
     )
 

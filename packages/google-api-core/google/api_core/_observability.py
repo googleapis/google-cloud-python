@@ -594,7 +594,9 @@ class _TraceContext:
             except Exception:  # Fail-open on malformed URL parsing
                 pass
 
-        span_name = resolved_method
+        span_name = (
+            f"{resolved_method} {url_template}" if url_template else resolved_method
+        )
         span_attributes: dict[str, Any] = {
             "http.request.method": resolved_method,
             "server.address": server_address or "",
