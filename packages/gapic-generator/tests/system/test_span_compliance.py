@@ -617,6 +617,8 @@ def _assert_parent_span_id(span, row: dict[str, str], t3_spans: list[Any]):
             f"Parent span_id mismatch: expected {t3_spans[0].context.span_id}, "
             f"got {span.parent.span_id}"
         )
+    elif expected_parent is not None:
+        pytest.fail(f"Unsupported parent_span_id value in matrix: {expected_parent!r}")
 
 
 def assert_span_matches_row(span, row: dict[str, str], t3_spans: list[Any]):
@@ -649,14 +651,17 @@ def assert_span_matches_row(span, row: dict[str, str], t3_spans: list[Any]):
 
 
 @pytest.mark.parametrize(
-    "feature_id",
-    list(FEATURE_MATRIX.keys()),
-    ids=[
-        f"{fid}_{FEATURE_MATRIX[fid]['Feature Name'].replace(' ', '_')}"
-        for fid in FEATURE_MATRIX
+    ("feature_id", "row"),
+    [
+        pytest.param(
+            fid,
+            row,
+            id=f"{fid}_{row['Feature Name'].replace(' ', '_')}",
+        )
+        for fid, row in FEATURE_MATRIX.items()
     ],
 )
-def test_feature(feature_id: str, span_exporter, monkeypatch):
+def test_feature(feature_id: str, row: dict[str, str], span_exporter, monkeypatch):
     """Executes a single observability scenario and validates its target span against a tidy matrix row.
 
     Test Lifecycle:
@@ -677,10 +682,10 @@ def test_feature(feature_id: str, span_exporter, monkeypatch):
 
     Args:
         feature_id: Unique matrix identifier (e.g. 'F1.2', 'F3.1b').
+        row: The CSV requirements dictionary for this feature.
         span_exporter: Isolated test fixture yielding (exporter, provider).
         monkeypatch: Pytest environment variable isolation fixture.
     """
-    row = FEATURE_MATRIX[feature_id]
     exporter, provider = span_exporter
 
     # Phase 1: Execute physical scenario against Showcase daemon
@@ -701,6 +706,7 @@ def test_feature(feature_id: str, span_exporter, monkeypatch):
     t4_spans = [s for s in spans if s.parent is not None]
 
     tier = row["Tier"]
+    assert tier in ("T3", "T4"), f"Unsupported Tier {tier!r} for {feature_id}"
     tier_spans = t3_spans if tier == "T3" else t4_spans
     assert len(tier_spans) == expected_count, (
         f"Expected {expected_count} {tier} spans for {feature_id}, got {len(tier_spans)}"
@@ -708,6 +714,10 @@ def test_feature(feature_id: str, span_exporter, monkeypatch):
 
     # Phase 5: Select the target span by Attempt index and validate all columns
     attempt_idx = int(row["Attempt"])
+    assert 0 <= attempt_idx < len(tier_spans), (
+        f"Attempt index {attempt_idx} out of bounds for {feature_id} "
+        f"(captured {len(tier_spans)} {tier} spans)"
+    )
     target_span = tier_spans[attempt_idx]
     assert_span_matches_row(target_span, row, t3_spans)
 
