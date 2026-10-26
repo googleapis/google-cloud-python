@@ -26,6 +26,12 @@ from __future__ import annotations
 
 from grpc import insecure_channel
 
+from google.cloud.bigtable.data._accelerator._health import (
+    HEALTH_CHECK_METHOD,
+    ServingStatus,
+    parse_health_response,
+    serialize_health_request,
+)
 from google.cloud.bigtable_v2.types import (
     MutateRowRequest,
     MutateRowResponse,
@@ -59,6 +65,11 @@ class _AcceleratorClient:
             request_serializer=ReadRowsRequest.serialize,
             response_deserializer=ReadRowsResponse.deserialize,
         )
+        self._health_stub = self._channel.unary_unary(
+            HEALTH_CHECK_METHOD,
+            request_serializer=serialize_health_request,
+            response_deserializer=parse_health_response,
+        )
 
     @property
     def uds_path(self) -> str:
@@ -77,6 +88,15 @@ class _AcceleratorClient:
         Shape matches what ``_gapic_client.read_rows`` returns so the existing
         chunk-merging machinery in ``_read_rows.py`` works unchanged."""
         return self._read_rows_stub(request, timeout=timeout, metadata=self._metadata)
+
+    def check_health(self, *, timeout: float | None = None) -> ServingStatus:
+        """Probe the daemon's overall serving status.
+
+        The daemon answers this out of its own process without touching a
+        session, the Channel, or the network, so how long it takes is almost
+        purely a measure of how contended that process is. That makes the
+        ``timeout`` the real signal here, more than the returned status."""
+        return self._health_stub(None, timeout=timeout, metadata=self._metadata)
 
     def close(self) -> None:
         self._channel.close()
