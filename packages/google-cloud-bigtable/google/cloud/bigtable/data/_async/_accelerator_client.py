@@ -46,15 +46,24 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen._accelerator_c
 _MUTATE_ROW_METHOD = "/google.bigtable.v2.Bigtable/MutateRow"
 _READ_ROWS_METHOD = "/google.bigtable.v2.Bigtable/ReadRows"
 
-# Inbound message cap on the UDS channel. gRPC defaults this to 4 MiB, a limit
-# meant for a channel that crosses a network. This one doesn't leave the
-# machine: the daemon has already paid the cost of pulling the response off the
-# wire, and all the cap does on this hop is turn an otherwise-fine read into
-# RESOURCE_EXHAUSTED. Raise it well past anything the service itself produces so
-# the UDS leg is never the narrower of the two.
+# Message caps on the UDS channel. gRPC defaults both directions to 4 MiB, a
+# limit meant for a channel that crosses a network. This one doesn't leave the
+# machine, and all the default does on this hop is turn an otherwise-fine call
+# into RESOURCE_EXHAUSTED before it ever reaches the daemon's own client. Each
+# direction is instead set to the matching service-side limit, so the UDS leg is
+# never the narrower of the two and an oversized call fails where it should --
+# at the service, with the service's own error.
+#
+# Inbound: 256 MiB, the hard limit on the combined size of all values in a
+# single row, which bounds the largest response the service can produce.
+# Outbound: 100 MB, the request size the service itself accepts.
 _MAX_RECEIVE_MESSAGE_LENGTH = 256 * 1024 * 1024
+_MAX_SEND_MESSAGE_LENGTH = 100 * 1024 * 1024
 
-_CHANNEL_OPTIONS = (("grpc.max_receive_message_length", _MAX_RECEIVE_MESSAGE_LENGTH),)
+_CHANNEL_OPTIONS = (
+    ("grpc.max_receive_message_length", _MAX_RECEIVE_MESSAGE_LENGTH),
+    ("grpc.max_send_message_length", _MAX_SEND_MESSAGE_LENGTH),
+)
 
 
 @CrossSync.convert_class(sync_name="_AcceleratorClient")

@@ -43,7 +43,11 @@ from google.cloud.bigtable_v2.types import (
 _MUTATE_ROW_METHOD = "/google.bigtable.v2.Bigtable/MutateRow"
 _READ_ROWS_METHOD = "/google.bigtable.v2.Bigtable/ReadRows"
 _MAX_RECEIVE_MESSAGE_LENGTH = 256 * 1024 * 1024
-_CHANNEL_OPTIONS = (("grpc.max_receive_message_length", _MAX_RECEIVE_MESSAGE_LENGTH),)
+_MAX_SEND_MESSAGE_LENGTH = 100 * 1024 * 1024
+_CHANNEL_OPTIONS = (
+    ("grpc.max_receive_message_length", _MAX_RECEIVE_MESSAGE_LENGTH),
+    ("grpc.max_send_message_length", _MAX_SEND_MESSAGE_LENGTH),
+)
 
 
 class _AcceleratorClient:
