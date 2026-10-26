@@ -386,6 +386,10 @@ def _get_error_type(
     if isinstance(call_code, bool):
         raise ValueError(f"Invalid gRPC error status code: {call_code!r}")
     error_type = type(core_exceptions.from_grpc_status(call_code, ""))
+    # from_grpc_status falls back to the base GoogleAPICallError for codes it
+    # doesn't recognize (including OK / 0). Returning the base class here would
+    # make retries.if_exception_type match every GoogleAPICallError subclass,
+    # silently turning all errors into retryable ones, so reject it instead.
     if error_type is core_exceptions.GoogleAPICallError:
         raise ValueError(f"Invalid gRPC error status code: {call_code!r}")
     return error_type
