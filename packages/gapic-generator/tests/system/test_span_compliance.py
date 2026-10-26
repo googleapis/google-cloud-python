@@ -42,7 +42,7 @@ The engine operates across five distinct phases:
    Partitions captured finished spans by parentage:
    - Root Spans (parent is None): Represents the outer logical RPC call (T3 Tier).
    - Child Spans (parent is not None): Represents physical wire attempts (T4 Tier).
-   Selects the exact span under test using the row's `Tier` and `Attempt` index.
+   Selects the span under test using the row's `Tier` and `Attempt` index.
 
 4. Atomic Sub-Validators (`assert_span_matches_row`):
    Validates each cell directly against the target span without custom cell parsers:
