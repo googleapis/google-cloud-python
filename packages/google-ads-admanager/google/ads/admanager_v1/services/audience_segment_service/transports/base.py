@@ -157,6 +157,26 @@ class AudienceSegmentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_audience_segment: gapic_v1.method.wrap_method(
+                self.create_audience_segment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_audience_segments: gapic_v1.method.wrap_method(
+                self.batch_create_audience_segments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_audience_segment: gapic_v1.method.wrap_method(
+                self.update_audience_segment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_audience_segments: gapic_v1.method.wrap_method(
+                self.batch_update_audience_segments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.batch_activate_audience_segments: gapic_v1.method.wrap_method(
                 self.batch_activate_audience_segments,
                 default_timeout=None,
@@ -223,6 +243,54 @@ class AudienceSegmentServiceTransport(abc.ABC):
         Union[
             audience_segment_service.ListAudienceSegmentsResponse,
             Awaitable[audience_segment_service.ListAudienceSegmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_audience_segment(
+        self,
+    ) -> Callable[
+        [audience_segment_service.CreateAudienceSegmentRequest],
+        Union[
+            audience_segment_messages.AudienceSegment,
+            Awaitable[audience_segment_messages.AudienceSegment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_audience_segments(
+        self,
+    ) -> Callable[
+        [audience_segment_service.BatchCreateAudienceSegmentsRequest],
+        Union[
+            audience_segment_service.BatchCreateAudienceSegmentsResponse,
+            Awaitable[audience_segment_service.BatchCreateAudienceSegmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_audience_segment(
+        self,
+    ) -> Callable[
+        [audience_segment_service.UpdateAudienceSegmentRequest],
+        Union[
+            audience_segment_messages.AudienceSegment,
+            Awaitable[audience_segment_messages.AudienceSegment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_audience_segments(
+        self,
+    ) -> Callable[
+        [audience_segment_service.BatchUpdateAudienceSegmentsRequest],
+        Union[
+            audience_segment_service.BatchUpdateAudienceSegmentsResponse,
+            Awaitable[audience_segment_service.BatchUpdateAudienceSegmentsResponse],
         ],
     ]:
         raise NotImplementedError()

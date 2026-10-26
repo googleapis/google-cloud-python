@@ -61,6 +61,14 @@ from google.cloud.compute_v1.services.firewall_policies import (
 )
 from google.cloud.compute_v1.types import compute
 
+try:
+    from google.api_core import version_header
+
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
+
+
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
     "credential_type": "service account credentials",
@@ -167,6 +175,614 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_add_association_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.add_association), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.add_association()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_add_rule_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.add_rule), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.add_rule()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_clone_rules_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.clone_rules), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.clone_rules()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_delete_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.delete), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.delete()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_get_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.get), "__call__") as call:
+            call.return_value = compute.FirewallPolicy()
+            client.get()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_get_association_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.get_association), "__call__"
+        ) as call:
+            call.return_value = compute.FirewallPolicyAssociation()
+            client.get_association()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_get_iam_policy_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.get_iam_policy), "__call__"
+        ) as call:
+            call.return_value = compute.Policy()
+            client.get_iam_policy()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_get_rule_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.get_rule), "__call__") as call:
+            call.return_value = compute.FirewallPolicyRule()
+            client.get_rule()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_insert_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.insert), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.insert()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_list_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.list), "__call__") as call:
+            call.return_value = compute.FirewallPolicyList()
+            client.list()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_list_associations_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.list_associations), "__call__"
+        ) as call:
+            call.return_value = compute.FirewallPoliciesListAssociationsResponse()
+            client.list_associations()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_move_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.move), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.move()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_patch_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.patch), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.patch()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_patch_rule_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.patch_rule), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.patch_rule()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_remove_association_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.remove_association), "__call__"
+        ) as call:
+            call.return_value = compute.Operation()
+            client.remove_association()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_remove_rule_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(type(client.transport.remove_rule), "__call__") as call:
+            call.return_value = compute.Operation()
+            client.remove_rule()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_set_iam_policy_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.set_iam_policy), "__call__"
+        ) as call:
+            call.return_value = compute.Policy()
+            client.set_iam_policy()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        ("rest"),
+    ],
+)
+def test_test_iam_permissions_api_version_header(transport_name):
+    client = FirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport_name
+    )
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [
+        int(part) for part in api_core_version.__version__.split(".")[0:2]
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+            type(client.transport.test_iam_permissions), "__call__"
+        ) as call:
+            call.return_value = compute.TestPermissionsResponse()
+            client.test_iam_permissions()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "2026-09-01",
+        ) in kw["metadata"]
+    else:
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
 
 
 @pytest.mark.parametrize(
@@ -3098,7 +3714,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     transport_class = transports.FirewallPoliciesRestTransport
 
     request_init = {}
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3106,7 +3721,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     default_values = getattr(
         transport_class._BaseInsert,
@@ -3119,10 +3733,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
-
-    jsonified_request["parentId"] = "parent_id_value"
 
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -3133,8 +3743,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     )
 
     # verify required fields with non-default values are left alone
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3174,12 +3782,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
 
             response = client.insert(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -3200,7 +3803,6 @@ def test_insert_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -3244,7 +3846,6 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.insert(
             compute.InsertFirewallPolicyRequest(),
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -3301,7 +3902,6 @@ def test_insert_unary_rest_required_fields(
     transport_class = transports.FirewallPoliciesRestTransport
 
     request_init = {}
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3309,7 +3909,6 @@ def test_insert_unary_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     default_values = getattr(
         transport_class._BaseInsert,
@@ -3322,10 +3921,6 @@ def test_insert_unary_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
-
-    jsonified_request["parentId"] = "parent_id_value"
 
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -3336,8 +3931,6 @@ def test_insert_unary_rest_required_fields(
     )
 
     # verify required fields with non-default values are left alone
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3377,12 +3970,7 @@ def test_insert_unary_rest_required_fields(
 
             response = client.insert_unary(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -3403,7 +3991,6 @@ def test_insert_unary_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -3447,7 +4034,6 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.insert_unary(
             compute.InsertFirewallPolicyRequest(),
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -3641,7 +4227,6 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3649,7 +4234,6 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     default_values = getattr(
         transport_class._BaseMove,
@@ -3662,11 +4246,8 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
 
     jsonified_request["firewallPolicy"] = "firewall_policy_value"
-    jsonified_request["parentId"] = "parent_id_value"
 
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -3679,8 +4260,6 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     # verify required fields with non-default values are left alone
     assert "firewallPolicy" in jsonified_request
     assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3719,12 +4298,7 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
 
             response = client.move(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -3746,7 +4320,6 @@ def test_move_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
         mock_args.update(sample_request)
 
@@ -3785,7 +4358,6 @@ def test_move_rest_flattened_error(transport: str = "rest"):
         client.move(
             compute.MoveFirewallPolicyRequest(),
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
 
 
@@ -3836,7 +4408,6 @@ def test_move_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3844,7 +4415,6 @@ def test_move_unary_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     default_values = getattr(
         transport_class._BaseMove,
@@ -3857,11 +4427,8 @@ def test_move_unary_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
 
     jsonified_request["firewallPolicy"] = "firewall_policy_value"
-    jsonified_request["parentId"] = "parent_id_value"
 
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -3874,8 +4441,6 @@ def test_move_unary_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "firewallPolicy" in jsonified_request
     assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3914,12 +4479,7 @@ def test_move_unary_rest_required_fields(
 
             response = client.move_unary(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -3941,7 +4501,6 @@ def test_move_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
         mock_args.update(sample_request)
 
@@ -3980,7 +4539,6 @@ def test_move_unary_rest_flattened_error(transport: str = "rest"):
         client.move_unary(
             compute.MoveFirewallPolicyRequest(),
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
 
 
@@ -5602,7 +6160,11 @@ def test_set_iam_policy_rest_flattened():
         mock_args = dict(
             resource="resource_value",
             global_organization_set_policy_request_resource=compute.GlobalOrganizationSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
+                bindings=[
+                    compute.Binding(
+                        condition=compute.Expr(description="description_value")
+                    )
+                ]
             ),
         )
         mock_args.update(sample_request)
@@ -5643,7 +6205,11 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
             compute.SetIamPolicyFirewallPolicyRequest(),
             resource="resource_value",
             global_organization_set_policy_request_resource=compute.GlobalOrganizationSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
+                bindings=[
+                    compute.Binding(
+                        condition=compute.Expr(description="description_value")
+                    )
+                ]
             ),
         )
 
@@ -5955,6 +6521,7 @@ def test_add_association_rest_call_success(request_type):
         "display_name": "display_name_value",
         "firewall_policy_id": "firewall_policy_id_value",
         "name": "name_value",
+        "priority": 898,
         "short_name": "short_name_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7019,6 +7586,7 @@ def test_get_association_rest_call_success(request_type):
             display_name="display_name_value",
             firewall_policy_id="firewall_policy_id_value",
             name="name_value",
+            priority=898,
             short_name="short_name_value",
         )
 
@@ -7040,6 +7608,7 @@ def test_get_association_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.firewall_policy_id == "firewall_policy_id_value"
     assert response.name == "name_value"
+    assert response.priority == 898
     assert response.short_name == "short_name_value"
 
 
@@ -7157,7 +7726,6 @@ def test_get_iam_policy_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(
             etag="etag_value",
-            iam_owned=True,
             version=774,
         )
 
@@ -7176,7 +7744,6 @@ def test_get_iam_policy_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
     assert response.etag == "etag_value"
-    assert response.iam_owned is True
     assert response.version == 774
 
 
@@ -7446,6 +8013,7 @@ def test_insert_rest_call_success(request_type):
                 "display_name": "display_name_value",
                 "firewall_policy_id": "firewall_policy_id_value",
                 "name": "name_value",
+                "priority": 898,
                 "short_name": "short_name_value",
             }
         ],
@@ -8225,6 +8793,7 @@ def test_patch_rest_call_success(request_type):
                 "display_name": "display_name_value",
                 "firewall_policy_id": "firewall_policy_id_value",
                 "name": "name_value",
+                "priority": 898,
                 "short_name": "short_name_value",
             }
         ],
@@ -9219,7 +9788,6 @@ def test_set_iam_policy_rest_call_success(request_type):
     request_init["global_organization_set_policy_request_resource"] = {
         "bindings": [
             {
-                "binding_id": "binding_id_value",
                 "condition": {
                     "description": "description_value",
                     "expression": "expression_value",
@@ -9240,20 +9808,14 @@ def test_set_iam_policy_rest_call_success(request_type):
                                 "exempted_members_value1",
                                 "exempted_members_value2",
                             ],
-                            "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
-                    ],
-                    "exempted_members": [
-                        "exempted_members_value1",
-                        "exempted_members_value2",
                     ],
                     "service": "service_value",
                 }
             ],
             "bindings": {},
             "etag": "etag_value",
-            "iam_owned": True,
             "version": 774,
         },
     }
@@ -9346,7 +9908,6 @@ def test_set_iam_policy_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(
             etag="etag_value",
-            iam_owned=True,
             version=774,
         )
 
@@ -9365,7 +9926,6 @@ def test_set_iam_policy_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
     assert response.etag == "etag_value"
-    assert response.iam_owned is True
     assert response.version == 774
 
 

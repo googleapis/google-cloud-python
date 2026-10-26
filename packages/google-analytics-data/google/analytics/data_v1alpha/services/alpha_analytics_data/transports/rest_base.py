@@ -88,6 +88,23 @@ class _BaseAlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
             api_audience=api_audience,
         )
 
+    class _BaseChat:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{property=properties/*}:chat",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
     class _BaseCreateAudienceList:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

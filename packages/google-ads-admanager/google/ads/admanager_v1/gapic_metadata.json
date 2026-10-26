@@ -49,9 +49,19 @@
                 "batch_allow_ad_review_center_ads"
               ]
             },
+            "BatchApplyAdReviewCenterCustomLabels": {
+              "methods": [
+                "batch_apply_ad_review_center_custom_labels"
+              ]
+            },
             "BatchBlockAdReviewCenterAds": {
               "methods": [
                 "batch_block_ad_review_center_ads"
+              ]
+            },
+            "FetchAdReviewCenterCustomLabels": {
+              "methods": [
+                "fetch_ad_review_center_custom_labels"
               ]
             },
             "SearchAdReviewCenterAds": {
@@ -279,6 +289,11 @@
                 "batch_approve_audience_segments"
               ]
             },
+            "BatchCreateAudienceSegments": {
+              "methods": [
+                "batch_create_audience_segments"
+              ]
+            },
             "BatchDeactivateAudienceSegments": {
               "methods": [
                 "batch_deactivate_audience_segments"
@@ -294,6 +309,16 @@
                 "batch_reject_audience_segments"
               ]
             },
+            "BatchUpdateAudienceSegments": {
+              "methods": [
+                "batch_update_audience_segments"
+              ]
+            },
+            "CreateAudienceSegment": {
+              "methods": [
+                "create_audience_segment"
+              ]
+            },
             "GetAudienceSegment": {
               "methods": [
                 "get_audience_segment"
@@ -302,6 +327,11 @@
             "ListAudienceSegments": {
               "methods": [
                 "list_audience_segments"
+              ]
+            },
+            "UpdateAudienceSegment": {
+              "methods": [
+                "update_audience_segment"
               ]
             }
           }
@@ -321,6 +351,45 @@
             "ListBandwidthGroups": {
               "methods": [
                 "list_bandwidth_groups"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "BreakTemplateService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "BreakTemplateServiceClient",
+          "rpcs": {
+            "BatchCreateBreakTemplates": {
+              "methods": [
+                "batch_create_break_templates"
+              ]
+            },
+            "BatchUpdateBreakTemplates": {
+              "methods": [
+                "batch_update_break_templates"
+              ]
+            },
+            "CreateBreakTemplate": {
+              "methods": [
+                "create_break_template"
+              ]
+            },
+            "GetBreakTemplate": {
+              "methods": [
+                "get_break_template"
+              ]
+            },
+            "ListBreakTemplates": {
+              "methods": [
+                "list_break_templates"
+              ]
+            },
+            "UpdateBreakTemplate": {
+              "methods": [
+                "update_break_template"
               ]
             }
           }
@@ -676,6 +745,35 @@
         }
       }
     },
+    "CreativeService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CreativeServiceClient",
+          "rpcs": {
+            "BatchActivateCreatives": {
+              "methods": [
+                "batch_activate_creatives"
+              ]
+            },
+            "BatchDeactivateCreatives": {
+              "methods": [
+                "batch_deactivate_creatives"
+              ]
+            },
+            "GetCreative": {
+              "methods": [
+                "get_creative"
+              ]
+            },
+            "ListCreatives": {
+              "methods": [
+                "list_creatives"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CreativeSetService": {
       "clients": {
         "rest": {
@@ -1018,6 +1116,20 @@
         }
       }
     },
+    "DaiSessionService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DaiSessionServiceClient",
+          "rpcs": {
+            "GetDaiSession": {
+              "methods": [
+                "get_dai_session"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DeviceCapabilityService": {
       "clients": {
         "rest": {
@@ -1114,6 +1226,30 @@
         }
       }
     },
+    "ForecastService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ForecastServiceClient",
+          "rpcs": {
+            "RunAvailabilityForecast": {
+              "methods": [
+                "run_availability_forecast"
+              ]
+            },
+            "RunDeliveryForecast": {
+              "methods": [
+                "run_delivery_forecast"
+              ]
+            },
+            "RunTrafficData": {
+              "methods": [
+                "run_traffic_data"
+              ]
+            }
+          }
+        }
+      }
+    },
     "GeoTargetService": {
       "clients": {
         "rest": {
@@ -1182,11 +1318,95 @@
         }
       }
     },
+    "LineItemCreativeAssociationService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LineItemCreativeAssociationServiceClient",
+          "rpcs": {
+            "GetLineItemCreativeAssociation": {
+              "methods": [
+                "get_line_item_creative_association"
+              ]
+            },
+            "ListLineItemCreativeAssociations": {
+              "methods": [
+                "list_line_item_creative_associations"
+              ]
+            }
+          }
+        }
+      }
+    },
     "LineItemService": {
       "clients": {
         "rest": {
           "libraryClient": "LineItemServiceClient",
           "rpcs": {
+            "BatchActivateLineItems": {
+              "methods": [
+                "batch_activate_line_items"
+              ]
+            },
+            "BatchArchiveLineItems": {
+              "methods": [
+                "batch_archive_line_items"
+              ]
+            },
+            "BatchCreateLineItems": {
+              "methods": [
+                "batch_create_line_items"
+              ]
+            },
+            "BatchDeleteLineItems": {
+              "methods": [
+                "batch_delete_line_items"
+              ]
+            },
+            "BatchPauseLineItems": {
+              "methods": [
+                "batch_pause_line_items"
+              ]
+            },
+            "BatchReleaseLineItems": {
+              "methods": [
+                "batch_release_line_items"
+              ]
+            },
+            "BatchReserveAndOverbookLineItems": {
+              "methods": [
+                "batch_reserve_and_overbook_line_items"
+              ]
+            },
+            "BatchReserveLineItems": {
+              "methods": [
+                "batch_reserve_line_items"
+              ]
+            },
+            "BatchResumeAndOverbookLineItems": {
+              "methods": [
+                "batch_resume_and_overbook_line_items"
+              ]
+            },
+            "BatchResumeLineItems": {
+              "methods": [
+                "batch_resume_line_items"
+              ]
+            },
+            "BatchUnarchiveLineItems": {
+              "methods": [
+                "batch_unarchive_line_items"
+              ]
+            },
+            "BatchUpdateLineItems": {
+              "methods": [
+                "batch_update_line_items"
+              ]
+            },
+            "CreateLineItem": {
+              "methods": [
+                "create_line_item"
+              ]
+            },
             "GetLineItem": {
               "methods": [
                 "get_line_item"
@@ -1195,6 +1415,30 @@
             "ListLineItems": {
               "methods": [
                 "list_line_items"
+              ]
+            },
+            "UpdateLineItem": {
+              "methods": [
+                "update_line_item"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LineItemTemplateService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LineItemTemplateServiceClient",
+          "rpcs": {
+            "GetLineItemTemplate": {
+              "methods": [
+                "get_line_item_template"
+              ]
+            },
+            "ListLineItemTemplates": {
+              "methods": [
+                "list_line_item_templates"
               ]
             }
           }
@@ -1385,6 +1629,11 @@
                 "batch_update_native_styles"
               ]
             },
+            "CreateNativeStyle": {
+              "methods": [
+                "create_native_style"
+              ]
+            },
             "GetNativeStyle": {
               "methods": [
                 "get_native_style"
@@ -1393,6 +1642,11 @@
             "ListNativeStyles": {
               "methods": [
                 "list_native_styles"
+              ]
+            },
+            "UpdateNativeStyle": {
+              "methods": [
+                "update_native_style"
               ]
             }
           }
@@ -2075,9 +2329,44 @@
         "rest": {
           "libraryClient": "UserServiceClient",
           "rpcs": {
+            "BatchActivateUsers": {
+              "methods": [
+                "batch_activate_users"
+              ]
+            },
+            "BatchCreateUsers": {
+              "methods": [
+                "batch_create_users"
+              ]
+            },
+            "BatchDeactivateUsers": {
+              "methods": [
+                "batch_deactivate_users"
+              ]
+            },
+            "BatchUpdateUsers": {
+              "methods": [
+                "batch_update_users"
+              ]
+            },
+            "CreateUser": {
+              "methods": [
+                "create_user"
+              ]
+            },
             "GetUser": {
               "methods": [
                 "get_user"
+              ]
+            },
+            "ListUsers": {
+              "methods": [
+                "list_users"
+              ]
+            },
+            "UpdateUser": {
+              "methods": [
+                "update_user"
               ]
             }
           }

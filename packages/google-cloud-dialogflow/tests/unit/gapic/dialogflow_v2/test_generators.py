@@ -4360,7 +4360,10 @@ def test_create_generator_rest_call_success(request_type):
                                     "ces_tool": "ces_tool_value",
                                     "ces_app": "ces_app_value",
                                     "action": "action_value",
-                                    "error": {"message": "message_value"},
+                                    "error": {
+                                        "message": "message_value",
+                                        "retryable": True,
+                                    },
                                     "raw_content": b"raw_content_blob",
                                     "content": "content_value",
                                     "create_time": {},
@@ -5089,7 +5092,10 @@ def test_update_generator_rest_call_success(request_type):
                                     "ces_tool": "ces_tool_value",
                                     "ces_app": "ces_app_value",
                                     "action": "action_value",
-                                    "error": {"message": "message_value"},
+                                    "error": {
+                                        "message": "message_value",
+                                        "retryable": True,
+                                    },
                                     "raw_content": b"raw_content_blob",
                                     "content": "content_value",
                                     "create_time": {},

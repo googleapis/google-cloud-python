@@ -2629,6 +2629,7 @@ def test_get_completion_config(request_type, transport: str = "grpc"):
             last_suggestions_import_operation="last_suggestions_import_operation_value",
             last_denylist_import_operation="last_denylist_import_operation_value",
             last_allowlist_import_operation="last_allowlist_import_operation_value",
+            enable_agent_prompts=True,
         )
         response = client.get_completion_config(request)
 
@@ -2657,6 +2658,7 @@ def test_get_completion_config(request_type, transport: str = "grpc"):
         response.last_allowlist_import_operation
         == "last_allowlist_import_operation_value"
     )
+    assert response.enable_agent_prompts is True
 
 
 def test_get_completion_config_non_empty_request_with_auto_populated_field():
@@ -2807,6 +2809,7 @@ async def test_get_completion_config_async(
                 last_suggestions_import_operation="last_suggestions_import_operation_value",
                 last_denylist_import_operation="last_denylist_import_operation_value",
                 last_allowlist_import_operation="last_allowlist_import_operation_value",
+                enable_agent_prompts=True,
             )
         )
         response = await client.get_completion_config(request)
@@ -2836,6 +2839,7 @@ async def test_get_completion_config_async(
         response.last_allowlist_import_operation
         == "last_allowlist_import_operation_value"
     )
+    assert response.enable_agent_prompts is True
 
 
 def test_get_completion_config_field_headers():
@@ -3020,6 +3024,7 @@ def test_update_completion_config(request_type, transport: str = "grpc"):
             last_suggestions_import_operation="last_suggestions_import_operation_value",
             last_denylist_import_operation="last_denylist_import_operation_value",
             last_allowlist_import_operation="last_allowlist_import_operation_value",
+            enable_agent_prompts=True,
         )
         response = client.update_completion_config(request)
 
@@ -3048,6 +3053,7 @@ def test_update_completion_config(request_type, transport: str = "grpc"):
         response.last_allowlist_import_operation
         == "last_allowlist_import_operation_value"
     )
+    assert response.enable_agent_prompts is True
 
 
 def test_update_completion_config_non_empty_request_with_auto_populated_field():
@@ -3194,6 +3200,7 @@ async def test_update_completion_config_async(
                 last_suggestions_import_operation="last_suggestions_import_operation_value",
                 last_denylist_import_operation="last_denylist_import_operation_value",
                 last_allowlist_import_operation="last_allowlist_import_operation_value",
+                enable_agent_prompts=True,
             )
         )
         response = await client.update_completion_config(request)
@@ -3223,6 +3230,7 @@ async def test_update_completion_config_async(
         response.last_allowlist_import_operation
         == "last_allowlist_import_operation_value"
     )
+    assert response.enable_agent_prompts is True
 
 
 def test_update_completion_config_field_headers():
@@ -7485,6 +7493,7 @@ async def test_get_completion_config_empty_call_grpc_asyncio():
                 last_suggestions_import_operation="last_suggestions_import_operation_value",
                 last_denylist_import_operation="last_denylist_import_operation_value",
                 last_allowlist_import_operation="last_allowlist_import_operation_value",
+                enable_agent_prompts=True,
             )
         )
         await client.get_completion_config(request=None)
@@ -7520,6 +7529,7 @@ async def test_update_completion_config_empty_call_grpc_asyncio():
                 last_suggestions_import_operation="last_suggestions_import_operation_value",
                 last_denylist_import_operation="last_denylist_import_operation_value",
                 last_allowlist_import_operation="last_allowlist_import_operation_value",
+                enable_agent_prompts=True,
             )
         )
         await client.update_completion_config(request=None)
@@ -8383,6 +8393,7 @@ def test_get_completion_config_rest_call_success(request_type):
             last_suggestions_import_operation="last_suggestions_import_operation_value",
             last_denylist_import_operation="last_denylist_import_operation_value",
             last_allowlist_import_operation="last_allowlist_import_operation_value",
+            enable_agent_prompts=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -8416,6 +8427,7 @@ def test_get_completion_config_rest_call_success(request_type):
         response.last_allowlist_import_operation
         == "last_allowlist_import_operation_value"
     )
+    assert response.enable_agent_prompts is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8552,6 +8564,7 @@ def test_update_completion_config_rest_call_success(request_type):
         "last_denylist_import_operation": "last_denylist_import_operation_value",
         "allowlist_input_config": {},
         "last_allowlist_import_operation": "last_allowlist_import_operation_value",
+        "enable_agent_prompts": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8636,6 +8649,7 @@ def test_update_completion_config_rest_call_success(request_type):
             last_suggestions_import_operation="last_suggestions_import_operation_value",
             last_denylist_import_operation="last_denylist_import_operation_value",
             last_allowlist_import_operation="last_allowlist_import_operation_value",
+            enable_agent_prompts=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -8669,6 +8683,7 @@ def test_update_completion_config_rest_call_success(request_type):
         response.last_allowlist_import_operation
         == "last_allowlist_import_operation_value"
     )
+    assert response.enable_agent_prompts is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

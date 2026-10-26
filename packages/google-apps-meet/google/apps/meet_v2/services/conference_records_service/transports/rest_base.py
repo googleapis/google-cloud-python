@@ -151,6 +151,22 @@ class _BaseConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTranspo
             ]
             return http_options
 
+    class _BaseGetSmartNote:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=conferenceRecords/*/smartNotes/*}",
+                },
+            ]
+            return http_options
+
     class _BaseGetTranscript:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -241,6 +257,22 @@ class _BaseConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTranspo
                 {
                     "method": "get",
                     "uri": "/v2/{parent=conferenceRecords/*}/recordings",
+                },
+            ]
+            return http_options
+
+    class _BaseListSmartNotes:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=conferenceRecords/*}/smartNotes",
                 },
             ]
             return http_options

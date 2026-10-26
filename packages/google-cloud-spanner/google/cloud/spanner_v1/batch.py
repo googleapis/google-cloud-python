@@ -58,8 +58,7 @@ class _BatchBase(_SessionWrapper):
     """Accumulate mutations for transmission during :meth:`commit`.
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
-    :param session: the session used to perform the commit
-    """
+    :param session: the session used to perform the commit"""
 
     def __init__(self, session, client_context=None):
         super(_BatchBase, self).__init__(session)
@@ -69,16 +68,6 @@ class _BatchBase(_SessionWrapper):
         "Timestamp at which the batch was successfully committed."
         self.commit_stats: Optional[CommitResponse.CommitStats] = None
         self._client_context = _validate_client_context(client_context)
-
-    @property
-    def _resource_info(self):
-        """Resource information for metrics labels."""
-        database = self._session._database
-        return {
-            "project": database._instance._client.project,
-            "instance": database._instance.instance_id,
-            "database": database.database_id,
-        }
 
     def insert(self, table, columns, values):
         """Insert one or more new table rows.
@@ -158,14 +147,12 @@ class _BatchBase(_SessionWrapper):
         :param payload: (Optional) The payload of the message.
 
         :type deliver_time: :class:`datetime.datetime`
-        :param deliver_time: (Optional) The time at which Spanner will begin attempting to deliver the message.
-        """
+        :param deliver_time: (Optional) The time at which Spanner will begin attempting to deliver the message."""
         send_kwargs = {"queue": queue, "key": _make_list_value_pb(key)}
         if payload is not None:
             send_kwargs["payload"] = _make_value_pb(payload)
         if deliver_time is not None:
             send_kwargs["deliver_time"] = _datetime_to_pb_timestamp(deliver_time)
-
         send = Mutation.Send(**send_kwargs)
         self._mutations.append(Mutation(send=send))
 
@@ -179,12 +166,10 @@ class _BatchBase(_SessionWrapper):
         :param key: The primary key of the message to be acked.
 
         :type ignore_not_found: bool
-        :param ignore_not_found: (Optional) Whether to ignore if the message does not exist.
-        """
+        :param ignore_not_found: (Optional) Whether to ignore if the message does not exist."""
         ack_kwargs = {"queue": queue, "key": _make_list_value_pb(key)}
         if ignore_not_found is not None:
             ack_kwargs["ignore_not_found"] = ignore_not_found
-
         ack = Mutation.Ack(**ack_kwargs)
         self._mutations.append(Mutation(ack=ack))
 
@@ -356,16 +341,6 @@ class MutationGroups(_SessionWrapper):
         self._mutation_groups: List[MutationGroup] = []
         self.committed: bool = False
         self._client_context = _validate_client_context(client_context)
-
-    @property
-    def _resource_info(self):
-        """Resource information for metrics labels."""
-        database = self._session._database
-        return {
-            "project": database._instance._client.project,
-            "instance": database._instance.instance_id,
-            "database": database.database_id,
-        }
 
     def group(self):
         """Returns a new `MutationGroup` to which mutations can be added."""

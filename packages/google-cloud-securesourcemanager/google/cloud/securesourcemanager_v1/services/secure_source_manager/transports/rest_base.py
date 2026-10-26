@@ -420,6 +420,22 @@ class _BaseSecureSourceManagerRestTransport(SecureSourceManagerTransport):
             ]
             return http_options
 
+    class _BaseFetchRefs:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{repository=projects/*/locations/*/repositories/*}:fetchRefs",
+                },
+            ]
+            return http_options
+
     class _BaseFetchTree:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

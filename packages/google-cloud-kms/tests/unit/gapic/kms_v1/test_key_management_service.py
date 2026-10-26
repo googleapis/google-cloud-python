@@ -24141,6 +24141,7 @@ def test_create_crypto_key_rest_call_success(request_type):
             "external_protection_level_options": {
                 "external_key_uri": "external_key_uri_value",
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
+                "ekm_connection_backend_override": "ekm_connection_backend_override_value",
             },
             "reimport_eligible": True,
             "trusted_wrapping_enabled": True,
@@ -24395,6 +24396,7 @@ def test_create_crypto_key_version_rest_call_success(request_type):
         "external_protection_level_options": {
             "external_key_uri": "external_key_uri_value",
             "ekm_connection_key_path": "ekm_connection_key_path_value",
+            "ekm_connection_backend_override": "ekm_connection_backend_override_value",
         },
         "reimport_eligible": True,
         "trusted_wrapping_enabled": True,
@@ -25648,6 +25650,7 @@ def test_update_crypto_key_rest_call_success(request_type):
             "external_protection_level_options": {
                 "external_key_uri": "external_key_uri_value",
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
+                "ekm_connection_backend_override": "ekm_connection_backend_override_value",
             },
             "reimport_eligible": True,
             "trusted_wrapping_enabled": True,
@@ -25906,6 +25909,7 @@ def test_update_crypto_key_version_rest_call_success(request_type):
         "external_protection_level_options": {
             "external_key_uri": "external_key_uri_value",
             "ekm_connection_key_path": "ekm_connection_key_path_value",
+            "ekm_connection_backend_override": "ekm_connection_backend_override_value",
         },
         "reimport_eligible": True,
         "trusted_wrapping_enabled": True,
@@ -29760,11 +29764,39 @@ def test_parse_crypto_key_version_path():
     assert expected == actual
 
 
-def test_import_job_path():
+def test_ekm_connection_path():
     project = "cuttlefish"
     location = "mussel"
-    key_ring = "winkle"
-    import_job = "nautilus"
+    ekm_connection = "winkle"
+    expected = "projects/{project}/locations/{location}/ekmConnections/{ekm_connection}".format(
+        project=project,
+        location=location,
+        ekm_connection=ekm_connection,
+    )
+    actual = KeyManagementServiceClient.ekm_connection_path(
+        project, location, ekm_connection
+    )
+    assert expected == actual
+
+
+def test_parse_ekm_connection_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "ekm_connection": "abalone",
+    }
+    path = KeyManagementServiceClient.ekm_connection_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = KeyManagementServiceClient.parse_ekm_connection_path(path)
+    assert expected == actual
+
+
+def test_import_job_path():
+    project = "squid"
+    location = "clam"
+    key_ring = "whelk"
+    import_job = "octopus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}".format(
         project=project,
         location=location,
@@ -29779,10 +29811,10 @@ def test_import_job_path():
 
 def test_parse_import_job_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "key_ring": "squid",
-        "import_job": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "import_job": "mussel",
     }
     path = KeyManagementServiceClient.import_job_path(**expected)
 
@@ -29792,9 +29824,9 @@ def test_parse_import_job_path():
 
 
 def test_key_ring_path():
-    project = "whelk"
-    location = "octopus"
-    key_ring = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    key_ring = "scallop"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}".format(
         project=project,
         location=location,
@@ -29806,9 +29838,9 @@ def test_key_ring_path():
 
 def test_parse_key_ring_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "key_ring": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "key_ring": "clam",
     }
     path = KeyManagementServiceClient.key_ring_path(**expected)
 
@@ -29818,11 +29850,11 @@ def test_parse_key_ring_path():
 
 
 def test_public_key_path():
-    project = "winkle"
-    location = "nautilus"
-    key_ring = "scallop"
-    crypto_key = "abalone"
-    crypto_key_version = "squid"
+    project = "whelk"
+    location = "octopus"
+    key_ring = "oyster"
+    crypto_key = "nudibranch"
+    crypto_key_version = "cuttlefish"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}/publicKey".format(
         project=project,
         location=location,
@@ -29838,11 +29870,11 @@ def test_public_key_path():
 
 def test_parse_public_key_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "key_ring": "octopus",
-        "crypto_key": "oyster",
-        "crypto_key_version": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "key_ring": "nautilus",
+        "crypto_key": "scallop",
+        "crypto_key_version": "abalone",
     }
     path = KeyManagementServiceClient.public_key_path(**expected)
 
@@ -29852,9 +29884,9 @@ def test_parse_public_key_path():
 
 
 def test_retired_resource_path():
-    project = "cuttlefish"
-    location = "mussel"
-    retired_resource = "winkle"
+    project = "squid"
+    location = "clam"
+    retired_resource = "whelk"
     expected = "projects/{project}/locations/{location}/retiredResources/{retired_resource}".format(
         project=project,
         location=location,
@@ -29868,9 +29900,9 @@ def test_retired_resource_path():
 
 def test_parse_retired_resource_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "retired_resource": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "retired_resource": "nudibranch",
     }
     path = KeyManagementServiceClient.retired_resource_path(**expected)
 
@@ -29880,7 +29912,7 @@ def test_parse_retired_resource_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -29890,7 +29922,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = KeyManagementServiceClient.common_billing_account_path(**expected)
 
@@ -29900,7 +29932,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -29910,7 +29942,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = KeyManagementServiceClient.common_folder_path(**expected)
 
@@ -29920,7 +29952,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -29930,7 +29962,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = KeyManagementServiceClient.common_organization_path(**expected)
 
@@ -29940,7 +29972,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -29950,7 +29982,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = KeyManagementServiceClient.common_project_path(**expected)
 
@@ -29960,8 +29992,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -29972,8 +30004,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = KeyManagementServiceClient.common_location_path(**expected)
 

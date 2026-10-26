@@ -109,10 +109,24 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install(FLAKE8_VERSION, RUFF_VERSION)
+    # 1. Check imports
     session.run(
-        "black",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
     session.run("flake8", "google", "tests")
@@ -200,11 +214,6 @@ def install_unittest_dependencies(session, *constraints):
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
-    if session.python == "3.15":
-        session.skip(
-            "Skipping 3.15 until wheels are available for 1. numba (from dependency pandas[performance]) 2. lxml (from dependency pikepdf) 3. pyarrow."
-        )
-
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )

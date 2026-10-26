@@ -78,6 +78,7 @@ class ListPrivateAuctionDealsRequest(proto.Message):
 
             **Filterable fields:**
 
+            - ``archived``
             - ``auctionPriorityEnabled``
             - ``blockOverrideEnabled``
             - ``buyerAccountId``
@@ -89,6 +90,7 @@ class ListPrivateAuctionDealsRequest(proto.Message):
             - ``privateAuctionDealId``
             - ``privateAuctionDisplayName``
             - ``privateAuctionId``
+            - ``publisherFloorExempt``
             - ``status``
             - ``updateTime``
         order_by (str):

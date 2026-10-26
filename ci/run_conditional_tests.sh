@@ -78,6 +78,14 @@ run_test_in_dir() {
     local log_file="/tmp/test_log_${PY_VERSION}_${pkg_name_clean}.log"
     export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
 
+    # Isolate setuptools build directories per worker to prevent parallel build collisions.
+    local worker_build_dir="/tmp/build_${PY_VERSION}_${pkg_name_clean}"
+    local dist_cfg="/tmp/dist_cfg_${PY_VERSION}_${pkg_name_clean}.cfg"
+    mkdir -p "${worker_build_dir}"
+    printf "[build]\nbuild_base = %s/build\n[bdist_wheel]\nbdist_dir = %s/bdist\n[egg_info]\negg_base = %s\n" \
+        "${worker_build_dir}" "${worker_build_dir}" "${worker_build_dir}" > "${dist_cfg}"
+    export DIST_EXTRA_CONFIG="${dist_cfg}"
+
     local div="============================================================"
     local header="\n${div}\nRunning tests in ${d}\n${div}"
     local footer
@@ -97,6 +105,8 @@ run_test_in_dir() {
     set -e
     popd > /dev/null
 
+    rm -rf "${worker_build_dir}" "${dist_cfg}"
+
     if [ ${ret} -ne 0 ]; then
         footer="❌ Tests failed in ${d} with exit code ${ret}"
     else
@@ -114,13 +124,26 @@ run_test_in_dir() {
         echo "${footer}"
     fi
 
+    if [ ${ret} -ne 0 ] && [ -n "${FAILURE_LOG_DIR}" ]; then
+        mkdir -p "${FAILURE_LOG_DIR}"
+        local pkg_name=$(basename "${d}")
+        if grep -q "short test summary info" "${log_file}" 2>/dev/null; then
+            grep -A 35 -B 2 "short test summary info" "${log_file}" 2>/dev/null | sed $'s/\x1b\\[[0-9;]*[a-zA-Z]//g' > "${FAILURE_LOG_DIR}/${pkg_name}.log.txt" || true
+        else
+            tail -n 50 "${log_file}" 2>/dev/null | sed $'s/\x1b\\[[0-9;]*[a-zA-Z]//g' > "${FAILURE_LOG_DIR}/${pkg_name}.log.txt" || true
+        fi
+    fi
+
     rm -f "${log_file}"
     if [ ${ret} -ne 0 ]; then
+        if [ "${CONTINUE_ON_ERROR}" = "true" ]; then
+            exit 1
+        fi
         exit 255  # Cancel xargs parallel jobs
     fi
 }
 export -f run_test_in_dir
-export test_script PROJECT_ROOT PY_VERSION TEST_TYPE
+export test_script PROJECT_ROOT PY_VERSION TEST_TYPE CONTINUE_ON_ERROR FAILURE_LOG_DIR
 
 dirs_to_test=()
 

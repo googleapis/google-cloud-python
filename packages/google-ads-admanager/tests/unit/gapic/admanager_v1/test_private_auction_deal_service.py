@@ -1891,7 +1891,9 @@ def test_get_private_auction_deal_rest_call_success(request_type):
             status=private_marketplace_enums.PrivateMarketplaceDealStatusEnum.PrivateMarketplaceDealStatus.PENDING,
             auction_priority_enabled=True,
             block_override_enabled=True,
+            publisher_floor_exempt=True,
             buyer_permission_type=deal_buyer_permission_type_enum.DealBuyerPermissionTypeEnum.DealBuyerPermissionType.NEGOTIATOR_ONLY,
+            archived=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -1920,10 +1922,12 @@ def test_get_private_auction_deal_rest_call_success(request_type):
     )
     assert response.auction_priority_enabled is True
     assert response.block_override_enabled is True
+    assert response.publisher_floor_exempt is True
     assert (
         response.buyer_permission_type
         == deal_buyer_permission_type_enum.DealBuyerPermissionTypeEnum.DealBuyerPermissionType.NEGOTIATOR_ONLY
     )
+    assert response.archived is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2411,7 +2415,8 @@ def test_create_private_auction_deal_rest_call_success(request_type):
                 }
             },
         },
-        "end_time": {"seconds": 751, "nanos": 543},
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
         "floor_price": {
             "currency_code": "currency_code_value",
             "units": 563,
@@ -2421,9 +2426,11 @@ def test_create_private_auction_deal_rest_call_success(request_type):
         "status": 1,
         "auction_priority_enabled": True,
         "block_override_enabled": True,
+        "publisher_floor_exempt": True,
         "buyer_permission_type": 1,
         "buyer_data": {"buyer_emails": ["buyer_emails_value1", "buyer_emails_value2"]},
         "deal_priority": {"priority_tier": 1},
+        "archived": True,
         "create_time": {},
         "update_time": {},
     }
@@ -2515,7 +2522,9 @@ def test_create_private_auction_deal_rest_call_success(request_type):
             status=private_marketplace_enums.PrivateMarketplaceDealStatusEnum.PrivateMarketplaceDealStatus.PENDING,
             auction_priority_enabled=True,
             block_override_enabled=True,
+            publisher_floor_exempt=True,
             buyer_permission_type=deal_buyer_permission_type_enum.DealBuyerPermissionTypeEnum.DealBuyerPermissionType.NEGOTIATOR_ONLY,
+            archived=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -2544,10 +2553,12 @@ def test_create_private_auction_deal_rest_call_success(request_type):
     )
     assert response.auction_priority_enabled is True
     assert response.block_override_enabled is True
+    assert response.publisher_floor_exempt is True
     assert (
         response.buyer_permission_type
         == deal_buyer_permission_type_enum.DealBuyerPermissionTypeEnum.DealBuyerPermissionType.NEGOTIATOR_ONLY
     )
+    assert response.archived is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2893,7 +2904,8 @@ def test_update_private_auction_deal_rest_call_success(request_type):
                 }
             },
         },
-        "end_time": {"seconds": 751, "nanos": 543},
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
         "floor_price": {
             "currency_code": "currency_code_value",
             "units": 563,
@@ -2903,9 +2915,11 @@ def test_update_private_auction_deal_rest_call_success(request_type):
         "status": 1,
         "auction_priority_enabled": True,
         "block_override_enabled": True,
+        "publisher_floor_exempt": True,
         "buyer_permission_type": 1,
         "buyer_data": {"buyer_emails": ["buyer_emails_value1", "buyer_emails_value2"]},
         "deal_priority": {"priority_tier": 1},
+        "archived": True,
         "create_time": {},
         "update_time": {},
     }
@@ -2997,7 +3011,9 @@ def test_update_private_auction_deal_rest_call_success(request_type):
             status=private_marketplace_enums.PrivateMarketplaceDealStatusEnum.PrivateMarketplaceDealStatus.PENDING,
             auction_priority_enabled=True,
             block_override_enabled=True,
+            publisher_floor_exempt=True,
             buyer_permission_type=deal_buyer_permission_type_enum.DealBuyerPermissionTypeEnum.DealBuyerPermissionType.NEGOTIATOR_ONLY,
+            archived=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -3026,10 +3042,12 @@ def test_update_private_auction_deal_rest_call_success(request_type):
     )
     assert response.auction_priority_enabled is True
     assert response.block_override_enabled is True
+    assert response.publisher_floor_exempt is True
     assert (
         response.buyer_permission_type
         == deal_buyer_permission_type_enum.DealBuyerPermissionTypeEnum.DealBuyerPermissionType.NEGOTIATOR_ONLY
     )
+    assert response.archived is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

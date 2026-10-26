@@ -110,11 +110,25 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install(FLAKE8_VERSION, RUFF_VERSION)
     session.run("python", "-m", "pip", "freeze")
+    # 1. Check imports
     session.run(
-        "black",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
     session.run("flake8", "db_dtypes", "tests")
@@ -251,6 +265,11 @@ def prerelease(session, tests_path):
         "pytest",
         "pytest-cov",
         "pytest-asyncio",
+        # tzdata is only needed for testing: pandas 3.0+ no longer installs
+        # tzdata by default on Linux, and compliance tests import
+        # pandas.tests.extension.base (which loads pandas.conftest and
+        # initializes a "US/Pacific" date_range via zoneinfo).
+        "tzdata",
         "-c",
         constraints_path,
     )
@@ -303,9 +322,6 @@ def prerelease(session, tests_path):
 @nox.parametrize("test_type", ["unit", "compliance"])
 def unit(session, test_type):
     """Run the unit test suite."""
-    if session.python == "3.15":
-        session.skip("Skipping 3.15 until wheels are available for pyarrow.")
-
     # Compliance tests only run on the latest Python version
     if test_type == "compliance" and session.python != DEFAULT_PYTHON_VERSION:
         session.skip(
