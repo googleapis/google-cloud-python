@@ -26,6 +26,7 @@ from google.ads.datamanager_v1.types import (
     destination,
     event,
     processing_errors,
+    user,
 )
 from google.ads.datamanager_v1.types import consent as gad_consent
 from google.ads.datamanager_v1.types import encryption_info as gad_encryption_info
@@ -33,6 +34,7 @@ from google.ads.datamanager_v1.types import (
     request_status_per_destination as gad_request_status_per_destination,
 )
 from google.ads.datamanager_v1.types import terms_of_service as gad_terms_of_service
+from google.ads.datamanager_v1.types import user_data as gad_user_data
 
 __protobuf__ = proto.module(
     package="google.ads.datamanager.v1",
@@ -46,6 +48,10 @@ __protobuf__ = proto.module(
         "RemoveAllAudienceMembersResponse",
         "IngestEventsRequest",
         "IngestEventsResponse",
+        "IngestUsersRequest",
+        "IngestUsersResponse",
+        "RemoveUsersRequest",
+        "RemoveUsersResponse",
         "IngestAdEventsRequest",
         "IngestAdEventsResponse",
         "RetrieveRequestStatusRequest",
@@ -391,6 +397,133 @@ class IngestEventsResponse(proto.Message):
             number=2,
             message=processing_errors.FieldWarning,
         )
+    )
+
+
+class IngestUsersRequest(proto.Message):
+    r"""Request to upload users to the provided destinations.
+
+    Attributes:
+        destinations (MutableSequence[google.ads.datamanager_v1.types.Destination]):
+            Required. The list of possible ingestion
+            destinations.
+        users (MutableSequence[google.ads.datamanager_v1.types.User]):
+            Required. The list of users to ingest.
+        encryption_info (google.ads.datamanager_v1.types.EncryptionInfo):
+            Optional. Encryption information about
+            encryption keys which are used to encrypt the
+            data.
+        validate_only (bool):
+            Optional. If ``true``, the request is validated but not
+            executed.
+        encoding (google.ads.datamanager_v1.types.Encoding):
+            Required. The encoding type of the user
+            identifiers. For encrypted user identifiers,
+            this only applies to the outer encoding.
+    """
+
+    destinations: MutableSequence[destination.Destination] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=destination.Destination,
+    )
+    users: MutableSequence[user.User] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=user.User,
+    )
+    encryption_info: gad_encryption_info.EncryptionInfo = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gad_encryption_info.EncryptionInfo,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    encoding: "Encoding" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="Encoding",
+    )
+
+
+class IngestUsersResponse(proto.Message):
+    r"""Response from the IngestUsersRequest.
+
+    Attributes:
+        request_id (str):
+            The generated request id of the Ingestion
+            Request.
+    """
+
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RemoveUsersRequest(proto.Message):
+    r"""Request to remove users from the provided destinations.
+
+    Attributes:
+        destinations (MutableSequence[google.ads.datamanager_v1.types.Destination]):
+            Required. The list of possible ingestion
+            destinations.
+        user_data (MutableSequence[google.ads.datamanager_v1.types.UserData]):
+            Required. The individual bits of UserData
+            that act as keys for the users to remove.
+        encryption_info (google.ads.datamanager_v1.types.EncryptionInfo):
+            Optional. Encryption information about
+            encryption keys which are used to encrypt the
+            data.
+        validate_only (bool):
+            Optional. If ``true``, the request is validated but not
+            executed.
+        encoding (google.ads.datamanager_v1.types.Encoding):
+            Required. The encoding type of the user
+            identifiers. For encrypted user identifiers,
+            this only applies to the outer encoding.
+    """
+
+    destinations: MutableSequence[destination.Destination] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=destination.Destination,
+    )
+    user_data: MutableSequence[gad_user_data.UserData] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gad_user_data.UserData,
+    )
+    encryption_info: gad_encryption_info.EncryptionInfo = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gad_encryption_info.EncryptionInfo,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    encoding: "Encoding" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="Encoding",
+    )
+
+
+class RemoveUsersResponse(proto.Message):
+    r"""Response from the RemoveUsersRequest.
+
+    Attributes:
+        request_id (str):
+            The generated request id of the Ingestion
+            Request.
+    """
+
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -242,6 +242,307 @@ class Test_merge_query_options(unittest.TestCase):
             self._callFUT(None, {"optmizer_version": "1"})
 
 
+class Test_as_raw_pb(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _as_raw_pb
+
+        return _as_raw_pb(*args, **kw)
+
+    def test_proto_plus_message_is_unwrapped(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        request_options = RequestOptions(request_tag="tag-1")
+        result = self._callFUT(request_options, RequestOptions)
+        self.assertIs(type(result), RequestOptions.pb())
+        self.assertEqual(result, RequestOptions.pb(request_options))
+
+    def test_raw_protobuf_message_is_returned_unchanged(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        request_options_pb = RequestOptions.pb(RequestOptions(request_tag="tag-1"))
+        self.assertIs(
+            self._callFUT(request_options_pb, RequestOptions), request_options_pb
+        )
+
+    def test_dict_is_converted(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        result = self._callFUT({"request_tag": "tag-1"}, RequestOptions)
+        self.assertIs(type(result), RequestOptions.pb())
+        self.assertEqual(result.request_tag, "tag-1")
+
+    def test_dict_containing_a_proto_plus_message_is_converted(self):
+        from google.cloud.spanner_v1 import DirectedReadOptions
+
+        # The raw protobuf constructor rejects a proto-plus message used as a
+        # dict value, so dicts must be routed through proto-plus instead.
+        include_replicas = DirectedReadOptions.IncludeReplicas(
+            auto_failover_disabled=True
+        )
+        result = self._callFUT(
+            {"include_replicas": include_replicas}, DirectedReadOptions
+        )
+        self.assertIs(type(result), DirectedReadOptions.pb())
+        self.assertTrue(result.include_replicas.auto_failover_disabled)
+
+    def test_none_is_returned_unchanged(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        self.assertIsNone(self._callFUT(None, RequestOptions))
+
+
+class Test_make_execute_sql_request(unittest.TestCase):
+    SESSION_NAME = "projects/p/instances/i/databases/d/sessions/s"
+    SQL = "SELECT * FROM Singers WHERE SingerId = @singer_id"
+
+    def _callFUT(self, **kw):
+        from google.cloud.spanner_v1._helpers import _make_execute_sql_request
+
+        return _make_execute_sql_request(
+            session_name=self.SESSION_NAME, sql=self.SQL, seqno=1, **kw
+        )
+
+    def _assert_matches_proto_plus(self, **kw):
+        """Assert the fast builder matches the proto-plus constructor exactly.
+
+        Comparing serialized bytes as well as message equality is what pins
+        field presence: an explicitly set but empty sub-message is a different
+        request on the wire than an absent one.
+        """
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # The builder names this argument `partition`, matching `execute_sql`,
+        # while the proto field is `partition_token`.
+        partition = kw.pop("partition", None)
+
+        expected = ExecuteSqlRequest(
+            session=self.SESSION_NAME,
+            sql=self.SQL,
+            seqno=1,
+            partition_token=partition,
+            **kw,
+        )
+        result = self._callFUT(partition=partition, **kw)
+
+        self.assertIsInstance(result, ExecuteSqlRequest)
+        self.assertEqual(result, expected)
+        self.assertEqual(
+            ExecuteSqlRequest.serialize(result),
+            ExecuteSqlRequest.serialize(expected),
+        )
+        return result
+
+    def test_minimal(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        result = self._assert_matches_proto_plus()
+        self.assertEqual(result.session, self.SESSION_NAME)
+        self.assertEqual(result.sql, self.SQL)
+        self.assertEqual(result.seqno, 1)
+        self.assertFalse(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_all_fields_proto_plus(self):
+        from google.protobuf.struct_pb2 import Struct
+
+        from google.cloud.spanner_v1 import DirectedReadOptions, ExecuteSqlRequest
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+        from google.cloud.spanner_v1.types import RequestOptions, Type, TypeCode
+
+        self._assert_matches_proto_plus(
+            params=Struct(fields={"singer_id": _make_value_pb(42)}),
+            param_types={"singer_id": Type(code=TypeCode.INT64)},
+            query_mode=ExecuteSqlRequest.QueryMode.PROFILE,
+            partition=b"partition-token",
+            query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="1"),
+            request_options=RequestOptions(
+                priority=RequestOptions.Priority.PRIORITY_HIGH,
+                request_tag="tag-1",
+                transaction_tag="transaction-tag-1",
+            ),
+            last_statement=True,
+            data_boost_enabled=True,
+            directed_read_options=DirectedReadOptions(
+                include_replicas=DirectedReadOptions.IncludeReplicas(
+                    replica_selections=[
+                        DirectedReadOptions.ReplicaSelection(
+                            location="us-central1",
+                            type_=DirectedReadOptions.ReplicaSelection.Type.READ_ONLY,
+                        )
+                    ],
+                    auto_failover_disabled=True,
+                )
+            ),
+        )
+
+    def test_all_fields_as_dicts(self):
+        from google.cloud.spanner_v1.types import TypeCode
+
+        self._assert_matches_proto_plus(
+            params={"singer_id": 42},
+            param_types={"singer_id": {"code": TypeCode.INT64}},
+            query_mode="PROFILE",
+            partition=b"partition-token",
+            query_options={"optimizer_version": "1"},
+            request_options={"request_tag": "tag-1"},
+            last_statement=True,
+            data_boost_enabled=True,
+            directed_read_options={
+                "include_replicas": {"auto_failover_disabled": True}
+            },
+        )
+
+    def test_all_fields_as_raw_protobuf(self):
+        from google.cloud.spanner_v1 import DirectedReadOptions, ExecuteSqlRequest
+        from google.cloud.spanner_v1.types import RequestOptions, Type, TypeCode
+
+        self._assert_matches_proto_plus(
+            param_types={"singer_id": Type.pb(Type(code=TypeCode.INT64))},
+            query_options=ExecuteSqlRequest.QueryOptions.pb(
+                ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+            ),
+            request_options=RequestOptions.pb(RequestOptions(request_tag="tag-1")),
+            directed_read_options=DirectedReadOptions.pb(
+                DirectedReadOptions(
+                    include_replicas=DirectedReadOptions.IncludeReplicas(
+                        auto_failover_disabled=True
+                    )
+                )
+            ),
+        )
+
+    def test_query_mode_accepts_name_and_value(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        profile = ExecuteSqlRequest.QueryMode.PROFILE
+        for query_mode in ("PROFILE", profile, profile.value):
+            with self.subTest(query_mode=query_mode):
+                result = self._assert_matches_proto_plus(query_mode=query_mode)
+                self.assertEqual(result.query_mode, profile)
+
+    def test_invalid_query_mode_name_raises_key_error(self):
+        # Matches what the proto-plus constructor raises today.
+        with self.assertRaises(KeyError):
+            self._callFUT(query_mode="NOT_A_QUERY_MODE")
+
+    def test_empty_params_preserves_field_presence(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # `execute_sql` passes `{}` rather than `None` when a query has no
+        # parameters, which sets the `params` field to an explicit empty Struct.
+        result = self._assert_matches_proto_plus(params={})
+        self.assertTrue(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_empty_struct_params_preserves_field_presence(self):
+        from google.protobuf.struct_pb2 import Struct
+
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        result = self._assert_matches_proto_plus(params=Struct())
+        self.assertTrue(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_params_none_leaves_field_unset(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # The proto-plus constructor rejects `params=None`, so this case has no
+        # counterpart to compare against.
+        result = self._callFUT(params=None)
+        self.assertFalse(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_empty_param_types_leaves_map_empty(self):
+        for param_types in (None, {}):
+            with self.subTest(param_types=param_types):
+                result = self._assert_matches_proto_plus(param_types=param_types)
+                self.assertEqual(len(result.param_types), 0)
+
+    def test_dicts_containing_proto_plus_messages(self):
+        from google.cloud.spanner_v1 import DirectedReadOptions
+        from google.cloud.spanner_v1.types import Type, TypeCode
+
+        # `directed_read_options` and `param_types` are passed straight from
+        # user input, so a dict holding a proto-plus message is reachable from
+        # the public API and must behave exactly like the proto-plus
+        # constructor.
+        self._assert_matches_proto_plus(
+            param_types={
+                "ids": {
+                    "code": TypeCode.ARRAY,
+                    "array_element_type": Type(code=TypeCode.INT64),
+                }
+            },
+            directed_read_options={
+                "include_replicas": DirectedReadOptions.IncludeReplicas(
+                    auto_failover_disabled=True
+                )
+            },
+        )
+
+    def test_params_dict_of_value_messages_is_not_supported(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # This is the one documented difference from the proto-plus
+        # constructor. It is unreachable from `execute_sql`, which always
+        # builds an already-encoded `Struct`, and it cannot be supported
+        # without re-encoding the parameter values by hand -- which would risk
+        # encoding them differently than `Struct` does.
+        params = {"singer_id": Value(string_value="42")}
+
+        ExecuteSqlRequest(
+            session=self.SESSION_NAME, sql=self.SQL, seqno=1, params=params
+        )
+        with self.assertRaises(ValueError):
+            self._callFUT(params=params)
+
+    def test_inputs_are_copied_not_aliased(self):
+        from google.protobuf.struct_pb2 import Struct
+
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+        from google.cloud.spanner_v1.types import RequestOptions
+
+        request_options = RequestOptions(request_tag="tag-1")
+        params = Struct(fields={"singer_id": _make_value_pb(42)})
+
+        expected_request_options = RequestOptions(request_tag="tag-1")
+        expected_params = Struct()
+        expected_params.CopyFrom(params)
+
+        result = self._callFUT(request_options=request_options, params=params)
+        result.request_options.request_tag = "mutated"
+        result.params["singer_id"] = "mutated"
+
+        # The mutations must land on the result...
+        self.assertEqual(result.request_options.request_tag, "mutated")
+        self.assertEqual(result.params["singer_id"], "mutated")
+        # ...and must not be visible through the caller's objects.
+        self.assertEqual(request_options, expected_request_options)
+        self.assertEqual(params, expected_params)
+
+    def test_builder_covers_every_request_field(self):
+        import inspect
+
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+        from google.cloud.spanner_v1._helpers import _make_execute_sql_request
+
+        fields = {field.name for field in ExecuteSqlRequest.pb().DESCRIPTOR.fields}
+        parameters = set(inspect.signature(_make_execute_sql_request).parameters)
+        self.assertEqual(
+            fields - parameters,
+            {
+                # Renamed to match `execute_sql`'s public keyword arguments.
+                "session",
+                "partition_token",
+                # Set by the retry layer in `_restart_on_unavailable`.
+                "transaction",
+                "resume_token",
+                # Not surfaced by the handwritten layer.
+                "routing_hint",
+            },
+            "ExecuteSqlRequest gained or lost a field; thread it through "
+            "_make_execute_sql_request (or add it to this exclusion list).",
+        )
+
+
 class Test_get_cloud_region(unittest.TestCase):
     def setUp(self):
         _helpers._cloud_region = None
@@ -2009,6 +2310,381 @@ class Test_parse_interval(unittest.TestCase):
                     self.assertEqual(result.months, case["expected_months"])
                     self.assertEqual(result.days, case["expected_days"])
                     self.assertEqual(result.nanos, case["expected_nanos"])
+
+
+class TestBoundedStreamDrainer(unittest.TestCase):
+    def test_drain_stream_consumes_iterator(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(iterator)
+        drainer._queue.join()
+
+        self.assertEqual(consumed, [1, 2, 3])
+
+    def test_drain_stream_inline_fallback_on_full_queue(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=1, worker_count=0)
+        drainer._queue.put_nowait(mock.Mock())
+
+        items = [1, 2]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer.drain(iterator)
+
+        self.assertEqual(consumed, [1, 2])
+
+    def test_drain_stream_handles_none(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(None)
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drain_stream_handles_iterator_exception(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        class FailingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                raise RuntimeError("Stream broken")
+
+        iterator = FailingIterator()
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(iterator)
+        drainer._queue.join()
+
+    def test_drain_stream_after_shutdown_drains_inline(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer.drain(iterator)
+        self.assertEqual(consumed, [1, 2, 3])
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drain_stream_inline_fallback_iterator_exception(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=1, worker_count=0)
+        drainer._queue.put_nowait(mock.Mock())
+
+        class FailingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                raise RuntimeError("Failed inline")
+
+        iterator = FailingIterator()
+        # Should catch and ignore the exception without raising
+        drainer.drain(iterator)
+
+    def test_drainer_fallback_on_ensure_started_error(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=1)
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    val = items.pop(0)
+                    consumed.append(val)
+                    return val
+                raise StopIteration
+
+        with mock.patch.object(
+            drainer, "_ensure_started", side_effect=RuntimeError("thread limit reached")
+        ):
+            drainer.drain(MockIterator())
+
+        self.assertEqual(consumed, [1, 2, 3])
+
+    def test_drainer_ensure_started_partial_failure_retains_started(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=3)
+        start_count = 0
+
+        def _mock_thread_start(thread_self):
+            nonlocal start_count
+            start_count += 1
+            if start_count > 1:
+                raise RuntimeError("thread limit reached")
+
+        with mock.patch(
+            "google.cloud.spanner_v1._helpers.threading.Thread.start",
+            _mock_thread_start,
+        ):
+            with self.assertRaises(RuntimeError):
+                drainer._ensure_started()
+
+        # Started should remain True because 1 worker was successfully created
+        self.assertTrue(drainer._started)
+        self.assertEqual(len(drainer._workers), 1)
+
+        # Subsequent call must not attempt to spawn additional threads
+        drainer._ensure_started()
+        self.assertEqual(len(drainer._workers), 1)
+
+    def test_drainer_ensure_started_total_failure_resets_started(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=2)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._helpers.threading.Thread.start",
+            side_effect=RuntimeError("no threads"),
+        ):
+            with self.assertRaises(RuntimeError):
+                drainer._ensure_started()
+
+        # Started should be reset to False because 0 workers were created
+        self.assertFalse(drainer._started)
+        self.assertEqual(len(drainer._workers), 0)
+
+    def test_drainer_shutdown_with_full_queue(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        items_first = [1, 2]
+        items_second = [3, 4]
+        consumed = []
+
+        class MockIterator:
+            def __init__(self, items):
+                self._items = list(items)
+
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if self._items:
+                    val = self._items.pop(0)
+                    consumed.append(val)
+                    return val
+                raise StopIteration
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=2)
+        drainer._ensure_started()
+        drainer._queue.put_nowait(MockIterator(items_first))
+        drainer._queue.put_nowait(MockIterator(items_second))
+        self.assertTrue(drainer._queue.full())
+
+        # Calling shutdown when queue is already full must not raise queue.Full
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        # All workers must cleanly terminate despite the queue having been full
+        for worker in drainer._workers:
+            self.assertFalse(worker.is_alive())
+
+        self.assertEqual(sorted(consumed), [1, 2, 3, 4])
+
+    def test_drainer_shutdown_terminates_idle_workers(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=2)
+        drainer._ensure_started()
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        for worker in drainer._workers:
+            self.assertFalse(worker.is_alive())
+
+    def test_drainer_drain_during_shutdown_does_not_strand_iterator(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=2)
+        drainer._ensure_started()
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        # Shutdown the drainer, which terminates workers
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        for worker in drainer._workers:
+            self.assertFalse(worker.is_alive())
+
+        # Calling drain() on a stopped drainer must drain inline and never strand tasks in the queue
+        drainer.drain(MockIterator())
+        self.assertEqual(consumed, [1, 2, 3])
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drainer_shutdown_respects_timeout_when_queue_unresponsive(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=0)
+        drainer._started = True
+        drainer._workers = [mock.Mock(), mock.Mock()]
+        drainer._queue.put_nowait(mock.Mock())
+        drainer._queue.put_nowait(mock.Mock())
+        self.assertTrue(drainer._queue.full())
+
+        # When the queue is full and workers cannot consume, shutdown must exit
+        # cleanly within the specified timeout without raising queue.Full
+        drainer.shutdown(timeout=0.05)
+        self.assertTrue(drainer._stopped)
+
+    def test_drainer_shutdown_respects_timeout_when_worker_is_busy(self):
+        import threading
+        import time
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=1)
+        drainer._ensure_started()
+
+        unblock_event = threading.Event()
+
+        class BlockingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                unblock_event.wait(timeout=1.0)
+                raise StopIteration
+
+        drainer._queue.put_nowait(BlockingIterator())
+
+        try:
+            # shutdown with a tiny timeout of 0.05s must return within ~0.05s
+            # rather than waiting indefinitely for the worker to finish
+            start_time = time.monotonic()
+            drainer.shutdown(timeout=0.05)
+            elapsed_time = time.monotonic() - start_time
+            self.assertTrue(drainer._stopped)
+            self.assertLess(elapsed_time, 0.5)
+        finally:
+            unblock_event.set()
+            for worker in drainer._workers:
+                worker.join(timeout=1.0)
+
+    def test_drainer_reset_after_fork(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=2)
+        drainer._ensure_started()
+        self.assertTrue(drainer._started)
+        self.assertEqual(len(drainer._workers), 2)
+
+        drainer._reset_after_fork()
+        self.assertFalse(drainer._started)
+        self.assertFalse(drainer._stopped)
+        self.assertEqual(len(drainer._workers), 0)
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drainer_garbage_collection(self):
+        import gc
+        import weakref
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        ref = weakref.ref(drainer)
+        del drainer
+        gc.collect()
+
+        self.assertIsNone(ref())
+
+    def test_global_stream_drainer_reset_after_fork(self):
+        from google.cloud.spanner_v1 import _helpers
+
+        _helpers._GLOBAL_STREAM_DRAINER._ensure_started()
+        self.assertTrue(_helpers._GLOBAL_STREAM_DRAINER._started)
+
+        _helpers._GLOBAL_STREAM_DRAINER._reset_after_fork()
+        self.assertFalse(_helpers._GLOBAL_STREAM_DRAINER._started)
+        self.assertEqual(len(_helpers._GLOBAL_STREAM_DRAINER._workers), 0)
+        self.assertEqual(_helpers._GLOBAL_STREAM_DRAINER._queue.qsize(), 0)
+
+    def test_module_drain_stream(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1 import _helpers
+
+        with mock.patch.object(_helpers._GLOBAL_STREAM_DRAINER, "drain") as mock_drain:
+            iterator = mock.Mock()
+            _helpers._drain_stream(iterator)
+            mock_drain.assert_called_once_with(iterator)
 
 
 class Test_get_type_decoder(unittest.TestCase):

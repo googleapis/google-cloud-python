@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.46.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.1...google-cloud-bigquery-v3.46.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* **bigquery:** accept empty sourceFormat fields ([#18472](https://github.com/googleapis/google-cloud-python/issues/18472)) ([590e43d](https://github.com/googleapis/google-cloud-python/commit/590e43da42fea4f08be7b29b3bf63c3c3a33d112))
+* **bigquery:** drop startIndex whenever a page token is sent ([#18603](https://github.com/googleapis/google-cloud-python/issues/18603)) ([fc6eae3](https://github.com/googleapis/google-cloud-python/commit/fc6eae3bbcea47d00f190d4bab51bef80e838a3a))
+* **bigquery:** remove PendingDeprecationWarning from RowIterator.to_arrow ([#18684](https://github.com/googleapis/google-cloud-python/issues/18684)) ([9025061](https://github.com/googleapis/google-cloud-python/commit/9025061801cc8b4e8f2b7d25b3d598074388ba48))
+
+## [3.46.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.0...google-cloud-bigquery-v3.46.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* **bigquery:** account for range element type, rounding mode, and foreign type in SchemaField equality ([#18540](https://github.com/googleapis/google-cloud-python/issues/18540)) ([053dbc9](https://github.com/googleapis/google-cloud-python/commit/053dbc9872ad3f26e10c311ff801b1a85faf1c32))
+
+## [3.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.2...google-cloud-bigquery-v3.46.0) (2026-10-01)
+
+
+### Features
+
+* **bigquery:** Declare Python 3.15 support ([#18525](https://github.com/googleapis/google-cloud-python/issues/18525)) ([6ed8447](https://github.com/googleapis/google-cloud-python/commit/6ed844782d453f1d1ebd3f70f8f0484254ff15b1))
+
+
+### Bug Fixes
+
+* repair broken and stale repository URLs in package metadata ([#18498](https://github.com/googleapis/google-cloud-python/issues/18498)) ([54dbd12](https://github.com/googleapis/google-cloud-python/commit/54dbd12056abcfc007b5b76006751c3b11bea99f)), refs [#18497](https://github.com/googleapis/google-cloud-python/issues/18497)
+
 ## [3.45.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.1...google-cloud-bigquery-v3.45.2) (2026-09-17)
 
 

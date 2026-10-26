@@ -180,11 +180,6 @@ def default(session, install_extras=True):
 @_calculate_duration
 def unit(session, test_type):
     """Run the unit test suite."""
-    if session.python == "3.15":
-        session.skip(
-            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
-        )
-
     install_extras = True
     if test_type == "unit_noextras":
         # unit_noextras only runs on the oldest and newest Python versions

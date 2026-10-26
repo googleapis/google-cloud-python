@@ -271,6 +271,24 @@ if packaging.version.parse(sqlalchemy.__version__) >= packaging.version.parse("2
         def test_floordiv_integer_bound(self):
             pass
 
+        @pytest.mark.skip(
+            "Skipped due to BigQuery Standard SQL limitations with extreme decimal/numeric inputs:\n"
+            "1. 38-Digit Integer Literal Overflows: BigQuery's SQL parser lexically evaluates "
+            "unquoted digit sequences without a decimal point as INT64 *before* evaluating "
+            "CAST() wrappers. Values like 30000000000000000000000000000000000000 overflow "
+            "signed 64-bit integer limits (max: 9,223,372,036,854,775,807) and raise a 400 "
+            "'Invalid integer literal' error unless quoted as strings.\n"
+            "2. Untyped Tiny Divisor Underflow: Standard NUMERIC in BigQuery is capped at 9 "
+            "decimal places (whereas BIGNUMERIC supports 38). When untyped functions (like "
+            "nullif) cast a 13-decimal divisor (0.00000000000012345679) to NUMERIC, it "
+            "rounds down to 0 and triggers a 400 division-by-zero error.\n"
+            "3. Untyped Precision Loss: Coercing high-precision operands to standard NUMERIC "
+            "during untyped division causes trailing precision mismatches "
+            "(e.g., returning 7.00000000447361540043026119825490002512 instead of 7)."
+        )
+        def test_truediv_divisor(self):
+            pass
+
     class SimpleUpdateDeleteTest(_SimpleUpdateDeleteTest):
         """The base tests fail if operations return rows for some reason."""
 
@@ -644,6 +662,11 @@ del (
     PostCompileParamsTest
 )  # BQ adds backticks to bind parameters, causing failure of tests TODO: fix this?
 del QuotedNameArgumentTest  # Quotes aren't allowed in BigQuery table names.
-del (
-    WindowFunctionTest.test_window_rows_between
-)  # test expects BQ to return sorted results
+# Test expects BQ to return sorted results, which it does not do. (renamed to _w_caching in SQLAlchemy 2.1+)
+for _test_name in ("test_window_rows_between", "test_window_rows_between_w_caching"):
+    if hasattr(WindowFunctionTest, _test_name):
+        delattr(WindowFunctionTest, _test_name)
+
+# BigQuery requires dataset qualification for views, which TableViaSelectTest does not provide.
+if "TableViaSelectTest" in globals():
+    del TableViaSelectTest

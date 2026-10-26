@@ -39,9 +39,11 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -66,8 +68,10 @@ from google.cloud.dialogflow_v2.services.answer_records import (
 from google.cloud.dialogflow_v2.types import (
     agent_coaching_instruction,
     answer_record,
+    companion_agent,
     context,
     generator,
+    grounding,
     intent,
     participant,
     session,
@@ -2820,6 +2824,7 @@ def test_update_answer_record_rest_call_success(request_type):
                     "answer_copied": True,
                     "clicked_uris": ["clicked_uris_value1", "clicked_uris_value2"],
                 },
+                "companion_feedback": {},
             },
             "clicked": True,
             "click_time": {},
@@ -3044,7 +3049,17 @@ def test_update_answer_record_rest_call_success(request_type):
                         "query_text_sentiment": {
                             "score": 0.54,
                             "magnitude": 0.9580000000000001,
-                        }
+                        },
+                        "status": {
+                            "code": 411,
+                            "message": "message_value",
+                            "details": [
+                                {
+                                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                                    "value": b"\x08\x0c\x10\xdb\x07",
+                                }
+                            ],
+                        },
                     },
                 },
                 "intent_suggestion": {
@@ -3126,7 +3141,7 @@ def test_update_answer_record_rest_call_success(request_type):
                             "ces_tool": "ces_tool_value",
                             "ces_app": "ces_app_value",
                             "action": "action_value",
-                            "error": {"message": "message_value"},
+                            "error": {"message": "message_value", "retryable": True},
                             "raw_content": b"raw_content_blob",
                             "content": "content_value",
                             "create_time": {},
@@ -3134,6 +3149,75 @@ def test_update_answer_record_rest_call_success(request_type):
                         },
                     }
                 ],
+            },
+            "companion_suggestion": {
+                "guidances": [
+                    {
+                        "suggested_reply": "suggested_reply_value",
+                        "suggested_action": "suggested_action_value",
+                        "instruction_source": {
+                            "display_name": "display_name_value",
+                            "display_details": "display_details_value",
+                            "condition": "condition_value",
+                            "actions": [{"description": "description_value"}],
+                            "trigger_event": 1,
+                            "disable_suggested_reply": True,
+                        },
+                        "knowledge_sources": [
+                            {
+                                "knowledge_article_url": "knowledge_article_url_value",
+                                "knowledge_article_title": "knowledge_article_title_value",
+                                "knowledge_snippet": "knowledge_snippet_value",
+                            }
+                        ],
+                        "explanation": "explanation_value",
+                        "grounding_metadata": {
+                            "web_search_queries": [
+                                "web_search_queries_value1",
+                                "web_search_queries_value2",
+                            ],
+                            "search_entry_point": {
+                                "rendered_content": "rendered_content_value"
+                            },
+                            "grounding_chunks": [
+                                {
+                                    "web": {
+                                        "uri": "uri_value",
+                                        "title": "title_value",
+                                        "domain": "domain_value",
+                                    },
+                                    "retrieved_context": {
+                                        "uri": "uri_value",
+                                        "title": "title_value",
+                                        "text": "text_value",
+                                    },
+                                }
+                            ],
+                            "grounding_supports": [
+                                {
+                                    "segment": {
+                                        "start_index": 1189,
+                                        "end_index": 942,
+                                        "text": "text_value",
+                                    },
+                                    "grounding_chunk_indices": [2436, 2437],
+                                }
+                            ],
+                        },
+                        "tool_calls": [
+                            {"tool_call_info": {}, "text_update": "text_update_value"}
+                        ],
+                        "triggering_tool_call_answer_records": [
+                            "triggering_tool_call_answer_records_value1",
+                            "triggering_tool_call_answer_records_value2",
+                        ],
+                    }
+                ]
+            },
+            "reactive_companion_suggestion": {
+                "response": "response_value",
+                "grounding_metadata": {},
+                "tool_calls": {},
             },
         },
     }

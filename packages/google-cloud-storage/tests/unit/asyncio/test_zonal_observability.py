@@ -499,3 +499,46 @@ async def test_noop_trace_span_fast_path_when_disabled(monkeypatch, mock_client)
         assert s2 is None
     async with cm3 as s3:
         assert s3 is None
+
+
+@pytest.mark.asyncio
+async def test_async_grpc_client_tracing_coexists_with_metrics_and_interconnect_options(
+    exporter,
+):
+    """Verify tracing, ACO cache, OTel metrics gating, and DirectPath Interconnect compose cleanly."""
+    from google.cloud.storage import _opentelemetry_metrics
+
+    with (
+        mock.patch("google.cloud._storage_v2.StorageAsyncClient"),
+        mock.patch.multiple(
+            _opentelemetry_metrics,
+            HAS_OPENTELEMETRY_METRICS=True,
+            _ENABLE_METRICS_DEV_GATE=True,
+        ),
+    ):
+        client = async_grpc_client.AsyncGrpcClient(
+            credentials=mock.Mock(),
+            attempt_direct_path_xds_over_interconnect=True,
+            enable_metrics=True,
+            enable_debug_metrics=True,
+        )
+        client._grpc_client = mock.AsyncMock()
+        client._grpc_client.get_object.return_value = storage_v2.Object(
+            name="obj1", bucket="projects/_/buckets/my-zonal-bucket"
+        )
+        client._bucket_metadata_cache.update_cache(
+            "my-zonal-bucket",
+            "//storage.googleapis.com/projects/123456789/buckets/my-zonal-bucket",
+            "us-east1-a",
+        )
+
+        assert client.metrics_enabled is True
+        assert client.debug_metrics_enabled is True
+        assert client._is_async_grpc_client is True
+
+        await client.get_object("my-zonal-bucket", "obj1")
+
+        spans = exporter.get_finished_spans()
+        assert len(spans) == 1
+        assert spans[0].name == "Storage.AsyncGrpcClient.getObject"
+        assert spans[0].attributes["gcp.resource.destination.location"] == "us-east1-a"

@@ -14,6 +14,7 @@
 
 """Helper functions for Cloud Spanner."""
 
+import atexit
 import base64
 import datetime
 import decimal
@@ -21,11 +22,13 @@ import logging
 import math
 import operator
 import os
+import queue
 import threading
 import time
 import uuid
 from contextlib import contextmanager
 
+import proto
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
@@ -40,9 +43,11 @@ from google.cloud.spanner_v1.request_id_header import (
     with_request_id_metadata_only,
 )
 from google.cloud.spanner_v1.types import (
+    DirectedReadOptions,
     ExecuteSqlRequest,
     RequestOptions,
     TransactionOptions,
+    Type,
     TypeCode,
 )
 
@@ -234,6 +239,110 @@ def _merge_query_options(base, merge):
     combined_pb.CopyFrom(type(base).pb(base))
     combined_pb.MergeFrom(type(merge).pb(merge))
     return combined
+
+
+# The protobuf class underlying the proto-plus ``ExecuteSqlRequest`` wrapper.
+_EXECUTE_SQL_REQUEST_PB = ExecuteSqlRequest.pb()
+
+
+def _as_raw_pb(value, message_type):
+    """Return the raw protobuf message for ``value``.
+
+    ``value`` may be a proto-plus message, a ``dict``, a raw protobuf message,
+    or ``None``:
+
+    - proto-plus messages are unwrapped directly, which is the hot path;
+    - dicts are converted by proto-plus, because the raw protobuf constructor
+      only accepts dicts whose values are themselves dicts and rejects
+      proto-plus messages nested inside them;
+    - raw protobuf messages and ``None`` are returned unchanged. The raw
+      constructor treats a ``None`` keyword argument as "field not set".
+
+    :type value: :class:`~proto.message.Message` or :class:`dict` or
+        :class:`~google.protobuf.message.Message` or None
+    :param value: the value to convert.
+
+    :type message_type: type
+    :param message_type: the proto-plus class of the target field, used to
+        convert ``value`` when it is a ``dict``.
+
+    :rtype: :class:`~google.protobuf.message.Message` or None
+    :returns: the raw protobuf message, or ``value`` unchanged.
+    """
+    if value is None:
+        return None
+    if isinstance(value, proto.Message):
+        return type(value).pb(value)
+    if isinstance(value, dict):
+        return message_type.pb(message_type(value))
+    return value
+
+
+def _make_execute_sql_request(
+    session_name,
+    sql,
+    seqno,
+    params=None,
+    param_types=None,
+    query_mode=None,
+    partition=None,
+    query_options=None,
+    request_options=None,
+    last_statement=False,
+    data_boost_enabled=False,
+    directed_read_options=None,
+):
+    """Build an :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest`.
+
+    ``ExecuteSqlRequest(**kwargs)`` marshals every keyword argument through
+    proto-plus, which performs Python-level descriptor lookups and type
+    coercion for each field. Executing a query is a hot path, so the request is
+    built on the underlying protobuf message instead and shallow-wrapped with
+    :meth:`~proto.message.Message.wrap`. The result is an ordinary
+    ``ExecuteSqlRequest`` that serializes to identical bytes, built several
+    times faster.
+
+    Arguments accept the same types as the proto-plus constructor: proto-plus
+    messages, dicts, or raw protobuf messages. ``None`` leaves the
+    corresponding field unset, with two documented exceptions:
+
+    - ``params=None`` is treated as "no parameters", where the proto-plus
+      constructor raises;
+    - a ``params`` dict must hold plain Python values, not raw
+      :class:`~google.protobuf.struct_pb2.Value` messages. ``execute_sql``
+      always passes an already-encoded ``Struct``, so this only affects direct
+      callers of this helper.
+
+    :rtype: :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest`
+    :returns: the request to send to ``ExecuteStreamingSql``.
+    """
+    if isinstance(query_mode, str):
+        query_mode = ExecuteSqlRequest.QueryMode[query_mode]
+    return ExecuteSqlRequest.wrap(
+        _EXECUTE_SQL_REQUEST_PB(
+            session=session_name,
+            sql=sql,
+            seqno=seqno,
+            params=params,
+            param_types=(
+                {
+                    name: _as_raw_pb(param_type, Type)
+                    for name, param_type in param_types.items()
+                }
+                if param_types
+                else None
+            ),
+            query_mode=query_mode,
+            partition_token=partition,
+            query_options=_as_raw_pb(query_options, ExecuteSqlRequest.QueryOptions),
+            request_options=_as_raw_pb(request_options, RequestOptions),
+            last_statement=last_statement,
+            data_boost_enabled=data_boost_enabled,
+            directed_read_options=_as_raw_pb(
+                directed_read_options, DirectedReadOptions
+            ),
+        )
+    )
 
 
 def _merge_client_context(base, merge):
@@ -740,6 +849,22 @@ _ARRAY_TYPE_CODE = int(TypeCode.ARRAY)
 _STRUCT_TYPE_CODE = int(TypeCode.STRUCT)
 
 
+def _resource_info_from_database(database):
+    """Resource information dictionary from database instance or fallback."""
+    if database is None:
+        return None
+    resource_info = getattr(database, "_resource_info", None)
+    if resource_info is not None:
+        return resource_info
+    instance = getattr(database, "_instance", None)
+    client = getattr(instance, "_client", None) if instance else None
+    return {
+        "project": getattr(client, "project", None),
+        "instance": getattr(instance, "instance_id", None),
+        "database": getattr(database, "database_id", None),
+    }
+
+
 class _SessionWrapper(object):
     """Base class for objects wrapping a session.
 
@@ -749,6 +874,13 @@ class _SessionWrapper(object):
 
     def __init__(self, session):
         self._session = session
+
+    @property
+    def _resource_info(self):
+        """Resource information for metrics labels."""
+        session = self._session
+        database = getattr(session, "_database", None) if session is not None else None
+        return _resource_info_from_database(database)
 
 
 def _append_routing_headers(metadata):
@@ -894,7 +1026,8 @@ def _delay_until_retry(exc, deadline, attempts, default_retry_delay=None):
     :param attempts: number of call retries
     """
 
-    cause = exc.errors[0]
+    errors = getattr(exc, "errors", None)
+    cause = errors[0] if errors else exc
     now = time.time()
     if now >= deadline:
         raise
@@ -1172,3 +1305,138 @@ def _create_experimental_host_transport(
         client_key,
         interceptors=interceptors,
     )
+
+
+_STREAM_DRAIN_QUEUE_SIZE = 512
+_STREAM_DRAIN_WORKER_COUNT = 8
+
+
+class _BoundedStreamDrainer:
+    """Bounded background drainer for synchronous gRPC streams.
+
+    Uses a fixed pool of daemon worker threads and a bounded queue to drain
+    completed streams to EOF, allowing callers to return early upon seeing
+    PartialResultSet.last without blocking on trailing gRPC frames.
+    """
+
+    def __init__(
+        self,
+        queue_size: int = _STREAM_DRAIN_QUEUE_SIZE,
+        worker_count: int = _STREAM_DRAIN_WORKER_COUNT,
+    ):
+        self._queue_size = queue_size
+        self._worker_count = worker_count
+        self._lock = threading.RLock()
+        self._reset()
+
+    def _reset(self):
+        self._queue = queue.Queue(maxsize=self._queue_size)
+        self._started = False
+        self._stopped = False
+        self._workers = []
+
+    def _reset_after_fork(self):
+        self._lock = threading.RLock()
+        self._reset()
+
+    def _ensure_started(self):
+        if not self._started and not self._stopped:
+            with self._lock:
+                if not self._started and not self._stopped:
+                    self._started = True
+                    try:
+                        for index in range(self._worker_count):
+                            worker = threading.Thread(
+                                target=self._worker_loop,
+                                name=f"spanner-stream-drainer-{index}",
+                                daemon=True,
+                            )
+                            worker.start()
+                            self._workers.append(worker)
+                    except Exception:
+                        if not self._workers:
+                            self._started = False
+                        raise
+
+    def _worker_loop(self):
+        while True:
+            iterator = self._queue.get()
+            if iterator is None:
+                self._queue.task_done()
+                break
+            try:
+                for _ in iterator:
+                    pass
+            except Exception:
+                pass
+            finally:
+                self._queue.task_done()
+
+    def drain(self, iterator):
+        if iterator is None:
+            return
+
+        with self._lock:
+            if not self._stopped:
+                try:
+                    self._ensure_started()
+                    self._queue.put_nowait(iterator)
+                    return
+                except Exception:
+                    # Under extreme bursts where the queue is temporarily full, or if thread
+                    # creation fails (e.g. in restricted environments or during shutdown),
+                    # fall through to drain inline on the caller thread.
+                    pass
+
+        # If already shut down or during interpreter exit, or if the queue is full,
+        # drain inline on caller thread rather than cancelling a successful query.
+        # Because trailers are delivered in sub-millisecond time (<0.5ms),
+        # inline draining adds negligible latency while guaranteeing status OK.
+        try:
+            for _ in iterator:
+                pass
+        except Exception:
+            pass
+
+    def shutdown(self, timeout: float = 0.5):
+        """Cleanly terminate worker threads during interpreter shutdown.
+
+        This is a best-effort cleanup at interpreter exit bounded by ``timeout``
+        seconds across all workers.
+        """
+        with self._lock:
+            if self._stopped:
+                return
+            self._stopped = True
+
+        if self._started:
+            deadline = time.monotonic() + timeout
+            for _ in range(len(self._workers)):
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                try:
+                    self._queue.put(None, timeout=remaining)
+                except queue.Full:
+                    break
+
+            for worker in self._workers:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                worker.join(timeout=remaining)
+
+
+_GLOBAL_STREAM_DRAINER = _BoundedStreamDrainer()
+atexit.register(_GLOBAL_STREAM_DRAINER.shutdown)
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(after_in_child=_GLOBAL_STREAM_DRAINER._reset_after_fork)
+
+
+def _drain_stream(iterator):
+    """Drain a stream iterator to EOF in the background.
+
+    Called when PartialResultSet.last is True to allow the caller to return immediately
+    while consuming trailing gRPC metadata so the stream terminates cleanly with status OK.
+    """
+    _GLOBAL_STREAM_DRAINER.drain(iterator)

@@ -53,6 +53,7 @@ __lazy_modules__ = {
     "google.ads.datamanager_v1.types.processing_errors",
     "google.ads.datamanager_v1.types.request_status_per_destination",
     "google.ads.datamanager_v1.types.terms_of_service",
+    "google.ads.datamanager_v1.types.user",
     "google.ads.datamanager_v1.types.user_data",
     "google.ads.datamanager_v1.types.user_list",
     "google.ads.datamanager_v1.types.user_list_direct_license",
@@ -146,10 +147,14 @@ from .types.ingestion_service import (
     IngestAudienceMembersResponse,
     IngestEventsRequest,
     IngestEventsResponse,
+    IngestUsersRequest,
+    IngestUsersResponse,
     RemoveAllAudienceMembersRequest,
     RemoveAllAudienceMembersResponse,
     RemoveAudienceMembersRequest,
     RemoveAudienceMembersResponse,
+    RemoveUsersRequest,
+    RemoveUsersResponse,
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
@@ -182,6 +187,7 @@ from .types.processing_errors import (
 )
 from .types.request_status_per_destination import RequestStatusPerDestination
 from .types.terms_of_service import TermsOfService, TermsOfServiceStatus
+from .types.user import User
 from .types.user_data import AddressInfo, UserData, UserIdentifier
 from .types.user_list import (
     ContactIdInfo,
@@ -301,6 +307,8 @@ __all__ = (
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
     "IngestEventsResponse",
+    "IngestUsersRequest",
+    "IngestUsersResponse",
     "IngestedUserListInfo",
     "IngestionServiceClient",
     "IpData",
@@ -340,6 +348,8 @@ __all__ = (
     "RemoveAllAudienceMembersResponse",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
+    "RemoveUsersRequest",
+    "RemoveUsersResponse",
     "RequestStatusPerDestination",
     "RetrieveInsightsRequest",
     "RetrieveInsightsResponse",
@@ -355,6 +365,7 @@ __all__ = (
     "UpdateUserListDirectLicenseRequest",
     "UpdateUserListGlobalLicenseRequest",
     "UpdateUserListRequest",
+    "User",
     "UserData",
     "UserIdData",
     "UserIdInfo",

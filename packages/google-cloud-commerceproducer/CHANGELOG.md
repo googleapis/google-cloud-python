@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerceproducer-v0.1.2...google-cloud-commerceproducer-v0.1.3) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+* update API sources and regenerate ([#18513](https://github.com/googleapis/google-cloud-python/issues/18513)) ([7d7adca](https://github.com/googleapis/google-cloud-python/commit/7d7adcaee688603077ea53abec678130045c20ed))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerceproducer-v0.1.1...google-cloud-commerceproducer-v0.1.2) (2026-08-21)
 
 

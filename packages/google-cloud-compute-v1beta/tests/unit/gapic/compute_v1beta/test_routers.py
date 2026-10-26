@@ -1216,7 +1216,12 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
     jsonified_request["router"] = "router_value"
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("requestId",))
+    assert not set(unset_fields) - set(
+        (
+            "etag",
+            "requestId",
+        )
+    )
 
     # verify required fields with non-default values are left alone
     assert "project" in jsonified_request
@@ -1406,7 +1411,12 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequ
     jsonified_request["router"] = "router_value"
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("requestId",))
+    assert not set(unset_fields) - set(
+        (
+            "etag",
+            "requestId",
+        )
+    )
 
     # verify required fields with non-default values are left alone
     assert "project" in jsonified_request
@@ -8475,6 +8485,7 @@ def test_get_rest_call_success(request_type):
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             encrypted_interconnect_router=True,
+            etag="etag_value",
             id=205,
             kind="kind_value",
             name="name_value",
@@ -8501,6 +8512,7 @@ def test_get_rest_call_success(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.encrypted_interconnect_router is True
+    assert response.etag == "etag_value"
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -9306,6 +9318,7 @@ def test_insert_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "encrypted_interconnect_router": True,
+        "etag": "etag_value",
         "id": 205,
         "interfaces": [
             {
@@ -9362,6 +9375,10 @@ def test_insert_rest_call_success(request_type):
                         "description": "description_value",
                         "match": "match_value",
                         "rule_number": 1184,
+                        "source_workload_identities": [
+                            "source_workload_identities_value1",
+                            "source_workload_identities_value2",
+                        ],
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
@@ -10220,6 +10237,7 @@ def test_patch_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "encrypted_interconnect_router": True,
+        "etag": "etag_value",
         "id": 205,
         "interfaces": [
             {
@@ -10276,6 +10294,10 @@ def test_patch_rest_call_success(request_type):
                         "description": "description_value",
                         "match": "match_value",
                         "rule_number": 1184,
+                        "source_workload_identities": [
+                            "source_workload_identities_value1",
+                            "source_workload_identities_value2",
+                        ],
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
@@ -11100,6 +11122,7 @@ def test_preview_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "encrypted_interconnect_router": True,
+        "etag": "etag_value",
         "id": 205,
         "interfaces": [
             {
@@ -11156,6 +11179,10 @@ def test_preview_rest_call_success(request_type):
                         "description": "description_value",
                         "match": "match_value",
                         "rule_number": 1184,
+                        "source_workload_identities": [
+                            "source_workload_identities_value1",
+                            "source_workload_identities_value2",
+                        ],
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
@@ -11633,6 +11660,7 @@ def test_update_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "encrypted_interconnect_router": True,
+        "etag": "etag_value",
         "id": 205,
         "interfaces": [
             {
@@ -11689,6 +11717,10 @@ def test_update_rest_call_success(request_type):
                         "description": "description_value",
                         "match": "match_value",
                         "rule_number": 1184,
+                        "source_workload_identities": [
+                            "source_workload_identities_value1",
+                            "source_workload_identities_value2",
+                        ],
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
