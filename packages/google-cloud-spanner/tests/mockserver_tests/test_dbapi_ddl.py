@@ -140,6 +140,7 @@ class TestDbapiDdl(MockServerTestBase):
             self.assertEqual(dml_statement, execute_requests[0].sql)
 
             connection.commit()
+            self.assertEqual(1, len(self.database_admin_service.requests))
         finally:
             connection.close()
 
@@ -177,6 +178,7 @@ class TestDbapiDdl(MockServerTestBase):
             self.assertEqual(dml_statement, batch_requests[0].statements[0].sql)
 
             connection.commit()
+            self.assertEqual(1, len(self.database_admin_service.requests))
         finally:
             connection.close()
 
@@ -204,6 +206,7 @@ class TestDbapiDdl(MockServerTestBase):
                 self.assertEqual([ddl_statement], request.statements)
 
             connection.commit()
+            self.assertEqual(1, len(self.database_admin_service.requests))
         finally:
             connection.close()
 
