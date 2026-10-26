@@ -194,9 +194,6 @@ class _StreamMultiplexer:
         async with self._reopen_lock:
             if self._stream_generation != broken_generation:
                 return
-            mark_clean = getattr(self._stream, "_mark_closing_cleanly", None)
-            if callable(mark_clean) and not inspect.iscoroutinefunction(mark_clean):
-                mark_clean()
             self._stop_recv_loop()
             if self._recv_task:
                 try:

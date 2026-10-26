@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import asyncio
-import time
 from typing import Any, List, Optional, Tuple
 
 import grpc
@@ -180,7 +179,6 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             metadata=final_metadata,
         )
 
-        attempt_start = time.perf_counter()
         try:
             await self.socket_like_rpc.open()  # this is actually 1 send
             response = await self.socket_like_rpc.recv()
@@ -191,11 +189,6 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             net_path = self._get_network_path(received_server_response=True)
             _opentelemetry_metrics.record_pending_retry(
                 self._metrics_recorder,
-                operation="WriteObject",
-                network_path=net_path,
-            )
-            self._metrics_recorder.record_ttfb(
-                time.perf_counter() - attempt_start,
                 operation="WriteObject",
                 network_path=net_path,
             )

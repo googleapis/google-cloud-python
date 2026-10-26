@@ -829,9 +829,12 @@ class TestAsyncGrpcClient:
         assert await tracked_uu == "resp"
         recorder.record_rpc_attempt.assert_called_once()
         assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+        recorder.record_ttfb.assert_called_once()
+        assert recorder.record_ttfb.call_args.kwargs["operation"] == "GetObject"
 
         # 2. Stream-Unary error and continuation error
         recorder.record_rpc_attempt.reset_mock()
+        recorder.record_ttfb.reset_mock()
         raw_su = _AwaitableCall(exc=_FakeRpcError())
         tracked_su = await s_u.intercept_stream_unary(
             mock.AsyncMock(return_value=raw_su), details, iter([])
@@ -845,6 +848,7 @@ class TestAsyncGrpcClient:
         assert (
             recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "UNAVAILABLE"
         )
+        recorder.record_ttfb.assert_not_called()
 
         for interceptor, method_name in (
             (u_u, "intercept_unary_unary"),
@@ -883,20 +887,35 @@ class TestAsyncGrpcClient:
                 return item
 
         recorder.record_rpc_attempt.reset_mock()
+        recorder.record_ttfb.reset_mock()
         tracked_us = await u_s.intercept_unary_stream(
             mock.AsyncMock(return_value=_StreamCall(["a", "b"])), details, "req"
         )
         collected = [x async for x in tracked_us]
         assert collected == ["a", "b"]
         assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+        recorder.record_ttfb.assert_called_once()
 
         recorder.record_rpc_attempt.reset_mock()
+        recorder.record_ttfb.reset_mock()
         tracked_ss = await s_s.intercept_stream_stream(
-            mock.AsyncMock(return_value=_StreamCall(["x"])), details, iter([])
+            mock.AsyncMock(return_value=_StreamCall(["x", "y"])), details, iter([])
         )
         assert await tracked_ss.read() == "x"
+        assert await tracked_ss.read() == "y"
         assert await tracked_ss.read() == grpc.aio.EOF
         assert recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
+        recorder.record_ttfb.assert_called_once()
+
+        # Immediate EOF without messages records attempt OK without TTFB
+        recorder.record_rpc_attempt.reset_mock()
+        recorder.record_ttfb.reset_mock()
+        tracked_empty = await s_s.intercept_stream_stream(
+            mock.AsyncMock(return_value=_StreamCall([])), details, iter([])
+        )
+        assert await tracked_empty.read() == grpc.aio.EOF
+        recorder.record_rpc_attempt.assert_called_once()
+        recorder.record_ttfb.assert_not_called()
 
         # Clean close vs abnormal cancel (including _interceptors_task, cycle, and non-dict object)
         recorder.record_rpc_attempt.reset_mock()
@@ -1318,6 +1337,7 @@ class TestAsyncGrpcClient:
 
         assert res == "object_meta"
         assert recorder.attempts_counter.add.call_count == 2
+        assert recorder.ttfb.record.call_count == 1
         assert recorder.errors_counter.add.call_count == 1
         assert recorder.retries_counter.add.call_count == 1
         assert (
@@ -1381,18 +1401,66 @@ class TestAsyncGrpcClient:
         recorded_dur = recorder.rpc_call_duration.record.call_args.args[0]
         assert recorded_dur < 10.0
 
-        # 3. _bind_call_to_operation for background recv loop task without active ContextVar
+        # 3. _bind_call_to_operation preserves _start_time:
+        #    - background recv failure uses bound op start_time
+        #    - clean stream close records full physical stream lifetime from _start_time
+        raw_bg_fail = mock.MagicMock()
+        raw_bg_fail.read = mock.AsyncMock(
+            side_effect=api_exceptions.Aborted("Background recv failed")
+        )
         tracked_bg = await s_s.intercept_stream_stream(
-            mock.AsyncMock(return_value=mock.MagicMock()), bidi_details, iter([])
+            mock.AsyncMock(return_value=raw_bg_fail), bidi_details, iter([])
         )
         tracked_bg._start_time -= 100.0
+        original_bg_start = tracked_bg._start_time
         wrapped_bg = types.SimpleNamespace(_call=tracked_bg)
-        with _opentelemetry_metrics.start_operation(
-            recorder,
+        bg_op = _opentelemetry_metrics._OperationState(
             client_method="storage.asyncio.AsyncMultiRangeDownloader.download_ranges",
             operation="ReadObject",
             rpc_method="google.storage.v2.Storage/BidiReadObject",
-        ) as bg_op:
-            async_grpc_client._bind_call_to_operation(wrapped_bg, bg_op)
-            assert tracked_bg._op_state is bg_op
-            assert tracked_bg._start_time == bg_op.start_time
+        )
+        async_grpc_client._bind_call_to_operation(wrapped_bg, bg_op)
+        assert tracked_bg._op_state is bg_op
+        assert tracked_bg._start_time == original_bg_start
+
+        recorder.rpc_call_duration.record.reset_mock()
+        with pytest.raises(api_exceptions.Aborted):
+            await tracked_bg.read()
+        assert recorder.rpc_call_duration.record.call_args.args[0] < 10.0
+
+        # 4. Healthy Bidi stream closed after _bind_call_to_operation and inside finalize()
+        #    records full physical stream lifetime (>= 100.0s)
+        raw_healthy = mock.MagicMock()
+        raw_healthy.cancel = mock.MagicMock(return_value=True)
+        raw_healthy.read = mock.AsyncMock(return_value=grpc.aio.EOF)
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.open",
+            operation="WriteObject",
+            rpc_method="google.storage.v2.Storage/BidiWriteObject",
+        ):
+            tracked_healthy = await s_s.intercept_stream_stream(
+                mock.AsyncMock(return_value=raw_healthy),
+                mock.MagicMock(method="/google.storage.v2.Storage/BidiWriteObject"),
+                iter([]),
+            )
+            tracked_healthy._start_time -= 100.0
+
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.append",
+            operation="WriteObject",
+            rpc_method="google.storage.v2.Storage/BidiWriteObject",
+        ) as append_op:
+            async_grpc_client._bind_call_to_operation(tracked_healthy, append_op)
+
+        recorder.rpc_call_duration.record.reset_mock()
+        with _opentelemetry_metrics.start_operation(
+            recorder,
+            client_method="storage.asyncio.AsyncAppendableObjectWriter.finalize",
+            operation="WriteObject",
+            rpc_method="google.storage.v2.Storage/BidiWriteObject",
+        ):
+            async_grpc_client._mark_call_closing_cleanly(tracked_healthy)
+            tracked_healthy.cancel()
+        assert recorder.rpc_call_duration.record.call_args.args[0] >= 100.0

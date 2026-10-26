@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import time
 from io import BytesIO
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -540,8 +539,6 @@ class AsyncMultiRangeDownloader:
                     async def generator():
                         nonlocal attempt_count, last_broken_generation
                         attempt_count += 1
-                        attempt_start = time.perf_counter()
-                        ttfb_recorded = False
 
                         if attempt_count > 1:
                             logger.info(
@@ -610,15 +607,6 @@ class AsyncMultiRangeDownloader:
 
                             # Track completion
                             if item.object_data_ranges:
-                                if not ttfb_recorded and recorder is not None:
-                                    ttfb_recorded = True
-                                    recorder.record_ttfb(
-                                        time.perf_counter() - attempt_start,
-                                        operation="ReadObject",
-                                        network_path=self._current_network_path(
-                                            received_server_response=True
-                                        ),
-                                    )
                                 for data_range in item.object_data_ranges:
                                     if data_range.range_end:
                                         pending_read_ids.discard(

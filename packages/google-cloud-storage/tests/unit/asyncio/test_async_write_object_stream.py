@@ -399,20 +399,32 @@ class TestAsyncWriteObjectStream:
     async def test_open_records_write_ttfb_and_close_marks_clean(
         self, mock_rpc_cls, mock_client
     ):
+        from google.cloud.storage.asyncio import async_grpc_client
+
         mock_recorder = MagicMock()
         mock_recorder.standard_enabled = True
-        mock_rpc = mock_rpc_cls.return_value
-        mock_rpc.open = AsyncMock()
-        mock_rpc.send = AsyncMock()
-        mock_rpc.recv = AsyncMock(
+        _, _, _, s_s = async_grpc_client._create_metrics_interceptors(
+            mock_recorder, direct_path_attempted=False
+        )
+        details = MagicMock(method="/google.storage.v2.Storage/BidiWriteObject")
+        raw_call = MagicMock()
+        raw_call.read = AsyncMock(
             side_effect=[
                 MagicMock(persisted_size=0, resource=None, write_handle=b"h1"),
+                MagicMock(persisted_size=4, resource=None, write_handle=b"h1"),
                 grpc.aio.EOF,
             ]
         )
+        tracked_call = await s_s.intercept_stream_stream(
+            AsyncMock(return_value=raw_call), details, iter([])
+        )
+
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.send = AsyncMock()
+        mock_rpc.recv = AsyncMock(side_effect=tracked_call.read)
         mock_rpc.close = AsyncMock()
-        mock_call = MagicMock(_closing_cleanly=False)
-        mock_rpc.call = mock_call
+        mock_rpc.call = tracked_call
 
         stream = _AsyncWriteObjectStream(
             mock_client, BUCKET, OBJECT, metrics_recorder=mock_recorder
@@ -422,8 +434,14 @@ class TestAsyncWriteObjectStream:
         assert mock_recorder.record_ttfb.call_args.kwargs["operation"] == "WriteObject"
         assert "network_path" in mock_recorder.record_ttfb.call_args.kwargs
 
+        # Subsequent recv on the same physical stream must not emit duplicate TTFB
+        await stream.recv()
+        mock_recorder.record_ttfb.assert_called_once()
+
         await stream.close()
-        assert mock_call._closing_cleanly is True
+        assert tracked_call._closing_cleanly is True
+        mock_recorder.record_rpc_attempt.assert_called_once()
+        assert mock_recorder.record_rpc_attempt.call_args.kwargs["status_code"] == "OK"
 
     @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
     @pytest.mark.asyncio

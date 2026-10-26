@@ -302,7 +302,6 @@ def _bind_call_to_operation(
     for current in _iter_wrapped_calls(call):
         if isinstance(current, _TrackedCallBase):
             current._op_state = op_state
-            current._start_time = op_state.start_time
 
 
 class _TrackedCallBase:
@@ -323,14 +322,46 @@ class _TrackedCallBase:
         self._rpc_method = rpc_method
         self._logical_operation = logical_operation
         self._start_time = start_time
+        self._initial_op_state = op_state
         self._op_state = op_state
+        self._started_after_failure = (
+            op_state is not None and op_state.last_failure_error_type is not None
+        )
         self._direct_path_attempted = direct_path_attempted
         self._received_response = False
+        self._ttfb_recorded = False
         self._recorded = False
         self._closing_cleanly = False
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._call, name)
+
+    def _record_ttfb_once(
+        self,
+        duration: Optional[float] = None,
+        network_path: Optional[str] = None,
+    ) -> None:
+        if not self._ttfb_recorded:
+            self._ttfb_recorded = True
+            ttfb_duration = (
+                max(0.0, time.perf_counter() - self._start_time)
+                if duration is None
+                else duration
+            )
+            resolved_path = (
+                _resolve_network_path(
+                    call=self._call,
+                    direct_path_attempted=self._direct_path_attempted,
+                    received_server_response=True,
+                )
+                if network_path is None
+                else network_path
+            )
+            self._recorder.record_ttfb(
+                duration=ttfb_duration,
+                operation=self._logical_operation,
+                network_path=resolved_path,
+            )
 
     def _record_once(
         self,
@@ -338,6 +369,7 @@ class _TrackedCallBase:
         error_type: str,
         exc: Optional[BaseException] = None,
         received_response: bool = False,
+        record_ttfb: bool = False,
     ) -> None:
         if not self._recorded:
             self._recorded = True
@@ -348,17 +380,33 @@ class _TrackedCallBase:
                 else None
             )
             active_op = current_op or fallback_op
-            effective_start = (
-                current_op.start_time
-                if (current_op is not None and current_op is not self._op_state)
-                else self._start_time
-            )
+            if (
+                error_type != "OK"
+                and active_op is not None
+                and active_op is not self._initial_op_state
+            ):
+                effective_start = active_op.start_time
+            else:
+                effective_start = self._start_time
             duration = max(0.0, time.perf_counter() - effective_start)
             resolved_path = _resolve_network_path(
                 call=self._call,
                 exc=exc,
                 direct_path_attempted=self._direct_path_attempted,
                 received_server_response=received_response or self._received_response,
+            )
+            if record_ttfb:
+                self._record_ttfb_once(
+                    duration=duration,
+                    network_path=resolved_path,
+                )
+            is_stale_teardown = (
+                active_op is not None
+                and active_op.last_failure_error_type is not None
+                and not self._started_after_failure
+            )
+            saved_prior_error = (
+                active_op.consume_retry_error() if is_stale_teardown else None
             )
             self._recorder.record_rpc_attempt(
                 duration=duration,
@@ -369,6 +417,8 @@ class _TrackedCallBase:
                 network_path=resolved_path,
                 op_state=active_op,
             )
+            if is_stale_teardown:
+                active_op.last_failure_error_type = saved_prior_error
 
     def _record_from_exception(self, exc: BaseException) -> None:
         if isinstance(exc, asyncio.CancelledError) and self._closing_cleanly:
@@ -439,7 +489,12 @@ class _TrackedUnaryResponseMixin:
             raise
         else:
             self._received_response = True
-            self._record_once(status_code="OK", error_type="OK", received_response=True)
+            self._record_once(
+                status_code="OK",
+                error_type="OK",
+                received_response=True,
+                record_ttfb=True,
+            )
             return response
 
     def __await__(self):
@@ -454,6 +509,7 @@ class _TrackedStreamResponseMixin:
         try:
             async for response in self._call:
                 self._received_response = True
+                self._record_ttfb_once()
                 yield response
             completed_normally = True
         except GeneratorExit:
@@ -490,6 +546,8 @@ class _TrackedStreamResponseMixin:
                 self._record_once(
                     status_code="OK", error_type="OK", received_response=True
                 )
+            else:
+                self._record_ttfb_once()
             return response
 
 
