@@ -312,6 +312,7 @@ def test_get_meter(monkeypatch):
 def test_histogram_bucket_boundaries():
     """Verify custom latency and byte-size bucket boundaries match specification."""
     latency = _opentelemetry_metrics.LATENCY_HISTOGRAM_BOUNDARIES
+    assert len(latency) == 165
     assert latency[0] == 0.0
     assert latency[1] == 0.002
     assert latency[49] == 0.098
@@ -340,9 +341,10 @@ def test_get_histogram_views_with_and_without_sdk(monkeypatch):
             self.boundaries = boundaries
 
     class FakeView:
-        def __init__(self, instrument_name, aggregation):
+        def __init__(self, instrument_name, aggregation, meter_name=None):
             self.instrument_name = instrument_name
             self.aggregation = aggregation
+            self.meter_name = meter_name
 
     fake_view_mod.ExplicitBucketHistogramAggregation = FakeAggregation
     fake_view_mod.View = FakeView
@@ -361,6 +363,7 @@ def test_get_histogram_views_with_and_without_sdk(monkeypatch):
 
         views = _opentelemetry_metrics.get_histogram_views()
         assert len(views) == 6
+        assert all(v.meter_name == "google.cloud.storage" for v in views)
         latency_views = [
             v
             for v in views
@@ -611,37 +614,37 @@ def test_classify_error_type_exceptions():
     wrapped_refused = requests.exceptions.ConnectionError(refused_err)
     assert (
         _opentelemetry_metrics.classify_error_type(wrapped_refused)
-        == "CONNECTION_REFUSED"
+        == "CONNECTION_ERROR"
     )
 
     reset_err = ConnectionResetError(104, "Connection reset by peer")
     wrapped_reset = requests.exceptions.ConnectionError(reset_err)
     assert (
-        _opentelemetry_metrics.classify_error_type(wrapped_reset) == "CONNECTION_RESET"
+        _opentelemetry_metrics.classify_error_type(wrapped_reset) == "CONNECTION_ERROR"
     )
 
-    # 10. Generic Connectivity
+    # 10. Generic Connection Errors
     assert (
         _opentelemetry_metrics.classify_error_type(
             requests.exceptions.ConnectionError("connection aborted")
         )
-        == "CONNECTIVITY"
+        == "CONNECTION_ERROR"
     )
     assert (
         _opentelemetry_metrics.classify_error_type(
             requests.exceptions.ChunkedEncodingError("incomplete read")
         )
-        == "CONNECTIVITY"
+        == "CONNECTION_ERROR"
     )
     assert (
         _opentelemetry_metrics.classify_error_type(OSError("network unreachable"))
-        == "CONNECTIVITY"
+        == "CONNECTION_ERROR"
     )
     assert (
         _opentelemetry_metrics.classify_error_type(
             http.client.IncompleteRead(b"partial", 10)
         )
-        == "CONNECTIVITY"
+        == "CONNECTION_ERROR"
     )
 
     # 11. Explicit status_code fallback when exception is generic
@@ -875,6 +878,7 @@ def test_classify_error_type_exceptions():
         ("https://storage.googleapis.com/storage/v2", "UNKNOWN"),
         ("https://storage.googleapis.com/storage/v2/other?uploadId=xyz", "UNKNOWN"),
         ("https://storage.googleapis.com/custom/unrecognized/path/here", "UNKNOWN"),
+        ("https://[::1/storage/v1/b", "UNKNOWN"),
     ],
 )
 def test_normalize_url_template(raw_url, expected):
@@ -1061,6 +1065,14 @@ def test_start_operation_asyncio_concurrency_isolation(monkeypatch):
         ("https://[::1]:8080", "::1"),
         ("http://localhost:9023/storage/v1", "localhost"),
         ("https://", "storage.googleapis.com"),
+        ("https://[::1", "storage.googleapis.com"),
+        ("[::1", "storage.googleapis.com"),
+        ("dns://8.8.8.8/custom.endpoint.com:443", "custom.endpoint.com"),
+        ("dns:custom.endpoint.com:443", "custom.endpoint.com"),
+        ("dns://custom.endpoint.com:443", "custom.endpoint.com"),
+        ("dns://8.8.8.8/", "storage.googleapis.com"),
+        ("ipv4:127.0.0.1:443", "127.0.0.1"),
+        ("ipv6:[::1]:443", "::1"),
     ],
 )
 def test_extract_server_address(endpoint, expected):
@@ -1340,7 +1352,7 @@ def test_metrics_recorder_recording_and_shutdown(monkeypatch):
         _opentelemetry_metrics.classify_error_type(
             urllib3.exceptions.NewConnectionError(None, "conn err")
         )
-        == "CONNECTIVITY"
+        == "CONNECTION_ERROR"
     )
 
     # Shutdown flushes custom meter_provider and swallows force_flush errors gracefully

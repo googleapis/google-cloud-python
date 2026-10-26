@@ -187,6 +187,8 @@ def is_debug_metrics_enabled(
 # ---------------------------------------------------------------------------
 # 5. Standard Common Attributes & Meter Provider
 # ---------------------------------------------------------------------------
+_METER_NAME = "google.cloud.storage"
+
 _COMMON_ATTRIBUTES: Dict[str, Any] = {
     "gcp.client.service": "storage",
     "gcp.client.version": __version__,
@@ -227,7 +229,7 @@ def get_meter(
     ):
         return None
     return metrics.get_meter(
-        "google.cloud.storage",
+        _METER_NAME,
         __version__,
         meter_provider=meter_provider,
     )
@@ -309,6 +311,7 @@ def get_histogram_views() -> List[Any]:
         views.append(
             View(
                 instrument_name=name,
+                meter_name=_METER_NAME,
                 aggregation=ExplicitBucketHistogramAggregation(
                     boundaries=LATENCY_HISTOGRAM_BOUNDARIES
                 ),
@@ -318,6 +321,7 @@ def get_histogram_views() -> List[Any]:
         views.append(
             View(
                 instrument_name=name,
+                meter_name=_METER_NAME,
                 aggregation=ExplicitBucketHistogramAggregation(
                     boundaries=SIZE_HISTOGRAM_BOUNDARIES
                 ),
@@ -507,10 +511,8 @@ def classify_error_type(
             {"NameResolutionError"},
         ):
             return "DNS_FAILURE"
-        if isinstance(item, ConnectionRefusedError):
-            return "CONNECTION_REFUSED"
-        if isinstance(item, ConnectionResetError):
-            return "CONNECTION_RESET"
+        if isinstance(item, (ConnectionRefusedError, ConnectionResetError)):
+            return "CONNECTION_ERROR"
 
     # 8. Timeouts (Note: urllib3.exceptions.NewConnectionError subclasses ConnectTimeoutError
     # even for non-timeout connection failures, so exclude NewConnectionError here.)
@@ -537,7 +539,7 @@ def classify_error_type(
             ):
                 return "TIMEOUT"
 
-    # 9. Generic Connectivity Failure
+    # 9. Generic Connection / Network Transport Failure
     for item in chain:
         if (
             _is_subclass_by_module(
@@ -552,7 +554,7 @@ def classify_error_type(
             )
             or isinstance(item, (OSError, http.client.HTTPException))
         ):
-            return "CONNECTIVITY"
+            return "CONNECTION_ERROR"
 
     # 10. Explicit HTTP status_code fallback
     if valid_status and status_code is not None:
@@ -708,7 +710,10 @@ def normalize_url_template(url_or_path: Optional[str]) -> str:
     if not url_or_path or not isinstance(url_or_path, str):
         return "UNKNOWN"
 
-    parsed = urlsplit(url_or_path)
+    try:
+        parsed = urlsplit(url_or_path)
+    except ValueError:
+        return "UNKNOWN"
     path = parsed.path or ""
     query = parsed.query or ""
 
@@ -993,12 +998,30 @@ def _extract_server_address(api_endpoint: Optional[str]) -> str:
     endpoint = api_endpoint.strip()
     if not endpoint:
         return DEFAULT_SERVER_ADDRESS
-    if ":///" in endpoint:
-        endpoint = "https://" + endpoint.split(":///", 1)[1].lstrip("/")
-    elif "://" not in endpoint:
+    for grpc_prefix in (
+        "dns:",
+        "google-c2p:",
+        "google-c2p-experimental:",
+        "xds:",
+        "ipv4:",
+        "ipv6:",
+    ):
+        if endpoint.startswith(grpc_prefix):
+            remainder = endpoint[len(grpc_prefix) :]
+            if remainder.startswith("//"):
+                remainder = remainder[2:]
+                remainder = (
+                    remainder.split("/", 1)[1] if "/" in remainder else remainder
+                )
+            endpoint = remainder.lstrip("/")
+            break
+    if "://" not in endpoint:
         endpoint = "https://" + endpoint.lstrip("/")
-    parsed = urlsplit(endpoint)
-    return parsed.hostname or DEFAULT_SERVER_ADDRESS
+    try:
+        parsed = urlsplit(endpoint)
+        return parsed.hostname or DEFAULT_SERVER_ADDRESS
+    except ValueError:
+        return DEFAULT_SERVER_ADDRESS
 
 
 class _MetricsRecorder:
