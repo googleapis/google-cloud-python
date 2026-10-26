@@ -450,3 +450,40 @@ def test_label_compiler(faux_conn, metadata):
 
     found_sql = q.compile(faux_conn).string
     assert found_sql == expected_sql
+
+
+def test_type_compiler_double_methods():
+    from sqlalchemy_bigquery.base import BigQueryTypeCompiler
+
+    assert BigQueryTypeCompiler.visit_DOUBLE == BigQueryTypeCompiler.visit_FLOAT
+    assert (
+        BigQueryTypeCompiler.visit_DOUBLE_PRECISION == BigQueryTypeCompiler.visit_FLOAT
+    )
+
+
+_double_types = [
+    getattr(sqlalchemy, name)
+    for name in ("DOUBLE", "DOUBLE_PRECISION", "Double")
+    if hasattr(sqlalchemy, name)
+]
+
+
+@pytest.mark.skipif(
+    not _double_types,
+    reason="DOUBLE types not present in this SQLAlchemy version",
+)
+@pytest.mark.parametrize("type_cls", _double_types or [None])
+def test_double_types_compile_to_float64(type_cls):
+    import sqlalchemy_bigquery
+
+    dialect = sqlalchemy_bigquery.BigQueryDialect()
+    assert dialect.type_compiler.process(type_cls()) == "FLOAT64"
+
+
+def test_float_literal_pyformat_bindparam():
+    import sqlalchemy_bigquery
+
+    dialect = sqlalchemy_bigquery.BigQueryDialect(paramstyle="pyformat")
+    stmt = sqlalchemy.select(sqlalchemy.literal(15.7563))
+    compiled = stmt.compile(dialect=dialect)
+    assert "%(param_1:FLOAT64)s" in str(compiled)

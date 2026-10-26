@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-accounts/#history
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v1.6.0...google-shopping-merchant-accounts-v1.7.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v1.5.0...google-shopping-merchant-accounts-v1.6.0) (2026-06-02)
 
 

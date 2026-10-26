@@ -90,9 +90,12 @@ class Message(proto.Message):
             Output only. The user who created the message. If your Chat
             app `authenticates as a
             user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-            the output populates the
+            the output only populates the
             `user <https://developers.google.com/workspace/chat/api/reference/rest/v1/User>`__
-            ``name`` and ``type``.
+            ``name`` and ``type`` fields for both internal and external
+            users, unless they are members of the space or have a prior
+            affinity, like a direct message (DM) conversation, with the
+            calling user.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Immutable. For spaces created in
             Chat, the time at which the message was created.

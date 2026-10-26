@@ -42,6 +42,7 @@ __lazy_modules__ = {
     "google.cloud.compute_v1.services.future_reservations",
     "google.cloud.compute_v1.services.global_addresses",
     "google.cloud.compute_v1.services.global_forwarding_rules",
+    "google.cloud.compute_v1.services.global_frontend_settings_service",
     "google.cloud.compute_v1.services.global_network_endpoint_groups",
     "google.cloud.compute_v1.services.global_operations",
     "google.cloud.compute_v1.services.global_organization_operations",
@@ -50,6 +51,7 @@ __lazy_modules__ = {
     "google.cloud.compute_v1.services.health_checks",
     "google.cloud.compute_v1.services.hosts",
     "google.cloud.compute_v1.services.image_family_views",
+    "google.cloud.compute_v1.services.image_views",
     "google.cloud.compute_v1.services.images",
     "google.cloud.compute_v1.services.instance_group_manager_resize_requests",
     "google.cloud.compute_v1.services.instance_group_managers",
@@ -69,6 +71,7 @@ __lazy_modules__ = {
     "google.cloud.compute_v1.services.licenses",
     "google.cloud.compute_v1.services.machine_images",
     "google.cloud.compute_v1.services.machine_types",
+    "google.cloud.compute_v1.services.managed_rulesets",
     "google.cloud.compute_v1.services.network_attachments",
     "google.cloud.compute_v1.services.network_edge_security_services",
     "google.cloud.compute_v1.services.network_endpoint_groups",
@@ -172,6 +175,9 @@ from .services.forwarding_rules import ForwardingRulesClient
 from .services.future_reservations import FutureReservationsClient
 from .services.global_addresses import GlobalAddressesClient
 from .services.global_forwarding_rules import GlobalForwardingRulesClient
+from .services.global_frontend_settings_service import (
+    GlobalFrontendSettingsServiceClient,
+)
 from .services.global_network_endpoint_groups import GlobalNetworkEndpointGroupsClient
 from .services.global_operations import GlobalOperationsClient
 from .services.global_organization_operations import GlobalOrganizationOperationsClient
@@ -182,6 +188,7 @@ from .services.global_vm_extension_policies import GlobalVmExtensionPoliciesClie
 from .services.health_checks import HealthChecksClient
 from .services.hosts import HostsClient
 from .services.image_family_views import ImageFamilyViewsClient
+from .services.image_views import ImageViewsClient
 from .services.images import ImagesClient
 from .services.instance_group_manager_resize_requests import (
     InstanceGroupManagerResizeRequestsClient,
@@ -203,6 +210,7 @@ from .services.license_codes import LicenseCodesClient
 from .services.licenses import LicensesClient
 from .services.machine_images import MachineImagesClient
 from .services.machine_types import MachineTypesClient
+from .services.managed_rulesets import ManagedRulesetsClient
 from .services.network_attachments import NetworkAttachmentsClient
 from .services.network_edge_security_services import NetworkEdgeSecurityServicesClient
 from .services.network_endpoint_groups import NetworkEndpointGroupsClient
@@ -516,6 +524,7 @@ from .types.compute import (
     CapacityHistoryAdviceRequest,
     CapacityHistoryRequest,
     CapacityHistoryRequestInstanceProperties,
+    CapacityHistoryRequestInstancePropertiesAttachedDisk,
     CapacityHistoryRequestInstancePropertiesScheduling,
     CapacityHistoryRequestLocationPolicy,
     CapacityHistoryResponse,
@@ -790,6 +799,7 @@ from .types.compute import (
     GetFutureReservationRequest,
     GetGlobalAddressRequest,
     GetGlobalForwardingRuleRequest,
+    GetGlobalFrontendSettingRequest,
     GetGlobalNetworkEndpointGroupRequest,
     GetGlobalOperationRequest,
     GetGlobalOrganizationOperationRequest,
@@ -841,6 +851,7 @@ from .types.compute import (
     GetIamPolicySubnetworkRequest,
     GetImageFamilyViewRequest,
     GetImageRequest,
+    GetImageViewRequest,
     GetInstanceGroupManagerRequest,
     GetInstanceGroupManagerResizeRequestRequest,
     GetInstanceGroupRequest,
@@ -860,6 +871,7 @@ from .types.compute import (
     GetMachineImageRequest,
     GetMachineTypeRequest,
     GetMacsecConfigInterconnectRequest,
+    GetManagedRulesetRequest,
     GetNamedSetRouterRequest,
     GetNatIpInfoRouterRequest,
     GetNatMappingInfoRoutersRequest,
@@ -967,6 +979,8 @@ from .types.compute import (
     GetZoneRequest,
     GetZoneVmExtensionPolicyRequest,
     GlobalAddressesMoveRequest,
+    GlobalFrontendSettings,
+    GlobalFrontendSettingsPatchResponse,
     GlobalNetworkEndpointGroupsAttachEndpointsRequest,
     GlobalNetworkEndpointGroupsDetachEndpointsRequest,
     GlobalOrganizationSetPolicyRequest,
@@ -1040,6 +1054,8 @@ from .types.compute import (
     ImageFamilyView,
     ImageList,
     ImageParams,
+    ImageView,
+    ImageViewsListResponse,
     InitialStateConfig,
     InsertAddressRequest,
     InsertAutoscalerRequest,
@@ -1315,6 +1331,7 @@ from .types.compute import (
     InterconnectRemoteLocationPermittedConnections,
     InterconnectsGetDiagnosticsResponse,
     InterconnectsGetMacsecConfigResponse,
+    InterconnectsSetNameRequest,
     Interval,
     InvalidateCacheUrlMapRequest,
     Items,
@@ -1356,6 +1373,7 @@ from .types.compute import (
     ListHealthChecksRequest,
     ListHostsRequest,
     ListImagesRequest,
+    ListImageViewsRequest,
     ListInstanceGroupManagerResizeRequestsRequest,
     ListInstanceGroupManagersRequest,
     ListInstanceGroupsRequest,
@@ -1377,6 +1395,7 @@ from .types.compute import (
     ListMachineTypesRequest,
     ListManagedInstancesInstanceGroupManagersRequest,
     ListManagedInstancesRegionInstanceGroupManagersRequest,
+    ListManagedRulesetsRequest,
     ListNamedSetsRoutersRequest,
     ListNetworkAttachmentsRequest,
     ListNetworkEndpointGroupsRequest,
@@ -1493,6 +1512,8 @@ from .types.compute import (
     ManagedInstanceScheduling,
     ManagedInstanceShutdownDetails,
     ManagedInstanceVersion,
+    ManagedRuleset,
+    ManagedRulesetList,
     Metadata,
     MetadataFilter,
     MetadataFilterLabelMatch,
@@ -1598,6 +1619,7 @@ from .types.compute import (
     PacketMirroringMirroredResourceInfoSubnetInfo,
     PacketMirroringNetworkInfo,
     PacketMirroringsScopedList,
+    PatchAssociationRegionNetworkFirewallPolicyRequest,
     PatchAutoscalerRequest,
     PatchBackendBucketRequest,
     PatchBackendServiceRequest,
@@ -1606,6 +1628,7 @@ from .types.compute import (
     PatchFirewallRequest,
     PatchForwardingRuleRequest,
     PatchGlobalForwardingRuleRequest,
+    PatchGlobalFrontendSettingRequest,
     PatchGlobalPublicDelegatedPrefixeRequest,
     PatchHealthCheckRequest,
     PatchImageRequest,
@@ -2030,6 +2053,7 @@ from .types.compute import (
     SetNamedPortsInstanceGroupRequest,
     SetNamedPortsRegionInstanceGroupRequest,
     SetNameInstanceRequest,
+    SetNameInterconnectRequest,
     SetNodeTemplateNodeGroupRequest,
     SetPrivateIpGoogleAccessSubnetworkRequest,
     SetProxyHeaderTargetSslProxyRequest,
@@ -2596,6 +2620,7 @@ __all__ = (
     "CapacityHistoryAdviceRequest",
     "CapacityHistoryRequest",
     "CapacityHistoryRequestInstanceProperties",
+    "CapacityHistoryRequestInstancePropertiesAttachedDisk",
     "CapacityHistoryRequestInstancePropertiesScheduling",
     "CapacityHistoryRequestLocationPolicy",
     "CapacityHistoryResponse",
@@ -2880,6 +2905,7 @@ __all__ = (
     "GetFutureReservationRequest",
     "GetGlobalAddressRequest",
     "GetGlobalForwardingRuleRequest",
+    "GetGlobalFrontendSettingRequest",
     "GetGlobalNetworkEndpointGroupRequest",
     "GetGlobalOperationRequest",
     "GetGlobalOrganizationOperationRequest",
@@ -2931,6 +2957,7 @@ __all__ = (
     "GetIamPolicySubnetworkRequest",
     "GetImageFamilyViewRequest",
     "GetImageRequest",
+    "GetImageViewRequest",
     "GetInstanceGroupManagerRequest",
     "GetInstanceGroupManagerResizeRequestRequest",
     "GetInstanceGroupRequest",
@@ -2950,6 +2977,7 @@ __all__ = (
     "GetMachineImageRequest",
     "GetMachineTypeRequest",
     "GetMacsecConfigInterconnectRequest",
+    "GetManagedRulesetRequest",
     "GetNamedSetRouterRequest",
     "GetNatIpInfoRouterRequest",
     "GetNatMappingInfoRoutersRequest",
@@ -3059,6 +3087,9 @@ __all__ = (
     "GlobalAddressesClient",
     "GlobalAddressesMoveRequest",
     "GlobalForwardingRulesClient",
+    "GlobalFrontendSettings",
+    "GlobalFrontendSettingsPatchResponse",
+    "GlobalFrontendSettingsServiceClient",
     "GlobalNetworkEndpointGroupsAttachEndpointsRequest",
     "GlobalNetworkEndpointGroupsClient",
     "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
@@ -3138,6 +3169,9 @@ __all__ = (
     "ImageFamilyViewsClient",
     "ImageList",
     "ImageParams",
+    "ImageView",
+    "ImageViewsClient",
+    "ImageViewsListResponse",
     "ImagesClient",
     "InitialStateConfig",
     "InsertAddressRequest",
@@ -3428,6 +3462,7 @@ __all__ = (
     "InterconnectsClient",
     "InterconnectsGetDiagnosticsResponse",
     "InterconnectsGetMacsecConfigResponse",
+    "InterconnectsSetNameRequest",
     "Interval",
     "InvalidateCacheUrlMapRequest",
     "Items",
@@ -3470,6 +3505,7 @@ __all__ = (
     "ListGlobalVmExtensionPoliciesRequest",
     "ListHealthChecksRequest",
     "ListHostsRequest",
+    "ListImageViewsRequest",
     "ListImagesRequest",
     "ListInstanceGroupManagerResizeRequestsRequest",
     "ListInstanceGroupManagersRequest",
@@ -3492,6 +3528,7 @@ __all__ = (
     "ListMachineTypesRequest",
     "ListManagedInstancesInstanceGroupManagersRequest",
     "ListManagedInstancesRegionInstanceGroupManagersRequest",
+    "ListManagedRulesetsRequest",
     "ListNamedSetsRoutersRequest",
     "ListNetworkAttachmentsRequest",
     "ListNetworkEndpointGroupsRequest",
@@ -3610,6 +3647,9 @@ __all__ = (
     "ManagedInstanceScheduling",
     "ManagedInstanceShutdownDetails",
     "ManagedInstanceVersion",
+    "ManagedRuleset",
+    "ManagedRulesetList",
+    "ManagedRulesetsClient",
     "Metadata",
     "MetadataFilter",
     "MetadataFilterLabelMatch",
@@ -3726,6 +3766,7 @@ __all__ = (
     "PacketMirroringNetworkInfo",
     "PacketMirroringsClient",
     "PacketMirroringsScopedList",
+    "PatchAssociationRegionNetworkFirewallPolicyRequest",
     "PatchAutoscalerRequest",
     "PatchBackendBucketRequest",
     "PatchBackendServiceRequest",
@@ -3734,6 +3775,7 @@ __all__ = (
     "PatchFirewallRequest",
     "PatchForwardingRuleRequest",
     "PatchGlobalForwardingRuleRequest",
+    "PatchGlobalFrontendSettingRequest",
     "PatchGlobalPublicDelegatedPrefixeRequest",
     "PatchHealthCheckRequest",
     "PatchImageRequest",
@@ -4207,6 +4249,7 @@ __all__ = (
     "SetMetadataInstanceRequest",
     "SetMinCpuPlatformInstanceRequest",
     "SetNameInstanceRequest",
+    "SetNameInterconnectRequest",
     "SetNamedPortsInstanceGroupRequest",
     "SetNamedPortsRegionInstanceGroupRequest",
     "SetNodeTemplateNodeGroupRequest",

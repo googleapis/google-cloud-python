@@ -60,7 +60,7 @@ def main():
         url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ndb",
         project_urls={
             "Documentation": "https://googleapis.dev/python/python-ndb/latest",
-            "Issue Tracker": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ndb/issues",
+            "Issue Tracker": "https://github.com/googleapis/google-cloud-python/issues",
         },
         classifiers=[
             "Development Status :: 5 - Production/Stable",

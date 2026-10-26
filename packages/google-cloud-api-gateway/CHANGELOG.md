@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-api-gateway/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-api-gateway-v1.17.0...google-cloud-api-gateway-v1.18.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+* update API sources and regenerate ([#18513](https://github.com/googleapis/google-cloud-python/issues/18513)) ([7d7adca](https://github.com/googleapis/google-cloud-python/commit/7d7adcaee688603077ea53abec678130045c20ed))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-api-gateway-v1.16.0...google-cloud-api-gateway-v1.17.0) (2026-09-17)
 
 

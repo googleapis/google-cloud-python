@@ -31446,6 +31446,8 @@ def test_create_message_rest_call_success(request_type):
         "sender": {
             "name": "name_value",
             "display_name": "display_name_value",
+            "avatar_url": "avatar_url_value",
+            "email": "email_value",
             "domain_id": "domain_id_value",
             "type_": 1,
             "is_anonymous": True,
@@ -32687,6 +32689,8 @@ def test_update_message_rest_call_success(request_type):
         "sender": {
             "name": "name_value",
             "display_name": "display_name_value",
+            "avatar_url": "avatar_url_value",
+            "email": "email_value",
             "domain_id": "domain_id_value",
             "type_": 1,
             "is_anonymous": True,
@@ -35532,6 +35536,8 @@ def test_create_membership_rest_call_success(request_type):
         "member": {
             "name": "name_value",
             "display_name": "display_name_value",
+            "avatar_url": "avatar_url_value",
+            "email": "email_value",
             "domain_id": "domain_id_value",
             "type_": 1,
             "is_anonymous": True,
@@ -35752,6 +35758,8 @@ def test_update_membership_rest_call_success(request_type):
         "member": {
             "name": "name_value",
             "display_name": "display_name_value",
+            "avatar_url": "avatar_url_value",
+            "email": "email_value",
             "domain_id": "domain_id_value",
             "type_": 1,
             "is_anonymous": True,
@@ -36107,6 +36115,8 @@ def test_create_reaction_rest_call_success(request_type):
         "user": {
             "name": "name_value",
             "display_name": "display_name_value",
+            "avatar_url": "avatar_url_value",
+            "email": "email_value",
             "domain_id": "domain_id_value",
             "type_": 1,
             "is_anonymous": True,

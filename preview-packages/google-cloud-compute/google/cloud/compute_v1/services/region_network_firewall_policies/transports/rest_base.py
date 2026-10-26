@@ -287,6 +287,23 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             ]
             return http_options
 
+    class _BasePatchAssociation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/firewallPolicies/{firewall_policy}/patchAssociation",
+                    "body": "firewall_policy_association_resource",
+                },
+            ]
+            return http_options
+
     class _BasePatchRule:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

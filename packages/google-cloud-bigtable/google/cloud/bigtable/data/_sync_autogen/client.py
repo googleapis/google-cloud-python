@@ -306,9 +306,8 @@ class BigtableDataClient(ClientWithProject):
             and (not self._disable_background_refresh)
         ):
             CrossSync._Sync_Impl.verify_async_event_loop()
-            self._channel_refresh_task = CrossSync._Sync_Impl.create_task(
+            self._channel_refresh_task = CrossSync._Sync_Impl.create_daemon_task(
                 self._manage_channel,
-                sync_executor=self._executor,
                 task_name=f"{self.__class__.__name__} channel refresh",
             )
 
