@@ -393,7 +393,7 @@ def execute_scenario(
 
 
 # ---------------------------------------------------------------------------
-# Atomic Cell Sub-Validators & Assertion Engine
+# Validators & Assertion Engine
 # ---------------------------------------------------------------------------
 
 # OpenTelemetry attributes validated as strings
