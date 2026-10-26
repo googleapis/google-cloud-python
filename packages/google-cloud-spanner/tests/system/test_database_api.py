@@ -134,14 +134,16 @@ def test_create_and_update_database_pitr(
     assert temp_db.version_retention_period == retention_period
 
     with temp_db.snapshot() as snapshot:
-        results = snapshot.execute_sql(
-            "SELECT OPTION_VALUE AS version_retention_period "
-            "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
-            "WHERE SCHEMA_NAME = '' "
-            "AND OPTION_NAME = 'version_retention_period'"
+        results = list(
+            snapshot.execute_sql(
+                "SELECT OPTION_VALUE AS version_retention_period "
+                "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
+                "WHERE SCHEMA_NAME = '' "
+                "AND OPTION_NAME = 'version_retention_period'"
+            )
         )
-        for result in results:
-            assert result[0] == retention_period
+        assert len(results) == 1
+        assert results[0][0] == retention_period
 
     # Test updating PITR and passing custom operation_id
     new_retention_period = "3d"
@@ -161,14 +163,16 @@ def test_create_and_update_database_pitr(
     assert temp_db.version_retention_period == new_retention_period
 
     with temp_db.snapshot() as snapshot:
-        results = snapshot.execute_sql(
-            "SELECT OPTION_VALUE AS version_retention_period "
-            "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
-            "WHERE SCHEMA_NAME = '' "
-            "AND OPTION_NAME = 'version_retention_period'"
+        results = list(
+            snapshot.execute_sql(
+                "SELECT OPTION_VALUE AS version_retention_period "
+                "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
+                "WHERE SCHEMA_NAME = '' "
+                "AND OPTION_NAME = 'version_retention_period'"
+            )
         )
-        for result in results:
-            assert result[0] == new_retention_period
+        assert len(results) == 1
+        assert results[0][0] == new_retention_period
 
 
 def test_create_and_update_database_with_default_leader(
@@ -199,13 +203,15 @@ def test_create_and_update_database_with_default_leader(
     assert temp_db.default_leader == default_leader
 
     with temp_db.snapshot() as snapshot:
-        results = snapshot.execute_sql(
-            "SELECT OPTION_VALUE AS default_leader "
-            "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
-            "WHERE SCHEMA_NAME = '' AND OPTION_NAME = 'default_leader'"
+        results = list(
+            snapshot.execute_sql(
+                "SELECT OPTION_VALUE AS default_leader "
+                "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
+                "WHERE SCHEMA_NAME = '' AND OPTION_NAME = 'default_leader'"
+            )
         )
-        for result in results:
-            assert result[0] == default_leader
+        assert len(results) == 1
+        assert results[0][0] == default_leader
 
     # Test updating default leader on the multiregion database
     new_default_leader = "us-east1"
@@ -220,13 +226,15 @@ def test_create_and_update_database_with_default_leader(
     assert temp_db.default_leader == new_default_leader
 
     with temp_db.snapshot() as snapshot:
-        results = snapshot.execute_sql(
-            "SELECT OPTION_VALUE AS default_leader "
-            "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
-            "WHERE SCHEMA_NAME = '' AND OPTION_NAME = 'default_leader'"
+        results = list(
+            snapshot.execute_sql(
+                "SELECT OPTION_VALUE AS default_leader "
+                "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
+                "WHERE SCHEMA_NAME = '' AND OPTION_NAME = 'default_leader'"
+            )
         )
-        for result in results:
-            assert result[0] == new_default_leader
+        assert len(results) == 1
+        assert results[0][0] == new_default_leader
 
 
 def test_iam_policy(
