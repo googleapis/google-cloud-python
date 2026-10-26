@@ -234,7 +234,7 @@ def encode_value(value) -> types.document.Value:
     if isinstance(value, Vector):
         return encode_value(value.to_map_value())
 
-    if isinstance(value, Mapping):
+    if isinstance(value, dict) or isinstance(value, Mapping):
         value_dict = encode_dict(value)
         value_pb = document.MapValue(fields=value_dict)
         return document.Value(map_value=value_pb)
@@ -565,7 +565,7 @@ def extract_fields(
 
             field_path = FieldPath(*(prefix_path.parts + sub_key.parts))
 
-            if isinstance(value, Mapping):
+            if isinstance(value, dict) or isinstance(value, Mapping):
                 for s_path, s_value in extract_fields(value, field_path):
                     yield s_path, s_value
             else:
