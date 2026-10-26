@@ -424,6 +424,13 @@ def _clean_cell(raw_val: str | None) -> str:
     return cleaned if cleaned else "N/A"
 
 
+def _match_int(attr: str, actual: Any, expected: str):
+    """Validates that an attribute matches the expected integer value."""
+    assert actual == int(expected), (
+        f"Attribute {attr}: expected {expected}, got {actual}"
+    )
+
+
 def _assert_attribute(
     span,
     attr: str,
@@ -443,7 +450,7 @@ def _assert_attribute(
         span: The OpenTelemetry ReadableSpan instance being evaluated.
         attr: The attribute name key (e.g. 'rpc.system.name').
         raw_expected: The raw string value from the CSV row cell.
-        comparator: Optional callable `comparator(actual, expected)` for custom validation.
+        comparator: Optional callable `comparator(attr, actual, expected)` for custom validation.
     """
     expected = _clean_cell(raw_expected)
     if expected == "N/A":
@@ -459,7 +466,7 @@ def _assert_attribute(
     assert actual is not None, f"Attribute {attr} missing, expected '{expected}'"
 
     if comparator:
-        comparator(actual, expected)
+        comparator(attr, actual, expected)
     else:
         assert actual == expected, (
             f"Attribute {attr}: expected '{expected}', got '{actual}'"
@@ -497,14 +504,16 @@ def _assert_string_attributes(span, row: dict[str, str]):
         row: The CSV requirements dictionary for this feature.
     """
 
-    def _match_string(actual: Any, expected: str):
+    def _match_string(attr: str, actual: Any, expected: str):
         if expected.endswith("/*"):
             prefix = expected[:-1]
             assert str(actual).startswith(prefix), (
-                f"Expected attribute to start with '{prefix}', got '{actual}'"
+                f"Attribute {attr}: expected prefix '{prefix}', got '{actual}'"
             )
         else:
-            assert actual == expected, f"Expected '{expected}', got '{actual}'"
+            assert actual == expected, (
+                f"Attribute {attr}: expected '{expected}', got '{actual}'"
+            )
 
     for attr in STRING_ATTRIBUTES:
         _assert_attribute(
@@ -525,10 +534,6 @@ def _assert_integer_attributes(span, row: dict[str, str]):
         span: The OpenTelemetry ReadableSpan being validated.
         row: The CSV requirements dictionary for this feature.
     """
-
-    def _match_int(actual: Any, expected: str):
-        assert actual == int(expected), f"Expected {expected}, got {actual}"
-
     for attr in INTEGER_ATTRIBUTES:
         _assert_attribute(
             span,
@@ -550,9 +555,9 @@ def _assert_status_message(span, row: dict[str, str]):
         row: The CSV requirements dictionary for this feature.
     """
 
-    def _match_message(actual: Any, expected: str):
+    def _match_message(attr: str, actual: Any, expected: str):
         assert expected in str(actual), (
-            f"Expected '{expected}' in status.message '{actual}'"
+            f"Attribute {attr}: expected '{expected}' in '{actual}'"
         )
 
     _assert_attribute(
@@ -574,21 +579,12 @@ def _assert_resend_count(span, row: dict[str, str]):
         span: The OpenTelemetry ReadableSpan being validated.
         row: The CSV requirements dictionary for this feature.
     """
-    expected_resend = _clean_cell(row.get("resend_count"))
-
-    if expected_resend == "NOT SET":
-        assert "http.request.resend_count" not in span.attributes
-        assert "gcp.grpc.resend_count" not in span.attributes
-    elif expected_resend != "N/A":
-        actual_resend = span.attributes.get(
-            "http.request.resend_count"
-        ) or span.attributes.get("gcp.grpc.resend_count")
-        assert actual_resend is not None, (
-            f"Resend count missing, expected {expected_resend}"
-        )
-        assert actual_resend == int(expected_resend), (
-            f"Resend count: expected {expected_resend}, got {actual_resend}"
-        )
+    attr = (
+        "gcp.grpc.resend_count"
+        if "grpc" in row["Transport"].lower()
+        else "http.request.resend_count"
+    )
+    _assert_attribute(span, attr, row.get("resend_count"), comparator=_match_int)
 
 
 def _assert_parent_span_id(span, row: dict[str, str], t3_spans: list[Any]):
@@ -617,7 +613,7 @@ def _assert_parent_span_id(span, row: dict[str, str], t3_spans: list[Any]):
             f"Parent span_id mismatch: expected {t3_spans[0].context.span_id}, "
             f"got {span.parent.span_id}"
         )
-    elif expected_parent is not None:
+    elif expected_parent != "N/A":
         pytest.fail(f"Unsupported parent_span_id value in matrix: {expected_parent!r}")
 
 
