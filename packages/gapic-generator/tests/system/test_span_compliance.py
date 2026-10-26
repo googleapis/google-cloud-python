@@ -44,8 +44,8 @@ The engine operates across five distinct phases:
    - Child Spans (parent is not None): Represents physical wire attempts (T4 Tier).
    Selects the span under test using the row's `Tier` and `Attempt` index.
 
-4. Atomic Sub-Validators (`assert_span_matches_row`):
-   Validates each cell directly against the target span without custom cell parsers:
+4. Validators (`assert_span_matches_row`):
+   Validates each cell against the target span, checking:
    span names, kinds, status codes, string attributes (with wildcard prefix support),
    integer attributes, substring status messages, resend counts, and parent-child span linkage.
 
