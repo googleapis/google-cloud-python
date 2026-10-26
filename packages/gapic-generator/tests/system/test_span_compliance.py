@@ -142,7 +142,7 @@ def load_feature_matrix() -> dict[str, dict[str, str]]:
 
     Returns:
         A dictionary mapping Feature ID (e.g. 'F1.2', 'F3.1b') to its dictionary
-        of column names and atomic string specifications.
+        of column names and string specifications.
     """
     with open(CSV_PATH, mode="r", encoding="utf-8") as f:
         return {r["Feature ID"]: r for r in csv.DictReader(f)}
