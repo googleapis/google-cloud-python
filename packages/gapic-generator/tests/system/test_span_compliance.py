@@ -430,7 +430,7 @@ def _assert_attribute(
     raw_expected: str | None,
     comparator=None,
 ):
-    """Universal triage helper for single-attribute validation against an atomic matrix cell.
+    """Universal triage helper for single-attribute validation against a matrix cell.
 
     This helper standardizes attribute verification across all sub-validators:
     - 'N/A': Skips assertion (attribute is irrelevant or not applicable to this scenario).
