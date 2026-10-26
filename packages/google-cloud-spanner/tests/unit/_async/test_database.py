@@ -2640,6 +2640,7 @@ class TestDatabase(_BaseTest):
         database._instance._client._ca_certificate = None
         database._instance._client._client_certificate = None
         database._instance._client._client_key = None
+        database._instance._client._client_options = None
 
         # This will trigger spanner_api property to create a new one
         database._spanner_api = None
