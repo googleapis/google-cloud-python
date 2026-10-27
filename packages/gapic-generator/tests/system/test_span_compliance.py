@@ -715,12 +715,15 @@ def test_feature(feature_id: str, row: dict[str, str], span_exporter, monkeypatc
         f"(captured {len(tier_spans)} {tier} spans)"
     )
     target_span = tier_spans[attempt_idx]
-    if not conftest.INSTALLED_CORE_MATCHES_MONOREPO:
-        pytest.skip(
-            "PyPI google-api-core differs from monorepo; "
-            "strict span attribute matrix is validated in showcase-canary"
-        )
-    assert_span_matches_row(target_span, row, t3_spans)
+    try:
+        assert_span_matches_row(target_span, row, t3_spans)
+    except AssertionError:
+        if not conftest.installed_core_matches_monorepo("_observability.py"):
+            pytest.skip(
+                "PyPI google-api-core (_observability.py) differs from monorepo; "
+                "strict span attribute matrix is validated in showcase-canary"
+            )
+        raise
 
 
 # ---------------------------------------------------------------------------
