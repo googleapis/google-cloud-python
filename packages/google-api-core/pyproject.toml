@@ -88,6 +88,7 @@ namespace_packages = true
 ignore_missing_imports = true
 
 [tool.pytest]
+asyncio_default_fixture_loop_scope = "function"
 filterwarnings = [
   # treat all warnings as errors
   "error",
