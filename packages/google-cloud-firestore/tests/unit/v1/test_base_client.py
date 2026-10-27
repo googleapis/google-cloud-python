@@ -237,7 +237,8 @@ def test_baseclient__rpc_metadata_property_with_emulator():
     ]
 
 
-def test_baseclient__emulator_channel():
+@pytest.mark.asyncio
+async def test_baseclient__emulator_channel():
     from google.cloud.firestore_v1.services.firestore.transports.grpc import (
         FirestoreGrpcTransport,
     )

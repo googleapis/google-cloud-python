@@ -208,7 +208,7 @@ def test_pipeline_results(test_dict, client):
     [t for t in yaml_loader() if "assert_error" in t],
     ids=id_format,
 )
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="module")
 async def test_pipeline_expected_errors_async(test_dict, async_client):
     """
     Finds assert_error statements in yaml, and ensures the pipeline raises the expected error
@@ -234,7 +234,7 @@ async def test_pipeline_expected_errors_async(test_dict, async_client):
     ],
     ids=id_format,
 )
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="module")
 async def test_pipeline_results_async(test_dict, async_client):
     """
     Ensure pipeline returns expected results
@@ -401,17 +401,6 @@ def _is_stage_string(yaml_str):
         and yaml_str[0].isupper()
         and hasattr(stages, yaml_str)
     )
-
-
-@pytest.fixture(scope="module")
-def event_loop():
-    """Change event_loop fixture to module level."""
-    import asyncio
-
-    policy = asyncio.get_event_loop_policy()
-    loop = policy.new_event_loop()
-    yield loop
-    loop.close()
 
 
 def _parse_yaml_types(data):

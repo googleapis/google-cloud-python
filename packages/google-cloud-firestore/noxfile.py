@@ -68,7 +68,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "asyncmock",
     "pytest",
     "pytest-cov",
-    "pytest-asyncio==0.21.2",
+    "pytest-asyncio",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "aiounittest",
@@ -86,7 +86,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
-    "pytest-asyncio==0.21.2",
+    "pytest-asyncio",
     "six",
     "pyyaml",
     "pytest-xdist",

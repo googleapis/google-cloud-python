@@ -84,7 +84,7 @@ RETRIES = retries.AsyncRetry(
 )
 
 
-pytestmark = pytest.mark.asyncio
+pytestmark = pytest.mark.asyncio(loop_scope="module")
 
 
 def _get_credentials_and_project():
@@ -166,7 +166,7 @@ def client(database):
     )
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(loop_scope="module")
 async def cleanup():
     operations = []
     yield operations.append
@@ -249,15 +249,6 @@ def verify_pipeline(subtests):
                     raise e
 
     return _verifier
-
-
-@pytest.fixture(scope="module")
-def event_loop():
-    """Change event_loop fixture to module level."""
-    policy = asyncio.get_event_loop_policy()
-    loop = policy.new_event_loop()
-    yield loop
-    loop.close()
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES, indirect=True)
@@ -1256,7 +1247,7 @@ async def test_list_collections_with_read_time(client, cleanup, database):
     }
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="module")
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 async def test_async_bson_document_read_and_write(client, cleanup, database):
     """Test async read and write operations for BSON types on Enterprise DB."""
@@ -1283,7 +1274,7 @@ async def test_async_bson_document_read_and_write(client, cleanup, database):
     assert snapshot.to_dict() == bson_payload
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="module")
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 async def test_async_bson_regex_invalid_options(client, cleanup, database):
     """Test async write operations for BSONRegex with invalid options against backend."""
@@ -1298,7 +1289,7 @@ async def test_async_bson_regex_invalid_options(client, cleanup, database):
     assert "Invalid regex option" in exc_info.value.message
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="module")
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 async def test_async_bson_decimal128_special_values(client, cleanup, database):
     """Test async write and read operations for BSONDecimal128 special values against backend."""
@@ -1325,7 +1316,7 @@ async def test_async_bson_decimal128_special_values(client, cleanup, database):
     }
 
 
-@pytest_asyncio.fixture(scope="module")
+@pytest_asyncio.fixture(scope="module", loop_scope="module")
 async def query_docs(client):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
@@ -1354,13 +1345,13 @@ async def query_docs(client):
         await operation()
 
 
-@pytest_asyncio.fixture(scope="module")
+@pytest_asyncio.fixture(scope="module", loop_scope="module")
 async def collection(query_docs):
     collection, _, _ = query_docs
     yield collection
 
 
-@pytest_asyncio.fixture(scope="module")
+@pytest_asyncio.fixture(scope="module", loop_scope="module")
 async def async_query(collection):
     return collection.where(filter=FieldFilter("a", "==", 1))
 

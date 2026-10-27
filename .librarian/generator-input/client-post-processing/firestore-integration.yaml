@@ -647,14 +647,6 @@ replacements:
           "pytest-xdist",
       ]
     count: 1
-  - paths: [
-      packages/google-cloud-firestore/noxfile.py
-    ]
-    before: |
-      "pytest-asyncio",
-    after: |
-      "pytest-asyncio==0.21.2",
-    count: 2
   # TODO(https://github.com/googleapis/google-cloud-python/issues/17429):
   # Temporary post-processing rule to inject `-n auto` for Firestore parallel tests.
   # This rule should be removed once the generator template changes are released

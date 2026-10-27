@@ -345,27 +345,39 @@ class TestAsyncBundle(_CollectionQueryMixin):
         return async_collection.AsyncCollectionReference
 
     def test_async_query(self):
-        # Create an async query, but this test does not need to be
-        # marked as async by pytest because `bundle.add_named_query()`
-        # seemlessly handles accepting async iterables.
+        # `bundle.add_named_query()` is a synchronous method that internally
+        # calls `asyncio.get_event_loop().run_until_complete()` when given an
+        # `AsyncQuery`. Because `run_until_complete()` raises a RuntimeError if
+        # the loop is already running, this test cannot use
+        # `@pytest.mark.asyncio` (`async def`). Instead, we explicitly attach an
+        # idle event loop to the current thread because Python 3.14+ and
+        # `pytest-asyncio` do not implicitly provide one for sync tests.
+        import asyncio
+
         from google.cloud.firestore_bundle import FirestoreBundle
 
-        async_query = self._bundled_query_helper()
-        bundle = FirestoreBundle("test")
-        bundle.add_named_query("asdf", async_query)
-        assert bundle.named_queries.get("asdf") is not None
-        assert (
-            bundle.documents[
-                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-1"
-            ]
-            is not None
-        )
-        assert (
-            bundle.documents[
-                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-2"
-            ]
-            is not None
-        )
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            async_query = self._bundled_query_helper()
+            bundle = FirestoreBundle("test")
+            bundle.add_named_query("asdf", async_query)
+            assert bundle.named_queries.get("asdf") is not None
+            assert (
+                bundle.documents[
+                    f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-1"
+                ]
+                is not None
+            )
+            assert (
+                bundle.documents[
+                    f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-2"
+                ]
+                is not None
+            )
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 class TestBundleBuilder(_CollectionQueryMixin):
