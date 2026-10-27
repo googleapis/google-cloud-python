@@ -13,10 +13,13 @@
 # limitations under the License.
 
 
+import filecmp
 import os
+from pathlib import Path
 from typing import Sequence, Tuple
 from unittest import mock
 
+import google.api_core
 import grpc
 import pytest
 import pytest_asyncio
@@ -29,6 +32,59 @@ try:
 except ImportError:
     _observability = None
 
+
+def _installed_core_matches_monorepo() -> bool:
+    """Returns True if the installed google.api_core matches the monorepo source.
+
+    When running Showcase tests against PyPI dependencies (e.g. non-canary CI jobs),
+    the installed `google-api-core` release may lag behind unreleased changes in
+    `packages/google-api-core`. Comparing the installed package files against the
+    monorepo source allows system tests to still execute end-to-end RPCs against
+    PyPI `google-api-core` while deferring strict monorepo-specific assertions to
+    `showcase-canary` (`INSTALL_LOCAL_CORE=true`).
+    """
+    monorepo_core_dir = (
+        Path(__file__).resolve().parents[3] / "google-api-core" / "google" / "api_core"
+    )
+    if not monorepo_core_dir.is_dir() or not getattr(google.api_core, "__file__", None):
+        return True
+
+    installed_core_dir = Path(google.api_core.__file__).resolve().parent
+    if installed_core_dir == monorepo_core_dir:
+        return True
+
+    for src_file in monorepo_core_dir.rglob("*.py"):
+        rel_path = src_file.relative_to(monorepo_core_dir)
+        installed_file = installed_core_dir / rel_path
+        if not installed_file.is_file() or not filecmp.cmp(
+            src_file, installed_file, shallow=False
+        ):
+            return False
+    return True
+
+
+INSTALLED_CORE_MATCHES_MONOREPO = _installed_core_matches_monorepo()
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers",
+        "requires_current_core: mark test as requiring installed google-api-core to match monorepo source.",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    if INSTALLED_CORE_MATCHES_MONOREPO:
+        return
+    skip_marker = pytest.mark.skip(
+        reason="Installed PyPI google-api-core differs from monorepo source; "
+        "validated by showcase-canary (INSTALL_LOCAL_CORE=true)."
+    )
+    for item in items:
+        if "requires_current_core" in item.keywords:
+            item.add_marker(skip_marker)
+
+
 try:
     from google.auth.aio import credentials as ga_credentials_async
 
@@ -38,8 +94,8 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 import google.auth
 from google.auth import credentials as ga_credentials
-
 from google.showcase import EchoClient, IdentityClient, MessagingClient
+
 try:
     from google.showcase import ResumableUploadServiceClient
 
@@ -74,8 +130,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     try:
         from google.showcase import ResumableUploadServiceAsyncClient
         from google.showcase_v1beta1.services.resumable_upload_service.transports.rest_asyncio import (
-            AsyncResumableUploadServiceRestTransport,
             AsyncResumableUploadServiceRestInterceptor,
+            AsyncResumableUploadServiceRestTransport,
         )
 
         HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT = True
