@@ -42,25 +42,42 @@ def _installed_core_matches_monorepo() -> bool:
     PyPI `google-api-core` while deferring strict monorepo-specific assertions to
     `showcase-canary` (`INSTALL_LOCAL_CORE=true`).
     """
+    repo_root = Path(__file__).resolve().parents[4]
     monorepo_core_dir = (
-        Path(__file__).resolve().parents[3] / "google-api-core" / "google" / "api_core"
+        repo_root / "packages" / "google-api-core" / "google" / "api_core"
     )
-    if not monorepo_core_dir.is_dir() or not getattr(google.api_core, "__file__", None):
+    installed_core_init = getattr(google.api_core, "__file__", None)
+
+    # Are we running outside the monorepo (e.g. in a standalone export)
+    # where the sibling `packages/google-api-core` directory does not exist?
+    # If so, there is no local monorepo source to compare against, so do not skip tests.
+    has_monorepo_source = monorepo_core_dir.is_dir() and installed_core_init is not None
+    if not has_monorepo_source:
         return True
 
-    installed_core_dir = Path(google.api_core.__file__).resolve().parent
-    if installed_core_dir == monorepo_core_dir:
+    # Was `google-api-core` installed in editable mode (`pip install -e`)
+    # or via PYTHONPATH directly from the monorepo (`showcase-canary`)?
+    # If both paths resolve to the same directory, the code is guaranteed to match.
+    installed_core_dir = Path(installed_core_init).resolve().parent
+    is_editable_monorepo_install = installed_core_dir == monorepo_core_dir
+    if is_editable_monorepo_install:
         return True
 
-    for src_file in monorepo_core_dir.rglob("*.py"):
-        rel_path = src_file.relative_to(monorepo_core_dir)
-        installed_file = installed_core_dir / rel_path
+    # Is `google-api-core` installed from PyPI into `site-packages`.
+    # Because `version.py` on `main` is not bumped until release time, we cannot
+    # rely on `__version__` to detect unreleased commits. Instead, verify that every
+    # Python file in the monorepo exists in the installed package with identical text.
+    for monorepo_file in monorepo_core_dir.rglob("*.py"):
+        relative_path = monorepo_file.relative_to(monorepo_core_dir)
+        installed_file = installed_core_dir / relative_path
         if not installed_file.is_file():
             return False
-        if src_file.read_text(encoding="utf-8") != installed_file.read_text(
-            encoding="utf-8"
-        ):
+
+        monorepo_code = monorepo_file.read_text(encoding="utf-8")
+        installed_code = installed_file.read_text(encoding="utf-8")
+        if monorepo_code != installed_code:
             return False
+
     return True
 
 
