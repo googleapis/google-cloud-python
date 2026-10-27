@@ -417,7 +417,9 @@ class TestBigtableDataClientAsync:
         client._disable_background_refresh = False
         client._emulator_host = None
         with mock.patch.object(
-            CrossSync, "create_daemon_task", side_effect=RuntimeError("can't start new thread")
+            CrossSync,
+            "create_daemon_task",
+            side_effect=RuntimeError("can't start new thread"),
         ) as mock_create_task:
             target_logger = logging.getLogger(client.__class__.__module__)
             target_logger.addHandler(caplog.handler)
