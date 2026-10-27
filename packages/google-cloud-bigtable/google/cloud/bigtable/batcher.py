@@ -20,7 +20,10 @@ import queue
 
 from google.api_core import exceptions as core_exceptions
 
-from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+from google.cloud.bigtable.data.exceptions import (
+    MutationsExceptionGroup,
+    RetryExceptionGroup,
+)
 from google.cloud.bigtable.data.mutations import RowMutationEntry
 
 FLUSH_COUNT = 100  # after this many elements, send out the batch
@@ -54,7 +57,10 @@ class MutationsBatcher(object):
     result in an in-memory change. Rows are sent to the service when a size
     limit is reached, when the ``flush_interval`` timer fires, when :func:`flush()`
     is called explicitly, or when the batcher is closed (:func:`close()` is also
-    registered to run at interpreter exit). As a result, if the process
+    registered to run at interpreter exit). Any errors encountered while
+    flushing batches are accumulated and raised as a
+    :exc:`~batcher.MutationsBatchError` only when :func:`close()` is called (or
+    when exiting a ``with`` block). As a result, if the process
     terminates abruptly -- e.g. a crash, ``SIGKILL``, or ``os._exit`` where the
     ``atexit`` handler never runs -- any :class:`DirectRow` still buffered in
     memory is silently dropped and never sent, even after :func:`mutate()`
@@ -137,8 +143,12 @@ class MutationsBatcher(object):
                 # return that error to the user. In standard execution paths,
                 # FailedMutationEntryError always has an Exception cause;
                 # defensively wrap in Unknown if __cause__ is None.
-                if error.__cause__ is not None:
-                    self._exceptions.put(error.__cause__)
+                cause = error.__cause__
+                if isinstance(cause, RetryExceptionGroup) and cause.exceptions:
+                    # Use the terminal exception from the retry chain.
+                    cause = cause.exceptions[-1]
+                if cause is not None:
+                    self._exceptions.put(cause)
                 else:
                     unknown_err = core_exceptions.Unknown(str(error))
                     unknown_err.__cause__ = error
@@ -193,15 +203,17 @@ class MutationsBatcher(object):
 
     def flush(self):
         """Sends the current batch to Cloud Bigtable synchronously.
+
+        Any errors encountered in the mutations are accumulated and will be
+        raised as a :exc:`~batcher.MutationsBatchError` when :func:`close()`
+        is called (or when exiting a ``with`` block).
+
         For example:
 
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_api_batcher_flush]
             :end-before: [END bigtable_api_batcher_flush]
             :dedent: 4
-
-        :raises:
-            * :exc:`~batcher.MutationsBatchError` if there's any error in the mutations.
         """
         self._close_batcher()
         # Set atexit registration after internal batcher.
