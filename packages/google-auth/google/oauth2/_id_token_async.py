@@ -179,8 +179,8 @@ async def verify_firebase_token(
             HTTP requests. This must be an aiohttp request.
         audience (Optional[Union[str, Iterable[str]]]): The audience that this
             token is intended for. This is your Firebase project ID. If
-            ``None``, a ``UserWarning`` is issued because tokens from any
-            Firebase project will be accepted.
+            ``None``, the audience is not verified and a ``UserWarning`` is
+            issued. Passing ``audience`` will be required in a future release.
         clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
             validation.
 
@@ -193,10 +193,9 @@ async def verify_firebase_token(
     """
     if audience is None:
         warnings.warn(
-            "Calling verify_firebase_token without an audience is insecure as "
-            "it accepts tokens from any Firebase project. Pass your Firebase "
-            "project ID as the 'audience' parameter. The 'audience' parameter "
-            "will be required in a future release.",
+            "Calling verify_firebase_token without an 'audience' leaves the "
+            "token's audience claim unverified. Pass your Firebase project ID "
+            "as 'audience', which will be required in a future release.",
             UserWarning,
             stacklevel=2,
         )

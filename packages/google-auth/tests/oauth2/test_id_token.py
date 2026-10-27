@@ -376,7 +376,10 @@ def test_verify_firebase_token_warns_without_audience(verify_token):
 
     with pytest.warns(
         UserWarning,
-        match="Calling verify_firebase_token without an audience is insecure",
+        match=(
+            "Calling verify_firebase_token without an 'audience' leaves the "
+            "token's audience claim unverified"
+        ),
     ) as record:
         result = id_token.verify_firebase_token(
             mock.sentinel.token, mock.sentinel.request
