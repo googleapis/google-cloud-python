@@ -475,14 +475,9 @@ class DirectRow(_SetDeleteRow):
                 "allowable %d." % (MAX_MUTATIONS,)
             )
 
-        # Clear on every path that returns a status, success or failure, which
-        # is what commit() has always done. An exception that cannot be turned
-        # into a status escapes instead, and the caller gets no outcome to act
-        # on, so the mutations are left in place for them.
         try:
             self._table._table_impl.mutate_row(self.row_key, self._get_mutations())
-            self.clear()
-            return status_pb2.Status(code=code_pb2.OK)
+            status = status_pb2.Status(code=code_pb2.OK)
         except GoogleAPICallError as e:
             # On timeout the data client raises a synthetic DeadlineExceeded
             # chained with the errors seen on the wire, which would mask the
@@ -497,18 +492,26 @@ class DirectRow(_SetDeleteRow):
                 and isinstance(cause, RetryExceptionGroup)
                 and cause.exceptions
             ):
-                self.clear()
-                return _get_status(cause.exceptions[-1])
+                status = _get_status(cause.exceptions[-1])
+            else:
+                # If the RPC call returns an error, extract the error into a status object, if possible.
+                status = status_pb2.Status(
+                    code=(
+                        e.grpc_status_code.value[0]
+                        if e.grpc_status_code is not None
+                        else code_pb2.UNKNOWN
+                    ),
+                    message=e.message,
+                    details=getattr(e, "details", []),
+                )
 
-            # If the RPC call returns an error, extract the error into a status object, if possible.
-            self.clear()
-            return status_pb2.Status(
-                code=e.grpc_status_code.value[0]
-                if e.grpc_status_code is not None
-                else code_pb2.UNKNOWN,
-                message=e.message,
-                details=getattr(e, "details", []),
-            )
+        # Clear on every path that returns a status, success or failure, which
+        # is what commit() has always done. An exception that cannot be turned
+        # into a status escapes instead (it did before the reroute too, where
+        # clear() ran after mutate_rows returned), and the caller gets no
+        # outcome to act on, so the mutations are left in place for them.
+        self.clear()
+        return status
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row.
