@@ -20,7 +20,10 @@ import queue
 
 from google.api_core import exceptions as core_exceptions
 
-from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+from google.cloud.bigtable.data.exceptions import (
+    MutationsExceptionGroup,
+    RetryExceptionGroup,
+)
 from google.cloud.bigtable.data.mutations import RowMutationEntry
 
 FLUSH_COUNT = 100  # after this many elements, send out the batch
@@ -140,8 +143,12 @@ class MutationsBatcher(object):
                 # return that error to the user. In standard execution paths,
                 # FailedMutationEntryError always has an Exception cause;
                 # defensively wrap in Unknown if __cause__ is None.
-                if error.__cause__ is not None:
-                    self._exceptions.put(error.__cause__)
+                cause = error.__cause__
+                if isinstance(cause, RetryExceptionGroup) and cause.exceptions:
+                    # Use the terminal exception from the retry chain.
+                    cause = cause.exceptions[-1]
+                if cause is not None:
+                    self._exceptions.put(cause)
                 else:
                     unknown_err = core_exceptions.Unknown(str(error))
                     unknown_err.__cause__ = error
