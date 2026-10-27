@@ -92,10 +92,12 @@ if not HAS_TIER3_TRACING:
         allow_module_level=True,
     )
 
+import requests.exceptions
 from google import showcase
 from google.api_core import exceptions
 from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
+from google.protobuf import duration_pb2
 from google.rpc import code_pb2, status_pb2
 from google.showcase import (
     AttemptSequenceRequest,
@@ -119,7 +121,16 @@ except (ImportError, ValueError):
 # while production defaults use exponential backoffs and multi-second retry windows,
 # test scenarios require ultra-fast, deterministic execution to keep the CI suite snappy
 # without flaking under high concurrency.
-SHORT_CLIENT_TIMEOUT_SECONDS = 0.2
+# Use a negative deadline (-1.0s) for gRPC so C-core immediately expires the call
+# locally with DEADLINE_EXCEEDED without writing a near-zero `grpc-timeout` header
+# to the wire (which can race with the Go Showcase server sending HTTP/2 RST_STREAM CANCEL).
+GRPC_CLIENT_TIMEOUT_SECONDS = -1.0
+REST_CLIENT_TIMEOUT_SECONDS = 0.2
+CLIENT_TIMEOUT_SECONDS = {
+    "grpc": GRPC_CLIENT_TIMEOUT_SECONDS,
+    "rest": REST_CLIENT_TIMEOUT_SECONDS,
+}
+SERVER_BLOCK_DELAY_SECONDS = 2
 FAST_RETRY_BACKOFF_SECONDS = 0.01
 # Setting multiplier to 1.0 enforces constant/linear polling intervals, bypassing
 # exponential backoff delay calculation during retry loops:
@@ -223,19 +234,21 @@ def construct_observability_client(
     )
 
 
-def run_echo_call(client: EchoClient, scenario: str):
+def run_echo_call(client: EchoClient, scenario: str, transport: str) -> None:
     """Executes unary RPC requests against an injected EchoClient.
 
     This runner exercises the three standard unary RPC lifecycle scenarios:
     - 'Happy Path' / 'Tracing Off': Dispatches a successful unary EchoRequest.
     - 'Server Failure': Injects a non-retryable INVALID_ARGUMENT gRPC status on the
       Showcase server, expecting an immediate InvalidArgument or BadRequest exception.
-    - 'Client Timeout': Enforces a tight client-side timeout (`SHORT_CLIENT_TIMEOUT_SECONDS`)
-      with retries disabled, expecting a DeadlineExceeded or GatewayTimeout exception.
+    - 'Client Timeout': Enforces a transport-appropriate client-side timeout
+      (`CLIENT_TIMEOUT_SECONDS[transport]`) with retries disabled, expecting a
+      DeadlineExceeded or Timeout exception.
 
     Args:
         client: The instantiated EchoClient (injected by `execute_scenario`).
         scenario: The scenario name string from the CSV matrix row.
+        transport: Normalized transport string ('grpc' or 'rest') derived from the CSV matrix row.
     """
     if scenario in ("Happy Path", "Tracing Off"):
         client.echo(showcase.EchoRequest(content="hello"))
@@ -250,15 +263,19 @@ def run_echo_call(client: EchoClient, scenario: str):
                 )
             )
     elif scenario == "Client Timeout":
-        with pytest.raises((exceptions.DeadlineExceeded, exceptions.GatewayTimeout)):
-            client.echo(
-                showcase.EchoRequest(
-                    error=status_pb2.Status(
-                        code=code_pb2.DEADLINE_EXCEEDED,
-                        message="Client deadline exceeded",
-                    )
+        with pytest.raises(
+            (
+                exceptions.DeadlineExceeded,
+                requests.exceptions.Timeout,
+            )
+        ):
+            client.block(
+                showcase.BlockRequest(
+                    response_delay=duration_pb2.Duration(
+                        seconds=SERVER_BLOCK_DELAY_SECONDS
+                    ),
                 ),
-                timeout=SHORT_CLIENT_TIMEOUT_SECONDS,
+                timeout=CLIENT_TIMEOUT_SECONDS[transport],
                 retry=None,
             )
 
@@ -384,7 +401,7 @@ def execute_scenario(
 
     if scenario in ("Happy Path", "Server Failure", "Client Timeout", "Tracing Off"):
         client = construct_observability_client(EchoClient, transport, client_options)
-        run_echo_call(client, scenario)
+        run_echo_call(client, scenario, transport)
     else:
         client = construct_observability_client(
             SequenceServiceClient, transport, client_options
