@@ -6875,7 +6875,9 @@ def test_create_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "filter_version_selector": {"version": "version_value", "alias": 1},
             "modalities": [1],
+            "data_residency_compliant": True,
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7107,7 +7109,9 @@ def test_update_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "filter_version_selector": {"version": "version_value", "alias": 1},
             "modalities": [1],
+            "data_residency_compliant": True,
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7579,6 +7583,11 @@ def test_update_floor_setting_rest_call_success(request_type):
         },
         "floor_setting_metadata": {
             "multi_language_detection": {"enable_multi_language_detection": True}
+        },
+        "google_mcp_server_floor_setting": {
+            "inspect_only": True,
+            "inspect_and_block": True,
+            "enable_cloud_logging": True,
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
