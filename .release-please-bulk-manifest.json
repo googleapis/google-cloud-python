@@ -73,6 +73,7 @@
   "packages/google-cloud-commerce-consumer-procurement": "0.6.1",
   "packages/google-cloud-commerceproducer": "0.1.3",
   "packages/google-cloud-common": "1.11.0",
+  "packages/google-cloud-compute": "1.56.0",
   "packages/google-cloud-compute-v1beta": "0.12.9",
   "packages/google-cloud-confidentialcomputing": "0.11.2",
   "packages/google-cloud-config": "0.7.2",
