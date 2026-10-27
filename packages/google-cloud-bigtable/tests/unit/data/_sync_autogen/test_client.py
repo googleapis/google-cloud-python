@@ -356,17 +356,18 @@ class TestBigtableDataClient:
         client._emulator_host = None
         with mock.patch.object(
             CrossSync._Sync_Impl,
-            "create_task",
+            "create_daemon_task",
             side_effect=RuntimeError("can't start new thread"),
         ) as mock_create_task:
-            with caplog.at_level(logging.WARNING):
+            target_logger = logging.getLogger(client.__class__.__module__)
+            target_logger.addHandler(caplog.handler)
+            with caplog.at_level(logging.WARNING, logger="google.cloud.bigtable.data"):
                 client._start_background_channel_refresh()
                 assert client._channel_refresh_task is None
                 assert "Failed to start background channel refresh task" in caplog.text
                 assert "can't start new thread" in caplog.text
                 mock_create_task.assert_called_once_with(
                     client._manage_channel,
-                    sync_executor=client._executor,
                     task_name=f"{client.__class__.__name__} channel refresh",
                 )
         client.close()
