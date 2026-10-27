@@ -13,7 +13,6 @@
 # limitations under the License.
 
 
-import functools
 import os
 from pathlib import Path
 from typing import Sequence, Tuple
@@ -33,8 +32,7 @@ except ImportError:
     _observability = None
 
 
-@functools.lru_cache(maxsize=None)
-def installed_core_matches_monorepo(*relative_paths: str) -> bool:
+def _installed_core_matches_monorepo() -> bool:
     """Returns True if the installed google.api_core matches the monorepo source.
 
     When running Showcase tests against PyPI dependencies (e.g. non-canary CI jobs),
@@ -43,11 +41,6 @@ def installed_core_matches_monorepo(*relative_paths: str) -> bool:
     monorepo source allows system tests to still execute end-to-end RPCs against
     PyPI `google-api-core` while deferring strict monorepo-specific assertions to
     `showcase-canary` (`INSTALL_LOCAL_CORE=true`).
-
-    Args:
-        *relative_paths: Optional file paths relative to `google/api_core`
-            (e.g. `"_observability.py"`). If omitted, all `.py` files in
-            `google/api_core` are compared.
     """
     repo_root = Path(__file__).resolve().parents[4]
     monorepo_core_dir = (
@@ -70,20 +63,14 @@ def installed_core_matches_monorepo(*relative_paths: str) -> bool:
     if is_editable_monorepo_install:
         return True
 
-    # Is `google-api-core` installed from PyPI into `site-packages`?
+    # Is `google-api-core` installed from PyPI into `site-packages`.
     # Because `version.py` on `main` is not bumped until release time, we cannot
-    # rely on `__version__` to detect unreleased commits. Instead, verify that the
-    # target Python file(s) in the monorepo exist in the installed package with
-    # identical text.
-    target_files = (
-        [monorepo_core_dir / rel_path for rel_path in relative_paths]
-        if relative_paths
-        else list(monorepo_core_dir.rglob("*.py"))
-    )
-    for monorepo_file in target_files:
+    # rely on `__version__` to detect unreleased commits. Instead, verify that every
+    # Python file in the monorepo exists in the installed package with identical text.
+    for monorepo_file in monorepo_core_dir.rglob("*.py"):
         relative_path = monorepo_file.relative_to(monorepo_core_dir)
         installed_file = installed_core_dir / relative_path
-        if not monorepo_file.is_file() or not installed_file.is_file():
+        if not installed_file.is_file():
             return False
 
         monorepo_code = monorepo_file.read_text(encoding="utf-8")
@@ -94,27 +81,26 @@ def installed_core_matches_monorepo(*relative_paths: str) -> bool:
     return True
 
 
-INSTALLED_CORE_MATCHES_MONOREPO = installed_core_matches_monorepo()
+INSTALLED_CORE_MATCHES_MONOREPO = _installed_core_matches_monorepo()
 
 
 def pytest_configure(config):
     config.addinivalue_line(
         "markers",
-        "requires_current_core(*relative_paths): mark test as requiring installed "
-        "google-api-core (or specific files within it) to match monorepo source.",
+        "requires_current_core: mark test as requiring installed google-api-core to match monorepo source.",
     )
 
 
 def pytest_collection_modifyitems(config, items):
+    if INSTALLED_CORE_MATCHES_MONOREPO:
+        return
+    skip_marker = pytest.mark.skip(
+        reason="Installed PyPI google-api-core differs from monorepo source; "
+        "validated by showcase-canary (INSTALL_LOCAL_CORE=true)."
+    )
     for item in items:
-        marker = item.get_closest_marker("requires_current_core")
-        if marker is not None and not installed_core_matches_monorepo(*marker.args):
-            item.add_marker(
-                pytest.mark.skip(
-                    reason="Installed PyPI google-api-core differs from monorepo source; "
-                    "validated by showcase-canary (INSTALL_LOCAL_CORE=true)."
-                )
-            )
+        if "requires_current_core" in item.keywords:
+            item.add_marker(skip_marker)
 
 
 try:
