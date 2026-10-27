@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import json
 import os
 import warnings
@@ -26,6 +27,8 @@ from google.auth import (
     transport,
 )
 from google.oauth2 import id_token, service_account
+
+PUBLIC_CERT_FILE = os.path.join(os.path.dirname(__file__), "../data/public_cert.pem")
 
 SERVICE_ACCOUNT_FILE = os.path.join(
     os.path.dirname(__file__), "../data/service_account.json"
@@ -389,6 +392,30 @@ def test_verify_firebase_token_warns_without_audience(verify_token):
         certs_url=id_token._GOOGLE_APIS_CERTS_URL,
         clock_skew_in_seconds=0,
     )
+
+
+@pytest.mark.parametrize("alg", ["ES256", "ES384"])
+def test_verify_firebase_token_mismatched_alg_for_rsa_certs(alg):
+    with open(PUBLIC_CERT_FILE, "r") as fh:
+        public_cert = fh.read()
+    request = make_request(200, {"1": public_cert})
+    header = base64.urlsafe_b64encode(
+        json.dumps({"alg": alg, "kid": "1", "typ": "JWT"}).encode("utf-8")
+    )
+    payload = base64.urlsafe_b64encode(
+        json.dumps(
+            {
+                "aud": "my-project-id",
+                "iss": "https://securetoken.google.com/my-project-id",
+                "sub": "my-user-id",
+            }
+        ).encode("utf-8")
+    )
+    sig = base64.urlsafe_b64encode(b"sig")
+    token = b".".join([header, payload, sig])
+
+    with pytest.raises(exceptions.InvalidValue):
+        id_token.verify_firebase_token(token, request, audience="my-project-id")
 
 
 def test_fetch_id_token_credentials_optional_request(monkeypatch):
