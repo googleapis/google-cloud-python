@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+import contextlib
 import os
 from pathlib import Path
 from typing import Sequence, Tuple
@@ -84,23 +85,18 @@ def _installed_core_matches_monorepo() -> bool:
 INSTALLED_CORE_MATCHES_MONOREPO = _installed_core_matches_monorepo()
 
 
-def pytest_configure(config):
-    config.addinivalue_line(
-        "markers",
-        "requires_current_core: mark test as requiring installed google-api-core to match monorepo source.",
-    )
-
-
-def pytest_collection_modifyitems(config, items):
-    if INSTALLED_CORE_MATCHES_MONOREPO:
-        return
-    skip_marker = pytest.mark.skip(
-        reason="Installed PyPI google-api-core differs from monorepo source; "
-        "validated by showcase-canary (INSTALL_LOCAL_CORE=true)."
-    )
-    for item in items:
-        if "requires_current_core" in item.keywords:
-            item.add_marker(skip_marker)
+@contextlib.contextmanager
+def skip_on_core_mismatch():
+    """Runs assertions and skips only if they fail while PyPI google-api-core lags monorepo."""
+    try:
+        yield
+    except AssertionError:
+        if not INSTALLED_CORE_MATCHES_MONOREPO:
+            pytest.skip(
+                "Installed PyPI google-api-core differs from monorepo source; "
+                "validated by showcase-canary (INSTALL_LOCAL_CORE=true)."
+            )
+        raise
 
 
 try:
