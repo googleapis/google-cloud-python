@@ -980,6 +980,59 @@ def test_extract_error_attributes_variations():
         "error.type": "CancelledError",
     }
 
+    # 12. HTTP response attached to GoogleAPICallError (direct and wrapped in RetryError)
+    http_resp_503 = types.SimpleNamespace(
+        status_code=503,
+        json=lambda: {"error": {"message": "Persistent outage"}},
+    )
+    http_exc = exceptions.ServiceUnavailable(
+        "POST http://localhost:7469/v1beta1/sequences/23: Persistent outage",
+        response=http_resp_503,
+    )
+    assert _extract_error_attributes(http_exc) == {
+        "error.type": "503",
+        "status.message": "Persistent outage",
+    }
+    retry_http_exc = exceptions.RetryError("Deadline of 0.1s exceeded", cause=http_exc)
+    assert _extract_error_attributes(retry_http_exc) == {
+        "error.type": "503",
+        "status.message": "Persistent outage",
+    }
+
+    # 13. HTTP response with dict ErrorInfo (from JSON format_http_response_error)
+    http_exc_dict_info = exceptions.BadRequest(
+        "POST http://localhost:7469/v1beta1/echo:echo: Quota exceeded",
+        response=types.SimpleNamespace(
+            status_code=400,
+            json=lambda: {"error": {"message": "Quota exceeded"}},
+        ),
+        error_info={
+            "domain": "googleapis.com",
+            "reason": "RATE_LIMIT_EXCEEDED",
+            "metadata": {"service": "showcase.googleapis.com"},
+        },
+    )
+    assert _extract_error_attributes(http_exc_dict_info) == {
+        "gcp.errors.domain": "googleapis.com",
+        "error.type": "RATE_LIMIT_EXCEEDED",
+        "gcp.errors.metadata.service": "showcase.googleapis.com",
+        "status.message": "Quota exceeded",
+    }
+
+    # 14. gRPC Call-like response (has trailing_metadata) is NOT treated as an HTTP response
+    grpc_call_like = types.SimpleNamespace(
+        status_code=503,
+        trailing_metadata=(),
+    )
+    grpc_exc_with_resp = exceptions.ServiceUnavailable(
+        "gRPC transport error",
+        response=grpc_call_like,
+    )
+    assert _extract_error_attributes(grpc_exc_with_resp) == {
+        "error.type": "UNAVAILABLE",
+        "status.message": "gRPC transport error",
+    }
+
 
 def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
     """Proves handling when span has or lacks set_attribute."""
