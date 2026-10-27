@@ -16,11 +16,23 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.chronicle_v1 import gapic_version as package_version
+from google.cloud.chronicle_v1._compat import (
+    ASYNC_WRAP_METHOD_SUPPORTS_KIND as _ASYNC_WRAP_METHOD_SUPPORTS_KIND,
+)
+from google.cloud.chronicle_v1._compat import (
+    WRAP_METHOD_SUPPORTS_TRACING as _WRAP_METHOD_SUPPORTS_TRACING,
+)
+
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = _WRAP_METHOD_SUPPORTS_TRACING
+_WRAP_METHOD_SUPPORTS_KIND = _WRAP_METHOD_SUPPORTS_TRACING
+
 import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
 import google.api_core
 import google.auth  # type: ignore
 import google.protobuf
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -28,7 +40,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.chronicle_v1 import gapic_version as package_version
 from google.cloud.chronicle_v1.types import feed
 from google.cloud.chronicle_v1.types import feed as gcc_feed
 
@@ -60,6 +71,7 @@ class FeedsServiceTransport(abc.ABC):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -90,6 +102,9 @@ class FeedsServiceTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -139,16 +154,95 @@ class FeedsServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._client_options = client_options
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        """Wrap an RPC method with common client-level features.
+
+        Applies retry, timeout, metadata, and tracing wrappers to the
+        underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            try:
+                kind = self.kind
+            except NotImplementedError:
+                kind = None
+            if kind:
+                kwargs["kind"] = kind
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
+    def _wrap_async_method(self, func, *args, **kwargs):
+        """Wrap an async RPC method with common client-level features.
+
+        Applies asynchronous retry, timeout, metadata, and tracing wrappers
+        to the underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            try:
+                kind = self.kind
+            except NotImplementedError:
+                kind = None
+            if kind:
+                kwargs["kind"] = kind
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+        # Fallback for older runtime versions of google-api-core:
+        # - Era 1 (< 2.29.0): Neither tracing args nor `kind` are supported.
+        # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
+        #   falling back to gRPC wrapping), but tracing args are not.
+        # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        try:
+            kind = self.kind
+        except NotImplementedError:
+            kind = None
+
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and kind:
+            kwargs["kind"] = kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
+        """Precompute and cache wrapped methods for RPC dispatch."""
         self._wrapped_methods = {
-            self.fetch_service_account_for_customer: gapic_v1.method.wrap_method(
+            self.fetch_service_account_for_customer: self._wrap_method(
                 self.fetch_service_account_for_customer,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -161,13 +255,15 @@ class FeedsServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/FetchServiceAccountForCustomer",
             ),
-            self.create_feed: gapic_v1.method.wrap_method(
+            self.create_feed: self._wrap_method(
                 self.create_feed,
                 default_timeout=300.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/CreateFeed",
             ),
-            self.get_feed: gapic_v1.method.wrap_method(
+            self.get_feed: self._wrap_method(
                 self.get_feed,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -180,23 +276,27 @@ class FeedsServiceTransport(abc.ABC):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/GetFeed",
             ),
-            self.delete_feed: gapic_v1.method.wrap_method(
+            self.delete_feed: self._wrap_method(
                 self.delete_feed,
                 default_timeout=300.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/DeleteFeed",
             ),
-            self.enable_feed: gapic_v1.method.wrap_method(
+            self.enable_feed: self._wrap_method(
                 self.enable_feed,
                 default_timeout=300.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/EnableFeed",
             ),
-            self.disable_feed: gapic_v1.method.wrap_method(
+            self.disable_feed: self._wrap_method(
                 self.disable_feed,
                 default_timeout=300.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/DisableFeed",
             ),
-            self.list_feeds: gapic_v1.method.wrap_method(
+            self.list_feeds: self._wrap_method(
                 self.list_feeds,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -209,8 +309,9 @@ class FeedsServiceTransport(abc.ABC):
                 ),
                 default_timeout=300.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/ListFeeds",
             ),
-            self.list_feed_packs: gapic_v1.method.wrap_method(
+            self.list_feed_packs: self._wrap_method(
                 self.list_feed_packs,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -223,8 +324,9 @@ class FeedsServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/ListFeedPacks",
             ),
-            self.get_feed_pack: gapic_v1.method.wrap_method(
+            self.get_feed_pack: self._wrap_method(
                 self.get_feed_pack,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -237,13 +339,15 @@ class FeedsServiceTransport(abc.ABC):
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/GetFeedPack",
             ),
-            self.update_feed: gapic_v1.method.wrap_method(
+            self.update_feed: self._wrap_method(
                 self.update_feed,
                 default_timeout=300.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/UpdateFeed",
             ),
-            self.list_feed_source_type_schemas: gapic_v1.method.wrap_method(
+            self.list_feed_source_type_schemas: self._wrap_method(
                 self.list_feed_source_type_schemas,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -256,8 +360,9 @@ class FeedsServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/ListFeedSourceTypeSchemas",
             ),
-            self.list_log_type_schemas: gapic_v1.method.wrap_method(
+            self.list_log_type_schemas: self._wrap_method(
                 self.list_log_type_schemas,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -270,36 +375,43 @@ class FeedsServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/ListLogTypeSchemas",
             ),
-            self.import_push_logs: gapic_v1.method.wrap_method(
+            self.import_push_logs: self._wrap_method(
                 self.import_push_logs,
                 default_timeout=120.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/ImportPushLogs",
             ),
-            self.generate_secret: gapic_v1.method.wrap_method(
+            self.generate_secret: self._wrap_method(
                 self.generate_secret,
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.chronicle.v1.FeedsService/GenerateSecret",
             ),
-            self.cancel_operation: gapic_v1.method.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/CancelOperation",
             ),
-            self.delete_operation: gapic_v1.method.wrap_method(
+            self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/DeleteOperation",
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.list_operations: gapic_v1.method.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/ListOperations",
             ),
         }
 
