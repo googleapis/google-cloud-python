@@ -164,6 +164,12 @@ class MutationsBatcher(object):
         """Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent asynchronously.
 
+        The row's mutations are copied into the batch right away and the row
+        itself is left untouched, so passing the same
+        :class:`~google.cloud.bigtable.row.DirectRow` twice, or committing it
+        afterwards, sends its mutations again. Use a fresh row per call, or
+        clear it yourself.
+
         For example:
 
         .. literalinclude:: snippets_table.py
