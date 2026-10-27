@@ -13,7 +13,6 @@
 # limitations under the License.
 
 
-import filecmp
 import os
 from pathlib import Path
 from typing import Sequence, Tuple
@@ -56,8 +55,10 @@ def _installed_core_matches_monorepo() -> bool:
     for src_file in monorepo_core_dir.rglob("*.py"):
         rel_path = src_file.relative_to(monorepo_core_dir)
         installed_file = installed_core_dir / rel_path
-        if not installed_file.is_file() or not filecmp.cmp(
-            src_file, installed_file, shallow=False
+        if not installed_file.is_file():
+            return False
+        if src_file.read_text(encoding="utf-8") != installed_file.read_text(
+            encoding="utf-8"
         ):
             return False
     return True
