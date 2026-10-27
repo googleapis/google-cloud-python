@@ -505,11 +505,9 @@ class DirectRow(_SetDeleteRow):
                     details=getattr(e, "details", []),
                 )
 
-        # Clear on every path that returns a status, success or failure, which
-        # is what commit() has always done. An exception that cannot be turned
-        # into a status escapes instead (it did before the reroute too, where
-        # clear() ran after mutate_rows returned), and the caller gets no
-        # outcome to act on, so the mutations are left in place for them.
+        # Clear once a status is produced, success or failure. An error that
+        # cannot be turned into a status propagates instead, and the mutations
+        # stay on the row so the caller can retry them.
         self.clear()
         return status
 
