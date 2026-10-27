@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.44.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.43.1...gapic-generator-v1.44.0) (2026-10-22)
+
+
+### Features
+
+* **observability:** suppress redundant gRPC auto-instrumentation spans ([#18592](https://github.com/googleapis/google-cloud-python/issues/18592)) ([a597007](https://github.com/googleapis/google-cloud-python/commit/a5970072a0218060bc34857797c3008e0f30becf))
+
 ## [1.43.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.43.0...gapic-generator-v1.43.1) (2026-10-15)
 
 

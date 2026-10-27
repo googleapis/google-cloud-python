@@ -116,6 +116,18 @@
     "packages/google-cloud-ndb": {
       "component": "google-cloud-ndb"
     },
+    "packages/google-cloud-observability": {
+      "component": "google-cloud-observability",
+      "extra-files": [
+        "google/cloud/observability/gapic_version.py",
+        "google/cloud/observability_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.observability.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-cloud-pubsub": {
       "component": "google-cloud-pubsub",
       "extra-files": [

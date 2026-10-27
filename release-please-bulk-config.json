@@ -181,18 +181,6 @@
         "google/apps/script/type/slides/gapic_version.py"
       ]
     },
-    "packages/google-area120-tables": {
-      "component": "google-area120-tables",
-      "extra-files": [
-        "google/area120/tables/gapic_version.py",
-        "google/area120/tables_v1alpha1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.area120.tables.v1alpha1.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-auth-httplib2": {
       "component": "google-auth-httplib2"
     },
@@ -3812,7 +3800,13 @@
       "component": "google-shopping-merchant-reviews",
       "extra-files": [
         "google/shopping/merchant_reviews/gapic_version.py",
+        "google/shopping/merchant_reviews_v1/gapic_version.py",
         "google/shopping/merchant_reviews_v1beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.reviews.v1.json",
+          "type": "json"
+        },
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.reviews.v1beta.json",
