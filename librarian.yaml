@@ -16,8 +16,8 @@ version: v0.50.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 14a161a98ef045be80c12ab69d924504a756f109
-    sha256: ce3cee2da77fbdff0e269bc520dc61e8b32efcdec7628b39b9e474a02bc951f6
+    commit: 968d491eddafaf61da6b8bd0a6a2710ec9e2fdbc
+    sha256: f61663b244a2907b2cce73cb16589f103d203cace88ed5a79228e27dc415bfe2
 tools:
   pip:
     - name: black
@@ -734,9 +734,11 @@ libraries:
       default_version: v1
   - name: google-cloud-ces
     version: 0.7.2
+    comment: Generation is skipped due to https://github.com/googleapis/google-cloud-python/issues/18888
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
+    skip_generate: true
     python:
       default_version: v1
   - name: google-cloud-channel
@@ -748,8 +750,10 @@ libraries:
       default_version: v1
   - name: google-cloud-chronicle
     version: 0.6.4
+    comment: Generation is skipped due to https://github.com/googleapis/google-cloud-python/issues/18890
     apis:
       - path: google/cloud/chronicle/v1
+    skip_generate: true
     python:
       default_version: v1
   - name: google-cloud-cloudcontrolspartner
