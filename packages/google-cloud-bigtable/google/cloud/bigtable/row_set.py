@@ -130,6 +130,8 @@ class RowSet(object):
         prefix_bytes = _to_bytes(row_key_prefix, encoding="utf-8")
         if not prefix_bytes:
             raise ValueError("row_key_prefix cannot be empty.")
+        # Carry the +1 increment past any trailing 0xFF (max byte) bytes;
+        # if all bytes are 0xFF, no larger prefix exists so the upper bound is None.
         stripped = prefix_bytes.rstrip(b"\xff")
         if not stripped:
             end_key = None
