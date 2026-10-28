@@ -207,6 +207,7 @@ class ActiveOperationMetric:
         """
         Save new instances to contextvars on init
         """
+        self._prev_context_op = self._active_operation_context.get(None)
         self._active_operation_context.set(self)
 
     def start(self) -> None:
@@ -390,6 +391,15 @@ class ActiveOperationMetric:
             flow_throttling_time_ns=self.flow_throttling_time_ns,
         )
         self.state = OperationState.COMPLETED
+        if self._active_operation_context.get(None) is self:
+            prev_op = getattr(self, "_prev_context_op", None)
+            if prev_op is not None and prev_op.state in (
+                OperationState.ACTIVE_ATTEMPT,
+                OperationState.BETWEEN_ATTEMPTS,
+            ):
+                self._active_operation_context.set(prev_op)
+            else:
+                self._active_operation_context.set(None)  # type: ignore[arg-type]
         for handler in self.handlers:
             handler.on_operation_complete(finalized)
 

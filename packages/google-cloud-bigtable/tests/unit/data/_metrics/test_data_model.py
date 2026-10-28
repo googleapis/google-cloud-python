@@ -729,3 +729,20 @@ class TestActiveOperationMetric:
             # outside context manager, should be ended
             assert end_with_status_mock.call_count == 1
             assert end_with_status_mock.call_args[0][0] == expected_exc
+
+    def test_nested_operation_restores_outer_context(self):
+        from google.cloud.bigtable.data._metrics.data_model import (
+            ActiveOperationMetric,
+            OperationType,
+        )
+
+        outer = self._make_one(OperationType.MUTATE_ROW)
+        outer.start_attempt()
+        assert ActiveOperationMetric.from_context() is outer
+
+        inner = self._make_one(OperationType.READ_ROWS)
+        assert ActiveOperationMetric.from_context() is inner
+        inner.end_with_success()
+        assert ActiveOperationMetric.from_context() is outer
+        outer.end_with_success()
+        assert ActiveOperationMetric.from_context() is None

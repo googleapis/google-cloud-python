@@ -359,3 +359,37 @@ class TestReadRowsOperation:
         with pytest.raises(InvalidChunk) as exc:
             stream.__next__()
         assert "row keys should be strictly increasing" in str(exc.value)
+
+    def test_merge_rows_empty_family_name(self):
+        from google.protobuf import wrappers_pb2
+
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable_v2.types import ReadRowsResponse
+
+        def chunk_gen():
+            yield ReadRowsResponse.CellChunk(
+                row_key=b"r1",
+                family_name=wrappers_pb2.StringValue(value="cf1"),
+                qualifier=wrappers_pb2.BytesValue(value=b"q1"),
+                timestamp_micros=100,
+                value=b"v1",
+                commit_row=False,
+            )._pb
+            yield ReadRowsResponse.CellChunk(
+                family_name=wrappers_pb2.StringValue(value=""),
+                qualifier=wrappers_pb2.BytesValue(value=b"q2"),
+                timestamp_micros=200,
+                value=b"v2",
+                commit_row=True,
+            )._pb
+
+        table = mock.Mock()
+        table._request_path = {"table_name": "t"}
+        table.app_profile_id = None
+        instance = self._make_one(
+            ReadRowsQuery(), table, 10, 10, ActiveOperationMetric("READ_ROWS")
+        )
+        rows = [r for r in instance.merge_rows(chunk_gen())]
+        assert len(rows) == 1
+        assert rows[0].cells[0].family == "cf1"
+        assert rows[0].cells[1].family == ""
