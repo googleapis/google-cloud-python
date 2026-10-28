@@ -57,11 +57,39 @@ class TestRowRange:
         """
         empty strings should be treated as None
         """
+        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+
         row_range = self._make_one("", "")
         assert row_range.start_key is None
         assert row_range.end_key is None
         assert row_range.start_is_inclusive is True
         assert row_range.end_is_inclusive is True
+
+        rr_open_start = self._make_one(start_key=b"", start_is_inclusive=False)
+        assert rr_open_start.start_key == b""
+        assert rr_open_start.start_is_inclusive is False
+        assert bool(rr_open_start) is True
+        assert "start_key_open" in rr_open_start._to_pb()
+
+        rr_closed_end = self._make_one(end_key=b"", end_is_inclusive=True)
+        assert rr_closed_end.end_key == b""
+        assert rr_closed_end.end_is_inclusive is True
+        assert bool(rr_closed_end) is True
+        assert "end_key_closed" in rr_closed_end._to_pb()
+
+        rr_open_end = self._make_one(end_key=b"", end_is_inclusive=False)
+        assert rr_open_end.end_key == b""
+        assert rr_open_end.end_is_inclusive is False
+        assert bool(rr_open_end) is True
+        assert "end_key_open" in rr_open_end._to_pb()
+
+        rr_from_pb = self._get_target_class()._from_pb(
+            RowRangePB(start_key_open=b"", end_key_closed=b"z")
+        )
+        assert rr_from_pb.start_key == b""
+        assert rr_from_pb.start_is_inclusive is False
+        assert rr_from_pb.end_key == b"z"
+        assert rr_from_pb.end_is_inclusive is True
 
     def test_ctor_inclusive_flags(self):
         row_range = self._make_one("test_row5", "test_row6", False, True)

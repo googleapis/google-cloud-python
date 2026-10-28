@@ -14,6 +14,8 @@
 
 """User-friendly container for Google Cloud Bigtable RowSet"""
 
+from google.cloud._helpers import _to_bytes  # type: ignore
+
 from google.cloud.bigtable.data.read_rows_query import (
     ReadRowsQuery,
 )
@@ -121,14 +123,19 @@ class RowSet(object):
             :start-after: [START bigtable_api_add_row_range_with_prefix]
             :end-before: [END bigtable_api_add_row_range_with_prefix]
 
-        :type row_key_prefix: str
+        :type row_key_prefix: str | bytes
         :param row_key_prefix: To retrieve  all rows that start with this row key prefix.
                             Prefix cannot be zero length."""
 
-        end_key = row_key_prefix[:-1] + chr(ord(row_key_prefix[-1]) + 1)
-        self.add_row_range_from_keys(
-            row_key_prefix.encode("utf-8"), end_key.encode("utf-8")
-        )
+        prefix_bytes = _to_bytes(row_key_prefix, encoding="utf-8")
+        if not prefix_bytes:
+            raise ValueError("row_key_prefix cannot be empty.")
+        stripped = prefix_bytes.rstrip(b"\xff")
+        if not stripped:
+            end_key = None
+        else:
+            end_key = stripped[:-1] + bytes([stripped[-1] + 1])
+        self.add_row_range_from_keys(prefix_bytes, end_key)
 
 
 class RowRange(_MappableAttributesMixin, BaseRowRange):

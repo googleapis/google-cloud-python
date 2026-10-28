@@ -52,9 +52,11 @@ class RowRange:
         start_is_inclusive: bool | None = None,
         end_is_inclusive: bool | None = None,
     ):
-        # convert empty key inputs to None for consistency
-        start_key = None if not start_key else start_key
-        end_key = None if not end_key else end_key
+        # convert empty key inputs to None for consistency when using default inclusiveness
+        if not start_key and start_is_inclusive is not False:
+            start_key = None
+        if end_key == "" and end_is_inclusive is None:
+            end_key = None
         # check for invalid combinations of arguments
         if start_is_inclusive is None:
             start_is_inclusive = True
@@ -105,7 +107,11 @@ class RowRange:
         """
         Returns the start key of the range. If None, the range is unbounded on the left.
         """
-        return self._pb.start_key_closed or self._pb.start_key_open or None
+        if "start_key_closed" in self._pb:
+            return self._pb.start_key_closed
+        elif "start_key_open" in self._pb:
+            return self._pb.start_key_open
+        return None
 
     @property
     def end_key(self) -> bytes | None:
@@ -115,7 +121,11 @@ class RowRange:
         Returns:
             bytes | None: The end key of the range, or None if the range is unbounded on the right.
         """
-        return self._pb.end_key_closed or self._pb.end_key_open or None
+        if "end_key_closed" in self._pb:
+            return self._pb.end_key_closed
+        elif "end_key_open" in self._pb:
+            return self._pb.end_key_open
+        return None
 
     @property
     def start_is_inclusive(self) -> bool:
@@ -127,7 +137,7 @@ class RowRange:
         Returns:
             bool: Whether the range is inclusive of the start key.
         """
-        return not bool(self._pb.start_key_open)
+        return "start_key_open" not in self._pb
 
     @property
     def end_is_inclusive(self) -> bool:
@@ -139,7 +149,7 @@ class RowRange:
         Returns:
             bool: Whether the range is inclusive of the end key.
         """
-        return not bool(self._pb.end_key_open)
+        return "end_key_open" not in self._pb
 
     def _to_pb(self) -> RowRangePB:
         """
@@ -190,10 +200,10 @@ class RowRange:
             bool: True if the RowRange is not empty, False otherwise
         """
         return bool(
-            self._pb.start_key_closed
-            or self._pb.start_key_open
-            or self._pb.end_key_closed
-            or self._pb.end_key_open
+            "start_key_closed" in self._pb
+            or "start_key_open" in self._pb
+            or "end_key_closed" in self._pb
+            or "end_key_open" in self._pb
         )
 
     def __eq__(self, other: Any) -> bool:

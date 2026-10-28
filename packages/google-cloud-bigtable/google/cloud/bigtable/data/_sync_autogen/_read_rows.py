@@ -318,10 +318,20 @@ class _ReadRowsOperation:
         ]
         adjusted_ranges: list[RowRangePB] = []
         for row_range in row_set.row_ranges:
-            end_key = row_range.end_key_closed or row_range.end_key_open or None
+            if "end_key_closed" in row_range:
+                end_key: bytes | None = row_range.end_key_closed
+            elif "end_key_open" in row_range:
+                end_key = row_range.end_key_open
+            else:
+                end_key = None
             if end_key is None or end_key > last_seen_row_key:
                 new_range = RowRangePB(row_range)
-                start_key = row_range.start_key_closed or row_range.start_key_open
+                if "start_key_closed" in row_range:
+                    start_key: bytes | None = row_range.start_key_closed
+                elif "start_key_open" in row_range:
+                    start_key = row_range.start_key_open
+                else:
+                    start_key = None
                 if start_key is None or start_key <= last_seen_row_key:
                     new_range.start_key_open = last_seen_row_key
                 adjusted_ranges.append(new_range)

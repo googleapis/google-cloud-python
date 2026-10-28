@@ -160,6 +160,13 @@ class TestReadRowsOperationAsync:
                 "a",
                 [{"start_key_open": "a", "end_key_open": "z"}],
             ),
+            ([{"end_key_closed": ""}], "", []),
+            ([{"end_key_open": ""}], "", []),
+            (
+                [{"start_key_open": "", "end_key_closed": "d"}],
+                "",
+                [{"start_key_open": "", "end_key_closed": "d"}],
+            ),
         ],
     )
     @pytest.mark.parametrize("with_key", [True, False])
