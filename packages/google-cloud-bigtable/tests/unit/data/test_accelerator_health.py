@@ -80,12 +80,21 @@ class TestHealthCodec:
             (b"\x08", "tag with no varint after it"),
             (b"\x08\x80", "varint truncated mid-continuation"),
             (b"\x08\xac\x02", "a status value this client has never heard of"),
+            (
+                b"\x08\x01TRAILING_GARBAGE",
+                "trailing unrecognized bytes after valid field",
+            ),
+            (bytes([0x08] + [0x80] * 9 + [0x02]), "10th byte shift >= 64 overflow"),
+            (bytes([0x08] + [0x80] * 10 + [0x01]), "11-byte overlong varint"),
         ],
     )
     def test_unreadable_payloads_are_unknown(self, payload, reason):
         # UNKNOWN is what the monitor counts as a failed probe, which is the
         # safe reading of a response we cannot interpret.
         assert parse_health_response(payload) == ServingStatus.UNKNOWN, reason
+
+    def test_repeated_field_last_one_wins(self):
+        assert parse_health_response(b"\x08\x01\x08\x02") == ServingStatus.NOT_SERVING
 
 
 class TestBreakerDegraded:
