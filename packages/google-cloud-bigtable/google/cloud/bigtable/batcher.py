@@ -189,14 +189,13 @@ class MutationsBatcher(object):
         """
         if not isinstance(row, DirectRow):
             raise TypeError(
-                "Bulk processing can not be applied for conditional or append mutations."
+                "Bulk processing cannot be applied for conditional or append mutations."
             )
         if row.table is not None and row.table.name != self.table.name:
             from google.cloud.bigtable.table import TableMismatchError
 
             raise TableMismatchError(
-                "Row %s is a part of %s table. Current table: %s"
-                % (row.row_key, row.table.name, self.table.name)
+                f"Row {row.row_key} is a part of {row.table.name} table. Current table: {self.table.name}"
             )
         self._batcher.append(RowMutationEntry(row.row_key, row._get_mutations()))
 

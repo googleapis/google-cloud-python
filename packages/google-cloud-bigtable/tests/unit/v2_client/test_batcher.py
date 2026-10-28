@@ -397,19 +397,19 @@ def test_mutations_batcher_mutate_wrong_row_type(_setup_batcher):
     with MutationsBatcher(table=table, flush_count=1) as mutation_batcher:
         with pytest.raises(
             TypeError,
-            match="Bulk processing can not be applied for conditional or append mutations.",
+            match="Bulk processing cannot be applied for conditional or append mutations.",
         ):
             mutation_batcher.mutate(cond_row)
 
         with pytest.raises(
             TypeError,
-            match="Bulk processing can not be applied for conditional or append mutations.",
+            match="Bulk processing cannot be applied for conditional or append mutations.",
         ):
             mutation_batcher.mutate(append_row)
 
         with pytest.raises(
             TypeError,
-            match="Bulk processing can not be applied for conditional or append mutations.",
+            match="Bulk processing cannot be applied for conditional or append mutations.",
         ):
             mutation_batcher.mutate_rows([cond_row])
 
@@ -424,9 +424,9 @@ def test_mutations_batcher_mutate_table_mismatch(_setup_batcher):
     row = DirectRow(row_key=b"row_key", table=other_table)
     row.set_cell("cf1", b"c1", b"val")
 
-    expected_msg = r"Row b'row_key' is a part of %s table\. Current table: %s" % (
-        other_table.name,
-        table.name,
+    expected_msg = (
+        rf"Row b'row_key' is a part of {other_table.name} table\. "
+        rf"Current table: {table.name}"
     )
 
     with MutationsBatcher(table=table, flush_count=1) as mutation_batcher:
