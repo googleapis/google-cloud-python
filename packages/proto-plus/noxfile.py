@@ -64,7 +64,7 @@ def unit(session, implementation):
     )
 
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
-    session.install("coverage", "pytest", "pytest-cov", "pytz")
+    session.install("coverage", "pytest<9.2", "pytest-cov", "pytz")
     session.install("-e", ".[testing]", "-c", constraints_path)
 
     # TODO(https://github.com/googleapis/proto-plus-python/issues/403): re-enable `-W=error`
@@ -100,7 +100,7 @@ def prerelease_deps(session, implementation):
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
 
     # Install test environment dependencies
-    session.install("coverage", "pytest", "pytest-cov", "pytz")
+    session.install("coverage", "pytest<9.2", "pytest-cov", "pytz")
 
     # Install the package without dependencies
     session.install("-e", ".", "--no-deps")
@@ -157,7 +157,7 @@ def core_deps_from_source(session, implementation):
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
 
     # Install test environment dependencies
-    session.install("coverage", "pytest", "pytest-cov", "pytz")
+    session.install("coverage", "pytest<9.2", "pytest-cov", "pytz")
 
     # Install the package without dependencies
     session.install("-e", ".", "--no-deps")

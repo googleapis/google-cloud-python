@@ -47,7 +47,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
-    "pytest",
+    "pytest<9.2",
     "pytest-cov",
     "pytest-asyncio",
 ]
@@ -60,7 +60,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
-    "pytest",
+    "pytest<9.2",
     "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []

@@ -220,7 +220,7 @@ def default(
         unittest.skip("The pre-release session cannot be run without grpc")
 
     session.install(
-        "pytest",
+        "pytest<9.2",
         "pytest-cov",
         "pytest-mock",
         "pytest-xdist",

@@ -16,6 +16,7 @@
 
 
 from __future__ import absolute_import
+
 import os
 import pathlib
 import re
@@ -154,7 +155,7 @@ def unit(session):
         "-e", "tests/unit/resources/good_package", "tests/unit/resources/bad_package"
     )
 
-    session.install("pytest", "pytest-cov")
+    session.install("pytest<9.2", "pytest-cov")
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
@@ -303,7 +304,7 @@ def prerelease_deps(session):
         "-e", "tests/unit/resources/good_package", "tests/unit/resources/bad_package"
     )
 
-    session.install("pytest", "pytest-cov")
+    session.install("pytest<9.2", "pytest-cov")
     session.install("-e", ".", "-c", constraints_path)
 
     # Because we test minimum dependency versions on the minimum Python
@@ -371,7 +372,7 @@ def core_deps_from_source(session):
         "-e", "tests/unit/resources/good_package", "tests/unit/resources/bad_package"
     )
 
-    session.install("pytest", "pytest-cov")
+    session.install("pytest<9.2", "pytest-cov")
     session.install("-e", ".", "-c", constraints_path)
 
     # Because we test minimum dependency versions on the minimum Python

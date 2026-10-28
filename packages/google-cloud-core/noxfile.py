@@ -136,7 +136,7 @@ def default(session):
     )
 
     # Install all test dependencies, then install local packages in-place.
-    session.install("pytest", "pytest-cov", "-c", constraints_path)
+    session.install("pytest<9.2", "pytest-cov", "-c", constraints_path)
     session.install("-e", ".[grpc]", "-c", constraints_path)
 
     # Run py.test against the unit tests.
@@ -275,7 +275,7 @@ def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
 
     # Install all test dependencies, then install local packages in-place.
-    session.install("pytest", "pytest-cov")
+    session.install("pytest<9.2", "pytest-cov")
     session.install("-e", ".[grpc]")
 
     # Because we test minimum dependency versions on the minimum Python
@@ -362,7 +362,7 @@ def core_deps_from_source(session, protobuf_implementation):
     """
 
     # Install all test dependencies, then install local packages in-place.
-    session.install("pytest", "pytest-cov")
+    session.install("pytest<9.2", "pytest-cov")
     session.install("-e", ".[grpc]")
 
     # Because we test minimum dependency versions on the minimum Python
