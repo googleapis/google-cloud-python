@@ -42,6 +42,7 @@ def _make_daemon(tmp_path, **kwargs):
 # to a no-op.  Tests that need to exercise the real implementation call this
 # directly as _real_cleanup_tempdir(daemon_instance).
 _real_cleanup_tempdir = AcceleratorDaemon._cleanup_tempdir
+_real_force_kill = AcceleratorDaemon._force_kill
 
 
 class TestExtraEnv:
@@ -810,3 +811,81 @@ class TestWindows:
         # UNAVAILABLE means the target resolved and nothing was listening, which
         # is the expected outcome. A malformed target fails earlier, as UNKNOWN.
         assert exc_info.value.code() == grpc.StatusCode.UNAVAILABLE
+
+
+class TestDaemonLifecycleHardening:
+    def test_stdin_grace_exceeds_go_graceful_stop_timeout(self):
+        assert _daemon._STDIN_GRACE_SECONDS >= 6.0
+
+    def test_close_closes_stdin_even_if_child_already_exited(self, tmp_path):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = 1
+        proc_mock.stdin = unittest.mock.Mock()
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+        d.close()
+        proc_mock.stdin.close.assert_called_once()
+        assert d._closed is True
+
+    def test_force_kill_closes_stdin_and_clears_proc_when_already_exited(
+        self, tmp_path
+    ):
+        import subprocess
+
+        proc_mock = unittest.mock.Mock(spec=subprocess.Popen)
+        proc_mock.poll.return_value = 1
+        proc_mock.stdin = unittest.mock.Mock()
+        d = _make_daemon(tmp_path)
+        d._proc = proc_mock
+        _real_force_kill(d)
+        proc_mock.stdin.close.assert_called_once()
+        assert d._proc is None
+
+    def test_start_passes_start_new_session_on_posix(self, tmp_path, monkeypatch):
+        captured = {}
+
+        def fake_popen(argv, **kwargs):
+            captured.update(kwargs)
+            raise _StopStart()
+
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", False)
+        monkeypatch.setattr(_daemon.subprocess, "Popen", fake_popen)
+        d = _make_daemon(tmp_path)
+        with pytest.raises(_StopStart):
+            d.start()
+        assert captured.get("start_new_session") is True
+
+    def test_start_falls_back_to_short_tmp_when_tmpdir_too_long(
+        self, tmp_path, monkeypatch
+    ):
+        import tempfile
+
+        long_tmp = str(tmp_path / ("x" * 95))
+        os.makedirs(long_tmp, exist_ok=True)
+        monkeypatch.setenv("TMPDIR", long_tmp)
+        tempfile.tempdir = None
+        captured_dirs = []
+
+        def spy_mkdtemp(prefix="", dir=None):
+            captured_dirs.append(dir)
+            raise _StopStart()
+
+        monkeypatch.setattr(_daemon, "_IS_WINDOWS", False)
+        monkeypatch.setattr(_daemon.tempfile, "mkdtemp", spy_mkdtemp)
+        d = _make_daemon(tmp_path)
+        try:
+            with pytest.raises(_StopStart):
+                d.start()
+        finally:
+            tempfile.tempdir = None
+        assert captured_dirs == ["/tmp"]
+
+    def test_log_path_truncates_oversized_log(self, tmp_path):
+        d = _make_daemon(tmp_path)
+        log = tmp_path / "daemon.log"
+        log.write_bytes(b"A" * (_daemon._MAX_LOG_BYTES * 2))
+        d._log_path = str(log)
+        path = d.log_path
+        assert os.path.getsize(path) <= _daemon._MAX_LOG_BYTES
