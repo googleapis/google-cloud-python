@@ -43,7 +43,7 @@ replacements:
       packages/google-cloud-vision/google/cloud/vision_v1p2beta1/__init__.py,
       packages/google-cloud-vision/google/cloud/vision_v1p3beta1/__init__.py,
       packages/google-cloud-vision/google/cloud/vision_v1p4beta1/__init__.py,
-    ]
+    ]    
     before: |
       from .types.web_detection import WebDetection\n
       __all__ = \(
@@ -93,7 +93,7 @@ replacements:
 
           translate_v2/services_
           translate_v2/types_
-
+    
       API Reference
       -------------
       .. toctree::
@@ -129,7 +129,7 @@ replacements:
   - paths: [
       packages/google-cloud-speech/google/cloud/speech_v1/__init__.py,
       packages/google-cloud-speech/google/cloud/speech_v1p1beta1/__init__.py,
-    ]
+    ]    
     before: |
       \)
 
@@ -150,7 +150,7 @@ replacements:
     count: 2
   - paths: [
       packages/google-cloud-speech/google/cloud/speech/__init__.py,
-    ]
+    ]    
     before: |
       from google.cloud.speech_v1.services.speech.client import SpeechClient
     after: |
@@ -354,7 +354,7 @@ replacements:
         :maxdepth: 2
 
         usage
-
+        
 
       API Reference
       -------------
@@ -369,7 +369,7 @@ replacements:
 
 
       Changelog
-    count: 1
+    count: 1 
   - paths: [
       "packages/google-cloud-bigquery-storage/noxfile.py",
     ]
@@ -473,3 +473,4 @@ replacements:
       google-cloud-logging>=3
       grpcio>=1
     count: 2
+
