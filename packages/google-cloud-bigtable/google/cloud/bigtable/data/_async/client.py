@@ -269,6 +269,16 @@ def _finalize_target(
                     fn()
                 except Exception:
                     pass
+            else:
+                ch = getattr(accel_client, "_channel", None)
+                for target in (ch, getattr(ch, "_channel", None)):
+                    ch_close = getattr(target, "close", None)
+                    if callable(ch_close) and not inspect.iscoroutinefunction(ch_close):
+                        try:
+                            ch_close()
+                            break
+                        except Exception:
+                            pass
         if daemon is not None:
             try:
                 daemon.close()
@@ -1923,7 +1933,17 @@ class _DataApiTargetAsync(abc.ABC):
             try:
                 if getattr(self, "_closed", False):
                     raise Cancelled("Table is closed") from exc
-                handle_accelerator_error(exc, daemon=daemon, breaker=self._accelerator_breaker)
+                try:
+                    handle_accelerator_error(
+                        exc,
+                        daemon=daemon,
+                        breaker=self._accelerator_breaker,
+                        operation_timeout=operation_timeout,
+                    )
+                except TypeError:
+                    handle_accelerator_error(
+                        exc, daemon=daemon, breaker=self._accelerator_breaker
+                    )
                 raise
             except Exception as translated_exc:
                 if not isinstance(translated_exc, _AcceleratorFallback) and metric.state != OperationState.COMPLETED:
@@ -2324,7 +2344,17 @@ class _DataApiTargetAsync(abc.ABC):
             try:
                 if getattr(self, "_closed", False):
                     raise Cancelled("Table is closed") from exc
-                handle_accelerator_error(exc, daemon=daemon, breaker=self._accelerator_breaker)
+                try:
+                    handle_accelerator_error(
+                        exc,
+                        daemon=daemon,
+                        breaker=self._accelerator_breaker,
+                        operation_timeout=operation_timeout,
+                    )
+                except TypeError:
+                    handle_accelerator_error(
+                        exc, daemon=daemon, breaker=self._accelerator_breaker
+                    )
                 raise
             except Exception as translated_exc:
                 if not isinstance(translated_exc, _AcceleratorFallback) and metric.state != OperationState.COMPLETED:

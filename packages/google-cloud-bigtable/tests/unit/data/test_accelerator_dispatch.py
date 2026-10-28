@@ -830,6 +830,23 @@ class TestAcceleratorDispatchFixes:
         finally:
             ActiveOperationMetric._active_operation_context.set(None)
 
+    def test_deadline_exceeded_includes_operation_timeout(self):
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+        from google.cloud.bigtable_v2.types.bigtable import MutateRowRequest
+
+        rpc_exc = _FakeRpcError(StatusCode.DEADLINE_EXCEEDED, "deadline exceeded")
+        client_mock = mock.AsyncMock()
+        client_mock.read_rows.side_effect = rpc_exc
+        client_mock.mutate_row.side_effect = rpc_exc
+        t = _bare_target(accel_client=client_mock, accel_daemon=mock.Mock(is_running=True))
+
+        query = ReadRowsQuery(row_keys=b"key1", limit=1)
+        with pytest.raises(core_exceptions.DeadlineExceeded, match="30.0s"):
+            self._run(t._read_row_via_accelerator(query, 30.0, 10.0))
+
+        with pytest.raises(core_exceptions.DeadlineExceeded, match="25.0s"):
+            self._run(t._mutate_row_via_accelerator(MutateRowRequest(), 25.0, 5.0))
+
 
 # ---------------------------------------------------------------------------
 # Event loop fixture so run_until_complete works

@@ -347,3 +347,19 @@ class TestMaybeStartAccelerator:
         assert sum(len(v) for v in client._instance_owners.values()) == 0
         assert len(client._active_instances) == 0
         client.close()
+
+    def test_finalize_target_closes_async_channel_synchronously(self):
+        from google.cloud.bigtable.data._async.client import _finalize_target
+
+        cy_ch = unittest.mock.MagicMock()
+        aio_ch = SimpleNamespace(close=unittest.mock.AsyncMock(), _channel=cy_ch)
+        accel_client = SimpleNamespace(
+            close=unittest.mock.AsyncMock(), _channel=aio_ch
+        )
+        daemon = unittest.mock.MagicMock()
+        _finalize_target(
+            lambda: None, "inst", None, 1, ("proj", "inst", None),
+            daemon, accel_client, None,
+        )
+        cy_ch.close.assert_called_once()
+        daemon.close.assert_called_once()
