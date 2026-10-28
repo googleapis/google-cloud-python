@@ -721,6 +721,116 @@ class TestStartAccelerator:
         assert "--app-profile" not in captured["cli_flags"]
 
 
+class TestAcceleratorDispatchFixes:
+    """Regression tests for async stream double-await, non-idempotent mutate_row,
+    closed table fallback guard, attempt_timeout / fallback budget, and metrics."""
+
+    def _run(self, coro):
+        return asyncio.get_event_loop().run_until_complete(coro)
+
+    def test_async_read_row_does_not_double_await_stream(self):
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+
+        class _FakeUnaryStreamCall:
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                raise StopAsyncIteration
+
+        client_mock = mock.AsyncMock()
+        client_mock.read_rows.return_value = _FakeUnaryStreamCall()
+        t = _bare_target(
+            accel_client=client_mock, accel_daemon=mock.Mock(is_running=True)
+        )
+        query = ReadRowsQuery(row_keys=b"key1", limit=1)
+        assert self._run(t._read_row_via_accelerator(query, 30.0, 5.0)) is None
+        client_mock.read_rows.assert_awaited_once()
+        assert client_mock.read_rows.call_args.kwargs["timeout"] == 5.0
+
+    def test_non_idempotent_mutate_row_skips_accelerator(self):
+        from google.cloud.bigtable.data.mutations import AddToCell, SetCell
+        from google.cloud.bigtable_v2.types.bigtable import MutateRowResponse
+
+        t = _bare_target(accel_client=mock.AsyncMock())
+        native_resp = MutateRowResponse()
+
+        async def fake_native_mutate(*args, **kwargs):
+            return native_resp
+
+        for mut in (
+            SetCell("cf", "col", b"val", timestamp_micros=-1),
+            AddToCell("cf", "col", 1, timestamp_micros=1000),
+        ):
+            with (
+                mock.patch.object(t, "_mutate_row_via_accelerator") as accel_mock,
+                mock.patch(
+                    "google.cloud.bigtable.data._async.client.tracked_retry",
+                    side_effect=fake_native_mutate,
+                ),
+            ):
+                res = self._run(t.mutate_row(b"key1", [mut]))
+                assert res == native_resp
+                accel_mock.assert_not_called()
+
+    def test_closed_table_aborts_fallback(self):
+        from google.cloud.bigtable.data.mutations import SetCell
+
+        t = _bare_target(accel_client=mock.AsyncMock())
+
+        async def close_and_fallback(*args, **kwargs):
+            t._closed = True
+            raise _AcceleratorFallback()
+
+        with mock.patch.object(
+            t, "_read_row_via_accelerator", side_effect=close_and_fallback
+        ):
+            with pytest.raises(core_exceptions.Cancelled, match="Table is closed"):
+                self._run(t.read_row(b"key1"))
+
+        t._closed = False
+        with mock.patch.object(
+            t, "_mutate_row_via_accelerator", side_effect=close_and_fallback
+        ):
+            with pytest.raises(core_exceptions.Cancelled, match="Table is closed"):
+                self._run(
+                    t.mutate_row(
+                        b"key1", [SetCell("cf", "col", b"v", timestamp_micros=1000)]
+                    )
+                )
+
+    def test_metrics_recorded_and_contextvar_restored(self):
+        from google.cloud.bigtable.data._metrics import (
+            ActiveOperationMetric,
+            OperationState,
+            OperationType,
+        )
+        from google.cloud.bigtable_v2.types.bigtable import (
+            MutateRowRequest,
+            MutateRowResponse,
+        )
+
+        handler = mock.Mock()
+        t = _bare_target(
+            accel_client=mock.AsyncMock(
+                mutate_row=mock.AsyncMock(return_value=MutateRowResponse())
+            ),
+            accel_daemon=mock.Mock(is_running=True),
+        )
+        t.client._metrics.add_handler(handler)
+        outer_op = ActiveOperationMetric(OperationType.READ_ROWS, is_streaming=True)
+        try:
+            self._run(t._mutate_row_via_accelerator(MutateRowRequest(), 20.0, 5.0))
+            assert (
+                ActiveOperationMetric._active_operation_context.get(None) is outer_op
+            )
+            handler.on_operation_complete.assert_called_once()
+            completed_op = handler.on_operation_complete.call_args[0][0]
+            assert completed_op.final_status == StatusCode.OK
+        finally:
+            ActiveOperationMetric._active_operation_context.set(None)
+
+
 # ---------------------------------------------------------------------------
 # Event loop fixture so run_until_complete works
 # ---------------------------------------------------------------------------

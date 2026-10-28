@@ -78,6 +78,7 @@ from google.cloud.bigtable.data._helpers import (
 from google.cloud.bigtable.data._metrics import (
     ActiveOperationMetric,
     BigtableClientSideMetricsController,
+    OperationState,
     OperationType,
 )
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
@@ -873,7 +874,7 @@ class BigtableDataClientAsync(ClientWithProject):
               `id` identity funcion, using `id(owner)`
         """
         unregistered = getattr(self, "_unregistered_owners", None)
-        if unregistered is not None and owner_id in unregistered:
+        if isinstance(unregistered, set) and owner_id in unregistered:
             unregistered.discard(owner_id)
             return
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
@@ -926,7 +927,7 @@ class BigtableDataClientAsync(ClientWithProject):
             return True
         except KeyError:
             unregistered = getattr(self, "_unregistered_owners", None)
-            if unregistered is not None:
+            if isinstance(unregistered, set):
                 unregistered.add(owner_id)
             return False
 
@@ -1455,13 +1456,12 @@ class _DataApiTargetAsync(abc.ABC):
 
         self._closed = False
         self._register_instance_future = None
-        if CrossSync.is_async:
-            try:
-                asyncio.get_running_loop()
-            except RuntimeError as e:
-                raise RuntimeError(
-                    f"{self.__class__.__name__} must be created within an async event loop context."
-                ) from e
+        try:
+            CrossSync.verify_async_event_loop()
+        except RuntimeError as e:
+            raise RuntimeError(
+                f"{self.__class__.__name__} must be created within an async event loop context."
+            ) from e
 
         # Optional in-process accelerator daemon, scoped to this data target's
         # (project, instance_id, app_profile_id) tuple. Enabled by default;
@@ -1665,7 +1665,8 @@ class _DataApiTargetAsync(abc.ABC):
         unable to serve routed RPCs is skipped without another round trip.
         """
         return (
-            self._accelerator_client is not None
+            not getattr(self, "_closed", False)
+            and self._accelerator_client is not None
             and is_supported(method_name)
             and not self._accelerator_breaker.bypass()
         )
@@ -1891,30 +1892,45 @@ class _DataApiTargetAsync(abc.ABC):
         exceptions and raised.
         """
         client = self._accelerator_client
-        if client is None:
+        if client is None or getattr(self, "_closed", False):
             raise _AcceleratorFallback()
         daemon = self._accelerator_daemon
-        row_merger = CrossSync._ReadRowsOperation(
-            query,
-            self,
-            operation_timeout=operation_timeout,
-            attempt_timeout=attempt_timeout,
-            metric=ActiveOperationMetric(OperationType.READ_ROWS, is_streaming=False),
-            retryable_exceptions=(),
+        rpc_timeout = (
+            min(operation_timeout, attempt_timeout)
+            if attempt_timeout is not None
+            else operation_timeout
         )
+        prev_op = ActiveOperationMetric._active_operation_context.get(None)
+        metric = self._create_operation(OperationType.READ_ROWS, is_streaming=False)
         try:
-            stream = await client.read_rows(
-                row_merger.request, timeout=operation_timeout
+            row_merger = CrossSync._ReadRowsOperation(
+                query, self, operation_timeout=operation_timeout,
+                attempt_timeout=attempt_timeout, metric=metric, retryable_exceptions=(),
             )
-            chunked_stream = row_merger.chunk_stream(stream)
+            metric.start_attempt()
+            stream = await client.read_rows(row_merger.request, timeout=rpc_timeout)
+            if CrossSync.is_async:
+                async def _awaitable_stream(s):
+                    return s
+
+                chunked_stream = row_merger.chunk_stream(_awaitable_stream(stream))
+            else:
+                chunked_stream = row_merger.chunk_stream(stream)
             results = [a async for a in row_merger.merge_rows(chunked_stream)]
+            if metric.state != OperationState.COMPLETED:
+                metric.end_with_success()
         except Exception as exc:
-            handle_accelerator_error(
-                exc,
-                daemon=daemon,
-                breaker=self._accelerator_breaker,
-            )
-            raise  # unreachable: handle_accelerator_error always raises
+            try:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from exc
+                handle_accelerator_error(exc, daemon=daemon, breaker=self._accelerator_breaker)
+                raise
+            except Exception as translated_exc:
+                if not isinstance(translated_exc, _AcceleratorFallback) and metric.state != OperationState.COMPLETED:
+                    metric.end_with_status(translated_exc)
+                raise
+        finally:
+            ActiveOperationMetric._active_operation_context.set(prev_op)
         try:
             return results[0]
         except IndexError:
@@ -1966,13 +1982,22 @@ class _DataApiTargetAsync(abc.ABC):
         )
 
         if self._use_accelerator("read_row"):
+            accel_start = time.monotonic()
             try:
                 return await self._read_row_via_accelerator(
                     query, operation_timeout, attempt_timeout
                 )
-            except _AcceleratorFallback:
-                # Daemon can't serve this call; fall through to the native path.
-                pass
+            except _AcceleratorFallback as fb_exc:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from fb_exc
+                elapsed = time.monotonic() - accel_start
+                operation_timeout = operation_timeout - elapsed
+                if operation_timeout <= 0:
+                    raise DeadlineExceeded(
+                        "Operation timeout exceeded during accelerator fallback"
+                    ) from fb_exc
+                if attempt_timeout is not None:
+                    attempt_timeout = min(attempt_timeout, operation_timeout)
 
         retryable_excs = _get_retryable_errors(retryable_errors, self)
 
@@ -2270,7 +2295,9 @@ class _DataApiTargetAsync(abc.ABC):
         )
 
     @CrossSync.convert
-    async def _mutate_row_via_accelerator(self, request, operation_timeout):
+    async def _mutate_row_via_accelerator(
+        self, request, operation_timeout, attempt_timeout: float | None = None
+    ):
         """Drive a single MutateRow attempt through the accelerator daemon.
 
         Raises ``_AcceleratorFallback`` if the caller should retry on the native
@@ -2278,18 +2305,33 @@ class _DataApiTargetAsync(abc.ABC):
         exceptions and raised.
         """
         client = self._accelerator_client
-        if client is None:
+        if client is None or getattr(self, "_closed", False):
             raise _AcceleratorFallback()
         daemon = self._accelerator_daemon
+        rpc_timeout = (
+            min(operation_timeout, attempt_timeout)
+            if attempt_timeout is not None
+            else operation_timeout
+        )
+        prev_op = ActiveOperationMetric._active_operation_context.get(None)
+        metric = self._create_operation(OperationType.MUTATE_ROW)
         try:
-            return await client.mutate_row(request, timeout=operation_timeout)
+            metric.start_attempt()
+            result = await client.mutate_row(request, timeout=rpc_timeout)
+            metric.end_with_success()
+            return result
         except Exception as exc:
-            handle_accelerator_error(
-                exc,
-                daemon=daemon,
-                breaker=self._accelerator_breaker,
-            )
-            raise  # unreachable: handle_accelerator_error always raises
+            try:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from exc
+                handle_accelerator_error(exc, daemon=daemon, breaker=self._accelerator_breaker)
+                raise
+            except Exception as translated_exc:
+                if not isinstance(translated_exc, _AcceleratorFallback) and metric.state != OperationState.COMPLETED:
+                    metric.end_with_status(translated_exc)
+                raise
+        finally:
+            ActiveOperationMetric._active_operation_context.set(prev_op)
 
     @CrossSync.convert
     async def mutate_row(
@@ -2340,6 +2382,7 @@ class _DataApiTargetAsync(abc.ABC):
         if not mutations:
             raise ValueError("No mutations provided")
         mutations_list = mutations if isinstance(mutations, list) else [mutations]
+        is_idempotent = all(mutation.is_idempotent() for mutation in mutations_list)
 
         request = MutateRowRequest(
             row_key=row_key.encode("utf-8") if isinstance(row_key, str) else row_key,
@@ -2348,16 +2391,30 @@ class _DataApiTargetAsync(abc.ABC):
             **self._request_path,
         )
 
-        if self._use_accelerator("mutate_row"):
+        if is_idempotent and self._use_accelerator("mutate_row"):
+            accel_start = time.monotonic()
+            rpc_timeout = (
+                min(operation_timeout, attempt_timeout)
+                if attempt_timeout is not None
+                else operation_timeout
+            )
             try:
                 return await self._mutate_row_via_accelerator(
-                    request, operation_timeout
+                    request, rpc_timeout
                 )
-            except _AcceleratorFallback:
-                # Daemon can't serve this call; fall through to the native path.
-                pass
+            except _AcceleratorFallback as fb_exc:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from fb_exc
+                elapsed = time.monotonic() - accel_start
+                operation_timeout = operation_timeout - elapsed
+                if operation_timeout <= 0:
+                    raise DeadlineExceeded(
+                        "Operation timeout exceeded during accelerator fallback"
+                    ) from fb_exc
+                if attempt_timeout is not None:
+                    attempt_timeout = min(attempt_timeout, operation_timeout)
 
-        if all(mutation.is_idempotent() for mutation in mutations_list):
+        if is_idempotent:
             # mutations are all idempotent and safe to retry
             predicate = retries.if_exception_type(
                 *_get_retryable_errors(retryable_errors, self)
@@ -2640,7 +2697,10 @@ class _DataApiTargetAsync(abc.ABC):
         grpc channels will be warmed for the specified instance
         """
         if self._register_instance_future:
-            await self._register_instance_future
+            if CrossSync.is_async:
+                await self._register_instance_future
+            else:
+                self._register_instance_future.result()
         return self
 
     @CrossSync.convert(sync_name="__exit__")

@@ -72,6 +72,7 @@ from google.cloud.bigtable.data._helpers import (
 from google.cloud.bigtable.data._metrics import (
     ActiveOperationMetric,
     BigtableClientSideMetricsController,
+    OperationState,
     OperationType,
 )
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
@@ -163,9 +164,7 @@ def _normalize_scopes(scopes: Any) -> frozenset[str]:
         return frozenset()
     if isinstance(scopes, str):
         scopes = scopes.replace(",", " ").split()
-    return frozenset(
-        (s.strip() for s in scopes if isinstance(s, str) and s.strip())
-    )
+    return frozenset((s.strip() for s in scopes if isinstance(s, str) and s.strip()))
 
 
 def _finalize_target(
@@ -199,14 +198,14 @@ def _finalize_target(
         if health is not None:
             for attr in ("request_stop", "close"):
                 fn = getattr(health, attr, None)
-                if callable(fn) and not inspect.iscoroutinefunction(fn):
+                if callable(fn) and (not inspect.iscoroutinefunction(fn)):
                     try:
                         fn()
                     except Exception:
                         pass
         if accel_client is not None:
             fn = getattr(accel_client, "close", None)
-            if callable(fn) and not inspect.iscoroutinefunction(fn):
+            if callable(fn) and (not inspect.iscoroutinefunction(fn)):
                 try:
                     fn()
                 except Exception:
@@ -277,7 +276,7 @@ class BigtableDataClient(ClientWithProject):
         elif (
             project is None
             and credentials is None
-            and client_options is not None
+            and (client_options is not None)
             and getattr(client_options, "credentials_file", None)
         ):
             _, file_project = google.auth.load_credentials_from_file(
@@ -318,10 +317,8 @@ class BigtableDataClient(ClientWithProject):
             try:
                 exporter_credentials = (
                     None
-                    if (
-                        client_options is not None
-                        and getattr(client_options, "credentials_file", None)
-                    )
+                    if client_options is not None
+                    and getattr(client_options, "credentials_file", None)
                     else self._credentials
                 )
                 exporter = BigtableMetricsExporter(
@@ -405,9 +402,7 @@ class BigtableDataClient(ClientWithProject):
         if scopes:
             if isinstance(scopes, str):
                 effective_scopes = [
-                    s.strip()
-                    for s in scopes.replace(",", " ").split()
-                    if s.strip()
+                    s.strip() for s in scopes.replace(",", " ").split() if s.strip()
                 ]
             else:
                 effective_scopes = [
@@ -548,13 +543,18 @@ class BigtableDataClient(ClientWithProject):
         pool = getattr(self, "_accelerator_pool", None)
         if isinstance(pool, dict):
             for entry in list(pool.values()):
-                for key in ("health", "client", "daemon"):
+                for key in ("health", "client"):
                     obj = entry.get(key)
                     if obj is not None:
                         try:
                             obj.close()
                         except Exception:
                             pass
+                if entry.get("daemon") is not None:
+                    try:
+                        entry["daemon"].close()
+                    except Exception:
+                        pass
             pool.clear()
         if self._channel_refresh_task is not None:
             self._channel_refresh_task.cancel()
@@ -678,7 +678,7 @@ class BigtableDataClient(ClientWithProject):
               owners call _remove_instance_registration. Can be obtained by calling
               `id` identity funcion, using `id(owner)`"""
         unregistered = getattr(self, "_unregistered_owners", None)
-        if unregistered is not None and owner_id in unregistered:
+        if isinstance(unregistered, set) and owner_id in unregistered:
             unregistered.discard(owner_id)
             return
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
@@ -716,7 +716,7 @@ class BigtableDataClient(ClientWithProject):
             return True
         except KeyError:
             unregistered = getattr(self, "_unregistered_owners", None)
-            if unregistered is not None:
+            if isinstance(unregistered, set):
                 unregistered.add(owner_id)
             return False
 
@@ -1157,13 +1157,12 @@ class _DataApiTarget(abc.ABC):
         )
         self._closed = False
         self._register_instance_future = None
-        if CrossSync._Sync_Impl.is_async:
-            try:
-                asyncio.get_running_loop()
-            except RuntimeError as e:
-                raise RuntimeError(
-                    f"{self.__class__.__name__} must be created within an async event loop context."
-                ) from e
+        try:
+            CrossSync._Sync_Impl.verify_async_event_loop()
+        except RuntimeError as e:
+            raise RuntimeError(
+                f"{self.__class__.__name__} must be created within an async event loop context."
+            ) from e
         self._accelerator_daemon: AcceleratorDaemon | None = None
         self._accelerator_client: AcceleratorClientType | None = None
         self._accelerator_health: AcceleratorHealthMonitorType | None = None
@@ -1182,14 +1181,26 @@ class _DataApiTarget(abc.ABC):
             raise RuntimeError(
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
-        accel_key = (getattr(self.client, "project", None), self.instance_id, self.app_profile_id)
+        accel_key = (
+            getattr(self.client, "project", None),
+            self.instance_id,
+            self.app_profile_id,
+        )
         try:
             client_ref = weakref.ref(self.client)
         except TypeError:
             client_ref = lambda: None
         self._finalizer = weakref.finalize(
-            self, _finalize_target, client_ref, self.instance_id, self.app_profile_id,
-            id(self), accel_key, self._accelerator_daemon, self._accelerator_client, self._accelerator_health,
+            self,
+            _finalize_target,
+            client_ref,
+            self.instance_id,
+            self.app_profile_id,
+            id(self),
+            accel_key,
+            self._accelerator_daemon,
+            self._accelerator_client,
+            self._accelerator_health,
         )
 
     def _maybe_start_accelerator(self, *, explicit: bool) -> None:
@@ -1259,7 +1270,11 @@ class _DataApiTarget(abc.ABC):
 
         On any failure the daemon is torn down before the error propagates."""
         pool = getattr(self.client, "_accelerator_pool", None)
-        accel_key = (getattr(self.client, "project", None), self.instance_id, self.app_profile_id)
+        accel_key = (
+            getattr(self.client, "project", None),
+            self.instance_id,
+            self.app_profile_id,
+        )
         if isinstance(pool, dict) and accel_key in pool:
             entry = pool[accel_key]
             entry["owners"].add(id(self))
@@ -1273,9 +1288,8 @@ class _DataApiTarget(abc.ABC):
             flags.extend(["--app-profile", self.app_profile_id])
         flags.extend(self.client._accelerator_flags)
         extra_env = dict(self.client._accelerator_env)
-        if (
-            "GOOGLE_APPLICATION_CREDENTIALS" not in extra_env
-            and not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+        if "GOOGLE_APPLICATION_CREDENTIALS" not in extra_env and (
+            not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
         ):
             cloudsdk_config = os.environ.get("CLOUDSDK_CONFIG")
             if cloudsdk_config:
@@ -1284,9 +1298,7 @@ class _DataApiTarget(abc.ABC):
                 )
                 if os.path.isfile(cloudsdk_adc):
                     extra_env["GOOGLE_APPLICATION_CREDENTIALS"] = cloudsdk_adc
-        server = AcceleratorDaemon(
-            cli_flags=flags, extra_env=extra_env
-        )
+        server = AcceleratorDaemon(cli_flags=flags, extra_env=extra_env)
         try:
             server.start()
             self._verify_daemon_identity(server)
@@ -1324,7 +1336,8 @@ class _DataApiTarget(abc.ABC):
         False once the fallback breaker has tripped, so a daemon that has proven
         unable to serve routed RPCs is skipped without another round trip."""
         return (
-            self._accelerator_client is not None
+            not getattr(self, "_closed", False)
+            and self._accelerator_client is not None
             and is_supported(method_name)
             and (not self._accelerator_breaker.bypass())
         )
@@ -1347,12 +1360,13 @@ class _DataApiTarget(abc.ABC):
         own_principal = self.client._resolve_principal()
         if (
             isinstance(
-                getattr(self.client, "_credentials", None),
-                compute_engine.Credentials,
+                getattr(self.client, "_credentials", None), compute_engine.Credentials
             )
-            and not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-            and not getattr(self.client, "_accelerator_env", {}).get(
-                "GOOGLE_APPLICATION_CREDENTIALS"
+            and (not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
+            and (
+                not getattr(self.client, "_accelerator_env", {}).get(
+                    "GOOGLE_APPLICATION_CREDENTIALS"
+                )
             )
         ):
             cloudsdk_config = os.environ.get("CLOUDSDK_CONFIG")
@@ -1364,17 +1378,17 @@ class _DataApiTarget(abc.ABC):
             )
             if (
                 cloudsdk_config
-                and not os.path.isfile(
-                    os.path.join(
-                        cloudsdk_config, "application_default_credentials.json"
+                and (
+                    not os.path.isfile(
+                        os.path.join(
+                            cloudsdk_config, "application_default_credentials.json"
+                        )
                     )
                 )
                 and os.path.isfile(well_known_adc)
             ):
                 raise _AcceleratorIdentityError(
-                    "Accelerator identity mismatch: Python resolved Compute "
-                    "Engine credentials via CLOUDSDK_CONFIG while a well-known "
-                    "ADC file exists for the daemon."
+                    "Accelerator identity mismatch: Python resolved Compute Engine credentials via CLOUDSDK_CONFIG while a well-known ADC file exists for the daemon."
                 )
         if own_principal is None or daemon_principal is None:
             raise _AcceleratorIdentityError(
@@ -1526,26 +1540,48 @@ class _DataApiTarget(abc.ABC):
         client; other gRPC errors are translated to ``google.api_core``
         exceptions and raised."""
         client = self._accelerator_client
-        if client is None:
+        if client is None or getattr(self, "_closed", False):
             raise _AcceleratorFallback()
         daemon = self._accelerator_daemon
-        row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
-            query,
-            self,
-            operation_timeout=operation_timeout,
-            attempt_timeout=attempt_timeout,
-            metric=ActiveOperationMetric(OperationType.READ_ROWS, is_streaming=False),
-            retryable_exceptions=(),
+        rpc_timeout = (
+            min(operation_timeout, attempt_timeout)
+            if attempt_timeout is not None
+            else operation_timeout
         )
+        prev_op = ActiveOperationMetric._active_operation_context.get(None)
+        metric = self._create_operation(OperationType.READ_ROWS, is_streaming=False)
         try:
-            stream = client.read_rows(row_merger.request, timeout=operation_timeout)
+            row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
+                query,
+                self,
+                operation_timeout=operation_timeout,
+                attempt_timeout=attempt_timeout,
+                metric=metric,
+                retryable_exceptions=(),
+            )
+            metric.start_attempt()
+            stream = client.read_rows(row_merger.request, timeout=rpc_timeout)
             chunked_stream = row_merger.chunk_stream(stream)
             results = [a for a in row_merger.merge_rows(chunked_stream)]
+            if metric.state != OperationState.COMPLETED:
+                metric.end_with_success()
         except Exception as exc:
-            handle_accelerator_error(
-                exc, daemon=daemon, breaker=self._accelerator_breaker
-            )
-            raise
+            try:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from exc
+                handle_accelerator_error(
+                    exc, daemon=daemon, breaker=self._accelerator_breaker
+                )
+                raise
+            except Exception as translated_exc:
+                if (
+                    not isinstance(translated_exc, _AcceleratorFallback)
+                    and metric.state != OperationState.COMPLETED
+                ):
+                    metric.end_with_status(translated_exc)
+                raise
+        finally:
+            ActiveOperationMetric._active_operation_context.set(prev_op)
         try:
             return results[0]
         except IndexError:
@@ -1592,12 +1628,22 @@ class _DataApiTarget(abc.ABC):
             operation_timeout, attempt_timeout, self
         )
         if self._use_accelerator("read_row"):
+            accel_start = time.monotonic()
             try:
                 return self._read_row_via_accelerator(
                     query, operation_timeout, attempt_timeout
                 )
-            except _AcceleratorFallback:
-                pass
+            except _AcceleratorFallback as fb_exc:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from fb_exc
+                elapsed = time.monotonic() - accel_start
+                operation_timeout = operation_timeout - elapsed
+                if operation_timeout <= 0:
+                    raise DeadlineExceeded(
+                        "Operation timeout exceeded during accelerator fallback"
+                    ) from fb_exc
+                if attempt_timeout is not None:
+                    attempt_timeout = min(attempt_timeout, operation_timeout)
         retryable_excs = _get_retryable_errors(retryable_errors, self)
         row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
@@ -1864,23 +1910,47 @@ class _DataApiTarget(abc.ABC):
             batch_retryable_errors=batch_retryable_errors,
         )
 
-    def _mutate_row_via_accelerator(self, request, operation_timeout):
+    def _mutate_row_via_accelerator(
+        self, request, operation_timeout, attempt_timeout: float | None = None
+    ):
         """Drive a single MutateRow attempt through the accelerator daemon.
 
         Raises ``_AcceleratorFallback`` if the caller should retry on the native
         client; other gRPC errors are translated to ``google.api_core``
         exceptions and raised."""
         client = self._accelerator_client
-        if client is None:
+        if client is None or getattr(self, "_closed", False):
             raise _AcceleratorFallback()
         daemon = self._accelerator_daemon
+        rpc_timeout = (
+            min(operation_timeout, attempt_timeout)
+            if attempt_timeout is not None
+            else operation_timeout
+        )
+        prev_op = ActiveOperationMetric._active_operation_context.get(None)
+        metric = self._create_operation(OperationType.MUTATE_ROW)
         try:
-            return client.mutate_row(request, timeout=operation_timeout)
+            metric.start_attempt()
+            result = client.mutate_row(request, timeout=rpc_timeout)
+            metric.end_with_success()
+            return result
         except Exception as exc:
-            handle_accelerator_error(
-                exc, daemon=daemon, breaker=self._accelerator_breaker
-            )
-            raise
+            try:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from exc
+                handle_accelerator_error(
+                    exc, daemon=daemon, breaker=self._accelerator_breaker
+                )
+                raise
+            except Exception as translated_exc:
+                if (
+                    not isinstance(translated_exc, _AcceleratorFallback)
+                    and metric.state != OperationState.COMPLETED
+                ):
+                    metric.end_with_status(translated_exc)
+                raise
+        finally:
+            ActiveOperationMetric._active_operation_context.set(prev_op)
 
     def mutate_row(
         self,
@@ -1927,18 +1997,34 @@ class _DataApiTarget(abc.ABC):
         if not mutations:
             raise ValueError("No mutations provided")
         mutations_list = mutations if isinstance(mutations, list) else [mutations]
+        is_idempotent = all((mutation.is_idempotent() for mutation in mutations_list))
         request = MutateRowRequest(
             row_key=row_key.encode("utf-8") if isinstance(row_key, str) else row_key,
             mutations=[mutation._to_pb() for mutation in mutations_list],
             app_profile_id=self.app_profile_id,
             **self._request_path,
         )
-        if self._use_accelerator("mutate_row"):
+        if is_idempotent and self._use_accelerator("mutate_row"):
+            accel_start = time.monotonic()
+            rpc_timeout = (
+                min(operation_timeout, attempt_timeout)
+                if attempt_timeout is not None
+                else operation_timeout
+            )
             try:
-                return self._mutate_row_via_accelerator(request, operation_timeout)
-            except _AcceleratorFallback:
-                pass
-        if all((mutation.is_idempotent() for mutation in mutations_list)):
+                return self._mutate_row_via_accelerator(request, rpc_timeout)
+            except _AcceleratorFallback as fb_exc:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from fb_exc
+                elapsed = time.monotonic() - accel_start
+                operation_timeout = operation_timeout - elapsed
+                if operation_timeout <= 0:
+                    raise DeadlineExceeded(
+                        "Operation timeout exceeded during accelerator fallback"
+                    ) from fb_exc
+                if attempt_timeout is not None:
+                    attempt_timeout = min(attempt_timeout, operation_timeout)
+        if is_idempotent:
             predicate = retries.if_exception_type(
                 *_get_retryable_errors(retryable_errors, self)
             )
@@ -2139,13 +2225,17 @@ class _DataApiTarget(abc.ABC):
             finalizer.detach()
         should_close_accel = True
         pool = getattr(self.client, "_accelerator_pool", None)
-        accel_key = (getattr(self.client, "project", None), getattr(self, "instance_id", None), getattr(self, "app_profile_id", None))
+        accel_key = (
+            getattr(self.client, "project", None),
+            getattr(self, "instance_id", None),
+            getattr(self, "app_profile_id", None),
+        )
         if isinstance(pool, dict) and accel_key in pool:
             entry = pool[accel_key]
             if (
                 entry.get("daemon") is self._accelerator_daemon
                 and entry.get("client") is self._accelerator_client
-                and entry.get("health") is self._accelerator_health
+                and (entry.get("health") is self._accelerator_health)
             ):
                 owners = entry["owners"]
                 owners.discard(id(self))
@@ -2162,7 +2252,9 @@ class _DataApiTarget(abc.ABC):
                 try:
                     self._accelerator_health.close()
                 except Exception as exc:
-                    _LOGGER.warning("Failed to close accelerator health monitor: %s", exc)
+                    _LOGGER.warning(
+                        "Failed to close accelerator health monitor: %s", exc
+                    )
                 finally:
                     self._accelerator_health = None
         finally:
@@ -2180,7 +2272,9 @@ class _DataApiTarget(abc.ABC):
                         try:
                             self._accelerator_daemon.close()
                         except Exception as exc:
-                            _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
+                            _LOGGER.warning(
+                                "Failed to close accelerator daemon: %s", exc
+                            )
                         finally:
                             self._accelerator_daemon = None
                 finally:
