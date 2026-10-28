@@ -194,6 +194,12 @@ class TestSetCell:
             self._make_one(family="f", qualifier=b"b", new_value=input_val)
         assert "int values must be between" in str(e.value)
 
+    @pytest.mark.parametrize("input_val", [True, False])
+    def test_ctor_bool_value(self, input_val):
+        with pytest.raises(TypeError) as e:
+            self._make_one(family="f", qualifier=b"b", new_value=input_val)
+        assert "new_value must be bytes, str, or int" in str(e.value)
+
     @pytest.mark.parametrize("input_val", ["", "a", "abc", "hello world!"])
     def test_ctor_str_value(self, input_val):
         found = self._make_one(family="f", qualifier=b"b", new_value=input_val)
@@ -756,6 +762,22 @@ class TestAddToCell:
         )
         assert instance.value == input_val
         assert instance._to_pb().add_to_cell.input.int_value == input_val
+
+    @pytest.mark.parametrize("input_val", [True, False])
+    def test_ctor_bool_value(self, input_val):
+        with pytest.raises(TypeError) as e:
+            self._make_one(
+                family="f", qualifier=b"b", value=input_val, timestamp_micros=123
+            )
+        assert "value must be int" in str(e.value)
+
+    @pytest.mark.parametrize("input_ts", [True, False])
+    def test_ctor_bool_timestamp(self, input_ts):
+        with pytest.raises(TypeError) as e:
+            self._make_one(
+                family="f", qualifier=b"b", value=123, timestamp_micros=input_ts
+            )
+        assert "timestamp_micros must be int" in str(e.value)
 
     @pytest.mark.parametrize("input_val", ["", "a", "abc", "hello world!"])
     def test_ctor_str_value(self, input_val):

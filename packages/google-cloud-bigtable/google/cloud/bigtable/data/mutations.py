@@ -172,6 +172,8 @@ class SetCell(Mutation):
         qualifier = qualifier.encode() if isinstance(qualifier, str) else qualifier
         if not isinstance(qualifier, bytes):
             raise TypeError("qualifier must be bytes or str")
+        if isinstance(new_value, bool):
+            raise TypeError("new_value must be bytes, str, or int")
         if isinstance(new_value, str):
             new_value = new_value.encode()
         elif isinstance(new_value, int):
@@ -328,9 +330,9 @@ class AddToCell(Mutation):
         qualifier = qualifier.encode() if isinstance(qualifier, str) else qualifier
         if not isinstance(qualifier, bytes):
             raise TypeError("qualifier must be bytes or str")
-        if not isinstance(value, int):
+        if isinstance(value, bool) or not isinstance(value, int):
             raise TypeError("value must be int")
-        if not isinstance(timestamp_micros, int):
+        if isinstance(timestamp_micros, bool) or not isinstance(timestamp_micros, int):
             raise TypeError("timestamp_micros must be int")
         if not (_MIN_INCREMENT_VALUE <= value <= _MAX_INCREMENT_VALUE):
             raise ValueError(

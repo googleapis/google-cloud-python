@@ -62,7 +62,7 @@ class IncrementRule(ReadModifyWriteRule):
     """
 
     def __init__(self, family: str, qualifier: bytes | str, increment_amount: int = 1):
-        if not isinstance(increment_amount, int):
+        if isinstance(increment_amount, bool) or not isinstance(increment_amount, int):
             raise TypeError("increment_amount must be an integer")
         if not (_MIN_INCREMENT_VALUE <= increment_amount <= _MAX_INCREMENT_VALUE):
             raise ValueError(

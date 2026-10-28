@@ -64,7 +64,9 @@ class TestIncrementRule:
         assert instance.qualifier == expected[1]
         assert instance.increment_amount == expected[2]
 
-    @pytest.mark.parametrize("input_amount", [1.1, None, "1", object(), "", b"", b"1"])
+    @pytest.mark.parametrize(
+        "input_amount", [True, False, 1.1, None, "1", object(), "", b"", b"1"]
+    )
     def test_ctor_bad_input(self, input_amount):
         with pytest.raises(TypeError) as e:
             self._target_class()("fam", b"qual", input_amount)
