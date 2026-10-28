@@ -44,6 +44,7 @@ def mock_otel(monkeypatch):
     mock_trace = mock.Mock()
     mock_trace.get_tracer.return_value = mock_tracer
     mock_trace.SpanKind.CLIENT = "CLIENT"
+    mock_trace.SpanKind.INTERNAL = "INTERNAL"
     mock_trace.StatusCode.ERROR = "ERROR"
 
     with (

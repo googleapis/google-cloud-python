@@ -615,7 +615,7 @@ def test_build_http_span_attributes_with_request():
     name, attrs, res_headers = _observability._TraceContext._build_http_span_attributes(
         request, url_template="/v1/echo"
     )
-    assert name == "POST"
+    assert name == "POST /v1/echo"
     assert attrs["http.request.method"] == "POST"
     assert attrs["server.address"] == "example.com"
     assert attrs["server.port"] == 8443
@@ -637,7 +637,7 @@ def test_build_http_span_attributes_with_kwargs():
         body="string-body",
         client_options=options,
     )
-    assert name == "GET"
+    assert name == "GET /v1/items"
     assert attrs["server.address"] == "custom.endpoint.com"
     assert attrs["server.port"] == 9443
     assert attrs["http.request.body.size"] == len("string-body")
@@ -736,7 +736,7 @@ def test_trace_http_request_active(monkeypatch):
 
     mock_tracer.start_as_current_span.assert_called_once()
     call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
-    assert call_args[0] == "POST"
+    assert call_args[0] == "POST /v1/test"
     attrs = call_kwargs["attributes"]
     assert attrs["http.request.method"] == "POST"
     assert attrs["server.address"] == "custom.googleapis.com"
@@ -843,7 +843,7 @@ def test_trace_http_request_with_kwargs(monkeypatch):
         assert ctx._span is mock_span
 
     call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
-    assert call_args[0] == "POST"
+    assert call_args[0] == "POST /v1/test"
     attrs = call_kwargs["attributes"]
     assert attrs["http.request.method"] == "POST"
     assert attrs["http.request.body.size"] == len("string-payload")
