@@ -167,6 +167,7 @@ class Client(ClientWithProject):
         self._read_only = bool(read_only)
         self._admin = bool(admin)
         self._client_info = client_info
+        self._explicit_credentials = credentials is not None
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
 
         if self._emulator_host is not None:
@@ -181,6 +182,23 @@ class Client(ClientWithProject):
                 DeprecationWarning,
                 stacklevel=2,
             )
+
+        if isinstance(client_options, dict):
+            client_options = google.api_core.client_options.from_dict(
+                client_options
+            )
+        if (
+            project is None
+            and not self._explicit_credentials
+            and self._emulator_host is None
+            and client_options is not None
+            and getattr(client_options, "credentials_file", None)
+        ):
+            _, file_project = google.auth.load_credentials_from_file(
+                client_options.credentials_file
+            )
+            if file_project is not None:
+                project = file_project
 
         self._client_options = client_options
         self._admin_client_options = admin_client_options
@@ -363,7 +381,11 @@ class Client(ClientWithProject):
             client_info.client_library_version = f"{bigtable.__version__}-data-shim"
             self._table_data_client = BigtableDataClient(
                 project=self.project,
-                credentials=self._credentials,
+                credentials=(
+                    self._credentials
+                    if getattr(self, "_explicit_credentials", False)
+                    else None
+                ),
                 client_options=self._client_options,
                 _client_info=client_info,
                 _disable_background_refresh=True,
