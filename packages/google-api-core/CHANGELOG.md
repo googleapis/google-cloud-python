@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.43.1](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.43.0...google-api-core-v2.43.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* **google-api-core:** remove packages_distributions scan and shorten EOL warning window ([#18872](https://github.com/googleapis/google-cloud-python/issues/18872)) ([fa77b42](https://github.com/googleapis/google-cloud-python/commit/fa77b42af42933373c8143ac25635e376fcf3722))
+
 ## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.42.0...google-api-core-v2.43.0) (2026-10-22)
 
 
