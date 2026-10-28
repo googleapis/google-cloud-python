@@ -52,10 +52,11 @@ class RowRange:
         start_is_inclusive: bool | None = None,
         end_is_inclusive: bool | None = None,
     ):
-        # convert empty key inputs to None for consistency when using default inclusiveness
+        # Normalize default empty inputs (e.g. RowRange("", "")) to unbounded None,
+        # but preserve explicit empty-key bounds when inclusiveness is specified.
         if not start_key and start_is_inclusive is not False:
             start_key = None
-        if end_key == "" and end_is_inclusive is None:
+        if not end_key and end_is_inclusive is None:
             end_key = None
         # check for invalid combinations of arguments
         if start_is_inclusive is None:

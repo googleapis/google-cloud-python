@@ -59,11 +59,12 @@ class TestRowRange:
         """
         from google.cloud.bigtable_v2.types import RowRange as RowRangePB
 
-        row_range = self._make_one("", "")
-        assert row_range.start_key is None
-        assert row_range.end_key is None
-        assert row_range.start_is_inclusive is True
-        assert row_range.end_is_inclusive is True
+        for empty in ("", b""):
+            row_range = self._make_one(empty, empty)
+            assert row_range.start_key is None
+            assert row_range.end_key is None
+            assert row_range.start_is_inclusive is True
+            assert row_range.end_is_inclusive is True
 
         rr_open_start = self._make_one(start_key=b"", start_is_inclusive=False)
         assert rr_open_start.start_key == b""
