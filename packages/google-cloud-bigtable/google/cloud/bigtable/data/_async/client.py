@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import abc
 import concurrent.futures
+import inspect
 import logging
 import os
 import random
@@ -224,6 +225,56 @@ def _normalize_scopes(scopes: Any) -> frozenset[str]:
     )
 
 
+def _finalize_target(
+    client_ref: Callable[[], Any],
+    instance_id: str,
+    app_profile_id: str | None,
+    owner_id: int,
+    accel_key: tuple[str | None, str, str | None],
+    daemon: AcceleratorDaemon | None,
+    accel_client: AcceleratorClientType | None,
+    health: AcceleratorHealthMonitorType | None,
+) -> None:
+    """Clean up instance registration and shared accelerator resources on GC."""
+    client = client_ref()
+    should_close_accel = True
+    if client is not None:
+        try:
+            client._remove_instance_registration(instance_id, app_profile_id, owner_id)
+        except Exception:
+            pass
+        pool = getattr(client, "_accelerator_pool", None)
+        if isinstance(pool, dict) and accel_key in pool:
+            owners = pool[accel_key].get("owners")
+            if isinstance(owners, set):
+                owners.discard(owner_id)
+                if owners:
+                    should_close_accel = False
+                else:
+                    pool.pop(accel_key, None)
+    if should_close_accel:
+        if health is not None:
+            for attr in ("request_stop", "close"):
+                fn = getattr(health, attr, None)
+                if callable(fn) and not inspect.iscoroutinefunction(fn):
+                    try:
+                        fn()
+                    except Exception:
+                        pass
+        if accel_client is not None:
+            fn = getattr(accel_client, "close", None)
+            if callable(fn) and not inspect.iscoroutinefunction(fn):
+                try:
+                    fn()
+                except Exception:
+                    pass
+        if daemon is not None:
+            try:
+                daemon.close()
+            except Exception:
+                pass
+
+
 @CrossSync.convert_class(
     sync_name="BigtableDataClient",
     add_mapping_for_name="DataClient",
@@ -388,6 +439,9 @@ class BigtableDataClientAsync(ClientWithProject):
         # only remove instance from _active_instances when all associated targets are closed
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}
         self._unregistered_owners: Set[int] = set()
+        self._accelerator_pool: dict[
+            tuple[str | None, str, str | None], dict[str, Any]
+        ] = {}
         self._channel_init_time = time.monotonic()
         self._channel_refresh_task: CrossSync.Task[None] | None = None
         self._executor: concurrent.futures.ThreadPoolExecutor | None = (
@@ -653,6 +707,22 @@ class BigtableDataClientAsync(ClientWithProject):
         Cancel all background tasks
         """
         self._is_closed.set()
+        pool = getattr(self, "_accelerator_pool", None)
+        if isinstance(pool, dict):
+            for entry in list(pool.values()):
+                for key in ("health", "client"):
+                    obj = entry.get(key)
+                    if obj is not None:
+                        try:
+                            await obj.close()
+                        except Exception:
+                            pass
+                if entry.get("daemon") is not None:
+                    try:
+                        entry["daemon"].close()
+                    except Exception:
+                        pass
+            pool.clear()
         if self._channel_refresh_task is not None:
             self._channel_refresh_task.cancel()
             await CrossSync.wait([self._channel_refresh_task], timeout=timeout)
@@ -1422,6 +1492,15 @@ class _DataApiTargetAsync(abc.ABC):
             raise RuntimeError(
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
+        accel_key = (getattr(self.client, "project", None), self.instance_id, self.app_profile_id)
+        try:
+            client_ref = weakref.ref(self.client)
+        except TypeError:
+            client_ref = lambda: None
+        self._finalizer = weakref.finalize(
+            self, _finalize_target, client_ref, self.instance_id, self.app_profile_id,
+            id(self), accel_key, self._accelerator_daemon, self._accelerator_client, self._accelerator_health,
+        )
 
     def _maybe_start_accelerator(self, *, explicit: bool) -> None:
         """Start the accelerator daemon unless the environment prevents it.
@@ -1506,6 +1585,16 @@ class _DataApiTargetAsync(abc.ABC):
 
         On any failure the daemon is torn down before the error propagates.
         """
+        pool = getattr(self.client, "_accelerator_pool", None)
+        accel_key = (getattr(self.client, "project", None), self.instance_id, self.app_profile_id)
+        if isinstance(pool, dict) and accel_key in pool:
+            entry = pool[accel_key]
+            entry["owners"].add(id(self))
+            self._accelerator_daemon = entry["daemon"]
+            self._accelerator_client = entry["client"]
+            self._accelerator_health = entry["health"]
+            self._accelerator_breaker = entry["breaker"]
+            return
         flags = [
             "--project",
             self.client.project,
@@ -1548,12 +1637,6 @@ class _DataApiTargetAsync(abc.ABC):
                 self._accelerator_client, self._accelerator_breaker
             )
             self._accelerator_health.start()
-            # close() is the orderly stop, but a Table dropped without it would
-            # otherwise leave the loop probing for the life of the event loop,
-            # holding the monitor and through it the accelerator channel. The
-            # finalizer is bound to the monitor, not to self, so it does not
-            # keep this Table alive; it only flips a flag the loop reads.
-            weakref.finalize(self, self._accelerator_health.request_stop)
         except Exception as exc:
             # Monitoring is an optimization on top of a working accelerator, so
             # failing to start it must not take the accelerator down with it —
@@ -1566,6 +1649,14 @@ class _DataApiTargetAsync(abc.ABC):
                 stacklevel=2,
             )
             self._accelerator_health = None
+        if isinstance(pool, dict):
+            pool[accel_key] = {
+                "daemon": self._accelerator_daemon,
+                "client": self._accelerator_client,
+                "health": self._accelerator_health,
+                "breaker": self._accelerator_breaker,
+                "owners": {id(self)},
+            }
 
     def _use_accelerator(self, method_name: str) -> bool:
         """Whether this call should be routed through the accelerator daemon.
@@ -2481,11 +2572,34 @@ class _DataApiTargetAsync(abc.ABC):
         Called to close the Table instance and release any resources held by it.
         """
         self._closed = True
+        finalizer = getattr(self, "_finalizer", None)
+        if finalizer is not None:
+            finalizer.detach()
+        should_close_accel = True
+        pool = getattr(self.client, "_accelerator_pool", None)
+        accel_key = (getattr(self.client, "project", None), getattr(self, "instance_id", None), getattr(self, "app_profile_id", None))
+        if isinstance(pool, dict) and accel_key in pool:
+            entry = pool[accel_key]
+            if (
+                entry.get("daemon") is self._accelerator_daemon
+                and entry.get("client") is self._accelerator_client
+                and entry.get("health") is self._accelerator_health
+            ):
+                owners = entry["owners"]
+                owners.discard(id(self))
+                if owners:
+                    should_close_accel = False
+                else:
+                    pool.pop(accel_key, None)
+        if not should_close_accel:
+            self._accelerator_health = None
+            self._accelerator_client = None
+            self._accelerator_daemon = None
         # Accelerator teardown goes first, so that nothing that can raise runs
         # ahead of it and strands the daemon subprocess. Within it, the monitor
         # stops before the channel it probes over goes away.
         try:
-            if self._accelerator_health is not None:
+            if should_close_accel and self._accelerator_health is not None:
                 try:
                     await self._accelerator_health.close()
                 except Exception as exc:
@@ -2494,7 +2608,7 @@ class _DataApiTargetAsync(abc.ABC):
                     self._accelerator_health = None
         finally:
             try:
-                if self._accelerator_client is not None:
+                if should_close_accel and self._accelerator_client is not None:
                     try:
                         await self._accelerator_client.close()
                     except Exception as exc:
@@ -2503,7 +2617,7 @@ class _DataApiTargetAsync(abc.ABC):
                         self._accelerator_client = None
             finally:
                 try:
-                    if self._accelerator_daemon is not None:
+                    if should_close_accel and self._accelerator_daemon is not None:
                         try:
                             self._accelerator_daemon.close()
                         except Exception as exc:
