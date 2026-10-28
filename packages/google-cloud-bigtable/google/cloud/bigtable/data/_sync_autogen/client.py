@@ -1581,17 +1581,12 @@ class _DataApiTarget(abc.ABC):
             try:
                 if getattr(self, "_closed", False):
                     raise Cancelled("Table is closed") from exc
-                try:
-                    handle_accelerator_error(
-                        exc,
-                        daemon=daemon,
-                        breaker=self._accelerator_breaker,
-                        operation_timeout=operation_timeout,
-                    )
-                except TypeError:
-                    handle_accelerator_error(
-                        exc, daemon=daemon, breaker=self._accelerator_breaker
-                    )
+                handle_accelerator_error(
+                    exc,
+                    daemon=daemon,
+                    breaker=self._accelerator_breaker,
+                    operation_timeout=operation_timeout,
+                )
                 raise
             except Exception as translated_exc:
                 if (
@@ -1958,17 +1953,12 @@ class _DataApiTarget(abc.ABC):
             try:
                 if getattr(self, "_closed", False):
                     raise Cancelled("Table is closed") from exc
-                try:
-                    handle_accelerator_error(
-                        exc,
-                        daemon=daemon,
-                        breaker=self._accelerator_breaker,
-                        operation_timeout=operation_timeout,
-                    )
-                except TypeError:
-                    handle_accelerator_error(
-                        exc, daemon=daemon, breaker=self._accelerator_breaker
-                    )
+                handle_accelerator_error(
+                    exc,
+                    daemon=daemon,
+                    breaker=self._accelerator_breaker,
+                    operation_timeout=operation_timeout,
+                )
                 raise
             except Exception as translated_exc:
                 if (
