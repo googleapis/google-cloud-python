@@ -248,3 +248,67 @@ class TestHandleAcceleratorError:
         with pytest.raises(core_exceptions.GoogleAPICallError):
             handle_accelerator_error(exc, daemon=None, breaker=breaker)
         assert not breaker.bypass()
+
+    def test_closed_table_or_daemon_translates_without_fallback_or_trip(self):
+        daemon = mock.Mock()
+        daemon.is_running = False
+        daemon._closed = True
+        breaker = AcceleratorBreaker()
+        exc = _make_rpc_error(StatusCode.UNAVAILABLE)
+        with pytest.raises(core_exceptions.ServiceUnavailable):
+            handle_accelerator_error(exc, daemon=daemon, breaker=breaker)
+        assert not breaker.bypass()
+
+    def test_dead_daemon_non_idempotent_trips_breaker_without_fallback(self):
+        daemon = mock.Mock()
+        daemon.is_running = False
+        breaker = AcceleratorBreaker()
+        exc = _make_rpc_error(StatusCode.UNAVAILABLE)
+        with pytest.raises(core_exceptions.ServiceUnavailable):
+            handle_accelerator_error(
+                exc, daemon=daemon, breaker=breaker, is_idempotent=False
+            )
+        assert breaker.is_tripped
+
+    def test_per_request_unimplemented_falls_back_without_tripping_breaker(self):
+        daemon = mock.Mock()
+        daemon.is_running = True
+        breaker = AcceleratorBreaker()
+        exc = _FakeRpcError(
+            StatusCode.UNIMPLEMENTED,
+            "ReadRows with multiple row_keys is not supported by single-row accelerator",
+        )
+        with pytest.raises(_AcceleratorFallback):
+            handle_accelerator_error(exc, daemon=daemon, breaker=breaker)
+        assert not breaker.is_tripped
+
+    def test_deadline_exceeded_chains_retry_exception_group_as_cause(self):
+        from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
+
+        daemon = mock.Mock()
+        daemon.is_running = True
+        breaker = AcceleratorBreaker()
+        exc = _make_rpc_error(StatusCode.DEADLINE_EXCEEDED)
+        with pytest.raises(core_exceptions.DeadlineExceeded) as exc_info:
+            handle_accelerator_error(
+                exc, daemon=daemon, breaker=breaker, operation_timeout=5.0
+            )
+        assert isinstance(exc_info.value.__cause__, RetryExceptionGroup)
+        assert len(exc_info.value.__cause__.exceptions) == 1
+        assert isinstance(
+            exc_info.value.__cause__.exceptions[0], core_exceptions.DeadlineExceeded
+        )
+
+    def test_invalid_chunk_trips_breaker_and_falls_back(self):
+        from google.cloud.bigtable.data.exceptions import InvalidChunk
+
+        daemon = mock.Mock()
+        daemon.is_running = True
+        breaker = AcceleratorBreaker()
+        with pytest.raises(_AcceleratorFallback):
+            handle_accelerator_error(
+                InvalidChunk("first row chunk is missing key"),
+                daemon=daemon,
+                breaker=breaker,
+            )
+        assert breaker.is_tripped
