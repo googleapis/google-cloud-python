@@ -763,3 +763,166 @@ def test_query_and_wait_arrow_max_results(
     table = pyarrow.Table.from_batches(batches)
     assert table.column("x").to_pylist() == list(range(1, expected_rows + 1))
     assert read_rows.called == streamed
+
+
+def _query_arrow(client, row_count):
+    return client.query_and_wait(
+        f"SELECT x FROM UNNEST(GENERATE_ARRAY(1, {row_count})) AS x ORDER BY x",
+        job_config=bigquery.QueryJobConfig(use_query_cache=False),
+        page_size=100,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+
+
+def test_query_and_wait_arrow_queries_share_one_bqstorage_client():
+    from google.cloud.bigquery import client as client_module
+
+    with bigquery.Client() as client:
+        # Wrap the client factory to count how many clients get created.
+        ensure = mock.Mock(wraps=client._ensure_bqstorage_client)
+        with mock.patch.object(client, "_ensure_bqstorage_client", ensure):
+            tables = [
+                pyarrow.Table.from_batches(
+                    list(_query_arrow(client, 1000).to_arrow_iterable())
+                ),
+                _query_arrow(client, 1000).to_arrow(),
+                pyarrow.Table.from_batches(
+                    list(_query_arrow(client, 1000).to_arrow_iterable())
+                ),
+            ]
+        shared = client._shared_bqstorage_client
+
+    for table in tables:
+        assert table.column("x").to_pylist() == list(range(1, 1001))
+    ensure.assert_called_once_with(transport=client_module._create_bqstorage_transport)
+    assert shared is not None
+    # Leaving the with block calls close(), which closes the shared channel.
+    assert client._shared_bqstorage_client is None
+    with pytest.raises(ValueError, match="(?i)closed"):
+        shared.read_rows("projects/p/locations/US/jobs/j/streams/_default")
+
+
+def test_query_and_wait_arrow_ending_a_read_early_cancels_only_its_stream():
+    from google.cloud.bigquery_storage_v1 import reader
+
+    # Wrap ReadRowsStream.cancel() to record calls without changing it.
+    cancel_stream = reader.ReadRowsStream.cancel
+    cancelled_open = []
+
+    def record_open_cancel(stream):
+        # google-cloud-bigquery-storage 2.43.0's __del__ also calls cancel()
+        # on finished streams, which does nothing. Count only cancels of a
+        # stream that's still open.
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/18785):
+        # Count every cancel() once the bqstorage extra requires a release
+        # whose __del__ skips finished streams.
+        if stream._wrapped is not None:
+            cancelled_open.append(stream)
+        return cancel_stream(stream)
+
+    with bigquery.Client() as client, mock.patch.object(
+        reader.ReadRowsStream, "cancel", autospec=True, side_effect=record_open_cancel
+    ):
+        ended_early_rows = _query_arrow(client, 100000)
+        ended_early = ended_early_rows.to_arrow_iterable()
+        read_fully = _query_arrow(client, 100000).to_arrow_iterable()
+        # Two reads reach the stream, whether or not jobs.query returned a
+        # first page.
+        next(ended_early)
+        next(ended_early)
+        rows = [next(read_fully), next(read_fully)]
+
+        ended_early.close()
+        rows.extend(read_fully)
+
+    (stream,) = cancelled_open
+    assert stream._name.endswith(f"/jobs/{ended_early_rows.job_id}/streams/_default")
+    table = pyarrow.Table.from_batches(rows)
+    assert table.column("x").to_pylist() == list(range(1, 100001))
+
+
+@pytest.mark.parametrize(
+    "write_disposition",
+    [None, enums.WriteDisposition.WRITE_TRUNCATE],
+    ids=["default", "overwrite"],
+)
+def test_query_and_wait_arrow_explicit_destination(
+    bigquery_client, bqstorage_client, dataset_id, write_disposition
+):
+    table_name = f"arrow_destination_{write_disposition or 'default'}".lower()
+    table_id = f"{bigquery_client.project}.{dataset_id}.{table_name}"
+    job_config = bigquery.QueryJobConfig(destination=table_id)
+    if write_disposition is not None:
+        # The rows already in the table are replaced, not read.
+        bigquery_client.query_and_wait(
+            f"CREATE OR REPLACE TABLE `{table_id}` AS SELECT -1 AS x"
+        )
+        job_config.write_disposition = write_disposition
+    # Wrap create_read_session() to check how the table is read.
+    create_read_session = mock.Mock(wraps=bqstorage_client.create_read_session)
+
+    rows = bigquery_client.query_and_wait(
+        "SELECT x FROM UNNEST(GENERATE_ARRAY(1, 1000)) AS x ORDER BY x",
+        job_config=job_config,
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    with mock.patch.object(
+        bqstorage_client, "create_read_session", create_read_session
+    ):
+        batches = list(rows.to_arrow_iterable(bqstorage_client=bqstorage_client))
+
+    table = pyarrow.Table.from_batches(batches)
+    assert table.column("x").to_pylist() == list(range(1, 1001))
+    kwargs = create_read_session.call_args.kwargs
+    assert kwargs["read_session"].table == (
+        f"projects/{bigquery_client.project}/datasets/{dataset_id}/tables/{table_name}"
+    )
+    assert kwargs["max_stream_count"] == 1
+
+
+@pytest.mark.parametrize(
+    "priority",
+    [None, enums.QueryPriority.INTERACTIVE],
+    ids=["jobs_query", "jobs_insert"],
+)
+def test_query_and_wait_arrow_zero_rows_keep_the_schema(bigquery_client, priority):
+    job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    if priority is not None:
+        # jobs.query doesn't accept a priority, so this runs through jobs.insert.
+        job_config.priority = priority
+
+    def query():
+        return bigquery_client.query_and_wait(
+            "SELECT x, CAST(x AS STRING) AS s "
+            "FROM UNNEST(CAST([] AS ARRAY<INT64>)) AS x",
+            job_config=job_config,
+            query_results_format=enums.QueryResultsFormat.ARROW,
+        )
+
+    batches = list(query().to_arrow_iterable())
+
+    assert len(batches) == 1
+    for table in (pyarrow.Table.from_batches(batches), query().to_arrow()):
+        assert table.num_rows == 0
+        assert table.schema.names == ["x", "s"]
+        assert table.schema.field("x").type == pyarrow.int64()
+        assert table.schema.field("s").type == pyarrow.string()
+
+
+def test_query_and_wait_arrow_statements_without_results(bigquery_client, dataset_id):
+    table_id = f"{bigquery_client.project}.{dataset_id}.arrow_statements"
+
+    for statement in (
+        f"CREATE OR REPLACE TABLE `{table_id}` AS SELECT 1 AS x",
+        f"UPDATE `{table_id}` SET x = 2 WHERE TRUE",
+    ):
+        rows = bigquery_client.query_and_wait(
+            statement, query_results_format=enums.QueryResultsFormat.ARROW
+        )
+        (batch,) = rows.to_arrow_iterable()
+        assert batch.num_rows == 0
+
+    assert rows.num_dml_affected_rows == 1
+    assert [
+        row.x for row in bigquery_client.query_and_wait(f"SELECT x FROM `{table_id}`")
+    ] == [2]

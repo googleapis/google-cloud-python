@@ -30,7 +30,7 @@ from google.cloud.bigquery.enums import QueryResultsCompressionCodec
 from google.cloud.bigquery.enums import TimestampPrecision
 from google.cloud.bigquery.enums import WriteDisposition
 from google.cloud.bigquery.job import QueryJobConfig
-from google.cloud.bigquery.table import RowIterator, _EmptyRowIterator
+from google.cloud.bigquery.table import RowIterator, TableReference, _EmptyRowIterator
 
 from .helpers import make_client
 
@@ -211,7 +211,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_constructs_stream_and_reads(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         iterator = RowIterator(
             client=mock_client,
@@ -232,7 +232,11 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         with mock.patch("google.cloud.bigquery._arrow_query.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
-            self.assertEqual(batches, [])
+            # No rows and no schema: one empty batch without columns.
+            self.assertEqual(
+                batches, [mock_pyarrow.RecordBatch.from_arrays.return_value]
+            )
+            mock_pyarrow.schema.assert_called_once_with([])
 
             expected_stream_name = (
                 "projects/test-proj/locations/US/jobs/test-job-456/streams/_default"
@@ -247,7 +251,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_with_first_page_response(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         raw_schema_bytes = b"schema_bytes_123"
         raw_batch_bytes = b"batch_bytes_123"
@@ -321,7 +325,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_with_first_page_response_schema_only(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         raw_schema_bytes = b"schema_bytes_456"
         first_page_response = {
@@ -373,7 +377,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
     def test_download_arrow_from_job_id_missing_storage_client_raises_value_error(self):
         mock_client = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = None
+        mock_client._get_shared_bqstorage_client.return_value = None
 
         iterator = RowIterator(
             client=mock_client,
@@ -397,7 +401,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_with_schema_and_batch(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         iterator = RowIterator(
             client=mock_client,
@@ -436,7 +440,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_first_page_batch_without_schema_raises(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         b64_batch = base64.b64encode(b"batch_bytes").decode("ascii")
         iterator = RowIterator(
@@ -464,7 +468,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_read_rows_batch_without_schema_raises(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         iterator = RowIterator(
             client=mock_client,
@@ -534,14 +538,14 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, [mock_first_batch])
-            mock_client._ensure_bqstorage_client.assert_called_once()
+            mock_client._get_shared_bqstorage_client.assert_not_called()
             batches_second = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches_second, [mock_first_batch])
 
     def test_download_arrow_from_job_id_page_token_calls_read_rows(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         # A cache hit too large to return inline: the job is complete and
         # totalRows is 0, but the pageToken says rows remain.
@@ -588,7 +592,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_download_arrow_from_job_id_calls_read_rows_when_job_not_complete(self):
         mock_client = mock.MagicMock()
         mock_bqstorage = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage
+        mock_client._get_shared_bqstorage_client.return_value = mock_bqstorage
 
         raw_schema_bytes = b"schema_bytes_789"
         raw_batch_bytes = b"batch_bytes_789"
@@ -625,7 +629,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, [mock_first_batch])
-            mock_client._ensure_bqstorage_client.assert_called_once()
+            mock_client._get_shared_bqstorage_client.assert_called_once_with()
             expected_stream = "projects/test-proj/locations/US/jobs/test-job-incomplete/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(
                 expected_stream,
@@ -681,7 +685,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_row_iterator_to_dataframe_iterable_when_format_is_arrow(self):
         pytest.importorskip("pandas")
         mock_client = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
+        mock_client._get_shared_bqstorage_client.return_value = mock.MagicMock()
 
         iterator = RowIterator(
             client=mock_client,
@@ -704,7 +708,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
     def test_row_iterator_to_dataframe_when_format_is_arrow(self):
         pytest.importorskip("pandas")
         mock_client = mock.MagicMock()
-        mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
+        mock_client._get_shared_bqstorage_client.return_value = mock.MagicMock()
 
         iterator = RowIterator(
             client=mock_client,
@@ -954,6 +958,7 @@ def test_query_and_wait_arrow_jobs_insert_omits_arrow_fields():
         max_results=mock.ANY,
         query_results_format="ARROW",
         arrow_serialization_options=_DEFAULT_QUERY_OPTIONS,
+        explicit_destination=True,
         callback=mock.ANY,
     )
     assert wait_or_cancel.call_args.kwargs["page_size"] == 0
@@ -1310,6 +1315,274 @@ def test_to_arrow_with_arrow_format_and_max_results_keeps_bqstorage_client():
     # ARROW results apply max_results while streaming, so there's no warning
     # about falling back to the REST API.
     assert not [w for w in caught if "max_results" in str(w.message)]
+
+
+def test_download_arrow_uses_passed_client_and_leaves_it_open():
+    iterator, bqstorage_client, _ = _limited_iterator([10, 15], 25, max_results=None)
+
+    batches = list(iterator._download_arrow_from_job_id(bqstorage_client))
+
+    assert _values(batches) == list(range(1, 26))
+    iterator.client._get_shared_bqstorage_client.assert_not_called()
+    bqstorage_client._transport.close.assert_not_called()
+
+
+def test_download_arrow_needs_a_client_only_to_stream():
+    iterator, _, _ = _limited_iterator([10, 15], 25, max_results=None)
+    iterator.client = None
+    batches = iterator._download_arrow_from_job_id()
+
+    assert next(batches).num_rows == 10
+    with pytest.raises(ValueError, match="RowIterator client is None"):
+        next(batches)
+
+
+def test_to_arrow_with_arrow_format_reads_with_the_shared_client():
+    pyarrow = pytest.importorskip("pyarrow")
+    client = mock.MagicMock()
+    iterator = RowIterator(
+        client=client,
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        query_results_format="ARROW",
+    )
+    batch = pyarrow.record_batch([pyarrow.array([1, 2])], names=["x"])
+
+    with mock.patch.object(
+        iterator, "to_arrow_iterable", return_value=iter([batch])
+    ) as to_arrow_iterable:
+        table = iterator.to_arrow()
+
+    assert table.num_rows == 2
+    # to_arrow() doesn't create (and then close) a client of its own; the
+    # stream uses the BigQuery client's shared one.
+    client._ensure_bqstorage_client.assert_not_called()
+    assert to_arrow_iterable.call_args.kwargs["bqstorage_client"] is None
+
+
+@pytest.mark.parametrize(
+    ("job_config", "expected"),
+    [
+        (QueryJobConfig(destination="p.d.t"), True),
+        # jobs.query doesn't accept a priority either, so this also runs
+        # through jobs.insert, without a destination.
+        (QueryJobConfig(priority="INTERACTIVE"), False),
+    ],
+    ids=["destination", "no_destination"],
+)
+def test_query_and_wait_arrow_marks_explicit_destination(job_config, expected):
+    client = mock.MagicMock(spec=Client)
+
+    with (
+        mock.patch.object(_job_helpers, "query_jobs_insert") as query_jobs_insert,
+        mock.patch.object(_job_helpers, "_wait_or_cancel") as wait_or_cancel,
+    ):
+        _query_and_wait(client, job_config=job_config, query_results_format="ARROW")
+
+    wait_or_cancel.assert_called_once_with(
+        query_jobs_insert.return_value,
+        api_timeout=mock.ANY,
+        wait_timeout=mock.ANY,
+        retry=mock.ANY,
+        page_size=mock.ANY,
+        max_results=mock.ANY,
+        query_results_format="ARROW",
+        arrow_serialization_options=mock.ANY,
+        explicit_destination=expected,
+        callback=mock.ANY,
+    )
+
+
+def test_wait_or_cancel_sets_explicit_destination():
+    job = mock.MagicMock(dry_run=False)
+    job.result.return_value = RowIterator(
+        client=mock.MagicMock(), api_request=mock.MagicMock(), path=None, schema=()
+    )
+    assert not job.result.return_value._explicit_destination
+
+    rows = _job_helpers._wait_or_cancel(
+        job,
+        api_timeout=None,
+        wait_timeout=None,
+        retry=None,
+        page_size=0,
+        max_results=None,
+        explicit_destination=True,
+    )
+
+    assert rows._explicit_destination
+
+
+def _destination_iterator(row_counts, serialized_schema=None):
+    """A RowIterator for a query with an explicit destination table, plus its
+    mock BigQuery Storage client.
+    """
+    bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+    options = bigquery_storage.types.ArrowSerializationOptions
+    if "picos_timestamp_precision" not in options.meta.fields:
+        # query_and_wait() rejects ARROW with this release before it runs.
+        pytest.skip("google-cloud-bigquery-storage has no timestamp precision")
+    schema, batches = _arrow_pages(*row_counts)
+    reader = mock.MagicMock()
+    reader.__iter__.return_value = iter([_stream_response(batch) for batch in batches])
+    stream = mock.Mock()
+    stream.name = "projects/p/locations/us/sessions/s/streams/0"
+    session = mock.Mock(streams=[stream] if row_counts else [])
+    session.arrow_schema.serialized_schema = (
+        schema if serialized_schema is None else serialized_schema
+    )
+    bqstorage_client = mock.MagicMock()
+    bqstorage_client.create_read_session.return_value = session
+    bqstorage_client.read_rows.return_value = reader
+    iterator = RowIterator(
+        client=mock.MagicMock(project="billing-project"),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        table=TableReference.from_string("p.d.t"),
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+    )
+    iterator._explicit_destination = True
+    return iterator, bqstorage_client
+
+
+def test_download_arrow_explicit_destination_reads_a_read_session():
+    iterator, bqstorage_client = _destination_iterator([10, 15])
+    from google.cloud import bigquery_storage
+
+    batches = list(iterator._download_arrow_from_job_id(bqstorage_client))
+
+    assert _values(batches) == list(range(1, 26))
+    bqstorage_client.create_read_session.assert_called_once_with(
+        parent="projects/billing-project",
+        read_session=bigquery_storage.types.stream.ReadSession(
+            table="projects/p/datasets/d/tables/t",
+            data_format=bigquery_storage.types.stream.DataFormat.ARROW,
+            read_options=bigquery_storage.types.stream.ReadSession.TableReadOptions(
+                arrow_serialization_options=_DEFAULT_READ_OPTIONS
+            ),
+        ),
+        max_stream_count=1,
+        timeout=None,
+    )
+    # The read session carries the serialization options, so ReadRows doesn't.
+    bqstorage_client.read_rows.assert_called_once_with(
+        "projects/p/locations/us/sessions/s/streams/0", offset=0, timeout=None
+    )
+
+
+@pytest.mark.parametrize(
+    ("serialized_schema", "expected_names"),
+    [(None, ["x"]), (b"", [])],
+    ids=["with_schema", "without_schema"],
+)
+def test_download_arrow_explicit_destination_without_rows(
+    serialized_schema, expected_names
+):
+    iterator, bqstorage_client = _destination_iterator(
+        [], serialized_schema=serialized_schema
+    )
+
+    (batch,) = iterator._download_arrow_from_job_id(bqstorage_client)
+
+    assert batch.num_rows == 0
+    assert batch.schema.names == expected_names
+    bqstorage_client.read_rows.assert_not_called()
+
+
+def _zero_row_iterator():
+    """A RowIterator whose jobs.query response has a schema and no rows."""
+    schema, _ = _arrow_pages()
+    return RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+        first_page_response={
+            "jobComplete": True,
+            "totalRows": "0",
+            "arrowSchema": {"serializedSchema": base64.b64encode(schema).decode()},
+            # A response without rows carries no serialized batch.
+            "arrowRecordBatch": {},
+        },
+    )
+
+
+def test_download_arrow_zero_rows_inline_keep_the_schema():
+    iterator = _zero_row_iterator()
+
+    (batch,) = iterator._download_arrow_from_job_id()
+
+    assert batch.num_rows == 0
+    assert batch.schema.names == ["x"]
+    iterator.client._get_shared_bqstorage_client.assert_not_called()
+
+
+def test_to_arrow_zero_rows_keep_the_schema():
+    table = _zero_row_iterator().to_arrow()
+
+    assert table.num_rows == 0
+    assert table.schema.names == ["x"]
+
+
+def test_download_arrow_zero_rows_streamed_use_the_query_results_schema():
+    pyarrow = pytest.importorskip("pyarrow")
+    from google.cloud.bigquery.schema import SchemaField
+
+    bqstorage_client = mock.MagicMock()
+    # The default job stream sends no responses for zero rows.
+    bqstorage_client.read_rows.return_value = []
+    iterator = RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=[SchemaField("x", "INTEGER")],
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+        first_page_response={"jobComplete": False},
+    )
+
+    (batch,) = iterator._download_arrow_from_job_id(bqstorage_client)
+
+    assert batch.num_rows == 0
+    assert batch.schema.names == ["x"]
+    assert batch.schema.field("x").type == pyarrow.int64()
+
+
+def test_download_arrow_rows_yield_no_extra_empty_batch():
+    schema, batches = _arrow_pages(3)
+    iterator = RowIterator(
+        client=mock.MagicMock(),
+        api_request=mock.MagicMock(),
+        path=None,
+        schema=(),
+        project="p",
+        location="US",
+        job_id="j",
+        query_results_format="ARROW",
+        first_page_response={
+            "jobComplete": True,
+            "totalRows": "3",
+            "arrowSchema": {"serializedSchema": base64.b64encode(schema).decode()},
+            "arrowRecordBatch": {
+                "serializedRecordBatch": base64.b64encode(batches[0]).decode()
+            },
+        },
+    )
+
+    (batch,) = iterator._download_arrow_from_job_id()
+
+    assert batch.num_rows == 3
 
 
 def test_to_arrow_iterable_reads_inline_result_twice():

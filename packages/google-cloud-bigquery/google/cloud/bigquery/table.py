@@ -1978,6 +1978,9 @@ class RowIterator(HTTPIterator):
         self._job_ended = ended
         self._query_results_format = query_results_format
         self._arrow_serialization_options = arrow_serialization_options
+        # Set by query_and_wait() if the query wrote to a destination table
+        # set in its job config.
+        self._explicit_destination = False
 
     @property
     @_disallow_when_arrow
@@ -2318,7 +2321,8 @@ class RowIterator(HTTPIterator):
 
         Args:
             bqstorage_client (Optional[bigquery_storage.BigQueryReadClient]):
-                Client for BigQuery Storage Read API. If None, one will be created.
+                Client for BigQuery Storage Read API. If None, the BigQuery
+                Storage client that the BigQuery client shares is used.
             timeout (Optional[float]):
                 Timeout in seconds for read operations.
 
