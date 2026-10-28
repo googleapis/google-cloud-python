@@ -43,7 +43,7 @@ replacements:
       packages/google-cloud-vision/google/cloud/vision_v1p2beta1/__init__.py,
       packages/google-cloud-vision/google/cloud/vision_v1p3beta1/__init__.py,
       packages/google-cloud-vision/google/cloud/vision_v1p4beta1/__init__.py,
-    ]    
+    ]
     before: |
       from .types.web_detection import WebDetection\n
       __all__ = \(
@@ -93,7 +93,7 @@ replacements:
 
           translate_v2/services_
           translate_v2/types_
-    
+
       API Reference
       -------------
       .. toctree::
@@ -129,7 +129,7 @@ replacements:
   - paths: [
       packages/google-cloud-speech/google/cloud/speech_v1/__init__.py,
       packages/google-cloud-speech/google/cloud/speech_v1p1beta1/__init__.py,
-    ]    
+    ]
     before: |
       \)
 
@@ -150,7 +150,7 @@ replacements:
     count: 2
   - paths: [
       packages/google-cloud-speech/google/cloud/speech/__init__.py,
-    ]    
+    ]
     before: |
       from google.cloud.speech_v1.services.speech.client import SpeechClient
     after: |
@@ -354,7 +354,7 @@ replacements:
         :maxdepth: 2
 
         usage
-        
+
 
       API Reference
       -------------
@@ -369,7 +369,7 @@ replacements:
 
 
       Changelog
-    count: 1 
+    count: 1
   - paths: [
       "packages/google-cloud-bigquery-storage/noxfile.py",
     ]
@@ -388,6 +388,24 @@ replacements:
     before: '\n        "--check-untyped-defs",'
     after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
     count: 1
+  - paths: [
+      "packages/google-cloud-error-reporting/noxfile.py",
+    ]
+    before: 'RUFF_VERSION = "ruff==0\.14\.14"'
+    after: |
+      RUFF_VERSION = "ruff==0.14.14"
+      # Temporarily pin pytest<9.2 because pytest 9.2.0 applies filterwarnings=error
+      # before pytest_configure hooks run, turning pytest-asyncio's unset
+      # asyncio_default_fixture_loop_scope warning into an error. Remove once
+      # pytest 9.2+ warning and fixture scope deprecations are resolved.
+      PYTEST_VERSION = "pytest<9.2"
+    count: 1
+  - paths: [
+      "packages/google-cloud-error-reporting/noxfile.py",
+    ]
+    before: '"pytest",'
+    after: 'PYTEST_VERSION,'
+    count: 2
   - paths: [
       "packages/google-cloud-monitoring-dashboards/noxfile.py",
     ]
@@ -453,4 +471,3 @@ replacements:
       google-cloud-logging>=3
       grpcio>=1
     count: 2
-
