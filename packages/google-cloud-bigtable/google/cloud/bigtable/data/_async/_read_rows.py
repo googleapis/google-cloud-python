@@ -26,11 +26,7 @@ from google.cloud.bigtable.data._helpers import (
     _attempt_timeout_generator,
     _rst_stream_aware_predicate,
 )
-from google.cloud.bigtable.data._metrics.data_model import (
-    ActiveOperationMetric,
-    OperationState,
-    OperationType,
-)
+from google.cloud.bigtable.data._metrics.data_model import OperationState
 from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 from google.cloud.bigtable.data.exceptions import (
     InvalidChunk,
@@ -117,25 +113,6 @@ class _ReadRowsOperationAsync:
         self._predicate = _rst_stream_aware_predicate(*retryable_exceptions)
         self._last_yielded_row_key: bytes | None = None
         self._remaining_count: int | None = self.request.rows_limit or None
-        if (
-            isinstance(metric, ActiveOperationMetric)
-            and metric.op_type == OperationType.READ_ROWS
-            and not metric.is_streaming
-            and not metric.handlers
-            and metric.state == OperationState.CREATED
-        ):
-            # Placeholder metric created by _read_row_via_accelerator (which
-            # never enters start_operation()); restore the previous ContextVar
-            # and mark completed so it does not leak or clobber outer metrics.
-            prev_op = getattr(metric, "_prev_context_op", None)
-            if prev_op is not None and prev_op.state in (
-                OperationState.ACTIVE_ATTEMPT,
-                OperationState.BETWEEN_ATTEMPTS,
-            ):
-                ActiveOperationMetric._active_operation_context.set(prev_op)
-            else:
-                ActiveOperationMetric._active_operation_context.set(None)  # type: ignore[arg-type]
-            metric.state = OperationState.COMPLETED
         self._operation_metric = metric
 
     def start_operation(self) -> CrossSync.Iterable[Row]:
@@ -221,7 +198,7 @@ class _ReadRowsOperationAsync:
             for c in resp.chunks:
                 if current_key is None:
                     current_key = c.row_key
-                    if not current_key:
+                    if current_key is None:
                         raise InvalidChunk("first chunk is missing a row key")
                     elif (
                         self._last_yielded_row_key

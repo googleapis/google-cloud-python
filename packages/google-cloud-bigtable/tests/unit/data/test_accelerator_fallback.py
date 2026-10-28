@@ -274,13 +274,28 @@ class TestHandleAcceleratorError:
         daemon = mock.Mock()
         daemon.is_running = True
         breaker = AcceleratorBreaker()
+        for msg in (
+            "accelerator: ReadRows must specify exactly one row (got 2 row keys, 0 row ranges)",
+            "accelerator: nil RowRange",
+            "accelerator fallback: unsupported row range shape",
+            "ReadRows with multiple row_keys is not supported by single-row accelerator",
+        ):
+            exc = _FakeRpcError(StatusCode.UNIMPLEMENTED, msg)
+            with pytest.raises(_AcceleratorFallback):
+                handle_accelerator_error(exc, daemon=daemon, breaker=breaker)
+            assert not breaker.is_tripped
+
+    def test_backend_unimplemented_with_not_supported_trips_breaker(self):
+        daemon = mock.Mock()
+        daemon.is_running = True
+        breaker = AcceleratorBreaker()
         exc = _FakeRpcError(
             StatusCode.UNIMPLEMENTED,
-            "ReadRows with multiple row_keys is not supported by single-row accelerator",
+            "Operation is not supported by this instance",
         )
         with pytest.raises(_AcceleratorFallback):
             handle_accelerator_error(exc, daemon=daemon, breaker=breaker)
-        assert not breaker.is_tripped
+        assert breaker.is_tripped
 
     def test_deadline_exceeded_chains_retry_exception_group_as_cause(self):
         from google.cloud.bigtable.data.exceptions import RetryExceptionGroup

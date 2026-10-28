@@ -54,17 +54,17 @@ if TYPE_CHECKING:
 
 _LOGGER = logging.getLogger(__name__)
 
-# Substrings in gRPC status details that indicate the Go daemon rejected a
-# specific request shape (e.g. multi-row ReadRowsRequest) rather than reporting
-# a persistent session/instance unavailability.
+# Prefixes and explicit shape markers in gRPC status details that indicate the
+# Go accelerator sidecar rejected a specific request shape (e.g. multi-row
+# ReadRowsRequest or nil RowRange) rather than reporting a backend/session
+# UNIMPLEMENTED. Backend session errors do not carry the "accelerator:" prefix.
+_PER_REQUEST_UNIMPLEMENTED_PREFIXES = (
+    "accelerator:",
+    "accelerator fallback:",
+)
 _PER_REQUEST_UNIMPLEMENTED_MARKERS = (
-    "not supported",
-    "must specify",
-    "must use",
-    "must have",
-    "unsupported row range",
-    "single-row",
-    "keys/ranges",
+    "single-row accelerator",
+    "unsupported row range shape",
 )
 
 
@@ -166,7 +166,9 @@ def _is_per_request_unimplemented(exc: BaseException) -> bool:
         return False
     if not isinstance(details, str):
         return False
-    lower = details.lower()
+    lower = details.strip().lower()
+    if lower.startswith(_PER_REQUEST_UNIMPLEMENTED_PREFIXES):
+        return True
     return any(marker in lower for marker in _PER_REQUEST_UNIMPLEMENTED_MARKERS)
 
 
