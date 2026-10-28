@@ -70,20 +70,38 @@ def parse_health_response(payload: bytes) -> ServingStatus:
     in ascending field-number order, so a payload that doesn't start with tag 1
     is not a response we understand.
     """
-    if not payload or payload[0] != _STATUS_TAG:
+    if not payload:
         return ServingStatus.UNKNOWN
-    value = 0
-    shift = 0
-    for byte in payload[1:]:
-        value |= (byte & 0x7F) << shift
-        if not byte & 0x80:
-            break
-        shift += 7
-    else:
-        # Ran off the end of a continued varint: truncated message.
-        return ServingStatus.UNKNOWN
-    try:
-        return ServingStatus(value)
-    except ValueError:
-        # A status this client predates. Not SERVING as far as we know.
-        return ServingStatus.UNKNOWN
+
+    pos = 0
+    n = len(payload)
+    status = ServingStatus.UNKNOWN
+    while pos < n:
+        if payload[pos] != _STATUS_TAG:
+            return ServingStatus.UNKNOWN
+        pos += 1
+        if pos >= n:
+            return ServingStatus.UNKNOWN
+
+        value = 0
+        shift = 0
+        while True:
+            if pos >= n:
+                # Ran off the end of a continued varint: truncated message.
+                return ServingStatus.UNKNOWN
+            byte = payload[pos]
+            pos += 1
+            value |= (byte & 0x7F) << shift
+            if not byte & 0x80:
+                break
+            shift += 7
+            if shift >= 64:
+                return ServingStatus.UNKNOWN
+
+        try:
+            status = ServingStatus(value)
+        except ValueError:
+            # A status this client predates. Not SERVING as far as we know.
+            status = ServingStatus.UNKNOWN
+
+    return status

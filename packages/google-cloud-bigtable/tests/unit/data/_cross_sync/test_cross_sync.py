@@ -492,6 +492,21 @@ class TestCrossSync:
         assert isinstance(result, asyncio.Task)
         assert result.get_name() == name
 
+    def test_create_task_async_no_running_loop_does_not_leak_coroutine(self, cs_async):
+        """
+        If called outside a running event loop, create_task should raise
+        RuntimeError before instantiating the coroutine.
+        """
+        called = False
+
+        async def coro_fn():
+            nonlocal called
+            called = True
+
+        with pytest.raises(RuntimeError, match="no running event loop"):
+            cs_async.create_task(coro_fn)
+        assert not called
+
     def test_yeild_to_event_loop(self, cs_sync):
         """
         no-op in sync version
