@@ -18,6 +18,7 @@
 
 from __future__ import annotations
 
+import inspect
 import time
 from typing import TYPE_CHECKING, Sequence
 
@@ -178,7 +179,8 @@ class _ReadRowsOperation:
             stream: the raw read_rows stream from the gapic client
         Yields:
             ReadRowsResponsePB.CellChunk: the next chunk in the stream"""
-        for resp in stream:
+        resolved_stream = stream if inspect.isawaitable(stream) else stream
+        for resp in resolved_stream:
             resp = resp._pb if hasattr(resp, "_pb") else resp
             if resp.last_scanned_row_key:
                 if (

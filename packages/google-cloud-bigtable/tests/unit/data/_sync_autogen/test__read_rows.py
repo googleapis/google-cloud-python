@@ -393,3 +393,30 @@ class TestReadRowsOperation:
         assert len(rows) == 1
         assert rows[0].cells[0].family == "cf1"
         assert rows[0].cells[1].family == ""
+
+    def test_chunk_stream_accepts_direct_async_iterable(self):
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable_v2.types import ReadRowsResponse
+
+        def direct_stream():
+            yield ReadRowsResponse(
+                chunks=[
+                    ReadRowsResponse.CellChunk(
+                        row_key=b"r1",
+                        family_name="cf1",
+                        qualifier=b"q1",
+                        value=b"v1",
+                        commit_row=True,
+                    )
+                ]
+            )
+
+        table = mock.Mock()
+        table._request_path = {"table_name": "t"}
+        table.app_profile_id = None
+        instance = self._make_one(
+            ReadRowsQuery(), table, 10, 10, ActiveOperationMetric("READ_ROWS")
+        )
+        chunks = [c for c in instance.chunk_stream(direct_stream())]
+        assert len(chunks) == 1
+        assert chunks[0].row_key == b"r1"
