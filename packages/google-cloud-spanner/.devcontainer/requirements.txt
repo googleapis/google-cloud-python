@@ -22,14 +22,16 @@ filelock==4.2.4 \
     # via
     #   python-discovery
     #   virtualenv
-nox==2026.10.20 \
-    --hash=sha256:5da57c009c3dfdd762c068d9079b17966ec967a9eb02cd8ebcf016a946eaf67f \
-    --hash=sha256:7aff12bb01471f5b087ada34cf0dbe452b02d840593f2e2afecc4bf6e6d6cd3f
+nox==2024.10.9 \
+    --hash=sha256:1d36f309a0a2a853e9bccb76bbef6bb118ba92fa92674d15604ca99adeb29eab \
+    --hash=sha256:7aa9dc8d1c27e9f45ab046ffd1c3b2c4f7c91755304769df231308849ebded95
     # via -r requirements.in
 packaging==26.3 \
     --hash=sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79 \
     --hash=sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c
-    # via nox
+    # via
+    #   nox
+    #   virtualenv
 platformdirs==4.13.5 \
     --hash=sha256:05831adf87d392760f4b5c3a0a95579ab5a10b18b9b9bd43680dcb47544788a0 \
     --hash=sha256:53d3ec4280b815c1e0b02edad7f9ee8fda1ba9c0865dd9c2e6e63849ce82fc1e
@@ -38,7 +40,7 @@ python-discovery==1.6.4 \
     --hash=sha256:530179cc51a1816d512b15635b3dc931295ae12efb183783ad31190a5d425d2b \
     --hash=sha256:bc70d31f0ec5de11eda13d4d64c16e24b3506a65984684f2b6c98cb83b2ea9df
     # via virtualenv
-virtualenv==21.14.12 \
-    --hash=sha256:7820aeaef23f1f59a96458edfc7f9d3deac937155718de15f1c9a64471e15551 \
-    --hash=sha256:bbcfb78e36c22ad70c6917c4aecb5e63477d3c138e9f88c946f320e31859c76a
+virtualenv==21.14.13 \
+    --hash=sha256:5fbb04138a4861580b78ba9110d529a26bc48fcc93c8ec36bc0202eeed96a788 \
+    --hash=sha256:de5307ba4b9a0001d9c8ea02832d38f63ca432880f416c1bface61c4323fd905
     # via nox
