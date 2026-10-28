@@ -54,6 +54,7 @@ from typing import Any
 
 from grpc import StatusCode
 
+from google.cloud.bigtable.data._accelerator._daemon import _DAEMON_BY_UDS_PATH
 from google.cloud.bigtable.data._accelerator._fallback import (
     AcceleratorBreaker,
     _grpc_code,
@@ -115,6 +116,7 @@ class _AsyncAcceleratorHealthMonitor:
         accelerator_client: AcceleratorClientType,
         breaker: AcceleratorBreaker,
         *,
+        daemon: Any = None,
         interval: float = DEFAULT_PROBE_INTERVAL,
         timeout: float = DEFAULT_PROBE_TIMEOUT,
         unhealthy_threshold: int = DEFAULT_UNHEALTHY_THRESHOLD,
@@ -122,6 +124,11 @@ class _AsyncAcceleratorHealthMonitor:
     ):
         self._client = accelerator_client
         self._breaker = breaker
+        if daemon is None and accelerator_client is not None:
+            uds_path = getattr(accelerator_client, "_uds_path", None)
+            if isinstance(uds_path, str):
+                daemon = _DAEMON_BY_UDS_PATH.get(uds_path)
+        self._daemon = daemon
         self._interval = interval
         self._timeout = timeout
         self._unhealthy_threshold = unhealthy_threshold
@@ -193,13 +200,31 @@ class _AsyncAcceleratorHealthMonitor:
                 await CrossSync.sleep(self._interval)
             else:
                 self._closed.wait(timeout=self._interval)
-            if self._closed.is_set():
-                return
-            if self._breaker.is_tripped:
+            if self._closed.is_set() or self._breaker.is_tripped:
                 # The accelerator has been permanently abandoned for some other
                 # reason; nothing this monitor observes can change that.
                 return
+            if self._daemon is not None:
+                if not self._daemon.is_running:
+                    if not getattr(self._daemon, "_closed", False) and not self._breaker.is_tripped:
+                        _LOGGER.warning(
+                            "Accelerator daemon exited; permanently falling back "
+                            "to the native Bigtable client for this table."
+                        )
+                        self._breaker.trip()
+                    return
+                self._daemon._maybe_truncate_log()
             healthy = await self._probe()
+            if self._closed.is_set() or self._breaker.is_tripped:
+                return
+            if self._daemon is not None and not self._daemon.is_running:
+                if not getattr(self._daemon, "_closed", False) and not self._breaker.is_tripped:
+                    _LOGGER.warning(
+                        "Accelerator daemon exited; permanently falling back "
+                        "to the native Bigtable client for this table."
+                    )
+                    self._breaker.trip()
+                return
             if healthy is None:
                 # The daemon does not serve health checks at all. Stop probing
                 # and leave the breaker undegraded: an unmonitorable daemon is

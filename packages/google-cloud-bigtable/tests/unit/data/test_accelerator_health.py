@@ -226,3 +226,50 @@ class TestSyncMonitorThread:
             assert not monitor.is_running
         finally:
             monitor.close()
+
+    def test_dead_daemon_trips_breaker_and_stops_loop(self):
+        import unittest.mock
+
+        breaker = AcceleratorBreaker()
+        breaker.set_degraded(True)
+        daemon = unittest.mock.Mock()
+        daemon.is_running = False
+        daemon._closed = False
+        monitor = _AcceleratorHealthMonitor(
+            accelerator_client=None,
+            breaker=breaker,
+            daemon=daemon,
+            interval=0.01,
+        )
+        monitor.start()
+        try:
+            monitor._task.join(timeout=2.0)
+            assert not monitor.is_running
+            assert breaker.is_tripped
+        finally:
+            monitor.close()
+
+    def test_post_probe_stop_does_not_mutate_breaker(self):
+        import unittest.mock
+
+        breaker = AcceleratorBreaker()
+        client = unittest.mock.Mock()
+        monitor = _AcceleratorHealthMonitor(
+            accelerator_client=client,
+            breaker=breaker,
+            interval=0.01,
+            unhealthy_threshold=1,
+        )
+
+        def fake_check_health(timeout=None):
+            monitor.request_stop()
+            raise RuntimeError("socket closed during teardown")
+
+        client.check_health.side_effect = fake_check_health
+        monitor.start()
+        try:
+            monitor._task.join(timeout=2.0)
+            assert not monitor.is_running
+            assert not breaker.is_degraded
+        finally:
+            monitor.close()
