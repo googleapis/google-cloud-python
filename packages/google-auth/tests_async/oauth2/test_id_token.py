@@ -21,7 +21,7 @@ from unittest import mock
 import pytest  # type: ignore
 
 import google.auth.compute_engine._metadata
-from google.auth import environment_vars, exceptions
+from google.auth import _helpers, crypt, environment_vars, exceptions, jwt
 from google.oauth2 import _id_token_async as id_token
 from google.oauth2 import _service_account_async
 from google.oauth2 import id_token as sync_id_token
@@ -305,9 +305,10 @@ async def test_verify_firebase_token_invalid_sub(verify_token, invalid_payload):
         )
 
 
+@pytest.mark.parametrize("audience", [None, "", []])
 @mock.patch("google.oauth2._id_token_async.verify_token", autospec=True)
 @pytest.mark.asyncio
-async def test_verify_firebase_token_warns_without_audience(verify_token):
+async def test_verify_firebase_token_warns_without_audience(verify_token, audience):
     verify_token.return_value = {
         "aud": "my-project-id",
         "iss": "https://securetoken.google.com/my-project-id",
@@ -322,7 +323,7 @@ async def test_verify_firebase_token_warns_without_audience(verify_token):
         ),
     ) as record:
         result = await id_token.verify_firebase_token(
-            mock.sentinel.token, mock.sentinel.request
+            mock.sentinel.token, mock.sentinel.request, audience=audience
         )
 
     assert len(record) == 1
@@ -331,7 +332,7 @@ async def test_verify_firebase_token_warns_without_audience(verify_token):
     verify_token.assert_called_once_with(
         mock.sentinel.token,
         mock.sentinel.request,
-        audience=None,
+        audience=audience,
         certs_url=sync_id_token._GOOGLE_APIS_CERTS_URL,
         clock_skew_in_seconds=0,
     )
@@ -358,8 +359,53 @@ async def test_verify_firebase_token_mismatched_alg_for_rsa_certs(alg):
     sig = base64.urlsafe_b64encode(b"sig")
     token = b".".join([header, payload, sig])
 
-    with pytest.raises(exceptions.InvalidValue):
+    with pytest.raises(
+        exceptions.InvalidValue,
+        match="Certificate key type does not match signature algorithm {}".format(alg),
+    ):
         await id_token.verify_firebase_token(token, request, audience="my-project-id")
+
+
+@pytest.mark.asyncio
+async def test_verify_firebase_token_end_to_end():
+    with open(test_id_token.PRIVATE_KEY_FILE, "rb") as fh:
+        private_key = fh.read()
+    with open(test_id_token.PUBLIC_CERT_FILE, "r") as fh:
+        public_cert = fh.read()
+
+    signer = crypt.RSASigner.from_string(private_key, "1")
+    now = _helpers.datetime_to_secs(_helpers.utcnow())
+
+    valid_payload = {
+        "aud": "my-project-id",
+        "iss": "https://securetoken.google.com/my-project-id",
+        "sub": "my-user-id",
+        "iat": now,
+        "exp": now + 300,
+    }
+    valid_token = jwt.encode(signer, valid_payload)
+    request = make_request(200, {"1": public_cert})
+
+    result = await id_token.verify_firebase_token(
+        valid_token, request, audience="my-project-id"
+    )
+    assert result == valid_payload
+
+    cross_tenant_token = jwt.encode(
+        signer,
+        {
+            "aud": "other-project-id",
+            "iss": "https://securetoken.google.com/other-project-id",
+            "sub": "my-user-id",
+            "iat": now,
+            "exp": now + 300,
+        },
+    )
+    request = make_request(200, {"1": public_cert})
+    with pytest.raises(exceptions.InvalidValue, match="Token has wrong audience"):
+        await id_token.verify_firebase_token(
+            cross_tenant_token, request, audience="my-project-id"
+        )
 
 
 @pytest.mark.asyncio

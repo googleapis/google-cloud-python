@@ -391,6 +391,12 @@ def test_decode_missing_certs(token_factory):
         jwt.decode(token_factory())
 
 
+@pytest.mark.parametrize("certs", [None, object()])
+def test_decode_non_iterable_certs(token_factory, certs):
+    with pytest.raises(TypeError):
+        jwt.decode(token_factory(), certs=certs)
+
+
 def test_decode_unhashable_alg():
     headers = json.dumps({"kid": "1", "alg": ["RS256"]})
     token = b".".join(

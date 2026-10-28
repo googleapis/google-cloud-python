@@ -41,10 +41,10 @@ You can also skip verification::
 """
 
 try:
-    from collections.abc import Mapping
+    from collections.abc import Iterable, Mapping
 # Python 2.7 compatibility
 except ImportError:  # pragma: NO COVER
-    from collections import Mapping  # type: ignore
+    from collections import Iterable, Mapping  # type: ignore
 import copy
 import datetime
 import json
@@ -302,7 +302,7 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
             signed_section, signature, certs_to_check, verifier_cls
         )
     except TypeError as exc:
-        if certs_to_check is None:
+        if not isinstance(certs_to_check, Iterable):
             raise
         raise exceptions.InvalidValue(
             "Certificate key type does not match signature algorithm {}.".format(
