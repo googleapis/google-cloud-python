@@ -25,7 +25,8 @@ from tests.transport import compliance
 
 class RequestResponseTests(object):
     @pytest.fixture(scope="module")
-    def server(self):
+    @classmethod
+    def server(cls):
         """Provides a test HTTP server.
 
         The test server is automatically created before
