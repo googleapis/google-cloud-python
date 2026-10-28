@@ -1006,6 +1006,16 @@ libraries:
     python:
       metadata_name_override: clouddeploy
       default_version: v1
+  - name: google-cloud-designcenter
+    version: 0.0.0
+    apis:
+      - path: google/cloud/designcenter/v1
+    copyright_year: "2026"
+    python:
+      opt_args_by_api:
+        google/cloud/designcenter/v1:
+          - proto-plus-deps=google.cloud.apphub.v1+google.cloud.config.v1
+      default_version: v1
   - name: google-cloud-developerconnect
     version: 0.6.1
     apis:
