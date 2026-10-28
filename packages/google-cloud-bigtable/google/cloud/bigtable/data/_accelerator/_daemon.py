@@ -35,6 +35,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import weakref
 from typing import Any, Mapping, Sequence
 
 import grpc
@@ -96,9 +97,68 @@ _DEFAULT_STARTUP_TIMEOUT = 20.0
 _READY_POLL_SECONDS = 0.05
 
 # Sequence: close stdin, wait this long; SIGTERM, wait again; SIGKILL.
-_STDIN_GRACE_SECONDS = 2.0
+# _STDIN_GRACE_SECONDS exceeds the Go daemon's gracefulStopTimeout (5s) so
+# in-flight RPCs can finish draining before SIGTERM.
+_STDIN_GRACE_SECONDS = 6.0
 _SIGTERM_GRACE_SECONDS = 2.0
 _SIGKILL_GRACE_SECONDS = 2.0
+
+# Cap daemon.log size to 32 KiB so verbose gRPC/Go stderr does not grow
+# unbounded in /tmp over long-lived sessions.
+_MAX_LOG_BYTES = 32 * 1024
+
+# Maximum UDS path length before falling back from $TMPDIR to /tmp on POSIX
+# (sockaddr_un.sun_path is 104 bytes on macOS/BSD and 108 on Linux).
+_MAX_UDS_PATH_LEN = 100
+
+# Weak registry mapping uds_path -> AcceleratorDaemon so health monitors can
+# detect dead daemons without requiring caller signature changes.
+_DAEMON_BY_UDS_PATH: weakref.WeakValueDictionary[str, "AcceleratorDaemon"] = (
+    weakref.WeakValueDictionary()
+)
+
+
+def _finalize_daemon_proc(
+    proc: subprocess.Popen[bytes] | None,
+    tempdir: str | None,
+) -> None:
+    """Clean up an unclosed AcceleratorDaemon on garbage collection.
+
+    Closes ``proc.stdin`` and reaps ``proc`` before ``Popen.__del__`` runs so
+    CPython does not resurrect ``proc`` into ``subprocess._active`` (which would
+    keep the stdin pipe open forever and leak the Go daemon process).
+    """
+    if proc is not None:
+        if getattr(proc, "stdin", None) is not None:
+            try:
+                proc.stdin.close()
+            except Exception:
+                pass
+        try:
+            running = proc.poll() is None
+        except Exception:
+            running = False
+        if running:
+            try:
+                proc.wait(timeout=0.5)
+            except Exception:
+                try:
+                    proc.terminate()
+                except Exception:
+                    pass
+                try:
+                    proc.wait(timeout=0.5)
+                except Exception:
+                    try:
+                        proc.kill()
+                    except Exception:
+                        pass
+                    try:
+                        proc.wait(timeout=0.5)
+                    except Exception:
+                        pass
+    if tempdir is not None and os.path.isdir(tempdir):
+        shutil.rmtree(tempdir, ignore_errors=True)
 
 
 def _resolve_binary_path() -> str:
@@ -182,19 +242,20 @@ class AcceleratorDaemon:
         Args:
             cli_flags: extra arguments appended after ``--uds-path`` when
                 spawning the daemon (e.g. ``--project``/``--instance``).
-            startup_timeout: seconds ``start()`` waits for the daemon's UDS to
-                become connectable before raising.
+            binary_path: optional override path to the accelerator binary.
+            extra_env: optional extra environment variables merged over
+                ``os.environ`` for the daemon subprocess.
 
         Raises:
             FileNotFoundError: the bundled binary is not present in this wheel.
+            ValueError: ``BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT`` is set to an
+                invalid, non-positive, or non-finite value.
         """
         self._binary_path = (
             binary_path if binary_path is not None else _resolve_binary_path()
         )
         self._cli_flags = list(cli_flags)
-        # ``None`` (the default) defers to the env var / module default; an
-        # explicit float overrides both. Resolved here, not as a signature
-        # default, so the env var is read at instantiation time.
+        # Resolved here so the env var is read at instantiation time.
         self._startup_timeout = _resolve_startup_timeout()
         # Extra environment for the subprocess, merged over the inherited env.
         # Used to forward GOOGLE_APPLICATION_CREDENTIALS (path only) so the
@@ -205,6 +266,15 @@ class AcceleratorDaemon:
         self._log_path: str | None = None
         self._proc: subprocess.Popen[bytes] | None = None
         self._auth_secret: str | None = None
+        self._closed: bool = False
+        self._finalizer: weakref.finalize | None = None
+
+    def __del__(self) -> None:
+        """Ensure child stdin and process are reaped before Popen.__del__."""
+        try:
+            self.close()
+        except Exception:
+            pass
 
     def __enter__(self) -> "AcceleratorDaemon":
         """Start the daemon on ``with`` entry and return it."""
@@ -225,6 +295,7 @@ class AcceleratorDaemon:
     def log_path(self) -> str:
         if self._log_path is None:
             raise RuntimeError("AcceleratorDaemon has not been started")
+        self._maybe_truncate_log()
         return self._log_path
 
     @property
@@ -269,7 +340,20 @@ class AcceleratorDaemon:
         # is the only access control the socket gets there — Windows has no
         # umask and chmod only toggles the read-only bit — so the daemon
         # deliberately relies on the directory we pick here.
-        self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
+        # On POSIX, sockaddr_un.sun_path is capped at 104–108 bytes; if a deeply
+        # nested $TMPDIR would overflow that limit, fall back to /tmp.
+        default_tmp = tempfile.gettempdir()
+        if (
+            not _IS_WINDOWS
+            and len(
+                os.path.join(default_tmp, _TEMPDIR_PREFIX + "x" * 8, _SOCKET_FILENAME)
+            )
+            > _MAX_UDS_PATH_LEN
+            and os.path.isdir("/tmp")
+        ):
+            self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX, dir="/tmp")
+        else:
+            self._tempdir = tempfile.mkdtemp(prefix=_TEMPDIR_PREFIX)
         self._uds_path = os.path.join(self._tempdir, _SOCKET_FILENAME)
 
         # Redirect the daemon's stdout/stderr to a log file rather than
@@ -289,8 +373,17 @@ class AcceleratorDaemon:
         env = None
         if self._extra_env:
             env = {**os.environ, **self._extra_env}
+        if (
+            "GRPC_GO_LOG_SEVERITY_LEVEL" in os.environ
+            or "GRPC_GO_LOG_VERBOSITY_LEVEL" in os.environ
+        ):
+            if env is None:
+                env = dict(os.environ)
+            for key in ("GRPC_GO_LOG_SEVERITY_LEVEL", "GRPC_GO_LOG_VERBOSITY_LEVEL"):
+                if key not in self._extra_env:
+                    env.pop(key, None)
         try:
-            log_file = open(self._log_path, "wb")
+            log_file = open(self._log_path, "ab")
             self._proc = subprocess.Popen(
                 argv,
                 stdin=subprocess.PIPE,
@@ -298,6 +391,7 @@ class AcceleratorDaemon:
                 stderr=subprocess.STDOUT,
                 close_fds=True,
                 env=env,
+                start_new_session=not _IS_WINDOWS,
             )
         except OSError as exc:
             self._cleanup_tempdir()
@@ -313,6 +407,13 @@ class AcceleratorDaemon:
                     log_file.close()
                 except OSError:
                     pass
+
+        self._closed = False
+        self._finalizer = weakref.finalize(
+            self, _finalize_daemon_proc, self._proc, self._tempdir
+        )
+        if self._uds_path is not None:
+            _DAEMON_BY_UDS_PATH[self._uds_path] = self
 
         # Mint a 256-bit secret and write it to the daemon's stdin before it
         # binds the socket. The daemon reads this line synchronously before
@@ -352,18 +453,23 @@ class AcceleratorDaemon:
 
     def close(self) -> None:
         """Tear down the daemon and clean up the UDS tempdir."""
+        self._closed = True
+        if self._finalizer is not None:
+            self._finalizer.detach()
+            self._finalizer = None
         proc = self._proc
         if proc is None:
             return
         try:
+            # Always close the parent's write end of stdin even if the child
+            # already exited, so the pipe FD is never leaked.
+            if proc.stdin is not None:
+                try:
+                    proc.stdin.close()
+                except OSError:
+                    pass
             if proc.poll() is None:
-                # Step 1: close stdin → daemon's stdin-EOF watchdog triggers
-                # graceful shutdown.
-                if proc.stdin is not None:
-                    try:
-                        proc.stdin.close()
-                    except OSError:
-                        pass
+                # Step 1: stdin EOF triggers daemon's graceful shutdown.
                 if not self._wait_for_exit(_STDIN_GRACE_SECONDS):
                     # Step 2: SIGTERM. On Windows this is TerminateProcess, so
                     # steps 2 and 3 are the same hard kill and the daemon's one
@@ -471,6 +577,23 @@ class AcceleratorDaemon:
             f"{timeout}s. log: {log_tail!r}"
         )
 
+    def _maybe_truncate_log(self, max_bytes: int = _MAX_LOG_BYTES) -> None:
+        """Bound ``daemon.log`` on disk to at most ``max_bytes``."""
+        if self._log_path is None:
+            return
+        try:
+            size = os.path.getsize(self._log_path)
+            if size <= max_bytes:
+                return
+            with open(self._log_path, "r+b") as fh:
+                fh.seek(-max_bytes, os.SEEK_END)
+                tail = fh.read(max_bytes)
+                fh.seek(0)
+                fh.truncate(0)
+                fh.write(tail)
+        except OSError:
+            pass
+
     def _read_log_tail(self, max_bytes: int = 4096) -> str:
         """Best-effort read of the tail of the daemon's log file.
 
@@ -482,6 +605,7 @@ class AcceleratorDaemon:
         """
         if self._log_path is None:
             return ""
+        self._maybe_truncate_log()
         try:
             with open(self._log_path, "rb") as fh:
                 try:
@@ -509,17 +633,30 @@ class AcceleratorDaemon:
             return False
 
     def _force_kill(self) -> None:
-        """SIGKILL the child and reap it; a no-op if it is already gone."""
-        if self._proc is None or self._proc.poll() is not None:
+        """SIGKILL the child, close its stdin pipe, and reap it."""
+        if self._finalizer is not None:
+            self._finalizer.detach()
+            self._finalizer = None
+        proc = self._proc
+        if proc is None:
             return
         try:
-            self._proc.kill()
-        except (OSError, ProcessLookupError):
-            pass
-        try:
-            self._proc.wait(timeout=1.0)
-        except subprocess.TimeoutExpired:
-            pass
+            if proc.stdin is not None:
+                try:
+                    proc.stdin.close()
+                except OSError:
+                    pass
+            if proc.poll() is None:
+                try:
+                    proc.kill()
+                except (OSError, ProcessLookupError):
+                    pass
+                try:
+                    proc.wait(timeout=1.0)
+                except subprocess.TimeoutExpired:
+                    pass
+        finally:
+            self._proc = None
 
     def _cleanup_tempdir(self) -> None:
         """Remove the tempdir holding the socket and log; clear derived paths."""
