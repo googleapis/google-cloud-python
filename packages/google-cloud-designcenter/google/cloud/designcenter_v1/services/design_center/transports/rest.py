@@ -21,7 +21,6 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.protobuf
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -36,7 +35,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.designcenter_v1._compat import trace_http_request, transcode_request
+from google.cloud.designcenter_v1._compat import transcode_request
 from google.cloud.designcenter_v1.types import (
     apphub_integration_messages,
     authoring,
@@ -4725,7 +4724,6 @@ class DesignCenterRestStub:
     _session: AuthorizedSession
     _host: str
     _interceptor: DesignCenterRestInterceptor
-    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 
 class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
@@ -4754,8 +4752,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         url_scheme: str = "https",
         interceptor: Optional[DesignCenterRestInterceptor] = None,
         api_audience: Optional[str] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -4795,9 +4791,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
-            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
-                Custom options for the client, containing options such as
-                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -4810,8 +4803,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
             api_audience=api_audience,
-            client_options=client_options,
-            **kwargs,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
@@ -4891,35 +4882,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5003,8 +4978,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -5018,6 +4991,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.ApplicationTemplateRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_commit_application_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_commit_application_template_with_metadata(
@@ -5063,35 +5037,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5170,8 +5128,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5184,6 +5140,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = deployment_resources.Application.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_application_with_metadata(
@@ -5230,35 +5187,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5340,8 +5281,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -5355,6 +5294,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.ApplicationTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_application_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_application_template_with_metadata(
@@ -5398,35 +5338,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5507,8 +5431,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5521,6 +5443,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.Catalog.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_catalog_with_metadata(
@@ -5564,35 +5487,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5672,8 +5579,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5686,6 +5591,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.CatalogTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_catalog_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_catalog_template_with_metadata(
@@ -5732,35 +5638,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5845,8 +5735,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -5858,6 +5746,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_catalog_template_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -5903,35 +5792,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6012,8 +5885,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6026,6 +5897,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.Component.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_component(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_component_with_metadata(
@@ -6069,35 +5941,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6178,8 +6034,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6192,6 +6046,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_connection_with_metadata(
@@ -6235,35 +6090,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6347,8 +6186,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6361,6 +6198,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = best_practices.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_policy_with_metadata(
@@ -6404,35 +6242,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6515,8 +6337,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6527,6 +6347,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_share_with_metadata(
@@ -6570,35 +6391,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6680,8 +6485,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6694,6 +6497,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_space(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_space_with_metadata(
@@ -6737,34 +6541,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6845,8 +6633,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6857,6 +6643,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_application_with_metadata(
@@ -6901,34 +6688,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7005,8 +6776,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -7031,34 +6800,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7136,8 +6889,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7160,34 +6911,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7268,8 +7003,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7280,6 +7013,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_catalog_with_metadata(
@@ -7323,34 +7057,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7432,8 +7150,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7444,6 +7160,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_catalog_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_catalog_template_with_metadata(
@@ -7488,34 +7205,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7599,8 +7300,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -7612,6 +7311,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_catalog_template_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -7657,34 +7357,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7760,8 +7444,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7784,34 +7466,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7887,8 +7553,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7911,34 +7575,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8012,8 +7660,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8036,34 +7682,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8145,8 +7775,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8157,6 +7785,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_share_with_metadata(
@@ -8200,34 +7829,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8301,8 +7914,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8325,35 +7936,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8435,8 +8030,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8447,6 +8040,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_deploy_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_deploy_application_with_metadata(
@@ -8490,35 +8084,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8601,8 +8179,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8613,6 +8189,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_application_ia_c(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_export_application_ia_c_with_metadata(
@@ -8657,35 +8234,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8770,8 +8331,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -8783,6 +8342,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_application_template_ia_c(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -8831,35 +8391,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8946,8 +8490,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8958,6 +8500,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_application_template_revision_ia_c(
                 resp
             )
@@ -9006,34 +8549,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9117,8 +8644,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9135,6 +8660,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_application_assessment_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -9182,34 +8708,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9289,8 +8799,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9303,6 +8811,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = best_practices_messages.FetchFrameworksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_frameworks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_fetch_frameworks_with_metadata(
@@ -9351,35 +8860,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9465,8 +8958,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9477,6 +8968,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_application_assessment_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -9522,35 +9014,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9632,8 +9108,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9646,6 +9120,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = deployment_messages.GenerateApplicationIaCResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_application_ia_c(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_generate_application_ia_c_with_metadata(
@@ -9696,35 +9171,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9810,8 +9269,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9822,6 +9279,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = (
                 self._interceptor.post_generate_application_template_assessment_report(
                     resp
@@ -9872,35 +9330,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9986,8 +9428,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -10001,6 +9441,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring_messages.GenerateApplicationTemplateIaCResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_application_template_ia_c(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -10051,35 +9492,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -10166,8 +9591,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10184,6 +9607,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_application_template_revision_ia_c(
                 resp
             )
@@ -10234,35 +9658,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -10350,8 +9758,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -10363,6 +9769,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_assessment_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_generate_assessment_report_with_metadata(
@@ -10409,35 +9816,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -10524,8 +9915,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10536,6 +9925,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_terraform_plan_assessment_report(
                 resp
             )
@@ -10583,34 +9973,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10688,8 +10062,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10702,6 +10074,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = deployment_resources.Application.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_application_with_metadata(
@@ -10747,34 +10120,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10853,8 +10210,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10867,6 +10222,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.ApplicationTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_application_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_application_template_with_metadata(
@@ -10911,34 +10267,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11021,8 +10361,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -11036,6 +10374,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.ApplicationTemplateRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_application_template_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -11086,34 +10425,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11197,8 +10520,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11211,6 +10532,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.ApplicationTemplateSystemRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_application_template_system_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -11258,34 +10580,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11365,8 +10671,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11379,6 +10683,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.Catalog.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_catalog_with_metadata(
@@ -11422,34 +10727,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11528,8 +10817,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11542,6 +10829,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.CatalogTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_catalog_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_catalog_template_with_metadata(
@@ -11588,34 +10876,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11696,8 +10968,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -11711,6 +10981,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.CatalogTemplateRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_catalog_template_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -11758,34 +11029,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11863,8 +11118,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11877,6 +11130,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.Component.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_component(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_component_with_metadata(
@@ -11920,34 +11174,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12025,8 +11263,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12039,6 +11275,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_connection_with_metadata(
@@ -12082,34 +11319,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12192,8 +11413,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12206,6 +11425,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = best_practices.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_policy_with_metadata(
@@ -12247,34 +11467,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12353,8 +11557,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12367,6 +11569,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = sharing.Share.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_share_with_metadata(
@@ -12410,34 +11613,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12518,8 +11705,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12532,6 +11717,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = sharing.SharedTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_shared_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_shared_template_with_metadata(
@@ -12576,34 +11762,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12686,8 +11856,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -12701,6 +11869,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = sharing.SharedTemplateRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_shared_template_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_shared_template_revision_with_metadata(
@@ -12742,34 +11911,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12851,8 +12004,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12865,6 +12016,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_space(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_space_with_metadata(
@@ -12908,35 +12060,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -13018,8 +12154,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13032,6 +12166,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = deployment_messages.ImportApplicationIaCResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_application_ia_c(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_import_application_ia_c_with_metadata(
@@ -13080,35 +12215,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -13190,8 +12309,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -13205,6 +12322,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.ApplicationTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_application_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_import_application_template_with_metadata(
@@ -13249,35 +12367,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -13361,8 +12463,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -13376,6 +12476,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring_messages.ImportApplicationTemplateIaCResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_application_template_ia_c(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -13426,35 +12527,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -13539,8 +12624,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -13552,6 +12635,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_ingest_application_template_ia_c(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -13597,34 +12681,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13707,8 +12775,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13721,6 +12787,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = deployment_messages.ListApplicationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_applications(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_applications_with_metadata(
@@ -13767,34 +12834,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13878,8 +12929,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13894,6 +12943,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_application_template_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -13942,34 +12992,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14052,8 +13086,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -14067,6 +13099,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring_messages.ListApplicationTemplatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_application_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_application_templates_with_metadata(
@@ -14117,34 +13150,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14228,8 +13245,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14246,6 +13261,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_application_template_system_revisions(
                 resp
             )
@@ -14295,34 +13311,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14401,8 +13401,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14415,6 +13413,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management_messages.ListCatalogsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_catalogs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_catalogs_with_metadata(
@@ -14463,34 +13462,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14573,8 +13556,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -14592,6 +13573,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_catalog_template_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -14639,34 +13621,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14747,8 +13713,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14761,6 +13725,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management_messages.ListCatalogTemplatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_catalog_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_catalog_templates_with_metadata(
@@ -14806,34 +13771,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14914,8 +13863,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14928,6 +13875,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring_messages.ListComponentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_components(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_components_with_metadata(
@@ -14973,34 +13921,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15083,8 +14015,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15097,6 +14027,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring_messages.ListConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_connections_with_metadata(
@@ -15142,34 +14073,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15250,8 +14165,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15264,6 +14177,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = best_practices_messages.ListPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_policies_with_metadata(
@@ -15310,34 +14224,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15420,8 +14318,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     self._session,
                     timeout,
                     transcoded_request,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -15435,6 +14331,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = sharing_messages.ListSharedTemplateRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_shared_template_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -15484,34 +14381,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15592,8 +14473,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15606,6 +14485,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = sharing_messages.ListSharedTemplatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_shared_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_shared_templates_with_metadata(
@@ -15651,34 +14531,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15759,8 +14623,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15773,6 +14635,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = sharing_messages.ListSharesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_shares(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_shares_with_metadata(
@@ -15818,34 +14681,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15926,8 +14773,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15940,6 +14785,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management_messages.ListSpacesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_spaces(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_spaces_with_metadata(
@@ -15985,35 +14831,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16096,8 +14926,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16108,6 +14936,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_preview_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_preview_application_with_metadata(
@@ -16151,35 +14980,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16261,8 +15074,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16273,6 +15084,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_recommend_iam_roles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_recommend_iam_roles_with_metadata(
@@ -16317,35 +15129,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16432,8 +15228,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16444,6 +15238,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_register_app_hub_application_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -16490,35 +15285,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16603,8 +15382,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -16616,6 +15393,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_snapshot_application_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = (
@@ -16661,35 +15439,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16772,8 +15534,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16784,6 +15544,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_sync_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_sync_share_with_metadata(
@@ -16827,35 +15588,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16934,8 +15679,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16948,6 +15691,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = deployment_resources.Application.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_application_with_metadata(
@@ -16994,35 +15738,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17104,8 +15832,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                     timeout,
                     transcoded_request,
                     body,
-                    client_options=getattr(self, "_client_options", None),
-                    url_template=http_options[0].get("uri") if http_options else None,
                 )
             )
 
@@ -17119,6 +15845,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.ApplicationTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_application_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_application_template_with_metadata(
@@ -17162,35 +15889,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17271,8 +15982,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17285,6 +15994,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.Catalog.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_catalog_with_metadata(
@@ -17328,35 +16038,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17436,8 +16130,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17450,6 +16142,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.CatalogTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_catalog_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_catalog_template_with_metadata(
@@ -17495,35 +16188,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17604,8 +16281,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17618,6 +16293,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.Component.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_component(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_component_with_metadata(
@@ -17661,35 +16337,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17770,8 +16430,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17784,6 +16442,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = authoring.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_connection_with_metadata(
@@ -17827,35 +16486,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17939,8 +16582,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17953,6 +16594,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = best_practices.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_policy_with_metadata(
@@ -17996,35 +16638,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -18106,8 +16732,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -18120,6 +16744,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             pb_resp = catalog_management.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_space(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_space_with_metadata(
@@ -18158,10 +16783,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CommitApplicationTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18172,12 +16794,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateApplication(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreateApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_application_template(
@@ -18189,10 +16806,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateApplicationTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18203,12 +16817,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateCatalog(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreateCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_catalog_template(
@@ -18219,12 +16828,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateCatalogTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreateCatalogTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_catalog_template_revision(
@@ -18236,10 +16840,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCatalogTemplateRevision(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18248,12 +16849,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.CreateComponentRequest], authoring.Component]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateComponent(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreateComponent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_connection(
@@ -18261,12 +16857,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.CreateConnectionRequest], authoring.Connection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateConnection(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_policy(
@@ -18274,12 +16865,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[best_practices_messages.CreatePolicyRequest], best_practices.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreatePolicy(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreatePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_share(
@@ -18287,12 +16873,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[sharing_messages.CreateShareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateShare(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreateShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_space(
@@ -18302,12 +16883,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSpace(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CreateSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_application(
@@ -18317,12 +16893,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteApplication(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_application_template(
@@ -18333,10 +16904,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteApplicationTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18348,10 +16916,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteApplicationTemplateRevision(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18362,12 +16927,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteCatalog(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_catalog_template(
@@ -18378,12 +16938,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteCatalogTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteCatalogTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_catalog_template_revision(
@@ -18395,10 +16950,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCatalogTemplateRevision(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18407,12 +16959,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.DeleteComponentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteComponent(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteComponent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_connection(
@@ -18420,12 +16967,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.DeleteConnectionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteConnection(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_policy(
@@ -18433,12 +16975,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[best_practices_messages.DeletePolicyRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeletePolicy(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeletePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_share(
@@ -18446,12 +16983,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[sharing_messages.DeleteShareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteShare(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_space(
@@ -18459,12 +16991,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[catalog_management_messages.DeleteSpaceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteSpace(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def deploy_application(
@@ -18474,12 +17001,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeployApplication(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeployApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def export_application_ia_c(
@@ -18489,12 +17011,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportApplicationIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ExportApplicationIaC(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def export_application_template_ia_c(
@@ -18506,10 +17023,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportApplicationTemplateIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18522,10 +17036,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportApplicationTemplateRevisionIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18538,10 +17049,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchApplicationAssessmentReport(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18553,12 +17061,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchFrameworks(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._FetchFrameworks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def generate_application_assessment_report(
@@ -18570,10 +17073,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateApplicationAssessmentReport(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18586,10 +17086,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateApplicationIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18602,10 +17099,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateApplicationTemplateAssessmentReport(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18618,10 +17112,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateApplicationTemplateIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18634,10 +17125,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateApplicationTemplateRevisionIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18650,10 +17138,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAssessmentReport(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18666,10 +17151,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateTerraformPlanAssessmentReport(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18680,12 +17162,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetApplication(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_application_template(
@@ -18697,10 +17174,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetApplicationTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18713,10 +17187,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetApplicationTemplateRevision(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18729,10 +17200,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetApplicationTemplateSystemRevision(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18743,12 +17211,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetCatalog(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_catalog_template(
@@ -18759,12 +17222,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetCatalogTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetCatalogTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_catalog_template_revision(
@@ -18776,10 +17234,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCatalogTemplateRevision(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18788,12 +17243,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.GetComponentRequest], authoring.Component]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetComponent(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetComponent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_connection(
@@ -18801,12 +17251,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.GetConnectionRequest], authoring.Connection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetConnection(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_policy(
@@ -18814,23 +17259,13 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[best_practices_messages.GetPolicyRequest], best_practices.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetPolicy(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_share(self) -> Callable[[sharing_messages.GetShareRequest], sharing.Share]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetShare(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_shared_template(
@@ -18838,12 +17273,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[sharing_messages.GetSharedTemplateRequest], sharing.SharedTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSharedTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetSharedTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_shared_template_revision(
@@ -18855,10 +17285,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSharedTemplateRevision(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18869,12 +17296,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSpace(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def import_application_ia_c(
@@ -18885,12 +17307,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportApplicationIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ImportApplicationIaC(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def import_application_template(
@@ -18902,10 +17319,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportApplicationTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18918,10 +17332,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportApplicationTemplateIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18934,10 +17345,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IngestApplicationTemplateIaC(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18949,12 +17357,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListApplications(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListApplications(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_application_template_revisions(
@@ -18966,10 +17369,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApplicationTemplateRevisions(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18982,10 +17382,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApplicationTemplates(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -18998,10 +17395,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApplicationTemplateSystemRevisions(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -19013,12 +17407,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListCatalogs(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListCatalogs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_catalog_template_revisions(
@@ -19030,10 +17419,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCatalogTemplateRevisions(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -19045,12 +17431,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListCatalogTemplates(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListCatalogTemplates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_components(
@@ -19061,12 +17442,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListComponents(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListComponents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_connections(
@@ -19077,12 +17453,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListConnections(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_policies(
@@ -19093,12 +17464,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPolicies(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_shared_template_revisions(
@@ -19110,10 +17476,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSharedTemplateRevisions(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -19125,12 +17488,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSharedTemplates(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListSharedTemplates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_shares(
@@ -19140,12 +17498,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListShares(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListShares(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_spaces(
@@ -19156,12 +17509,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSpaces(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListSpaces(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def preview_application(
@@ -19171,12 +17519,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PreviewApplication(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._PreviewApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def recommend_iam_roles(
@@ -19186,12 +17529,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RecommendIAMRoles(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._RecommendIAMRoles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def register_app_hub_application_resources(
@@ -19203,10 +17541,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RegisterAppHubApplicationResources(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -19219,10 +17554,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SnapshotApplicationTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -19231,12 +17563,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[sharing_messages.SyncShareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SyncShare(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._SyncShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_application(
@@ -19246,12 +17573,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateApplication(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._UpdateApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_application_template(
@@ -19263,10 +17585,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApplicationTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
+            self._session, self._host, self._interceptor
         )  # type: ignore
 
     @property
@@ -19277,12 +17596,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateCatalog(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._UpdateCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_catalog_template(
@@ -19293,12 +17607,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateCatalogTemplate(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._UpdateCatalogTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_component(
@@ -19306,12 +17615,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.UpdateComponentRequest], authoring.Component]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateComponent(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._UpdateComponent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_connection(
@@ -19319,12 +17623,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[authoring_messages.UpdateConnectionRequest], authoring.Connection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateConnection(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._UpdateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_policy(
@@ -19332,12 +17631,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ) -> Callable[[best_practices_messages.UpdatePolicyRequest], best_practices.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdatePolicy(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._UpdatePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_space(
@@ -19347,21 +17641,11 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateSpace(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._UpdateSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):
-        return self._GetLocation(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetLocation(
         _BaseDesignCenterRestTransport._BaseGetLocation, DesignCenterRestStub
@@ -19378,34 +17662,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -19482,8 +17750,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -19520,12 +17786,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def list_locations(self):
-        return self._ListLocations(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListLocations(
         _BaseDesignCenterRestTransport._BaseListLocations, DesignCenterRestStub
@@ -19542,34 +17803,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -19646,8 +17891,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -19684,12 +17927,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def get_iam_policy(self):
-        return self._GetIamPolicy(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetIamPolicy(
         _BaseDesignCenterRestTransport._BaseGetIamPolicy, DesignCenterRestStub
@@ -19706,34 +17944,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -19810,8 +18032,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -19848,12 +18068,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def set_iam_policy(self):
-        return self._SetIamPolicy(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     class _SetIamPolicy(
         _BaseDesignCenterRestTransport._BaseSetIamPolicy, DesignCenterRestStub
@@ -19870,35 +18085,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -19976,8 +18175,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -20014,12 +18211,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def test_iam_permissions(self):
-        return self._TestIamPermissions(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     class _TestIamPermissions(
         _BaseDesignCenterRestTransport._BaseTestIamPermissions, DesignCenterRestStub
@@ -20036,35 +18228,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -20142,8 +18318,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -20180,12 +18354,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _CancelOperation(
         _BaseDesignCenterRestTransport._BaseCancelOperation, DesignCenterRestStub
@@ -20202,35 +18371,19 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    data=body,
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -20307,8 +18460,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 timeout,
                 transcoded_request,
                 body,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -20320,12 +18471,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _DeleteOperation(
         _BaseDesignCenterRestTransport._BaseDeleteOperation, DesignCenterRestStub
@@ -20342,34 +18488,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -20445,8 +18575,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -20458,12 +18586,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetOperation(
         _BaseDesignCenterRestTransport._BaseGetOperation, DesignCenterRestStub
@@ -20480,34 +18603,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -20584,8 +18691,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -20622,12 +18727,7 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(
-            self._session,
-            self._host,
-            self._interceptor,
-            getattr(self, "_client_options", None),
-        )  # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListOperations(
         _BaseDesignCenterRestTransport._BaseListOperations, DesignCenterRestStub
@@ -20644,34 +18744,18 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
             timeout,
             transcoded_request,
             body=None,
-            client_options=None,
-            url_template=None,
         ):
-            """Execute the HTTP request over the transport session with
-            OpenTelemetry tracing and metadata propagation."""
-
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
-            url = "{host}{uri}".format(host=host, uri=uri)
-
-            with trace_http_request(
-                client_options=client_options,
-                method=method,
-                url=url,
-                url_template=url_template,
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
                 headers=headers,
-                body=body,
-            ) as trace_ctx:
-                response = getattr(session, method)(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-                trace_ctx.record_response(response)
-                return response
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -20748,8 +18832,6 @@ class DesignCenterRestTransport(_BaseDesignCenterRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                client_options=getattr(self, "_client_options", None),
-                url_template=http_options[0].get("uri") if http_options else None,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
