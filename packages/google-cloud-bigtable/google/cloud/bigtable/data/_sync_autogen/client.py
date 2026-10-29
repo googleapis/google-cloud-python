@@ -72,6 +72,7 @@ from google.cloud.bigtable.data._helpers import (
 from google.cloud.bigtable.data._metrics import (
     ActiveOperationMetric,
     BigtableClientSideMetricsController,
+    OperationState,
     OperationType,
 )
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
@@ -1536,28 +1537,43 @@ class _DataApiTarget(abc.ABC):
             if attempt_timeout is not None
             else operation_timeout
         )
-        row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
-            query,
-            self,
-            operation_timeout=operation_timeout,
-            attempt_timeout=attempt_timeout,
-            metric=ActiveOperationMetric(OperationType.READ_ROWS, is_streaming=False),
-            retryable_exceptions=(),
-        )
+        prev_op = ActiveOperationMetric._active_operation_context.get(None)
+        metric = self._create_operation(OperationType.READ_ROWS, is_streaming=False)
         try:
+            row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
+                query,
+                self,
+                operation_timeout=operation_timeout,
+                attempt_timeout=attempt_timeout,
+                metric=metric,
+                retryable_exceptions=(),
+            )
+            metric.start_attempt()
             stream = client.read_rows(row_merger.request, timeout=rpc_timeout)
             chunked_stream = row_merger.chunk_stream(stream)
             results = [a for a in row_merger.merge_rows(chunked_stream)]
+            if metric.state != OperationState.COMPLETED:
+                metric.end_with_success()
         except Exception as exc:
-            if getattr(self, "_closed", False):
-                raise Cancelled("Table is closed") from exc
-            handle_accelerator_error(
-                exc,
-                daemon=daemon,
-                breaker=self._accelerator_breaker,
-                operation_timeout=operation_timeout,
-            )
-            raise
+            try:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from exc
+                handle_accelerator_error(
+                    exc,
+                    daemon=daemon,
+                    breaker=self._accelerator_breaker,
+                    operation_timeout=operation_timeout,
+                )
+                raise
+            except Exception as translated_exc:
+                if (
+                    not isinstance(translated_exc, _AcceleratorFallback)
+                    and metric.state != OperationState.COMPLETED
+                ):
+                    metric.end_with_status(translated_exc)
+                raise
+        finally:
+            ActiveOperationMetric._active_operation_context.set(prev_op)
         try:
             return results[0]
         except IndexError:
@@ -1903,18 +1919,33 @@ class _DataApiTarget(abc.ABC):
             if attempt_timeout is not None
             else operation_timeout
         )
+        prev_op = ActiveOperationMetric._active_operation_context.get(None)
+        metric = self._create_operation(OperationType.MUTATE_ROW)
         try:
-            return client.mutate_row(request, timeout=rpc_timeout)
+            metric.start_attempt()
+            result = client.mutate_row(request, timeout=rpc_timeout)
+            metric.end_with_success()
+            return result
         except Exception as exc:
-            if getattr(self, "_closed", False):
-                raise Cancelled("Table is closed") from exc
-            handle_accelerator_error(
-                exc,
-                daemon=daemon,
-                breaker=self._accelerator_breaker,
-                operation_timeout=operation_timeout,
-            )
-            raise
+            try:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from exc
+                handle_accelerator_error(
+                    exc,
+                    daemon=daemon,
+                    breaker=self._accelerator_breaker,
+                    operation_timeout=operation_timeout,
+                )
+                raise
+            except Exception as translated_exc:
+                if (
+                    not isinstance(translated_exc, _AcceleratorFallback)
+                    and metric.state != OperationState.COMPLETED
+                ):
+                    metric.end_with_status(translated_exc)
+                raise
+        finally:
+            ActiveOperationMetric._active_operation_context.set(prev_op)
 
     def mutate_row(
         self,

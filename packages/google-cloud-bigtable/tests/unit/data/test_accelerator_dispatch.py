@@ -818,6 +818,34 @@ class TestAcceleratorDispatchFixes:
         with pytest.raises(core_exceptions.DeadlineExceeded, match="25.0s"):
             self._run(t._mutate_row_via_accelerator(MutateRowRequest(), 25.0, 5.0))
 
+    def test_metrics_recorded_and_contextvar_restored(self):
+        from google.cloud.bigtable.data._metrics import (
+            ActiveOperationMetric,
+            OperationType,
+        )
+        from google.cloud.bigtable_v2.types.bigtable import (
+            MutateRowRequest,
+            MutateRowResponse,
+        )
+
+        handler = mock.Mock()
+        t = _bare_target(
+            accel_client=mock.AsyncMock(
+                mutate_row=mock.AsyncMock(return_value=MutateRowResponse())
+            ),
+            accel_daemon=mock.Mock(is_running=True),
+        )
+        t.client._metrics.add_handler(handler)
+        outer_op = ActiveOperationMetric(OperationType.READ_ROWS, is_streaming=True)
+        try:
+            self._run(t._mutate_row_via_accelerator(MutateRowRequest(), 20.0, 5.0))
+            assert ActiveOperationMetric._active_operation_context.get(None) is outer_op
+            handler.on_operation_complete.assert_called_once()
+            completed_op = handler.on_operation_complete.call_args[0][0]
+            assert completed_op.final_status == StatusCode.OK
+        finally:
+            ActiveOperationMetric._active_operation_context.set(None)
+
 
 # ---------------------------------------------------------------------------
 # Event loop fixture so run_until_complete works
