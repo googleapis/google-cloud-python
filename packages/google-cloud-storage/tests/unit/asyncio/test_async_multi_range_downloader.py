@@ -23,7 +23,7 @@ from google.api_core import exceptions
 from google.rpc import error_details_pb2, status_pb2
 
 from google.cloud import _storage_v2
-from google.cloud.storage.asyncio import async_read_object_stream
+from google.cloud.storage.asyncio import _zero_copy_bidi_read, async_read_object_stream
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
@@ -34,6 +34,48 @@ _TEST_OBJECT_NAME = "test-object"
 _TEST_OBJECT_SIZE = 1024 * 1024  # 1 MiB
 _TEST_GENERATION_NUMBER = 123456789
 _TEST_READ_HANDLE = b"test-handle"
+
+
+def _accept_memoryview_in_crc32c(monkeypatch):
+    # Let the installed google-crc32c hash the zero-copy parser's views even if
+    # it predates memoryview support, so that is_supported() holds.
+    value, update = google_crc32c.value, google_crc32c.Checksum.update
+    monkeypatch.setattr(google_crc32c, "value", lambda data: value(bytes(data)))
+    monkeypatch.setattr(
+        google_crc32c.Checksum, "update", lambda self, data: update(self, bytes(data))
+    )
+
+
+def _zero_copy_response(content, offset, read_id, range_end, crc32c=None):
+    return _zero_copy_bidi_read.deserialize(
+        _storage_v2.BidiReadObjectResponse.serialize(
+            _storage_v2.BidiReadObjectResponse(
+                object_data_ranges=[
+                    _storage_v2.ObjectRangeData(
+                        checksummed_data=_storage_v2.ChecksummedData(
+                            content=content,
+                            crc32c=google_crc32c.value(content)
+                            if crc32c is None
+                            else crc32c,
+                        ),
+                        range_end=range_end,
+                        read_range=_storage_v2.ReadRange(
+                            read_offset=offset,
+                            read_length=len(content),
+                            read_id=read_id,
+                        ),
+                    )
+                ]
+            )
+        )
+    )
+
+
+@pytest.fixture(autouse=True)
+def _reprobe_crc32c_memoryview_support(monkeypatch):
+    # is_supported() caches its google_crc32c probe; tests below patch
+    # google_crc32c.value, so each test must probe afresh.
+    monkeypatch.setattr(_zero_copy_bidi_read, "_memoryview_supported", None)
 
 
 class TestAsyncMultiRangeDownloader:
@@ -84,7 +126,6 @@ class TestAsyncMultiRangeDownloader:
             object_name=_TEST_OBJECT_NAME,
             generation_number=_TEST_GENERATION_NUMBER,
             read_handle=_TEST_READ_HANDLE,
-            client_info=mock_client._client_info,
         )
 
         mrd.read_obj_str.open.assert_called_once()
@@ -107,22 +148,27 @@ class TestAsyncMultiRangeDownloader:
     )
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        "accepts_memoryview, expected_type", [(False, bytes), (True, memoryview)]
+        "zero_copy, accepts_memoryview, expected_type",
+        [
+            # A write() sink sees a memoryview only when the zero-copy parser
+            # is enabled (GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1) AND the
+            # caller opted in; the generated parser always yields bytes.
+            (True, True, memoryview),
+            (True, False, bytes),
+            (False, True, bytes),
+            (False, False, bytes),
+        ],
     )
     async def test_download_ranges_write_destination_chunk_type(
         self,
         mock_cls_async_read_object_stream,
         mock_random_int,
         monkeypatch,
+        zero_copy,
         accepts_memoryview,
         expected_type,
     ):
-        from google.cloud.storage.asyncio import _zero_copy_bidi_read
-
-        orig_crc32c = google_crc32c.value
-        monkeypatch.setattr(
-            google_crc32c, "value", lambda data: orig_crc32c(bytes(data))
-        )
+        _accept_memoryview_in_crc32c(monkeypatch)
         data = b"these_are_18_chars"
         crc32c_int = google_crc32c.value(data)
 
@@ -144,13 +190,16 @@ class TestAsyncMultiRangeDownloader:
                 ]
             )
         )
-        zero_copy_resp = _zero_copy_bidi_read.deserialize(wire)
-        assert isinstance(
-            zero_copy_resp.object_data_ranges[0].checksummed_data.content, memoryview
-        )
+        if zero_copy:
+            resp = _zero_copy_bidi_read.deserialize(wire)
+            assert isinstance(
+                resp.object_data_ranges[0].checksummed_data.content, memoryview
+            )
+        else:
+            resp = _storage_v2.BidiReadObjectResponse.deserialize(wire)
 
         mock_mrd.read_obj_str.send = AsyncMock()
-        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[zero_copy_resp, None])
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[resp, None])
 
         seen_types = []
 
@@ -183,10 +232,7 @@ class TestAsyncMultiRangeDownloader:
     ):
         from google.cloud.storage.asyncio import _zero_copy_bidi_read
 
-        orig_crc32c = google_crc32c.value
-        monkeypatch.setattr(
-            google_crc32c, "value", lambda data: orig_crc32c(bytes(data))
-        )
+        _accept_memoryview_in_crc32c(monkeypatch)
         data = b"these_are_18_chars"
         crc1 = google_crc32c.value(data[:10])
         crc2 = google_crc32c.value(data[10:])
@@ -260,6 +306,253 @@ class TestAsyncMultiRangeDownloader:
         mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
         with pytest.raises(ValueError, match=match):
             await mock_mrd.download_ranges([(0, length, buf)])
+
+    def test_buffer_destination_rejects_chunk_past_bytes_to_read(self):
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            _BufferWriter,
+        )
+
+        # A buffer may be larger than bytes_to_read; bytes past the range are
+        # never written, even if a chunk runs past it.
+        buffer = bytearray(b"." * 8)
+        writer = _BufferWriter(buffer, 4)
+        writer.write(b"ab")
+        with pytest.raises(ValueError):
+            writer.write(b"cde")
+        assert bytes(buffer) == b"ab......"
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("initial", [b"\0" * 10, b"B" * 20])
+    async def test_download_ranges_rejects_chunk_past_bytes_to_read(
+        self,
+        mock_cls_async_read_object_stream,
+        mock_random_int,
+        monkeypatch,
+        initial,
+    ):
+        # The server sends 12 bytes for a 10-byte range, in a message that is
+        # not the range's last one.
+        _accept_memoryview_in_crc32c(monkeypatch)
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456]
+        response = _zero_copy_response(b"A" * 12, 0, 456, False)
+        assert isinstance(
+            response.object_data_ranges[0].checksummed_data.content, memoryview
+        )
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.close = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[response, None])
+        buffer = bytearray(initial)
+
+        with pytest.raises(DataCorruption, match="Byte count mismatch"):
+            await mock_mrd.download_ranges([(0, 10, buffer)])
+
+        assert bytes(buffer) == initial
+        assert not mock_mrd.is_stream_open
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_releases_buffer_when_a_later_range_is_invalid(
+        self, mock_cls_async_read_object_stream
+    ):
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        buffer = bytearray(4)
+
+        with pytest.raises(ValueError) as exc_info:
+            await mock_mrd.download_ranges([(0, 4, buffer), (0, 0, bytearray(4))])
+        # exc_info.tb still references download_ranges' frame here.
+        assert exc_info.tb is not None
+        buffer.clear()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_checksum_mismatch_into_buffer(
+        self, mock_cls_async_read_object_stream, mock_random_int, monkeypatch
+    ):
+        _accept_memoryview_in_crc32c(monkeypatch)
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456]
+        response = _zero_copy_response(b"x" * 18, 0, 456, True, crc32c=12345)
+        assert isinstance(
+            response.object_data_ranges[0].checksummed_data.content, memoryview
+        )
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.close = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[response, None])
+        buffer = bytearray(18)
+
+        with pytest.raises(DataCorruption) as exc_info:
+            await mock_mrd.download_ranges([(0, 18, buffer)])
+        assert bytes(buffer) == bytes(18)
+        assert not mock_mrd.is_stream_open
+        # exc_info.tb still references download_ranges' frame here.
+        assert exc_info.tb is not None
+        buffer.clear()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_resumes_into_buffer_after_retry(
+        self, mock_cls_async_read_object_stream, mock_random_int, monkeypatch
+    ):
+        _accept_memoryview_in_crc32c(monkeypatch)
+        data = b"these_are_18_chars"
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.return_value = 456
+
+        first_chunk = _zero_copy_response(data[:10], 0, 456, False)
+        second_chunk = _zero_copy_response(data[10:], 10, 456, True)
+        assert isinstance(
+            first_chunk.object_data_ranges[0].checksummed_data.content, memoryview
+        )
+        assert isinstance(
+            second_chunk.object_data_ranges[0].checksummed_data.content, memoryview
+        )
+
+        first_stream = mock_mrd.read_obj_str
+        first_stream.send = AsyncMock()
+        first_stream.close = AsyncMock()
+        first_stream.is_stream_open = True
+        first_stream.recv = AsyncMock(
+            side_effect=[
+                first_chunk,
+                exceptions.Aborted("Idle stream has been closed."),
+            ]
+        )
+        second_stream = mock.MagicMock()
+        second_stream.open = AsyncMock()
+        second_stream.send = AsyncMock()
+        second_stream.close = AsyncMock()
+        second_stream.recv = AsyncMock(side_effect=[second_chunk])
+        mock_cls_async_read_object_stream.side_effect = [second_stream]
+        buffer = bytearray(18)
+
+        await mock_mrd.download_ranges([(0, 18, buffer)])
+
+        assert bytes(buffer) == data
+        second_stream.open.assert_awaited_once()
+        second_stream.send.assert_awaited_once_with(
+            _storage_v2.BidiReadObjectRequest(
+                read_ranges=[
+                    _storage_v2.ReadRange(read_offset=10, read_length=8, read_id=456)
+                ]
+            )
+        )
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "length, make_destination",
+        [(0, BytesIO), (18, lambda: bytearray(18))],
+    )
+    async def test_download_ranges_full_object_read_of_zero_copy_chunks(
+        self,
+        mock_cls_async_read_object_stream,
+        mock_random_int,
+        monkeypatch,
+        length,
+        make_destination,
+    ):
+        # Full-object reads also feed every chunk to Checksum.update.
+        _accept_memoryview_in_crc32c(monkeypatch)
+        destination = make_destination()
+        data = b"these_are_18_chars"
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_mrd.persisted_size = len(data)
+        mock_mrd.full_obj_server_crc32c = google_crc32c.value(data)
+        mock_random_int.side_effect = [456]
+        response = _zero_copy_response(data, 0, 456, True)
+        assert isinstance(
+            response.object_data_ranges[0].checksummed_data.content, memoryview
+        )
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[response, None])
+
+        await mock_mrd.download_ranges([(0, length, destination)], enable_checksum=True)
+
+        written = (
+            destination.getvalue()
+            if isinstance(destination, BytesIO)
+            else bytes(destination)
+        )
+        assert written == data
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_verifies_parser_output_with_installed_crc32c(
+        self, mock_cls_async_read_object_stream, mock_random_int
+    ):
+        # Deliberately no monkeypatch of google_crc32c or is_supported: the
+        # chunks the parser hands out (memoryview or bytes, depending on the
+        # installed google-crc32c) must verify as-is, including the content-less
+        # final message of a range that ends on a chunk boundary.
+        from google.cloud.storage.asyncio import _zero_copy_bidi_read
+
+        data = b"these_are_18_chars"
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456, 789]
+
+        def response(content, offset, range_end):
+            return _zero_copy_bidi_read.deserialize(
+                _storage_v2.BidiReadObjectResponse.serialize(
+                    _storage_v2.BidiReadObjectResponse(
+                        object_data_ranges=[
+                            _storage_v2.ObjectRangeData(
+                                checksummed_data=_storage_v2.ChecksummedData(
+                                    content=content,
+                                    crc32c=google_crc32c.value(content),
+                                ),
+                                range_end=range_end,
+                                read_range=_storage_v2.ReadRange(
+                                    read_offset=offset,
+                                    read_length=len(content),
+                                    read_id=read_id,
+                                ),
+                            )
+                            for read_id in (456, 789)
+                        ]
+                    )
+                )
+            )
+
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(
+            side_effect=[response(data, 0, False), response(b"", 18, True), None]
+        )
+
+        sink = BytesIO()
+        raw = bytearray(18)
+        await mock_mrd.download_ranges([(0, 18, sink), (0, 18, raw)])
+
+        assert sink.getvalue() == data
+        assert bytes(raw) == data
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"

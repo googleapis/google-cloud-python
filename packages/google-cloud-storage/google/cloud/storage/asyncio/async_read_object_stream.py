@@ -59,7 +59,6 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         object_name: str,
         generation_number: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
-        client_info=None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -79,7 +78,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
         transport = self.client._client._transport
-        self.rpc = _zero_copy_bidi_read.wrapped_rpc(transport, client_info)
+        self.rpc = _zero_copy_bidi_read.wrapped_rpc(transport)
         if self.rpc is None:
             self.rpc = transport._wrapped_methods[transport.bidi_read_object]
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)

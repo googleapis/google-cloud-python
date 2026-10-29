@@ -91,7 +91,6 @@ class AsyncGrpcClient:
         agent_version = f"gcloud-python/{__version__}"
         if agent_version not in client_info.user_agent:
             client_info.user_agent += f" {agent_version} "
-        self._client_info = client_info
 
         self._grpc_client = self._create_async_grpc_client(
             credentials=credentials,

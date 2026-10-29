@@ -34,7 +34,6 @@ import os
 import weakref
 
 import google_crc32c
-from google.api_core import gapic_v1
 from google.protobuf.message import DecodeError
 
 from google.cloud import _storage_v2
@@ -45,10 +44,10 @@ from google.cloud._storage_v2.services.storage.transports.grpc_asyncio import (
     StorageGrpcAsyncIOTransport,
 )
 
-# Set ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=0`` (or ``false``, ``no``, ``off``)
-# to disable the wire parser and use the generated parser instead.
+# Off by default; set ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1`` (or ``true``,
+# ``yes``, ``on``) to use the wire parser instead of the generated one.
 _ENV_VAR = "GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ"
-_DISABLED_VALUES = ("0", "false", "no", "off")
+_ENABLED_VALUES = ("1", "true", "yes", "on")
 
 # Protobuf wire types (low 3 bits of a field tag): varint, 8-byte fixed,
 # length-delimited, 4-byte fixed. Groups (3, 4) are left to the generated parser.
@@ -67,8 +66,13 @@ class _ChecksummedData:
         self.crc32c = 0
         self._has_crc32c = False
 
+    @property
+    def _pb(self):
+        return self
+
     def HasField(self, name):
-        if name == "crc32c":
+        # "_crc32c" is the synthetic oneof of the proto3 ``optional`` field.
+        if name in ("crc32c", "_crc32c"):
             return self._has_crc32c
         raise ValueError(f"Unknown field {name!r}")
 
@@ -88,6 +92,10 @@ class _ObjectRangeData:
         self.range_end = False
         self._has_checksummed_data = False
         self._has_read_range = False
+
+    @property
+    def _pb(self):
+        return self
 
     def HasField(self, name):
         if name == "checksummed_data":
@@ -170,8 +178,14 @@ def _tag(buf, i, end):
 
 
 def _length_prefixed(buf, i, end):
-    """Return ``(start, stop)`` of the length-delimited field body at ``i``."""
+    """Return ``(start, stop)`` of the length-delimited field body at ``i``.
+
+    upb rejects lengths encoded in more than five bytes.
+    """
+    start = i
     n, i = _varint(buf, i, end)
+    if i - start > 5:
+        raise _Malformed("field length longer than five bytes")
     stop = i + n
     if stop > end:
         raise _Malformed("field runs past its enclosing message")
@@ -276,43 +290,55 @@ def deserialize(buf):
         return _generated_deserialize(buf)
 
 
+_memoryview_supported = None
+
+
 def is_supported():
     """Whether the installed ``google_crc32c`` can hash ``memoryview`` inputs.
 
     When true, :func:`deserialize` exposes chunk payloads as ``memoryview``
     slices of the gRPC wire buffer; when false, it slices ``bytes`` instead so
     checksum verification remains compatible with older ``google_crc32c``
-    releases while still avoiding the intermediate upb arena copy.
+    releases while still avoiding the intermediate upb arena copy. Both
+    ``value`` and ``Checksum.update`` (used by full-object reads) must accept
+    a ``memoryview``. The probe runs once per process.
     """
-    try:
-        google_crc32c.value(memoryview(b"\0"))
-    except Exception:
-        return False
-    return True
+    global _memoryview_supported
+    if _memoryview_supported is None:
+        probe = memoryview(b"\0")
+        try:
+            google_crc32c.value(probe)
+            google_crc32c.Checksum().update(probe)
+        except Exception:
+            _memoryview_supported = False
+        else:
+            _memoryview_supported = True
+    return _memoryview_supported
 
 
 def is_enabled():
     """Whether a stream should use the zero-copy parser.
 
-    Enabled by default; set ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=0``
-    (or ``false``, ``no``, ``off``) to keep the generated parser.
+    Off by default; set ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1`` (or
+    ``true``, ``yes``, ``on``) to turn it on.
     """
-    return os.environ.get(_ENV_VAR, "").strip().lower() not in _DISABLED_VALUES
+    return os.environ.get(_ENV_VAR, "").strip().lower() in _ENABLED_VALUES
 
 
 _rpcs = weakref.WeakKeyDictionary()
 
 
-def wrapped_rpc(transport, client_info=None):
+def wrapped_rpc(transport):
     """Return the zero-copy ``BidiReadObject`` callable for ``transport``.
 
     The callable is the generated transport's stub with :func:`deserialize`
-    swapped in, wrapped exactly like ``transport._wrapped_methods`` entries
-    (error mapping, no default retry or timeout, the ``x-goog-api-client``
-    header from ``client_info``, the transport's own by default). Returns
-    ``None`` when :func:`is_enabled` is false or ``transport`` is not the
-    generated grpc_asyncio transport, in which case callers should use the
-    generated wrapped method.
+    swapped in, wrapped like the transport's own ``bidi_read_object`` entry:
+    error mapping, no default retry or timeout, and the default
+    ``x-goog-api-client`` header, which is what transports built by
+    ``AsyncGrpcClient`` send on every RPC. Returns ``None`` when
+    :func:`is_enabled` is false or ``transport`` is not the generated
+    grpc_asyncio transport, in which case callers should use the generated
+    wrapped method.
     """
     if not isinstance(transport, StorageGrpcAsyncIOTransport) or not is_enabled():
         return None
@@ -323,10 +349,8 @@ def wrapped_rpc(transport, client_info=None):
             request_serializer=_storage_v2.BidiReadObjectRequest.serialize,
             response_deserializer=deserialize,
         )
-        if not hasattr(client_info, "to_grpc_metadata"):
-            client_info = DEFAULT_CLIENT_INFO
-        rpc = gapic_v1.method_async.wrap_method(
-            stub, default_timeout=None, client_info=client_info
+        rpc = transport._wrap_method(
+            stub, default_timeout=None, client_info=DEFAULT_CLIENT_INFO
         )
         _rpcs[transport] = rpc
     return rpc

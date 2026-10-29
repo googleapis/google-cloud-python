@@ -16,8 +16,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from io import BytesIO
-from typing import Any, Dict, List, Optional, Tuple
+from typing import IO, Any, Dict, List, Optional, Tuple, Union
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
@@ -99,19 +98,20 @@ class _BufferWriter:
         if length <= 0:
             raise ValueError("A writable buffer destination requires bytes_to_read > 0")
         view = memoryview(buffer)
-        if view.readonly or not view.c_contiguous:
+        try:
+            if view.readonly or not view.c_contiguous:
+                raise ValueError(
+                    "Buffer destination must be a writable, C-contiguous buffer"
+                )
+            nbytes = view.nbytes
+            if nbytes < length:
+                raise ValueError(
+                    f"Buffer destination ({nbytes} bytes) is smaller than "
+                    f"bytes_to_read ({length})"
+                )
+            self._view = view.cast("B")[:length]
+        finally:
             view.release()
-            raise ValueError(
-                "Buffer destination must be a writable, C-contiguous buffer"
-            )
-        nbytes = view.nbytes
-        if nbytes < length:
-            view.release()
-            raise ValueError(
-                f"Buffer destination ({nbytes} bytes) is smaller than "
-                f"bytes_to_read ({length})"
-            )
-        self._view = view.cast("B")
         self._pos = 0
 
     def write(self, data):
@@ -120,6 +120,10 @@ class _BufferWriter:
         self._view[self._pos : end] = data
         self._pos = end
         return n
+
+    def close(self):
+        # Lets the caller resize the buffer again.
+        self._view.release()
 
 
 def _wrap_user_buffer(user_buffer, length: int, accepts_memoryview: bool = False):
@@ -342,7 +346,6 @@ class AsyncMultiRangeDownloader:
                 object_name=self.object_name,
                 generation_number=self.generation,
                 read_handle=self.read_handle,
-                client_info=getattr(self.client, "_client_info", None),
             )
 
             if self._routing_token:
@@ -382,7 +385,6 @@ class AsyncMultiRangeDownloader:
                 object_name=self.object_name,
                 generation_number=self.generation,
                 read_handle=current_handle,
-                client_info=getattr(self.client, "_client_info", None),
             )
 
             current_metadata = list(metadata) if metadata else []
@@ -412,8 +414,8 @@ class AsyncMultiRangeDownloader:
 
     async def download_ranges(
         self,
-        read_ranges: List[Tuple[int, int, BytesIO]],
-        lock: asyncio.Lock = None,
+        read_ranges: List[Tuple[int, int, Union[IO[bytes], bytearray, memoryview]]],
+        lock: Optional[asyncio.Lock] = None,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
         enable_checksum: bool = True,
@@ -422,7 +424,7 @@ class AsyncMultiRangeDownloader:
         """Downloads multiple byte ranges from the object into the buffers
         provided by user with automatic retries.
 
-        :type read_ranges: List[Tuple[int, int, "BytesIO"]]
+        :type read_ranges: List[Tuple[int, int, Union[IO[bytes], bytearray, memoryview]]]
         :param read_ranges: A list of tuples, where each tuple represents a
             combination of byte_range and writeable buffer in format -
             (`start_byte`, `bytes_to_read`, `writeable_buffer`). Buffer has
@@ -437,8 +439,10 @@ class AsyncMultiRangeDownloader:
             buffer supporting the buffer protocol (e.g. :class:`bytearray`
             or a writable :class:`memoryview` slice) of at least
             ``bytes_to_read`` bytes (with ``bytes_to_read > 0``), and the SDK
-            copies each chunk directly into it in place from the gRPC
-            response buffer without an intermediate ``bytes`` allocation.
+            copies each chunk directly into it in place (straight from the
+            gRPC response buffer, without an intermediate ``bytes``, when the
+            zero-copy parser is enabled with
+            ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1``).
 
             Special cases:
             if the value of `bytes_to_read` is 0, it'll be interpreted as
@@ -448,7 +452,7 @@ class AsyncMultiRangeDownloader:
                 * (0, 0, buffer) : downloads 0 to end , i.e. entire object.
                 * (100, 0, buffer) : downloads from 100 to end.
 
-        :type lock: asyncio.Lock
+        :type lock: Optional[asyncio.Lock]
         :param lock: (Deprecated) This parameter is deprecated and has no effect.
 
         :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
@@ -463,12 +467,14 @@ class AsyncMultiRangeDownloader:
         :type accepts_memoryview: bool
         :param accepts_memoryview: (Optional) If True, ``write()`` destinations
             may receive each chunk as a read-only :class:`memoryview` of the
-            received gRPC message instead of ``bytes``. The SDK drops its
-            reference after ``write()`` returns; the message (the chunk plus
-            a few bytes of framing) is freed when the destination drops the
-            view. Destinations must still accept ``bytes``, which the generated
-            parser produces. No effect on buffer destinations. Defaults to
-            False.
+            received gRPC message instead of ``bytes`` (only when the zero-copy
+            parser is enabled with ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1``).
+            The view keeps that message (the chunk plus a few bytes of
+            framing) alive while the destination or the SDK's most recently
+            processed response references it; use ``bytes(data)`` to keep the
+            data without the message. Destinations must still accept
+            ``bytes``, which the generated parser produces. No effect on
+            buffer destinations. Defaults to False.
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
@@ -492,38 +498,41 @@ class AsyncMultiRangeDownloader:
 
         # Initialize Global State for Retry Strategy
         download_states = {}
-        for read_range in read_ranges:
-            read_id = generate_random_56_bit_integer()
-            # Unpack tuple into self-documenting variable names to improve readability.
-            offset, length, user_buffer = read_range
-
-            # Heuristic to detect full object reads:
-            # - Implicit full object read: start offset is 0 and length is 0 (read all).
-            # - Explicit full object read: start offset is 0 and length matches the exact persisted size.
-            is_full_object_read = (offset == 0 and length == 0) or (
-                self.persisted_size is not None
-                and offset == 0
-                and length == self.persisted_size
-            )
-            download_states[read_id] = _DownloadState(
-                initial_offset=offset,
-                initial_length=length,
-                user_buffer=_wrap_user_buffer(user_buffer, length, accepts_memoryview),
-                is_full_object_read=is_full_object_read,
-            )
-
-        initial_state = {
-            "download_states": download_states,
-            "read_handle": self.read_handle,
-            "routing_token": None,
-            "enable_checksum": enable_checksum,
-            "full_obj_server_crc32c": self.full_obj_server_crc32c,
-        }
-
-        read_ids = set(download_states.keys())
-        queue = self._multiplexer.register(read_ids)
-
+        read_ids = set()
         try:
+            for read_range in read_ranges:
+                read_id = generate_random_56_bit_integer()
+                # Unpack tuple into self-documenting variable names to improve readability.
+                offset, length, user_buffer = read_range
+
+                # Heuristic to detect full object reads:
+                # - Implicit full object read: start offset is 0 and length is 0 (read all).
+                # - Explicit full object read: start offset is 0 and length matches the exact persisted size.
+                is_full_object_read = (offset == 0 and length == 0) or (
+                    self.persisted_size is not None
+                    and offset == 0
+                    and length == self.persisted_size
+                )
+                download_states[read_id] = _DownloadState(
+                    initial_offset=offset,
+                    initial_length=length,
+                    user_buffer=_wrap_user_buffer(
+                        user_buffer, length, accepts_memoryview
+                    ),
+                    is_full_object_read=is_full_object_read,
+                )
+
+            initial_state = {
+                "download_states": download_states,
+                "read_handle": self.read_handle,
+                "routing_token": None,
+                "enable_checksum": enable_checksum,
+                "full_obj_server_crc32c": self.full_obj_server_crc32c,
+            }
+
+            read_ids = set(download_states.keys())
+            queue = self._multiplexer.register(read_ids)
+
             attempt_count = 0
             last_broken_generation = None
 
@@ -617,6 +626,9 @@ class AsyncMultiRangeDownloader:
         finally:
             if self._multiplexer is not None:
                 self._multiplexer.unregister(read_ids)
+            for download_state in download_states.values():
+                if isinstance(download_state.user_buffer, _BufferWriter):
+                    download_state.user_buffer.close()
 
     async def close(self):
         """
