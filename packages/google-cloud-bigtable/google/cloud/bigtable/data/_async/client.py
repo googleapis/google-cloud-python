@@ -17,11 +17,13 @@ from __future__ import annotations
 
 import abc
 import concurrent.futures
+import inspect
 import logging
 import os
 import random
 import time
 import warnings
+import weakref
 from functools import partial
 from typing import (
     TYPE_CHECKING,
@@ -219,6 +221,54 @@ def _normalize_scopes(scopes: Any) -> frozenset[str]:
     if isinstance(scopes, str):
         scopes = scopes.replace(",", " ").split()
     return frozenset(s.strip() for s in scopes if isinstance(s, str) and s.strip())
+
+
+def _call_sync_quietly(obj: Any, attr: str = "close") -> bool:
+    fn = getattr(obj, attr, None)
+    if callable(fn) and not inspect.iscoroutinefunction(fn):
+        try:
+            fn()
+            return True
+        except Exception:
+            pass
+    return False
+
+
+def _finalize_target(
+    client_ref: Callable[[], Any],
+    instance_id: str,
+    app_profile_id: str | None,
+    owner_id: int,
+    accel_key: tuple[str | None, str, str | None],
+    daemon: Any,
+    accel_client: Any,
+    health: Any,
+) -> None:
+    """weakref.finalize callback for unclosed _DataApiTarget instances."""
+    client = client_ref()
+    should_close_accel = True
+    if client is not None:
+        try:
+            client._remove_instance_registration(instance_id, app_profile_id, owner_id)
+        except Exception:
+            pass
+        pool = getattr(client, "_accelerator_pool", None)
+        owners = (
+            pool.get(accel_key, {}).get("owners") if isinstance(pool, dict) else None
+        )
+        if isinstance(owners, set):
+            owners.discard(owner_id)
+            should_close_accel = not bool(owners)
+            if should_close_accel:
+                pool.pop(accel_key, None)
+    if should_close_accel:
+        _call_sync_quietly(health, "request_stop")
+        _call_sync_quietly(health, "close")
+        ch = getattr(accel_client, "_channel", None)
+        for target in (accel_client, ch, getattr(ch, "_channel", None)):
+            if _call_sync_quietly(target, "close"):
+                break
+        _call_sync_quietly(daemon, "close")
 
 
 @CrossSync.convert_class(
@@ -1435,6 +1485,22 @@ class _DataApiTargetAsync(abc.ABC):
             raise RuntimeError(
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
+        self._finalizer = weakref.finalize(
+            self,
+            _finalize_target,
+            weakref.ref(self.client),
+            self.instance_id,
+            self.app_profile_id,
+            id(self),
+            (
+                getattr(self.client, "project", None),
+                self.instance_id,
+                self.app_profile_id,
+            ),
+            self._accelerator_daemon,
+            self._accelerator_client,
+            self._accelerator_health,
+        )
 
     def _maybe_start_accelerator(self, *, explicit: bool) -> None:
         """Start the accelerator daemon unless the environment prevents it.
@@ -2511,6 +2577,9 @@ class _DataApiTargetAsync(abc.ABC):
         Called to close the Table instance and release any resources held by it.
         """
         self._closed = True
+        finalizer = getattr(self, "_finalizer", None)
+        if finalizer is not None:
+            finalizer.detach()
         should_close_accel = True
         pool = getattr(self.client, "_accelerator_pool", None)
         accel_key = (
@@ -2578,7 +2647,10 @@ class _DataApiTargetAsync(abc.ABC):
         grpc channels will be warmed for the specified instance
         """
         if self._register_instance_future:
-            await self._register_instance_future
+            if CrossSync.is_async:
+                await self._register_instance_future
+            else:
+                self._register_instance_future.result()
         return self
 
     @CrossSync.convert(sync_name="__exit__")

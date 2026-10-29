@@ -345,3 +345,89 @@ class TestMaybeStartAccelerator:
         t3.close()
         assert daemons[1].close.call_count == 1
         client.close()
+
+    def test_sync_enter_waits_for_register_instance_future(self):
+        """Sync _DataApiTarget.__enter__ must call .result() on _register_instance_future."""
+        from google.cloud.bigtable.data._sync_autogen.client import _DataApiTarget
+
+        class _SyncTarget(_DataApiTarget):
+            @property
+            def _request_path(self):
+                return {}
+
+        t = object.__new__(_SyncTarget)
+        t._register_instance_future = unittest.mock.MagicMock()
+        assert t.__enter__() is t
+        t._register_instance_future.result.assert_called_once_with()
+
+    def test_unclosed_table_gc_cleans_up(self, monkeypatch):
+        """Dropping an unclosed Table cleans up its daemon and instance owners via GC."""
+        import gc
+
+        import google.auth.credentials
+
+        import google.cloud.bigtable.data._sync_autogen.client as _sync_mod
+
+        daemon = unittest.mock.MagicMock(uds_path="/tmp/fake.sock", auth_secret="s")
+        monkeypatch.setattr(
+            _sync_mod.BigtableDataClient,
+            "_start_background_channel_refresh",
+            lambda s: None,
+        )
+        monkeypatch.setattr(_sync_mod, "AcceleratorDaemon", lambda **_: daemon)
+        monkeypatch.setattr(
+            _sync_mod, "AcceleratorClientType", lambda *_: unittest.mock.MagicMock()
+        )
+        monkeypatch.setattr(
+            _sync_mod,
+            "AcceleratorHealthMonitorType",
+            lambda *_: unittest.mock.MagicMock(),
+        )
+        monkeypatch.setattr(
+            _sync_mod._DataApiTarget, "_verify_daemon_identity", lambda s, srv: None
+        )
+
+        client = _sync_mod.BigtableDataClient(
+            project="proj",
+            credentials=google.auth.credentials.AnonymousCredentials(),
+            use_accelerator=True,
+        )
+        client._accelerator_blocked_reason = None
+
+        t1 = client.get_table("inst", "tbl-1")
+        t2 = client.get_table("inst", "tbl-2")
+        health = t1._accelerator_health
+        t1._register_instance_future.result()
+        t2._register_instance_future.result()
+        del t1
+        gc.collect()
+        assert daemon.close.call_count == 0
+        assert health.request_stop.call_count == 0
+        del t2
+        gc.collect()
+        assert daemon.close.call_count == 1
+        assert health.request_stop.call_count == 1
+        assert sum(len(v) for v in client._instance_owners.values()) == 0
+        assert len(client._active_instances) == 0
+        client.close()
+
+    def test_finalize_target_closes_async_channel_synchronously(self):
+        """_finalize_target closes an async gRPC channel via its synchronous _channel."""
+        from google.cloud.bigtable.data._async.client import _finalize_target
+
+        cy_ch = unittest.mock.MagicMock()
+        aio_ch = SimpleNamespace(close=unittest.mock.AsyncMock(), _channel=cy_ch)
+        accel_client = SimpleNamespace(close=unittest.mock.AsyncMock(), _channel=aio_ch)
+        daemon = unittest.mock.MagicMock()
+        _finalize_target(
+            lambda: None,
+            "inst",
+            None,
+            1,
+            ("proj", "inst", None),
+            daemon,
+            accel_client,
+            None,
+        )
+        cy_ch.close.assert_called_once()
+        daemon.close.assert_called_once()
