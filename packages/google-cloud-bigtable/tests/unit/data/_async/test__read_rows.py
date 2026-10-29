@@ -391,3 +391,67 @@ class TestReadRowsOperationAsync:
         with pytest.raises(InvalidChunk) as exc:
             await stream.__anext__()
         assert "row keys should be strictly increasing" in str(exc.value)
+
+    @CrossSync.pytest
+    @CrossSync.convert(replace_symbols={"__anext__": "__next__"})
+    async def test_merge_rows_empty_family_name(self):
+        from google.protobuf import wrappers_pb2
+
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable_v2.types import ReadRowsResponse
+
+        async def chunk_gen():
+            yield ReadRowsResponse.CellChunk(
+                row_key=b"r1",
+                family_name=wrappers_pb2.StringValue(value="cf1"),
+                qualifier=wrappers_pb2.BytesValue(value=b"q1"),
+                timestamp_micros=100,
+                value=b"v1",
+                commit_row=False,
+            )._pb
+            yield ReadRowsResponse.CellChunk(
+                family_name=wrappers_pb2.StringValue(value=""),
+                qualifier=wrappers_pb2.BytesValue(value=b"q2"),
+                timestamp_micros=200,
+                value=b"v2",
+                commit_row=True,
+            )._pb
+
+        table = mock.Mock()
+        table._request_path = {"table_name": "t"}
+        table.app_profile_id = None
+        instance = self._make_one(
+            ReadRowsQuery(), table, 10, 10, ActiveOperationMetric("READ_ROWS")
+        )
+        rows = [r async for r in instance.merge_rows(chunk_gen())]
+        assert len(rows) == 1
+        assert rows[0].cells[0].family == "cf1"
+        assert rows[0].cells[1].family == ""
+
+    @CrossSync.pytest
+    async def test_chunk_stream_accepts_direct_async_iterable(self):
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable_v2.types import ReadRowsResponse
+
+        async def direct_stream():
+            yield ReadRowsResponse(
+                chunks=[
+                    ReadRowsResponse.CellChunk(
+                        row_key=b"r1",
+                        family_name="cf1",
+                        qualifier=b"q1",
+                        value=b"v1",
+                        commit_row=True,
+                    )
+                ]
+            )
+
+        table = mock.Mock()
+        table._request_path = {"table_name": "t"}
+        table.app_profile_id = None
+        instance = self._make_one(
+            ReadRowsQuery(), table, 10, 10, ActiveOperationMetric("READ_ROWS")
+        )
+        chunks = [c async for c in instance.chunk_stream(direct_stream())]
+        assert len(chunks) == 1
+        assert chunks[0].row_key == b"r1"

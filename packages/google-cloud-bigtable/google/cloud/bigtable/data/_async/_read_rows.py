@@ -15,6 +15,7 @@
 
 from __future__ import annotations
 
+import inspect
 import time
 from typing import TYPE_CHECKING, Sequence
 
@@ -25,6 +26,7 @@ from google.cloud.bigtable.data._helpers import (
     _attempt_timeout_generator,
     _rst_stream_aware_predicate,
 )
+from google.cloud.bigtable.data._metrics.data_model import OperationState
 from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 from google.cloud.bigtable.data.exceptions import (
     InvalidChunk,
@@ -176,9 +178,10 @@ class _ReadRowsOperationAsync:
         Yields:
             ReadRowsResponsePB.CellChunk: the next chunk in the stream
         """
-        async for resp in await stream:
+        resolved_stream = await stream if inspect.isawaitable(stream) else stream
+        async for resp in resolved_stream:
             # extract proto from proto-plus wrapper
-            resp = resp._pb
+            resp = resp._pb if hasattr(resp, "_pb") else resp
 
             # handle last_scanned_row_key packets, sent when server
             # has scanned past the end of the row range
@@ -232,7 +235,12 @@ class _ReadRowsOperationAsync:
         """
         try:
             if chunks is None:
-                self._operation_metric.end_with_success()
+                if (
+                    self._operation_metric is not None
+                    and getattr(self._operation_metric, "state", None)
+                    != OperationState.COMPLETED
+                ):
+                    self._operation_metric.end_with_success()
                 return
             it = chunks.__aiter__()
             # For each row
@@ -241,7 +249,12 @@ class _ReadRowsOperationAsync:
                     c = await it.__anext__()
                 except CrossSync.StopIteration:
                     # stream complete
-                    self._operation_metric.end_with_success()
+                    if (
+                        self._operation_metric is not None
+                        and getattr(self._operation_metric, "state", None)
+                        != OperationState.COMPLETED
+                    ):
+                        self._operation_metric.end_with_success()
                     return
                 row_key = c.row_key
 
@@ -260,11 +273,11 @@ class _ReadRowsOperationAsync:
                         if c.reset_row:
                             raise _ResetRow(c)
                         k = c.row_key
-                        f = c.family_name.value
+                        f = c.family_name.value if c.HasField("family_name") else None
                         q = c.qualifier.value if c.HasField("qualifier") else None
                         if k and k != row_key:
                             raise InvalidChunk("unexpected new row key")
-                        if f:
+                        if f is not None:
                             family = f
                             if q is not None:
                                 qualifier = q
@@ -344,7 +357,12 @@ class _ReadRowsOperationAsync:
                     raise InvalidChunk("premature end of stream")
         except GeneratorExit as close_exception:
             # handle aclose()
-            self._operation_metric.end_with_status(StatusCode.CANCELLED)
+            if (
+                self._operation_metric is not None
+                and getattr(self._operation_metric, "state", None)
+                != OperationState.COMPLETED
+            ):
+                self._operation_metric.end_with_status(StatusCode.CANCELLED)
             raise close_exception
         except Exception as generic_exception:
             # handle exceptions in retry wrapper
