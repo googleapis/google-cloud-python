@@ -99,7 +99,11 @@ from google.cloud.bigtable.data.execute_query.metadata import (
     _pb_metadata_to_metadata_types,
 )
 from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
-from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
+from google.cloud.bigtable.data.mutations import (
+    Mutation,
+    RowMutationEntry,
+    _is_mutate_row_idempotent,
+)
 from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery, RowRange
 from google.cloud.bigtable.data.row import Row
@@ -2083,10 +2087,16 @@ class _DataApiTargetAsync(abc.ABC):
         try:
             return await client.mutate_row(request, timeout=operation_timeout)
         except Exception as exc:
+            is_idempotent = (
+                _is_mutate_row_idempotent(request)
+                if daemon is not None and not daemon.is_running
+                else True
+            )
             handle_accelerator_error(
                 exc,
                 daemon=daemon,
                 breaker=self._accelerator_breaker,
+                is_idempotent=is_idempotent,
             )
             raise  # unreachable: handle_accelerator_error always raises
 
