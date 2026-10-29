@@ -1324,7 +1324,8 @@ class _DataApiTarget(abc.ABC):
         False once the fallback breaker has tripped, so a daemon that has proven
         unable to serve routed RPCs is skipped without another round trip."""
         return (
-            self._accelerator_client is not None
+            not getattr(self, "_closed", False)
+            and self._accelerator_client is not None
             and is_supported(method_name)
             and (not self._accelerator_breaker.bypass())
         )
@@ -1527,9 +1528,14 @@ class _DataApiTarget(abc.ABC):
         client; other gRPC errors are translated to ``google.api_core``
         exceptions and raised."""
         client = self._accelerator_client
-        if client is None:
+        if client is None or getattr(self, "_closed", False):
             raise _AcceleratorFallback()
         daemon = self._accelerator_daemon
+        rpc_timeout = (
+            min(operation_timeout, attempt_timeout)
+            if attempt_timeout is not None
+            else operation_timeout
+        )
         row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
             self,
@@ -1539,12 +1545,17 @@ class _DataApiTarget(abc.ABC):
             retryable_exceptions=(),
         )
         try:
-            stream = client.read_rows(row_merger.request, timeout=operation_timeout)
+            stream = client.read_rows(row_merger.request, timeout=rpc_timeout)
             chunked_stream = row_merger.chunk_stream(stream)
             results = [a for a in row_merger.merge_rows(chunked_stream)]
         except Exception as exc:
+            if getattr(self, "_closed", False):
+                raise Cancelled("Table is closed") from exc
             handle_accelerator_error(
-                exc, daemon=daemon, breaker=self._accelerator_breaker
+                exc,
+                daemon=daemon,
+                breaker=self._accelerator_breaker,
+                operation_timeout=operation_timeout,
             )
             raise
         try:
@@ -1593,12 +1604,22 @@ class _DataApiTarget(abc.ABC):
             operation_timeout, attempt_timeout, self
         )
         if self._use_accelerator("read_row"):
+            accel_start = time.monotonic()
             try:
                 return self._read_row_via_accelerator(
                     query, operation_timeout, attempt_timeout
                 )
-            except _AcceleratorFallback:
-                pass
+            except _AcceleratorFallback as fb_exc:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from fb_exc
+                elapsed = time.monotonic() - accel_start
+                operation_timeout = operation_timeout - elapsed
+                if operation_timeout <= 0:
+                    raise DeadlineExceeded(
+                        "Operation timeout exceeded during accelerator fallback"
+                    ) from fb_exc
+                if attempt_timeout is not None:
+                    attempt_timeout = min(attempt_timeout, operation_timeout)
         retryable_excs = _get_retryable_errors(retryable_errors, self)
         row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
@@ -1865,21 +1886,33 @@ class _DataApiTarget(abc.ABC):
             batch_retryable_errors=batch_retryable_errors,
         )
 
-    def _mutate_row_via_accelerator(self, request, operation_timeout):
+    def _mutate_row_via_accelerator(
+        self, request, operation_timeout, attempt_timeout: float | None = None
+    ):
         """Drive a single MutateRow attempt through the accelerator daemon.
 
         Raises ``_AcceleratorFallback`` if the caller should retry on the native
         client; other gRPC errors are translated to ``google.api_core``
         exceptions and raised."""
         client = self._accelerator_client
-        if client is None:
+        if client is None or getattr(self, "_closed", False):
             raise _AcceleratorFallback()
         daemon = self._accelerator_daemon
+        rpc_timeout = (
+            min(operation_timeout, attempt_timeout)
+            if attempt_timeout is not None
+            else operation_timeout
+        )
         try:
-            return client.mutate_row(request, timeout=operation_timeout)
+            return client.mutate_row(request, timeout=rpc_timeout)
         except Exception as exc:
+            if getattr(self, "_closed", False):
+                raise Cancelled("Table is closed") from exc
             handle_accelerator_error(
-                exc, daemon=daemon, breaker=self._accelerator_breaker
+                exc,
+                daemon=daemon,
+                breaker=self._accelerator_breaker,
+                operation_timeout=operation_timeout,
             )
             raise
 
@@ -1928,18 +1961,34 @@ class _DataApiTarget(abc.ABC):
         if not mutations:
             raise ValueError("No mutations provided")
         mutations_list = mutations if isinstance(mutations, list) else [mutations]
+        is_idempotent = all((mutation.is_idempotent() for mutation in mutations_list))
         request = MutateRowRequest(
             row_key=row_key.encode("utf-8") if isinstance(row_key, str) else row_key,
             mutations=[mutation._to_pb() for mutation in mutations_list],
             app_profile_id=self.app_profile_id,
             **self._request_path,
         )
-        if self._use_accelerator("mutate_row"):
+        if is_idempotent and self._use_accelerator("mutate_row"):
+            accel_start = time.monotonic()
+            rpc_timeout = (
+                min(operation_timeout, attempt_timeout)
+                if attempt_timeout is not None
+                else operation_timeout
+            )
             try:
-                return self._mutate_row_via_accelerator(request, operation_timeout)
-            except _AcceleratorFallback:
-                pass
-        if all((mutation.is_idempotent() for mutation in mutations_list)):
+                return self._mutate_row_via_accelerator(request, rpc_timeout)
+            except _AcceleratorFallback as fb_exc:
+                if getattr(self, "_closed", False):
+                    raise Cancelled("Table is closed") from fb_exc
+                elapsed = time.monotonic() - accel_start
+                operation_timeout = operation_timeout - elapsed
+                if operation_timeout <= 0:
+                    raise DeadlineExceeded(
+                        "Operation timeout exceeded during accelerator fallback"
+                    ) from fb_exc
+                if attempt_timeout is not None:
+                    attempt_timeout = min(attempt_timeout, operation_timeout)
+        if is_idempotent:
             predicate = retries.if_exception_type(
                 *_get_retryable_errors(retryable_errors, self)
             )
