@@ -310,11 +310,11 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         """Writes held chunks, in arrival order, once their checksums match.
 
         Returns when at most ``max_pending`` chunks are still held; only an
-        unfinished checksum at the head of the queue is waited for. On a
-        mismatch, raises DataCorruption after discarding every held chunk
-        (see discard_pending_checksums()), so nothing from the corrupt chunk
-        on is written and a retry requests it again; a checksum that failed
-        on the worker is re-raised the same way.
+        unfinished checksum at the head of the queue is waited for. On a chunk
+        checksum mismatch, raises DataCorruption after discarding every held
+        chunk (see discard_pending_checksums()), so nothing from the corrupt
+        chunk on is written and a retry requests it again; a checksum that
+        failed on the worker is re-raised the same way.
         """
         pending = state.get("pending_checksums")
         while pending:
