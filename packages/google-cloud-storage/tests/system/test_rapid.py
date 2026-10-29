@@ -30,6 +30,7 @@ from google.cloud.storage._helpers import _parse_bool_env
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     _DEFAULT_FLUSH_INTERVAL_BYTES,
     AsyncAppendableObjectWriter,
+    Preconditions,
 )
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
@@ -816,6 +817,71 @@ def test_open_with_generation_zero(
 
         # cleanup
         del writer
+        gc.collect()
+
+        blobs_to_delete.append(
+            storage_client.bucket(_BUCKET_UNDER_TEST).blob(object_name)
+        )
+
+    event_loop.run_until_complete(_run())
+
+
+def test_open_with_preconditions(
+    storage_client, blobs_to_delete, event_loop, grpc_client
+):
+    """Tests create-only and compare-and-swap writes using `Preconditions`."""
+    object_name = f"test_append_with_preconditions-{uuid.uuid4()}"
+
+    async def _run():
+        writer = AsyncAppendableObjectWriter(
+            grpc_client,
+            _BUCKET_UNDER_TEST,
+            object_name,
+            preconditions=Preconditions(if_generation_match=0),
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+        )
+        await writer.open()
+        assert writer.is_stream_open
+        gen_1 = writer.generation
+        await writer.close()
+        assert not writer.is_stream_open
+
+        with pytest.raises(FailedPrecondition) as exc_info:
+            writer_create_fail = AsyncAppendableObjectWriter(
+                grpc_client,
+                _BUCKET_UNDER_TEST,
+                object_name,
+                preconditions=Preconditions(if_generation_match=0),
+                storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+            )
+            await writer_create_fail.open()
+        assert exc_info.value.code == 400
+
+        writer_cas = AsyncAppendableObjectWriter(
+            grpc_client,
+            _BUCKET_UNDER_TEST,
+            object_name,
+            preconditions=Preconditions(if_generation_match=gen_1),
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+        )
+        await writer_cas.open()
+        assert writer_cas.generation != gen_1
+        await writer_cas.close()
+
+        with pytest.raises(FailedPrecondition) as exc_info:
+            writer_stale_cas = AsyncAppendableObjectWriter(
+                grpc_client,
+                _BUCKET_UNDER_TEST,
+                object_name,
+                preconditions=Preconditions(if_generation_match=gen_1),
+                storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+            )
+            await writer_stale_cas.open()
+        assert exc_info.value.code == 400
+
+        # cleanup
+        del writer
+        del writer_cas
         gc.collect()
 
         blobs_to_delete.append(

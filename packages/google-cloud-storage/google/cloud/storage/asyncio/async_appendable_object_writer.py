@@ -14,6 +14,7 @@
 
 import io
 import logging
+from dataclasses import dataclass
 from io import BufferedReader
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -100,6 +101,44 @@ def _is_write_retryable(exc):
     return False
 
 
+@dataclass
+class Preconditions:
+    """Preconditions for :class:`AsyncAppendableObjectWriter` operations.
+
+    Generation preconditions (``if_generation_match``,
+    ``if_generation_not_match``) apply only when creating or overwriting an
+    object (``WriteObjectSpec``). Metageneration preconditions
+    (``if_metageneration_match``, ``if_metageneration_not_match``) apply to both
+    creating/overwriting (``WriteObjectSpec``) and appending to an existing
+    appendable object (``AppendObjectSpec``).
+
+    :type if_generation_match: Optional[int]
+    :param if_generation_match: (Optional) Makes the operation conditional on
+        whether the object's current generation matches the given value. Setting
+        to ``0`` makes the operation succeed only if there are no live versions
+        of the object.
+
+    :type if_generation_not_match: Optional[int]
+    :param if_generation_not_match: (Optional) Makes the operation conditional
+        on whether the object's current generation does not match the given
+        value. If no live object exists, the precondition fails.
+
+    :type if_metageneration_match: Optional[int]
+    :param if_metageneration_match: (Optional) Makes the operation conditional
+        on whether the object's current metageneration matches the given value.
+
+    :type if_metageneration_not_match: Optional[int]
+    :param if_metageneration_not_match: (Optional) Makes the operation
+        conditional on whether the object's current metageneration does not
+        match the given value.
+    """
+
+    if_generation_match: Optional[int] = None
+    if_generation_not_match: Optional[int] = None
+    if_metageneration_match: Optional[int] = None
+    if_metageneration_not_match: Optional[int] = None
+
+
 class AsyncAppendableObjectWriter:
     """Class for appending data to a GCS Appendable Object asynchronously."""
 
@@ -112,7 +151,7 @@ class AsyncAppendableObjectWriter:
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
         storage_class: Optional[str] = None,
-        if_generation_match: Optional[int] = None,
+        preconditions: Optional[Preconditions] = None,
     ):
         """
         Class for appending data to a GCS Appendable Object.
@@ -166,7 +205,8 @@ class AsyncAppendableObjectWriter:
             object doesn't exist in the bucket (useful for not accidentally
             overwriting existing objects).
 
-            Warning: If `None`, a new object is created. If an object with the
+            Warning: If `None` and no generation precondition is set in
+            `preconditions`, a new object is created. If an object with the
             same name already exists, it will be overwritten the moment
             `writer.open()` is called.
 
@@ -186,23 +226,31 @@ class AsyncAppendableObjectWriter:
             If specified, it overrides the bucket's `storage_class`. If not, object storage class
             will be the same as bucket's storage_class.
 
-        :type if_generation_match: Optional[int]
-        :param if_generation_match: (Optional) Only create the object if its
-            current generation matches this value; ``0`` means the object must
-            not exist. Use this for compare-and-swap overwrites of an existing
-            object. Ignored when ``generation`` selects an existing object to
-            append to. A mismatch raises
+        :type preconditions: Optional[:class:`Preconditions`]
+        :param preconditions: (Optional) Preconditions for the write operation.
+            Generation preconditions (``if_generation_match``,
+            ``if_generation_not_match``) apply only when creating or overwriting
+            an object (``generation`` is ``None`` or ``0``) and are ignored when
+            appending to an existing object (``generation > 0``). Metageneration
+            preconditions (``if_metageneration_match``,
+            ``if_metageneration_not_match``) apply to both creating/overwriting
+            and appending. A mismatch raises
             :class:`google.api_core.exceptions.FailedPrecondition` from
             ``open()``.
+
+        :raises TypeError: If ``preconditions`` is not a :class:`Preconditions`
+            instance.
         """
         _utils.raise_if_no_fast_crc32c()
+        if preconditions is not None and not isinstance(preconditions, Preconditions):
+            raise TypeError("preconditions must be an instance of Preconditions")
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
         self.write_handle = write_handle
         self.generation = generation
         self.storage_class = storage_class
-        self.if_generation_match = if_generation_match
+        self.preconditions = preconditions
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -238,6 +286,7 @@ class AsyncAppendableObjectWriter:
         blob: Blob,
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
+        preconditions: Optional[Preconditions] = None,
     ) -> "AsyncAppendableObjectWriter":
         """Creates an AsyncAppendableObjectWriter from an existing Blob object.
 
@@ -270,6 +319,9 @@ class AsyncAppendableObjectWriter:
         :param writer_options: (Optional) Configuration settings for the underlying
             appendable writer.
 
+        :type preconditions: Optional[:class:`Preconditions`]
+        :param preconditions: (Optional) Preconditions for the write operation.
+
         :rtype: :class:`AsyncAppendableObjectWriter`
         :returns: An initialized writer instance.
         """
@@ -281,6 +333,7 @@ class AsyncAppendableObjectWriter:
             write_handle=write_handle,
             writer_options=writer_options,
             storage_class=blob.storage_class,
+            preconditions=preconditions,
         )
         instance.blob = blob
         return instance
@@ -349,6 +402,8 @@ class AsyncAppendableObjectWriter:
         """Opens the underlying bidi-gRPC stream.
 
         :raises ValueError: If the stream is already open.
+        :raises google.api_core.exceptions.FailedPrecondition: If a precondition
+            in ``preconditions`` (or ``generation=0``) is not met.
 
         """
         if self._is_stream_open:
@@ -380,7 +435,7 @@ class AsyncAppendableObjectWriter:
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,
                 storage_class=self.storage_class,
-                if_generation_match=self.if_generation_match,
+                preconditions=self.preconditions,
             )
 
             if self._routing_token:
