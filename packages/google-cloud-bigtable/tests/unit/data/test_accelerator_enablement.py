@@ -192,3 +192,96 @@ class TestMaybeStartAccelerator:
             t._start_accelerator()
 
         mock_server.close.assert_called_once()
+
+    def test_views_skip_accelerator(self):
+        """AuthorizedView and MaterializedView must never start the accelerator."""
+        called = []
+        av = _bare_target(emulator=None, start=lambda: called.append(1))
+        av.authorized_view_id = "av-1"
+        av._maybe_start_accelerator(explicit=True)
+        assert called == []
+        assert av._accelerator_daemon is None
+        assert av._accelerator_client is None
+
+        mv = _bare_target(emulator=None, start=lambda: called.append(1))
+        mv.materialized_view_id = "mv-1"
+        mv._maybe_start_accelerator(explicit=True)
+        assert called == []
+        assert mv._accelerator_daemon is None
+        assert mv._accelerator_client is None
+
+    def test_value_error_propagates_in_default_mode(self):
+        """ValueError (e.g. malformed BIGTABLE_ACCELERATOR_STARTUP_TIMEOUT)
+        must propagate even when explicit=False."""
+
+        def _bad_timeout():
+            raise ValueError("invalid startup timeout")
+
+        t = _bare_target(emulator=None, start=_bad_timeout)
+        with pytest.raises(ValueError, match="invalid startup timeout"):
+            t._maybe_start_accelerator(explicit=False)
+        assert t._accelerator_daemon is None
+        assert t._accelerator_client is None
+
+    def test_startup_failure_does_not_leak_instance_owners(self, monkeypatch):
+        """When explicit=True startup fails, _instance_owners and _active_instances
+        must remain empty."""
+        import google.auth.credentials
+
+        import google.cloud.bigtable.data._sync_autogen.client as _sync_mod
+
+        monkeypatch.setattr(
+            _sync_mod.BigtableDataClient,
+            "_start_background_channel_refresh",
+            lambda self: None,
+        )
+        monkeypatch.setattr(
+            _sync_mod,
+            "AcceleratorDaemon",
+            unittest.mock.MagicMock(side_effect=FileNotFoundError("no binary")),
+        )
+        client = _sync_mod.BigtableDataClient(
+            project="proj",
+            credentials=google.auth.credentials.AnonymousCredentials(),
+            use_accelerator=True,
+        )
+        client._accelerator_blocked_reason = None
+        with pytest.raises(FileNotFoundError, match="no binary"):
+            client.get_table("inst", "tbl")
+        assert sum(len(v) for v in client._instance_owners.values()) == 0
+        assert len(client._active_instances) == 0
+        client.close()
+
+    @pytest.mark.asyncio
+    async def test_close_cancelled_error_still_closes_daemon_and_unregisters(self):
+        """asyncio.CancelledError during health/client close must still tear down
+        the daemon subprocess and remove instance registration."""
+        import asyncio
+
+        t = object.__new__(_ConcreteTarget)
+        t.instance_id = "inst"
+        t.app_profile_id = None
+        t.client = SimpleNamespace(
+            _remove_instance_registration=unittest.mock.MagicMock()
+        )
+        t._accelerator_health = SimpleNamespace(
+            close=unittest.mock.AsyncMock(side_effect=asyncio.CancelledError())
+        )
+        mock_client = SimpleNamespace(close=unittest.mock.AsyncMock())
+        mock_daemon = SimpleNamespace(close=unittest.mock.MagicMock())
+        t._accelerator_client = mock_client
+        t._accelerator_daemon = mock_daemon
+        t._register_instance_future = unittest.mock.MagicMock()
+
+        with pytest.raises(asyncio.CancelledError):
+            await t.close()
+
+        mock_client.close.assert_awaited_once()
+        mock_daemon.close.assert_called_once()
+        t._register_instance_future.cancel.assert_called_once()
+        t.client._remove_instance_registration.assert_called_once_with(
+            "inst", None, id(t)
+        )
+        assert t._accelerator_health is None
+        assert t._accelerator_client is None
+        assert t._accelerator_daemon is None

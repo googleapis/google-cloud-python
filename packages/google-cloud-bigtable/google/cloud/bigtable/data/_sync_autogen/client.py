@@ -286,6 +286,7 @@ class BigtableDataClient(ClientWithProject):
         self.transport = cast(TransportType, self._gapic_client.transport)
         self._active_instances: Set[_WarmedInstanceKey] = set()
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}
+        self._unregistered_owners: Set[int] = set()
         self._channel_init_time = time.monotonic()
         self._channel_refresh_task: CrossSync._Sync_Impl.Task[None] | None = None
         self._executor: concurrent.futures.ThreadPoolExecutor | None = (
@@ -605,6 +606,10 @@ class BigtableDataClient(ClientWithProject):
               _instance_owners, and instances will only be unregistered when all
               owners call _remove_instance_registration. Can be obtained by calling
               `id` identity funcion, using `id(owner)`"""
+        unregistered = getattr(self, "_unregistered_owners", None)
+        if isinstance(unregistered, set) and owner_id in unregistered:
+            unregistered.discard(owner_id)
+            return
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
         instance_key = _WarmedInstanceKey(instance_name, app_profile_id)
         self._instance_owners.setdefault(instance_key, set()).add(owner_id)
@@ -639,6 +644,9 @@ class BigtableDataClient(ClientWithProject):
                 self._active_instances.remove(instance_key)
             return True
         except KeyError:
+            unregistered = getattr(self, "_unregistered_owners", None)
+            if isinstance(unregistered, set):
+                unregistered.add(owner_id)
             return False
 
     def get_table(self, instance_id: str, table_id: str, *args, **kwargs) -> Table:
@@ -1076,6 +1084,14 @@ class _DataApiTarget(abc.ABC):
         self.default_retryable_errors: Sequence[type[Exception]] = (
             default_retryable_errors or ()
         )
+        self._closed = False
+        self._register_instance_future = None
+        self._accelerator_daemon: AcceleratorDaemon | None = None
+        self._accelerator_client: AcceleratorClientType | None = None
+        self._accelerator_health: AcceleratorHealthMonitorType | None = None
+        self._accelerator_breaker = AcceleratorBreaker()
+        if self.client._use_accelerator is not False:
+            self._maybe_start_accelerator(explicit=self.client._use_accelerator is True)
         try:
             self._register_instance_future = CrossSync._Sync_Impl.create_task(
                 self.client._register_instance,
@@ -1088,12 +1104,6 @@ class _DataApiTarget(abc.ABC):
             raise RuntimeError(
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
-        self._accelerator_daemon: AcceleratorDaemon | None = None
-        self._accelerator_client: AcceleratorClientType | None = None
-        self._accelerator_health: AcceleratorHealthMonitorType | None = None
-        self._accelerator_breaker = AcceleratorBreaker()
-        if self.client._use_accelerator is not False:
-            self._maybe_start_accelerator(explicit=self.client._use_accelerator is True)
 
     def _maybe_start_accelerator(self, *, explicit: bool) -> None:
         """Start the accelerator daemon unless the environment prevents it.
@@ -1105,6 +1115,13 @@ class _DataApiTarget(abc.ABC):
         ``use_accelerator=True``: a caller who required the accelerator gets a
         hard error rather than a silent fallback, both for the emulator (a
         genuine misconfiguration) and for a daemon that fails to start."""
+        if (
+            getattr(self, "authorized_view_id", None) is not None
+            or getattr(self, "materialized_view_id", None) is not None
+        ):
+            self._accelerator_daemon = None
+            self._accelerator_client = None
+            return
         if self.client._emulator_host is not None:
             if explicit:
                 raise RuntimeError(
@@ -1135,6 +1152,10 @@ class _DataApiTarget(abc.ABC):
             warnings.warn(f"Accelerator disabled: {exc}", RuntimeWarning, stacklevel=2)
             self._accelerator_daemon = None
             self._accelerator_client = None
+        except ValueError:
+            self._accelerator_daemon = None
+            self._accelerator_client = None
+            raise
         except Exception as exc:
             if explicit:
                 raise
@@ -2006,32 +2027,39 @@ class _DataApiTarget(abc.ABC):
 
     def close(self):
         """Called to close the Table instance and release any resources held by it."""
-        if self._accelerator_health is not None:
+        self._closed = True
+        try:
+            if self._accelerator_health is not None:
+                try:
+                    self._accelerator_health.close()
+                except Exception as exc:
+                    _LOGGER.warning(
+                        "Failed to close accelerator health monitor: %s", exc
+                    )
+                finally:
+                    self._accelerator_health = None
+        finally:
             try:
-                self._accelerator_health.close()
-            except Exception as exc:
-                _LOGGER.warning("Failed to close accelerator health monitor: %s", exc)
+                if self._accelerator_client is not None:
+                    try:
+                        self._accelerator_client.close()
+                    except Exception as exc:
+                        _LOGGER.warning("Failed to close accelerator client: %s", exc)
+                    finally:
+                        self._accelerator_client = None
             finally:
-                self._accelerator_health = None
-        if self._accelerator_client is not None:
-            try:
-                self._accelerator_client.close()
-            except Exception as exc:
-                _LOGGER.warning("Failed to close accelerator client: %s", exc)
-            finally:
-                self._accelerator_client = None
-        if self._accelerator_daemon is not None:
-            try:
-                self._accelerator_daemon.close()
-            except Exception as exc:
-                _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
-            finally:
-                self._accelerator_daemon = None
-        if self._register_instance_future:
-            self._register_instance_future.cancel()
-        self.client._remove_instance_registration(
-            self.instance_id, self.app_profile_id, id(self)
-        )
+                if self._accelerator_daemon is not None:
+                    try:
+                        self._accelerator_daemon.close()
+                    except Exception as exc:
+                        _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
+                    finally:
+                        self._accelerator_daemon = None
+                if self._register_instance_future:
+                    self._register_instance_future.cancel()
+                self.client._remove_instance_registration(
+                    self.instance_id, self.app_profile_id, id(self)
+                )
 
     def __enter__(self):
         """Implement async context manager protocol
