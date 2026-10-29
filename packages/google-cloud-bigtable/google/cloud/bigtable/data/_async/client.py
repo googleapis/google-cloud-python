@@ -22,7 +22,6 @@ import os
 import random
 import time
 import warnings
-import weakref
 from functools import partial
 from typing import (
     TYPE_CHECKING,
@@ -386,6 +385,9 @@ class BigtableDataClientAsync(ClientWithProject):
         # only remove instance from _active_instances when all associated targets are closed
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}
         self._unregistered_owners: Set[int] = set()
+        self._accelerator_pool: dict[
+            tuple[str | None, str, str | None], dict[str, Any]
+        ] = {}
         self._channel_init_time = time.monotonic()
         self._channel_refresh_task: CrossSync.Task[None] | None = None
         self._executor: concurrent.futures.ThreadPoolExecutor | None = (
@@ -649,6 +651,21 @@ class BigtableDataClientAsync(ClientWithProject):
         Cancel all background tasks
         """
         self._is_closed.set()
+        pool = getattr(self, "_accelerator_pool", None)
+        if isinstance(pool, dict):
+            for entry in list(pool.values()):
+                for key in ("health", "client"):
+                    if entry.get(key) is not None:
+                        try:
+                            await entry[key].close()
+                        except Exception:
+                            pass
+                if entry.get("daemon") is not None:
+                    try:
+                        entry["daemon"].close()
+                    except Exception:
+                        pass
+            pool.clear()
         if self._channel_refresh_task is not None:
             self._channel_refresh_task.cancel()
             await CrossSync.wait([self._channel_refresh_task], timeout=timeout)
@@ -1502,6 +1519,24 @@ class _DataApiTargetAsync(abc.ABC):
 
         On any failure the daemon is torn down before the error propagates.
         """
+        pool = getattr(self.client, "_accelerator_pool", None)
+        accel_key = (
+            getattr(self.client, "project", None),
+            self.instance_id,
+            self.app_profile_id,
+        )
+        if isinstance(pool, dict) and accel_key in pool:
+            entry = pool[accel_key]
+            daemon = entry.get("daemon")
+            if daemon is not None and getattr(daemon, "is_running", True):
+                entry["owners"].add(id(self))
+                self._accelerator_daemon = daemon
+                self._accelerator_client = entry["client"]
+                self._accelerator_health = entry["health"]
+                self._accelerator_breaker = entry["breaker"]
+                return
+            pool.pop(accel_key, None)
+
         flags = [
             "--project",
             self.client.project,
@@ -1541,12 +1576,6 @@ class _DataApiTargetAsync(abc.ABC):
                 self._accelerator_client, self._accelerator_breaker
             )
             self._accelerator_health.start()
-            # close() is the orderly stop, but a Table dropped without it would
-            # otherwise leave the loop probing for the life of the event loop,
-            # holding the monitor and through it the accelerator channel. The
-            # finalizer is bound to the monitor, not to self, so it does not
-            # keep this Table alive; it only flips a flag the loop reads.
-            weakref.finalize(self, self._accelerator_health.request_stop)
         except Exception as exc:
             # Monitoring is an optimization on top of a working accelerator, so
             # failing to start it must not take the accelerator down with it —
@@ -1559,6 +1588,14 @@ class _DataApiTargetAsync(abc.ABC):
                 stacklevel=2,
             )
             self._accelerator_health = None
+        if isinstance(pool, dict):
+            pool[accel_key] = {
+                "daemon": self._accelerator_daemon,
+                "client": self._accelerator_client,
+                "health": self._accelerator_health,
+                "breaker": self._accelerator_breaker,
+                "owners": {id(self)},
+            }
 
     def _use_accelerator(self, method_name: str) -> bool:
         """Whether this call should be routed through the accelerator daemon.
@@ -2474,6 +2511,28 @@ class _DataApiTargetAsync(abc.ABC):
         Called to close the Table instance and release any resources held by it.
         """
         self._closed = True
+        should_close_accel = True
+        pool = getattr(self.client, "_accelerator_pool", None)
+        accel_key = (
+            getattr(self.client, "project", None),
+            getattr(self, "instance_id", None),
+            getattr(self, "app_profile_id", None),
+        )
+        entry = pool.get(accel_key) if isinstance(pool, dict) else None
+        if (
+            entry
+            and entry.get("daemon") is self._accelerator_daemon
+            and entry.get("client") is self._accelerator_client
+            and entry.get("health") is self._accelerator_health
+        ):
+            entry["owners"].discard(id(self))
+            should_close_accel = not bool(entry["owners"])
+            if should_close_accel:
+                pool.pop(accel_key, None)
+        if not should_close_accel:
+            self._accelerator_health = None
+            self._accelerator_client = None
+            self._accelerator_daemon = None
         # Accelerator teardown goes first, so that nothing that can raise runs
         # ahead of it and strands the daemon subprocess. Within it, the monitor
         # stops before the channel it probes over goes away.

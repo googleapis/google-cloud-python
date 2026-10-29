@@ -285,3 +285,63 @@ class TestMaybeStartAccelerator:
         assert t._accelerator_health is None
         assert t._accelerator_client is None
         assert t._accelerator_daemon is None
+
+    def test_tables_share_daemon(self, monkeypatch):
+        """Multiple Table objects on the same (project, instance_id, app_profile_id)
+        share one AcceleratorDaemon and close it only when the last Table closes."""
+        import gc
+
+        import google.auth.credentials
+
+        import google.cloud.bigtable.data._sync_autogen.client as _sync_mod
+
+        daemons = []
+
+        def _make_daemon(**_):
+            d = unittest.mock.MagicMock(uds_path="/tmp/fake.sock", auth_secret="s")
+            daemons.append(d)
+            return d
+
+        monkeypatch.setattr(
+            _sync_mod.BigtableDataClient,
+            "_start_background_channel_refresh",
+            lambda s: None,
+        )
+        monkeypatch.setattr(_sync_mod, "AcceleratorDaemon", _make_daemon)
+        monkeypatch.setattr(
+            _sync_mod, "AcceleratorClientType", lambda *_: unittest.mock.MagicMock()
+        )
+        monkeypatch.setattr(
+            _sync_mod,
+            "AcceleratorHealthMonitorType",
+            lambda *_: unittest.mock.MagicMock(),
+        )
+        monkeypatch.setattr(
+            _sync_mod._DataApiTarget, "_verify_daemon_identity", lambda s, srv: None
+        )
+
+        client = _sync_mod.BigtableDataClient(
+            project="proj",
+            credentials=google.auth.credentials.AnonymousCredentials(),
+            use_accelerator=True,
+        )
+        client._accelerator_blocked_reason = None
+
+        t1 = client.get_table("inst", "tbl-1")
+        t2 = client.get_table("inst", "tbl-2")
+        t3 = client.get_table("inst", "tbl-1", app_profile_id="prof-a")
+        health = t1._accelerator_health
+        assert len(daemons) == 2
+        assert t1._accelerator_daemon is t2._accelerator_daemon
+        assert t1._accelerator_daemon is not t3._accelerator_daemon
+
+        t1.close()
+        del t1
+        gc.collect()
+        assert daemons[0].close.call_count == 0
+        assert health.request_stop.call_count == 0
+        t2.close()
+        assert daemons[0].close.call_count == 1
+        t3.close()
+        assert daemons[1].close.call_count == 1
+        client.close()
