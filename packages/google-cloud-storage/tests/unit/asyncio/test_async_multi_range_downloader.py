@@ -1488,3 +1488,65 @@ class TestAsyncMultiRangeDownloader:
             match="Underlying bidi-gRPC stream or multiplexer is not initialized",
         ):
             await mrd.download_ranges([(0, 10, BytesIO())])
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_reopen_non_primary_stream_preserves_primary_stream_and_metadata(
+        self, mock_cls_stream
+    ):
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            MultiStreamConfig,
+        )
+
+        mock_client = self._make_mock_client()
+        primary_stream = self._make_mock_stream(read_handle=b"h1", is_finalized=True)
+        non_primary_initial = self._make_mock_stream(
+            read_handle=b"h2", is_finalized=False
+        )
+        non_primary_initial.object_metadata = None
+        non_primary_initial.full_obj_server_crc32c = None
+
+        replacement_stream = self._make_mock_stream(
+            read_handle=b"h3", is_finalized=False
+        )
+        # Reopening with a read_handle may not return response.metadata
+        replacement_stream.object_metadata = None
+        replacement_stream.full_obj_server_crc32c = None
+
+        mock_cls_stream.side_effect = [
+            primary_stream,
+            non_primary_initial,
+            replacement_stream,
+        ]
+
+        config = MultiStreamConfig(min_streams=2, max_streams=4)
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            mock_client, "b", "o", multi_stream_config=config
+        )
+        assert mrd.read_obj_str is primary_stream
+        assert mrd._primary_stream.stream is primary_stream
+        assert mrd.is_finalized is True
+        assert mrd.full_obj_server_crc32c == 12345
+
+        non_primary_pooled = mrd._pool.streams[1]
+        assert non_primary_pooled is not mrd._primary_stream
+        assert non_primary_pooled.stream is non_primary_initial
+
+        # Reopen the non-primary stream via _create_stream_factory
+        factory = mrd._create_stream_factory(
+            state={"read_handle": b"h2", "routing_token": "tok"},
+            metadata=None,
+            pooled_stream=non_primary_pooled,
+        )
+        reopened = await factory()
+
+        assert reopened is replacement_stream
+        assert non_primary_pooled.stream is replacement_stream
+        assert mrd.read_obj_str is mrd._primary_stream.stream
+        assert mrd.read_obj_str is primary_stream
+        assert mrd.is_finalized is True
+        assert mrd.full_obj_server_crc32c == 12345
+
+        await mrd.close()

@@ -451,13 +451,12 @@ class AsyncMultiRangeDownloader:
                 self.read_handle = stream.read_handle
             if current_token:
                 self._routing_token = current_token
-            self.is_finalized = stream.is_finalized
-            self.full_obj_server_crc32c = stream.full_obj_server_crc32c
-
-            self.read_obj_str = stream
+            if stream.object_metadata is not None:
+                self.is_finalized = stream.is_finalized
+                self.full_obj_server_crc32c = stream.full_obj_server_crc32c
             if target_stream is not None:
                 target_stream.stream = stream
-            if target_stream is None or target_stream == self._primary_stream:
+            if target_stream is None or target_stream is self._primary_stream:
                 self.read_obj_str = stream
             self._is_stream_open = True
 
