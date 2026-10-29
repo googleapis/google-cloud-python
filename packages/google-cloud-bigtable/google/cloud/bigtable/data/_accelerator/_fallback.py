@@ -43,10 +43,29 @@ from typing import TYPE_CHECKING
 from google.api_core import exceptions as core_exceptions
 from grpc import RpcError, StatusCode
 
+from google.cloud.bigtable.data._helpers import (
+    RetryFailureReason,
+    _retry_exception_factory,
+)
+from google.cloud.bigtable.data.exceptions import InvalidChunk
+
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
 
 _LOGGER = logging.getLogger(__name__)
+
+# Prefixes and explicit shape markers in gRPC status details that indicate the
+# Go accelerator sidecar rejected a specific request shape (e.g. multi-row
+# ReadRowsRequest or nil RowRange) rather than reporting a backend/session
+# UNIMPLEMENTED. Backend session errors do not carry the "accelerator:" prefix.
+_PER_REQUEST_UNIMPLEMENTED_PREFIXES = (
+    "accelerator:",
+    "accelerator fallback:",
+)
+_PER_REQUEST_UNIMPLEMENTED_MARKERS = (
+    "single-row accelerator",
+    "unsupported row range shape",
+)
 
 
 class _AcceleratorFallback(Exception):
@@ -135,11 +154,50 @@ def _grpc_code(exc: BaseException) -> StatusCode | None:
     return None
 
 
+def _is_per_request_unimplemented(exc: BaseException) -> bool:
+    """Return True if an UNIMPLEMENTED error is a per-request shape rejection
+    rather than a persistent session/instance unavailability."""
+    details_fn = getattr(exc, "details", None)
+    if not callable(details_fn):
+        return False
+    try:
+        details = details_fn()
+    except Exception:
+        return False
+    if not isinstance(details, str):
+        return False
+    lower = details.strip().lower()
+    if lower.startswith(_PER_REQUEST_UNIMPLEMENTED_PREFIXES):
+        return True
+    return any(marker in lower for marker in _PER_REQUEST_UNIMPLEMENTED_MARKERS)
+
+
+def _raise_translated_rpc_error(
+    exc: RpcError,
+    operation_timeout: float | None = None,
+) -> None:
+    """Translate a gRPC RpcError to a google.api_core exception and raise it.
+
+    For DEADLINE_EXCEEDED, chains a RetryExceptionGroup([translated]) as
+    __cause__ to match the native client's timeout exception contract.
+    """
+    translated = core_exceptions.from_grpc_error(exc)
+    if _grpc_code(exc) == StatusCode.DEADLINE_EXCEEDED:
+        source_exc, cause_exc = _retry_exception_factory(
+            [translated], RetryFailureReason.TIMEOUT, operation_timeout
+        )
+        raise source_exc from cause_exc
+    raise translated from exc
+
+
 def handle_accelerator_error(
     exc: BaseException,
     *,
     daemon: "AcceleratorDaemon | None",
     breaker: AcceleratorBreaker,
+    is_idempotent: bool = True,
+    is_closed: bool = False,
+    operation_timeout: float | None = None,
 ) -> None:
     """Classify an exception raised by an accelerator-routed RPC.
 
@@ -147,37 +205,62 @@ def handle_accelerator_error(
     to retry on the native path, or raises the translated ``google.api_core``
     exception for the caller to propagate:
 
-    * daemon subprocess dead -> trip the breaker, fall back (it will not recover)
-    * ``UNIMPLEMENTED`` -> trip the breaker, fall back immediately
-    * any other gRPC error -> translate and raise
-    * a non-gRPC exception -> re-raise unchanged (never masked as a fallback)
+    * closed table/daemon -> translate and raise without tripping or falling back
+    * daemon subprocess dead -> trip the breaker; fall back only if idempotent
+    * ``UNIMPLEMENTED`` -> fall back immediately (trip breaker unless per-request shape error)
+    * ``InvalidChunk`` -> trip the breaker and fall back
+    * any other gRPC error -> translate and raise (with ``RetryExceptionGroup`` cause on timeout)
+    * any other non-gRPC exception -> re-raise unchanged (never masked as a fallback)
     """
-    # TODO(accelerator): emit a metric here (e.g. a fallback/error counter keyed
-    # by reason: dead-daemon / unimplemented / translated-error) once client-side
-    # accelerator metrics are wired up.
+    if is_closed or getattr(daemon, "_closed", False) is True:
+        if isinstance(exc, RpcError):
+            _raise_translated_rpc_error(exc, operation_timeout=operation_timeout)
+        raise exc
+
     # A dead subprocess can surface as a channel error under any status code, so
     # check liveness first: the "daemon died mid-flight" case always wins and is
     # never recoverable.
     if daemon is not None and not daemon.is_running:
-        _LOGGER.warning(
-            "Accelerator daemon is no longer running; permanently falling back "
-            "to the native Bigtable client for this table.",
-            exc_info=exc,
-        )
-        breaker.trip()
+        if not breaker.is_tripped:
+            _LOGGER.warning(
+                "Accelerator daemon is no longer running; permanently falling back "
+                "to the native Bigtable client for this table.",
+                exc_info=exc,
+            )
+            breaker.trip()
+        if not is_idempotent:
+            if isinstance(exc, RpcError):
+                _raise_translated_rpc_error(exc, operation_timeout=operation_timeout)
+            raise exc
         raise _AcceleratorFallback() from exc
+
+    if isinstance(exc, InvalidChunk):
+        if not breaker.is_tripped:
+            _LOGGER.warning(
+                "Accelerator daemon returned an invalid ReadRows chunk (%s); "
+                "permanently falling back to the native Bigtable client for this table.",
+                exc,
+            )
+            breaker.trip()
+        raise _AcceleratorFallback() from exc
+
     if not isinstance(exc, RpcError):
         # A bug in our own merge machinery, not a daemon result. Do not mask it
         # as a fallback; let it propagate unchanged.
         raise exc
+
     if _grpc_code(exc) == StatusCode.UNIMPLEMENTED:
+        if _is_per_request_unimplemented(exc):
+            raise _AcceleratorFallback() from exc
         # The daemon only replies UNIMPLEMENTED once it has no working sessions,
         # a persistent condition, so trip the breaker and fall back immediately
         # rather than re-dialing on every subsequent call.
-        _LOGGER.warning(
-            "Accelerator daemon replied UNIMPLEMENTED; permanently falling back "
-            "to the native Bigtable client for this table."
-        )
-        breaker.trip()
+        if not breaker.is_tripped:
+            _LOGGER.warning(
+                "Accelerator daemon replied UNIMPLEMENTED; permanently falling back "
+                "to the native Bigtable client for this table."
+            )
+            breaker.trip()
         raise _AcceleratorFallback() from exc
-    raise core_exceptions.from_grpc_error(exc) from exc
+
+    _raise_translated_rpc_error(exc, operation_timeout=operation_timeout)
