@@ -60,6 +60,7 @@ import contextlib
 import csv
 import json
 import time
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -561,11 +562,7 @@ def _assert_integer_attributes(span, row: dict[str, str]):
 
 
 def _assert_status_message(span, row: dict[str, str]):
-    """Validates status.message via substring containment matching.
-
-    Because gRPC and REST backends format error message payloads slightly differently,
-    the matrix specifies key error phrases (e.g. 'Persistent outage') that must appear
-    inside the captured `status.message` attribute.
+    """Validates status.message via exact string equality.
 
     Args:
         span: The OpenTelemetry ReadableSpan being validated.
@@ -573,8 +570,8 @@ def _assert_status_message(span, row: dict[str, str]):
     """
 
     def _match_message(attr: str, actual: Any, expected: str):
-        assert expected in str(actual), (
-            f"Attribute {attr}: expected '{expected}' in '{actual}'"
+        assert str(actual) == expected, (
+            f"Attribute {attr}: expected '{expected}', got '{actual}'"
         )
 
     _assert_attribute(
@@ -634,21 +631,66 @@ def _assert_parent_span_id(span, row: dict[str, str], t3_spans: list[Any]):
         pytest.fail(f"Unsupported parent_span_id value in matrix: {expected_parent!r}")
 
 
-def assert_span_matches_row(span, row: dict[str, str], t3_spans: list[Any]):
+def _assert_t3_t4_inheritance(span, row: Mapping[str, str], t4_spans: Sequence[Any]):
+    """Validates cross-tier attribute inheritance from child T4 spans to the parent T3 span.
+
+    Enforces Test Plan requirements:
+    - `url.template` on HTTP T3 is populated from the first T4 span (`T4_1`).
+    - `http.response.status_code`, `error.type`, and `status.message` on HTTP T3 are
+      consistent with / inherited from the last T4 span when present on that T4 span.
+
+    Args:
+        span: The OpenTelemetry ReadableSpan being validated.
+        row: The CSV requirements dictionary for this feature.
+        t4_spans: List of captured child (T4) spans in the current trace.
+    """
+    if row.get("Tier") != "T3" or not t4_spans:
+        return
+
+    first_t4 = t4_spans[0]
+    if "url.template" in first_t4.attributes:
+        assert span.attributes.get("url.template") == first_t4.attributes.get(
+            "url.template"
+        ), (
+            "T3 url.template must be inherited from the first T4 span: T3="
+            f"{span.attributes.get('url.template')!r} != "
+            f"T4_1={first_t4.attributes.get('url.template')!r}"
+        )
+
+    last_t4 = t4_spans[-1]
+    for inherited_attr in ("http.response.status_code", "error.type", "status.message"):
+        if inherited_attr in last_t4.attributes:
+            assert span.attributes.get(inherited_attr) == last_t4.attributes.get(
+                inherited_attr
+            ), (
+                f"T3 {inherited_attr} must match the last T4 span: T3="
+                f"{span.attributes.get(inherited_attr)!r} != "
+                f"T4_last={last_t4.attributes.get(inherited_attr)!r}"
+            )
+
+
+def assert_span_matches_row(
+    span,
+    row: Mapping[str, str],
+    t3_spans: Sequence[Any],
+    t4_spans: Sequence[Any] | None = None,
+):
     """Master validator delegating single-span verification across specialized sub-validators.
 
     Coordinates verification of:
     1. Top-level Span Metadata (Name, Kind, Status)
     2. String Attributes (System, Method, URL, Error Type)
     3. Integer Attributes (HTTP / gRPC Status Codes, Port)
-    4. Status Error Message (Substring containment)
+    4. Status Error Message (Exact string equality)
     5. Retry Resend Count (Protocol-aware retry progression)
     6. Parent Span ID Hierarchy Invariant
+    7. Cross-tier T3/T4 Attribute Inheritance
 
     Args:
         span: The OpenTelemetry ReadableSpan instance being checked.
         row: The CSV requirements dictionary for this feature.
         t3_spans: Captured T3 root spans used to validate parent-child linkage.
+        t4_spans: Captured T4 child spans used to validate cross-tier inheritance.
     """
     _assert_span_metadata(span, row)
     _assert_string_attributes(span, row)
@@ -656,6 +698,8 @@ def assert_span_matches_row(span, row: dict[str, str], t3_spans: list[Any]):
     _assert_status_message(span, row)
     _assert_resend_count(span, row)
     _assert_parent_span_id(span, row, t3_spans)
+    if t4_spans is not None:
+        _assert_t3_t4_inheritance(span, row, t4_spans)
 
 
 # ---------------------------------------------------------------------------
@@ -733,7 +777,7 @@ def test_feature(feature_id: str, row: dict[str, str], span_exporter, monkeypatc
     )
     target_span = tier_spans[attempt_idx]
     with conftest.skip_on_core_mismatch():
-        assert_span_matches_row(target_span, row, t3_spans)
+        assert_span_matches_row(target_span, row, t3_spans, t4_spans)
 
 
 # ---------------------------------------------------------------------------

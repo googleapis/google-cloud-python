@@ -57,6 +57,9 @@ def mock_otel(monkeypatch):
             {
                 "opentelemetry": mock.Mock(trace=mock_trace),
                 "opentelemetry.trace": mock_trace,
+                "opentelemetry.trace.status": mock.Mock(),
+                "opentelemetry.trace.propagation.tracecontext": mock.Mock(),
+                "opentelemetry.instrumentation.grpc": mock.Mock(),
             },
         ),
     ):
