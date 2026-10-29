@@ -219,7 +219,7 @@ def _normalize_scopes(scopes: Any) -> frozenset[str]:
         return frozenset()
     if isinstance(scopes, str):
         scopes = scopes.replace(",", " ").split()
-    return frozenset(s for s in scopes if s)
+    return frozenset(s.strip() for s in scopes if isinstance(s, str) and s.strip())
 
 
 @CrossSync.convert_class(
@@ -303,6 +303,17 @@ class BigtableDataClientAsync(ClientWithProject):
                 credentials = google.auth.credentials.AnonymousCredentials()
             if project is None:
                 project = _DEFAULT_BIGTABLE_EMULATOR_CLIENT
+        elif (
+            project is None
+            and credentials is None
+            and client_options is not None
+            and getattr(client_options, "credentials_file", None)
+        ):
+            _, file_project = google.auth.load_credentials_from_file(
+                client_options.credentials_file
+            )
+            if file_project is not None:
+                project = file_project
         self._metrics_interceptor = MetricsInterceptorType()
         # initialize client
         ClientWithProject.__init__(
@@ -343,8 +354,16 @@ class BigtableDataClientAsync(ClientWithProject):
         if self._emulator_host is None:
             try:
                 # create a metrics exporter using the same client configuration
+                exporter_credentials = (
+                    None
+                    if (
+                        client_options is not None
+                        and getattr(client_options, "credentials_file", None)
+                    )
+                    else self._credentials
+                )
                 exporter = BigtableMetricsExporter(
-                    credentials=self._credentials,
+                    credentials=exporter_credentials,
                     client_options=client_options,
                 )
                 handlers.append(
@@ -431,7 +450,7 @@ class BigtableDataClientAsync(ClientWithProject):
         # Identify this client to the daemon so it can construct the full
         # "python-v{ver}-go-accelerator-v{ver}" User-Agent.
         self._accelerator_flags += [
-            "--caller-user-agent",
+            "--user-agent",
             f"python-v{google.cloud.bigtable.__version__}",
         ]
 
@@ -440,7 +459,17 @@ class BigtableDataClientAsync(ClientWithProject):
         # Forward the effective auth scopes so the daemon's token audience
         # matches the native client (whose default is TransportType.AUTH_SCOPES),
         # rather than the daemon's single hardcoded data scope.
-        effective_scopes = list(scopes) if scopes else list(TransportType.AUTH_SCOPES)
+        if scopes:
+            if isinstance(scopes, str):
+                effective_scopes = [
+                    s.strip() for s in scopes.replace(",", " ").split() if s.strip()
+                ]
+            else:
+                effective_scopes = [
+                    s.strip() for s in scopes if isinstance(s, str) and s.strip()
+                ]
+        else:
+            effective_scopes = list(TransportType.AUTH_SCOPES)
         # Remember the scopes we forwarded so the identity handshake can confirm
         # the daemon actually resolved a token for the same effective scope.
         self._accelerator_scopes: list[str] = effective_scopes
@@ -1401,6 +1430,11 @@ class _DataApiTargetAsync(abc.ABC):
             # An in-memory secret we cannot reproduce in the daemon was
             # supplied; stay on the native client rather than run the
             # accelerated path under a different identity.
+            if explicit:
+                raise RuntimeError(
+                    "use_accelerator=True is not supported: "
+                    f"{self.client._accelerator_blocked_reason}"
+                )
             warnings.warn(
                 "Accelerator disabled: "
                 f"{self.client._accelerator_blocked_reason}; using the "
@@ -1448,9 +1482,18 @@ class _DataApiTargetAsync(abc.ABC):
         if self.app_profile_id:
             flags.extend(["--app-profile", self.app_profile_id])
         flags.extend(self.client._accelerator_flags)
-        server = AcceleratorDaemon(
-            cli_flags=flags, extra_env=self.client._accelerator_env
-        )
+        extra_env = dict(self.client._accelerator_env)
+        if "GOOGLE_APPLICATION_CREDENTIALS" not in extra_env and not os.environ.get(
+            "GOOGLE_APPLICATION_CREDENTIALS"
+        ):
+            cloudsdk_config = os.environ.get("CLOUDSDK_CONFIG")
+            if cloudsdk_config:
+                cloudsdk_adc = os.path.join(
+                    cloudsdk_config, "application_default_credentials.json"
+                )
+                if os.path.isfile(cloudsdk_adc):
+                    extra_env["GOOGLE_APPLICATION_CREDENTIALS"] = cloudsdk_adc
+        server = AcceleratorDaemon(cli_flags=flags, extra_env=extra_env)
         try:
             server.start()
             # Backstop against an identity flip: even under config we forwarded,
@@ -1518,6 +1561,37 @@ class _DataApiTargetAsync(abc.ABC):
 
         daemon_principal = identity.get("principal") or None
         own_principal = self.client._resolve_principal()
+        if (
+            isinstance(
+                getattr(self.client, "_credentials", None),
+                compute_engine.Credentials,
+            )
+            and not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+            and not getattr(self.client, "_accelerator_env", {}).get(
+                "GOOGLE_APPLICATION_CREDENTIALS"
+            )
+        ):
+            cloudsdk_config = os.environ.get("CLOUDSDK_CONFIG")
+            well_known_adc = os.path.join(
+                os.path.expanduser("~"),
+                ".config",
+                "gcloud",
+                "application_default_credentials.json",
+            )
+            if (
+                cloudsdk_config
+                and not os.path.isfile(
+                    os.path.join(
+                        cloudsdk_config, "application_default_credentials.json"
+                    )
+                )
+                and os.path.isfile(well_known_adc)
+            ):
+                raise _AcceleratorIdentityError(
+                    "Accelerator identity mismatch: Python resolved Compute "
+                    "Engine credentials via CLOUDSDK_CONFIG while a well-known "
+                    "ADC file exists for the daemon."
+                )
         if own_principal is None or daemon_principal is None:
             raise _AcceleratorIdentityError(
                 "Could not verify daemon identity: principal is unknown on "

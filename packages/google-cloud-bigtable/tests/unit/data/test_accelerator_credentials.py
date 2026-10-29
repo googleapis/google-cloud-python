@@ -119,7 +119,42 @@ class TestInitAcceleratorConfig:
         c._init_accelerator_config(explicit_credentials=False, client_options=None)
         flags = c._accelerator_flags
         expected = f"python-v{google.cloud.bigtable.__version__}"
-        assert flags[flags.index("--caller-user-agent") + 1] == expected
+        assert flags[flags.index("--user-agent") + 1] == expected
+
+    def test_scopes_string_and_whitespace_normalized(self):
+        c = _bare_client()
+        c._init_accelerator_config(
+            explicit_credentials=False,
+            client_options=ClientOptions(
+                scopes=" https://www.googleapis.com/auth/bigtable.data , https://www.googleapis.com/auth/cloud-platform\n"
+            ),
+        )
+        flags = c._accelerator_flags
+        assert flags[flags.index("--scopes") + 1] == (
+            "https://www.googleapis.com/auth/bigtable.data,"
+            "https://www.googleapis.com/auth/cloud-platform"
+        )
+        assert c._accelerator_scopes == [
+            "https://www.googleapis.com/auth/bigtable.data",
+            "https://www.googleapis.com/auth/cloud-platform",
+        ]
+
+    def test_scopes_list_whitespace_stripped(self):
+        c = _bare_client()
+        c._init_accelerator_config(
+            explicit_credentials=False,
+            client_options=ClientOptions(
+                scopes=[
+                    "https://www.googleapis.com/auth/bigtable.data ",
+                    " https://www.googleapis.com/auth/cloud-platform\n",
+                ]
+            ),
+        )
+        flags = c._accelerator_flags
+        assert flags[flags.index("--scopes") + 1] == (
+            "https://www.googleapis.com/auth/bigtable.data,"
+            "https://www.googleapis.com/auth/cloud-platform"
+        )
 
     def test_caller_user_agent_not_built_when_blocked(self):
         # Blocked means the daemon never starts, so no flag list is ever
