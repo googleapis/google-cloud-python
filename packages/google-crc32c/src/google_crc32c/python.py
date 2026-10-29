@@ -64,8 +64,7 @@ class Checksum(CommonChecksum):
 
     def __init__(self, initial_value=b""):
         self._crc = 0
-        if initial_value != b"":
-            self.update(initial_value)
+        self.update(initial_value)
 
     def update(self, data):
         """Update the checksum with a new chunk of data.

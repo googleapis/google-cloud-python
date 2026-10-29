@@ -18,6 +18,7 @@ import itertools
 import mmap
 import sys
 import threading
+import time
 from unittest import mock
 
 import pytest  # type: ignore
@@ -349,7 +350,7 @@ def test_value_releases_gil_for_immutable_memory(_cext, factory):
     # The counterpart of the test above: nothing can write to a bytes object,
     # so hashing it (or a view into it) runs with the GIL released and the
     # probe thread gets to run while value() is in progress.
-    data = factory(bytes(64 * 1024 * 1024))
+    data = factory(bytes(2 * _cext.GIL_RELEASE_THRESHOLD))
     go = threading.Event()
     in_call = False
     seen = []
@@ -363,9 +364,14 @@ def test_value_releases_gil_for_immutable_memory(_cext, factory):
     try:
         thread = threading.Thread(target=probe, daemon=True)
         thread.start()
-        go.set()
         in_call = True
-        _cext.value(data)
+        go.set()
+        # On a busy machine one call can finish before the probe is scheduled,
+        # so hash until it has run. The deadline stays below the switch
+        # interval: only a released GIL lets the probe in during the loop.
+        deadline = time.monotonic() + 5
+        while not seen and time.monotonic() < deadline:
+            _cext.value(data)
         in_call = False
         thread.join()
     finally:
@@ -447,6 +453,17 @@ class TestChecksum(object):
     @pytest.mark.parametrize("factory", _BYTES_LIKE)
     def test_ctor_w_bytes_like(_crc32c, factory):
         helper = _crc32c.Checksum(factory(ISCSI_BYTES))
+        assert helper._crc == ISCSI_CRC
+
+    @staticmethod
+    def test_ctor_w_exporter_whose_ne_raises(_crc32c):
+        # Like a numpy array, whose ``!=`` compares element-wise and has no
+        # truth value, so the constructor must not compare initial_value.
+        class NoNotEqual(bytes):
+            def __ne__(self, other):
+                raise TypeError("compared")  # pragma: NO COVER
+
+        helper = _crc32c.Checksum(NoNotEqual(ISCSI_BYTES))
         assert helper._crc == ISCSI_CRC
 
     @staticmethod
