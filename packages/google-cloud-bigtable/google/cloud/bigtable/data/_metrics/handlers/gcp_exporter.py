@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import copy
 import logging
 import time
 from collections import defaultdict
@@ -167,6 +168,26 @@ class BigtableMetricsExporter(MetricExporter):
 
     def __init__(self, *client_args, **client_kwargs):
         super().__init__()
+        if client_kwargs.get("credentials") is not None:
+            client_options = client_kwargs.get("client_options")
+            if isinstance(client_options, dict):
+                if client_options.get("credentials_file") or client_options.get(
+                    "api_key"
+                ):
+                    client_options = {
+                        k: v
+                        for k, v in client_options.items()
+                        if k not in ("credentials_file", "api_key")
+                    }
+                    client_kwargs["client_options"] = client_options
+            elif client_options is not None and (
+                getattr(client_options, "credentials_file", None) is not None
+                or getattr(client_options, "api_key", None) is not None
+            ):
+                client_options = copy.copy(client_options)
+                client_options.credentials_file = None
+                client_options.api_key = None
+                client_kwargs["client_options"] = client_options
         self.client = MetricServiceClient(*client_args, **client_kwargs)
         self.prefix = "bigtable.googleapis.com/internal/client"
 

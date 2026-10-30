@@ -176,6 +176,47 @@ class TestBigtableMetricsExporter:
             assert instance.prefix == "bigtable.googleapis.com/internal/client"
             mock_client.assert_called_once_with(*args, **kwargs)
 
+    def test_ctor_with_credentials_and_credentials_file(self):
+        """Passing both resolved credentials and a ClientOptions with
+        credentials_file (or api_key) should not raise DuplicateCredentialArgs
+        or mutate the caller's ClientOptions."""
+        import google.auth.credentials
+        from google.api_core.client_options import ClientOptions
+
+        class _FakeScopedCreds(
+            google.auth.credentials.Scoped, google.auth.credentials.Credentials
+        ):
+            @property
+            def requires_scopes(self):
+                return False
+
+            def with_scopes(self, scopes, default_scopes=None):
+                return self
+
+            def refresh(self, request):
+                pass
+
+        creds = _FakeScopedCreds()
+        opts = ClientOptions(
+            credentials_file="/fake/sa_key.json",
+            api_endpoint="monitoring.googleapis.com",
+        )
+        exporter = BigtableMetricsExporter(credentials=creds, client_options=opts)
+        assert exporter.client is not None
+        assert opts.credentials_file == "/fake/sa_key.json"
+
+        dict_opts = {
+            "credentials_file": "/fake/sa_key.json",
+            "api_key": "fake-key",
+            "api_endpoint": "monitoring.googleapis.com",
+        }
+        exporter_from_dict = BigtableMetricsExporter(
+            credentials=creds, client_options=dict_opts
+        )
+        assert exporter_from_dict.client is not None
+        assert dict_opts["credentials_file"] == "/fake/sa_key.json"
+        assert dict_opts["api_key"] == "fake-key"
+
     @pytest.mark.parametrize(
         "value,expected_field",
         [
