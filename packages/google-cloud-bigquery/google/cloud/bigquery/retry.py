@@ -86,6 +86,10 @@ with reasonable defaults. To disable retry, pass ``retry=None``.
 To modify the default retry behavior, call a ``with_XXX`` method
 on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
 pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
+
+Note: streaming insert methods (``Client.insert_rows``,
+``Client.insert_rows_json``, ``Client.insert_rows_from_dataframe``) default to
+:data:`DEFAULT_INSERT_ROWS_RETRY` instead.
 """
 
 
@@ -103,7 +107,14 @@ def _should_retry_insert_rows(exc):
 
 
 DEFAULT_INSERT_ROWS_RETRY = DEFAULT_RETRY.with_predicate(_should_retry_insert_rows)
-"""The default retry object for streaming inserts (insert_rows_json / insert_rows)."""
+"""The default retry object for streaming inserts.
+
+Used by ``Client.insert_rows``, ``Client.insert_rows_json`` and
+``Client.insert_rows_from_dataframe``. Identical to :data:`DEFAULT_RETRY`,
+except that :class:`requests.exceptions.SSLError` is *not* retried, because
+for ``tabledata.insertAll`` it typically indicates an invalid request (e.g. a
+schema mismatch) rather than a transient failure.
+"""
 
 
 def _should_retry_get_job_conflict(exc):

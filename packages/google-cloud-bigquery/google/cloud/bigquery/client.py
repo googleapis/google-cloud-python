@@ -4121,7 +4121,12 @@ class Client(ClientWithProject):
                 based on the schema of the template table. See
                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
             retry (Optional[google.api_core.retry.Retry]):
-                How to retry the RPC.
+                How to retry the RPC. Defaults to
+                :data:`~google.cloud.bigquery.retry.DEFAULT_INSERT_ROWS_RETRY`,
+                which, unlike :data:`~google.cloud.bigquery.retry.DEFAULT_RETRY`,
+                does not retry :class:`requests.exceptions.SSLError`, since
+                for streaming inserts that usually indicates an invalid request
+                (e.g. a schema mismatch) rather than a transient failure.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
