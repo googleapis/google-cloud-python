@@ -229,21 +229,36 @@ class AsyncAppendableObjectWriter:
         :type preconditions: Optional[:class:`Preconditions`]
         :param preconditions: (Optional) Preconditions for the write operation.
             Generation preconditions (``if_generation_match``,
-            ``if_generation_not_match``) apply only when creating or overwriting
-            an object (``generation`` is ``None`` or ``0``) and are ignored when
-            appending to an existing object (``generation > 0``). Metageneration
-            preconditions (``if_metageneration_match``,
-            ``if_metageneration_not_match``) apply to both creating/overwriting
-            and appending. A mismatch raises
+            ``if_generation_not_match``) require ``generation`` to be ``None``.
+            Metageneration preconditions (``if_metageneration_match``,
+            ``if_metageneration_not_match``) apply to the existing object: the
+            one being overwritten, or the one being appended to when
+            ``generation > 0``. A mismatch raises
             :class:`google.api_core.exceptions.FailedPrecondition` from
-            ``open()``.
+            ``open()``. Preconditions are not re-sent when the writer reconnects
+            to a generation it created.
 
         :raises TypeError: If ``preconditions`` is not a :class:`Preconditions`
             instance.
+        :raises ValueError: If ``generation`` is set together with a generation
+            precondition in ``preconditions``.
         """
         _utils.raise_if_no_fast_crc32c()
         if preconditions is not None and not isinstance(preconditions, Preconditions):
             raise TypeError("preconditions must be an instance of Preconditions")
+        if (
+            generation is not None
+            and preconditions is not None
+            and (
+                preconditions.if_generation_match is not None
+                or preconditions.if_generation_not_match is not None
+            )
+        ):
+            raise ValueError(
+                "if_generation_match/if_generation_not_match require generation=None; "
+                "generation=0 already means if_generation_match=0 and generation > 0 "
+                "(including from_blob's blob.generation) appends to an existing object."
+            )
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
@@ -251,6 +266,9 @@ class AsyncAppendableObjectWriter:
         self.generation = generation
         self.storage_class = storage_class
         self.preconditions = preconditions
+        # Set once this writer creates a new generation; `preconditions` then no
+        # longer apply to the object being reconnected to.
+        self._created_generation = False
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -321,9 +339,12 @@ class AsyncAppendableObjectWriter:
 
         :type preconditions: Optional[:class:`Preconditions`]
         :param preconditions: (Optional) Preconditions for the write operation.
+            Generation preconditions require ``blob.generation`` to be ``None``.
 
         :rtype: :class:`AsyncAppendableObjectWriter`
         :returns: An initialized writer instance.
+        :raises ValueError: If ``blob.generation`` is set together with a
+            generation precondition in ``preconditions``.
         """
         instance = cls(
             client=client,
@@ -368,6 +389,9 @@ class AsyncAppendableObjectWriter:
             if redirect_proto.write_handle:
                 self.write_handle = redirect_proto.write_handle
             if redirect_proto.generation:
+                if not self.generation:
+                    # The redirected create already produced this generation.
+                    self._created_generation = True
                 self.generation = redirect_proto.generation
 
     def _merge_retry_policy(
@@ -413,6 +437,7 @@ class AsyncAppendableObjectWriter:
 
         async def _do_open():
             current_metadata = list(metadata) if metadata else []
+            creating = not self.generation
 
             # Cleanup stream from previous failed attempt, if any.
             if self.write_obj_stream:
@@ -435,7 +460,7 @@ class AsyncAppendableObjectWriter:
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,
                 storage_class=self.storage_class,
-                preconditions=self.preconditions,
+                preconditions=None if self._created_generation else self.preconditions,
             )
 
             if self._routing_token:
@@ -448,6 +473,8 @@ class AsyncAppendableObjectWriter:
             )
 
             if self.write_obj_stream.generation_number:
+                if creating:
+                    self._created_generation = True
                 self.generation = self.write_obj_stream.generation_number
             if self.write_obj_stream.write_handle:
                 self.write_handle = self.write_obj_stream.write_handle
