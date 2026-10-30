@@ -1225,10 +1225,12 @@ class TestAuthorizedSession(object):
 
     def test_cert_rotation_check_params_fails(self):
         credentials = mock.Mock(wraps=CredentialsStub())
-        adapter = AdapterStub([
-            make_response(status=http_client.UNAUTHORIZED),
-            make_response(status=http_client.OK)
-        ])
+        adapter = AdapterStub(
+            [
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ]
+        )
 
         authed_session = google.auth.transport.requests.AuthorizedSession(
             credentials, refresh_timeout=60
@@ -1438,26 +1440,234 @@ class TestAuthorizedSession(object):
         )
 
     def test_unauthorized_cert_discovery_exception_proceeds_to_token_refresh(self):
-        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-        session = google.auth.transport.requests.AuthorizedSession(credentials)
-        session._is_mtls = True
-        mock_response_unauth = mock.Mock(status_code=http_client.UNAUTHORIZED)
-        mock_response_ok = mock.Mock(status_code=http_client.OK)
+        credentials = mock.Mock(wraps=CredentialsStub())
+        adapter = AdapterStub(
+            [
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ]
+        )
+        authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
+        authed_session.mount(self.MTLS_TEST_URL, adapter)
+        authed_session._is_mtls = True
         # Simulate discovery failure (e.g. Enterprise cert provider error or file missing)
         with mock.patch.object(
-            requests._mtls_helper,
+            google.auth.transport._mtls_helper,
             "check_parameters_for_unauthorized_response",
             side_effect=Exception("Certificate discovery failed"),
         ):
-            with mock.patch.object(
-                super(google.auth.transport.requests.AuthorizedSession, session),
-                "request",
-                side_effect=[mock_response_unauth, mock_response_ok],
-            ):
-                session.request("GET", "https://example.mtls.googleapis.com/")
+            result = authed_session.request("GET", self.MTLS_TEST_URL)
         # Token refresh should still be called despite discovery failure
         credentials.refresh.assert_called_once()
-        assert not session._mtls_reauth_lock.locked()
+        assert result.status_code == http_client.OK
+        assert not authed_session._mtls_reauth_lock.locked()
+
+    def test_cert_check_skipped_when_cert_rotated_during_request(self):
+        """
+        Tests that a request that receives a 401 response does not read the
+        client certificate again if another thread has already rotated it
+        while the request was in flight.
+        """
+        credentials = mock.Mock(wraps=CredentialsStub())
+        adapter = AdapterStub(
+            [
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ]
+        )
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, refresh_timeout=60
+        )
+        authed_session.mount(self.MTLS_TEST_URL, adapter)
+        authed_session._is_mtls = True
+        authed_session._cached_cert = b"old_cert"
+        send_request = adapter.send
+
+        def send_request_and_rotate_cert(request, **kwargs):
+            # Simulate another thread rotating the client certificate while
+            # this request is in flight.
+            authed_session._cached_cert = b"new_cert"
+            return send_request(request, **kwargs)
+
+        adapter.send = send_request_and_rotate_cert
+
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+        ) as mock_check_params:
+            with mock.patch.object(
+                authed_session, "configure_mtls_channel"
+            ) as mock_configure_mtls_channel:
+                result = authed_session.request("GET", self.MTLS_TEST_URL)
+
+        assert result.status_code == http_client.OK
+        mock_check_params.assert_not_called()
+        mock_configure_mtls_channel.assert_not_called()
+        credentials.refresh.assert_called_once()
+
+    def test_reconfigure_mtls_channel_skipped_if_mtls_disabled(self):
+        """
+        Tests that the client certificate is not checked if another thread
+        disabled mTLS while this thread was waiting for the lock.
+        """
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            mock.sentinel.credentials
+        )
+        authed_session._is_mtls = False
+
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+        ) as mock_check_params:
+            authed_session._reconfigure_mtls_channel_if_cert_changed(b"old_cert")
+
+        mock_check_params.assert_not_called()
+        assert not authed_session._mtls_reauth_lock.locked()
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_concurrent_unauthorized_responses_reconfigure_mtls_channel_once(
+        self, mock_send
+    ):
+        """
+        Tests that when several threads that share an AuthorizedSession receive
+        a 401 response at the same time, the client certificate is read and the
+        real mTLS channel reconfiguration runs only once, and every request is
+        retried successfully through the newly mounted mTLS adapter.
+        """
+        num_threads = 8
+        old_cert = b"old_cert"
+        all_requests_sent = threading.Barrier(num_threads)
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            CredentialsStub(), refresh_timeout=60
+        )
+        authed_session._is_mtls = True
+        authed_session._cached_cert = old_cert
+        old_adapter = authed_session.adapters["https://"]
+        old_auth_adapter = authed_session._auth_request_session.adapters["https://"]
+
+        def send(adapter, request, **kwargs):
+            if isinstance(adapter, google.auth.transport.requests._MutualTlsAdapter):
+                return make_response(status=http_client.OK)
+            # Wait until every thread has sent its request through the old
+            # adapter, so that all of them receive a 401 response.
+            all_requests_sent.wait(timeout=30)
+            return make_response(status=http_client.UNAUTHORIZED)
+
+        mock_send.side_effect = send
+
+        def check_parameters_for_unauthorized_response(cached_cert):
+            cached_fingerprint = "old_fp" if cached_cert == old_cert else "new_fp"
+            return (
+                pytest.public_cert_bytes,
+                pytest.private_key_bytes,
+                cached_fingerprint,
+                "new_fp",
+            )
+
+        results = []
+        errors = []
+
+        def make_request():
+            try:
+                results.append(authed_session.request("GET", self.MTLS_TEST_URL))
+            except Exception as exc:  # pragma: NO COVER
+                errors.append(exc)
+
+        with (
+            mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ),
+            mock.patch.object(
+                google.auth.transport._mtls_helper,
+                "check_parameters_for_unauthorized_response",
+                side_effect=check_parameters_for_unauthorized_response,
+            ) as mock_check_params,
+            mock.patch.object(
+                authed_session,
+                "configure_mtls_channel",
+                wraps=authed_session.configure_mtls_channel,
+            ) as spy_configure_mtls_channel,
+        ):
+            threads = [
+                threading.Thread(target=make_request) for _ in range(num_threads)
+            ]
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join(timeout=60)
+
+        assert errors == []
+        assert [r.status_code for r in results] == [http_client.OK] * num_threads
+        mock_check_params.assert_called_once()
+        spy_configure_mtls_channel.assert_called_once()
+        assert authed_session.is_mtls
+        assert authed_session._cached_cert == pytest.public_cert_bytes
+        new_adapter = authed_session.adapters["https://"]
+        new_auth_adapter = authed_session._auth_request_session.adapters["https://"]
+        assert isinstance(new_adapter, google.auth.transport.requests._MutualTlsAdapter)
+        assert isinstance(
+            new_auth_adapter, google.auth.transport.requests._MutualTlsAdapter
+        )
+        assert new_adapter is not old_adapter
+        assert new_auth_adapter is not old_auth_adapter
+        assert not authed_session._mtls_reauth_lock.locked()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    def test_configure_mtls_channel_does_not_mutate_adapters_in_place(
+        self, mock_get_client_cert_and_key
+    ):
+        """
+        Tests that configure_mtls_channel replaces the adapters dictionaries of
+        the session and of the auth request session instead of mutating them,
+        so that a thread iterating over them in get_adapter() does not fail
+        with "OrderedDict mutated during iteration".
+        """
+        mock_get_client_cert_and_key.return_value = (
+            True,
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials=mock.Mock()
+        )
+        custom_adapter = AdapterStub([])
+        authed_session.mount(self.MTLS_TEST_URL, custom_adapter)
+        auth_session = authed_session._auth_request_session
+
+        adapters_before = authed_session.adapters
+        adapters_snapshot = adapters_before.copy()
+        adapters_iter = iter(adapters_before.items())
+        next(adapters_iter)
+        auth_adapters_before = auth_session.adapters
+        auth_adapters_snapshot = auth_adapters_before.copy()
+        auth_adapters_iter = iter(auth_adapters_before.items())
+        next(auth_adapters_iter)
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            authed_session.configure_mtls_channel()
+
+        # Iterators over the previous dictionaries are still valid.
+        list(adapters_iter)
+        list(auth_adapters_iter)
+        assert adapters_before == adapters_snapshot
+        assert auth_adapters_before == auth_adapters_snapshot
+        assert authed_session.adapters is not adapters_before
+        assert auth_session.adapters is not auth_adapters_before
+        assert isinstance(
+            authed_session.get_adapter("https://example.com/"),
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert isinstance(
+            auth_session.get_adapter("https://example.com/"),
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        # The more specific prefix mounted earlier still takes precedence.
+        assert authed_session.get_adapter(self.MTLS_TEST_URL) is custom_adapter
 
 
 class TestMutualTlsOffloadAdapter(object):
@@ -1532,12 +1742,17 @@ class TestAuthorizedSessionMTLSReauth:
         "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
     )
     @mock.patch("google.auth.transport.requests.requests.Session.request")
-    def test_reauth_lock_acquired_on_unauthorized(self, *args):
+    def test_reauth_lock_acquired_on_unauthorized(
+        self, mock_session_request, mock_check_params
+    ):
         credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-        session = requests.AuthorizedSession(credentials)
+        session = google.auth.transport.requests.AuthorizedSession(credentials)
         session._is_mtls = True
-        mock_response = mock.Mock(status_code=http_client.UNAUTHORIZED)
-        mock_success_response = mock.Mock(status_code=http_client.OK)
+        mock_session_request.side_effect = [
+            mock.Mock(status_code=http_client.UNAUTHORIZED),
+            mock.Mock(status_code=http_client.OK),
+        ]
+        mock_check_params.return_value = (b"cert", b"key", "old_fp", "new_fp")
         lock_held_during_call = {"held": False}
 
         def mock_configure_mtls_channel(callback):
@@ -1546,17 +1761,9 @@ class TestAuthorizedSessionMTLSReauth:
         session.configure_mtls_channel = mock.Mock(
             side_effect=mock_configure_mtls_channel
         )
-        with mock.patch.object(
-            requests._mtls_helper,
-            "check_parameters_for_unauthorized_response",
-            return_value=(b"cert", b"key", "old_fp", "new_fp"),
-        ):
-            with mock.patch.object(
-                super(requests.AuthorizedSession, session),
-                "request",
-                side_effect=[mock_response, mock_success_response],
-            ):
-                session.request("GET", "https://example.mtls.googleapis.com/")
+
+        session.request("GET", "https://example.mtls.googleapis.com/")
+
         session.configure_mtls_channel.assert_called_once()
         assert lock_held_during_call["held"] is True
         assert not session._mtls_reauth_lock.locked()
