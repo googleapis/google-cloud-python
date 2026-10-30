@@ -12,10 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
+import json
+import logging
 import os
+import pickle
 import re
 import sys
 import tempfile
+import threading
 from unittest import mock
 
 import pytest  # type: ignore
@@ -23,7 +28,7 @@ import urllib3.util
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
 
-from google.auth import environment_vars, exceptions
+from google.auth import _agent_identity_utils, environment_vars, exceptions
 from google.auth.transport import _mtls_helper
 
 if not hasattr(os, "MFD_CLOEXEC"):
@@ -50,6 +55,14 @@ PASSPHRASE = b"""-----BEGIN PASSPHRASE-----
 password
 -----END PASSPHRASE-----"""
 PASSPHRASE_VALUE = b"password"
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+
+with open(os.path.join(DATA_DIR, "other_cert.pem"), "rb") as _fh:
+    OTHER_CERT_BYTES = _fh.read()
+
+with open(os.path.join(DATA_DIR, "trust_chain_with_leaf.pem"), "rb") as _fh:
+    TRUST_CHAIN_WITH_LEAF_BYTES = _fh.read()
 
 
 def check_cert_and_key(content, expected_cert, expected_key):
@@ -2313,3 +2326,240 @@ class TestGkeCredentialBundleDiscovery(object):
         assert _mtls_helper._get_workload_cert_and_key() == (None, None)
         assert _mtls_helper.check_use_client_cert() is False
         mock_is_ready.assert_not_called()
+
+
+class TestMtlsCertManager(object):
+    def _write_workload_config(self, tmp_path):
+        cert_file = tmp_path / "cert.pem"
+        key_file = tmp_path / "key.pem"
+        config_file = tmp_path / "certificate_config.json"
+
+        cert_file.write_bytes(pytest.public_cert_bytes)
+        key_file.write_bytes(pytest.private_key_bytes)
+        config_file.write_text(
+            json.dumps(
+                {
+                    "cert_configs": {
+                        "workload": {
+                            "cert_path": str(cert_file),
+                            "key_path": str(key_file),
+                        }
+                    }
+                }
+            )
+        )
+        return cert_file, config_file
+
+    def test_default_discovery_and_rotation_from_config_file(self, tmp_path):
+        cert_file, config_file = self._write_workload_config(tmp_path)
+        manager = _mtls_helper._MtlsCertManager(
+            certificate_config_path=str(config_file)
+        )
+        assert manager.get_credential_snapshot() == (None, None, 0)
+
+        assert manager.refresh() is True
+        assert manager.generation_id == 1
+        assert manager.get_credential_snapshot() == (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+            1,
+        )
+
+        assert manager.refresh() is False
+        assert manager.generation_id == 1
+
+        cert_file.write_bytes(OTHER_CERT_BYTES)
+        assert manager.refresh() is True
+        assert manager.generation_id == 2
+        assert manager.get_credential_snapshot() == (
+            OTHER_CERT_BYTES,
+            pytest.private_key_bytes,
+            2,
+        )
+
+    def test_client_cert_source_and_pem_chain_leaf_fingerprint(self):
+        source = mock.Mock(
+            side_effect=[
+                (TRUST_CHAIN_WITH_LEAF_BYTES, pytest.private_key_bytes),
+                (TRUST_CHAIN_WITH_LEAF_BYTES, pytest.private_key_bytes),
+                (OTHER_CERT_BYTES, pytest.private_key_bytes),
+            ]
+        )
+        manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+
+        expected_leaf_fp = _agent_identity_utils.calculate_certificate_fingerprint(
+            _agent_identity_utils.parse_certificate(TRUST_CHAIN_WITH_LEAF_BYTES)
+        )
+        assert manager.refresh() is True
+        assert manager.generation_id == 1
+        assert manager.get_credential_snapshot() == (
+            TRUST_CHAIN_WITH_LEAF_BYTES,
+            pytest.private_key_bytes,
+            1,
+        )
+        assert manager._cert_fingerprint == expected_leaf_fp
+
+        assert manager.refresh() is False
+        assert manager.generation_id == 1
+
+        assert manager.refresh() is True
+        assert manager.generation_id == 2
+        assert manager.get_credential_snapshot() == (
+            OTHER_CERT_BYTES,
+            pytest.private_key_bytes,
+            2,
+        )
+        assert source.call_count == 3
+
+    def test_expected_generation_coalesces_concurrent_refreshes(self):
+        barrier = threading.Barrier(4)
+        source = mock.Mock(
+            return_value=(pytest.public_cert_bytes, pytest.private_key_bytes)
+        )
+
+        manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+        assert manager.refresh() is True
+        assert manager.generation_id == 1
+        assert source.call_count == 1
+
+        assert manager.refresh(expected_generation=0) is True
+        assert source.call_count == 1
+
+        source.return_value = (OTHER_CERT_BYTES, pytest.private_key_bytes)
+        results = [None] * 4
+
+        def worker(idx):
+            barrier.wait()
+            results[idx] = manager.refresh(expected_generation=1)
+
+        threads = [threading.Thread(target=worker, args=(i,)) for i in range(4)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        assert results == [True, True, True, True]
+        assert manager.generation_id == 2
+        assert source.call_count == 2
+
+    def test_initial_load_no_default_cert_returns_false(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("HOME", str(tmp_path))
+        monkeypatch.setenv("USERPROFILE", str(tmp_path))
+        monkeypatch.setattr(
+            _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmp_path)
+        )
+        manager = _mtls_helper._MtlsCertManager()
+        assert manager.refresh() is False
+        assert manager.generation_id == 0
+        assert manager.get_credential_snapshot() == (None, None, 0)
+
+    @pytest.mark.parametrize(
+        "side_effect",
+        [
+            exceptions.ClientCertError("bad cert config"),
+            exceptions.MutualTLSChannelError("channel cert error"),
+            OSError("file missing"),
+            [(b"not a valid pem cert", pytest.private_key_bytes)],
+            [(b"", pytest.private_key_bytes)],
+            [(pytest.public_cert_bytes, b"")],
+        ],
+    )
+    def test_initial_load_error_raises_client_cert_error(self, side_effect):
+        source = mock.Mock(side_effect=side_effect)
+        manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+
+        with pytest.raises(exceptions.ClientCertError):
+            manager.refresh()
+
+        assert manager.generation_id == 0
+        assert manager.get_credential_snapshot() == (None, None, 0)
+
+    @pytest.mark.parametrize(
+        "reload_side_effect",
+        [
+            exceptions.ClientCertError("transient cert error"),
+            exceptions.MutualTLSChannelError("transient mtls error"),
+            OSError("transient read error"),
+            [(b"-----BEGIN CERTIFICATE-----\ntruncated", pytest.private_key_bytes)],
+            [(b"", pytest.private_key_bytes)],
+            [(pytest.public_cert_bytes, b"")],
+        ],
+    )
+    def test_transient_reload_error_retains_last_known_good_cert(
+        self, reload_side_effect, caplog
+    ):
+        source = mock.Mock(
+            return_value=(pytest.public_cert_bytes, pytest.private_key_bytes)
+        )
+        manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+        assert manager.refresh() is True
+        assert manager.generation_id == 1
+
+        source.side_effect = reload_side_effect
+        with caplog.at_level(logging.DEBUG, logger=_mtls_helper.__name__):
+            assert manager.refresh() is False
+
+        assert "retaining previous certificate (generation 1)" in caplog.text
+        assert manager.generation_id == 1
+        assert manager.get_credential_snapshot() == (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+            1,
+        )
+
+    def test_transient_missing_default_cert_on_reload_retains_last_known_good(
+        self, tmp_path, monkeypatch, caplog
+    ):
+        monkeypatch.setenv("HOME", str(tmp_path))
+        monkeypatch.setenv("USERPROFILE", str(tmp_path))
+        monkeypatch.setattr(
+            _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmp_path)
+        )
+        _, config_file = self._write_workload_config(tmp_path)
+
+        manager = _mtls_helper._MtlsCertManager(
+            certificate_config_path=str(config_file)
+        )
+        assert manager.refresh() is True
+
+        config_file.unlink()
+        with caplog.at_level(logging.DEBUG, logger=_mtls_helper.__name__):
+            assert manager.refresh() is False
+
+        assert "retaining previous certificate (generation 1)" in caplog.text
+        assert manager.generation_id == 1
+        assert manager.get_credential_snapshot() == (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+            1,
+        )
+
+    def test_deepcopy_shares_instance_and_pickle_roundtrip_recreates_lock(
+        self, tmp_path
+    ):
+        cert_file, config_file = self._write_workload_config(tmp_path)
+        manager = _mtls_helper._MtlsCertManager(
+            certificate_config_path=str(config_file)
+        )
+        assert manager.refresh() is True
+
+        copied = copy.deepcopy(manager)
+        assert copied is manager
+
+        restored = pickle.loads(pickle.dumps(manager))
+        assert restored is not manager
+        assert restored.get_credential_snapshot() == (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+            1,
+        )
+        assert restored.generation_id == 1
+
+        cert_file.write_bytes(OTHER_CERT_BYTES)
+        assert restored.refresh() is True
+        assert restored.generation_id == 2
+        assert restored.get_credential_snapshot() == (
+            OTHER_CERT_BYTES,
+            pytest.private_key_bytes,
+            2,
+        )

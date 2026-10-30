@@ -22,8 +22,9 @@ import re
 import subprocess
 import sys
 import tempfile
+import threading
 from os import environ, getenv, path
-from typing import Generator, List, Optional, Tuple, Union, cast
+from typing import Callable, Generator, List, Optional, Tuple, Union, cast
 from urllib.parse import urlsplit
 
 from google.auth import _agent_identity_utils, _cloud_sdk, environment_vars, exceptions
@@ -967,3 +968,141 @@ def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
         return False
 
     return hostname in _MTLS_EXACT_HOSTS or hostname.endswith(_MTLS_HOST_SUFFIXES)
+
+
+class _MtlsCertManager:
+    """Thread-safe manager for mTLS client certificates and generation tracking.
+
+    Tracks the active client certificate bytes, private key bytes, leaf
+    certificate SHA-256 fingerprint, and a ``generation_id`` counter that
+    increments only when the loaded certificate changes.
+
+    Args:
+        client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+            Optional callback returning ``(cert_bytes, key_bytes)`` in PEM
+            format. When ``None``, certificates are discovered via
+            :func:`get_client_ssl_credentials`.
+        certificate_config_path (Optional[str]): Optional explicit path to a
+            ``certificate_config.json`` file used when ``client_cert_source``
+            is ``None``.
+    """
+
+    def __init__(
+        self,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        certificate_config_path: Optional[str] = None,
+    ) -> None:
+        self._client_cert_source = client_cert_source
+        self._certificate_config_path = certificate_config_path
+        self._cert: Optional[bytes] = None
+        self._key: Optional[bytes] = None
+        self._cert_fingerprint: Optional[str] = None
+        self._generation_id: int = 0
+        self._lock = threading.Lock()
+
+    @property
+    def generation_id(self) -> int:
+        return self._generation_id
+
+    def get_credential_snapshot(
+        self,
+    ) -> Tuple[Optional[bytes], Optional[bytes], int]:
+        """Returns the current ``(cert_bytes, key_bytes, generation_id)`` under the lock."""
+        with self._lock:
+            return self._cert, self._key, self._generation_id
+
+    def _load_cert_and_fingerprint(
+        self,
+    ) -> Tuple[Optional[bytes], Optional[bytes], Optional[str]]:
+        """Loads the certificate, private key, and leaf SHA-256 fingerprint."""
+        if self._client_cert_source is not None:
+            cert_bytes, key_bytes = self._client_cert_source()
+        else:
+            has_cert, cert_bytes, key_bytes, _ = get_client_ssl_credentials(
+                generate_encrypted_key=False,
+                certificate_config_path=self._certificate_config_path,
+            )
+            if not has_cert and self._generation_id == 0:
+                return None, None, None
+
+        if not cert_bytes or not key_bytes:
+            raise exceptions.ClientCertError(
+                "Client certificate or private key is empty."
+            )
+
+        cert_obj = _agent_identity_utils.parse_certificate(cert_bytes)
+        fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(cert_obj)
+
+        return cert_bytes, key_bytes, fingerprint
+
+    def refresh(self, expected_generation: Optional[int] = None) -> bool:
+        """Loads the client certificate and increments ``generation_id`` if it changed.
+
+        Args:
+            expected_generation (Optional[int]): If provided and the manager's
+                ``generation_id`` is already greater than ``expected_generation``,
+                returns ``True`` immediately without reading the certificate
+                source again. This can be set to the ``generation_id`` a caller
+                was using when a request failed so concurrent callers do not
+                load the certificate multiple times.
+
+        Returns:
+            bool: ``True`` if the certificate changed (or ``generation_id`` is
+                already greater than ``expected_generation``), ``False``
+                otherwise.
+
+        Raises:
+            google.auth.exceptions.ClientCertError: If loading or parsing the
+                certificate fails on the initial load (``generation_id == 0``).
+        """
+        with self._lock:
+            if (
+                expected_generation is not None
+                and self._generation_id > expected_generation
+            ):
+                return True
+
+            try:
+                cert_bytes, key_bytes, fingerprint = self._load_cert_and_fingerprint()
+            except (
+                exceptions.ClientCertError,
+                exceptions.MutualTLSChannelError,
+                OSError,
+                ValueError,
+            ) as caught_exc:
+                if self._generation_id > 0:
+                    _LOGGER.debug(
+                        "Failed to reload mTLS client certificate; retaining "
+                        "previous certificate (generation %d): %s",
+                        self._generation_id,
+                        caught_exc,
+                    )
+                    return False
+                if isinstance(caught_exc, exceptions.ClientCertError):
+                    raise
+                raise exceptions.ClientCertError(caught_exc) from caught_exc
+
+            if cert_bytes is None:
+                return False
+
+            if fingerprint != self._cert_fingerprint:
+                self._cert = cert_bytes
+                self._key = key_bytes
+                self._cert_fingerprint = fingerprint
+                self._generation_id += 1
+                return True
+
+            return False
+
+    def __deepcopy__(self, memo):
+        # Share the same thread-safe manager instance across deep copies.
+        return self
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state["_lock"] = None
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self._lock = threading.Lock()
