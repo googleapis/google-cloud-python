@@ -772,7 +772,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
 
         item_one = mock.Mock(
             value=0,
-            resume_token=b"",
+            resume_token=b"r1",
             metadata=None,
             precommit_token=None,
             last=False,
@@ -829,8 +829,17 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             SpannerMetricsTracerFactory,
         )
 
-        item = mock.Mock(
+        item_one = mock.Mock(
             value=0,
+            resume_token=b"r1",
+            metadata=None,
+            precommit_token=None,
+            last=False,
+            _pb=None,
+            spec=["value", "resume_token", "metadata", "precommit_token", "last"],
+        )
+        item_two = mock.Mock(
+            value=1,
             resume_token=b"",
             metadata=None,
             precommit_token=None,
@@ -838,7 +847,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             _pb=None,
             spec=["value", "resume_token", "metadata", "precommit_token", "last"],
         )
-        raw = _MockIterator(item)
+        raw = _MockIterator(item_one, item_two)
         restart = mock.Mock(return_value=raw)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         database = _Database()
@@ -857,7 +866,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
 
         # Breaking early must not raise ValueError during aclose()
         async for it in resumable:
-            self.assertEqual(it, item)
+            self.assertEqual(it, item_one)
             break
         await resumable.aclose()
 
@@ -976,8 +985,17 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             "metrics export failure"
         )
 
-        item = mock.Mock(
+        item_one = mock.Mock(
             value=0,
+            resume_token=b"r1",
+            metadata=None,
+            precommit_token=None,
+            last=False,
+            _pb=None,
+            spec=["value", "resume_token", "metadata", "precommit_token", "last"],
+        )
+        item_two = mock.Mock(
+            value=1,
             resume_token=b"",
             metadata=None,
             precommit_token=None,
@@ -985,7 +1003,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             _pb=None,
             spec=["value", "resume_token", "metadata", "precommit_token", "last"],
         )
-        mock_iterator = _MockIterator(item)
+        mock_iterator = _MockIterator(item_one, item_two)
         mock_iterator.cancel = mock.Mock()
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         database = _Database()
@@ -1009,9 +1027,23 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
                 break
             await resumable.aclose()
 
-            self.assertEqual(items, [item])
+            self.assertEqual(items, [item_one])
             mock_tracer.record_operation_completion.assert_called_once()
             mock_iterator.cancel.assert_called_once()
+
+            # Also verify error is handled when stream finishes normally before yield
+            mock_tracer.reset_mock()
+            resumable_done = _restart_on_unavailable(
+                mock.Mock(return_value=_MockIterator(item_two)),
+                request,
+                session=session,
+                transaction=snapshot,
+                request_id_manager=session._database,
+                resource_info={"project": "p"},
+            )
+            items_done = [it async for it in resumable_done]
+            self.assertEqual(items_done, [item_two])
+            mock_tracer.record_operation_completion.assert_called_once()
 
     async def test_restart_on_unavailable_metrics_completion_error_preserves_query_error(
         self,
