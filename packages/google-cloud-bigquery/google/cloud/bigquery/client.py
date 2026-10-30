@@ -4191,8 +4191,6 @@ class Client(ClientWithProject):
         path = "%s/insertAll" % table.path
         # We can always retry, because every row has an insert ID.
         span_attributes = {"path": path}
-        if retry is DEFAULT_RETRY:
-            retry = DEFAULT_INSERT_ROWS_RETRY
 
         try:
             response = self._call_api(
