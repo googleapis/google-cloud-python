@@ -39,6 +39,7 @@ from google.api_core.exceptions import (
     DeadlineExceeded,
     ServiceUnavailable,
 )
+import google.auth
 from google.auth import compute_engine, environment_vars
 from google.auth.transport import requests as google_auth_requests
 from google.cloud.client import ClientWithProject
@@ -225,7 +226,7 @@ class BigtableDataClient(ClientWithProject):
         if (
             project is None
             and credentials is None
-            and (client_options is not None)
+            and client_options is not None
             and client_options.credentials_file
         ):
             project = os.getenv(
