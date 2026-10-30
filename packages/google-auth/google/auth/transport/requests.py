@@ -582,14 +582,22 @@ class AuthorizedSession(requests.Session):
                 If the callback is None, application default SSL credentials
                 will be used.
 
-        .. warning::
-            Replaces and closes adapters. Serialize concurrent calls to this
-            method.
+        .. note::
+            Replaces and closes adapters. Calls are serialized with each other
+            and with the automatic reconfiguration that runs on 401 responses.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason. The existing session state (such
                 as adapter mounts) remains unmodified if this error is raised.
+        """
+        with self._mtls_reauth_lock:
+            self._configure_mtls_channel_locked(client_cert_callback)
+
+    def _configure_mtls_channel_locked(self, client_cert_callback=None):
+        """Implements :meth:`configure_mtls_channel`.
+
+        The caller must hold ``_mtls_reauth_lock``.
         """
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
@@ -671,7 +679,12 @@ class AuthorizedSession(requests.Session):
             old_adapter.close()
 
         if self._auth_request_session is not None and new_auth_adapter is not None:
-            _replace_adapter(self._auth_request_session, "https://", new_auth_adapter)
+            # Request._configure_mtls_if_needed() also writes the adapters of
+            # this session during token refresh, under the Request's own lock.
+            with self._auth_request._mtls_lock:
+                _replace_adapter(
+                    self._auth_request_session, "https://", new_auth_adapter
+                )
 
             if (
                 old_auth_adapter is not None
@@ -883,6 +896,7 @@ class AuthorizedSession(requests.Session):
                 _LOGGER.warning(
                     "Failed to check whether the client certificate has changed: %s",
                     e,
+                    exc_info=True,
                 )
                 return
             finally:
@@ -899,9 +913,13 @@ class AuthorizedSession(requests.Session):
                 _LOGGER.info(
                     "Client certificate has changed, reconfiguring mTLS channel."
                 )
-                self.configure_mtls_channel(lambda: (call_cert_bytes, call_key_bytes))
+                self._configure_mtls_channel_locked(
+                    lambda: (call_cert_bytes, call_key_bytes)
+                )
             except Exception as e:
-                _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                _LOGGER.error(
+                    "Failed to reconfigure mTLS channel: %s", e, exc_info=True
+                )
                 raise exceptions.MutualTLSChannelError(
                     "Failed to reconfigure mTLS channel"
                 ) from e

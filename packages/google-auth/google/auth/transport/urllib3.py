@@ -346,9 +346,10 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 If the callback is None, application default SSL credentials
                 will be used.
 
-        .. warning::
-            Replaces and closes adapters. Serialize concurrent calls to this
-            method.
+        .. note::
+            Replaces the pool manager and clears the old one. Calls are
+            serialized with each other and with the automatic reconfiguration
+            that runs on 401 responses.
 
         Returns:
             True if the channel is mutual TLS and False otherwise.
@@ -357,6 +358,14 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason. The existing channel state (the
                 HTTP client) remains unmodified if this error is raised.
+        """
+        with self._mtls_reauth_lock:
+            return self._configure_mtls_channel_locked(client_cert_callback)
+
+    def _configure_mtls_channel_locked(self, client_cert_callback=None):
+        """Implements :meth:`configure_mtls_channel`.
+
+        The caller must hold ``_mtls_reauth_lock``.
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
@@ -539,6 +548,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 _LOGGER.warning(
                     "Failed to check whether the client certificate has changed: %s",
                     e,
+                    exc_info=True,
                 )
                 return
             finally:
@@ -555,11 +565,13 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 _LOGGER.info(
                     "Client certificate has changed, reconfiguring mTLS channel."
                 )
-                self.configure_mtls_channel(
+                self._configure_mtls_channel_locked(
                     client_cert_callback=lambda: (call_cert_bytes, call_key_bytes)
                 )
             except Exception as e:
-                _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                _LOGGER.error(
+                    "Failed to reconfigure mTLS channel: %s", e, exc_info=True
+                )
                 raise exceptions.MutualTLSChannelError(
                     "Failed to reconfigure mTLS channel"
                 ) from e

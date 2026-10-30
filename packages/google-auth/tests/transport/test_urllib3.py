@@ -599,7 +599,7 @@ class TestAuthorizedHttp(object):
         ) as mock_check_params:
             with mock.patch.object(
                 authed_http,
-                "configure_mtls_channel",
+                "_configure_mtls_channel_locked",
                 side_effect=Exception("Failed to reconfigure"),
             ) as mock_reconfigure:
                 with pytest.raises(exceptions.MutualTLSChannelError):
@@ -831,7 +831,7 @@ class TestAuthorizedHttp(object):
         def mock_configure_mtls_channel(client_cert_callback=None):
             lock_held_during_call["held"] = http_obj._mtls_reauth_lock.locked()
 
-        http_obj.configure_mtls_channel = mock.Mock(
+        http_obj._configure_mtls_channel_locked = mock.Mock(
             side_effect=mock_configure_mtls_channel
         )
         http_obj.http.urlopen = mock.Mock(
@@ -845,7 +845,7 @@ class TestAuthorizedHttp(object):
         ):
             http_obj.request("GET", "https://example.mtls.googleapis.com/")
 
-        http_obj.configure_mtls_channel.assert_called_once()
+        http_obj._configure_mtls_channel_locked.assert_called_once()
         assert lock_held_during_call["held"] is True
         assert not http_obj._mtls_reauth_lock.locked()
 
@@ -908,7 +908,7 @@ class TestAuthorizedHttp(object):
             "check_parameters_for_unauthorized_response",
         ) as mock_check_params:
             with mock.patch.object(
-                authed_http, "configure_mtls_channel"
+                authed_http, "_configure_mtls_channel_locked"
             ) as mock_configure_mtls_channel:
                 result = authed_http.urlopen(
                     "GET", "https://example.mtls.googleapis.com"
@@ -999,17 +999,19 @@ class TestAuthorizedHttp(object):
             ) as mock_check_params,
             mock.patch.object(
                 authed_http,
-                "configure_mtls_channel",
-                wraps=authed_http.configure_mtls_channel,
+                "_configure_mtls_channel_locked",
+                wraps=authed_http._configure_mtls_channel_locked,
             ) as spy_configure_mtls_channel,
         ):
             threads = [
-                threading.Thread(target=make_request) for _ in range(num_threads)
+                threading.Thread(target=make_request, daemon=True)
+                for _ in range(num_threads)
             ]
             for thread in threads:
                 thread.start()
             for thread in threads:
                 thread.join(timeout=60)
+            assert not any(thread.is_alive() for thread in threads)
 
         assert errors == []
         assert [r.status for r in results] == [http_client.OK] * num_threads
@@ -1080,16 +1082,18 @@ class TestAuthorizedHttp(object):
                 ),
             ) as mock_check_params,
             mock.patch.object(
-                authed_http, "configure_mtls_channel"
+                authed_http, "_configure_mtls_channel_locked"
             ) as mock_configure_mtls_channel,
         ):
             threads = [
-                threading.Thread(target=make_request) for _ in range(num_threads)
+                threading.Thread(target=make_request, daemon=True)
+                for _ in range(num_threads)
             ]
             for thread in threads:
                 thread.start()
             for thread in threads:
                 thread.join(timeout=60)
+            assert not any(thread.is_alive() for thread in threads)
 
         assert errors == []
         assert [r.status for r in results] == [http_client.OK] * num_threads
@@ -1097,4 +1101,121 @@ class TestAuthorizedHttp(object):
         mock_configure_mtls_channel.assert_not_called()
         assert authed_http.http is http
         assert authed_http._mtls_cert_check_generation == 1
+        assert not authed_http._mtls_reauth_lock.locked()
+
+    @mock.patch.object(urllib3.PoolManager, "urlopen", autospec=True)
+    def test_configure_mtls_channel_serialized_with_unauthorized_reconfiguration(
+        self, mock_urlopen
+    ):
+        """
+        Tests that an explicit configure_mtls_channel() call made while another
+        thread is reconfiguring the channel after a 401 response waits for it,
+        so that each replaced pool manager is cleared exactly once and the
+        cached certificate matches the pool manager that ends up in use.
+        """
+        with open(os.path.join(pytest.data_dir, "es256_public_cert.pem"), "rb") as fh:
+            explicit_cert = fh.read()
+        with open(os.path.join(pytest.data_dir, "es256_privatekey.pem"), "rb") as fh:
+            explicit_key = fh.read()
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(CredentialsStub())
+        authed_http._is_mtls = True
+        authed_http._cached_cert = b"old_cert"
+        initial_http = authed_http.http
+
+        def urlopen(pool_manager, method, url, body=None, headers=None, **kwargs):
+            if "ssl_context" in pool_manager.connection_pool_kw:
+                return ResponseStub(status=http_client.OK)
+            return ResponseStub(status=http_client.UNAUTHORIZED)
+
+        mock_urlopen.side_effect = urlopen
+
+        check_started = threading.Event()
+        release_check = threading.Event()
+
+        def check_parameters_for_unauthorized_response(cached_cert):
+            check_started.set()
+            release_check.wait(timeout=30)
+            return (
+                pytest.public_cert_bytes,
+                pytest.private_key_bytes,
+                "old_fp",
+                "new_fp",
+            )
+
+        created = []
+        make_mutual_tls_http = google.auth.transport.urllib3._make_mutual_tls_http
+
+        def record_make_mutual_tls_http(cert, key):
+            http = make_mutual_tls_http(cert, key)
+            created.append(http)
+            return http
+
+        results = []
+        errors = []
+
+        def make_request():
+            try:
+                results.append(
+                    authed_http.urlopen("GET", "https://example.mtls.googleapis.com")
+                )
+            except Exception as exc:  # pragma: NO COVER
+                errors.append(exc)
+
+        def configure():
+            try:
+                authed_http.configure_mtls_channel(
+                    lambda: (explicit_cert, explicit_key)
+                )
+            except Exception as exc:  # pragma: NO COVER
+                errors.append(exc)
+
+        with (
+            mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ),
+            mock.patch.object(
+                google.auth.transport._mtls_helper,
+                "check_parameters_for_unauthorized_response",
+                side_effect=check_parameters_for_unauthorized_response,
+            ),
+            mock.patch.object(
+                google.auth.transport.urllib3,
+                "_make_mutual_tls_http",
+                side_effect=record_make_mutual_tls_http,
+            ),
+            mock.patch.object(
+                urllib3.PoolManager, "clear", autospec=True
+            ) as mock_clear,
+        ):
+            request_thread = threading.Thread(target=make_request, daemon=True)
+            request_thread.start()
+            assert check_started.wait(timeout=30)
+
+            configure_thread = threading.Thread(target=configure, daemon=True)
+            configure_thread.start()
+            # The explicit call waits for the 401 reconfiguration to finish.
+            configure_thread.join(timeout=0.5)
+            assert configure_thread.is_alive()
+            assert created == []
+
+            release_check.set()
+            request_thread.join(timeout=60)
+            configure_thread.join(timeout=60)
+            assert not request_thread.is_alive()
+            assert not configure_thread.is_alive()
+
+        assert errors == []
+        assert [r.status for r in results] == [http_client.OK]
+        # The 401 reconfiguration ran first, then the explicit call.
+        assert len(created) == 2
+        assert authed_http.http is created[-1]
+        assert authed_http._request.http is created[-1]
+        assert authed_http._cached_cert == explicit_cert
+        cleared = [call.args[0] for call in mock_clear.call_args_list]
+        # Each replaced pool manager is cleared exactly once, and the one in
+        # use is not cleared.
+        assert cleared.count(initial_http) == 1
+        assert cleared.count(created[0]) == 1
+        assert created[-1] not in cleared
         assert not authed_http._mtls_reauth_lock.locked()
