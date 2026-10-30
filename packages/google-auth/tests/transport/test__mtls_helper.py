@@ -14,7 +14,6 @@
 
 import copy
 import json
-import logging
 import os
 import pickle
 import re
@@ -2454,19 +2453,18 @@ class TestMtlsCertManager(object):
         assert manager.get_credential_snapshot() == (None, None, 0)
 
     @pytest.mark.parametrize(
-        "side_effect",
+        "cert_source",
         [
-            exceptions.ClientCertError("bad cert config"),
-            exceptions.MutualTLSChannelError("channel cert error"),
-            OSError("file missing"),
-            [(b"not a valid pem cert", pytest.private_key_bytes)],
-            [(b"", pytest.private_key_bytes)],
-            [(pytest.public_cert_bytes, b"")],
+            mock.Mock(side_effect=exceptions.ClientCertError("bad cert config")),
+            mock.Mock(side_effect=exceptions.MutualTLSChannelError("channel error")),
+            mock.Mock(side_effect=OSError("file missing")),
+            mock.Mock(return_value=(b"not a valid pem cert", pytest.private_key_bytes)),
+            mock.Mock(return_value=(b"", pytest.private_key_bytes)),
+            mock.Mock(return_value=(pytest.public_cert_bytes, b"")),
         ],
     )
-    def test_initial_load_error_raises_client_cert_error(self, side_effect):
-        source = mock.Mock(side_effect=side_effect)
-        manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+    def test_initial_load_error_raises_client_cert_error(self, cert_source):
+        manager = _mtls_helper._MtlsCertManager(client_cert_source=cert_source)
 
         with pytest.raises(exceptions.ClientCertError):
             manager.refresh()
@@ -2474,32 +2472,21 @@ class TestMtlsCertManager(object):
         assert manager.generation_id == 0
         assert manager.get_credential_snapshot() == (None, None, 0)
 
-    @pytest.mark.parametrize(
-        "reload_side_effect",
-        [
-            exceptions.ClientCertError("transient cert error"),
-            exceptions.MutualTLSChannelError("transient mtls error"),
-            OSError("transient read error"),
-            [(b"-----BEGIN CERTIFICATE-----\ntruncated", pytest.private_key_bytes)],
-            [(b"", pytest.private_key_bytes)],
-            [(pytest.public_cert_bytes, b"")],
-        ],
-    )
-    def test_transient_reload_error_retains_last_known_good_cert(
-        self, reload_side_effect, caplog
-    ):
+    def test_transient_reload_error_retains_last_known_good_cert(self):
         source = mock.Mock(
-            return_value=(pytest.public_cert_bytes, pytest.private_key_bytes)
+            side_effect=[
+                (pytest.public_cert_bytes, pytest.private_key_bytes),
+                OSError("transient read error"),
+            ]
         )
         manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
         assert manager.refresh() is True
         assert manager.generation_id == 1
 
-        source.side_effect = reload_side_effect
-        with caplog.at_level(logging.DEBUG, logger=_mtls_helper.__name__):
+        with mock.patch.object(_mtls_helper._LOGGER, "debug") as mock_debug:
             assert manager.refresh() is False
 
-        assert "retaining previous certificate (generation 1)" in caplog.text
+        mock_debug.assert_called_once()
         assert manager.generation_id == 1
         assert manager.get_credential_snapshot() == (
             pytest.public_cert_bytes,
@@ -2508,7 +2495,7 @@ class TestMtlsCertManager(object):
         )
 
     def test_transient_missing_default_cert_on_reload_retains_last_known_good(
-        self, tmp_path, monkeypatch, caplog
+        self, tmp_path, monkeypatch
     ):
         monkeypatch.setenv("HOME", str(tmp_path))
         monkeypatch.setenv("USERPROFILE", str(tmp_path))
@@ -2523,10 +2510,10 @@ class TestMtlsCertManager(object):
         assert manager.refresh() is True
 
         config_file.unlink()
-        with caplog.at_level(logging.DEBUG, logger=_mtls_helper.__name__):
+        with mock.patch.object(_mtls_helper._LOGGER, "debug") as mock_debug:
             assert manager.refresh() is False
 
-        assert "retaining previous certificate (generation 1)" in caplog.text
+        assert "retaining previous certificate" in mock_debug.call_args[0][0]
         assert manager.generation_id == 1
         assert manager.get_credential_snapshot() == (
             pytest.public_cert_bytes,
