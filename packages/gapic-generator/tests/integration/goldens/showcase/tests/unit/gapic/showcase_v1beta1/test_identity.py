@@ -849,7 +849,7 @@ def test_identity_grpc_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_get_interceptor.assert_called_once_with(options)
+        mock_get_interceptor.assert_called_once_with(transport._client_options)
         mock_apply_interceptors.assert_called_once_with(
             mock_channel, [mock_otel_interceptor]
         )
@@ -923,7 +923,9 @@ def test_identity_grpc_asyncio_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_apply_async_interceptors.assert_called_once_with(mock_channel, options)
+        mock_apply_async_interceptors.assert_called_once_with(
+            mock_channel, transport._client_options
+        )
         assert mock_create_channel.call_count == 1
         assert transport.grpc_channel == mock_channel
 
@@ -6908,6 +6910,80 @@ def test_identity_base_transport_wrap_method_modern_api_core(monkeypatch):
         base_transport._wrap_method(func)
         assert "kind" not in mock_wrap.call_args.kwargs
         assert "client_options" in mock_wrap.call_args.kwargs
+
+
+@pytest.mark.parametrize(
+    "otel_enabled,expected_endpoint",
+    [
+        pytest.param(False, None, id="otel_disabled"),
+        pytest.param(True, "default.example.com:443", id="otel_enabled"),
+    ],
+)
+def test_identity_base_transport_client_options_none(
+    monkeypatch, otel_enabled, expected_endpoint
+):
+    fake_observability = mock.MagicMock()
+    fake_observability.is_otel_capabilities_enabled.return_value = otel_enabled
+    monkeypatch.setattr(transports.base, "_observability", fake_observability)
+
+    transport = transports.IdentityTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=None,
+    )
+    assert getattr(transport._client_options, "api_endpoint", None) == expected_endpoint
+
+
+@pytest.mark.parametrize(
+    "initial_endpoint,expected_endpoint",
+    [
+        pytest.param(None, "default.example.com:443", id="default_from_host"),
+        pytest.param(
+            "custom.example.com:443",
+            "custom.example.com:443",
+            id="preserve_explicit",
+        ),
+    ],
+)
+def test_identity_base_transport_client_options_object(
+    initial_endpoint, expected_endpoint
+):
+    options = client_options.ClientOptions(api_endpoint=initial_endpoint)
+    transport = transports.IdentityTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=options,
+    )
+    assert transport._client_options.api_endpoint == expected_endpoint
+    assert options.api_endpoint == initial_endpoint
+
+
+@pytest.mark.parametrize(
+    "initial_options,expected_options",
+    [
+        pytest.param(
+            {},
+            {"api_endpoint": "default.example.com:443"},
+            id="default_from_host",
+        ),
+        pytest.param(
+            {"api_endpoint": "custom.example.com:443"},
+            {"api_endpoint": "custom.example.com:443"},
+            id="preserve_explicit",
+        ),
+    ],
+)
+def test_identity_base_transport_client_options_dict(
+    initial_options, expected_options
+):
+    options = dict(initial_options)
+    transport = transports.IdentityTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=options,
+    )
+    assert transport._client_options == expected_options
+    assert options == initial_options
 
 
 def test_identity_base_transport_wrap_method_older_api_core_fallbacks(monkeypatch):
