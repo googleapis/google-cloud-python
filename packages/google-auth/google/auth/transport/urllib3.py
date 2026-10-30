@@ -347,9 +347,8 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 will be used.
 
         .. warning::
-            Calling this method mutates the underlying `urllib3.PoolManager`.
-            It is not thread-safe to call this explicitly while other
-            threads are making requests.
+            Replaces and closes adapters. Serialize concurrent calls to this
+            method.
 
         Returns:
             True if the channel is mutual TLS and False otherwise.

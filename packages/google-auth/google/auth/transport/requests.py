@@ -119,13 +119,18 @@ class TimeoutGuard(object):
 def _replace_adapter(session, prefix, adapter):
     """Mounts an adapter on a session without mutating its adapters in place.
 
-    ``adapter`` is mounted on ``session`` for ``prefix``.
     :meth:`requests.Session.mount` mutates the ``session.adapters``
     OrderedDict in place. If another thread is iterating over it in
     :meth:`requests.Session.get_adapter` at the same time, that thread fails
     with ``RuntimeError: OrderedDict mutated during iteration``. This builds
     an updated copy and assigns it in one step instead, so threads that are
     already iterating over the old dictionary are not affected.
+
+    This only protects threads that read ``session.adapters``. The copy and
+    the assignment are not atomic together, so if two threads call this (or
+    :meth:`requests.Session.mount`) on the same session at the same time,
+    one of the new adapters can be lost. Callers must serialize writes, for
+    example by holding a lock.
 
     Args:
         session (requests.Session): The session to mount the adapter on.
@@ -578,9 +583,8 @@ class AuthorizedSession(requests.Session):
                 will be used.
 
         .. warning::
-            Calling this method replaces the underlying `requests.Session`
-            adapters and closes the previous ones. It is not thread-safe to call
-            this explicitly while other threads are making requests.
+            Replaces and closes adapters. Serialize concurrent calls to this
+            method.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
