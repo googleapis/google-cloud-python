@@ -179,7 +179,7 @@ class SetCell(Mutation):
         elif isinstance(new_value, int):
             if not (_MIN_INCREMENT_VALUE <= new_value <= _MAX_INCREMENT_VALUE):
                 raise ValueError(
-                    "int values must be between -2**63 and 2**63 (64-bit signed int)"
+                    "int values must be between -2**63 and 2**63 - 1 (64-bit signed int)"
                 )
             new_value = new_value.to_bytes(8, "big", signed=True)
         if not isinstance(new_value, bytes):
@@ -336,7 +336,7 @@ class AddToCell(Mutation):
             raise TypeError("timestamp_micros must be int")
         if not (_MIN_INCREMENT_VALUE <= value <= _MAX_INCREMENT_VALUE):
             raise ValueError(
-                "int values must be between -2**63 and 2**63 (64-bit signed int)"
+                "int values must be between -2**63 and 2**63 - 1 (64-bit signed int)"
             )
 
         if timestamp_micros < 0:
