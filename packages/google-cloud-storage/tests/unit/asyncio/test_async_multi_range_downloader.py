@@ -357,6 +357,71 @@ class TestAsyncMultiRangeDownloader:
         assert not mock_mrd.is_stream_open
 
     @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_raises_on_short_read_into_buffer(
+        self, mock_cls_async_read_object_stream, mock_random_int, monkeypatch
+    ):
+        # GCS clamps reads extending past EOF and closes the range after the
+        # remaining bytes; a fixed buffer destination has no cursor or return
+        # count, so unwritten tail bytes must not be left unnoticed.
+        _accept_memoryview_in_crc32c(monkeypatch)
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456]
+        response = _zero_copy_response(b"6789", 6, 456, True)
+        assert isinstance(
+            response.object_data_ranges[0].checksummed_data.content, memoryview
+        )
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.close = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[response, None])
+        buffer = bytearray(b"STALE_TAIL")
+
+        with pytest.raises(
+            BufferError, match="expected 10 bytes at offset 6, got 4"
+        ) as exc_info:
+            await mock_mrd.download_ranges([(6, 10, buffer)])
+
+        assert mock_mrd.is_stream_open
+        mock_mrd.read_obj_str.close.assert_not_awaited()
+        # exc_info.tb still references download_ranges' frame here.
+        assert exc_info.tb is not None
+        buffer.clear()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_allows_short_read_into_write_destination(
+        self, mock_cls_async_read_object_stream, mock_random_int, monkeypatch
+    ):
+        _accept_memoryview_in_crc32c(monkeypatch)
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456]
+        response = _zero_copy_response(b"6789", 6, 456, True)
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=[response, None])
+        chunks = []
+
+        class RecordingSink:
+            def write(self, chunk):
+                chunks.append((type(chunk), bytes(chunk)))
+                return len(chunk)
+
+        await mock_mrd.download_ranges(
+            [(6, 10, RecordingSink())], accepts_memoryview=True
+        )
+
+        assert chunks == [(memoryview, b"6789")]
+
+    @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio

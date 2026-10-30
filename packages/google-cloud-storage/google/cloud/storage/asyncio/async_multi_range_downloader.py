@@ -442,7 +442,9 @@ class AsyncMultiRangeDownloader:
             copies each chunk directly into it in place (straight from the
             gRPC response buffer, without an intermediate ``bytes``, when the
             zero-copy parser is enabled with
-            ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1``).
+            ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1``). If fewer than
+            ``bytes_to_read`` bytes are available before end of object,
+            :exc:`BufferError` is raised.
 
             Special cases:
             if the value of `bytes_to_read` is 0, it'll be interpreted as
@@ -473,11 +475,17 @@ class AsyncMultiRangeDownloader:
             framing) alive while the destination or the SDK's most recently
             processed response references it; use ``bytes(data)`` to keep the
             data without the message. Destinations must still accept
-            ``bytes``, which the generated parser produces. No effect on
-            buffer destinations. Defaults to False.
+            ``bytes``, which the generated parser produces. Unlike buffer
+            destinations (which raise :exc:`BufferError` on short reads),
+            ``write()`` destinations observe each chunk's length and allow
+            short reads clamped at end of object as well as
+            ``bytes_to_read=0``. No effect on buffer destinations. Defaults
+            to False.
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
+        :raises BufferError: if fewer than ``bytes_to_read`` bytes are returned
+            for a buffer destination.
         :raises DataCorruption: if a checksum mismatch is detected while reading data.
 
         """
@@ -623,6 +631,17 @@ class AsyncMultiRangeDownloader:
 
             if initial_state.get("read_handle"):
                 self.read_handle = initial_state["read_handle"]
+
+            for download_state in download_states.values():
+                if (
+                    isinstance(download_state.user_buffer, _BufferWriter)
+                    and download_state.bytes_written != download_state.initial_length
+                ):
+                    raise BufferError(
+                        f"Buffer destination expected {download_state.initial_length} "
+                        f"bytes at offset {download_state.initial_offset}, got "
+                        f"{download_state.bytes_written}"
+                    )
         finally:
             if self._multiplexer is not None:
                 self._multiplexer.unregister(read_ids)
