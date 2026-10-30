@@ -22,7 +22,7 @@ import pytest
 from google.api_core.exceptions import NotFound
 from test_utils.retry import RetryResult
 
-from google.cloud import bigtable_admin
+from google.cloud import bigtable_admin_v2
 
 from . import metricscaler
 from .metricscaler import get_cpu_load, get_storage_utilization, main, scale_bigtable
@@ -56,18 +56,18 @@ def test_get_storage_utilization(monitoring_v3_query):
 def instance():
     cluster_id = BIGTABLE_INSTANCE
 
-    client = bigtable_admin.BigtableInstanceAdminClient()
+    client = bigtable_admin_v2.BigtableInstanceAdminClient()
     project_path = client.common_project_path(PROJECT)
     instance_path = client.instance_path(PROJECT, BIGTABLE_INSTANCE)
 
-    cluster = bigtable_admin.Cluster(
+    cluster = bigtable_admin_v2.Cluster(
         location=client.common_location_path(PROJECT, BIGTABLE_ZONE),
         serve_nodes=1,
-        default_storage_type=bigtable_admin.StorageType.SSD,
+        default_storage_type=bigtable_admin_v2.StorageType.SSD,
     )
-    instance_obj = bigtable_admin.Instance(
+    instance_obj = bigtable_admin_v2.Instance(
         display_name=BIGTABLE_INSTANCE,
-        type_=bigtable_admin.Instance.Type.PRODUCTION,
+        type_=bigtable_admin_v2.Instance.Type.PRODUCTION,
         labels={"prod-label": "prod-label"},
     )
 
@@ -92,17 +92,17 @@ def instance():
 def dev_instance():
     cluster_id = BIGTABLE_DEV_INSTANCE
 
-    client = bigtable_admin.BigtableInstanceAdminClient()
+    client = bigtable_admin_v2.BigtableInstanceAdminClient()
     project_path = client.common_project_path(PROJECT)
     instance_path = client.instance_path(PROJECT, BIGTABLE_DEV_INSTANCE)
 
-    cluster = bigtable_admin.Cluster(
+    cluster = bigtable_admin_v2.Cluster(
         location=client.common_location_path(PROJECT, BIGTABLE_ZONE),
-        default_storage_type=bigtable_admin.StorageType.SSD,
+        default_storage_type=bigtable_admin_v2.StorageType.SSD,
     )
-    instance_obj = bigtable_admin.Instance(
+    instance_obj = bigtable_admin_v2.Instance(
         display_name=BIGTABLE_DEV_INSTANCE,
-        type_=bigtable_admin.Instance.Type.DEVELOPMENT,
+        type_=bigtable_admin_v2.Instance.Type.DEVELOPMENT,
         labels={"dev-label": "dev-label"},
     )
 
@@ -134,7 +134,7 @@ class ClusterNodeCountPredicate:
 
 
 def test_scale_bigtable(instance):
-    bigtable_client = bigtable_admin.BigtableInstanceAdminClient()
+    bigtable_client = bigtable_admin_v2.BigtableInstanceAdminClient()
     cluster_path = bigtable_client.cluster_path(
         PROJECT, BIGTABLE_INSTANCE, BIGTABLE_INSTANCE
     )

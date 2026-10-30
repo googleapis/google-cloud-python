@@ -17,7 +17,7 @@ Provides helper logic used across samples
 from google.api_core import exceptions
 from google.api_core.retry import Retry, if_exception_type
 
-from google.cloud import bigtable, bigtable_admin
+from google.cloud import bigtable, bigtable_admin_v2
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable_admin_v2.types import ColumnFamily as ColumnFamily_pb
 
@@ -44,7 +44,7 @@ class create_table_cm:
         return self._table
 
     def __exit__(self, *args):
-        admin_client = bigtable_admin.BigtableTableAdminClient()
+        admin_client = bigtable_admin_v2.BigtableTableAdminClient()
         try:
             if self._verbose:
                 print(f"deleting table: {self._table.table_id}")
@@ -58,7 +58,7 @@ def create_table(project, instance_id, table_id, column_families={}):
     """
     Creates a new table, and blocks until it reaches a ready state
     """
-    admin_client = bigtable_admin.BigtableTableAdminClient()
+    admin_client = bigtable_admin_v2.BigtableTableAdminClient()
     instance_path = admin_client.instance_path(project, instance_id)
     table_path = admin_client.table_path(project, instance_id, table_id)
 
@@ -112,10 +112,10 @@ def wait_for_table(table):
             raise exceptions.NotFound
     else:
         table_path = table.table_name if hasattr(table, "table_name") else str(table)
-        admin_client = bigtable_admin.BigtableTableAdminClient()
+        admin_client = bigtable_admin_v2.BigtableTableAdminClient()
         admin_client.get_table(
             request={
                 "name": table_path,
-                "view": bigtable_admin.Table.View.NAME_ONLY,
+                "view": bigtable_admin_v2.Table.View.NAME_ONLY,
             }
         )

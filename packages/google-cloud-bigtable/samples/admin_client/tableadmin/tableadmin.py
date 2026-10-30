@@ -28,9 +28,9 @@ from ...utils import create_table_cm
 def run_table_operations(project_id, instance_id, table_id):
     with create_table_cm(project_id, instance_id, table_id, verbose=False):
         # [START bigtable_list_tables]
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         instance_path = client.instance_path(project_id, instance_id)
 
         tables = client.list_tables(parent=instance_path)
@@ -45,9 +45,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [START bigtable_create_family_gc_max_age]
         from google.protobuf import duration_pb2
 
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Creating column family cf1 with MaxAge GC Rule...")
@@ -55,11 +55,11 @@ def run_table_operations(project_id, instance_id, table_id):
         # where age = current time minus cell timestamp
 
         # Define the GC rule to retain data with max age of 5 days
-        max_age_rule = bigtable_admin.GcRule(
+        max_age_rule = bigtable_admin_v2.GcRule(
             max_age=duration_pb2.Duration(seconds=5 * 86400)
         )
-        cf1 = bigtable_admin.ColumnFamily(gc_rule=max_age_rule)
-        mod1 = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        cf1 = bigtable_admin_v2.ColumnFamily(gc_rule=max_age_rule)
+        mod1 = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
             id="cf1", create=cf1
         )
         client.modify_column_families(name=table_path, modifications=[mod1])
@@ -67,9 +67,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_create_family_gc_max_age]
 
         # [START bigtable_create_family_gc_max_versions]
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Creating column family cf2 with max versions GC rule...")
@@ -77,9 +77,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # where 1 = most recent version
 
         # Define the GC policy to retain only the most recent 2 versions
-        max_versions_rule = bigtable_admin.GcRule(max_num_versions=2)
-        cf2 = bigtable_admin.ColumnFamily(gc_rule=max_versions_rule)
-        mod2 = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        max_versions_rule = bigtable_admin_v2.GcRule(max_num_versions=2)
+        cf2 = bigtable_admin_v2.ColumnFamily(gc_rule=max_versions_rule)
+        mod2 = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
             id="cf2", create=cf2
         )
         client.modify_column_families(name=table_path, modifications=[mod2])
@@ -89,9 +89,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [START bigtable_create_family_gc_union]
         from google.protobuf import duration_pb2
 
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Creating column family cf3 with union GC rule...")
@@ -99,18 +99,18 @@ def run_table_operations(project_id, instance_id, table_id):
         # at least one condition.
         # Define a GC rule to drop cells older than 5 days or not the
         # most recent version
-        union_rule = bigtable_admin.GcRule(
-            union=bigtable_admin.GcRule.Union(
+        union_rule = bigtable_admin_v2.GcRule(
+            union=bigtable_admin_v2.GcRule.Union(
                 rules=[
-                    bigtable_admin.GcRule(
+                    bigtable_admin_v2.GcRule(
                         max_age=duration_pb2.Duration(seconds=5 * 86400)
                     ),
-                    bigtable_admin.GcRule(max_num_versions=2),
+                    bigtable_admin_v2.GcRule(max_num_versions=2),
                 ]
             )
         )
-        cf3 = bigtable_admin.ColumnFamily(gc_rule=union_rule)
-        mod3 = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        cf3 = bigtable_admin_v2.ColumnFamily(gc_rule=union_rule)
+        mod3 = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
             id="cf3", create=cf3
         )
         client.modify_column_families(name=table_path, modifications=[mod3])
@@ -120,9 +120,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [START bigtable_create_family_gc_intersection]
         from google.protobuf import duration_pb2
 
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Creating column family cf4 with Intersection GC rule...")
@@ -130,18 +130,18 @@ def run_table_operations(project_id, instance_id, table_id):
         # all conditions
         # GC rule: Drop cells older than 5 days AND older than the most
         # recent 2 versions
-        intersection_rule = bigtable_admin.GcRule(
-            intersection=bigtable_admin.GcRule.Intersection(
+        intersection_rule = bigtable_admin_v2.GcRule(
+            intersection=bigtable_admin_v2.GcRule.Intersection(
                 rules=[
-                    bigtable_admin.GcRule(
+                    bigtable_admin_v2.GcRule(
                         max_age=duration_pb2.Duration(seconds=5 * 86400)
                     ),
-                    bigtable_admin.GcRule(max_num_versions=2),
+                    bigtable_admin_v2.GcRule(max_num_versions=2),
                 ]
             )
         )
-        cf4 = bigtable_admin.ColumnFamily(gc_rule=intersection_rule)
-        mod4 = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        cf4 = bigtable_admin_v2.ColumnFamily(gc_rule=intersection_rule)
+        mod4 = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
             id="cf4", create=cf4
         )
         client.modify_column_families(name=table_path, modifications=[mod4])
@@ -151,9 +151,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [START bigtable_create_family_gc_nested]
         from google.protobuf import duration_pb2
 
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Creating column family cf5 with a Nested GC rule...")
@@ -163,22 +163,22 @@ def run_table_operations(project_id, instance_id, table_id):
         # OR
         # Drop cells that are older than a month AND older than the
         # 2 recent versions
-        rule1 = bigtable_admin.GcRule(max_num_versions=10)
-        rule2 = bigtable_admin.GcRule(
-            intersection=bigtable_admin.GcRule.Intersection(
+        rule1 = bigtable_admin_v2.GcRule(max_num_versions=10)
+        rule2 = bigtable_admin_v2.GcRule(
+            intersection=bigtable_admin_v2.GcRule.Intersection(
                 rules=[
-                    bigtable_admin.GcRule(
+                    bigtable_admin_v2.GcRule(
                         max_age=duration_pb2.Duration(seconds=30 * 86400)
                     ),
-                    bigtable_admin.GcRule(max_num_versions=2),
+                    bigtable_admin_v2.GcRule(max_num_versions=2),
                 ]
             )
         )
-        nested_rule = bigtable_admin.GcRule(
-            union=bigtable_admin.GcRule.Union(rules=[rule1, rule2])
+        nested_rule = bigtable_admin_v2.GcRule(
+            union=bigtable_admin_v2.GcRule.Union(rules=[rule1, rule2])
         )
-        cf5 = bigtable_admin.ColumnFamily(gc_rule=nested_rule)
-        mod5 = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        cf5 = bigtable_admin_v2.ColumnFamily(gc_rule=nested_rule)
+        mod5 = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
             id="cf5", create=cf5
         )
         client.modify_column_families(name=table_path, modifications=[mod5])
@@ -186,9 +186,9 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_create_family_gc_nested]
 
         # [START bigtable_list_column_families]
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Printing Column Family and GC Rule for all column families...")
@@ -213,17 +213,17 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_list_column_families]
 
         # [START bigtable_update_gc_rule]
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Updating column family cf1 GC rule...")
         # Update the column family cf1 to update the GC rule
-        updated_cf1 = bigtable_admin.ColumnFamily(
-            gc_rule=bigtable_admin.GcRule(max_num_versions=1)
+        updated_cf1 = bigtable_admin_v2.ColumnFamily(
+            gc_rule=bigtable_admin_v2.GcRule(max_num_versions=1)
         )
-        mod_update = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        mod_update = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
             id="cf1", update=updated_cf1
         )
         client.modify_column_families(name=table_path, modifications=[mod_update])
@@ -231,14 +231,14 @@ def run_table_operations(project_id, instance_id, table_id):
         # [END bigtable_update_gc_rule]
 
         # [START bigtable_delete_family]
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
-        client = bigtable_admin.BigtableTableAdminClient()
+        client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = client.table_path(project_id, instance_id, table_id)
 
         print("Delete a column family cf2...")
         # Delete a column family
-        mod_delete = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+        mod_delete = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
             id="cf2", drop=True
         )
         client.modify_column_families(name=table_path, modifications=[mod_delete])
@@ -264,9 +264,9 @@ def delete_table(project_id, instance_id, table_id):
     :param table_id: Table id to create table.
     """
     # [START bigtable_delete_table]
-    from google.cloud import bigtable_admin
+    from google.cloud import bigtable_admin_v2
 
-    client = bigtable_admin.BigtableTableAdminClient()
+    client = bigtable_admin_v2.BigtableTableAdminClient()
     table_path = client.table_path(project_id, instance_id, table_id)
 
     # Delete the entire table
@@ -289,9 +289,9 @@ def wait_for_consistency(project_id, instance_id, table_id):
     :param table_id: Table id to wait on.
     """
     # [START bigtable_wait_for_consistency]
-    from google.cloud import bigtable_admin
+    from google.cloud import bigtable_admin_v2
 
-    client = bigtable_admin.BigtableTableAdminClient()
+    client = bigtable_admin_v2.BigtableTableAdminClient()
     table_path = client.table_path(project_id, instance_id, table_id)
 
     # Blocks until every mutation made to the table before this call has been
@@ -323,9 +323,9 @@ def create_backup(project_id, instance_id, cluster_id, table_id, backup_id):
     # [START bigtable_create_backup]
     import datetime
 
-    from google.cloud import bigtable_admin
+    from google.cloud import bigtable_admin_v2
 
-    client = bigtable_admin.BigtableTableAdminClient()
+    client = bigtable_admin_v2.BigtableTableAdminClient()
     cluster_path = client.cluster_path(project_id, instance_id, cluster_id)
     table_path = client.table_path(project_id, instance_id, table_id)
 
@@ -337,7 +337,9 @@ def create_backup(project_id, instance_id, cluster_id, table_id, backup_id):
     operation = client.create_backup(
         parent=cluster_path,
         backup_id=backup_id,
-        backup=bigtable_admin.Backup(source_table=table_path, expire_time=expire_time),
+        backup=bigtable_admin_v2.Backup(
+            source_table=table_path, expire_time=expire_time
+        ),
     )
     backup = operation.result()
     print("Created backup {}.".format(backup.name.split("/")[-1]))
@@ -363,9 +365,9 @@ def restore_table(project_id, instance_id, cluster_id, backup_id, restored_table
     :param restored_table_id: Id for the new table.
     """
     # [START bigtable_restore_table]
-    from google.cloud import bigtable_admin
+    from google.cloud import bigtable_admin_v2
 
-    client = bigtable_admin.BigtableTableAdminClient()
+    client = bigtable_admin_v2.BigtableTableAdminClient()
     instance_path = client.instance_path(project_id, instance_id)
     backup_path = client.backup_path(project_id, instance_id, cluster_id, backup_id)
 

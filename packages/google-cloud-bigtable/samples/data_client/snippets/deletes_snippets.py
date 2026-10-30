@@ -126,9 +126,9 @@ def check_and_mutate(project_id, instance_id, table_id):
 
 # [START bigtable_drop_row_range]
 def drop_row_range(project_id, instance_id, table_id):
-    from google.cloud import bigtable_admin
+    from google.cloud import bigtable_admin_v2
 
-    client = bigtable_admin.BigtableTableAdminClient()
+    client = bigtable_admin_v2.BigtableTableAdminClient()
     table_path = client.table_path(project_id, instance_id, table_id)
     row_key_prefix = b"phone#4c410523"
     client.drop_row_range(
@@ -145,12 +145,12 @@ def drop_row_range(project_id, instance_id, table_id):
 
 # [START bigtable_delete_column_family]
 def delete_column_family(project_id, instance_id, table_id):
-    from google.cloud import bigtable_admin
+    from google.cloud import bigtable_admin_v2
 
-    client = bigtable_admin.BigtableTableAdminClient()
+    client = bigtable_admin_v2.BigtableTableAdminClient()
     table_path = client.table_path(project_id, instance_id, table_id)
     column_family_id = "stats_summary"
-    modification = bigtable_admin.ModifyColumnFamiliesRequest.Modification(
+    modification = bigtable_admin_v2.ModifyColumnFamiliesRequest.Modification(
         id=column_family_id, drop=True
     )
     client.modify_column_families(name=table_path, modifications=[modification])

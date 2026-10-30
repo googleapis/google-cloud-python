@@ -16,7 +16,7 @@ import uuid
 
 from google.api_core import exceptions
 
-from google.cloud import bigtable_admin
+from google.cloud import bigtable_admin_v2
 
 from ...utils import create_table_cm
 from .tableadmin import (
@@ -69,7 +69,7 @@ def test_backup_and_restore(capsys):
     backup_id = f"backup-{str(uuid.uuid4())[:16]}"
     restored_table_id = f"table-admin-restored-{str(uuid.uuid4())[:16]}"
 
-    instance_client = bigtable_admin.BigtableInstanceAdminClient()
+    instance_client = bigtable_admin_v2.BigtableInstanceAdminClient()
     instance_path = instance_client.instance_path(PROJECT, BIGTABLE_INSTANCE)
     cluster_id = (
         instance_client.list_clusters(parent=instance_path)
@@ -77,7 +77,7 @@ def test_backup_and_restore(capsys):
         .name.split("/")[-1]
     )
 
-    table_client = bigtable_admin.BigtableTableAdminClient()
+    table_client = bigtable_admin_v2.BigtableTableAdminClient()
     backup_path = table_client.backup_path(
         PROJECT, BIGTABLE_INSTANCE, cluster_id, backup_id
     )

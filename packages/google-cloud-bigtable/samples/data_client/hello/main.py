@@ -46,27 +46,27 @@ def main(project_id, instance_id, table_id):
     # [START bigtable_hw_create_table]
     from google.api_core.exceptions import AlreadyExists
 
-    from google.cloud import bigtable_admin
+    from google.cloud import bigtable_admin_v2
 
     # the data client only supports the data API. Table creation is an admin operation
     # use admin client to create the table
     print("Creating the {} table.".format(table_id))
-    admin_client = bigtable_admin.BigtableTableAdminClient()
+    admin_client = bigtable_admin_v2.BigtableTableAdminClient()
     instance_path = admin_client.instance_path(project_id, instance_id)
 
     print("Creating column family cf1 with Max Version GC rule...")
     # Create a column family with GC policy : most recent N versions
     # Define the GC policy to retain only the most recent 2 versions
-    max_versions_rule = bigtable_admin.GcRule(max_num_versions=2)
+    max_versions_rule = bigtable_admin_v2.GcRule(max_num_versions=2)
     column_family_id = "cf1"
     column_families = {
-        column_family_id: bigtable_admin.ColumnFamily(gc_rule=max_versions_rule)
+        column_family_id: bigtable_admin_v2.ColumnFamily(gc_rule=max_versions_rule)
     }
     try:
         admin_client.create_table(
             parent=instance_path,
             table_id=table_id,
-            table=bigtable_admin.Table(column_families=column_families),
+            table=bigtable_admin_v2.Table(column_families=column_families),
         )
     except AlreadyExists:
         print("Table {} already exists.".format(table_id))
@@ -130,11 +130,11 @@ def main(project_id, instance_id, table_id):
         # [END bigtable_hw_scan_with_filter]
     finally:
         # [START bigtable_hw_delete_table]
-        from google.cloud import bigtable_admin
+        from google.cloud import bigtable_admin_v2
 
         # the data client only supports the data API. Table deletion is an admin operation
         # use admin client to delete the table
-        admin_client = bigtable_admin.BigtableTableAdminClient()
+        admin_client = bigtable_admin_v2.BigtableTableAdminClient()
         table_path = admin_client.table_path(project_id, instance_id, table_id)
 
         print("Deleting the {} table.".format(table_id))

@@ -23,7 +23,7 @@ import time
 from google.cloud.monitoring_v3 import query
 from google.protobuf import field_mask_pb2
 
-from google.cloud import bigtable_admin, monitoring_v3
+from google.cloud import bigtable_admin_v2, monitoring_v3
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
@@ -106,11 +106,11 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
     size_change_step = 3
 
     # [START bigtable_scale]
-    bigtable_client = bigtable_admin.BigtableInstanceAdminClient()
+    bigtable_client = bigtable_admin_v2.BigtableInstanceAdminClient()
     instance_name = bigtable_client.instance_path(PROJECT, bigtable_instance)
     instance = bigtable_client.get_instance(name=instance_name)
 
-    if instance.type_ == bigtable_admin.Instance.Type.DEVELOPMENT:
+    if instance.type_ == bigtable_admin_v2.Instance.Type.DEVELOPMENT:
         raise ValueError("Development instances cannot be scaled.")
 
     cluster_name = bigtable_client.cluster_path(
