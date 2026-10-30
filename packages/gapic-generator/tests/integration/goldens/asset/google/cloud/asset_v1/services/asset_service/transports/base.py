@@ -19,6 +19,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 from google.cloud.asset_v1 import gapic_version as package_version
 from google.cloud.asset_v1._compat import (
     ASYNC_WRAP_METHOD_SUPPORTS_KIND as _ASYNC_WRAP_METHOD_SUPPORTS_KIND,
+    SUPPORTS_DEFAULT_HOST as _SUPPORTS_DEFAULT_HOST,
     WRAP_METHOD_SUPPORTS_TRACING as _WRAP_METHOD_SUPPORTS_TRACING,
 )
 _ASYNC_WRAP_METHOD_SUPPORTS_TRACING = _WRAP_METHOD_SUPPORTS_TRACING
@@ -133,7 +134,13 @@ class AssetServiceTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+        if isinstance(client_options, dict):
+            client_options = client_options_lib.from_dict(client_options)
+
         self._client_options = client_options
+        self._default_host: Optional[str] = (
+            None if self._ignore_credentials else self._host
+        )
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
@@ -152,6 +159,8 @@ class AssetServiceTransport(abc.ABC):
         """
         if _WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
+            if _SUPPORTS_DEFAULT_HOST:
+                kwargs["default_host"] = self._default_host
             try:
                 kind = self.kind
             except NotImplementedError:
@@ -164,7 +173,7 @@ class AssetServiceTransport(abc.ABC):
         # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
         #   falling back to gRPC wrapping), but tracing args are not.
         # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
-        for k in ["client_options", "method_name", "is_streaming"]:
+        for k in ["client_options", "method_name", "is_streaming", "default_host"]:
             kwargs.pop(k, None)
 
         try:
@@ -191,6 +200,8 @@ class AssetServiceTransport(abc.ABC):
         """
         if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
+            if _SUPPORTS_DEFAULT_HOST:
+                kwargs["default_host"] = self._default_host
             try:
                 kind = self.kind
             except NotImplementedError:
@@ -203,7 +214,7 @@ class AssetServiceTransport(abc.ABC):
         # - Era 2 (>= 2.29.0, < 2.36.0): `kind` is supported (prevents REST from
         #   falling back to gRPC wrapping), but tracing args are not.
         # (These fallbacks can be removed once google-api-core < 2.36.0 is no longer supported.)
-        for k in ["client_options", "method_name", "is_streaming"]:
+        for k in ["client_options", "method_name", "is_streaming", "default_host"]:
             kwargs.pop(k, None)
 
         try:
