@@ -22,6 +22,18 @@ from google.cloud.spanner_dbapi.parse_utils import (
 )
 
 
+def _escape_tzname(tzname):
+    """Escape a time zone name for embedding in a Spanner string literal.
+
+    The datetime helpers below inline the time zone name into a quoted
+    string literal. Cloud Spanner (GoogleSQL) uses backslash escaping inside
+    string literals, so a name containing a quote would otherwise close the
+    literal and inject SQL. Both quote characters are escaped so the result is
+    safe in single- and double-quoted contexts.
+    """
+    return tzname.replace("\\", "\\\\").replace('"', '\\"').replace("'", "\\'")
+
+
 class DatabaseOperations(BaseDatabaseOperations):
     """A Spanner-specific version of Django database operations."""
 
@@ -442,6 +454,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :returns: A SQL statement for extracting.
         """
         tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        tzname = _escape_tzname(tzname)
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
         return (
             'EXTRACT(%s FROM %s AT TIME ZONE "%s")'
@@ -529,6 +542,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
         tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        tzname = _escape_tzname(tzname)
         if lookup_type == "week":
             # Spanner truncates to Sunday but Django expects Monday. First,
             # subtract a day so that a Sunday will be truncated to the previous
@@ -564,6 +578,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
         tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        tzname = _escape_tzname(tzname)
         return (
             'TIMESTAMP_TRUNC(%s, %s, "%s")'
             % (
@@ -592,6 +607,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#date
         tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        tzname = _escape_tzname(tzname)
         return 'DATE(%s, "%s")' % (field_name, tzname), params
 
     def datetime_cast_time_sql(self, field_name, params, tzname):
@@ -611,6 +627,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :returns: A SQL statement for casting.
         """
         tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        tzname = _escape_tzname(tzname)
         # Cloud Spanner doesn't have a function for converting
         # TIMESTAMP to another time zone.
         return (
