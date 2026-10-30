@@ -171,8 +171,9 @@ class BigtableMetricsExporter(MetricExporter):
         if client_kwargs.get("credentials") is not None:
             client_options = client_kwargs.get("client_options")
             if isinstance(client_options, dict):
-                if client_options.get("credentials_file") or client_options.get(
-                    "api_key"
+                if (
+                    client_options.get("credentials_file") is not None
+                    or client_options.get("api_key") is not None
                 ):
                     client_options = {
                         k: v
