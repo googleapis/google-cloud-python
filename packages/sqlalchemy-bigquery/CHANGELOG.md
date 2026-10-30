@@ -8,6 +8,13 @@ Older versions of this project were distributed as [pybigquery][0].
 
 [1]: https://pypi.org/project/sqlalchemy-bigquery/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.17.3...sqlalchemy-bigquery-v1.18.0) (2026-10-30)
+
+
+### Features
+
+* support Python 3.15 ([8fceef4](https://github.com/googleapis/google-cloud-python/commit/8fceef49c523bcc8989abf3b6b82bcf143332d50))
+
 ## [1.17.3](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.17.2...sqlalchemy-bigquery-v1.17.3) (2026-10-02)
 
 
