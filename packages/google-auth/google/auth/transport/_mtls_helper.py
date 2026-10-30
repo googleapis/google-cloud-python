@@ -423,7 +423,7 @@ def _get_workload_cert_and_key(
         )
         return cert_data, key_data
 
-    cert_path, key_path, config_file_path = _get_workload_cert_and_key_paths(
+    cert_path, key_path, config_file_path = _get_non_spiffe_workload_cert_and_key_paths(
         certificate_config_path, include_context_aware
     )
 
@@ -499,6 +499,14 @@ def _get_workload_cert_and_key_paths(config_path=None, include_context_aware=Tru
         )
         return cert_path, key_path, config_file_path
 
+    return _get_non_spiffe_workload_cert_and_key_paths(
+        config_path, include_context_aware
+    )
+
+
+def _get_non_spiffe_workload_cert_and_key_paths(
+    config_path=None, include_context_aware=True
+):
     absolute_path = _get_cert_config_path(config_path, include_context_aware)
     if absolute_path is None:
         return None, None, None

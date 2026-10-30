@@ -558,3 +558,20 @@ def test_has_default_client_cert_source_malformed_config_no_gke_fallback(
 
     assert mtls.has_default_client_cert_source(include_context_aware=False) is True
     mock_is_ready.assert_not_called()
+
+
+@mock.patch(
+    "google.auth.transport._mtls_helper._get_non_spiffe_workload_cert_and_key_paths",
+    autospec=True,
+)
+@mock.patch(
+    "google.auth.transport._mtls_helper._get_spiffe_polling_config_path",
+    return_value="/var/run/secrets/workload-spiffe-credentials/credentials.json",
+    autospec=True,
+)
+def test_has_default_client_cert_source_spiffe_returns_true_without_polling(
+    mock_spiffe_path, mock_non_spiffe_paths
+):
+    assert mtls.has_default_client_cert_source() is True
+    mock_spiffe_path.assert_called_once_with()
+    mock_non_spiffe_paths.assert_not_called()
