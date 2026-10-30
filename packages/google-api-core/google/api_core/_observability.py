@@ -92,10 +92,12 @@ def _extract_endpoint_attributes(
     universe_domain = None
 
     if isinstance(client_options, dict):
-        endpoint = client_options.get("api_endpoint")
+        endpoint = client_options.get("api_endpoint") or client_options.get("_host")
         universe_domain = client_options.get("universe_domain")
     elif client_options is not None:
-        endpoint = getattr(client_options, "api_endpoint", None)
+        endpoint = getattr(client_options, "api_endpoint", None) or getattr(
+            client_options, "_host", None
+        )
         universe_domain = getattr(client_options, "universe_domain", None)
 
     attrs["url.domain"] = universe_domain or "googleapis.com"

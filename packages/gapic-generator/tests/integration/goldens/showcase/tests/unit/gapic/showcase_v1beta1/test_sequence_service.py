@@ -850,7 +850,7 @@ def test_sequence_service_grpc_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_get_interceptor.assert_called_once_with(options)
+        mock_get_interceptor.assert_called_once_with(transport._client_options)
         mock_apply_interceptors.assert_called_once_with(
             mock_channel, [mock_otel_interceptor]
         )
@@ -924,7 +924,9 @@ def test_sequence_service_grpc_asyncio_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_apply_async_interceptors.assert_called_once_with(mock_channel, options)
+        mock_apply_async_interceptors.assert_called_once_with(
+            mock_channel, transport._client_options
+        )
         assert mock_create_channel.call_count == 1
         assert transport.grpc_channel == mock_channel
 
@@ -7590,6 +7592,98 @@ def test_sequence_service_base_transport_wrap_method_modern_api_core(monkeypatch
         base_transport._wrap_method(func)
         assert "kind" not in mock_wrap.call_args.kwargs
         assert "client_options" in mock_wrap.call_args.kwargs
+
+
+@pytest.mark.parametrize(
+    "otel_enabled,expected_host",
+    [
+        pytest.param(False, None, id="otel_disabled"),
+        pytest.param(True, "default.example.com:443", id="otel_enabled"),
+    ],
+)
+def test_sequence_service_base_transport_client_options_none(
+    monkeypatch, otel_enabled, expected_host
+):
+    fake_observability = mock.MagicMock()
+    fake_observability.is_otel_capabilities_enabled.return_value = otel_enabled
+    monkeypatch.setattr(transports.base, "_observability", fake_observability)
+
+    transport = transports.SequenceServiceTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=None,
+    )
+    assert getattr(transport._client_options, "api_endpoint", None) is None
+    assert getattr(transport._client_options, "_host", None) == expected_host
+
+
+@pytest.mark.parametrize(
+    "initial_endpoint",
+    [
+        pytest.param(None, id="unset_api_endpoint"),
+        pytest.param("custom.example.com:443", id="explicit_api_endpoint"),
+    ],
+)
+def test_sequence_service_base_transport_client_options_object(
+    initial_endpoint,
+):
+    options = client_options.ClientOptions(api_endpoint=initial_endpoint)
+    transport = transports.SequenceServiceTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=options,
+    )
+    assert isinstance(transport._client_options, client_options.ClientOptions)
+    assert transport._client_options.api_endpoint == initial_endpoint
+    assert transport._client_options._host == "default.example.com:443"
+    assert options.api_endpoint == initial_endpoint
+    assert not hasattr(options, "_host")
+
+
+@pytest.mark.parametrize(
+    "initial_options,expected_endpoint",
+    [
+        pytest.param(
+            {},
+            None,
+            id="unset_api_endpoint",
+        ),
+        pytest.param(
+            {"api_endpoint": "custom.example.com:443"},
+            "custom.example.com:443",
+            id="explicit_api_endpoint",
+        ),
+    ],
+)
+def test_sequence_service_base_transport_client_options_dict(
+    initial_options, expected_endpoint
+):
+    options = dict(initial_options)
+    transport = transports.SequenceServiceTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=options,
+    )
+    assert isinstance(transport._client_options, client_options.ClientOptions)
+    assert transport._client_options.api_endpoint == expected_endpoint
+    assert transport._client_options._host == "default.example.com:443"
+    assert options == initial_options
+
+
+def test_sequence_service_base_transport_client_options_ignored_when_ignore_credentials():
+    class _CustomChannelTransport(transports.SequenceServiceTransport):
+        def __init__(self, **kwargs):
+            self._ignore_credentials = True
+            super().__init__(**kwargs)
+
+    options = client_options.ClientOptions()
+    transport = _CustomChannelTransport(
+        host="default.example.com:443",
+        client_options=options,
+    )
+    assert transport._client_options is options
+    assert transport._client_options.api_endpoint is None
+    assert not hasattr(transport._client_options, "_host")
 
 
 def test_sequence_service_base_transport_wrap_method_older_api_core_fallbacks(monkeypatch):

@@ -18,6 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.redis_v1 import gapic_version as package_version
 from google.cloud.redis_v1._compat import (
+    _observability,
     ASYNC_WRAP_METHOD_SUPPORTS_KIND as _ASYNC_WRAP_METHOD_SUPPORTS_KIND,
     WRAP_METHOD_SUPPORTS_TRACING as _WRAP_METHOD_SUPPORTS_TRACING,
 )
@@ -41,6 +42,22 @@ from google.longrunning import operations_pb2 # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+
+
+class _TransportClientOptions(client_options_lib.ClientOptions):
+    """Internal ClientOptions subclass that attaches the resolved transport host
+    as a separate ``_host`` attribute without mutating ``api_endpoint``."""
+
+    def __init__(
+        self,
+        base_options: Optional[client_options_lib.ClientOptions] = None,
+        *,
+        _host: Optional[str] = None,
+    ) -> None:
+        super().__init__()
+        if base_options is not None:
+            self.__dict__.update(base_options.__dict__)
+        self._host = _host
 
 
 class CloudRedisTransport(abc.ABC):
@@ -133,6 +150,23 @@ class CloudRedisTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+        if isinstance(client_options, dict):
+            client_options = client_options_lib.from_dict(client_options)
+
+        # Attach the resolved transport host on an internal ClientOptions subclass
+        # so OpenTelemetry spans can fall back to _host without mutating api_endpoint.
+        # Skip when _ignore_credentials is True (e.g., when a pre-constructed gRPC
+        # channel is supplied and self._host does not reflect the channel target).
+        if not self._ignore_credentials and (
+            client_options is not None
+            or (
+                _observability is not None
+                and _observability.is_otel_capabilities_enabled(None)
+            )
+        ):
+            client_options = _TransportClientOptions(
+                client_options, _host=self._host
+            )
         self._client_options = client_options
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
