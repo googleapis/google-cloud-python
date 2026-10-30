@@ -2482,9 +2482,12 @@ class TestSpiffeWorkloadPolling(object):
     ):
         config_file = spiffe_dir / "credentials.json"
 
-        with pytest.raises(exceptions.ClientCertError, match="not ready after 30s"):
+        with pytest.raises(
+            exceptions.ClientCertError, match="not ready after 30s"
+        ) as exc_info:
             _mtls_helper._get_workload_cert_and_key(str(config_file))
 
+        assert isinstance(exc_info.value.__cause__, FileNotFoundError)
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
         mock_debug.assert_called_once_with(
             "Identity certificate files are taking longer than 5 seconds to mount at %s. Retrying...",
@@ -2506,8 +2509,12 @@ class TestSpiffeWorkloadPolling(object):
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_file)
         )
 
-        with pytest.raises(exceptions.ClientCertError, match="not ready after 30s"):
+        with pytest.raises(
+            exceptions.ClientCertError, match="not ready after 30s"
+        ) as exc_info:
             _mtls_helper._get_workload_cert_and_key()
+
+        assert isinstance(exc_info.value.__cause__, FileNotFoundError)
 
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
         mock_debug.assert_called_once_with(

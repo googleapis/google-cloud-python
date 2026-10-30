@@ -597,13 +597,14 @@ def _extract_workload_paths_from_config(data, absolute_path):
 
 def _poll_spiffe_workload_credentials(spiffe_config_path):
     """Polls up to 30s for SPIFFE workload config, cert, and key files to be ready."""
+    last_error = None
     for attempt, interval in enumerate(_agent_identity_utils._POLLING_INTERVALS):
         try:
             data = _load_json_file(spiffe_config_path)
         except PermissionError:
             raise
-        except (OSError, exceptions.ClientCertError):
-            pass
+        except (OSError, exceptions.ClientCertError) as caught_exc:
+            last_error = caught_exc
         else:
             cert_path, key_path = _extract_workload_paths_from_config(
                 data, spiffe_config_path
@@ -618,12 +619,13 @@ def _poll_spiffe_workload_credentials(spiffe_config_path):
                 return cert_path, key_path, spiffe_config_path, cert_data, key_data
             except PermissionError:
                 raise
-            except (OSError, exceptions.ClientCertError):
+            except (OSError, exceptions.ClientCertError) as caught_exc:
                 if not (
                     _agent_identity_utils._is_in_well_known_dir(cert_path)
                     and _agent_identity_utils._is_in_well_known_dir(key_path)
                 ):
                     raise
+                last_error = caught_exc
 
         if attempt + 1 == _agent_identity_utils._FAST_POLL_CYCLES:
             _LOGGER.debug(
@@ -636,7 +638,7 @@ def _poll_spiffe_workload_credentials(spiffe_config_path):
         "Identity certificate configuration or certificate/key files at {} were not ready after {}s".format(
             spiffe_config_path, _agent_identity_utils._TOTAL_TIMEOUT
         )
-    )
+    ) from last_error
 
 
 def _read_credential_bundle_file(bundle_path):
