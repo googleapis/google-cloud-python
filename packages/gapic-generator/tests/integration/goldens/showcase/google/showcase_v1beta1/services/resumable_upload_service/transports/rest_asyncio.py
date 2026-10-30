@@ -28,6 +28,7 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core.client_options import ClientOptions
 import urllib.parse
 from google.api_core import resumable_transfer
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -36,7 +37,7 @@ from google.cloud.location import locations_pb2 # type: ignore
 from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
-from google.showcase_v1beta1._compat import transcode_request
+from google.showcase_v1beta1._compat import transcode_request, trace_http_request
 
 import google.protobuf
 
@@ -121,6 +122,7 @@ class AsyncResumableUploadServiceRestStub:
     _session: AsyncAuthorizedSession
     _host: str
     _interceptor: AsyncResumableUploadServiceRestInterceptor
+    _client_options: Optional[ClientOptions] = None
 
 class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTransport):
     """Asynchronous REST backend transport for ResumableUploadService.
@@ -141,6 +143,8 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
             interceptor: Optional[AsyncResumableUploadServiceRestInterceptor] = None,
+            client_options: Optional[ClientOptions] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -162,6 +166,9 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
                 "http" can be specified.
             interceptor (Optional[AsyncResumableUploadServiceRestInterceptor]): Interceptor used
                 to manipulate requests, request metadata, and responses.
+            client_options (Optional[google.api_core.client_options.ClientOptions]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         super().__init__(
@@ -170,27 +177,27 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
             client_info=client_info,
             always_use_jwt_access=False,
             url_scheme=url_scheme,
-            api_audience=None
+            api_audience=None,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._interceptor = interceptor or AsyncResumableUploadServiceRestInterceptor()
-        self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 
     def _prep_wrapped_messages(self, client_info):
-        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """Precompute and cache wrapped methods for async RPC dispatch.
+
+        Overrides the base class method to use asynchronous wrappers and retries.
+        """
         self._wrapped_methods = {
-            self.upload_media: self._wrap_method(
+            self.upload_media: self._wrap_async_method(
                 self.upload_media,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.ResumableUploadService/UploadMedia",
             ),
         }
-
-    def _wrap_method(self, func, *args, **kwargs):
-        if self._wrap_with_kind:  # pragma: NO COVER
-            kwargs["kind"] = self.kind
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     class _UploadMedia(_BaseResumableUploadServiceRestTransport._BaseUploadMedia, AsyncResumableUploadServiceRestStub):
         def __hash__(self):
@@ -270,7 +277,7 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
     def upload_media(self) -> Callable[
             [resumable_upload.UploadMediaRequest],
             resumable_transfer.AsyncResumableUploadSession]:
-        return self._UploadMedia(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UploadMedia(self._session, self._host, self._interceptor, getattr(self, "_client_options", None))  # type: ignore
 
     @property
     def kind(self) -> str:

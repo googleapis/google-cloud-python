@@ -1912,6 +1912,178 @@ class TestDatabase(_BaseTest):
             self.assertEqual(committed, NOW)
 
     @CrossSync.pytest
+    async def test_run_in_transaction_tracing(self):
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+        from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+
+        tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+        trace_exporter = InMemorySpanExporter()
+        tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+
+        client = _Client(observability_options=dict(tracer_provider=tracer_provider))
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        session = _Session()
+        pool.put(session)
+        session._committed = 42
+        database = await self._make_one(self.DATABASE_ID, instance, pool=pool)
+        database._spanner_api = instance._client._spanner_api
+
+        async def unit_of_work(transaction):
+            return 42
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.transaction.Transaction.commit",
+            new_callable=mock.AsyncMock,
+            return_value=42,
+        ):
+            await database.run_in_transaction(
+                unit_of_work, transaction_tag="database-tag"
+            )
+
+        finished_spans = trace_exporter.get_finished_spans()
+        span_names = [span.name for span in finished_spans]
+        self.assertIn("CloudSpanner.Database.run_in_transaction", span_names)
+        self.assertNotIn("CloudSpanner.Session.run_in_transaction", span_names)
+        database_span = next(
+            span
+            for span in finished_spans
+            if span.name == "CloudSpanner.Database.run_in_transaction"
+        )
+        self.assertEqual(
+            database_span.attributes.get("transaction.tag"), "database-tag"
+        )
+
+    @CrossSync.pytest
+    async def test_run_in_transaction_tracing_retry_events(self):
+        from google.api_core.exceptions import Aborted
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+        from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+
+        from google.cloud.spanner_v1._async.session import Session
+
+        tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+        trace_exporter = InMemorySpanExporter()
+        tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+
+        client = _Client(observability_options=dict(tracer_provider=tracer_provider))
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = await self._make_one(self.DATABASE_ID, instance, pool=pool)
+        session = Session(database, is_multiplexed=True)
+        session._session_id = "test-session-id"
+        database._sessions_manager._multiplexed_session = session
+
+        mock_error = mock.Mock()
+        mock_error.trailing_metadata.return_value = ()
+        aborted_exception = Aborted("aborted", errors=[mock_error])
+
+        attempts = 0
+
+        async def unit_of_work(transaction):
+            nonlocal attempts
+            attempts += 1
+            if attempts == 1:
+                raise aborted_exception
+            return "success"
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.transaction.Transaction.commit",
+            new_callable=mock.AsyncMock,
+            side_effect=[aborted_exception, 42],
+        ):
+            result = await database.run_in_transaction(
+                unit_of_work, default_retry_delay=0
+            )
+
+        self.assertEqual(result, "success")
+        finished_spans = trace_exporter.get_finished_spans()
+        self.assertEqual(len(finished_spans), 1)
+        database_span = finished_spans[0]
+        self.assertEqual(database_span.name, "CloudSpanner.Database.run_in_transaction")
+
+        event_names = [event.name for event in database_span.events]
+        self.assertIn(
+            "Transaction was aborted in user operation, retrying",
+            event_names,
+        )
+        self.assertIn(
+            "Transaction was aborted during commit, retrying",
+            event_names,
+        )
+
+        user_abort_event = next(
+            event
+            for event in database_span.events
+            if event.name == "Transaction was aborted in user operation, retrying"
+        )
+        self.assertEqual(user_abort_event.attributes.get("attempt"), 1)
+        self.assertIn("cause", user_abort_event.attributes)
+
+        commit_abort_event = next(
+            event
+            for event in database_span.events
+            if event.name == "Transaction was aborted during commit, retrying"
+        )
+        self.assertEqual(commit_abort_event.attributes.get("attempt"), 2)
+
+    @CrossSync.pytest
+    async def test_run_in_transaction_tracing_error_status(self):
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+        from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+        from opentelemetry.trace import StatusCode
+
+        from google.cloud.spanner_v1._async.session import Session
+
+        tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+        trace_exporter = InMemorySpanExporter()
+        tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+
+        client = _Client(observability_options=dict(tracer_provider=tracer_provider))
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = await self._make_one(self.DATABASE_ID, instance, pool=pool)
+        session = Session(database, is_multiplexed=True)
+        session._session_id = "test-session-id"
+        database._sessions_manager._multiplexed_session = session
+
+        async def unit_of_work(transaction):
+            raise ZeroDivisionError("division by zero")
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.transaction.Transaction.rollback",
+            new_callable=mock.AsyncMock,
+        ):
+            with self.assertRaises(ZeroDivisionError):
+                await database.run_in_transaction(unit_of_work)
+
+        finished_spans = trace_exporter.get_finished_spans()
+        self.assertEqual(len(finished_spans), 1)
+        database_span = finished_spans[0]
+        self.assertEqual(database_span.name, "CloudSpanner.Database.run_in_transaction")
+        self.assertEqual(database_span.status.status_code, StatusCode.ERROR)
+        self.assertIn("division by zero", database_span.status.description)
+        error_event = next(
+            event
+            for event in database_span.events
+            if event.name
+            == "User operation failed. Invoking Transaction.rollback(), not retrying"
+        )
+        self.assertEqual(error_event.attributes.get("attempt"), 1)
+
+    @CrossSync.pytest
     async def test_run_in_transaction_nested(self):
         from datetime import datetime
 

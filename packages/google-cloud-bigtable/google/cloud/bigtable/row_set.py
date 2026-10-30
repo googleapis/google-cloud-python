@@ -157,17 +157,6 @@ class RowRange(_MappableAttributesMixin, BaseRowRange):
         "end_inclusive": "end_is_inclusive",
     }
 
-    def _key(self):
-        return (
-            self.start_key,
-            self.end_key,
-            self.start_is_inclusive,
-            self.end_is_inclusive,
-        )
-
-    def __hash__(self):
-        return hash(self._key())
-
     def get_range_kwargs(self):
         """Convert row range object to dict which can be passed to
         google.bigtable.v2.RowRange add method.

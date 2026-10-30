@@ -1111,3 +1111,57 @@ class TestClient(unittest.TestCase):
             credentials=creds,
         )
         self.assertIs(client._credentials, creds)
+
+
+class TestInitializeMetrics(unittest.TestCase):
+    def test_initialize_metrics_emulator_branch(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        with mock.patch(
+            "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+            return_value="localhost",
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.client._metrics_monitor_initialized",
+                False,
+            ):
+                with mock.patch(
+                    "google.cloud.spanner_v1.client.metrics.set_meter_provider"
+                ) as set_mock:
+                    MUT._initialize_metrics("project", mock.Mock())
+                    set_mock.assert_called_once()
+
+    def test_initialize_metrics_emulator_host_parameter(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        with mock.patch(
+            "google.cloud.spanner_v1.client._metrics_monitor_initialized",
+            False,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.client.metrics.set_meter_provider"
+            ) as set_mock:
+                MUT._initialize_metrics(
+                    "project",
+                    mock.Mock(),
+                    emulator_host="localhost:9010",
+                )
+                set_mock.assert_called_once()
+
+    def test_initialize_metrics_anonymous_credentials(self):
+        from google.auth.credentials import AnonymousCredentials
+
+        from google.cloud.spanner_v1 import client as MUT
+
+        with mock.patch(
+            "google.cloud.spanner_v1.client._metrics_monitor_initialized",
+            False,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.client.metrics.set_meter_provider"
+            ) as set_mock:
+                MUT._initialize_metrics(
+                    "project",
+                    AnonymousCredentials(),
+                )
+                set_mock.assert_called_once()
