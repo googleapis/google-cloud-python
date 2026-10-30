@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.62.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.0...google-auth-v2.62.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* **auth:** use an unencrypted key for mTLS certificate rotation ([#18709](https://github.com/googleapis/google-cloud-python/issues/18709)) ([8166325](https://github.com/googleapis/google-cloud-python/commit/81663259c3743c6ab76005a5decb2b3628cfcc79))
+
 ## [2.62.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.61.0...google-auth-v2.62.0) (2026-10-12)
 
 
