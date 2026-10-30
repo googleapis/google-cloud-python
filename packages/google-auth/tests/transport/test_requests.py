@@ -1519,7 +1519,7 @@ class TestAuthorizedSession(object):
             google.auth.transport._mtls_helper,
             "check_parameters_for_unauthorized_response",
         ) as mock_check_params:
-            authed_session._reconfigure_mtls_channel_if_cert_changed(b"old_cert")
+            authed_session._reconfigure_mtls_channel_if_cert_changed(b"old_cert", 0)
 
         mock_check_params.assert_not_called()
         assert not authed_session._mtls_reauth_lock.locked()
@@ -1611,6 +1611,82 @@ class TestAuthorizedSession(object):
         )
         assert new_adapter is not old_adapter
         assert new_auth_adapter is not old_auth_adapter
+        assert not authed_session._mtls_reauth_lock.locked()
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_concurrent_unauthorized_responses_check_unchanged_cert_once(
+        self, mock_send
+    ):
+        """
+        Tests that when several threads that share an AuthorizedSession receive
+        a 401 response at the same time and the client certificate has not
+        changed (for example, because the token expired), the certificate is
+        loaded only once, the mTLS channel is not reconfigured, and every
+        request is retried successfully.
+        """
+        num_threads = 8
+        all_requests_sent = threading.Barrier(num_threads)
+        sent_lock = threading.Lock()
+        sent = {"count": 0}
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            CredentialsStub(), refresh_timeout=60
+        )
+        authed_session._is_mtls = True
+        authed_session._cached_cert = pytest.public_cert_bytes
+        adapter = authed_session.adapters["https://"]
+
+        def send(adapter, request, **kwargs):
+            with sent_lock:
+                sent["count"] += 1
+                first_attempt = sent["count"] <= num_threads
+            if first_attempt:
+                # Wait until every thread has sent its first request, so that
+                # all of them receive a 401 response before any cert check.
+                all_requests_sent.wait(timeout=30)
+                return make_response(status=http_client.UNAUTHORIZED)
+            return make_response(status=http_client.OK)
+
+        mock_send.side_effect = send
+
+        results = []
+        errors = []
+
+        def make_request():
+            try:
+                results.append(authed_session.request("GET", self.MTLS_TEST_URL))
+            except Exception as exc:  # pragma: NO COVER
+                errors.append(exc)
+
+        with (
+            mock.patch.object(
+                google.auth.transport._mtls_helper,
+                "check_parameters_for_unauthorized_response",
+                return_value=(
+                    pytest.public_cert_bytes,
+                    pytest.private_key_bytes,
+                    "same_fp",
+                    "same_fp",
+                ),
+            ) as mock_check_params,
+            mock.patch.object(
+                authed_session, "configure_mtls_channel"
+            ) as mock_configure_mtls_channel,
+        ):
+            threads = [
+                threading.Thread(target=make_request) for _ in range(num_threads)
+            ]
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join(timeout=60)
+
+        assert errors == []
+        assert [r.status_code for r in results] == [http_client.OK] * num_threads
+        mock_check_params.assert_called_once()
+        mock_configure_mtls_channel.assert_not_called()
+        assert authed_session.adapters["https://"] is adapter
+        assert authed_session._mtls_cert_check_generation == 1
         assert not authed_session._mtls_reauth_lock.locked()
 
     @mock.patch(

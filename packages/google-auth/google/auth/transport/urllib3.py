@@ -310,6 +310,11 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         self._request = Request(self.http)
         self._is_mtls = False
         self._mtls_reauth_lock = threading.Lock()
+        # Incremented after every client certificate check that runs on a
+        # 401 response, so that threads that were waiting for
+        # _mtls_reauth_lock can skip a check that ran after they sent their
+        # request.
+        self._mtls_cert_check_generation = 0
 
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
@@ -421,10 +426,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         self.credentials.before_request(self._request, method, url, request_headers)
 
-        # Remember the client certificate that this request is sent with. If
-        # the request receives a 401 response, this tells whether another
-        # thread has already rotated the certificate in the meantime.
+        # Remember the client certificate that this request is sent with, and
+        # how many certificate checks have run so far. If the request receives
+        # a 401 response, this tells whether another thread has already
+        # checked or rotated the certificate in the meantime.
         cert_at_request = getattr(self, "_cached_cert", None)
+        check_generation_at_request = self._mtls_cert_check_generation
 
         response = self.http.urlopen(
             method, url, body=body, headers=request_headers, **kwargs
@@ -444,7 +451,9 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             if response.status == http_client.UNAUTHORIZED:
                 use_mtls = self.is_mtls and _mtls_helper.is_mtls_endpoint(url)
                 if use_mtls:
-                    self._reconfigure_mtls_channel_if_cert_changed(cert_at_request)
+                    self._reconfigure_mtls_channel_if_cert_changed(
+                        cert_at_request, check_generation_at_request
+                    )
 
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
@@ -467,19 +476,26 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         return response
 
-    def _reconfigure_mtls_channel_if_cert_changed(self, cert_at_request):
+    def _reconfigure_mtls_channel_if_cert_changed(
+        self, cert_at_request, check_generation_at_request
+    ):
         """Reconfigures the mTLS channel if the client certificate has changed.
 
         This is called when a request to an mTLS endpoint receives a 401
         response. The certificate check and the channel reconfiguration run
         while holding ``_mtls_reauth_lock``. When several threads receive a 401
         response at the same time, only the first one reads the current
-        certificate and replaces the pool manager. The other threads see that
-        the channel has already been reconfigured and reuse it.
+        certificate, and replaces the pool manager if the certificate has
+        changed. Threads that were waiting for the lock see that the
+        certificate was already checked after they sent their request, and
+        skip the check.
 
         Args:
             cert_at_request (Optional[bytes]): The cached client certificate at
                 the time the request that received the 401 response was sent.
+            check_generation_at_request (int): The value of
+                ``_mtls_cert_check_generation`` at the time the request that
+                received the 401 response was sent.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If the client
@@ -495,6 +511,16 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 _LOGGER.info(
                     "Skipping reconfiguration of mTLS channel because it has already"
                     " been reconfigured with a new client certificate."
+                )
+                return
+
+            if self._mtls_cert_check_generation != check_generation_at_request:
+                # Another thread checked the certificate after this request was
+                # sent, whether or not the certificate had changed. Checking it
+                # again would only load the same certificate again.
+                _LOGGER.info(
+                    "Skipping client certificate check because another request"
+                    " already checked it."
                 )
                 return
 
@@ -516,6 +542,8 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                     e,
                 )
                 return
+            finally:
+                self._mtls_cert_check_generation += 1
 
             if cached_fingerprint == current_cert_fingerprint:
                 _LOGGER.info(

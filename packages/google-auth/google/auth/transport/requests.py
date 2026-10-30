@@ -529,6 +529,11 @@ class AuthorizedSession(requests.Session):
         self._is_mtls = False
         self._default_host = default_host
         self._mtls_reauth_lock = threading.Lock()
+        # Incremented after every client certificate check that runs on a
+        # 401 response, so that threads that were waiting for
+        # _mtls_reauth_lock can skip a check that ran after they sent their
+        # request.
+        self._mtls_cert_check_generation = 0
 
         if auth_request is None:
             self._auth_request_session = requests.Session()
@@ -739,10 +744,12 @@ class AuthorizedSession(requests.Session):
             self.credentials.before_request(auth_request, method, url, request_headers)
         remaining_time = guard.remaining_timeout
 
-        # Remember the client certificate that this request is sent with. If
-        # the request receives a 401 response, this tells whether another
-        # thread has already rotated the certificate in the meantime.
+        # Remember the client certificate that this request is sent with, and
+        # how many certificate checks have run so far. If the request receives
+        # a 401 response, this tells whether another thread has already
+        # checked or rotated the certificate in the meantime.
         cert_at_request = getattr(self, "_cached_cert", None)
+        check_generation_at_request = self._mtls_cert_check_generation
 
         with TimeoutGuard(remaining_time) as guard:
             _helpers.request_log(_LOGGER, method, url, data, headers)
@@ -770,7 +777,9 @@ class AuthorizedSession(requests.Session):
                 use_mtls = self.is_mtls and _mtls_helper.is_mtls_endpoint(url)
                 if use_mtls:
                     with TimeoutGuard(remaining_time) as guard:
-                        self._reconfigure_mtls_channel_if_cert_changed(cert_at_request)
+                        self._reconfigure_mtls_channel_if_cert_changed(
+                            cert_at_request, check_generation_at_request
+                        )
                     remaining_time = guard.remaining_timeout
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
@@ -806,19 +815,26 @@ class AuthorizedSession(requests.Session):
 
         return response
 
-    def _reconfigure_mtls_channel_if_cert_changed(self, cert_at_request):
+    def _reconfigure_mtls_channel_if_cert_changed(
+        self, cert_at_request, check_generation_at_request
+    ):
         """Reconfigures the mTLS channel if the client certificate has changed.
 
         This is called when a request to an mTLS endpoint receives a 401
         response. The certificate check and the channel reconfiguration run
         while holding ``_mtls_reauth_lock``. When several threads receive a 401
         response at the same time, only the first one reads the current
-        certificate and remounts the adapters. The other threads see that the
-        channel has already been reconfigured and reuse it.
+        certificate, and remounts the adapters if the certificate has
+        changed. Threads that were waiting for the lock see that the
+        certificate was already checked after they sent their request, and
+        skip the check.
 
         Args:
             cert_at_request (Optional[bytes]): The cached client certificate at
                 the time the request that received the 401 response was sent.
+            check_generation_at_request (int): The value of
+                ``_mtls_cert_check_generation`` at the time the request that
+                received the 401 response was sent.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If the client
@@ -834,6 +850,16 @@ class AuthorizedSession(requests.Session):
                 _LOGGER.info(
                     "Skipping reconfiguration of mTLS channel because it has already"
                     " been reconfigured with a new client certificate."
+                )
+                return
+
+            if self._mtls_cert_check_generation != check_generation_at_request:
+                # Another thread checked the certificate after this request was
+                # sent, whether or not the certificate had changed. Checking it
+                # again would only load the same certificate again.
+                _LOGGER.info(
+                    "Skipping client certificate check because another request"
+                    " already checked it."
                 )
                 return
 
@@ -855,6 +881,8 @@ class AuthorizedSession(requests.Session):
                     e,
                 )
                 return
+            finally:
+                self._mtls_cert_check_generation += 1
 
             if cached_fingerprint == current_cert_fingerprint:
                 _LOGGER.info(
