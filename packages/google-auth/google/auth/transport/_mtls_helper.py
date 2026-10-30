@@ -926,6 +926,10 @@ def check_use_client_cert():
     containing a "workload" section, or if no certificate config file is
     configured/present and the GKE credential bundle exists at
     /var/run/secrets/workload-spiffe-credentials/x509.credential-bundle.private-key.pem.
+    When GOOGLE_API_CERTIFICATE_CONFIG points to the well-known SPIFFE
+    directory (/var/run/secrets/workload-spiffe-credentials), this returns True
+    without waiting for the file to exist on disk so startup polling can run
+    when credentials are loaded.
     Otherwise, it returns False.
 
     Returns:

@@ -2417,6 +2417,46 @@ class TestSpiffeWorkloadPolling(object):
         )
         mock_sleep.assert_not_called()
 
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_polling_missing_files_retry_success(
+        self, mock_sleep, spiffe_dir, monkeypatch
+    ):
+        cert_file = spiffe_dir / "certificates.pem"
+        key_file = spiffe_dir / "private_key.pem"
+        config_file = spiffe_dir / "credentials.json"
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_file)
+        )
+
+        def write_config(*args, **kwargs):
+            self._write_workload_config(config_file, cert_file, key_file)
+
+        cert_file.write_bytes(pytest.public_cert_bytes)
+        key_file.write_bytes(pytest.private_key_bytes)
+        mock_sleep.side_effect = write_config
+
+        assert _mtls_helper._get_workload_cert_and_key() == (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        assert mock_sleep.call_count == 1
+
+        cert_file.unlink()
+        key_file.unlink()
+        mock_sleep.reset_mock()
+
+        def write_cert_and_key(*args, **kwargs):
+            cert_file.write_bytes(pytest.public_cert_bytes)
+            key_file.write_bytes(pytest.private_key_bytes)
+
+        mock_sleep.side_effect = write_cert_and_key
+
+        assert _mtls_helper._get_workload_cert_and_key() == (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        assert mock_sleep.call_count == 1
+
     @pytest.mark.parametrize("initial_config", ["", "{truncated"])
     @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
     def test_polling_config_retry_success(
@@ -2583,6 +2623,14 @@ class TestSpiffeWorkloadPolling(object):
         mock_sleep.assert_not_called()
 
         external_cert.write_bytes(pytest.public_cert_bytes)
+        spiffe_cert = spiffe_dir / "certificates.pem"
+        spiffe_cert.write_bytes(pytest.public_cert_bytes)
+        self._write_workload_config(config_file, spiffe_cert, external_key)
+        with pytest.raises(FileNotFoundError):
+            _mtls_helper._get_workload_cert_and_key(str(config_file))
+        mock_sleep.assert_not_called()
+
+        self._write_workload_config(config_file, external_cert, external_key)
         external_key.write_bytes(pytest.private_key_bytes)
         assert _mtls_helper._get_workload_cert_and_key(str(config_file)) == (
             pytest.public_cert_bytes,
