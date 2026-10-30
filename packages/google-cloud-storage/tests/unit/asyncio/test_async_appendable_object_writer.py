@@ -870,3 +870,193 @@ class TestAsyncAppendableObjectWriter:
         assert writer.write_handle.handle == b"h2"
         writer.open.assert_awaited_once()
         assert not writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_writer_metrics_recording(self, mock_appendable_writer):
+        mock_recorder = mock.MagicMock()
+        mock_recorder.standard_enabled = True
+        mock_client = mock_appendable_writer["mock_client"]
+        mock_client._metrics_recorder = mock_recorder
+        mock_stream = mock_appendable_writer["mock_stream"]
+
+        writer = self._make_one(mock_client)
+        await writer.open()
+        assert mock_stream._metrics_recorder is mock_recorder
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.open"
+        )
+
+        # Direct append records request_body_size once
+        mock_recorder.record_logical_operation.reset_mock()
+        await writer.append(b"hello")
+        mock_recorder.record_request_body_size.assert_called_once_with(
+            5, operation="WriteObject"
+        )
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.append"
+        )
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["operation"]
+            == "WriteObject"
+        )
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["rpc_method"]
+            == "google.storage.v2.Storage/BidiWriteObject"
+        )
+
+        # append_from_file suppresses per-chunk append metrics and records total size once
+        mock_recorder.record_logical_operation.reset_mock()
+        mock_recorder.record_request_body_size.reset_mock()
+        await writer.append_from_file(io.BytesIO(b"abcdefghij"), block_size=4)
+        mock_recorder.record_request_body_size.assert_called_once_with(
+            10, operation="WriteObject"
+        )
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.append_from_file"
+        )
+
+        # state_lookup, simple_flush, flush, close(finalize_on_close=True)
+        for method_name, call_coro in (
+            ("state_lookup", writer.state_lookup()),
+            ("simple_flush", writer.simple_flush()),
+            ("flush", writer.flush()),
+        ):
+            mock_recorder.record_logical_operation.reset_mock()
+            await call_coro
+            mock_recorder.record_logical_operation.assert_called_once()
+            assert (
+                mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+                == f"storage.asyncio.AsyncAppendableObjectWriter.{method_name}"
+            )
+            assert (
+                mock_recorder.record_logical_operation.call_args.kwargs["operation"]
+                == "WriteObject"
+            )
+
+        mock_recorder.record_logical_operation.reset_mock()
+        mock_stream.recv.return_value = storage_type.BidiWriteObjectResponse(
+            resource=storage_type.Object(size=15)
+        )
+        await writer.close(finalize_on_close=True)
+        # close(finalize_on_close=True) records outer close without duplicating finalize
+        mock_recorder.record_logical_operation.assert_called_once()
+        assert (
+            mock_recorder.record_logical_operation.call_args.kwargs["client_method"]
+            == "storage.asyncio.AsyncAppendableObjectWriter.close"
+        )
+
+    @pytest.mark.asyncio
+    async def test_writer_retry_metrics_accounting(
+        self, mock_appendable_writer, monkeypatch
+    ):
+        from google.api_core.retry_async import AsyncRetry
+
+        from google.cloud.storage import _opentelemetry_metrics
+
+        monkeypatch.setattr(_opentelemetry_metrics, "HAS_OPENTELEMETRY_METRICS", True)
+        monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
+        mock_metrics = mock.Mock()
+        mock_meter = mock.Mock()
+        mock_meter.create_histogram.side_effect = lambda *a, **kw: mock.Mock()
+        mock_meter.create_counter.side_effect = lambda *a, **kw: mock.Mock()
+        mock_metrics.get_meter.return_value = mock_meter
+        monkeypatch.setattr(
+            _opentelemetry_metrics, "metrics", mock_metrics, raising=False
+        )
+
+        recorder = _opentelemetry_metrics._MetricsRecorder(
+            enable_metrics=True, rpc_system="grpc"
+        )
+        mock_client = mock_appendable_writer["mock_client"]
+        mock_client._metrics_recorder = recorder
+        mock_stream = mock_appendable_writer["mock_stream"]
+
+        fast_retry = AsyncRetry(
+            predicate=_is_write_retryable,
+            initial=0.001,
+            maximum=0.001,
+            on_error=mock.Mock(),
+        )
+        writer = self._make_one(mock_client)
+
+        # 1. open() retry
+        mock_stream.open = AsyncMock(
+            side_effect=[exceptions.ServiceUnavailable("503 open"), None]
+        )
+        await writer.open(retry_policy=fast_retry)
+        recorder.retries_counter.add.assert_called_once()
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "UNAVAILABLE"
+        )
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"][
+                "gcp.storage.operation"
+            ]
+            == "WriteObject"
+        )
+
+        # 2. append() retry
+        recorder.retries_counter.add.reset_mock()
+        mock_stream.open = AsyncMock(return_value=None)
+        mock_stream.send = AsyncMock(
+            side_effect=[exceptions.ServiceUnavailable("503 append"), None]
+        )
+        await writer.append(b"abc", retry_policy=fast_retry)
+        recorder.retries_counter.add.assert_called_once()
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "UNAVAILABLE"
+        )
+
+        # 3. close(finalize_on_close=False) retry
+        recorder.retries_counter.add.reset_mock()
+        writer.offset = 0
+        mock_stream.persisted_size = 0
+        redirect = BidiWriteObjectRedirectedError(
+            routing_token="rt_close",
+            write_handle=storage_type.BidiWriteHandle(handle=b"hc"),
+        )
+        mock_stream.close = AsyncMock(
+            side_effect=[exceptions.Aborted("redirect", errors=[redirect]), None]
+        )
+        await writer.close(finalize_on_close=False, retry_policy=fast_retry)
+        recorder.retries_counter.add.assert_called_once()
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "ABORTED"
+        )
+
+        # 4. finalize() retry
+        recorder.retries_counter.add.reset_mock()
+        writer._is_stream_open = True
+        writer.offset = 0
+        mock_stream.close = AsyncMock(return_value=None)
+        mock_stream.send = AsyncMock(return_value=None)
+        mock_stream.recv = AsyncMock(
+            side_effect=[
+                exceptions.InternalServerError("500 finalize"),
+                storage_type.BidiWriteObjectResponse(
+                    resource=storage_type.Object(size=3)
+                ),
+            ]
+        )
+        await writer.finalize(retry_policy=fast_retry)
+        recorder.retries_counter.add.assert_called_once()
+        assert (
+            recorder.retries_counter.add.call_args.kwargs["attributes"]["error.type"]
+            == "INTERNAL"
+        )
+
+        # 5. open() failure when metrics are disabled (recorder is None)
+        mock_client._metrics_recorder = None
+        writer_disabled = self._make_one(mock_client)
+        mock_stream.open = AsyncMock(side_effect=exceptions.NotFound("404"))
+        with pytest.raises(exceptions.NotFound):
+            await writer_disabled.open()
