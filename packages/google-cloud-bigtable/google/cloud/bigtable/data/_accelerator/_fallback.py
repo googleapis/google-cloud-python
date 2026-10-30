@@ -43,6 +43,8 @@ from typing import TYPE_CHECKING
 from google.api_core import exceptions as core_exceptions
 from grpc import RpcError, StatusCode
 
+from google.cloud.bigtable.data.exceptions import InvalidChunk
+
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
 
@@ -148,6 +150,7 @@ def handle_accelerator_error(
     exception for the caller to propagate:
 
     * daemon subprocess dead -> trip the breaker, fall back (it will not recover)
+    * :class:`InvalidChunk` -> trip the breaker, fall back immediately
     * ``UNIMPLEMENTED`` -> trip the breaker, fall back immediately
     * any other gRPC error -> translate and raise
     * a non-gRPC exception -> re-raise unchanged (never masked as a fallback)
@@ -162,6 +165,14 @@ def handle_accelerator_error(
         _LOGGER.warning(
             "Accelerator daemon is no longer running; permanently falling back "
             "to the native Bigtable client for this table.",
+            exc_info=exc,
+        )
+        breaker.trip()
+        raise _AcceleratorFallback() from exc
+    if isinstance(exc, InvalidChunk):
+        _LOGGER.warning(
+            "Accelerator daemon returned an invalid ReadRows chunk; permanently "
+            "falling back to the native Bigtable client for this table.",
             exc_info=exc,
         )
         breaker.trip()
