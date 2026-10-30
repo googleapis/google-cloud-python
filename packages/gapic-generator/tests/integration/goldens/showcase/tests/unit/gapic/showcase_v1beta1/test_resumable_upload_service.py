@@ -4506,14 +4506,14 @@ def test_resumable_upload_service_base_transport_wrap_method_modern_api_core(mon
 
 
 @pytest.mark.parametrize(
-    "otel_enabled,expected_endpoint",
+    "otel_enabled,expected_host",
     [
         pytest.param(False, None, id="otel_disabled"),
         pytest.param(True, "default.example.com:443", id="otel_enabled"),
     ],
 )
 def test_resumable_upload_service_base_transport_client_options_none(
-    monkeypatch, otel_enabled, expected_endpoint
+    monkeypatch, otel_enabled, expected_host
 ):
     fake_observability = mock.MagicMock()
     fake_observability.is_otel_capabilities_enabled.return_value = otel_enabled
@@ -4524,22 +4524,19 @@ def test_resumable_upload_service_base_transport_client_options_none(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=None,
     )
-    assert getattr(transport._client_options, "api_endpoint", None) == expected_endpoint
+    assert getattr(transport._client_options, "api_endpoint", None) is None
+    assert getattr(transport._client_options, "_host", None) == expected_host
 
 
 @pytest.mark.parametrize(
-    "initial_endpoint,expected_endpoint",
+    "initial_endpoint",
     [
-        pytest.param(None, "default.example.com:443", id="default_from_host"),
-        pytest.param(
-            "custom.example.com:443",
-            "custom.example.com:443",
-            id="preserve_explicit",
-        ),
+        pytest.param(None, id="unset_api_endpoint"),
+        pytest.param("custom.example.com:443", id="explicit_api_endpoint"),
     ],
 )
 def test_resumable_upload_service_base_transport_client_options_object(
-    initial_endpoint, expected_endpoint
+    initial_endpoint,
 ):
     options = client_options.ClientOptions(api_endpoint=initial_endpoint)
     transport = transports.ResumableUploadServiceTransport(
@@ -4547,27 +4544,30 @@ def test_resumable_upload_service_base_transport_client_options_object(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=options,
     )
-    assert transport._client_options.api_endpoint == expected_endpoint
+    assert isinstance(transport._client_options, client_options.ClientOptions)
+    assert transport._client_options.api_endpoint == initial_endpoint
+    assert transport._client_options._host == "default.example.com:443"
     assert options.api_endpoint == initial_endpoint
+    assert not hasattr(options, "_host")
 
 
 @pytest.mark.parametrize(
-    "initial_options,expected_options",
+    "initial_options,expected_endpoint",
     [
         pytest.param(
             {},
-            {"api_endpoint": "default.example.com:443"},
-            id="default_from_host",
+            None,
+            id="unset_api_endpoint",
         ),
         pytest.param(
             {"api_endpoint": "custom.example.com:443"},
-            {"api_endpoint": "custom.example.com:443"},
-            id="preserve_explicit",
+            "custom.example.com:443",
+            id="explicit_api_endpoint",
         ),
     ],
 )
 def test_resumable_upload_service_base_transport_client_options_dict(
-    initial_options, expected_options
+    initial_options, expected_endpoint
 ):
     options = dict(initial_options)
     transport = transports.ResumableUploadServiceTransport(
@@ -4575,8 +4575,26 @@ def test_resumable_upload_service_base_transport_client_options_dict(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=options,
     )
-    assert transport._client_options == expected_options
+    assert isinstance(transport._client_options, client_options.ClientOptions)
+    assert transport._client_options.api_endpoint == expected_endpoint
+    assert transport._client_options._host == "default.example.com:443"
     assert options == initial_options
+
+
+def test_resumable_upload_service_base_transport_client_options_ignored_when_ignore_credentials():
+    class _CustomChannelTransport(transports.ResumableUploadServiceTransport):
+        def __init__(self, **kwargs):
+            self._ignore_credentials = True
+            super().__init__(**kwargs)
+
+    options = client_options.ClientOptions()
+    transport = _CustomChannelTransport(
+        host="default.example.com:443",
+        client_options=options,
+    )
+    assert transport._client_options is options
+    assert transport._client_options.api_endpoint is None
+    assert not hasattr(transport._client_options, "_host")
 
 
 def test_resumable_upload_service_base_transport_wrap_method_older_api_core_fallbacks(monkeypatch):

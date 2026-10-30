@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 import abc
-import copy
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.showcase_v1beta1 import gapic_version as package_version
@@ -45,6 +44,22 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+
+
+class _TransportClientOptions(client_options_lib.ClientOptions):
+    """Internal ClientOptions subclass that attaches the resolved transport host
+    as a separate ``_host`` attribute without mutating ``api_endpoint``."""
+
+    def __init__(
+        self,
+        base_options: Optional[client_options_lib.ClientOptions] = None,
+        *,
+        _host: Optional[str] = None,
+    ) -> None:
+        super().__init__()
+        if base_options is not None:
+            self.__dict__.update(base_options.__dict__)
+        self._host = _host
 
 
 class IdentityTransport(abc.ABC):
@@ -136,24 +151,23 @@ class IdentityTransport(abc.ABC):
             host += ':443'
         self._host = host
 
-        # If the transport was instantiated directly with client_options=None
-        # while OpenTelemetry tracing is enabled via environment variable,
-        # create a ClientOptions instance with the resolved transport host so
-        # method and wire spans can record server.address and server.port.
-        if (
-            client_options is None
-            and _observability is not None
-            and _observability.is_otel_capabilities_enabled(None)
+        if isinstance(client_options, dict):
+            client_options = client_options_lib.from_dict(client_options)
+
+        # Attach the resolved transport host on an internal ClientOptions subclass
+        # so OpenTelemetry spans can fall back to _host without mutating api_endpoint.
+        # Skip when _ignore_credentials is True (e.g., when a pre-constructed gRPC
+        # channel is supplied and self._host does not reflect the channel target).
+        if not self._ignore_credentials and (
+            client_options is not None
+            or (
+                _observability is not None
+                and _observability.is_otel_capabilities_enabled(None)
+            )
         ):
-            client_options = client_options_lib.ClientOptions(api_endpoint=self._host)
-        # And here we check for the presence of an api_endpoint attr OR key,
-        # shallow-copying before populating to avoid mutating caller-owned state.
-        elif isinstance(client_options, client_options_lib.ClientOptions) and not client_options.api_endpoint:
-            client_options = copy.copy(client_options)
-            client_options.api_endpoint = self._host
-        elif isinstance(client_options, dict) and not client_options.get("api_endpoint"):
-            client_options = copy.copy(client_options)
-            client_options["api_endpoint"] = self._host
+            client_options = _TransportClientOptions(
+                client_options, _host=self._host
+            )
         self._client_options = client_options
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
