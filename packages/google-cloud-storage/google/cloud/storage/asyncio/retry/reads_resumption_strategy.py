@@ -149,6 +149,18 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
 
             # Update State & Write Data
             chunk_size = len(data)
+            # Reject a response longer than the range before it reaches the
+            # destination, which may be the caller's preallocated buffer.
+            if (
+                read_state.initial_length != 0
+                and read_state.bytes_written + chunk_size > read_state.initial_length
+            ):
+                raise DataCorruption(
+                    response,
+                    f"Byte count mismatch for read_id {read_id}. "
+                    f"Expected {read_state.initial_length}, "
+                    f"got {read_state.bytes_written + chunk_size}",
+                )
             read_state.user_buffer.write(data)
 
             # Commit updates only after the write succeeds
@@ -157,18 +169,9 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             read_state.bytes_written += chunk_size
             read_state.next_expected_offset += chunk_size
 
-            # Final Byte Count & Full Object Checksum Verification
+            # Full Object Checksum Verification
             if object_data_range.range_end:
                 read_state.is_complete = True
-                if (
-                    read_state.initial_length != 0
-                    and read_state.bytes_written > read_state.initial_length
-                ):
-                    raise DataCorruption(
-                        response,
-                        f"Byte count mismatch for read_id {read_id}. "
-                        f"Expected {read_state.initial_length}, got {read_state.bytes_written}",
-                    )
 
                 # Perform full-object checksum verification once the stream finishes.
                 if (
