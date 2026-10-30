@@ -101,7 +101,7 @@ def _is_write_retryable(exc):
     return False
 
 
-@dataclass
+@dataclass(frozen=True)
 class Preconditions:
     """Preconditions for :class:`AsyncAppendableObjectWriter` operations.
 
