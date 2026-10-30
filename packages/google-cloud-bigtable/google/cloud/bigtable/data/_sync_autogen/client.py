@@ -39,7 +39,7 @@ from google.api_core.exceptions import (
     DeadlineExceeded,
     ServiceUnavailable,
 )
-from google.auth import compute_engine
+from google.auth import compute_engine, environment_vars
 from google.auth.transport import requests as google_auth_requests
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
@@ -222,6 +222,20 @@ class BigtableDataClient(ClientWithProject):
             if project is None:
                 project = _DEFAULT_BIGTABLE_EMULATOR_CLIENT
         self._metrics_interceptor = MetricsInterceptorType()
+        if (
+            project is None
+            and credentials is None
+            and (client_options is not None)
+            and client_options.credentials_file
+        ):
+            project = os.getenv(
+                environment_vars.PROJECT,
+                os.getenv(environment_vars.LEGACY_PROJECT),
+            )
+            if project is None:
+                _, project = google.auth.load_credentials_from_file(
+                    client_options.credentials_file
+                )
         ClientWithProject.__init__(
             self,
             credentials=credentials,
