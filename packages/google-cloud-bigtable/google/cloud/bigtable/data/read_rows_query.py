@@ -52,20 +52,7 @@ class RowRange:
         start_is_inclusive: bool | None = None,
         end_is_inclusive: bool | None = None,
     ):
-        # Normalize default empty inputs (e.g. RowRange("", "")) to unbounded None.
-        # [b"", ...) is equivalent to an unbounded start, whereas (..., b""] matches
-        # only b"", so end_key is only normalized when end_is_inclusive was omitted.
-        if not start_key and start_is_inclusive is not False:
-            start_key = None
-        if not end_key and end_is_inclusive is None:
-            end_key = None
-        # check for invalid combinations of arguments
-        if start_is_inclusive is None:
-            start_is_inclusive = True
-
-        if end_is_inclusive is None:
-            end_is_inclusive = False
-        # ensure that start_key and end_key are bytes
+        # ensure that start_key and end_key are bytes or None
         if isinstance(start_key, str):
             start_key = start_key.encode()
         elif start_key is not None and not isinstance(start_key, bytes):
@@ -74,21 +61,39 @@ class RowRange:
             end_key = end_key.encode()
         elif end_key is not None and not isinstance(end_key, bytes):
             raise ValueError("end_key must be a string or bytes")
+
+        # Record whether end_is_inclusive was explicitly specified before applying defaults
+        end_inclusive_omitted = end_is_inclusive is None
+
+        # Apply default inclusivity
+        if start_is_inclusive is None:
+            start_is_inclusive = True
+        if end_is_inclusive is None:
+            end_is_inclusive = False
+
+        # Normalize default empty inputs (e.g. RowRange("", "")) to unbounded None:
+        # - [b"", ...) covers all valid (non-empty) Bigtable rows, identical to [-inf, ...).
+        #   Only preserve b"" if the caller explicitly requested exclusive start (start_is_inclusive=False).
+        if start_key == b"" and start_is_inclusive:
+            start_key = None
+        # - An empty end_key was historically passed as shorthand for unbounded (+inf) only
+        #   when end_is_inclusive was omitted (e.g. RowRange(start, "")).
+        if end_key == b"" and end_inclusive_omitted:
+            end_key = None
+
         # ensure that start_key is less than or equal to end_key
         if start_key is not None and end_key is not None and start_key > end_key:
             raise ValueError("start_key must be less than or equal to end_key")
 
         init_dict = {}
         if start_key is not None:
-            if start_is_inclusive:
-                init_dict["start_key_closed"] = start_key
-            else:
-                init_dict["start_key_open"] = start_key
+            init_dict[
+                "start_key_closed" if start_is_inclusive else "start_key_open"
+            ] = start_key
         if end_key is not None:
-            if end_is_inclusive:
-                init_dict["end_key_closed"] = end_key
-            else:
-                init_dict["end_key_open"] = end_key
+            init_dict["end_key_closed" if end_is_inclusive else "end_key_open"] = (
+                end_key
+            )
         self._pb = RowRangePB(**init_dict)
 
     def _key(
@@ -111,7 +116,7 @@ class RowRange:
         """
         if "start_key_closed" in self._pb:
             return self._pb.start_key_closed
-        elif "start_key_open" in self._pb:
+        if "start_key_open" in self._pb:
             return self._pb.start_key_open
         return None
 
@@ -125,7 +130,7 @@ class RowRange:
         """
         if "end_key_closed" in self._pb:
             return self._pb.end_key_closed
-        elif "end_key_open" in self._pb:
+        if "end_key_open" in self._pb:
             return self._pb.end_key_open
         return None
 

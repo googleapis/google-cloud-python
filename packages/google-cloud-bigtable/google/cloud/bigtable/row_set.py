@@ -25,6 +25,17 @@ from google.cloud.bigtable.data.read_rows_query import (
 from google.cloud.bigtable.helpers import _MappableAttributesMixin
 
 
+def _calculate_prefix_end_key(prefix: bytes) -> bytes | None:
+    """Calculates the exclusive upper bound for a prefix scan by incrementing the last byte.
+
+    Trailing 0xFF bytes roll over. Returns None if prefix consists entirely of 0xFF (no upper bound).
+    """
+    stripped = prefix.rstrip(b"\xff")
+    if not stripped:
+        return None
+    return stripped[:-1] + bytes([stripped[-1] + 1])
+
+
 class RowSet(object):
     """Convenience wrapper of google.bigtable.v2.RowSet
 
@@ -130,13 +141,7 @@ class RowSet(object):
         prefix_bytes = _to_bytes(row_key_prefix, encoding="utf-8")
         if not prefix_bytes:
             raise ValueError("row_key_prefix cannot be empty.")
-        # Carry the +1 increment past any trailing 0xFF (max byte) bytes;
-        # if all bytes are 0xFF, no larger prefix exists so the upper bound is None.
-        stripped = prefix_bytes.rstrip(b"\xff")
-        if not stripped:
-            end_key = None
-        else:
-            end_key = stripped[:-1] + bytes([stripped[-1] + 1])
+        end_key = _calculate_prefix_end_key(prefix_bytes)
         self.add_row_range_from_keys(prefix_bytes, end_key)
 
 
