@@ -22,8 +22,8 @@ format directly and exposes ``content`` as a ``memoryview`` of the raw message
 when :func:`is_supported` holds (or a single ``bytes`` slice when the installed
 ``google-crc32c`` only accepts ``bytes``). Responses carrying object metadata
 (the first message of a stream opened without a read handle) or anything
-unexpected fall back to the generated parser, so callers never see a difference
-other than the type of ``content``.
+unexpected fall back to the generated parser; the rest are returned as the
+duck-typed :class:`_ZeroCopyBidiReadObjectResponse`.
 
 :func:`wrapped_rpc` builds the matching ``BidiReadObject`` callable for a
 transport; :class:`~google.cloud.storage.asyncio.async_read_object_stream._AsyncReadObjectStream`

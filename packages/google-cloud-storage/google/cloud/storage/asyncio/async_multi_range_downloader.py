@@ -442,7 +442,8 @@ class AsyncMultiRangeDownloader:
             copies each chunk directly into it in place (straight from the
             gRPC response buffer, without an intermediate ``bytes``, when the
             zero-copy parser is enabled with
-            ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1``). If fewer than
+            ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1`` and the installed
+            ``google-crc32c`` accepts ``memoryview``). If fewer than
             ``bytes_to_read`` bytes are available before end of object,
             :exc:`BufferError` is raised.
 
@@ -471,14 +472,14 @@ class AsyncMultiRangeDownloader:
             may receive each chunk as a read-only :class:`memoryview` of the
             received gRPC message instead of ``bytes`` (only when the zero-copy
             parser is enabled with ``GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ=1``).
-            The view keeps that message (the chunk plus a few bytes of
-            framing) alive while the destination or the SDK's most recently
-            processed response references it; use ``bytes(data)`` to keep the
-            data without the message. Destinations must still accept
-            ``bytes``, which the generated parser produces. Unlike buffer
-            destinations (which raise :exc:`BufferError` on short reads),
-            ``write()`` destinations observe each chunk's length and allow
-            short reads clamped at end of object as well as
+            The view keeps that message (the whole response, which may also
+            carry other ranges' chunks) alive while the destination or the
+            SDK's most recently processed response references it; use
+            ``bytes(data)`` to keep the data without the message. Destinations
+            must still accept ``bytes``, which the generated parser produces.
+            Unlike buffer destinations (which raise :exc:`BufferError` on
+            short reads), ``write()`` destinations observe each chunk's length
+            and allow short reads clamped at end of object as well as
             ``bytes_to_read=0``. No effect on buffer destinations. Defaults
             to False.
 
