@@ -1548,3 +1548,143 @@ def test_suppressing_interceptors_define_slots():
     assert _observability._AsyncSuppressingClientInterceptor.__slots__ == ()
     assert "__dict__" not in _observability._SuppressingClientInterceptor.__dict__
     assert "__dict__" not in _observability._AsyncSuppressingClientInterceptor.__dict__
+
+
+def test_has_opentelemetry_caching(monkeypatch):
+    """Proves that has_opentelemetry caches package detection across invocations."""
+    monkeypatch.setattr(_observability, "_HAS_OPENTELEMETRY", None)
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock.Mock())
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock.Mock())
+
+    assert _observability.has_opentelemetry() is True
+    assert _observability._HAS_OPENTELEMETRY is True
+    # Cached call returns True even if sys.modules changes
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", None)
+    assert _observability.has_opentelemetry() is True
+
+    # Reset sentinel and test when ImportError occurs
+    monkeypatch.setattr(_observability, "_HAS_OPENTELEMETRY", None)
+    assert _observability.has_opentelemetry() is False
+    assert _observability._HAS_OPENTELEMETRY is False
+
+
+def test_extract_trace_context_variants(monkeypatch):
+    """Proves that extract_trace_context handles explicit spans, ambient spans, invalid contexts, and missing OTel."""
+    import types
+
+    # 1. Explicit span with valid context and boolean sampled flag
+    valid_ctx = types.SimpleNamespace(
+        is_valid=True,
+        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
+        span_id=0x0123456789ABCDEF,
+        trace_flags=types.SimpleNamespace(sampled=True),
+    )
+    span = mock.Mock()
+    span.get_span_context.return_value = valid_ctx
+
+    expected = {
+        "trace_id": "0123456789abcdef0123456789abcdef",
+        "span_id": "0123456789abcdef",
+        "logging.googleapis.com/trace": "0123456789abcdef0123456789abcdef",
+        "logging.googleapis.com/spanId": "0123456789abcdef",
+        "logging.googleapis.com/trace_sampled": True,
+    }
+    assert _observability.extract_trace_context(span) == expected
+
+    # 2. Integer trace_flags (e.g. 0x01 or 0x00) and None trace_flags
+    ctx_int_flags = types.SimpleNamespace(
+        is_valid=True,
+        trace_id=1,
+        span_id=2,
+        trace_flags=1,
+    )
+    span.get_span_context.return_value = ctx_int_flags
+    res_int = _observability.extract_trace_context(span)
+    assert res_int["logging.googleapis.com/trace_sampled"] is True
+
+    ctx_none_flags = types.SimpleNamespace(
+        is_valid=True,
+        trace_id=1,
+        span_id=2,
+        trace_flags=None,
+    )
+    span.get_span_context.return_value = ctx_none_flags
+    res_none = _observability.extract_trace_context(span)
+    assert res_none["logging.googleapis.com/trace_sampled"] is False
+
+    # 3. Span whose get_span_context raises Exception or returns invalid context
+    bad_span = mock.Mock()
+    bad_span.get_span_context.side_effect = RuntimeError("broken span")
+    assert _observability.extract_trace_context(bad_span) == {}
+
+    bad_ctx_span = mock.Mock()
+    bad_ctx_span.get_span_context.return_value = types.SimpleNamespace(
+        is_valid=True, trace_id="not_an_int", span_id="not_an_int"
+    )
+    assert _observability.extract_trace_context(bad_ctx_span) == {}
+
+    # 4. Ambient span fallback when span is None
+    monkeypatch.setattr(_observability, "_HAS_OPENTELEMETRY", True)
+    mock_trace = mock.Mock()
+    mock_ambient_span = mock.Mock()
+    mock_ambient_span.get_span_context.return_value = valid_ctx
+    mock_trace.get_current_span.return_value = mock_ambient_span
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock.Mock(trace=mock_trace))
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_trace)
+    assert _observability.extract_trace_context(None) == expected
+
+    # 5. Ambient get_current_span raises Exception
+    mock_trace.get_current_span.side_effect = RuntimeError("ambient error")
+    assert _observability.extract_trace_context(None) == {}
+
+    # 6. OTel not installed
+    monkeypatch.setattr(_observability, "_HAS_OPENTELEMETRY", False)
+    assert _observability.extract_trace_context(None) == {}
+
+
+def test_build_telemetry_error_attributes_none_and_dict():
+    """Proves that _build_telemetry_error_attributes handles None, dict error_info, status_code/status_message fallbacks, and include_exception."""
+    import types
+
+    assert _observability._build_telemetry_error_attributes(None) == {}
+    assert _observability._build_telemetry_error_attributes(
+        None, status_code="503"
+    ) == {
+        "error.type": "503",
+        "status.message": "HTTP 503",
+    }
+    assert _observability._build_telemetry_error_attributes(
+        None, status_code="503", status_message="Service Unavailable"
+    ) == {
+        "error.type": "503",
+        "status.message": "Service Unavailable",
+    }
+
+    exc_dict = types.SimpleNamespace(
+        _error_info={
+            "domain": "googleapis.com",
+            "reason": "RATE_LIMIT_EXCEEDED",
+            "metadata": {"quota": "100"},
+        },
+        message="Quota exceeded",
+    )
+    assert _observability._build_telemetry_error_attributes(exc_dict) == {
+        "gcp.errors.domain": "googleapis.com",
+        "error.type": "RATE_LIMIT_EXCEEDED",
+        "gcp.errors.metadata.quota": "100",
+        "status.message": "Quota exceeded",
+    }
+
+    # Test status_message fallback and include_exception=True
+    exc_empty = RuntimeError("")
+    attrs_inc = _observability._build_telemetry_error_attributes(
+        exc_empty,
+        status_code="UNAVAILABLE",
+        status_message="backend down",
+        include_exception=True,
+    )
+    assert attrs_inc["error.type"] == "UNAVAILABLE"
+    assert attrs_inc["status.message"] == "backend down"
+    assert attrs_inc["exception.type"] == "RuntimeError"
+    assert attrs_inc["exception.message"] == ""
+    assert "RuntimeError" in attrs_inc["exception.stacktrace"]
