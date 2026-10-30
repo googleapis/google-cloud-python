@@ -484,6 +484,9 @@ class AsyncMultiRangeDownloader:
 
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
+        :raises ValueError: if a buffer destination is read-only, not
+            C-contiguous, smaller than ``bytes_to_read``, or used with
+            ``bytes_to_read <= 0``.
         :raises BufferError: if fewer than ``bytes_to_read`` bytes are returned
             for a buffer destination.
         :raises DataCorruption: if a checksum mismatch is detected while reading data.
