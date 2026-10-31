@@ -2984,7 +2984,7 @@ class Client(ClientWithProject):
             and new_job_config.write_disposition != job.WriteDisposition.WRITE_TRUNCATE
         ):
             try:
-                table = self.get_table(destination)
+                table = self.get_table(destination, timeout=timeout)
             except core_exceptions.NotFound:
                 pass
             else:
@@ -3172,7 +3172,7 @@ class Client(ClientWithProject):
                 new_job_config.autodetect = True
             else:
                 try:
-                    self.get_table(destination)
+                    self.get_table(destination, timeout=timeout)
                 except core_exceptions.NotFound:
                     new_job_config.autodetect = True
                 else:
