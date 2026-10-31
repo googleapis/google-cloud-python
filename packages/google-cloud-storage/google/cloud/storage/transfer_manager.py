@@ -20,6 +20,7 @@ import copyreg
 import functools
 import inspect
 import io
+import logging
 import os
 import pickle
 import struct
@@ -35,6 +36,8 @@ from google.cloud.storage.blob import _get_host_name, _quote
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.exceptions import DataCorruption, InvalidPathError
 from google.cloud.storage.retry import DEFAULT_RETRY
+
+_logger = logging.getLogger(__name__)
 
 TM_DEFAULT_CHUNK_SIZE = 32 * 1024 * 1024
 DEFAULT_MAX_WORKERS = 8
@@ -1244,7 +1247,11 @@ def upload_chunks_concurrently(
 
         container.finalize(blob._get_transport(client), timeout=timeout)
     except Exception:
-        container.cancel(blob._get_transport(client), timeout=timeout)
+        # A failed cleanup must not hide the error that caused it.
+        try:
+            container.cancel(blob._get_transport(client), timeout=timeout)
+        except Exception as exc:
+            _logger.warning("Failed to cancel multipart upload %s: %s", upload_id, exc)
         raise
 
 

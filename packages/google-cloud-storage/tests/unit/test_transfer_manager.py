@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import os
 import pickle
 import tempfile
@@ -1234,6 +1235,47 @@ def test_upload_chunks_concurrently_passes_timeout_to_cancel():
             )
         container_mock.cancel.assert_called_once_with(transport, timeout=TIMEOUT)
         container_mock.finalize.assert_not_called()
+
+
+def test_upload_chunks_concurrently_keeps_original_error_when_cancel_fails(caplog):
+    bucket = mock.Mock()
+    bucket.name = "bucket"
+    bucket.client = _PickleableMockClient(identify_as_client=True)
+    bucket.user_project = None
+
+    blob = Blob("blob", bucket)
+
+    FILENAME = "file_a.txt"
+    SIZE = 2048
+
+    container_mock = mock.Mock()
+    container_mock.upload_id = "abcd"
+    container_mock.cancel.side_effect = exceptions.DeadlineExceeded("cancel failed")
+    part_mock = mock.Mock()
+    part_mock.upload.side_effect = exceptions.ServiceUnavailable("part failed")
+
+    with (
+        mock.patch("os.path.getsize", return_value=SIZE),
+        mock.patch(
+            "google.cloud.storage.transfer_manager.XMLMPUContainer",
+            return_value=container_mock,
+        ),
+        mock.patch(
+            "google.cloud.storage.transfer_manager.XMLMPUPart", return_value=part_mock
+        ),
+    ):
+        with caplog.at_level(logging.WARNING, logger=transfer_manager.__name__):
+            with pytest.raises(exceptions.ServiceUnavailable):
+                transfer_manager.upload_chunks_concurrently(
+                    FILENAME,
+                    blob,
+                    chunk_size=SIZE // 2,
+                    worker_type=transfer_manager.THREAD,
+                )
+
+    container_mock.cancel.assert_called_once()
+    assert "abcd" in caplog.text
+    assert "cancel failed" in caplog.text
 
 
 def test_upload_chunks_concurrently_with_metadata_and_encryption():
