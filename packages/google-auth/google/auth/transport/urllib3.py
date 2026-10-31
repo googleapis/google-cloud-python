@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import contextlib
 import http.client as http_client
 import logging
 import threading
@@ -310,6 +311,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         self._request = Request(self.http)
         self._is_mtls = False
         self._mtls_reauth_lock = threading.Lock()
+        self._mtls_reauth_lock_owner = None
         # Incremented after every client certificate check that runs on a
         # 401 response, so that threads that were waiting for
         # _mtls_reauth_lock can skip a check that ran after they sent their
@@ -330,6 +332,26 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         """Indicates if the created SSL channel is mutual TLS."""
         return self._is_mtls
 
+    @contextlib.contextmanager
+    def _acquire_mtls_reauth_lock(self):
+        """Acquires ``_mtls_reauth_lock`` reentrantly for the current thread.
+
+        A reentrant wrapper around ``threading.Lock`` is used so that a
+        ``client_cert_callback`` that sends a request through this instance on
+        the same thread does not deadlock, while keeping ``.locked()``
+        available on Python < 3.14.
+        """
+        current_thread = threading.get_ident()
+        if self._mtls_reauth_lock_owner == current_thread:
+            yield
+            return
+        with self._mtls_reauth_lock:
+            self._mtls_reauth_lock_owner = current_thread
+            try:
+                yield
+            finally:
+                self._mtls_reauth_lock_owner = None
+
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
         application default SSL credentials.
@@ -349,7 +371,10 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         .. note::
             Replaces the pool manager and clears the old one. Calls are
             serialized with each other and with the automatic reconfiguration
-            that runs on 401 responses.
+            that runs on 401 responses. ``client_cert_callback`` runs while the
+            lock is held. It may send requests through this instance on the
+            same thread, but it must not wait for other threads that use this
+            instance.
 
         Returns:
             True if the channel is mutual TLS and False otherwise.
@@ -359,7 +384,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 creation failed for any reason. The existing channel state (the
                 HTTP client) remains unmodified if this error is raised.
         """
-        with self._mtls_reauth_lock:
+        with self._acquire_mtls_reauth_lock():
             return self._configure_mtls_channel_locked(client_cert_callback)
 
     def _configure_mtls_channel_locked(self, client_cert_callback=None):
@@ -391,6 +416,8 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
+        # Read the current pool manager after the callback returns so any pool
+        # manager created by a reentrant call inside the callback is cleared below.
         old_http = self.http
 
         self.http = new_http
@@ -510,7 +537,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 certificate has changed but the mTLS channel could not be
                 reconfigured.
         """
-        with self._mtls_reauth_lock:
+        with self._acquire_mtls_reauth_lock():
             if not self.is_mtls:
                 # mTLS was disabled by another thread while this one waited.
                 return

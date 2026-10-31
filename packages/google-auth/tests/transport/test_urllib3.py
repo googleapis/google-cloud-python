@@ -873,6 +873,7 @@ class TestAuthorizedHttp(object):
 
         # Token refresh should still be called despite discovery failure
         credentials.refresh.assert_called_once()
+        assert http_obj._mtls_cert_check_generation == 1
         assert not http_obj._mtls_reauth_lock.locked()
 
     def test_cert_check_skipped_when_cert_rotated_during_request(self):
@@ -1215,6 +1216,89 @@ class TestAuthorizedHttp(object):
         cleared = [call.args[0] for call in mock_clear.call_args_list]
         # Each replaced pool manager is cleared exactly once, and the one in
         # use is not cleared.
+        assert cleared.count(initial_http) == 1
+        assert cleared.count(created[0]) == 1
+        assert created[-1] not in cleared
+        assert not authed_http._mtls_reauth_lock.locked()
+
+    @mock.patch.object(urllib3.PoolManager, "urlopen", autospec=True)
+    def test_configure_mtls_channel_callback_can_reenter_session(self, mock_urlopen):
+        """
+        Tests that _acquire_mtls_reauth_lock() is reentrant on the same thread,
+        so a custom client_cert_callback that sends a request through the same
+        AuthorizedHttp (even one that receives a 401 from an mTLS endpoint)
+        does not deadlock, while _mtls_reauth_lock remains held against other
+        threads.
+        """
+        with open(os.path.join(pytest.data_dir, "es256_public_cert.pem"), "rb") as fh:
+            callback_cert = fh.read()
+        with open(os.path.join(pytest.data_dir, "es256_privatekey.pem"), "rb") as fh:
+            callback_key = fh.read()
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(CredentialsStub())
+        authed_http._is_mtls = True
+        authed_http._cached_cert = b"old_cert"
+        initial_http = authed_http.http
+
+        responses = iter(
+            [
+                ResponseStub(status=http_client.UNAUTHORIZED),
+                ResponseStub(status=http_client.OK),
+            ]
+        )
+        mock_urlopen.side_effect = (
+            lambda pool_manager, method, url, body=None, headers=None, **kwargs: next(
+                responses
+            )
+        )
+
+        created = []
+        make_mutual_tls_http = google.auth.transport.urllib3._make_mutual_tls_http
+
+        def record_make_mutual_tls_http(cert, key):
+            http = make_mutual_tls_http(cert, key)
+            created.append(http)
+            return http
+
+        lock_held_in_callback = {"held": None}
+
+        def client_cert_callback():
+            lock_held_in_callback["held"] = authed_http._mtls_reauth_lock.locked()
+            response = authed_http.urlopen("GET", "https://example.mtls.googleapis.com")
+            assert response.status == http_client.OK
+            return callback_cert, callback_key
+
+        with (
+            mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ),
+            mock.patch.object(
+                google.auth.transport._mtls_helper,
+                "check_parameters_for_unauthorized_response",
+                return_value=(
+                    pytest.public_cert_bytes,
+                    pytest.private_key_bytes,
+                    "old_fp",
+                    "new_fp",
+                ),
+            ),
+            mock.patch.object(
+                google.auth.transport.urllib3,
+                "_make_mutual_tls_http",
+                side_effect=record_make_mutual_tls_http,
+            ),
+            mock.patch.object(
+                urllib3.PoolManager, "clear", autospec=True
+            ) as mock_clear,
+        ):
+            assert authed_http.configure_mtls_channel(client_cert_callback) is True
+
+        assert lock_held_in_callback["held"] is True
+        assert len(created) == 2
+        assert authed_http.http is created[-1]
+        assert authed_http._request.http is created[-1]
+        assert authed_http._cached_cert == callback_cert
+        cleared = [call.args[0] for call in mock_clear.call_args_list]
         assert cleared.count(initial_http) == 1
         assert cleared.count(created[0]) == 1
         assert created[-1] not in cleared

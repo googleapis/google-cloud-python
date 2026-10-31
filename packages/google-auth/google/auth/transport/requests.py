@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import collections
+import contextlib
 import copy
 import functools
 import http.client as http_client
@@ -534,6 +535,7 @@ class AuthorizedSession(requests.Session):
         self._is_mtls = False
         self._default_host = default_host
         self._mtls_reauth_lock = threading.Lock()
+        self._mtls_reauth_lock_owner = None
         # Incremented after every client certificate check that runs on a
         # 401 response, so that threads that were waiting for
         # _mtls_reauth_lock can skip a check that ran after they sent their
@@ -566,6 +568,26 @@ class AuthorizedSession(requests.Session):
                 "https://{}/".format(self._default_host) if self._default_host else None
             )
 
+    @contextlib.contextmanager
+    def _acquire_mtls_reauth_lock(self):
+        """Acquires ``_mtls_reauth_lock`` reentrantly for the current thread.
+
+        A reentrant wrapper around ``threading.Lock`` is used so that a
+        ``client_cert_callback`` that sends a request through this session on
+        the same thread does not deadlock, while keeping ``.locked()``
+        available on Python < 3.14.
+        """
+        current_thread = threading.get_ident()
+        if self._mtls_reauth_lock_owner == current_thread:
+            yield
+            return
+        with self._mtls_reauth_lock:
+            self._mtls_reauth_lock_owner = current_thread
+            try:
+                yield
+            finally:
+                self._mtls_reauth_lock_owner = None
+
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
@@ -585,13 +607,16 @@ class AuthorizedSession(requests.Session):
         .. note::
             Replaces and closes adapters. Calls are serialized with each other
             and with the automatic reconfiguration that runs on 401 responses.
+            ``client_cert_callback`` runs while the lock is held. It may send
+            requests through this session on the same thread, but it must not
+            wait for other threads that use this session.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason. The existing session state (such
                 as adapter mounts) remains unmodified if this error is raised.
         """
-        with self._mtls_reauth_lock:
+        with self._acquire_mtls_reauth_lock():
             self._configure_mtls_channel_locked(client_cert_callback)
 
     def _configure_mtls_channel_locked(self, client_cert_callback=None):
@@ -612,6 +637,8 @@ class AuthorizedSession(requests.Session):
                 client_cert_callback
             )
 
+            # Read current adapters after the callback returns so any adapter
+            # mounted by a reentrant call inside the callback is closed below.
             old_adapter = self.adapters.get("https://")
 
             kwargs = {}
@@ -858,7 +885,7 @@ class AuthorizedSession(requests.Session):
                 certificate has changed but the mTLS channel could not be
                 reconfigured.
         """
-        with self._mtls_reauth_lock:
+        with self._acquire_mtls_reauth_lock():
             if not self.is_mtls:
                 # mTLS was disabled by another thread while this one waited.
                 return

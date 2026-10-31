@@ -731,6 +731,47 @@ class TestAuthorizedSession(object):
                 "GET", self.TEST_URL, timeout=60, max_allowed_time=2.9
             )
 
+    def test_request_timeout_w_mtls_reconfigure_timeout_error(self, frozen_time):
+        tick_one_second = functools.partial(
+            frozen_time.tick, delta=datetime.timedelta(seconds=1.0)
+        )
+
+        credentials = mock.Mock(
+            wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
+        )
+        adapter = TimeTickAdapterStub(
+            time_tick=tick_one_second,
+            responses=[
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ],
+        )
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, refresh_timeout=100
+        )
+        authed_session.mount(self.MTLS_TEST_URL, adapter)
+        authed_session._is_mtls = True
+        authed_session._cached_cert = b"old_cert"
+
+        def check_params(cached_cert):
+            tick_one_second()
+            return (b"old_cert", b"old_key", "same_fp", "same_fp")
+
+        # First request (1s) + mTLS cert check (1s) = 2s, which exceeds
+        # max_allowed_time=1.9 inside the mTLS TimeoutGuard before refresh.
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+            side_effect=check_params,
+        ):
+            with pytest.raises(requests.exceptions.Timeout):
+                authed_session.request(
+                    "GET", self.MTLS_TEST_URL, timeout=60, max_allowed_time=1.9
+                )
+
+        credentials.refresh.assert_not_called()
+
     def test_authorized_session_without_default_host(self):
         credentials = mock.create_autospec(service_account.Credentials)
 
@@ -1460,6 +1501,7 @@ class TestAuthorizedSession(object):
         # Token refresh should still be called despite discovery failure
         credentials.refresh.assert_called_once()
         assert result.status_code == http_client.OK
+        assert authed_session._mtls_cert_check_generation == 1
         assert not authed_session._mtls_reauth_lock.locked()
 
     def test_cert_check_skipped_when_cert_rotated_during_request(self):
@@ -1804,6 +1846,85 @@ class TestAuthorizedSession(object):
         closed = [call.args[0] for call in mock_close.call_args_list]
         # Each replaced adapter of the session is closed exactly once, and the
         # mounted adapter is not closed.
+        assert closed.count(initial_adapter) == 1
+        assert closed.count(mounted[0]) == 1
+        assert mounted[-1] not in closed
+        assert not authed_session._mtls_reauth_lock.locked()
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_configure_mtls_channel_callback_can_reenter_session(self, mock_send):
+        """
+        Tests that _acquire_mtls_reauth_lock() is reentrant on the same thread,
+        so a custom client_cert_callback that sends a request through the same
+        session (even one that receives a 401 from an mTLS endpoint) does not
+        deadlock, while _mtls_reauth_lock remains held against other threads.
+        """
+        with open(os.path.join(pytest.data_dir, "es256_public_cert.pem"), "rb") as fh:
+            callback_cert = fh.read()
+        with open(os.path.join(pytest.data_dir, "es256_privatekey.pem"), "rb") as fh:
+            callback_key = fh.read()
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            CredentialsStub(), refresh_timeout=60
+        )
+        authed_session._is_mtls = True
+        authed_session._cached_cert = b"old_cert"
+        initial_adapter = authed_session.adapters["https://"]
+
+        responses = iter(
+            [
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ]
+        )
+        mock_send.side_effect = lambda adapter, request, **kwargs: next(responses)
+
+        mounted = []
+        replace_adapter = google.auth.transport.requests._replace_adapter
+
+        def record_replace_adapter(session, prefix, adapter):
+            if session is authed_session:
+                mounted.append(adapter)
+            replace_adapter(session, prefix, adapter)
+
+        lock_held_in_callback = {"held": None}
+
+        def client_cert_callback():
+            lock_held_in_callback["held"] = authed_session._mtls_reauth_lock.locked()
+            response = authed_session.request("GET", self.MTLS_TEST_URL)
+            assert response.status_code == http_client.OK
+            return callback_cert, callback_key
+
+        with (
+            mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ),
+            mock.patch.object(
+                google.auth.transport._mtls_helper,
+                "check_parameters_for_unauthorized_response",
+                return_value=(
+                    pytest.public_cert_bytes,
+                    pytest.private_key_bytes,
+                    "old_fp",
+                    "new_fp",
+                ),
+            ),
+            mock.patch.object(
+                google.auth.transport.requests,
+                "_replace_adapter",
+                side_effect=record_replace_adapter,
+            ),
+            mock.patch.object(
+                requests.adapters.HTTPAdapter, "close", autospec=True
+            ) as mock_close,
+        ):
+            authed_session.configure_mtls_channel(client_cert_callback)
+
+        assert lock_held_in_callback["held"] is True
+        assert len(mounted) == 2
+        assert authed_session.adapters["https://"] is mounted[-1]
+        assert authed_session._cached_cert == callback_cert
+        closed = [call.args[0] for call in mock_close.call_args_list]
         assert closed.count(initial_adapter) == 1
         assert closed.count(mounted[0]) == 1
         assert mounted[-1] not in closed
