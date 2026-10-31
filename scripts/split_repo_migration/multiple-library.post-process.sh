@@ -75,7 +75,7 @@ fi
 
 PATH_MONOREPO="$(realpath "$1")"
 cat <<EOF
-Post-processing multiple pacakges
+Post-processing multiple packages
   PATH_MONOREPO:         ${PATH_MONOREPO}
 EOF
 shift
