@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import collections
+import contextlib
 import copy
 import functools
 import http.client as http_client
@@ -116,6 +117,36 @@ class TimeoutGuard(object):
             raise self._timeout_error_type()
 
 
+def _replace_adapter(session, prefix, adapter):
+    """Mounts an adapter on a session without mutating its adapters in place.
+
+    :meth:`requests.Session.mount` mutates the ``session.adapters``
+    OrderedDict in place. If another thread is iterating over it in
+    :meth:`requests.Session.get_adapter` at the same time, that thread fails
+    with ``RuntimeError: OrderedDict mutated during iteration``. This builds
+    an updated copy and assigns it in one step instead, so threads that are
+    already iterating over the old dictionary are not affected.
+
+    This only protects threads that read ``session.adapters``. The copy and
+    the assignment are not atomic together, so if two threads call this (or
+    :meth:`requests.Session.mount`) on the same session at the same time,
+    one of the new adapters can be lost. Callers must serialize writes, for
+    example by holding a lock.
+
+    Args:
+        session (requests.Session): The session to mount the adapter on.
+        prefix (str): The URL prefix to mount the adapter for.
+        adapter (requests.adapters.BaseAdapter): The adapter to mount.
+    """
+    new_adapters = session.adapters.copy()
+    new_adapters[prefix] = adapter
+    # Keep the longest prefixes first, as requests.Session.mount() does, so
+    # that get_adapter() matches the most specific prefix.
+    session.adapters = collections.OrderedDict(
+        sorted(new_adapters.items(), key=lambda item: len(item[0]), reverse=True)
+    )
+
+
 class Request(transport.Request):
     """Requests request adapter.
 
@@ -213,18 +244,7 @@ class Request(transport.Request):
                     pool_block=session_adapter._pool_block,
                 )
 
-            # Replace session.adapters atomically instead of calling session.mount(),
-            # which mutates the OrderedDict in place and can raise RuntimeError if
-            # another thread is iterating over session.adapters in get_adapter().
-            new_adapters = self.session.adapters.copy()
-            new_adapters[prefix] = self._mtls_adapter
-            self.session.adapters = collections.OrderedDict(
-                sorted(
-                    new_adapters.items(),
-                    key=lambda item: len(item[0]),
-                    reverse=True,
-                )
-            )
+            _replace_adapter(self.session, prefix, self._mtls_adapter)
 
     def __call__(
         self,
@@ -514,6 +534,13 @@ class AuthorizedSession(requests.Session):
         self._refresh_timeout = refresh_timeout
         self._is_mtls = False
         self._default_host = default_host
+        self._mtls_reauth_lock = threading.Lock()
+        self._mtls_reauth_lock_owner = None
+        # Incremented after every client certificate check that runs on a
+        # 401 response, so that threads that were waiting for
+        # _mtls_reauth_lock can skip a check that ran after they sent their
+        # request.
+        self._mtls_cert_check_generation = 0
 
         if auth_request is None:
             self._auth_request_session = requests.Session()
@@ -541,6 +568,26 @@ class AuthorizedSession(requests.Session):
                 "https://{}/".format(self._default_host) if self._default_host else None
             )
 
+    @contextlib.contextmanager
+    def _acquire_mtls_reauth_lock(self):
+        """Acquires ``_mtls_reauth_lock`` reentrantly for the current thread.
+
+        A reentrant wrapper around ``threading.Lock`` is used so that a
+        ``client_cert_callback`` that sends a request through this session on
+        the same thread does not deadlock, while keeping ``.locked()``
+        available on Python < 3.14.
+        """
+        current_thread = threading.get_ident()
+        if self._mtls_reauth_lock_owner == current_thread:
+            yield
+            return
+        with self._mtls_reauth_lock:
+            self._mtls_reauth_lock_owner = current_thread
+            try:
+                yield
+            finally:
+                self._mtls_reauth_lock_owner = None
+
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
@@ -557,15 +604,25 @@ class AuthorizedSession(requests.Session):
                 If the callback is None, application default SSL credentials
                 will be used.
 
-        .. warning::
-            Calling this method mutates the underlying `requests.Session` adapter
-            dictionary. It is not thread-safe to call this explicitly while other
-            threads are making requests.
+        .. note::
+            Replaces and closes adapters. Calls are serialized with each other
+            and with the automatic reconfiguration that runs on 401 responses.
+            ``client_cert_callback`` runs while the lock is held. It may send
+            requests through this session on the same thread, but it must not
+            wait for other threads that use this session.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason. The existing session state (such
                 as adapter mounts) remains unmodified if this error is raised.
+        """
+        with self._acquire_mtls_reauth_lock():
+            self._configure_mtls_channel_locked(client_cert_callback)
+
+    def _configure_mtls_channel_locked(self, client_cert_callback=None):
+        """Implements :meth:`configure_mtls_channel`.
+
+        The caller must hold ``_mtls_reauth_lock``.
         """
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
@@ -580,6 +637,8 @@ class AuthorizedSession(requests.Session):
                 client_cert_callback
             )
 
+            # Read current adapters after the callback returns so any adapter
+            # mounted by a reentrant call inside the callback is closed below.
             old_adapter = self.adapters.get("https://")
 
             kwargs = {}
@@ -641,13 +700,18 @@ class AuthorizedSession(requests.Session):
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
-        self.mount("https://", new_adapter)
+        _replace_adapter(self, "https://", new_adapter)
 
         if old_adapter is not None and old_adapter is not new_adapter:
             old_adapter.close()
 
         if self._auth_request_session is not None and new_auth_adapter is not None:
-            self._auth_request_session.mount("https://", new_auth_adapter)
+            # Request._configure_mtls_if_needed() also writes the adapters of
+            # this session during token refresh, under the Request's own lock.
+            with self._auth_request._mtls_lock:
+                _replace_adapter(
+                    self._auth_request_session, "https://", new_auth_adapter
+                )
 
             if (
                 old_auth_adapter is not None
@@ -724,6 +788,13 @@ class AuthorizedSession(requests.Session):
             self.credentials.before_request(auth_request, method, url, request_headers)
         remaining_time = guard.remaining_timeout
 
+        # Remember the client certificate that this request is sent with, and
+        # how many certificate checks have run so far. If the request receives
+        # a 401 response, this tells whether another thread has already
+        # checked or rotated the certificate in the meantime.
+        cert_at_request = getattr(self, "_cached_cert", None)
+        check_generation_at_request = self._mtls_cert_check_generation
+
         with TimeoutGuard(remaining_time) as guard:
             _helpers.request_log(_LOGGER, method, url, data, headers)
             response = super(AuthorizedSession, self).request(
@@ -749,33 +820,11 @@ class AuthorizedSession(requests.Session):
             if response.status_code == http_client.UNAUTHORIZED:
                 use_mtls = self.is_mtls and _mtls_helper.is_mtls_endpoint(url)
                 if use_mtls:
-                    (
-                        call_cert_bytes,
-                        call_key_bytes,
-                        cached_fingerprint,
-                        current_cert_fingerprint,
-                    ) = _mtls_helper.check_parameters_for_unauthorized_response(
-                        self._cached_cert
-                    )
-                    if cached_fingerprint != current_cert_fingerprint:
-                        try:
-                            _LOGGER.info(
-                                "Client certificate has changed, reconfiguring mTLS "
-                                "channel."
-                            )
-                            self.configure_mtls_channel(
-                                lambda: (call_cert_bytes, call_key_bytes)
-                            )
-                        except Exception as e:
-                            _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
-                            raise exceptions.MutualTLSChannelError(
-                                "Failed to reconfigure mTLS channel"
-                            ) from e
-                    else:
-                        _LOGGER.info(
-                            "Skipping reconfiguration of mTLS channel because the client"
-                            " certificate has not changed."
+                    with TimeoutGuard(remaining_time) as guard:
+                        self._reconfigure_mtls_channel_if_cert_changed(
+                            cert_at_request, check_generation_at_request
                         )
+                    remaining_time = guard.remaining_timeout
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
                 response.status_code,
@@ -809,6 +858,98 @@ class AuthorizedSession(requests.Session):
             )
 
         return response
+
+    def _reconfigure_mtls_channel_if_cert_changed(
+        self, cert_at_request, check_generation_at_request
+    ):
+        """Reconfigures the mTLS channel if the client certificate has changed.
+
+        This is called when a request to an mTLS endpoint receives a 401
+        response. The certificate check and the channel reconfiguration run
+        while holding ``_mtls_reauth_lock``. When several threads receive a 401
+        response at the same time, only the first one reads the current
+        certificate, and remounts the adapters if the certificate has
+        changed. Threads that were waiting for the lock see that the
+        certificate was already checked after they sent their request, and
+        skip the check.
+
+        Args:
+            cert_at_request (Optional[bytes]): The cached client certificate at
+                the time the request that received the 401 response was sent.
+            check_generation_at_request (int): The value of
+                ``_mtls_cert_check_generation`` at the time the request that
+                received the 401 response was sent.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If the client
+                certificate has changed but the mTLS channel could not be
+                reconfigured.
+        """
+        with self._acquire_mtls_reauth_lock():
+            if not self.is_mtls:
+                # mTLS was disabled by another thread while this one waited.
+                return
+
+            if getattr(self, "_cached_cert", None) != cert_at_request:
+                _LOGGER.info(
+                    "Skipping reconfiguration of mTLS channel because it has already"
+                    " been reconfigured with a new client certificate."
+                )
+                return
+
+            if self._mtls_cert_check_generation != check_generation_at_request:
+                # Another thread checked the certificate after this request was
+                # sent, whether or not the certificate had changed. Checking it
+                # again would only load the same certificate again.
+                _LOGGER.info(
+                    "Skipping client certificate check because another request"
+                    " already checked it."
+                )
+                return
+
+            try:
+                (
+                    call_cert_bytes,
+                    call_key_bytes,
+                    cached_fingerprint,
+                    current_cert_fingerprint,
+                ) = _mtls_helper.check_parameters_for_unauthorized_response(
+                    cert_at_request
+                )
+            except Exception as e:
+                # Failing to load the current certificate (for example, because
+                # the certificate file is missing or the certificate provider
+                # failed) must not prevent the token refresh that follows.
+                _LOGGER.warning(
+                    "Failed to check whether the client certificate has changed: %s",
+                    e,
+                    exc_info=True,
+                )
+                return
+            finally:
+                self._mtls_cert_check_generation += 1
+
+            if cached_fingerprint == current_cert_fingerprint:
+                _LOGGER.info(
+                    "Skipping reconfiguration of mTLS channel because the client"
+                    " certificate has not changed."
+                )
+                return
+
+            try:
+                _LOGGER.info(
+                    "Client certificate has changed, reconfiguring mTLS channel."
+                )
+                self._configure_mtls_channel_locked(
+                    lambda: (call_cert_bytes, call_key_bytes)
+                )
+            except Exception as e:
+                _LOGGER.error(
+                    "Failed to reconfigure mTLS channel: %s", e, exc_info=True
+                )
+                raise exceptions.MutualTLSChannelError(
+                    "Failed to reconfigure mTLS channel"
+                ) from e
 
     @property
     def is_mtls(self):

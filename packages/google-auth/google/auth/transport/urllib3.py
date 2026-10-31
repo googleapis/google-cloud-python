@@ -16,8 +16,10 @@
 
 from __future__ import absolute_import
 
+import contextlib
 import http.client as http_client
 import logging
+import threading
 import warnings
 
 # Certifi is Mozilla's certificate bundle. Urllib3 needs a certificate bundle
@@ -308,6 +310,13 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         # credentials.refresh).
         self._request = Request(self.http)
         self._is_mtls = False
+        self._mtls_reauth_lock = threading.Lock()
+        self._mtls_reauth_lock_owner = None
+        # Incremented after every client certificate check that runs on a
+        # 401 response, so that threads that were waiting for
+        # _mtls_reauth_lock can skip a check that ran after they sent their
+        # request.
+        self._mtls_cert_check_generation = 0
 
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
@@ -317,6 +326,31 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
         super(AuthorizedHttp, self).__init__()
+
+    @property
+    def is_mtls(self):
+        """Indicates if the created SSL channel is mutual TLS."""
+        return self._is_mtls
+
+    @contextlib.contextmanager
+    def _acquire_mtls_reauth_lock(self):
+        """Acquires ``_mtls_reauth_lock`` reentrantly for the current thread.
+
+        A reentrant wrapper around ``threading.Lock`` is used so that a
+        ``client_cert_callback`` that sends a request through this instance on
+        the same thread does not deadlock, while keeping ``.locked()``
+        available on Python < 3.14.
+        """
+        current_thread = threading.get_ident()
+        if self._mtls_reauth_lock_owner == current_thread:
+            yield
+            return
+        with self._mtls_reauth_lock:
+            self._mtls_reauth_lock_owner = current_thread
+            try:
+                yield
+            finally:
+                self._mtls_reauth_lock_owner = None
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
@@ -334,10 +368,13 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 If the callback is None, application default SSL credentials
                 will be used.
 
-        .. warning::
-            Calling this method mutates the underlying `urllib3.PoolManager`.
-            It is not thread-safe to call this explicitly while other
-            threads are making requests.
+        .. note::
+            Replaces the pool manager and clears the old one. Calls are
+            serialized with each other and with the automatic reconfiguration
+            that runs on 401 responses. ``client_cert_callback`` runs while the
+            lock is held. It may send requests through this instance on the
+            same thread, but it must not wait for other threads that use this
+            instance.
 
         Returns:
             True if the channel is mutual TLS and False otherwise.
@@ -346,6 +383,14 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason. The existing channel state (the
                 HTTP client) remains unmodified if this error is raised.
+        """
+        with self._acquire_mtls_reauth_lock():
+            return self._configure_mtls_channel_locked(client_cert_callback)
+
+    def _configure_mtls_channel_locked(self, client_cert_callback=None):
+        """Implements :meth:`configure_mtls_channel`.
+
+        The caller must hold ``_mtls_reauth_lock``.
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
@@ -371,6 +416,8 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
+        # Read the current pool manager after the callback returns so any pool
+        # manager created by a reentrant call inside the callback is cleared below.
         old_http = self.http
 
         self.http = new_http
@@ -414,6 +461,13 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         self.credentials.before_request(self._request, method, url, request_headers)
 
+        # Remember the client certificate that this request is sent with, and
+        # how many certificate checks have run so far. If the request receives
+        # a 401 response, this tells whether another thread has already
+        # checked or rotated the certificate in the meantime.
+        cert_at_request = getattr(self, "_cached_cert", None)
+        check_generation_at_request = self._mtls_cert_check_generation
+
         response = self.http.urlopen(
             method, url, body=body, headers=request_headers, **kwargs
         )
@@ -430,39 +484,11 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
             if response.status == http_client.UNAUTHORIZED:
-                use_mtls = self._is_mtls and _mtls_helper.is_mtls_endpoint(url)
+                use_mtls = self.is_mtls and _mtls_helper.is_mtls_endpoint(url)
                 if use_mtls:
-                    (
-                        call_cert_bytes,
-                        call_key_bytes,
-                        cached_fingerprint,
-                        current_cert_fingerprint,
-                    ) = _mtls_helper.check_parameters_for_unauthorized_response(
-                        self._cached_cert
+                    self._reconfigure_mtls_channel_if_cert_changed(
+                        cert_at_request, check_generation_at_request
                     )
-                    if cached_fingerprint != current_cert_fingerprint:
-                        try:
-                            _LOGGER.info(
-                                "Client certificate has changed, reconfiguring mTLS "
-                                "channel."
-                            )
-                            self.configure_mtls_channel(
-                                client_cert_callback=lambda: (
-                                    call_cert_bytes,
-                                    call_key_bytes,
-                                )
-                            )
-                        except Exception as e:
-                            _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
-                            raise exceptions.MutualTLSChannelError(
-                                "Failed to reconfigure mTLS channel"
-                            ) from e
-
-                    else:
-                        _LOGGER.info(
-                            "Skipping reconfiguration of mTLS channel because the "
-                            "client certificate has not changed."
-                        )
 
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
@@ -484,6 +510,98 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
         return response
+
+    def _reconfigure_mtls_channel_if_cert_changed(
+        self, cert_at_request, check_generation_at_request
+    ):
+        """Reconfigures the mTLS channel if the client certificate has changed.
+
+        This is called when a request to an mTLS endpoint receives a 401
+        response. The certificate check and the channel reconfiguration run
+        while holding ``_mtls_reauth_lock``. When several threads receive a 401
+        response at the same time, only the first one reads the current
+        certificate, and replaces the pool manager if the certificate has
+        changed. Threads that were waiting for the lock see that the
+        certificate was already checked after they sent their request, and
+        skip the check.
+
+        Args:
+            cert_at_request (Optional[bytes]): The cached client certificate at
+                the time the request that received the 401 response was sent.
+            check_generation_at_request (int): The value of
+                ``_mtls_cert_check_generation`` at the time the request that
+                received the 401 response was sent.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If the client
+                certificate has changed but the mTLS channel could not be
+                reconfigured.
+        """
+        with self._acquire_mtls_reauth_lock():
+            if not self.is_mtls:
+                # mTLS was disabled by another thread while this one waited.
+                return
+
+            if getattr(self, "_cached_cert", None) != cert_at_request:
+                _LOGGER.info(
+                    "Skipping reconfiguration of mTLS channel because it has already"
+                    " been reconfigured with a new client certificate."
+                )
+                return
+
+            if self._mtls_cert_check_generation != check_generation_at_request:
+                # Another thread checked the certificate after this request was
+                # sent, whether or not the certificate had changed. Checking it
+                # again would only load the same certificate again.
+                _LOGGER.info(
+                    "Skipping client certificate check because another request"
+                    " already checked it."
+                )
+                return
+
+            try:
+                (
+                    call_cert_bytes,
+                    call_key_bytes,
+                    cached_fingerprint,
+                    current_cert_fingerprint,
+                ) = _mtls_helper.check_parameters_for_unauthorized_response(
+                    cert_at_request
+                )
+            except Exception as e:
+                # Failing to load the current certificate (for example, because
+                # the certificate file is missing or the certificate provider
+                # failed) must not prevent the token refresh that follows.
+                _LOGGER.warning(
+                    "Failed to check whether the client certificate has changed: %s",
+                    e,
+                    exc_info=True,
+                )
+                return
+            finally:
+                self._mtls_cert_check_generation += 1
+
+            if cached_fingerprint == current_cert_fingerprint:
+                _LOGGER.info(
+                    "Skipping reconfiguration of mTLS channel because the "
+                    "client certificate has not changed."
+                )
+                return
+
+            try:
+                _LOGGER.info(
+                    "Client certificate has changed, reconfiguring mTLS channel."
+                )
+                self._configure_mtls_channel_locked(
+                    client_cert_callback=lambda: (call_cert_bytes, call_key_bytes)
+                )
+            except Exception as e:
+                _LOGGER.error(
+                    "Failed to reconfigure mTLS channel: %s", e, exc_info=True
+                )
+                raise exceptions.MutualTLSChannelError(
+                    "Failed to reconfigure mTLS channel"
+                ) from e
 
     # Proxy methods for compliance with the urllib3.PoolManager interface
 
