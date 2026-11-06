@@ -146,10 +146,7 @@ class TestBasics(MockServerTestBase):
 
     def test_insert_and_fetch_json_field(self):
         add_single_result(
-            "INSERT INTO tests_detail "
-            "(id, value) "
-            "VALUES (@a0, @a1) "
-            "THEN RETURN id",
+            "INSERT INTO tests_detail (id, value) VALUES (@a0, @a1) THEN RETURN id",
             "id",
             TypeCode.INT64,
             [("1",)],
@@ -164,9 +161,7 @@ class TestBasics(MockServerTestBase):
         ]
         self.assertEqual(len(exec_requests), 1)
         self.assertEqual(exec_requests[0].param_types["a1"].code, TypeCode.JSON)
-        self.assertEqual(
-            exec_requests[0].params["a1"], '{"age":"26","name":"Jakob"}'
-        )
+        self.assertEqual(exec_requests[0].params["a1"], '{"age":"26","name":"Jakob"}')
 
         select_result = result_set.ResultSet(
             dict(

@@ -155,9 +155,7 @@ class TestOperations(SpannerSimpleTestClass):
             encoder=None,
         )
         self.assertIsInstance(adapted_nested, JsonObject)
-        self.assertEqual(
-            adapted_nested.serialize(), '{"items":[1,2],"meta":["tag"]}'
-        )
+        self.assertEqual(adapted_nested.serialize(), '{"items":[1,2],"meta":["tag"]}')
 
         adapted_scalar = self.db_operations.adapt_json_value(
             JsonObject(42), encoder=None

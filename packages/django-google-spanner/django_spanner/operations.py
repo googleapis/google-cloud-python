@@ -40,7 +40,6 @@ def _unwrap_json_object(value):
     return value
 
 
-
 class DatabaseOperations(BaseDatabaseOperations):
     """A Spanner-specific version of Django database operations."""
 
