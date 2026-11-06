@@ -1212,6 +1212,33 @@ def test_blob_update_storage_class_large_file(
     assert blob.storage_class == constants.COLDLINE_STORAGE_CLASS
 
 
+def test_blob_update_storage_class_enterprise(
+    storage_client, buckets_to_delete, blobs_to_delete, file_data
+):
+    bucket_name = _helpers.unique_name("blob-ent-sc")
+    bucket = storage_client.bucket(bucket_name)
+    bucket.storage_class = "STANDARD_ENTERPRISE"
+
+    _helpers.retry_429_503(bucket.create)(location="us-central1")
+    buckets_to_delete.append(bucket)
+
+    blob = bucket.blob("EnterpriseSmallFile")
+    assert "STANDARD_ENTERPRISE" in blob.STORAGE_CLASSES
+    assert "LR_STANDARD_ENTERPRISE" in blob.STORAGE_CLASSES
+    info = file_data["simple"]
+    blob.upload_from_filename(info["path"])
+    blobs_to_delete.append(blob)
+    assert blob.storage_class == "STANDARD_ENTERPRISE"
+
+    blob.update_storage_class("LR_STANDARD_ENTERPRISE")
+    blob.reload()
+    assert blob.storage_class == "LR_STANDARD_ENTERPRISE"
+
+    blob.update_storage_class("STANDARD_ENTERPRISE")
+    blob.reload()
+    assert blob.storage_class == "STANDARD_ENTERPRISE"
+
+
 def test_object_retention_lock(storage_client, buckets_to_delete, blobs_to_delete):
     from google.cloud.storage._helpers import _NOW, _UTC
 
