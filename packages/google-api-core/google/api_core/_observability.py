@@ -18,11 +18,19 @@
 
 from __future__ import annotations
 
+import contextlib
 import urllib.parse
 from typing import TYPE_CHECKING, Any, Callable, Sequence
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
+
+try:
+    from opentelemetry.instrumentation.utils import (
+        suppress_instrumentation as _suppress_instrumentation,
+    )
+except ImportError:
+    _suppress_instrumentation = contextlib.nullcontext
 
 if TYPE_CHECKING:
     # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
@@ -68,27 +76,32 @@ def is_otel_capabilities_enabled(
 
 def _extract_endpoint_attributes(
     client_options: ClientOptions | dict[str, Any] | None = None,
+    default_host: str | None = None,
 ) -> dict[str, Any]:
     """Extracts server.address, server.port (if non-default), and url.domain from client options if present.
 
     Args:
         client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
             object or dictionary.
+        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+            set on ``client_options``.
 
     Returns:
-        dict[str, Any]: A dictionary containing url.domain and, if an api_endpoint is configured,
-            server.address and non-default server.port.
+        dict[str, Any]: A dictionary containing url.domain and, if an api_endpoint or default_host
+            is configured, server.address and non-default server.port.
     """
     attrs: dict[str, Any] = {}
     endpoint = None
     universe_domain = None
 
     if isinstance(client_options, dict):
-        endpoint = client_options.get("api_endpoint")
+        endpoint = client_options.get("api_endpoint") or default_host
         universe_domain = client_options.get("universe_domain")
     elif client_options is not None:
-        endpoint = getattr(client_options, "api_endpoint", None)
+        endpoint = getattr(client_options, "api_endpoint", None) or default_host
         universe_domain = getattr(client_options, "universe_domain", None)
+    else:
+        endpoint = default_host
 
     attrs["url.domain"] = universe_domain or "googleapis.com"
 
@@ -223,14 +236,151 @@ def _get_tracer_provider(
     return None
 
 
+try:
+    # flake8: `grpc` imported conditionally for runtime interceptor base classes
+    import grpc  # noqa: F811
+    from grpc import (
+        StreamStreamClientInterceptor as _SyncStreamStreamClientInterceptor,
+    )
+    from grpc import (
+        StreamUnaryClientInterceptor as _SyncStreamUnaryClientInterceptor,
+    )
+    from grpc import (
+        UnaryStreamClientInterceptor as _SyncUnaryStreamClientInterceptor,
+    )
+    from grpc import (
+        UnaryUnaryClientInterceptor as _SyncUnaryUnaryClientInterceptor,
+    )
+    from grpc.aio import (
+        StreamStreamClientInterceptor as _AsyncStreamStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        StreamUnaryClientInterceptor as _AsyncStreamUnaryClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryStreamClientInterceptor as _AsyncUnaryStreamClientInterceptor,
+    )
+    from grpc.aio import (
+        UnaryUnaryClientInterceptor as _AsyncUnaryUnaryClientInterceptor,
+    )
+except ImportError:  # pragma: NO COVER
+    # mypy: Fallbacks:  grpc sentinel when optional grpc is not installed in the environment.
+    # and distinct empty classes avoid duplicate base class 'object' TypeError at runtime.
+    grpc = None  # type: ignore[assignment]
+
+    class _SyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _SyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncUnaryUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncUnaryStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncStreamUnaryClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+    class _AsyncStreamStreamClientInterceptor:  # type: ignore[no-redef]
+        __slots__ = ()
+
+
+class _SuppressingClientInterceptor(
+    _SyncUnaryUnaryClientInterceptor,
+    _SyncUnaryStreamClientInterceptor,
+    _SyncStreamUnaryClientInterceptor,
+    _SyncStreamStreamClientInterceptor,
+):
+    """Client interceptor that suppresses redundant downstream generic auto-instrumentation spans.
+
+    When users enable global OpenTelemetry gRPC auto-instrumentation (e.g. GrpcInstrumentorClient),
+    the underlying channel is wrapped with generic interceptors that emit bare-bones spans.
+    This interceptor wraps downstream calls in OpenTelemetry's native `suppress_instrumentation`
+    context manager so that our feature-rich Google Cloud SDK T4 span is emitted while
+    redundant generic downstream spans are bypassed.
+    """
+
+    __slots__ = ()
+
+    def intercept_unary_unary(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request)
+
+    def intercept_unary_stream(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request)
+
+    def intercept_stream_unary(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request_iterator)
+
+    def intercept_stream_stream(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return continuation(client_call_details, request_iterator)
+
+
+class _AsyncSuppressingClientInterceptor(
+    _AsyncUnaryUnaryClientInterceptor,
+    _AsyncUnaryStreamClientInterceptor,
+    _AsyncStreamUnaryClientInterceptor,
+    _AsyncStreamStreamClientInterceptor,
+):
+    """AsyncIO client interceptor that suppresses redundant downstream generic auto-instrumentation spans."""
+
+    __slots__ = ()
+
+    async def intercept_unary_unary(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request)
+
+    async def intercept_unary_stream(
+        self, continuation: Any, client_call_details: Any, request: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request)
+
+    async def intercept_stream_unary(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request_iterator)
+
+    async def intercept_stream_stream(
+        self, continuation: Any, client_call_details: Any, request_iterator: Any
+    ) -> Any:
+        with _suppress_instrumentation():
+            return await continuation(client_call_details, request_iterator)
+
+
 def get_otel_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
+    default_host: str | None = None,
 ) -> Callable[[grpc.Channel], grpc.Channel] | None:
     """Returns an interceptor callable that wraps a sync gRPC channel with OpenTelemetry tracing.
 
     Args:
         client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
             object or dictionary used for feature gating and extracting the tracer provider.
+        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+            set on ``client_options``.
 
     Returns:
         Callable[[grpc.Channel], grpc.Channel] | None: An interceptor callable if OpenTelemetry
@@ -241,7 +391,9 @@ def get_otel_interceptor(
 
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
-    endpoint_attrs = _extract_endpoint_attributes(client_options)
+    endpoint_attrs = _extract_endpoint_attributes(
+        client_options, default_host=default_host
+    )
     request_hook = _make_grpc_client_request_hook(endpoint_attrs)
 
     interceptor: ClientInterceptor = otel_grpc.client_interceptor(
@@ -249,8 +401,15 @@ def get_otel_interceptor(
         request_hook=request_hook,
         response_hook=_grpc_client_response_hook,
     )
+    suppressor = _SuppressingClientInterceptor()
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
+        if grpc is not None:
+            try:
+                channel = grpc.intercept_channel(channel, suppressor)
+            except (AttributeError, TypeError):
+                # Fallback if grpc lacks intercept_channel or custom channel type rejects it.
+                pass
         return otel_grpc.intercept_channel(channel, interceptor)
 
     otel_interceptor._is_otel_interceptor = True  # type: ignore[attr-defined]
@@ -259,12 +418,15 @@ def get_otel_interceptor(
 
 def get_otel_async_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
+    default_host: str | None = None,
 ) -> Sequence[grpc.aio.ClientInterceptor] | None:
     """Returns async gRPC client interceptors for OpenTelemetry tracing.
 
     Args:
         client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
             object or dictionary used for feature gating and extracting the tracer provider.
+        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+            set on ``client_options``.
 
     Returns:
         Sequence[grpc.aio.ClientInterceptor] | None: Instantiated OpenTelemetry async
@@ -276,14 +438,101 @@ def get_otel_async_interceptor(
     # Ignored by mypy: Optional dependency only loaded if early-return is skipped
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
-    endpoint_attrs = _extract_endpoint_attributes(client_options)
+    endpoint_attrs = _extract_endpoint_attributes(
+        client_options, default_host=default_host
+    )
     request_hook = _make_grpc_client_request_hook(endpoint_attrs)
 
-    return otel_grpc.aio_client_interceptors(
+    raw_interceptors = otel_grpc.aio_client_interceptors(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
         response_hook=_grpc_client_response_hook,
     )
+    interceptors = (
+        list(raw_interceptors)
+        if isinstance(raw_interceptors, (list, tuple))
+        else [raw_interceptors]
+    )
+    interceptors.append(_AsyncSuppressingClientInterceptor())
+
+    return interceptors
+
+
+_CHANNEL_INTERCEPTOR_MAPPING = (
+    ("intercept_unary_unary", "_unary_unary_interceptors"),
+    ("intercept_unary_stream", "_unary_stream_interceptors"),
+    ("intercept_stream_unary", "_stream_unary_interceptors"),
+    ("intercept_stream_stream", "_stream_stream_interceptors"),
+)
+
+
+def apply_otel_async_channel_interceptors(
+    channel: Any,
+    client_options: ClientOptions | dict[str, Any] | Sequence[Any] | None = None,
+    default_host: str | None = None,
+) -> Any:
+    """Creates and attaches OpenTelemetry client interceptors to the front of an async gRPC channel.
+
+    In grpc.aio, channels maintain internal interceptor lists evaluated in index order.
+    To ensure Google Cloud SDK telemetry wraps outside downstream interceptors and
+    suppresses ambient generic auto-instrumentation, our interceptors are prepended
+    to the front of the channel's interceptor lists.
+
+    Args:
+        channel: The async gRPC channel to intercept.
+        client_options (Optional[Union[ClientOptions, dict[str, Any], Sequence[Any]]]): The client
+            options used to resolve feature flags and tracer provider, or a sequence of
+            pre-resolved interceptors.
+        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+            set on ``client_options``.
+
+    Returns:
+        The channel with interceptors prepended to its internal lists,
+        or the original channel if tracing is disabled or not installed.
+    """
+    otel_interceptors: Sequence[Any] | None
+    if isinstance(client_options, (ClientOptions, dict)) or client_options is None:
+        otel_interceptors = get_otel_async_interceptor(
+            client_options, default_host=default_host
+        )
+    elif isinstance(client_options, Sequence):
+        otel_interceptors = client_options
+    else:
+        otel_interceptors = None
+
+    if not otel_interceptors:
+        return channel
+
+    interceptor_list = list(otel_interceptors)
+
+    # Section 1: Typed interceptors - prepend matching interceptors to each
+    # corresponding channel list (unary-unary, unary-stream, etc.) in order.
+    # See note in the docstring about why prepending is important here.
+    for method_name, attr_name in _CHANNEL_INTERCEPTOR_MAPPING:
+        target_list = getattr(channel, attr_name, None)
+        if isinstance(target_list, list):
+            matching = [
+                i
+                for i in interceptor_list
+                if hasattr(i, method_name) and i not in target_list
+            ]
+            if matching:
+                target_list[:0] = matching
+
+    # Section 2: Untyped/generic fallback - prepend any remaining interceptors
+    # lacking standard method names directly to the unary-unary list.
+    unary_list = getattr(channel, "_unary_unary_interceptors", None)
+    if isinstance(unary_list, list):
+        standard_methods = tuple(method for method, _ in _CHANNEL_INTERCEPTOR_MAPPING)
+        fallback_items = [
+            i
+            for i in interceptor_list
+            if not any(hasattr(i, m) for m in standard_methods) and i not in unary_list
+        ]
+        if fallback_items:
+            unary_list[:0] = fallback_items
+
+    return channel
 
 
 _TRACE_CONTEXT_PROPAGATOR: Any = None
@@ -365,8 +614,11 @@ class _TraceContext:
             except Exception:  # Fail-open on malformed URL parsing
                 pass
 
-        span_name = resolved_method
+        span_name = (
+            f"{resolved_method} {url_template}" if url_template else resolved_method
+        )
         span_attributes: dict[str, Any] = {
+            "rpc.system.name": "http",
             "http.request.method": resolved_method,
             "server.address": server_address or "",
             "server.port": server_port or 443,
@@ -381,6 +633,36 @@ class _TraceContext:
             span_attributes["http.request.body.size"] = len(resolved_body)
 
         return span_name, span_attributes, resolved_headers
+
+    @staticmethod
+    def _extract_http_error_message(response: Any) -> str | None:
+        """Extract a human-readable error message from an HTTP error response."""
+        json_fn = getattr(response, "json", None)
+        if callable(json_fn):
+            try:
+                payload = json_fn()
+                if isinstance(payload, dict):
+                    err_obj = payload.get("error")
+                    if isinstance(err_obj, dict):
+                        msg = err_obj.get("message")
+                        if isinstance(msg, str) and msg:
+                            return msg
+                    elif isinstance(err_obj, str) and err_obj:
+                        return err_obj
+            # Intentionally catch broad Exception so telemetry extraction
+            # fails open and never disrupts the caller's RPC flow.
+            except Exception:
+                pass
+        for attr in ("text", "reason"):
+            try:
+                val = getattr(response, attr, None)
+                if isinstance(val, str) and val.strip():
+                    return val.strip()
+            # Intentionally catch broad Exception so telemetry extraction
+            # fails open and never disrupts the caller's RPC flow.
+            except Exception:
+                continue
+        return None
 
     def __init__(
         self,
@@ -401,6 +683,7 @@ class _TraceContext:
         self._body = body
         self._client_options = client_options
         self._span: Any = None
+        self._parent_span: Any = None
         self._cm: Any = None
 
     def record_response(self, response: Any) -> None:
@@ -423,11 +706,18 @@ class _TraceContext:
                 response, "status_code", getattr(response, "status", None)
             )
             if status_code is not None:
-                span.set_attribute("http.response.status_code", int(status_code))
-                if int(status_code) >= 400:
+                code_int = int(status_code)
+                span.set_attribute("http.response.status_code", code_int)
+                if self._parent_span is not None:
+                    self._parent_span.set_attribute(
+                        "http.response.status_code", code_int
+                    )
+                if code_int >= 400:
                     span.set_status(Status(StatusCode.ERROR))
-                else:
-                    span.set_status(Status(StatusCode.OK))
+                    span.set_attribute("error.type", str(code_int))
+                    error_msg = self._extract_http_error_message(response)
+                    if error_msg:
+                        span.set_attribute("status.message", error_msg)
 
             headers = getattr(response, "headers", None)
             if headers and "Content-Length" in headers:
@@ -513,6 +803,25 @@ class _TraceContext:
                     client_options=self._client_options,
                 )
             )
+
+            parent_span = trace.get_current_span()
+            if (
+                parent_span is not None
+                and getattr(parent_span, "is_recording", lambda: False)() is True
+                and hasattr(parent_span, "set_attribute")
+            ):
+                self._parent_span = parent_span
+                if self._url_template:
+                    try:
+                        parent_attrs = getattr(parent_span, "attributes", None)
+                        if parent_attrs is None or "url.template" not in parent_attrs:
+                            parent_span.set_attribute(
+                                "url.template", self._url_template
+                            )
+                    # Intentionally catch broad Exception so telemetry extraction
+                    # fails open and never disrupts the caller's RPC flow.
+                    except Exception:
+                        pass
 
             self._cm = tracer.start_as_current_span(
                 span_name,

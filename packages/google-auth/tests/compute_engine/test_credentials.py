@@ -22,7 +22,6 @@ import responses  # type: ignore
 
 from google.auth import (
     _helpers,
-    environment_vars,
     exceptions,
     jwt,
     metrics,
@@ -887,10 +886,7 @@ class TestIDTokenCredentials(object):
 
         assert self.credentials.token is not None
 
-    @pytest.mark.parametrize(
-        "cert_config_env,bind_id_token",
-        [(None, None), (None, True), ("/path/to/config.json", True)],
-    )
+    @pytest.mark.parametrize("bind_id_token", [None, True])
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
@@ -904,14 +900,8 @@ class TestIDTokenCredentials(object):
         mock_metadata_get,
         mock_should_request,
         mock_get_cert_and_bytes,
-        cert_config_env,
         bind_id_token,
-        monkeypatch,
     ):
-        if cert_config_env:
-            monkeypatch.setenv(
-                environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, cert_config_env
-            )
         mock_metadata_get.side_effect = [
             {"email": "service-account@example.com", "scopes": ["one", "two"]},
             SAMPLE_ID_TOKEN,
@@ -946,14 +936,6 @@ class TestIDTokenCredentials(object):
             == metrics.token_request_id_token_mds()
         )
 
-    @pytest.mark.parametrize(
-        "cert_config_env,bind_id_token",
-        [
-            (None, False),
-            ("/path/to/config.json", False),
-            ("/path/to/config.json", None),
-        ],
-    )
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
@@ -962,14 +944,7 @@ class TestIDTokenCredentials(object):
         self,
         mock_metadata_get,
         mock_get_cert_and_bytes,
-        cert_config_env,
-        bind_id_token,
-        monkeypatch,
     ):
-        if cert_config_env:
-            monkeypatch.setenv(
-                environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, cert_config_env
-            )
         mock_metadata_get.side_effect = [
             {"email": "service-account@example.com", "scopes": ["one", "two"]},
             SAMPLE_ID_TOKEN,
@@ -980,7 +955,7 @@ class TestIDTokenCredentials(object):
             request=request,
             target_audience="https://audience.com",
             use_metadata_identity_endpoint=True,
-            bind_id_token=bind_id_token,
+            bind_id_token=False,
         )
 
         self.credentials.refresh(None)

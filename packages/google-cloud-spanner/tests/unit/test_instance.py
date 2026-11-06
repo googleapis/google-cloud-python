@@ -595,6 +595,65 @@ class TestInstance(unittest.TestCase):
         self.assertIs(database.database_role, DATABASE_ROLE)
         self.assertIs(database._proto_descriptors, proto_descriptors)
 
+    def test_database_factory_pool_database_role(self):
+        from google.cloud.spanner_v1.database import Database
+
+        client = _Client(self.PROJECT)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        database_id = "database-id"
+        pool = _Pool(database_role="pool-role")
+
+        database = instance.database(
+            database_id,
+            pool=pool,
+        )
+
+        self.assertIsInstance(database, Database)
+        self.assertIs(database._pool, pool)
+        self.assertIs(pool._bound, database)
+        self.assertEqual(pool.database_role, "pool-role")
+
+    def test_database_factory_pool_inherits_database_role(self):
+        from google.cloud.spanner_v1.database import Database
+
+        client = _Client(self.PROJECT)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        database_id = "database-id"
+        database_role = "db-role"
+        pool = _Pool()
+
+        database = instance.database(
+            database_id,
+            pool=pool,
+            database_role=database_role,
+        )
+
+        self.assertIsInstance(database, Database)
+        self.assertIs(database._pool, pool)
+        self.assertIs(pool._bound, database)
+        self.assertEqual(database.database_role, database_role)
+        self.assertEqual(pool.database_role, database_role)
+
+    def test_database_factory_pool_database_role_precedence(self):
+        from google.cloud.spanner_v1.database import Database
+
+        client = _Client(self.PROJECT)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        database_id = "database-id"
+        pool = _Pool(database_role="pool-role")
+
+        database = instance.database(
+            database_id,
+            pool=pool,
+            database_role="db-role",
+        )
+
+        self.assertIsInstance(database, Database)
+        self.assertIs(database._pool, pool)
+        self.assertIs(pool._bound, database)
+        self.assertEqual(database.database_role, "db-role")
+        self.assertEqual(pool.database_role, "pool-role")
+
     def test_list_databases(self):
         from google.cloud.spanner_admin_database_v1 import (
             Database as DatabasePB,
@@ -1124,5 +1183,9 @@ class _FauxOperationFuture(object):
 class _Pool(object):
     _bound = None
 
+    def __init__(self, database_role=None):
+        self.database_role = database_role
+
     def bind(self, database):
         self._bound = database
+        self.database_role = self.database_role or database.database_role

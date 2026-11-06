@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.62.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.0...google-auth-v2.62.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* **auth:** strip -fips suffix from AWS service name in SigV4 signing ([#18920](https://github.com/googleapis/google-cloud-python/issues/18920)) ([2e1899e](https://github.com/googleapis/google-cloud-python/commit/2e1899ed52a8c5adeb05422f48581124b4ab3fbe))
+* **auth:** use an unencrypted key for mTLS certificate rotation ([#18709](https://github.com/googleapis/google-cloud-python/issues/18709)) ([8166325](https://github.com/googleapis/google-cloud-python/commit/81663259c3743c6ab76005a5decb2b3628cfcc79))
+
+## [2.62.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.61.0...google-auth-v2.62.0) (2026-10-12)
+
+
+### Features
+
+* **auth:** enable bound ID tokens by default on Cloud Run ([#18635](https://github.com/googleapis/google-cloud-python/issues/18635)) ([8b625c4](https://github.com/googleapis/google-cloud-python/commit/8b625c4927371992f4569962292299eced040047))
+
 ## [2.61.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.60.0...google-auth-v2.61.0) (2026-10-07)
 
 

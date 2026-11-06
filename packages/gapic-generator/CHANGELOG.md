@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.44.2](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.44.1...gapic-generator-v1.44.2) (2026-11-05)
+
+
+### Bug Fixes
+
+* **gapic-generator:** default client_options.api_endpoint to transport host for OpenTelemetry spans ([#18869](https://github.com/googleapis/google-cloud-python/issues/18869)) ([10cdc90](https://github.com/googleapis/google-cloud-python/commit/10cdc908c0fbd146ebdb7c170ad5df474344529e))
+
+## [1.44.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.44.0...gapic-generator-v1.44.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* **google-api-core:** align HTTP T3 and T4 OpenTelemetry span status and attributes ([#18868](https://github.com/googleapis/google-cloud-python/issues/18868)) ([deb2194](https://github.com/googleapis/google-cloud-python/commit/deb2194d3fd615e2054b165a2493cc9ddb36ee9b))
+* **google-api-core:** align OpenTelemetry span names, kinds, and T3 endpoint attributes with spec ([#18866](https://github.com/googleapis/google-cloud-python/issues/18866)) ([2a10196](https://github.com/googleapis/google-cloud-python/commit/2a1019643da54baae33e1737ee1506de178aa857))
+
+## [1.44.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.43.1...gapic-generator-v1.44.0) (2026-10-22)
+
+
+### Features
+
+* **observability:** suppress redundant gRPC auto-instrumentation spans ([#18592](https://github.com/googleapis/google-cloud-python/issues/18592)) ([a597007](https://github.com/googleapis/google-cloud-python/commit/a5970072a0218060bc34857797c3008e0f30becf))
+
+## [1.43.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.43.0...gapic-generator-v1.43.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* **gapic-generator:** do not emit empty routing metadata on client-streaming RPCs ([#18591](https://github.com/googleapis/google-cloud-python/issues/18591)) ([bbdd643](https://github.com/googleapis/google-cloud-python/commit/bbdd643b91665b749da3fe3d5b39d2450caec2c2))
+* **gapic-generator:** resolve showcase-mypy incompatible redefinition ([7032a89](https://github.com/googleapis/google-cloud-python/commit/7032a895a891172b01844b805ac4fe4bd9ffa424))
+* **gapic-generator:** resolve showcase-mypy incompatible redefinition and add canary CI job ([#18701](https://github.com/googleapis/google-cloud-python/issues/18701)) ([7032a89](https://github.com/googleapis/google-cloud-python/commit/7032a895a891172b01844b805ac4fe4bd9ffa424))
+
 ## [1.43.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.42.0...gapic-generator-v1.43.0) (2026-10-08)
 
 

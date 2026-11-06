@@ -108,6 +108,7 @@ class MetricsCapture:
                 except Exception:
                     pass
         finally:
+            # Reset the context var using the token
             try:
                 SpannerMetricsTracerFactory.reset_current_tracer(token)
             except ValueError:

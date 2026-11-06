@@ -263,45 +263,20 @@ COLUMN_INFO = {
 
 
 @pytest.fixture(scope="session")
-def sessions_database(
-    shared_instance, database_operation_timeout, database_dialect, proto_descriptor_file
-):
-    database_name = _helpers.unique_id("test_sessions", separator="_")
+def sessions_database(shared_instance, shared_database):
     pool = spanner_v1.BurstyPool(labels={"testcase": "session_api"})
-
-    if database_dialect == DatabaseDialect.POSTGRESQL:
-        sessions_database = shared_instance.database(
-            database_name,
-            pool=pool,
-            database_dialect=database_dialect,
-        )
-
-        operation = sessions_database.create()
-        operation.result(database_operation_timeout)
-
-        operation = sessions_database.update_ddl(ddl_statements=_helpers.DDL_STATEMENTS)
-        operation.result(database_operation_timeout)
-
-    else:
-        sessions_database = shared_instance.database(
-            database_name,
-            ddl_statements=_helpers.DDL_STATEMENTS,
-            pool=pool,
-            proto_descriptors=proto_descriptor_file,
-        )
-
-        operation = sessions_database.create()
-        operation.result(database_operation_timeout)
-
-    _helpers.retry_has_all_dll(sessions_database.reload)()
+    database = shared_instance.database(
+        shared_database.database_id,
+        pool=pool,
+        database_dialect=shared_database.database_dialect,
+        proto_descriptors=getattr(shared_database, "_proto_descriptors", None),
+    )
     # Some tests expect there to be a session present in the pool.
     # Experimental host connections only support multiplexed sessions
     if not _helpers.USE_SPANNER_OMNI:
         pool.put(pool.get())
 
-    yield sessions_database
-
-    sessions_database.drop()
+    return database
 
 
 @pytest.fixture(scope="function")
@@ -1818,52 +1793,17 @@ def test_multiuse_snapshot_read_isolation_exact_staleness(sessions_database):
 
 
 def test_read_w_index(
-    shared_instance,
-    database_operation_timeout,
-    databases_to_delete,
+    sessions_database,
     database_dialect,
-    proto_descriptor_file,
 ):
     # Indexed reads cannot return non-indexed columns
     sd = _sample_data
     row_count = 2000
     my_columns = sd.COLUMNS[0], sd.COLUMNS[2]
 
-    # Create an alternate dataase w/ index.
-    extra_ddl = ["CREATE INDEX contacts_by_last_name ON contacts(last_name)"]
-    pool = spanner_v1.BurstyPool(labels={"testcase": "read_w_index"})
+    committed = _set_up_table(sessions_database, row_count)
 
-    if database_dialect == DatabaseDialect.POSTGRESQL:
-        temp_db = shared_instance.database(
-            _helpers.unique_id("test_read", separator="_"),
-            pool=pool,
-            database_dialect=database_dialect,
-        )
-        operation = temp_db.create()
-        operation.result(database_operation_timeout)
-
-        operation = temp_db.update_ddl(
-            ddl_statements=_helpers.DDL_STATEMENTS + extra_ddl,
-        )
-        operation.result(database_operation_timeout)
-
-    else:
-        temp_db = shared_instance.database(
-            _helpers.unique_id("test_read", separator="_"),
-            ddl_statements=_helpers.DDL_STATEMENTS
-            + extra_ddl
-            + _helpers.PROTO_COLUMNS_DDL_STATEMENTS,
-            pool=pool,
-            database_dialect=database_dialect,
-            proto_descriptors=proto_descriptor_file,
-        )
-        operation = temp_db.create()
-        operation.result(database_operation_timeout)  # raises on failure / timeout.
-
-    databases_to_delete.append(temp_db)
-    committed = _set_up_table(temp_db, row_count)
-
-    with temp_db.snapshot(read_timestamp=committed) as snapshot:
+    with sessions_database.snapshot(read_timestamp=committed) as snapshot:
         rows = list(
             snapshot.read(sd.TABLE, my_columns, sd.ALL, index="contacts_by_last_name")
         )
@@ -1879,8 +1819,8 @@ def test_read_w_index(
             sd.SINGERS_PROTO_COLUMNS[1],
             sd.SINGERS_PROTO_COLUMNS[4],
         )
-        committed = _set_up_proto_table(temp_db)
-        with temp_db.snapshot(read_timestamp=committed) as snapshot:
+        committed = _set_up_proto_table(sessions_database)
+        with sessions_database.snapshot(read_timestamp=committed) as snapshot:
             rows = list(
                 snapshot.read(
                     sd.SINGERS_PROTO_TABLE,
@@ -3151,34 +3091,10 @@ def test_interval(sessions_database, database_dialect, not_emulator):
     from google.cloud.spanner_v1 import Interval
 
     def setup_table():
-        if database_dialect == DatabaseDialect.POSTGRESQL:
-            sessions_database.update_ddl(
-                [
-                    """
-                CREATE TABLE IntervalTable (
-                    key text primary key,
-                    create_time timestamptz,
-                    expiry_time timestamptz,
-                    expiry_within_month bool GENERATED ALWAYS AS (expiry_time - create_time < INTERVAL '30' DAY) STORED,
-                    interval_array_len bigint GENERATED ALWAYS AS (ARRAY_LENGTH(ARRAY[INTERVAL '1-2 3 4:5:6'], 1)) STORED
-                )
-                """
-                ]
-            ).result()
-        else:
-            sessions_database.update_ddl(
-                [
-                    """
-                CREATE TABLE IntervalTable (
-                    key STRING(MAX),
-                    create_time TIMESTAMP,
-                    expiry_time TIMESTAMP,
-                    expiry_within_month bool AS (expiry_time - create_time < INTERVAL 30 DAY),
-                    interval_array_len INT64 AS (ARRAY_LENGTH(ARRAY<INTERVAL>[INTERVAL '1-2 3 4:5:6' YEAR TO SECOND]))
-                ) PRIMARY KEY (key)
-                """
-                ]
-            ).result()
+        def _clear(transaction):
+            transaction.delete("IntervalTable", spanner_v1.KeySet(all_=True))
+
+        sessions_database.run_in_transaction(_clear)
 
     def insert_test1(transaction):
         keys, placeholders = get_param_info(

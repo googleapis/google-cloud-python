@@ -1476,3 +1476,149 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(connection.run_statement.call_count, 4)
         mock_database.update_ddl.assert_called_once_with([ddl_sql])
         self.assertEqual(connection._ddl_statements, [])
+
+    def test_execute_ddl_then_close_clears_ddl(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.close()
+        self.assertEqual(connection._ddl_statements, [])
+        mock_database.update_ddl.assert_not_called()
+
+    def test_execute_ddl_then_rollback_and_close_clears_ddl(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.rollback()
+        self.assertEqual(connection._ddl_statements, [])
+
+        connection.close()
+        mock_database.update_ddl.assert_not_called()
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_ddl_then_rollback_and_autocommit_query_does_not_execute_ddl(
+        self, mock_peek_iterator
+    ):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.rollback()
+        self.assertEqual(connection._ddl_statements, [])
+
+        connection.autocommit = True
+        cursor.execute(sql="SELECT 1")
+
+        mock_database.update_ddl.assert_not_called()
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_ddl_then_autocommit_without_rollback_executes_ddl(
+        self, mock_peek_iterator
+    ):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE valid_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.autocommit = True
+        self.assertEqual(connection._ddl_statements, [])
+        mock_database.update_ddl.assert_called_once_with([ddl_sql])
+
+        cursor.execute(sql="SELECT 1")
+        mock_database.update_ddl.assert_called_once_with([ddl_sql])
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_ddl_then_rollback_and_dml_does_not_execute_ddl(
+        self, mock_peek_iterator
+    ):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+        insert_sql = "INSERT INTO users (id) VALUES (1)"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.rollback()
+
+        connection.run_statement = mock.Mock(return_value=mock.MagicMock())
+        cursor.execute(sql=insert_sql)
+        connection.commit()
+
+        mock_database.update_ddl.assert_not_called()
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.batch_dml_executor.run_batch_dml")
+    def test_execute_ddl_then_rollback_and_executemany_does_not_execute_ddl(
+        self, mock_run_batch_dml
+    ):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+        insert_sql = "INSERT INTO users (id) VALUES (%s)"
+
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.rollback()
+
+        cursor.executemany(insert_sql, [(1,), (2,)])
+        connection.commit()
+
+        mock_database.update_ddl.assert_not_called()
+
+    def test_execute_ddl_then_rollback_and_ddl_does_not_execute_canceled_ddl(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        canceled_ddl = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+        valid_ddl = "CREATE TABLE valid_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=canceled_ddl)
+        self.assertEqual(connection._ddl_statements, [canceled_ddl])
+
+        connection.rollback()
+
+        cursor.execute(sql=valid_ddl)
+        connection.commit()
+
+        mock_database.update_ddl.assert_called_once_with([valid_ddl])
+        self.assertEqual(connection._ddl_statements, [])
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_execute_dml_then_ddl_then_rollback_discards_ddl(self, mock_peek_iterator):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        connection.run_statement = mock.Mock(return_value=mock.MagicMock())
+        dml_sql = "INSERT INTO users (id) VALUES (1)"
+        ddl_sql = "CREATE TABLE canceled_table (id INT64) PRIMARY KEY (id)"
+
+        cursor.execute(sql=dml_sql)
+        cursor.execute(sql=ddl_sql)
+        self.assertEqual(connection._ddl_statements, [ddl_sql])
+
+        connection.rollback()
+        self.assertEqual(connection._ddl_statements, [])
+
+        cursor.execute(sql="SELECT 1")
+        connection.commit()
+        mock_database.update_ddl.assert_not_called()
