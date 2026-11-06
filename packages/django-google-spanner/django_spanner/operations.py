@@ -25,6 +25,11 @@ from google.cloud.spanner_v1 import JsonObject
 
 def _unwrap_json_object(value):
     """Recursively unwrap JsonObject instances before json.dumps serialization."""
+    val_type = type(value)
+    if val_type is dict:
+        return {k: _unwrap_json_object(v) for k, v in value.items()}
+    if val_type is list:
+        return [_unwrap_json_object(item) for item in value]
     if isinstance(value, JsonObject):
         if value._is_null:
             return None
