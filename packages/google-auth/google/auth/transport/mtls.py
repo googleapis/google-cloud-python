@@ -17,7 +17,7 @@
 import enum
 import logging
 import ssl
-from os import getenv
+from os import getenv, path
 from typing import Optional
 
 from google.auth import environment_vars, exceptions
@@ -42,12 +42,18 @@ def has_default_client_cert_source(include_context_aware=True):
     Returns:
         bool: indicating if the default client cert source exists.
     """
+    spiffe_config_path = _mtls_helper._get_spiffe_polling_config_path()
+    # Before the SPIFFE config is mounted, assume it will provide a cert and let
+    # the loader poll for it. Once it exists, inspect it like any other config.
+    if spiffe_config_path is not None and not path.exists(spiffe_config_path):
+        return True
+
     try:
         (
             cert_path,
             key_path,
             config_file_path,
-        ) = _mtls_helper._get_workload_cert_and_key_paths(
+        ) = _mtls_helper._get_non_spiffe_workload_cert_and_key_paths(
             None, include_context_aware=include_context_aware
         )
     except (exceptions.ClientCertError, OSError):
