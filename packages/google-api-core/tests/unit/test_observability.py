@@ -2373,3 +2373,34 @@ def test_build_telemetry_error_attributes_include_exception(
     assert expected_exc_msg_substr in attrs_inc["exception.message"]
     assert "Traceback (most recent call last):" in attrs_inc["exception.stacktrace"]
     assert "raise exc_factory()" in attrs_inc["exception.stacktrace"]
+
+
+@pytest.mark.parametrize(
+    "method_name,expected_full,expected_service,expected_method",
+    [
+        pytest.param(None, "", "", "", id="none_method_name"),
+        pytest.param("", "", "", "", id="empty_string_method_name"),
+        pytest.param(
+            b"/my.Service/Method",
+            "my.Service/Method",
+            "my.Service",
+            "Method",
+            id="bytes_method_name",
+        ),
+        pytest.param(
+            "/my.Service/Method",
+            "my.Service/Method",
+            "my.Service",
+            "Method",
+            id="string_method_name",
+        ),
+    ],
+)
+def test_extract_rpc_identity(
+    method_name, expected_full, expected_service, expected_method
+):
+    """Proves extract_rpc_identity decodes and partitions method names safely."""
+    full, service, method = _observability.extract_rpc_identity(method_name)
+    assert full == expected_full
+    assert service == expected_service
+    assert method == expected_method
