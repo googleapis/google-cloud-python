@@ -18,3 +18,7 @@ from django.db import models
 class Singer(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
+
+
+class Detail(models.Model):
+    value = models.JSONField(null=True)

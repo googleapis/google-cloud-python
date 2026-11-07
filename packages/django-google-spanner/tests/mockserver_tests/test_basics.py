@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
 from django.db import connection, models
 from google.cloud.spanner_v1 import (
     BatchCreateSessionsRequest,
@@ -22,11 +24,12 @@ from google.cloud.spanner_v1 import (
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_result,
     add_select1_result,
     add_singer_query_result,
     add_single_result,
 )
-from tests.mockserver_tests.models import Singer
+from tests.mockserver_tests.models import Detail, Singer
 from tests.settings import DATABASES
 
 
@@ -140,3 +143,72 @@ class TestBasics(MockServerTestBase):
             for db, config in DATABASES.items():
                 if config["ENGINE"] == "django_spanner":
                     config.pop("DISABLE_RANDOM_ID_GENERATION", None)
+
+    def test_insert_and_fetch_json_field(self):
+        add_single_result(
+            "INSERT INTO tests_detail (id, value) VALUES (@a0, @a1) THEN RETURN id",
+            "id",
+            TypeCode.INT64,
+            [("1",)],
+        )
+        json_data = Detail(value={"name": "Jakob", "age": "26"})
+        json_data.save()
+
+        exec_requests = [
+            req
+            for req in self.spanner_service.requests
+            if isinstance(req, ExecuteSqlRequest)
+        ]
+        self.assertEqual(len(exec_requests), 1)
+        self.assertEqual(exec_requests[0].param_types["a1"].code, TypeCode.JSON)
+        self.assertEqual(exec_requests[0].params["a1"], '{"age":"26","name":"Jakob"}')
+
+        select_result = result_set.ResultSet(
+            dict(
+                metadata=result_set.ResultSetMetadata(
+                    dict(
+                        row_type=spanner_type.StructType(
+                            dict(
+                                fields=[
+                                    spanner_type.StructType.Field(
+                                        dict(
+                                            name="id",
+                                            type=spanner_type.Type(
+                                                dict(code=TypeCode.INT64)
+                                            ),
+                                        )
+                                    ),
+                                    spanner_type.StructType.Field(
+                                        dict(
+                                            name="value",
+                                            type=spanner_type.Type(
+                                                dict(code=TypeCode.JSON)
+                                            ),
+                                        )
+                                    ),
+                                ]
+                            )
+                        )
+                    )
+                ),
+            )
+        )
+        select_result.rows.extend(
+            [
+                ("1", '{"age":"26","name":"Jakob"}'),
+                ("2", "[1,2,3]"),
+                ("3", None),
+            ]
+        )
+        add_result(
+            "SELECT tests_detail.id, tests_detail.value FROM tests_detail",
+            select_result,
+        )
+
+        details = list(Detail.objects.all())
+        self.assertEqual(len(details), 3)
+        self.assertEqual(details[0].value, {"name": "Jakob", "age": "26"})
+        self.assertIs(type(details[0].value), dict)
+        self.assertEqual(details[1].value, [1, 2, 3])
+        self.assertIs(type(details[1].value), list)
+        self.assertIsNone(details[2].value)

@@ -12,8 +12,11 @@ from unittest import mock
 
 from django.conf import settings
 from django.core.management.color import no_style
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import JSONField
 from django.db.utils import DatabaseError
 from google.cloud.spanner_dbapi.types import DateStr
+from google.cloud.spanner_v1 import JsonObject
 
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
@@ -109,6 +112,103 @@ class TestOperations(SpannerSimpleTestClass):
             self.db_operations.convert_uuidfield_value(
                 value=None, expression=None, connection=None
             ),
+        )
+
+    def test_adapt_json_value_dict_and_encoder(self):
+        adapted = self.db_operations.adapt_json_value(
+            {"name": "Jakob", "age": "26"}, encoder=None
+        )
+        self.assertIsInstance(adapted, JsonObject)
+        self.assertEqual(adapted, {"name": "Jakob", "age": "26"})
+        self.assertEqual(adapted.serialize(), '{"age":"26","name":"Jakob"}')
+
+        adapted_decimal = self.db_operations.adapt_json_value(
+            {"amount": Decimal("12.34")}, encoder=DjangoJSONEncoder
+        )
+        self.assertIsInstance(adapted_decimal, JsonObject)
+        self.assertEqual(adapted_decimal, {"amount": "12.34"})
+
+    def test_adapt_json_value_list_and_scalar(self):
+        adapted_list = self.db_operations.adapt_json_value([1, 2, 3], encoder=None)
+        self.assertIsInstance(adapted_list, JsonObject)
+        self.assertEqual(adapted_list.serialize(), "[1,2,3]")
+
+        adapted_scalar = self.db_operations.adapt_json_value("hello", encoder=None)
+        self.assertIsInstance(adapted_scalar, JsonObject)
+        self.assertEqual(adapted_scalar.serialize(), '"hello"')
+
+    def test_adapt_json_value_json_object_and_null(self):
+        adapted_obj = self.db_operations.adapt_json_value(
+            JsonObject({"k": "v"}), encoder=None
+        )
+        self.assertIsInstance(adapted_obj, JsonObject)
+        self.assertEqual(adapted_obj.serialize(), '{"k":"v"}')
+
+        adapted_arr = self.db_operations.adapt_json_value(
+            JsonObject([1, 2]), encoder=None
+        )
+        self.assertIsInstance(adapted_arr, JsonObject)
+        self.assertEqual(adapted_arr.serialize(), "[1,2]")
+
+        adapted_nested = self.db_operations.adapt_json_value(
+            {"items": JsonObject([1, 2]), "meta": [JsonObject("tag")]},
+            encoder=None,
+        )
+        self.assertIsInstance(adapted_nested, JsonObject)
+        self.assertEqual(adapted_nested.serialize(), '{"items":[1,2],"meta":["tag"]}')
+
+        adapted_scalar = self.db_operations.adapt_json_value(
+            JsonObject(42), encoder=None
+        )
+        self.assertIsInstance(adapted_scalar, JsonObject)
+        self.assertEqual(adapted_scalar.serialize(), "42")
+
+        adapted_null_obj = self.db_operations.adapt_json_value(
+            JsonObject(None), encoder=None
+        )
+        self.assertIsInstance(adapted_null_obj, JsonObject)
+        self.assertIsNone(adapted_null_obj.serialize())
+
+        adapted_none = self.db_operations.adapt_json_value(None, encoder=None)
+        self.assertIsInstance(adapted_none, JsonObject)
+        self.assertIsNone(adapted_none.serialize())
+
+    def test_get_db_converters_jsonfield(self):
+        expression = mock.MagicMock()
+        expression.output_field = JSONField()
+        converters = self.db_operations.get_db_converters(expression)
+        self.assertIn(self.db_operations.convert_jsonfield_value, converters)
+
+    def test_convert_jsonfield_value(self):
+        self.assertEqual(
+            self.db_operations.convert_jsonfield_value(
+                JsonObject({"name": "Jakob", "age": "26"}),
+                expression=None,
+                connection=None,
+            ),
+            '{"age":"26","name":"Jakob"}',
+        )
+        self.assertEqual(
+            self.db_operations.convert_jsonfield_value(
+                JsonObject([1, 2, 3]), expression=None, connection=None
+            ),
+            "[1,2,3]",
+        )
+        self.assertIsNone(
+            self.db_operations.convert_jsonfield_value(
+                JsonObject(None), expression=None, connection=None
+            ),
+        )
+        self.assertIsNone(
+            self.db_operations.convert_jsonfield_value(
+                None, expression=None, connection=None
+            ),
+        )
+        self.assertEqual(
+            self.db_operations.convert_jsonfield_value(
+                '{"raw":1}', expression=None, connection=None
+            ),
+            '{"raw":1}',
         )
 
     def test_date_extract_sql(self):

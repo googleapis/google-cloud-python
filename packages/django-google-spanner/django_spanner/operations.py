@@ -20,6 +20,29 @@ from google.cloud.spanner_dbapi.parse_utils import (
     TimestampStr,
     escape_name,
 )
+from google.cloud.spanner_v1 import JsonObject
+
+
+def _unwrap_json_object(value):
+    """Recursively unwrap JsonObject instances before json.dumps serialization."""
+    val_type = type(value)
+    if val_type is dict:
+        return {k: _unwrap_json_object(v) for k, v in value.items()}
+    if val_type is list:
+        return [_unwrap_json_object(item) for item in value]
+    if isinstance(value, JsonObject):
+        if value._is_null:
+            return None
+        if value._is_array:
+            return [_unwrap_json_object(item) for item in value._array_value]
+        if value._is_scalar_value:
+            return value._simple_value
+        return {k: _unwrap_json_object(v) for k, v in value.items()}
+    if isinstance(value, dict):
+        return {k: _unwrap_json_object(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_unwrap_json_object(item) for item in value]
+    return value
 
 
 class DatabaseOperations(BaseDatabaseOperations):
@@ -291,6 +314,25 @@ class DatabaseOperations(BaseDatabaseOperations):
             "0001-01-01T" + value.isoformat(timespec="microseconds") + "Z"
         )
 
+    def adapt_json_value(self, value, encoder):
+        """Adapt a JSON value into a Spanner JsonObject for parameter binding.
+
+        Note that JSON null (`Value(None, JSONField())`) maps to a null
+        JsonObject whose `serialize()` returns `None` (bound as SQL NULL by
+        `spanner_v1`).
+
+        :type value: object
+        :param value: A Python value to serialize as JSON.
+
+        :type encoder: :class:`json.JSONEncoder` or None
+        :param encoder: Custom JSON encoder class, if configured on the field.
+
+        :rtype: :class:`~google.cloud.spanner_v1.JsonObject`
+        :returns: A Spanner JsonObject wrapping the serialized JSON payload.
+        """
+        value = _unwrap_json_object(value)
+        return JsonObject.from_str(super().adapt_json_value(value, encoder))
+
     def get_db_converters(self, expression):
         """Get a list of functions needed to convert field data.
 
@@ -310,6 +352,8 @@ class DatabaseOperations(BaseDatabaseOperations):
             converters.append(self.convert_binaryfield_value)
         elif internal_type == "UUIDField":
             converters.append(self.convert_uuidfield_value)
+        elif internal_type == "JSONField":
+            converters.append(self.convert_jsonfield_value)
         return converters
 
     def convert_binaryfield_value(self, value, expression, connection):
@@ -404,6 +448,26 @@ class DatabaseOperations(BaseDatabaseOperations):
         """
         if value is not None:
             value = UUID(value)
+        return value
+
+    def convert_jsonfield_value(self, value, expression, connection):
+        """Convert Spanner JSONField value into a JSON string for Django.
+
+        :type value: :class:`~google.cloud.spanner_v1.JsonObject` or str or None
+        :param value: A JSON field value returned by Spanner.
+
+        :type expression: :class:`django.db.models.expressions.BaseExpression`
+        :param expression: A query expression.
+
+        :type connection: :class:`~google.cloud.spanner_dbapi.connection.Connection`
+        :param connection: Reference to a Spanner database connection.
+
+        :rtype: str or None
+        :returns: A serialized JSON string for Django's JSONField.from_db_value,
+                  or None.
+        """
+        if isinstance(value, JsonObject):
+            return value.serialize()
         return value
 
     def date_extract_sql(self, lookup_type, field_name, params=None):
