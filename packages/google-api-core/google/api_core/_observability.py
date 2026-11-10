@@ -22,13 +22,8 @@ import contextlib
 import functools
 import traceback
 import urllib.parse
-<<<<<<< HEAD
 from collections.abc import Callable, MutableMapping, Sequence
 from typing import TYPE_CHECKING, Any
-=======
-from collections.abc import MutableMapping
-from typing import TYPE_CHECKING, Any, Callable, Sequence
->>>>>>> bc577313a23 (refactor(api_core): modernize observability type annotations and centralize RPC identity helpers)
 
 from google.api_core import _feature_gating_helpers, exceptions
 from google.api_core.client_options import ClientOptions
@@ -41,14 +36,12 @@ except ImportError:
     _suppress_instrumentation = contextlib.nullcontext
 
 if TYPE_CHECKING:
-<<<<<<< HEAD
     # flake8: grpc, opentelemetry.trace, and ClientInterceptor are imported only for static analysis and type annotations
-=======
-    # flake8: grpc and opentelemetry.trace are imported only for static analysis and type annotations
->>>>>>> bc577313a23 (refactor(api_core): modernize observability type annotations and centralize RPC identity helpers)
     # The 'noqa: F401' comment avoids flake8 "imported but not used" errors.
     import grpc  # noqa: F401
     import opentelemetry.trace  # noqa: F401
+
+    from google.api_core.grpc_helpers import ClientInterceptor  # noqa: F401
 
 _TRACER_PROVIDER = "tracer_provider"
 _TRACE_CONTEXT_PROPAGATOR: Any = None
@@ -347,7 +340,7 @@ def _decode_method_name(method: str | bytes | None) -> str:
 def extract_rpc_identity(
     method_name: str | bytes | None,
 ) -> tuple[str, str, str]:
-    """Extracts (full_rpc_name, service_name, rpc_method_name) from a gRPC method path.
+    """Extracts RPC identity tuple from a gRPC method path.
 
     Args:
         method_name (str | bytes | None): Explicit gRPC method path
@@ -362,7 +355,7 @@ def extract_rpc_identity(
 
 
 def _resolve_rpc_system(kind: str | None = "grpc") -> str:
-    """Normalizes a transport kind ('grpc', 'rest', 'rest_asyncio', 'http') to an OTel rpc.system.name.
+    """Normalizes a transport kind to an OpenTelemetry rpc.system.name.
 
     Args:
         kind (str | None): The transport kind identifier.
@@ -675,7 +668,7 @@ def _build_otel_grpc_hook_kwargs(
     client_options: ClientOptions | dict[str, Any] | None = None,
     default_host: str | None = None,
 ) -> dict[str, Any]:
-    """Builds the keyword arguments passed to OpenTelemetry's gRPC interceptor factories.
+    """Builds keyword arguments for OpenTelemetry gRPC interceptor factories.
 
     Both the sync (`otel_grpc.client_interceptor`) and async
     (`otel_grpc.aio_client_interceptors`) factories in `opentelemetry.instrumentation.grpc`
@@ -1187,11 +1180,7 @@ def trace_http_request(
         method (str | None): Explicit HTTP method (e.g. "GET", "POST").
         url (str | None): Fully qualified request URL.
         url_template (str | None): Parameterized path template for url.template.
-<<<<<<< HEAD
         headers (MutableMapping[str, Any] | None): Mutable mapping of request headers.
-=======
-        headers (dict[str, Any] | None): Mutable dictionary of request headers.
->>>>>>> bc577313a23 (refactor(api_core): modernize observability type annotations and centralize RPC identity helpers)
         body (Any | None): Request payload (used for body size calculation).
         client_options (ClientOptions | dict[str, Any] | None): Client options
             containing custom endpoint and tracer provider configurations.
