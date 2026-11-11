@@ -614,13 +614,17 @@ class AsyncMultiRangeDownloader:
                     and offset == 0
                     and length == self.persisted_size
                 )
+                wrapped_buffer = _wrap_user_buffer(
+                    user_buffer, length, accepts_memoryview
+                )
                 download_states[read_id] = _DownloadState(
                     initial_offset=offset,
                     initial_length=length,
-                    user_buffer=_wrap_user_buffer(
-                        user_buffer, length, accepts_memoryview
-                    ),
+                    user_buffer=wrapped_buffer,
                     is_full_object_read=is_full_object_read,
+                    # Unwrapped only for a write() destination that accepts
+                    # memoryview chunks.
+                    receives_views=wrapped_buffer is user_buffer,
                 )
 
             initial_state = {
@@ -824,13 +828,17 @@ class AsyncMultiRangeDownloader:
 
         :type enable_checksum: bool
         :param enable_checksum: (Optional) If True, checksums are verified for downloaded data. Defaults to True.
-            Chunks of ``GCS_PYTHON_CLIENT_CRC32C_OFFLOAD_MIN_BYTES`` bytes or
-            more (default 1 MiB) are verified on a worker thread and written to
-            their buffer once the checksum matches; chunks still waiting are
-            discarded if the call is cancelled or a mismatch is found, and a
-            retry requests them again. Setting
-            ``GCS_PYTHON_CLIENT_CRC32C_OFFLOAD_MIN_BYTES=0`` verifies every
-            chunk inline.
+            By default, chunks of 1 MiB or more that a ``write()`` destination
+            receives as ``memoryview`` are verified on a worker thread and
+            written once their checksum matches. Destinations receive
+            ``memoryview`` chunks with ``accepts_memoryview=True``, the
+            zero-copy parser and a ``google-crc32c`` that accepts
+            ``memoryview``. On cancellation or a mismatch, waiting chunks are
+            not written. Other chunks, and all chunks in ranges that read the
+            whole object, are verified as they arrive.
+            ``GCS_PYTHON_CLIENT_CRC32C_OFFLOAD=1`` (or ``true``, ``yes``,
+            ``on``) offloads every chunk of 1 MiB or more outside whole-object
+            ranges, and any other non-empty value keeps every chunk inline.
 
         :type accepts_memoryview: bool
         :param accepts_memoryview: (Optional) If True, ``write()`` destinations

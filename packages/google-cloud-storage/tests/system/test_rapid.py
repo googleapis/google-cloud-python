@@ -1594,6 +1594,8 @@ def test_mrd_zero_copy_bidi_read(
 ):
     """Tests zero-copy BidiReadObject reads across write() and buffer destinations."""
     monkeypatch.setenv("GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ", "1")
+    # Partial ranges below have 2 MiB chunks, so this also covers off-loop CRC32C.
+    monkeypatch.setenv("GCS_PYTHON_CLIENT_CRC32C_OFFLOAD", "1")
     object_size = 5 * 1024 * 1024
     object_name = f"test_mrd_zero_copy-{uuid.uuid4()}"
 
