@@ -15,6 +15,7 @@
 """Helper functions for getting mTLS cert and key."""
 
 import contextlib
+import inspect
 import json
 import logging
 import os
@@ -616,6 +617,24 @@ def _read_cert_and_key_files(cert_path, key_path):
     )
 
 
+def _get_key_match_load_kwargs():
+    # Only the public half is compared, so skip RSA private-key validation
+    # where supported (cryptography >= 39.0.0); it is slow and the TLS layer
+    # does not perform it either.
+    try:
+        if (
+            "unsafe_skip_rsa_key_validation"
+            in inspect.signature(serialization.load_pem_private_key).parameters
+        ):
+            return {"unsafe_skip_rsa_key_validation": True}
+    except (TypeError, ValueError):
+        pass
+    return {}
+
+
+_KEY_MATCH_LOAD_KWARGS = _get_key_match_load_kwargs()
+
+
 def _has_cert_key_mismatch(cert_chain, key):
     """Checks whether the private key does not belong to the leaf certificate.
 
@@ -626,7 +645,7 @@ def _has_cert_key_mismatch(cert_chain, key):
     try:
         cert_public_key = x509.load_pem_x509_certificate(cert_chain).public_key()
         key_public_key = serialization.load_pem_private_key(
-            key, password=None
+            key, password=None, **_KEY_MATCH_LOAD_KWARGS
         ).public_key()
     except (ValueError, TypeError, UnsupportedAlgorithm):
         return False

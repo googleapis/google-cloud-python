@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import inspect
 import os
 import re
 import sys
@@ -21,7 +22,7 @@ from unittest import mock
 import pytest  # type: ignore
 import urllib3.util
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.asymmetric import ec, rsa
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
@@ -891,6 +892,78 @@ class TestReadCertAndKeyFile(object):
             key_bytes,
         )
         mock_sleep.assert_not_called()
+
+    @pytest.mark.skipif(
+        not _mtls_helper._KEY_MATCH_LOAD_KWARGS,
+        reason="Requires unsafe_skip_rsa_key_validation (cryptography >= 39.0.0)",
+    )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_corrupted_rsa_key_still_detects_mismatch(self, mock_sleep, tmp_path):
+        cert_path = os.path.join(pytest.data_dir, "other_cert.pem")
+        nums = serialization.load_pem_private_key(
+            pytest.private_key_bytes,
+            password=None,
+            unsafe_skip_rsa_key_validation=True,
+        ).private_numbers()
+        corrupted_key = rsa.RSAPrivateNumbers(
+            p=nums.p,
+            q=nums.q,
+            d=nums.d,
+            dmp1=nums.dmp1,
+            dmq1=nums.dmq1,
+            iqmp=nums.iqmp ^ 2,
+            public_numbers=nums.public_numbers,
+        ).private_key(unsafe_skip_rsa_key_validation=True)
+        key_file = tmp_path / "corrupted_key.pem"
+        key_file.write_bytes(
+            corrupted_key.private_bytes(
+                serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8,
+                serialization.NoEncryption(),
+            )
+        )
+
+        with pytest.raises(
+            exceptions.ClientCertError, match="do not match after 3 attempts"
+        ):
+            _mtls_helper._read_cert_and_key_files(cert_path, str(key_file))
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+
+    @pytest.mark.parametrize(
+        "signature_side_effect, expected_kwargs",
+        [
+            (
+                [
+                    inspect.Signature(
+                        [
+                            inspect.Parameter(
+                                "unsafe_skip_rsa_key_validation",
+                                inspect.Parameter.KEYWORD_ONLY,
+                                default=False,
+                            )
+                        ]
+                    )
+                ],
+                {"unsafe_skip_rsa_key_validation": True},
+            ),
+            ([inspect.Signature()], {}),
+            (ValueError("no signature found"), {}),
+            (TypeError("not a callable"), {}),
+        ],
+        ids=[
+            "supported",
+            "unsupported_cryptography",
+            "missing_builtin_signature",
+            "non_callable",
+        ],
+    )
+    def test_get_key_match_load_kwargs(self, signature_side_effect, expected_kwargs):
+        with mock.patch(
+            "google.auth.transport._mtls_helper.inspect.signature",
+            autospec=True,
+            side_effect=signature_side_effect,
+        ):
+            assert _mtls_helper._get_key_match_load_kwargs() == expected_kwargs
 
     def test_no_cert_file(self):
         cert_path = "fake/file/path"
