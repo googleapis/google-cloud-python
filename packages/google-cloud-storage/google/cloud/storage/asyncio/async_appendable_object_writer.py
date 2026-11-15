@@ -571,6 +571,9 @@ class AsyncAppendableObjectWriter:
         :param enable_checksum: (Optional) If True, calculates and checks checksums for each chunk. Defaults to True.
 
         :raises ValueError: If the stream is not open.
+        :raises google.api_core.exceptions.DataLoss: If reconnecting after a
+            stream failure reveals that unpersisted bytes from an earlier
+            ``append()`` call were lost.
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before append().")
@@ -618,15 +621,19 @@ class AsyncAppendableObjectWriter:
 
                         self._is_stream_open = False
                         await self.open(metadata=current_metadata)
+                        self.bytes_appended_since_last_flush = 0
+
+                        if (self.persisted_size or 0) < write_state.initial_offset:
+                            raise exceptions.DataLoss(
+                                f"Unrecoverable data loss during reconnect. "
+                                f"Expected persisted_size >= {write_state.initial_offset}, "
+                                f"got {self.persisted_size}."
+                            )
 
                         write_state.persisted_size = self.persisted_size
                         write_state.write_handle = self.write_handle
                         write_state.routing_token = None
-
-                        write_state.user_buffer.seek(write_state.persisted_size)
-                        write_state.bytes_sent = write_state.persisted_size
-                        write_state.bytes_since_last_flush = 0
-                        self.bytes_appended_since_last_flush = 0
+                        write_state.reset_to_persisted()
 
                         requests = strategy.generate_requests(state)
 
@@ -662,15 +669,14 @@ class AsyncAppendableObjectWriter:
                 buffer,
                 self.flush_interval,
                 enable_checksum=enable_checksum,
+                initial_offset=self.offset or 0,
             )
             write_state.write_handle = self.write_handle
             write_state.persisted_size = self.persisted_size
-            # offset is set during `open()` call.
-            write_state.bytes_sent = self.offset or 0
             write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
 
             retry_manager = _BidiStreamRetryManager(
-                _WriteResumptionStrategy(),
+                strategy,
                 lambda r, s: send_and_recv_generator(r, s, metadata),
             )
             await retry_manager.execute({"write_state": write_state}, retry_policy)

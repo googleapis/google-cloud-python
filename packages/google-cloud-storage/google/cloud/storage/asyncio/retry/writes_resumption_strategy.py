@@ -37,6 +37,13 @@ class _WriteState:
 
     :type flush_interval: int
     :param flush_interval: The flush interval at which the data is flushed.
+
+    :type enable_checksum: bool
+    :param enable_checksum: Whether to compute CRC32C checksums for chunks.
+
+    :type initial_offset: int
+    :param initial_offset: The object byte offset corresponding to position 0 of
+        ``user_buffer``.
     """
 
     def __init__(
@@ -45,22 +52,31 @@ class _WriteState:
         user_buffer: IO[bytes],
         flush_interval: int,
         enable_checksum: bool = True,
+        initial_offset: int = 0,
     ):
         self.chunk_size = chunk_size
         self.user_buffer = user_buffer
+        self.initial_offset: int = initial_offset
         self.persisted_size: int = 0
         # Bytes sent to the server (it may be unpersisted),
         # i.e. latest object size = persisted_size + some more bytes.
         # Please note: these bytes are sent from client to server, server might have also received it.
         # but might not have persisted it yet (may be in memory buffer on server side).
         # This variable is same as `offset variable` in the instance of `AppendableObjectWriter`.
-        self.bytes_sent: int = 0
+        self.bytes_sent: int = initial_offset
         self.bytes_since_last_flush: int = 0
         self.flush_interval: int = flush_interval
         self.write_handle: Union[bytes, storage_type.BidiWriteHandle, None] = None
         self.routing_token: Optional[str] = None
         self.is_finalized: bool = False
         self.enable_checksum: bool = enable_checksum
+
+    def reset_to_persisted(self) -> None:
+        """Rewinds user_buffer and byte counters to persisted_size."""
+        persisted_offset = max(self.persisted_size or 0, self.initial_offset)
+        self.user_buffer.seek(persisted_offset - self.initial_offset)
+        self.bytes_sent = persisted_offset
+        self.bytes_since_last_flush = 0
 
 
 class _WriteResumptionStrategy(_BaseResumptionStrategy):
@@ -150,6 +166,4 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
 
         # We must assume any data sent beyond 'persisted_size' was lost.
         # Reset the user buffer to the last known good byte confirmed by the server.
-        write_state.user_buffer.seek(write_state.persisted_size)
-        write_state.bytes_sent = write_state.persisted_size
-        write_state.bytes_since_last_flush = 0
+        write_state.reset_to_persisted()

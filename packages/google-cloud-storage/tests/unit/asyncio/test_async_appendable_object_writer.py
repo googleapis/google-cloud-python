@@ -799,6 +799,199 @@ class TestAsyncAppendableObjectWriter:
                 mock_writer_open.assert_awaited()
                 assert writer.persisted_size == 5
 
+    @staticmethod
+    def _attach_in_memory_server(mock_stream, fail_at_offset, failure):
+        """Configures mock_stream as an in-memory appendable object that fails once."""
+        server_bytes = bytearray()
+        persisted_bytes = 0
+        failed_once = False
+        open_metadata = []
+
+        async def fake_open(metadata=None):
+            open_metadata.append(metadata)
+            mock_stream.is_stream_open = True
+            mock_stream.generation_number = GENERATION
+            mock_stream.write_handle = WRITE_HANDLE
+            mock_stream.persisted_size = persisted_bytes
+            del server_bytes[persisted_bytes:]
+
+        async def fake_send(request):
+            nonlocal persisted_bytes, failed_once
+            chunk_content = request.checksummed_data.content
+            if chunk_content:
+                if not failed_once and request.write_offset >= fail_at_offset:
+                    failed_once = True
+                    raise failure
+                assert request.write_offset == len(server_bytes)
+                server_bytes.extend(chunk_content)
+            if request.flush:
+                persisted_bytes = len(server_bytes)
+
+        async def fake_recv():
+            return storage_type.BidiWriteObjectResponse(
+                persisted_size=persisted_bytes,
+                write_handle=storage_type.BidiWriteHandle(handle=WRITE_HANDLE),
+            )
+
+        mock_stream.open.side_effect = fake_open
+        mock_stream.send.side_effect = fake_send
+        mock_stream.recv.side_effect = fake_recv
+        return server_bytes, open_metadata
+
+    @pytest.mark.parametrize(
+        "first_payload, second_payload, fail_at_offset, failure, expected_routing_token",
+        [
+            # persisted_size > len(second_payload): must not seek past buffer EOF.
+            (
+                b"A" * (2 * _MAX_CHUNK_SIZE_BYTES),
+                b"B" * _MAX_CHUNK_SIZE_BYTES + b"C" * 512,
+                3 * _MAX_CHUNK_SIZE_BYTES,
+                exceptions.ServiceUnavailable("transient 503"),
+                None,
+            ),
+            # initial_offset < persisted_size < len(second_payload): seek relative to initial_offset.
+            (
+                b"0" * _MAX_CHUNK_SIZE_BYTES,
+                b"1" * _MAX_CHUNK_SIZE_BYTES
+                + b"2" * _MAX_CHUNK_SIZE_BYTES
+                + b"3" * _MAX_CHUNK_SIZE_BYTES,
+                2 * _MAX_CHUNK_SIZE_BYTES,
+                exceptions.ServiceUnavailable("transient 503"),
+                None,
+            ),
+            # Redirect error during second append: forwards routing_token and preserves offset.
+            (
+                b"M" * _MAX_CHUNK_SIZE_BYTES,
+                b"N" * 4096,
+                _MAX_CHUNK_SIZE_BYTES,
+                exceptions.Aborted(
+                    "redirect",
+                    errors=[
+                        BidiWriteObjectRedirectedError(
+                            routing_token="redirect-token-2",
+                            write_handle=storage_type.BidiWriteHandle(
+                                handle=b"redirected-handle"
+                            ),
+                        )
+                    ],
+                ),
+                "redirect-token-2",
+            ),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_append_multi_call_retry_preserves_alignment(
+        self,
+        mock_appendable_writer,
+        first_payload,
+        second_payload,
+        fail_at_offset,
+        failure,
+        expected_routing_token,
+    ):
+        """Verify retries on subsequent append calls preserve byte alignment."""
+        from google.api_core.retry_async import AsyncRetry
+
+        writer = self._make_one(
+            mock_appendable_writer["mock_client"],
+            writer_options={"FLUSH_INTERVAL_BYTES": _MAX_CHUNK_SIZE_BYTES},
+        )
+        server_bytes, open_metadata = self._attach_in_memory_server(
+            mock_appendable_writer["mock_stream"], fail_at_offset, failure
+        )
+        fast_retry = AsyncRetry(
+            predicate=_is_write_retryable, initial=0.0, maximum=0.0, multiplier=1.0
+        )
+
+        await writer.open(retry_policy=fast_retry)
+        await writer.append(first_payload, retry_policy=fast_retry)
+        await writer.append(
+            second_payload,
+            retry_policy=fast_retry,
+            metadata=[("x-custom-header", "1")],
+        )
+
+        expected_payload = first_payload + second_payload
+        assert bytes(server_bytes) == expected_payload
+        assert writer.offset == len(expected_payload)
+        if expected_routing_token:
+            assert (
+                "x-goog-request-params",
+                f"routing_token={expected_routing_token}",
+            ) in (open_metadata[-1] or [])
+
+    @pytest.mark.asyncio
+    async def test_append_multi_call_unpersisted_prior_append_raises_data_loss(
+        self, mock_appendable_writer
+    ):
+        """Verify reconnect losing unpersisted bytes from a prior append raises DataLoss."""
+        from google.api_core.retry_async import AsyncRetry
+
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        mock_stream = mock_appendable_writer["mock_stream"]
+        mock_stream.persisted_size = 0
+
+        await writer.open()
+        await writer.append(b"unflushed-first-append")
+        assert writer.offset == len(b"unflushed-first-append")
+        assert writer.persisted_size == 0
+
+        mock_stream.send.side_effect = exceptions.ServiceUnavailable("stream reset")
+        fast_retry = AsyncRetry(
+            predicate=_is_write_retryable,
+            initial=0.0,
+            maximum=0.0,
+            multiplier=1.0,
+            deadline=0.1,
+        )
+
+        with pytest.raises(
+            exceptions.DataLoss, match="Unrecoverable data loss during reconnect"
+        ):
+            await writer.append(b"second-append", retry_policy=fast_retry)
+
+        assert mock_stream.open.await_count == 2
+        assert writer.offset == 0
+        assert writer.bytes_appended_since_last_flush == 0
+
+    @pytest.mark.asyncio
+    async def test_append_from_file_multi_block_retry_preserves_data(
+        self, mock_appendable_writer
+    ):
+        """Verify append_from_file preserves all blocks across a mid-transfer retry."""
+        from google.api_core.retry_async import AsyncRetry
+
+        writer = self._make_one(
+            mock_appendable_writer["mock_client"],
+            writer_options={"FLUSH_INTERVAL_BYTES": _MAX_CHUNK_SIZE_BYTES},
+        )
+        server_bytes, _ = self._attach_in_memory_server(
+            mock_appendable_writer["mock_stream"],
+            _MAX_CHUNK_SIZE_BYTES,
+            exceptions.ServiceUnavailable("transient 503 on block 2"),
+        )
+        await writer.open()
+
+        full_file_bytes = (
+            b"X" * _MAX_CHUNK_SIZE_BYTES + b"Y" * _MAX_CHUNK_SIZE_BYTES + b"Z" * 1024
+        )
+        with mock.patch(
+            "google.cloud.storage.asyncio.async_appendable_object_writer.AsyncRetry",
+            side_effect=lambda **kwargs: AsyncRetry(
+                predicate=kwargs["predicate"],
+                on_error=kwargs.get("on_error"),
+                initial=0.0,
+                maximum=0.0,
+                multiplier=1.0,
+            ),
+        ):
+            await writer.append_from_file(
+                io.BytesIO(full_file_bytes), block_size=_MAX_CHUNK_SIZE_BYTES
+            )
+
+        assert bytes(server_bytes) == full_file_bytes
+        assert writer.offset == len(full_file_bytes)
+
     @pytest.mark.asyncio
     async def test_append_unimplemented_string_raises(self, mock_appendable_writer):
         writer = self._make_one(mock_appendable_writer["mock_client"])
