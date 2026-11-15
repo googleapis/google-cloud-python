@@ -56,8 +56,9 @@ _KEY_REGEX = re.compile(
 
 _LOGGER = logging.getLogger(__name__)
 
-# Separate cert and key files are read up to 3 times, 100ms apart, when the
-# private key does not match the leaf certificate.
+# Separate cert and key files are read up to 3 times, 100ms apart, to ride out
+# mid-rotation updates where a file is briefly missing or incomplete or the pair
+# does not yet match.
 _CERT_KEY_MATCH_MAX_ATTEMPTS = 3
 _CERT_KEY_MATCH_RETRY_INTERVAL = 0.1
 
@@ -577,9 +578,9 @@ def _read_credential_bundle_file(bundle_path):
 def _read_cert_and_key_files(cert_path, key_path):
     """Reads the certificate chain and private key from separate files.
 
-    A rotation on disk can briefly leave one file updated before the other, so
-    both files are re-read when the private key does not match the leaf
-    certificate's public key.
+    A rotation on disk can briefly leave a file missing or incomplete, or one
+    file updated before the other, so both files are retried if a file read,
+    PEM extraction, or the public-key match check fails.
 
     Args:
         cert_path (str): The certificate chain file path.
@@ -590,16 +591,29 @@ def _read_cert_and_key_files(cert_path, key_path):
             PEM format.
 
     Raises:
-        OSError: If either file cannot be read.
-        google.auth.exceptions.ClientCertError: If either file is not in a
-            valid PEM format, or the private key still does not match the
-            certificate after all attempts.
+        OSError: If either file still cannot be read after all attempts.
+        google.auth.exceptions.ClientCertError: If either file is still not in
+            a valid PEM format, or the private key still does not match the
+            certificate, after all attempts.
     """
     for attempt in range(_CERT_KEY_MATCH_MAX_ATTEMPTS):
         if attempt:
             time.sleep(_CERT_KEY_MATCH_RETRY_INTERVAL)
-        cert_data = _read_cert_file(cert_path)
-        key_data = _read_key_file(key_path)
+        try:
+            cert_data = _read_cert_file(cert_path)
+            key_data = _read_key_file(key_path)
+        except (OSError, exceptions.ClientCertError) as exc:
+            _LOGGER.debug(
+                "Failed to read certificate %s or private key %s (attempt %d of %d): %s",
+                cert_path,
+                key_path,
+                attempt + 1,
+                _CERT_KEY_MATCH_MAX_ATTEMPTS,
+                exc,
+            )
+            if attempt + 1 == _CERT_KEY_MATCH_MAX_ATTEMPTS:
+                raise
+            continue
         if not _has_cert_key_mismatch(cert_data, key_data):
             return cert_data, key_data
         _LOGGER.debug(

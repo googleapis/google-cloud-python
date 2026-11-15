@@ -245,19 +245,27 @@ class TestRequestResponse(compliance.RequestResponseTests):
         mock_get_cert.assert_called_once()
 
     @pytest.mark.parametrize(
-        "cert_bytes,expected_cause",
+        "cert_bytes,expected_cause,expected_sleeps",
         [
-            (None, FileNotFoundError),
-            (b"invalid", exceptions.ClientCertError),
+            (None, FileNotFoundError, [mock.call(0.1), mock.call(0.1)]),
+            (b"invalid", exceptions.ClientCertError, [mock.call(0.1), mock.call(0.1)]),
             (
                 b"-----BEGIN CERTIFICATE-----\ninvalid\n-----END CERTIFICATE-----\n",
                 exceptions.MutualTLSChannelError,
+                [],
             ),
         ],
     )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
     def test_mtls_cert_error_raises_transport_error_and_recovers(
-        self, mock_send, cert_bytes, expected_cause, workload_cert_config
+        self,
+        mock_send,
+        mock_sleep,
+        cert_bytes,
+        expected_cause,
+        expected_sleeps,
+        workload_cert_config,
     ):
         mock_send.return_value = make_response()
         if cert_bytes is None:
@@ -270,6 +278,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
             request("https://iamcredentials.mtls.googleapis.com/v1/token")
         assert isinstance(exc_info.value.__cause__, expected_cause)
         assert request._mtls_unavailable is False
+        assert mock_sleep.call_args_list == expected_sleeps
 
         workload_cert_config.write_binary(pytest.public_cert_bytes)
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
