@@ -848,17 +848,43 @@ class TestReadCertAndKeyFile(object):
             _mtls_helper._read_cert_and_key_files(str(cert_file), key_path)
         assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
+    @pytest.mark.parametrize(
+        "initial_cert_name, initial_key_name, lagging_file, rotated_bytes",
+        [
+            (
+                "public_cert.pem",
+                "es256_privatekey.pem",
+                "key",
+                pytest.private_key_bytes,
+            ),
+            (
+                "es256_public_cert.pem",
+                "privatekey.pem",
+                "cert",
+                pytest.public_cert_bytes,
+            ),
+        ],
+        ids=["key_catches_up", "cert_catches_up"],
+    )
     @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
-    def test_key_mismatch_recovers_after_rotation(self, mock_sleep, tmp_path):
+    def test_key_mismatch_recovers_after_rotation(
+        self,
+        mock_sleep,
+        tmp_path,
+        initial_cert_name,
+        initial_key_name,
+        lagging_file,
+        rotated_bytes,
+    ):
         cert_file = tmp_path / "cert.pem"
         key_file = tmp_path / "key.pem"
-        cert_file.write_bytes(pytest.public_cert_bytes)
-        with open(os.path.join(pytest.data_dir, "es256_privatekey.pem"), "rb") as fh:
+        with open(os.path.join(pytest.data_dir, initial_cert_name), "rb") as fh:
+            cert_file.write_bytes(fh.read())
+        with open(os.path.join(pytest.data_dir, initial_key_name), "rb") as fh:
             key_file.write_bytes(fh.read())
-        # The key file catches up with the certificate during the first wait.
-        mock_sleep.side_effect = lambda _: key_file.write_bytes(
-            pytest.private_key_bytes
-        )
+
+        target_file = key_file if lagging_file == "key" else cert_file
+        mock_sleep.side_effect = lambda _: target_file.write_bytes(rotated_bytes)
 
         actual_cert, actual_key = _mtls_helper._read_cert_and_key_files(
             str(cert_file), str(key_file)
