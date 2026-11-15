@@ -661,7 +661,7 @@ def _has_cert_key_mismatch(cert_chain, key):
         key_public_key = serialization.load_pem_private_key(
             key, password=None, **_KEY_MATCH_LOAD_KWARGS
         ).public_key()
-    except (ValueError, TypeError, UnsupportedAlgorithm):
+    except (ValueError, TypeError, UnsupportedAlgorithm, x509.InvalidVersion):
         return False
 
     return cert_public_key.public_bytes(

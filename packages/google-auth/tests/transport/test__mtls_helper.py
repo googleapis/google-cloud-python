@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import inspect
 import os
 import re
@@ -21,6 +22,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 import urllib3.util
+from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec, rsa
 
@@ -916,6 +918,32 @@ class TestReadCertAndKeyFile(object):
         assert _mtls_helper._read_cert_and_key_files(str(cert_file), str(key_file)) == (
             cert_bytes,
             key_bytes,
+        )
+        mock_sleep.assert_not_called()
+
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_invalid_version_cert_skips_match_check(self, mock_sleep, tmp_path):
+        der = bytearray(
+            x509.load_pem_x509_certificate(pytest.public_cert_bytes).public_bytes(
+                serialization.Encoding.DER
+            )
+        )
+        # Patch the X.509 explicit [0] version integer to an invalid version (9).
+        version_idx = der.index(b"\xa0\x03\x02\x01\x02")
+        der[version_idx + 4] = 9
+        cert_bytes = (
+            b"-----BEGIN CERTIFICATE-----\n"
+            + base64.encodebytes(bytes(der))
+            + b"-----END CERTIFICATE-----\n"
+        )
+        cert_file = tmp_path / "cert.pem"
+        key_file = tmp_path / "key.pem"
+        cert_file.write_bytes(cert_bytes)
+        key_file.write_bytes(pytest.private_key_bytes)
+
+        assert _mtls_helper._read_cert_and_key_files(str(cert_file), str(key_file)) == (
+            cert_bytes,
+            pytest.private_key_bytes,
         )
         mock_sleep.assert_not_called()
 
