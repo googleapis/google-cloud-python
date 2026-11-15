@@ -1403,6 +1403,25 @@ class TestCursor(unittest.TestCase):
         )
 
     @mock.patch("google.cloud.spanner_v1.Client")
+    def test_fetchmany_aborted_mid_read_resumes_from_retried_cursor(self, mock_client):
+        connection = connect("test-instance", "test-database")
+        cursor = connection.cursor()
+        retried_cursor = mock.Mock()
+        retried_cursor._itr = iter([("a",), ("b",), ("c",), ("d",)])
+        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+        transaction_helper_mock._cursor_map = {cursor: retried_cursor}
+
+        def rows_then_aborted():
+            yield ("a",)
+            raise Aborted("Aborted")
+
+        cursor._itr = rows_then_aborted()
+
+        self.assertEqual(cursor.fetchmany(3), [("a",), ("b",), ("c",)])
+        self.assertEqual(cursor.fetchmany(3), [("d",)])
+        transaction_helper_mock.retry_transaction.assert_called_once()
+
+    @mock.patch("google.cloud.spanner_v1.Client")
     def test_fetchall_aborted_in_read_only_mode_raises(self, mock_client):
         connection = connect("test-instance", "test-database")
         connection.read_only = True
