@@ -461,6 +461,13 @@ class Test_Blob(unittest.TestCase):
         expected_url = "https://storage.googleapis.com/name/winter%20%E2%98%83"
         self.assertEqual(blob.public_url, expected_url)
 
+    def test_public_url_dot_segment_name(self):
+        bucket = _Bucket()
+        for name in (".", ".."):
+            blob = self._make_one(name, bucket=bucket)
+            with self.assertRaises(ValueError):
+                blob.public_url
+
     def test_public_url_without_client(self):
         BLOB_NAME = "blob-name"
         bucket = _Bucket()
@@ -479,6 +486,16 @@ class Test_Blob(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             blob.generate_signed_url(EXPIRATION, version="nonesuch")
+
+    def test_generate_signed_url_dot_segment_name(self):
+        EXPIRATION = "2014-10-16T20:34:37.000Z"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        for name in (".", ".."):
+            blob = self._make_one(name, bucket=bucket)
+            for version in ("v2", "v4"):
+                with self.assertRaises(ValueError):
+                    blob.generate_signed_url(EXPIRATION, version=version)
 
     def _generate_signed_url_helper(
         self,
