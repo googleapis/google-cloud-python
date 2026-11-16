@@ -18,6 +18,8 @@ This is used by gapic clients to provide common error mapping, retry, timeout,
 compression, pagination, and long-running operations to gRPC methods.
 """
 
+from __future__ import annotations
+
 import contextlib
 import enum
 import functools
