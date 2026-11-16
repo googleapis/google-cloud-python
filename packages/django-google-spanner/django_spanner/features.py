@@ -82,6 +82,11 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # example: CREATE INDEX index_name ON table (LOWER(column_name))
     supports_expression_indexes = False
     supports_stored_generated_columns = True
+    # Spanner GoogleSQL requires a FROM clause when WHERE/GROUP BY/HAVING/ORDER BY
+    # is present (such as in Q.check() / CheckConstraint.validate()). Include a
+    # leading space (like Oracle's " FROM DUAL") because some Django callers
+    # concatenate bare_select_suffix directly without adding whitespace.
+    bare_select_suffix = " FROM UNNEST([1])"
 
     # Django tests that aren't supported by Spanner.
     skip_tests = (
@@ -103,12 +108,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "backends.tests.LastExecutedQueryTest.test_last_executed_query_with_duplicate_params",
         # Constraints tests
         "constraints.tests.CheckConstraintTests.test_database_default",
-        "constraints.tests.CheckConstraintTests.test_validate",
-        "constraints.tests.CheckConstraintTests.test_validate_boolean_expressions",
-        "constraints.tests.CheckConstraintTests.test_validate_custom_error",
-        "constraints.tests.CheckConstraintTests.test_validate_generated_field_stored",
         "constraints.tests.CheckConstraintTests.test_validate_jsonfield_exact",
-        "constraints.tests.CheckConstraintTests.test_validate_pk_field",
         "constraints.tests.UniqueConstraintTests.test_validate_case_when",
         "constraints.tests.UniqueConstraintTests.test_validate_expression_condition",
         "constraints.tests.UniqueConstraintTests.test_validate_expression_generated_field_stored",

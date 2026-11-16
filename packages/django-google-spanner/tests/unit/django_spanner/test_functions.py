@@ -234,3 +234,133 @@ class TestUtils(SpannerSimpleTestClass):
             + "name_prefix FROM tests_author",
         )
         self.assertEqual(params, (1, 5))
+
+    def test_value_null_with_output_field(self):
+        """Null and float Value expressions emit typed SQL when output_field is set."""
+        from django.db.models import (
+            BinaryField,
+            BooleanField,
+            Case,
+            DateField,
+            DateTimeField,
+            DecimalField,
+            DurationField,
+            Field,
+            IntegerField,
+            JSONField,
+            TextField,
+            TimeField,
+            UUIDField,
+            When,
+        )
+        from django.db.models.functions import Coalesce
+
+        class VirtualField(Field):
+            def db_type(self, connection):
+                return None
+
+        class WrappedPlaceholderField(Field):
+            def db_type(self, connection):
+                return "INT64"
+
+            def get_placeholder(self, value, compiler, connection):
+                return "WRAP(%s)"
+
+        compiler = SQLCompiler(Author.objects.all().query, self.connection, "default")
+        expected_casts = [
+            (IntegerField(), "CAST(NULL AS INT64)"),
+            (CharField(max_length=10), "CAST(NULL AS STRING)"),
+            (TextField(), "CAST(NULL AS STRING)"),
+            (UUIDField(), "CAST(NULL AS STRING)"),
+            (BinaryField(), "CAST(NULL AS BYTES)"),
+            (BooleanField(), "CAST(NULL AS BOOL)"),
+            (DateField(), "CAST(NULL AS DATE)"),
+            (DateTimeField(), "CAST(NULL AS TIMESTAMP)"),
+            (TimeField(), "CAST(NULL AS TIMESTAMP)"),
+            (DurationField(), "CAST(NULL AS INT64)"),
+            (DecimalField(max_digits=5, decimal_places=2), "CAST(NULL AS NUMERIC)"),
+            (FloatField(), "CAST(NULL AS FLOAT64)"),
+            (VirtualField(), "NULL"),
+            (JSONField(), "%s"),
+        ]
+        for field, expected_sql in expected_casts:
+            sql, parameters = Value(None, output_field=field).as_spanner(
+                compiler, self.connection
+            )
+            self.assertEqual(sql, expected_sql)
+            if expected_sql == "%s":
+                self.assertEqual(len(parameters), 1)
+            else:
+                self.assertEqual(parameters, [])
+
+        # Non-null FloatField (explicit and implicit) emits CAST(%s AS FLOAT64).
+        for float_expr in (Value(1.5, output_field=FloatField()), Value(1.5)):
+            sql_float, params_float = float_expr.as_spanner(compiler, self.connection)
+            self.assertEqual(sql_float, "CAST(%s AS FLOAT64)")
+            self.assertEqual(params_float, [1.5])
+
+        # Unmapped param whose cast_db_type is parameterized strips length params.
+        from django.db.models import FileField
+        from django.utils.safestring import mark_safe
+
+        sql_safestr, params_safestr = Value(
+            mark_safe("file.txt"), output_field=FileField()
+        ).as_spanner(compiler, self.connection)
+        self.assertEqual(sql_safestr, "CAST(%s AS STRING)")
+        self.assertEqual(params_safestr, ["file.txt"])
+
+        # Unmapped param whose cast_db_type is None or custom placeholder is left untouched.
+        sql_virtual_float, params_virtual_float = Value(
+            1.5, output_field=VirtualField()
+        ).as_spanner(compiler, self.connection)
+        self.assertEqual(sql_virtual_float, "%s")
+        self.assertEqual(params_virtual_float, [1.5])
+
+        sql_wrapped, params_wrapped = Value(
+            None, output_field=WrappedPlaceholderField()
+        ).as_spanner(compiler, self.connection)
+        self.assertEqual(sql_wrapped, "WRAP(%s)")
+        self.assertEqual(params_wrapped, [None])
+
+        # Non-None falsy values must never become CAST(NULL AS ...).
+        for falsy_value, field in (
+            (0, IntegerField()),
+            (False, BooleanField()),
+            ("", CharField(max_length=10)),
+        ):
+            sql_falsy, params_falsy = Value(falsy_value, output_field=field).as_spanner(
+                compiler, self.connection
+            )
+            self.assertEqual(sql_falsy, "%s")
+            self.assertEqual(params_falsy, [falsy_value])
+
+        json_value_for_save = Value(None, output_field=JSONField())
+        json_value_for_save.for_save = True
+        sql_save, params_save = json_value_for_save.as_spanner(
+            compiler, self.connection
+        )
+        self.assertEqual(sql_save, "CAST(NULL AS JSON)")
+        self.assertEqual(params_save, [])
+
+        sql_untyped, params_untyped = Value(None).as_spanner(compiler, self.connection)
+        self.assertEqual(sql_untyped, "NULL")
+        self.assertEqual(params_untyped, [])
+
+        # Verify Case/When, Coalesce, and annotate compile typed NULLs cleanly.
+        queryset = Author.objects.values("name").annotate(
+            null_text=Value(None, output_field=CharField(max_length=10)),
+            coalesced=Coalesce(
+                Value(None, output_field=CharField(max_length=10)), Value("fallback")
+            ),
+            cased=Case(
+                When(num__gt=0, then=Value("ok")),
+                default=Value(None, output_field=CharField(max_length=10)),
+            ),
+        )
+        query_sql, query_params = SQLCompiler(
+            queryset.query, self.connection, "default"
+        ).as_sql()
+        self.assertIn("CAST(NULL AS STRING) AS null_text", query_sql)
+        self.assertIn("COALESCE(CAST(NULL AS STRING), %s) AS coalesced", query_sql)
+        self.assertIn("ELSE CAST(NULL AS STRING) END AS cased", query_sql)
+        self.assertEqual(query_params, ("fallback", 0, "ok"))

@@ -7,6 +7,8 @@
 """Various math helper functions."""
 
 import math
+import re
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
 from django.db.models.expressions import Func, Value
 from django.db.models.functions import (
@@ -25,6 +27,13 @@ from django.db.models.functions import (
     StrIndex,
     Substr,
 )
+
+if TYPE_CHECKING:
+    from django.db.backends.base.base import BaseDatabaseWrapper
+    from django.db.models.sql.compiler import SQLCompiler
+
+_TYPE_PARAMS_RE = re.compile(r"\([^)]*\)")
+_TYPES_MAP: Optional[Dict[type, Any]] = None
 
 
 class IfNull(Func):
@@ -401,6 +410,57 @@ def substr(self, compiler, connection, **extra_context):
     return self.as_sql(compiler, connection, function="SUBSTR", **extra_context)
 
 
+def _get_types_map() -> Dict[type, Any]:
+    """Lazily import ``TYPES_MAP`` to avoid loading spanner_dbapi on import."""
+    global _TYPES_MAP
+    if _TYPES_MAP is None:
+        from google.cloud.spanner_dbapi.parse_utils import TYPES_MAP
+
+        _TYPES_MAP = TYPES_MAP
+    return _TYPES_MAP
+
+
+def value_as_spanner(
+    self: Value,
+    compiler: "SQLCompiler",
+    connection: "BaseDatabaseWrapper",
+) -> Tuple[str, List[Any]]:
+    """Ensure ``Value`` expressions have an explicit GoogleSQL type.
+
+    GoogleSQL is statically typed and rejects untyped expressions (such as
+    literal ``NULL`` or parameters whose Python type is not mapped in
+    ``TYPES_MAP``) when no table column provides type context, such as in
+    ``CheckConstraint.validate()`` or ``UNION`` queries. When ``output_field``
+    defines a Spanner type, cast any untyped ``NULL`` or unmapped parameter to
+    that type.
+
+    Examples:
+        - ``Value(None, output_field=IntegerField())`` -> ``("CAST(NULL AS INT64)", [])``
+        - ``Value(1.5, output_field=FloatField())`` -> ``("CAST(%s AS FLOAT64)", [1.5])``
+        - ``Value(1, output_field=IntegerField())`` -> ``("%s", [1])`` (mapped in ``TYPES_MAP``)
+    """
+    sql, parameters = self.as_sql(compiler, connection)
+    output_field = self._output_field_or_none
+    if output_field is None:
+        return sql, parameters
+
+    types_map = _get_types_map()
+    is_untyped_null = sql == "NULL" and not parameters
+    is_unmapped_param = (
+        sql == "%s" and len(parameters) == 1 and type(parameters[0]) not in types_map
+    )
+    if not (is_untyped_null or is_unmapped_param):
+        return sql, parameters
+
+    database_type = output_field.cast_db_type(connection)
+    if not database_type:
+        return sql, parameters
+    base_type = _TYPE_PARAMS_RE.sub("", database_type)
+    if is_untyped_null or parameters[0] is None:
+        return f"CAST(NULL AS {base_type})", []
+    return f"CAST(%s AS {base_type})", parameters
+
+
 def register_functions():
     """Register the above methods with the corersponding Django classes."""
     Cast.as_spanner = cast
@@ -417,3 +477,4 @@ def register_functions():
     Right.as_spanner = left_and_right
     StrIndex.as_spanner = strindex
     Substr.as_spanner = substr
+    Value.as_spanner = value_as_spanner

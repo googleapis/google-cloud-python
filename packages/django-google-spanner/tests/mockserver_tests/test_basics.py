@@ -404,3 +404,99 @@ class TestBasics(MockServerTestBase):
         # filter(value=None) request -> also queries JSON null ("null", TypeCode.JSON)
         self.assertEqual(exec_requests[14].param_types["a0"].code, TypeCode.JSON)
         self.assertEqual(exec_requests[14].params["a0"], "null")
+
+    def test_check_constraint_validate(self):
+        from django.core.exceptions import ValidationError
+
+        constraint = models.CheckConstraint(
+            condition=models.Q(first_name="Alice"),
+            name="first_name_alice",
+        )
+        sql_non_null = (
+            "SELECT @a0 AS _check  FROM UNNEST([1]) WHERE COALESCE((@a1 = @a2), @a3)"
+        )
+
+        # Valid instance -> returns 1 row -> passes
+        add_single_result(sql_non_null, "_check", TypeCode.INT64, [("1",)])
+        constraint.validate(Singer, Singer(first_name="Alice", last_name="Smith"))
+
+        # Invalid instance -> returns 0 rows -> raises ValidationError
+        add_single_result(sql_non_null, "_check", TypeCode.INT64, [])
+        with self.assertRaisesRegex(ValidationError, "first_name_alice"):
+            constraint.validate(Singer, Singer(first_name="Bob", last_name="Smith"))
+
+        # Null field -> emits typed CAST(NULL AS STRING) -> returns 1 row -> passes
+        sql_null = (
+            "SELECT @a0 AS _check  FROM UNNEST([1]) "
+            "WHERE COALESCE((CAST(NULL AS STRING) = @a1), @a2)"
+        )
+        add_single_result(sql_null, "_check", TypeCode.INT64, [("1",)])
+        constraint.validate(Singer, Singer(first_name=None, last_name="Smith"))
+
+        exec_requests = [
+            req
+            for req in self.spanner_service.requests
+            if isinstance(req, ExecuteSqlRequest)
+        ]
+        self.assertEqual(len(exec_requests), 3)
+        self.assertEqual(exec_requests[0].sql, sql_non_null)
+        self.assertEqual(exec_requests[0].params["a0"], "1")
+        self.assertEqual(exec_requests[0].params["a1"], "Alice")
+        self.assertEqual(exec_requests[0].params["a2"], "Alice")
+        self.assertEqual(exec_requests[0].params["a3"], True)
+        self.assertEqual(exec_requests[0].param_types["a0"].code, TypeCode.INT64)
+        self.assertEqual(exec_requests[0].param_types["a1"].code, TypeCode.STRING)
+        self.assertEqual(exec_requests[0].param_types["a2"].code, TypeCode.STRING)
+        self.assertEqual(exec_requests[0].param_types["a3"].code, TypeCode.BOOL)
+
+        self.assertEqual(exec_requests[1].sql, sql_non_null)
+        self.assertEqual(exec_requests[1].params["a1"], "Bob")
+        self.assertEqual(exec_requests[1].params["a2"], "Alice")
+
+        self.assertEqual(exec_requests[2].sql, sql_null)
+        self.assertEqual(exec_requests[2].params["a0"], "1")
+        self.assertEqual(exec_requests[2].params["a1"], "Alice")
+        self.assertEqual(exec_requests[2].params["a2"], True)
+        self.assertEqual(exec_requests[2].param_types["a0"].code, TypeCode.INT64)
+        self.assertEqual(exec_requests[2].param_types["a1"].code, TypeCode.STRING)
+        self.assertEqual(exec_requests[2].param_types["a2"].code, TypeCode.BOOL)
+
+    def test_check_constraint_validate_float(self):
+        from django.core.exceptions import ValidationError
+        from django.test.utils import isolate_apps
+
+        with isolate_apps("tests"):
+
+            class FloatSample(models.Model):
+                rating = models.FloatField(null=True)
+
+                class Meta:
+                    app_label = "tests"
+
+            constraint = models.CheckConstraint(
+                condition=models.Q(rating__gt=0.0),
+                name="positive_rating",
+            )
+            sql_float = (
+                "SELECT @a0 AS _check  FROM UNNEST([1]) "
+                "WHERE COALESCE((CAST(@a1 AS FLOAT64) > @a2), @a3)"
+            )
+            add_single_result(sql_float, "_check", TypeCode.INT64, [("1",)])
+            constraint.validate(FloatSample, FloatSample(rating=1.5))
+
+            add_single_result(sql_float, "_check", TypeCode.INT64, [])
+            with self.assertRaisesRegex(ValidationError, "positive_rating"):
+                constraint.validate(FloatSample, FloatSample(rating=-1.5))
+
+            exec_requests = [
+                req
+                for req in self.spanner_service.requests
+                if isinstance(req, ExecuteSqlRequest)
+            ]
+            self.assertEqual(len(exec_requests), 2)
+            self.assertEqual(exec_requests[0].sql, sql_float)
+            self.assertEqual(exec_requests[0].params["a1"], 1.5)
+            self.assertEqual(exec_requests[0].params["a2"], 0.0)
+            self.assertNotIn("a1", exec_requests[0].param_types)
+            self.assertNotIn("a2", exec_requests[0].param_types)
+            self.assertEqual(exec_requests[1].params["a1"], -1.5)
