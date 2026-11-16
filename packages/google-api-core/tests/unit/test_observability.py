@@ -2691,30 +2691,32 @@ def test_log_transport_attempt_emits_debug(
     _observability.log_transport_attempt(span=span, logger=mock_logger, **kwargs)
 
 
-def test_capture_grpc_attempt_exception(mock_service_logger):
+@pytest.mark.parametrize(
+    "exc_to_raise,should_log",
+    [
+        pytest.param(None, False, id="no_exception"),
+        pytest.param(KeyboardInterrupt(), False, id="keyboard_interrupt_bypassed"),
+        pytest.param(SystemExit(), False, id="system_exit_bypassed"),
+        pytest.param(
+            RuntimeError("wire boom"), True, id="runtime_error_logged_and_reraised"
+        ),
+    ],
+)
+def test_capture_grpc_attempt_exception(mock_service_logger, exc_to_raise, should_log):
     """Proves _capture_grpc_attempt_exception logs and re-raises exceptions while bypassing system interrupts."""
-    with _observability._capture_grpc_attempt_exception(
-        "/google.showcase.v1beta1.Echo/Echo"
-    ):
-        pass
-    mock_service_logger.debug.assert_not_called()
+    method_name = "/google.showcase.v1beta1.Echo/Echo"
+    if exc_to_raise is None:
+        with _observability._capture_grpc_attempt_exception(method_name):
+            pass
+    else:
+        with pytest.raises(type(exc_to_raise)):
+            with _observability._capture_grpc_attempt_exception(method_name):
+                raise exc_to_raise
 
-    for interrupt_exc in (KeyboardInterrupt, SystemExit):
-        with pytest.raises(interrupt_exc):
-            with _observability._capture_grpc_attempt_exception(
-                "/google.showcase.v1beta1.Echo/Echo"
-            ):
-                raise interrupt_exc()
-    mock_service_logger.debug.assert_not_called()
-
-    with pytest.raises(RuntimeError, match="wire boom"):
-        with _observability._capture_grpc_attempt_exception(
-            "/google.showcase.v1beta1.Echo/Echo"
-        ):
-            raise RuntimeError("wire boom")
-
-    mock_service_logger.debug.assert_called_once()
-    assert (
-        mock_service_logger.debug.call_args[1]["extra"]["rpc.method"]
-        == "/google.showcase.v1beta1.Echo/Echo"
-    )
+    if should_log:
+        mock_service_logger.debug.assert_called_once()
+        assert (
+            mock_service_logger.debug.call_args[1]["extra"]["rpc.method"] == method_name
+        )
+    else:
+        mock_service_logger.debug.assert_not_called()

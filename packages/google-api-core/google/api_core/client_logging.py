@@ -60,6 +60,7 @@ _PREFIX_FIELDS = tuple(f[:-1] for f in _recognized_logging_fields if f.endswith(
 
 def is_error_logging_enabled(
     client_options: ClientOptions | dict[str, Any] | None = None,
+    env_var: str = "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED",
 ) -> bool:
     """Determines if OpenTelemetry-correlated Production Error Logging (PEL) is enabled.
 
@@ -71,12 +72,13 @@ def is_error_logging_enabled(
     Args:
         client_options (ClientOptions | dict[str, Any] | None): The client options
             object or dictionary.
+        env_var (str): The environment variable to check for enablement.
 
     Returns:
         bool: True if production error logging is enabled, False otherwise.
     """
     return _feature_gating_helpers.resolve_feature_flags(
-        env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED",
+        env_var=env_var,
         feature_key=_LOGGER_PROVIDER,
         configuration=client_options,
     )
