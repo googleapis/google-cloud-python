@@ -73,92 +73,102 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     sql_create_inline_fk = None
 
     def __init__(self, connection, collect_sql=False, atomic=True):
-        self._atomic = atomic
         super().__init__(connection, collect_sql=collect_sql, atomic=atomic)
-
-    def _commit_ddls(self):
-        try:
-            self.connection.connection.commit()
-        except (AlreadyExists, FailedPrecondition, OutOfRange) as exc:
-            raise IntegrityError(getattr(exc, "details", exc)) from exc
-        except InvalidArgument as exc:
-            raise ProgrammingError(getattr(exc, "details", exc)) from exc
-        except (InternalServerError, GoogleAPICallError) as exc:
-            raise OperationalError(getattr(exc, "details", exc)) from exc
-
-    def _enter_ddl_batch(self):
-        if not self._ddl_batch_active:
-            self.connection.ensure_connection()
-            self.connection._set_autocommit(False)
-            self._ddl_batch_active = True
-
-    def _exit_ddl_batch(self, clean):
-        if not self._ddl_batch_active:
-            return
-        try:
-            if clean:
-                self._commit_ddls()
-            else:
-                self.connection.connection.rollback()
-        finally:
-            self._ddl_batch_active = False
-            self.connection._set_autocommit(True)
-
-    def _ddl_execution_wrapper(self, execute, sql, params, many, context):
-        is_ddl = False
-        if (
-            not many
-            and sql is not None
-            and not self.connection.in_atomic_block
-            and self.connection.get_autocommit()
-        ):
-            parsed = parse_utils.classify_statement(str(sql))
-            is_ddl = parsed is not None and parsed.statement_type == StatementType.DDL
-
-        if is_ddl:
-            self._enter_ddl_batch()
-        elif self._ddl_batch_active:
-            self._exit_ddl_batch(clean=True)
-
-        return execute(sql, params, many, context)
+        # BaseDatabaseSchemaEditor sets self.atomic = False because Spanner sets
+        # can_rollback_ddl = False. Preserve the caller's atomic flag to know
+        # whether DDL batching is permitted for this schema editor session.
+        self.batch_ddl = bool(
+            atomic
+            and not collect_sql
+            and self.connection.settings_dict.get("OPTIONS", {}).get("batch_ddl", False)
+        )
 
     def __enter__(self):
         super().__enter__()
-        self._ddl_batch_active = False
-        self._execute_wrapper_cm = None
-        batch_ddl = self.connection.settings_dict.get("OPTIONS", {}).get(
-            "batch_ddl", False
-        )
-        if (
-            batch_ddl
-            and getattr(self, "_atomic", True)
+        # Disable DDL batching if the connection is already inside an atomic
+        # block or manual transaction mode when entering the schema editor.
+        self.batch_ddl = (
+            self.batch_ddl
             and not self.collect_sql
             and not self.connection.in_atomic_block
             and self.connection.get_autocommit()
-            and getattr(self.connection, "_active_ddl_batch_editor", None) is None
-        ):
-            self.connection._active_ddl_batch_editor = self
-            self._execute_wrapper_cm = self.connection.execute_wrapper(
-                self._ddl_execution_wrapper
-            )
-            self._execute_wrapper_cm.__enter__()
+        )
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        clean_exit = False
+        has_exception = exc_type is not None
         try:
-            res = super().__exit__(exc_type, exc_value, traceback)
-            clean_exit = (exc_type is None) or bool(res)
-            return res
+            # Executes any statements queued in self.deferred_sql via self.execute().
+            return super().__exit__(exc_type, exc_value, traceback)
+        except BaseException:
+            has_exception = True
+            raise
         finally:
+            if self.batch_ddl:
+                if has_exception:
+                    if (
+                        self.connection.connection is not None
+                        and not self.connection.connection.autocommit
+                    ):
+                        try:
+                            # Discard buffered DDL statements in DB-API before
+                            # restoring autocommit=True (otherwise setting
+                            # autocommit=True would commit them).
+                            self.connection.connection.rollback()
+                        finally:
+                            self.connection.connection.autocommit = True
+                else:
+                    # Flush all buffered DDL statements in a single batch.
+                    self.flush_ddl_batch()
+
+    def execute(self, sql, params=()):
+        # Bypass DDL batching when disabled, collecting SQL for sqlmigrate,
+        # or running inside an explicit transaction block.
+        if (
+            not self.batch_ddl
+            or self.collect_sql
+            or self.connection.in_atomic_block
+            or not self.connection.get_autocommit()
+        ):
+            return super().execute(sql, params)
+
+        parsed = parse_utils.classify_statement(str(sql))
+        if parsed is None or parsed.statement_type != StatementType.DDL:
+            # Flush any prior buffered DDLs before running a non-DDL statement
+            # (e.g., an UPDATE setting default values during add_field).
+            self.flush_ddl_batch()
+            return super().execute(sql, params)
+
+        # Turn off DB-API autocommit before executing DDL so spanner_dbapi
+        # buffers consecutive DDL statements instead of running each immediately.
+        self.connection.ensure_connection()
+        if self.connection.connection.autocommit:
+            self.connection.connection.autocommit = False
+        return super().execute(sql, params)
+
+    def flush_ddl_batch(self):
+        """Flush buffered DDL statements by restoring DB-API autocommit=True."""
+        if (
+            self.connection.connection is not None
+            and not self.connection.connection.autocommit
+        ):
             try:
-                self._exit_ddl_batch(clean=clean_exit)
+                # Transitioning autocommit from False to True calls commit() in
+                # DB-API, which flushes all buffered DDL statements and clears
+                # _ddl_statements in its finally block.
+                self.connection.connection.autocommit = True
+            except (AlreadyExists, FailedPrecondition, OutOfRange) as exc:
+                raise IntegrityError(getattr(exc, "details", exc)) from exc
+            except InvalidArgument as exc:
+                raise ProgrammingError(getattr(exc, "details", exc)) from exc
+            except (InternalServerError, GoogleAPICallError) as exc:
+                raise OperationalError(getattr(exc, "details", exc)) from exc
             finally:
-                if getattr(self, "_execute_wrapper_cm", None) is not None:
-                    self._execute_wrapper_cm.__exit__(exc_type, exc_value, traceback)
-                    self._execute_wrapper_cm = None
-                if getattr(self.connection, "_active_ddl_batch_editor", None) is self:
-                    self.connection._active_ddl_batch_editor = None
+                # If commit() raised inside the autocommit setter before
+                # _autocommit was updated to True, restore autocommit=True
+                # (_ddl_statements is already cleared by DB-API commit()).
+                if not self.connection.connection.autocommit:
+                    self.connection.connection.autocommit = True
 
     def create_model(self, model):
         """

@@ -691,6 +691,11 @@ class TestBasics(MockServerTestBase):
         events = []
 
         def run_atomic_dml(apps, schema_editor):
+            with schema_editor.connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE tests_singer SET first_name=%s WHERE id=%s",
+                    ["updated", 1],
+                )
             events.append(
                 (
                     "runpython_state",
@@ -699,11 +704,6 @@ class TestBasics(MockServerTestBase):
                     len(self.database_admin_service.requests),
                 )
             )
-            with schema_editor.connection.cursor() as cursor:
-                cursor.execute(
-                    "UPDATE tests_singer SET first_name=%s WHERE id=%s",
-                    ["updated", 1],
-                )
 
         mig = Migration("0001_create_then_runpython", "tests")
         mig.operations = [

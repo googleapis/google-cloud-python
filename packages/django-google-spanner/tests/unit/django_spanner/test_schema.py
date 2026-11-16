@@ -518,50 +518,44 @@ class TestUtils(SpannerSimpleTestClass):
         normal_field = mock.MagicMock(generated=False, db_default=None)
         self.assertTrue(schema_editor.skip_default(normal_field))
 
-    def _make_batch_ddl_mock_conn(self, events, batch_ddl=True):
-        import contextlib
+    def _make_batch_ddl_mock_conn(
+        self, events, batch_ddl=True, flush_exc=None, rollback_exc=None
+    ):
+        class FakeDBAPIConn:
+            def __init__(self):
+                self._ac = True
+                self.flush_exc = flush_exc
+                self.rollback_exc = rollback_exc
+
+            @property
+            def autocommit(self):
+                return self._ac
+
+            @autocommit.setter
+            def autocommit(self, value):
+                events.append(("autocommit", value))
+                if value and not self._ac and self.flush_exc is not None:
+                    exc = self.flush_exc
+                    self.flush_exc = None
+                    raise exc
+                self._ac = value
+
+            def rollback(self):
+                events.append("rollback")
+                if self.rollback_exc is not None:
+                    raise self.rollback_exc
 
         mock_conn = mock.MagicMock()
         mock_conn.in_atomic_block = False
         mock_conn.features.can_rollback_ddl = False
         mock_conn.get_autocommit.return_value = True
-        mock_conn._active_ddl_batch_editor = None
         mock_conn.settings_dict = (
             {"OPTIONS": {"batch_ddl": batch_ddl}} if batch_ddl is not None else {}
         )
-        wrappers = []
-
-        @contextlib.contextmanager
-        def fake_execute_wrapper(wrapper):
-            wrappers.append(wrapper)
-            try:
-                yield
-            finally:
-                wrappers.remove(wrapper)
-
-        mock_conn.execute_wrapper.side_effect = fake_execute_wrapper
-        mock_conn.connection.commit.side_effect = lambda: events.append("dbapi_commit")
-        mock_conn.connection.rollback.side_effect = lambda: events.append(
-            "dbapi_rollback"
-        )
-        mock_conn._set_autocommit.side_effect = lambda val: events.append(
-            ("_set_autocommit", val)
-        )
+        mock_conn.connection = FakeDBAPIConn()
 
         def run_cursor_execute(sql, params=None):
-            def base_exec(s, p, many, ctx):
-                events.append(("cursor_execute", s))
-
-            def make_wrapped_executor(w, nxt):
-                def wrapped(s, p, m, c):
-                    return w(nxt, s, p, m, c)
-
-                return wrapped
-
-            executor = base_exec
-            for wrapper in reversed(wrappers):
-                executor = make_wrapped_executor(wrapper, executor)
-            return executor(sql, params, False, {"connection": mock_conn})
+            events.append(("cursor_execute", sql))
 
         cursor_cm = mock.MagicMock()
         cursor_cm.__enter__.return_value.execute.side_effect = run_cursor_execute
@@ -569,29 +563,29 @@ class TestUtils(SpannerSimpleTestClass):
         return mock_conn
 
     def test_schema_editor_batches_ddl_lazily_when_option_enabled(self):
-        """Lazily toggles _set_autocommit(False) on DDL, commits, and restores _set_autocommit(True)."""
+        """Lazily sets connection.autocommit=False on DDL and restores connection.autocommit=True on exit."""
         events = []
         mock_conn = self._make_batch_ddl_mock_conn(events)
 
         with DatabaseSchemaEditor(mock_conn) as editor:
-            # Entering schema_editor alone does not disable autocommit before any DDL runs.
             self.assertEqual(events, [])
             editor.execute("CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)", None)
+            self.assertFalse(mock_conn.connection.autocommit)
             editor.deferred_sql.append("CREATE INDEX idx_t1 ON t1 (id)")
 
         self.assertEqual(
             events,
             [
-                ("_set_autocommit", False),
+                ("autocommit", False),
                 (
                     "cursor_execute",
                     "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)",
                 ),
                 ("cursor_execute", "CREATE INDEX idx_t1 ON t1 (id)"),
-                "dbapi_commit",
-                ("_set_autocommit", True),
+                ("autocommit", True),
             ],
         )
+        self.assertTrue(mock_conn.connection.autocommit)
         mock_conn.set_autocommit.assert_not_called()
 
     def test_schema_editor_noop_without_ddl_does_not_toggle_autocommit(self):
@@ -603,11 +597,11 @@ class TestUtils(SpannerSimpleTestClass):
             editor.execute("SELECT 1", None)
 
         self.assertEqual(events, [("cursor_execute", "SELECT 1")])
-        mock_conn._set_autocommit.assert_not_called()
+        self.assertTrue(mock_conn.connection.autocommit)
         mock_conn.set_autocommit.assert_not_called()
 
     def test_schema_editor_flushes_ddl_before_non_ddl_and_resumes_batching(self):
-        """Flushes queued DDLs and restores DB-API autocommit before DML/DQL, then resumes on next DDL."""
+        """Flushes queued DDLs via autocommit=True before DML/DQL, then resumes batching on next DDL."""
         events = []
         mock_conn = self._make_batch_ddl_mock_conn(events)
 
@@ -620,21 +614,19 @@ class TestUtils(SpannerSimpleTestClass):
         self.assertEqual(
             events,
             [
-                ("_set_autocommit", False),
+                ("autocommit", False),
                 ("cursor_execute", "ALTER TABLE t1 ADD COLUMN c1 INT64"),
-                "dbapi_commit",
-                ("_set_autocommit", True),
+                ("autocommit", True),
                 ("cursor_execute", "UPDATE t1 SET c1 = %s WHERE 1=1"),
-                ("_set_autocommit", False),
+                ("autocommit", False),
                 ("cursor_execute", "ALTER TABLE t1 ALTER COLUMN c1 INT64 NOT NULL"),
                 ("cursor_execute", "CREATE INDEX idx_t1_c1 ON t1 (c1)"),
-                "dbapi_commit",
-                ("_set_autocommit", True),
+                ("autocommit", True),
             ],
         )
 
     def test_schema_editor_rolls_back_on_exception_when_batching(self):
-        """Rolls back queued DDLs on DB-API connection before restoring autocommit on exception."""
+        """Calls connection.rollback() and restores connection.autocommit=True on exception."""
         events = []
         mock_conn = self._make_batch_ddl_mock_conn(events)
 
@@ -648,18 +640,19 @@ class TestUtils(SpannerSimpleTestClass):
         self.assertEqual(
             events,
             [
-                ("_set_autocommit", False),
+                ("autocommit", False),
                 (
                     "cursor_execute",
                     "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)",
                 ),
-                "dbapi_rollback",
-                ("_set_autocommit", True),
+                "rollback",
+                ("autocommit", True),
             ],
         )
+        self.assertTrue(mock_conn.connection.autocommit)
 
     def test_schema_editor_rolls_back_on_deferred_sql_exception_when_batching(self):
-        """Rolls back when super().__exit__() raises Exception or BaseException."""
+        """Calls connection.rollback() and restores autocommit=True when super().__exit__() raises."""
         for exc_cls in (RuntimeError, KeyboardInterrupt):
             events = []
             mock_conn = self._make_batch_ddl_mock_conn(events)
@@ -682,26 +675,23 @@ class TestUtils(SpannerSimpleTestClass):
             self.assertEqual(
                 events,
                 [
-                    ("_set_autocommit", False),
+                    ("autocommit", False),
                     (
                         "cursor_execute",
                         "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)",
                     ),
-                    "dbapi_rollback",
-                    ("_set_autocommit", True),
+                    "rollback",
+                    ("autocommit", True),
                 ],
             )
+            self.assertTrue(mock_conn.connection.autocommit)
 
     def test_schema_editor_restores_autocommit_when_commit_raises(self):
-        """Restores _set_autocommit(True) even if DB-API commit() raises a DDL error."""
+        """Restores connection.autocommit=True even if setting autocommit=True raises."""
         events = []
-        mock_conn = self._make_batch_ddl_mock_conn(events)
-
-        def failing_commit():
-            events.append("dbapi_commit")
-            raise RuntimeError("server DDL error")
-
-        mock_conn.connection.commit.side_effect = failing_commit
+        mock_conn = self._make_batch_ddl_mock_conn(
+            events, flush_exc=RuntimeError("server DDL error")
+        )
 
         with self.assertRaises(RuntimeError):
             with DatabaseSchemaEditor(mock_conn) as editor:
@@ -712,18 +702,19 @@ class TestUtils(SpannerSimpleTestClass):
         self.assertEqual(
             events,
             [
-                ("_set_autocommit", False),
+                ("autocommit", False),
                 (
                     "cursor_execute",
                     "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)",
                 ),
-                "dbapi_commit",
-                ("_set_autocommit", True),
+                ("autocommit", True),
+                ("autocommit", True),
             ],
         )
+        self.assertTrue(mock_conn.connection.autocommit)
 
     def test_schema_editor_skips_autocommit_toggle_by_default(self):
-        """Does not install wrapper or toggle autocommit when OPTIONS['batch_ddl'] is False or unset."""
+        """Sets batch_ddl=False when OPTIONS['batch_ddl'] is False or unset."""
         for settings_dict in (
             {},
             {"OPTIONS": {}},
@@ -735,11 +726,8 @@ class TestUtils(SpannerSimpleTestClass):
             mock_conn.get_autocommit.return_value = True
             mock_conn.settings_dict = settings_dict
 
-            with DatabaseSchemaEditor(mock_conn):
-                pass
-
-            mock_conn.execute_wrapper.assert_not_called()
-            mock_conn._set_autocommit.assert_not_called()
+            with DatabaseSchemaEditor(mock_conn) as editor:
+                self.assertFalse(editor.batch_ddl)
 
     def test_schema_editor_skips_autocommit_toggle_for_collect_sql_or_atomic_or_manual(
         self,
@@ -756,11 +744,8 @@ class TestUtils(SpannerSimpleTestClass):
             mock_conn.get_autocommit.return_value = is_autocommit
             mock_conn.settings_dict = {"OPTIONS": {"batch_ddl": True}}
 
-            with DatabaseSchemaEditor(mock_conn, collect_sql=collect_sql):
-                pass
-
-            mock_conn.execute_wrapper.assert_not_called()
-            mock_conn._set_autocommit.assert_not_called()
+            with DatabaseSchemaEditor(mock_conn, collect_sql=collect_sql) as editor:
+                self.assertFalse(editor.batch_ddl)
 
     def test_schema_editor_skips_autocommit_toggle_when_atomic_false(self):
         """Skips batching when schema_editor(atomic=False) is requested."""
@@ -770,14 +755,11 @@ class TestUtils(SpannerSimpleTestClass):
         mock_conn.get_autocommit.return_value = True
         mock_conn.settings_dict = {"OPTIONS": {"batch_ddl": True}}
 
-        with DatabaseSchemaEditor(mock_conn, atomic=False):
-            pass
-
-        mock_conn.execute_wrapper.assert_not_called()
-        mock_conn._set_autocommit.assert_not_called()
+        with DatabaseSchemaEditor(mock_conn, atomic=False) as editor:
+            self.assertFalse(editor.batch_ddl)
 
     def test_schema_editor_maps_google_api_errors_to_django_database_errors(self):
-        """Maps GoogleAPICallError subclasses on commit() to django.db DatabaseErrors."""
+        """Maps GoogleAPICallError subclasses on autocommit=True flush to django.db DatabaseErrors."""
         from django.db import IntegrityError, OperationalError, ProgrammingError
         from google.api_core.exceptions import (
             FailedPrecondition,
@@ -792,8 +774,7 @@ class TestUtils(SpannerSimpleTestClass):
         ]
         for api_exc, expected_django_exc in cases:
             events = []
-            mock_conn = self._make_batch_ddl_mock_conn(events)
-            mock_conn.connection.commit.side_effect = api_exc
+            mock_conn = self._make_batch_ddl_mock_conn(events, flush_exc=api_exc)
 
             with self.assertRaises(expected_django_exc):
                 with DatabaseSchemaEditor(mock_conn) as editor:
@@ -801,4 +782,21 @@ class TestUtils(SpannerSimpleTestClass):
                         "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)", None
                     )
 
-            mock_conn._set_autocommit.assert_called_with(True)
+            self.assertTrue(mock_conn.connection.autocommit)
+
+    def test_schema_editor_restores_autocommit_when_rollback_raises(self):
+        """Restores connection.autocommit=True via finally even if rollback() raises."""
+        events = []
+        mock_conn = self._make_batch_ddl_mock_conn(
+            events,
+            rollback_exc=RuntimeError("rollback error"),
+        )
+
+        with self.assertRaisesRegex(RuntimeError, "rollback error"):
+            with DatabaseSchemaEditor(mock_conn) as editor:
+                editor.execute(
+                    "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)", None
+                )
+                raise ValueError("ddl failure")
+
+        self.assertTrue(mock_conn.connection.autocommit)
