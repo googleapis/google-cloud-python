@@ -738,3 +738,116 @@ class TestBasics(MockServerTestBase):
         )
         self.assertTrue(transaction.get_autocommit())
         self.assertTrue(connection.connection.autocommit)
+
+    def test_schema_editor_orm_insert_between_create_model_and_add_field(self):
+        """Flushes buffered DDL and runs ORM insert in autocommit=True before subsequent add_field DDL."""
+        add_single_result(
+            "INSERT INTO tests_singer "
+            "(id, first_name, last_name) "
+            "VALUES (@a0, @a1, @a2) "
+            "THEN RETURN id",
+            "id",
+            TypeCode.INT64,
+            [("1",)],
+        )
+        add_update_count("UPDATE tests_singer SET stage_name=@a0 WHERE 1=1", 1)
+
+        field = models.CharField(max_length=100, default="anon")
+        field.set_attributes_from_name("stage_name")
+
+        connection.settings_dict["OPTIONS"]["batch_ddl"] = True
+        try:
+            with connection.schema_editor() as editor:
+                editor.create_model(Singer)
+                # Direct ORM insert inside schema_editor block bypasses editor.execute()
+                # and must flush CREATE TABLE and commit its own insert in autocommit=True.
+                Singer.objects.create(first_name="Jane", last_name="Doe")
+                self.assertTrue(connection.connection.autocommit)
+                self.assertFalse(connection.connection._spanner_transaction_started)
+                editor.add_field(Singer, field)
+        finally:
+            connection.settings_dict["OPTIONS"].pop("batch_ddl", None)
+
+        ddl_requests = self.database_admin_service.requests
+        self.assertEqual(len(ddl_requests), 3)
+        self.assertTrue(transaction.get_autocommit())
+        self.assertTrue(connection.connection.autocommit)
+
+    def test_schema_editor_atomic_rollback_after_create_model_preserves_flushed_ddl(
+        self,
+    ):
+        """Flushes buffered DDL on entering transaction.atomic() so an atomic() rollback does not discard prior DDL."""
+        connection.settings_dict["OPTIONS"]["batch_ddl"] = True
+        try:
+            with connection.schema_editor() as editor:
+                editor.create_model(Singer)
+                # Entering transaction.atomic() must flush CREATE TABLE before BEGIN,
+                # so rolling back the atomic block before any SQL runs does not wipe out
+                # CREATE TABLE.
+                with self.assertRaises(RuntimeError):
+                    with transaction.atomic():
+                        self.assertEqual(len(self.database_admin_service.requests), 1)
+                        raise RuntimeError("abort atomic block before any SQL")
+        finally:
+            connection.settings_dict["OPTIONS"].pop("batch_ddl", None)
+
+        ddl_requests = self.database_admin_service.requests
+        self.assertEqual(len(ddl_requests), 1)
+        self.assertEqual(len(ddl_requests[0].statements), 1)
+        self.assertTrue(transaction.get_autocommit())
+        self.assertTrue(connection.connection.autocommit)
+
+    def test_schema_editor_manual_set_autocommit_false_after_create_model_flushes_ddl(
+        self,
+    ):
+        """Flushes buffered DDL on transaction.set_autocommit(False) so subsequent rollback() preserves prior DDL."""
+        connection.settings_dict["OPTIONS"]["batch_ddl"] = True
+        try:
+            with connection.schema_editor() as editor:
+                editor.create_model(Singer)
+                transaction.set_autocommit(False)
+                try:
+                    self.assertEqual(len(self.database_admin_service.requests), 1)
+                    transaction.rollback()
+                finally:
+                    transaction.set_autocommit(True)
+        finally:
+            connection.settings_dict["OPTIONS"].pop("batch_ddl", None)
+
+        ddl_requests = self.database_admin_service.requests
+        self.assertEqual(len(ddl_requests), 1)
+        self.assertEqual(len(ddl_requests[0].statements), 1)
+        self.assertTrue(transaction.get_autocommit())
+        self.assertTrue(connection.connection.autocommit)
+
+    def test_schema_editor_inside_outer_atomic_block_skips_batch_ddl(self):
+        """Disables batch_ddl when schema_editor is entered inside an outer transaction.atomic() block."""
+        add_select1_result()
+        connection.settings_dict["OPTIONS"]["batch_ddl"] = True
+        try:
+            with transaction.atomic():
+                with connection.schema_editor() as editor:
+                    self.assertFalse(editor.batch_ddl)
+                with connection.cursor() as cursor:
+                    cursor.execute("select 1")
+        finally:
+            connection.settings_dict["OPTIONS"].pop("batch_ddl", None)
+
+        self.assertTrue(
+            any(isinstance(r, CommitRequest) for r in self.spanner_service.requests)
+        )
+        self.assertTrue(transaction.get_autocommit())
+        self.assertTrue(connection.connection.autocommit)
+
+    def test_schema_editor_collect_sql_skips_batch_ddl(self):
+        """Disables batch_ddl and collects SQL without RPCs when collect_sql=True."""
+        connection.settings_dict["OPTIONS"]["batch_ddl"] = True
+        try:
+            with connection.schema_editor(collect_sql=True) as editor:
+                self.assertFalse(editor.batch_ddl)
+                editor.create_model(Singer)
+        finally:
+            connection.settings_dict["OPTIONS"].pop("batch_ddl", None)
+
+        self.assertEqual(len(self.database_admin_service.requests), 0)
+        self.assertEqual(len(editor.collected_sql), 1)

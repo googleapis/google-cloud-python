@@ -82,6 +82,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             and not collect_sql
             and self.connection.settings_dict.get("OPTIONS", {}).get("batch_ddl", False)
         )
+        self.execute_wrapper_cm = None
 
     def __enter__(self):
         super().__enter__()
@@ -93,6 +94,16 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             and not self.connection.in_atomic_block
             and self.connection.get_autocommit()
         )
+        if self.batch_ddl:
+            # Register a connection-level execute_wrapper so that all SQL run
+            # inside the schema_editor context—including direct ORM queries
+            # (e.g., Model.objects.create()) and introspection queries that
+            # bypass schema_editor.execute()—flushes any buffered DDLs before
+            # executing non-DDL statements.
+            self.execute_wrapper_cm = self.connection.execute_wrapper(
+                self.ddl_batch_wrapper
+            )
+            self.execute_wrapper_cm.__enter__()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -104,24 +115,30 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             has_exception = True
             raise
         finally:
-            if self.batch_ddl:
-                if has_exception:
-                    if (
-                        self.connection.connection is not None
-                        and not self.connection.connection.autocommit
-                    ):
-                        try:
-                            # Discard buffered DDL statements in DB-API before
-                            # restoring autocommit=True (otherwise setting
-                            # autocommit=True would commit them).
-                            self.connection.connection.rollback()
-                        finally:
-                            self.connection.connection.autocommit = True
-                else:
-                    # Flush all buffered DDL statements in a single batch.
-                    self.flush_ddl_batch()
+            try:
+                if self.batch_ddl:
+                    if has_exception:
+                        if (
+                            self.connection.connection is not None
+                            and not self.connection.connection.autocommit
+                        ):
+                            try:
+                                # Discard buffered DDL statements in DB-API before
+                                # restoring autocommit=True (otherwise setting
+                                # autocommit=True would commit them).
+                                self.connection.connection.rollback()
+                            finally:
+                                self.connection.connection.autocommit = True
+                    else:
+                        # Flush all buffered DDL statements in a single batch.
+                        self.flush_ddl_batch()
+            finally:
+                if self.execute_wrapper_cm is not None:
+                    self.execute_wrapper_cm.__exit__(exc_type, exc_value, traceback)
+                    self.execute_wrapper_cm = None
 
-    def execute(self, sql, params=()):
+    def ddl_batch_wrapper(self, execute, sql, params, many, context):
+        """Wrap cursor execution to batch consecutive DDL statements."""
         # Bypass DDL batching when disabled, collecting SQL for sqlmigrate,
         # or running inside an explicit transaction block.
         if (
@@ -130,21 +147,27 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             or self.connection.in_atomic_block
             or not self.connection.get_autocommit()
         ):
-            return super().execute(sql, params)
+            return execute(sql, params, many, context)
 
-        parsed = parse_utils.classify_statement(str(sql))
+        parsed = (
+            parse_utils.classify_statement(str(sql))
+            if not many and sql is not None
+            else None
+        )
         if parsed is None or parsed.statement_type != StatementType.DDL:
             # Flush any prior buffered DDLs before running a non-DDL statement
-            # (e.g., an UPDATE setting default values during add_field).
+            # (e.g., an ORM query, introspection query, or UPDATE in add_field)
+            # so non-DDL statements run in autocommit=True mode without leaving
+            # an uncommitted Spanner read-write transaction open.
             self.flush_ddl_batch()
-            return super().execute(sql, params)
+            return execute(sql, params, many, context)
 
         # Turn off DB-API autocommit before executing DDL so spanner_dbapi
         # buffers consecutive DDL statements instead of running each immediately.
         self.connection.ensure_connection()
         if self.connection.connection.autocommit:
             self.connection.connection.autocommit = False
-        return super().execute(sql, params)
+        return execute(sql, params, many, context)
 
     def flush_ddl_batch(self):
         """Flush buffered DDL statements by restoring DB-API autocommit=True."""

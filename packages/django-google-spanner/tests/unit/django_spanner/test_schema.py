@@ -553,9 +553,27 @@ class TestUtils(SpannerSimpleTestClass):
             {"OPTIONS": {"batch_ddl": batch_ddl}} if batch_ddl is not None else {}
         )
         mock_conn.connection = FakeDBAPIConn()
+        wrappers = []
+
+        def fake_execute_wrapper(wrapper):
+            cm = mock.MagicMock()
+            cm.__enter__.side_effect = lambda: wrappers.append(wrapper)
+            cm.__exit__.side_effect = lambda *args: (
+                wrappers.remove(wrapper) if wrapper in wrappers else None
+            )
+            return cm
+
+        mock_conn.execute_wrapper.side_effect = fake_execute_wrapper
+
+        def base_execute(sql, params, many, context):
+            events.append(("cursor_execute", sql))
 
         def run_cursor_execute(sql, params=None):
-            events.append(("cursor_execute", sql))
+            if wrappers:
+                return wrappers[-1](
+                    base_execute, sql, params, False, {"connection": mock_conn}
+                )
+            return base_execute(sql, params, False, {"connection": mock_conn})
 
         cursor_cm = mock.MagicMock()
         cursor_cm.__enter__.return_value.execute.side_effect = run_cursor_execute

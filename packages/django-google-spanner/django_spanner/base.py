@@ -217,6 +217,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         :param autocommit: The new value of the autocommit flag.
         """
         with self.wrap_database_errors:
+            if not autocommit and not self.connection.autocommit:
+                # If DatabaseSchemaEditor set DB-API autocommit=False to buffer
+                # DDL statements while Django's autocommit remained True, flush
+                # the buffered DDLs by restoring DB-API autocommit=True before
+                # disabling autocommit via transaction.set_autocommit(False).
+                self.connection.autocommit = True
             self.connection.autocommit = autocommit
 
     async def _a_set_autocommit(self, autocommit):
@@ -245,6 +251,11 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         """
         Start a transaction explicitly in autocommit mode.
         """
+        if not self.connection.autocommit:
+            # Flush any DDLs buffered by DatabaseSchemaEditor before starting
+            # an explicit transaction block (e.g., transaction.atomic()).
+            with self.wrap_database_errors:
+                self.connection.autocommit = True
         if self.allow_transactions_in_auto_commit:
             self.connection.cursor().execute("BEGIN")
         else:
