@@ -20,7 +20,7 @@ from unittest import mock
 
 import pytest
 from google.rpc import error_details_pb2
-from opentelemetry.trace import INVALID_SPAN, SpanContext, TraceFlags
+from opentelemetry.trace import INVALID_SPAN, Span, SpanContext, TraceFlags
 
 from google.api_core import _observability, exceptions
 from google.api_core._feature_gating_helpers import FeatureGatingError
@@ -636,6 +636,27 @@ def test_get_otel_async_interceptor_with_api_endpoint(monkeypatch):
     )
     mock_span.set_attribute.assert_any_call("server.port", 8443)
     mock_span.set_attribute.assert_any_call("url.domain", "custom-domain.com")
+
+
+def test_build_otel_grpc_hook_kwargs():
+    """Proves _build_otel_grpc_hook_kwargs wires tracer_provider, response_hook, and default_host into request_hook."""
+    mock_provider = mock.Mock(spec_set=["get_tracer"])
+    kwargs = _observability._build_otel_grpc_hook_kwargs(
+        client_options=ClientOptions(tracer_provider=mock_provider),
+        default_host="secretmanager.googleapis.com:8443",
+    )
+
+    assert kwargs["tracer_provider"] is mock_provider
+    assert kwargs["response_hook"] is _observability._grpc_client_response_hook
+
+    mock_span = mock.create_autospec(Span, instance=True, spec_set=True)
+    mock_span.is_recording.return_value = True
+    kwargs["request_hook"](mock_span, None)
+    mock_span.set_attribute.assert_any_call(
+        "server.address", "secretmanager.googleapis.com"
+    )
+    mock_span.set_attribute.assert_any_call("server.port", 8443)
+    mock_span.set_attribute.assert_any_call("url.domain", "googleapis.com")
 
 
 def test_grpc_client_response_hook_success():
@@ -1464,6 +1485,7 @@ def test_trace_context_record_response_content_len_error(monkeypatch):
     ctx = _observability._TraceContext()
     ctx._span = mock_span
     ctx.record_response(response)
+    mock_span.set_attribute.assert_called_once_with("http.response.status_code", 200)
 
 
 def test_trace_context_record_error_partial_span(monkeypatch):
@@ -2373,3 +2395,116 @@ def test_build_telemetry_error_attributes_include_exception(
     assert expected_exc_msg_substr in attrs_inc["exception.message"]
     assert "Traceback (most recent call last):" in attrs_inc["exception.stacktrace"]
     assert "raise exc_factory()" in attrs_inc["exception.stacktrace"]
+
+
+@pytest.mark.parametrize(
+    "method_name,expected_full,expected_service,expected_method",
+    [
+        pytest.param(None, "", "", "", id="none_method_name"),
+        pytest.param("", "", "", "", id="empty_string_method_name"),
+        pytest.param(
+            b"/my.Service/Method",
+            "my.Service/Method",
+            "my.Service",
+            "Method",
+            id="bytes_method_name",
+        ),
+        pytest.param(
+            b"/my.Service/Method\xff",
+            "my.Service/Method\ufffd",
+            "my.Service",
+            "Method\ufffd",
+            id="invalid_utf8_bytes_replaced",
+        ),
+        pytest.param(
+            "/my.Service/Method",
+            "my.Service/Method",
+            "my.Service",
+            "Method",
+            id="string_method_name",
+        ),
+        pytest.param(
+            "///my.Service/Method",
+            "my.Service/Method",
+            "my.Service",
+            "Method",
+            id="multiple_leading_slashes_stripped",
+        ),
+        pytest.param(
+            "MethodOnly",
+            "MethodOnly",
+            "",
+            "MethodOnly",
+            id="no_slash_method_only",
+        ),
+        pytest.param(
+            "/pkg/my.Service/Method",
+            "pkg/my.Service/Method",
+            "pkg/my.Service",
+            "Method",
+            id="multiple_slashes_rpartition",
+        ),
+    ],
+)
+def test_extract_rpc_identity(
+    method_name, expected_full, expected_service, expected_method
+):
+    """Proves extract_rpc_identity decodes and partitions method names safely."""
+    full, service, method = _observability.extract_rpc_identity(method_name)
+    assert full == expected_full
+    assert service == expected_service
+    assert method == expected_method
+
+
+@pytest.mark.parametrize(
+    "response_obj,expected_status",
+    [
+        pytest.param(
+            mock.Mock(spec_set=["status_code", "status"], status_code=200, status=500),
+            200,
+            id="status_code_takes_precedence_over_status",
+        ),
+        pytest.param(
+            mock.Mock(spec_set=["status_code", "status"], status_code=None, status=404),
+            404,
+            id="falls_back_to_status_when_status_code_none",
+        ),
+        pytest.param(
+            mock.Mock(spec_set=["status"], status=503),
+            503,
+            id="status_int_only",
+        ),
+        pytest.param(
+            mock.Mock(spec_set=["status_code"], status_code=True),
+            None,
+            id="bool_status_code_excluded",
+        ),
+        pytest.param(
+            mock.Mock(spec_set=["status_code"], status_code="200"),
+            None,
+            id="string_status_code_excluded",
+        ),
+        pytest.param(object(), None, id="missing_status_attributes"),
+        pytest.param(None, None, id="none_response"),
+    ],
+)
+def test_extract_http_status_code(response_obj, expected_status):
+    """Proves _extract_http_status_code extracts genuine int status codes and ignores invalid types."""
+    assert _observability._extract_http_status_code(response_obj) == expected_status
+
+
+@pytest.mark.parametrize(
+    "kind,expected",
+    [
+        pytest.param("grpc", "grpc", id="grpc_kind"),
+        pytest.param("grpc_asyncio", "grpc", id="grpc_asyncio_kind"),
+        pytest.param("rest", "http", id="rest_kind"),
+        pytest.param("rest_asyncio", "http", id="rest_asyncio_kind"),
+        pytest.param("http", "http", id="http_kind"),
+        pytest.param("", "grpc", id="empty_string_defaults_to_grpc"),
+        pytest.param(None, "grpc", id="none_defaults_to_grpc"),
+    ],
+)
+def test_resolve_rpc_system(kind, expected):
+    """Proves _resolve_rpc_system normalizes transport kinds to OTel rpc.system.name."""
+    assert _observability._resolve_rpc_system(kind) == expected
