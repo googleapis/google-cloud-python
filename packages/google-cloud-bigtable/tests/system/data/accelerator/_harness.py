@@ -300,6 +300,7 @@ class RandomOps:
         key_prefix: bytes = b"accel-",
         *,
         include_aggregate: bool = False,
+        guard_ops: int = DELETE_AFTER_WRITE_GUARD_OPS,
     ):
         import random
 
@@ -309,6 +310,7 @@ class RandomOps:
         self._qualifiers = [f"q{i}".encode() for i in range(self._rand.randint(2, 16))]
         self._agg_qualifiers = [f"agg{i}".encode() for i in range(4)]
         self._include_aggregate = include_aggregate
+        self._guard_ops = guard_ops
         self._op_index = 0
         self._last_write_op: dict[bytes, int] = {}
         self._last_delete_op: dict[bytes, int] = {}
@@ -377,12 +379,10 @@ class RandomOps:
         last_write = self._last_write_op.get(key)
         last_delete = self._last_delete_op.get(key)
         recently_written = (
-            last_write is not None
-            and self._op_index - last_write <= DELETE_AFTER_WRITE_GUARD_OPS
+            last_write is not None and self._op_index - last_write <= self._guard_ops
         )
         recently_deleted = (
-            last_delete is not None
-            and self._op_index - last_delete <= DELETE_AFTER_WRITE_GUARD_OPS
+            last_delete is not None and self._op_index - last_delete <= self._guard_ops
         )
         if recently_deleted and not recently_written:
             self._last_delete_op[key] = self._op_index

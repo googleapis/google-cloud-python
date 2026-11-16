@@ -32,8 +32,9 @@ class TestConcurrency(AcceleratorTestBase):
     OPS_PER_WORKER = 50
 
     @pytest.fixture(scope="session")
+    @classmethod
     def second_table_id(
-        self,
+        cls,
         admin_client,
         project_id,
         instance_id,
@@ -66,15 +67,17 @@ class TestConcurrency(AcceleratorTestBase):
             except Exception as exc:
                 print(f"Failed to delete table {second_id}: {exc}")
 
-    def _worker(self, table, worker_id, key_prefix):
-        ops = _harness.RandomOps(worker_id, key_prefix=key_prefix)
+    def _worker(self, table, worker_id, key_prefix, janitor=None):
+        ops = _harness.RandomOps(worker_id, key_prefix=key_prefix, guard_ops=8)
         expected_state = _harness.ExpectedState()
         touched = set()
         for _ in range(self.OPS_PER_WORKER):
             key, mutation = ops.build_mutation(expected_state)
+            if janitor is not None:
+                janitor.track(key)
             table.mutate_row(key, mutation)
             touched.add(key)
-        for key in touched:
+        for key in sorted(touched):
             row = table.read_row(key)
             _harness.assert_rows_equivalent(
                 f"worker-{worker_id}",
@@ -107,6 +110,7 @@ class TestConcurrency(AcceleratorTestBase):
                             tables[w % 2],
                             w,
                             f"conc-mt-{run_id}-p{w // 2}-".encode(),
+                            janitor if w % 2 == 0 else None,
                         )
                         for w in range(self.CONCURRENCY)
                     ]
@@ -120,11 +124,10 @@ class TestConcurrency(AcceleratorTestBase):
                     assert not isinstance(result, BaseException), (
                         f"worker {w} failed: {result!r}"
                     )
-                    if w % 2 == 0:
-                        for key in result:
-                            janitor.track(key)
             assert _harness.daemon_pid(table_b) == daemon_pid_b
-            verify_ops = _harness.RandomOps(999, key_prefix=b"conc-mt-after-close-")
+            verify_ops = _harness.RandomOps(
+                999, key_prefix=f"conc-mt-after-close-{run_id}-".encode(), guard_ops=8
+            )
             verify_state = _harness.ExpectedState()
             vkey, vmut = verify_ops.build_mutation(verify_state)
             table_b.mutate_row(vkey, vmut)

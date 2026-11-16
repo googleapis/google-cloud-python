@@ -47,15 +47,19 @@ class TestFuzzCorrectness(AcceleratorTestBase):
             "accelerator", accel_cells, "native", native_cells
         )
 
-    def _fuzz_worker(self, accel_table, native_table, seed, worker_id, run_id):
+    def _fuzz_worker(self, accel_table, native_table, janitor, seed, worker_id, run_id):
         prefix = f"fuzz-{seed}-{run_id}-w{worker_id}-".encode()
         ops = _harness.RandomOps(
-            seed * 100 + worker_id, key_prefix=prefix, include_aggregate=True
+            seed * 100 + worker_id,
+            key_prefix=prefix,
+            include_aggregate=True,
+            guard_ops=8,
         )
         expected_state = _harness.ExpectedState()
         touched: set[bytes] = set()
         for i in range(self.OPS_PER_WORKER):
             key, mutation = ops.build_mutation(expected_state)
+            janitor.track(key)
             accel_table.mutate_row(key, mutation)
             touched.add(key)
             if touched and i % 8 == 7:
@@ -78,7 +82,13 @@ class TestFuzzCorrectness(AcceleratorTestBase):
         try:
             partials = [
                 functools.partial(
-                    self._fuzz_worker, accel_table, native_table, seed, w, run_id
+                    self._fuzz_worker,
+                    accel_table,
+                    native_table,
+                    janitor,
+                    seed,
+                    w,
+                    run_id,
                 )
                 for w in range(self.CONCURRENCY)
             ]
@@ -92,8 +102,6 @@ class TestFuzzCorrectness(AcceleratorTestBase):
             assert not isinstance(result, BaseException), (
                 f"fuzz worker {w} failed: {result!r}"
             )
-            for key in result:
-                janitor.track(key)
 
     def test_multiple_versions_range_delete_and_row_filter(
         self, accel_table, native_table, janitor
@@ -130,7 +138,7 @@ class TestFuzzCorrectness(AcceleratorTestBase):
         )
         self._verify_key(accel_table, native_table, expected_state, key)
 
-    def test_shared_daemon_across_multiple_tables(
+    def test_shared_daemon_across_table_handles(
         self, accel_client, instance_id, table_id, native_table, janitor
     ):
         with (
