@@ -40,7 +40,7 @@ def _daemon_owner_process(project, instance_id, table_id, app_profile_id, result
         table_kwargs = {"app_profile_id": app_profile_id} if app_profile_id else {}
         with client.get_table(instance_id, table_id, **table_kwargs) as table:
             key = f"crash-{uuid.uuid4().hex}".encode()
-            ts = 1000 * _harness.MS
+            ts = _harness.ms_ts(1000)
             table.mutate_row(
                 key, SetCell(_harness.TEST_FAMILY, b"q", b"v", timestamp_micros=ts)
             )
@@ -64,7 +64,7 @@ class TestLifecycle(AcceleratorTestBase):
                         _harness.TEST_FAMILY,
                         b"q",
                         b"v",
-                        timestamp_micros=1000 * _harness.MS,
+                        timestamp_micros=_harness.ms_ts(1000),
                     ),
                 )
                 assert table.read_row(key) is not None

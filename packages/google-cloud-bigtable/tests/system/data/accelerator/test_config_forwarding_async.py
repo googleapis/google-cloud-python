@@ -56,7 +56,7 @@ class TestConfigForwardingAsync(AcceleratorTestBase):
                         _harness.TEST_FAMILY,
                         b"q",
                         b"v",
-                        timestamp_micros=1000 * _harness.MS,
+                        timestamp_micros=_harness.ms_ts(1000),
                     ),
                 )
                 row = await table.read_row(key)

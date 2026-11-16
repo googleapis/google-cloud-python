@@ -38,7 +38,7 @@ class TestDefaultAndFallbackAsync(AcceleratorTestBase):
         await default_table.mutate_row(
             key,
             SetCell(
-                _harness.TEST_FAMILY, b"q", b"v", timestamp_micros=1000 * _harness.MS
+                _harness.TEST_FAMILY, b"q", b"v", timestamp_micros=_harness.ms_ts(1000)
             ),
         )
         assert (await default_table.read_row(key)).cells[0].value == b"v"
@@ -53,7 +53,7 @@ class TestDefaultAndFallbackAsync(AcceleratorTestBase):
         await native_table.mutate_row(
             key,
             SetCell(
-                _harness.TEST_FAMILY, b"q", b"v", timestamp_micros=1000 * _harness.MS
+                _harness.TEST_FAMILY, b"q", b"v", timestamp_micros=_harness.ms_ts(1000)
             ),
         )
         assert (await native_table.read_row(key)).cells[0].value == b"v"
