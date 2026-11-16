@@ -207,7 +207,7 @@ def _extract_http_status_code(response: Any) -> int | None:
     if status is None:
         status = getattr(response, "status", None)
     if isinstance(status, int) and not isinstance(status, bool):
-        return status
+        return int(status)
     return None
 
 
@@ -386,7 +386,7 @@ def _get_service_logger(
       returns `logging.getLogger(target.__module__)`.
     - Otherwise, if `method_name` is a full gRPC method path (e.g.
       `/google.cloud.secretmanager.v1.SecretManagerService/GetSecret`), extracts
-      the service package prefix (`google.cloud.secretmanager.v1`).
+      the Python service package prefix (`google.cloud.secretmanager_v1`).
     - Falls back to `logging.getLogger("google.api_core._observability")`.
 
     Args:
@@ -407,10 +407,13 @@ def _get_service_logger(
         # Example transformation:
         #   Input:        "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
         #   service_name: "google.cloud.secretmanager.v1.SecretManagerService"
-        #   pkg:          "google.cloud.secretmanager.v1"
+        #   pkg:          "google.cloud.secretmanager_v1"
         _, service_name, _ = extract_rpc_identity(method_name)
         pkg = service_name.rpartition(".")[0]
         if pkg.startswith("google."):
+            base, _, tail = pkg.rpartition(".")
+            if base and len(tail) > 1 and tail.startswith("v") and tail[1].isdigit():
+                pkg = f"{base}_{tail}"
             return logging.getLogger(pkg)
     return _LOGGER
 
@@ -445,7 +448,7 @@ def _build_attempt_log_extra(
     exc: BaseException | None,
     status_message: str | None,
 ) -> tuple[dict[str, Any], str | None]:
-    """Builds the structured extra dictionary and resolved status for a failed wire attempt.
+    """Builds the extra dictionary and status for a failed wire attempt.
 
     Args:
         span (opentelemetry.trace.Span | None): Active OpenTelemetry span, if any.
@@ -522,18 +525,18 @@ def log_transport_attempt(
         logger (logging.Logger | None): Explicit logger override.
         status_message (str | None): Explicit status message fallback.
     """
-    if not client_logging.is_error_logging_enabled(client_options):
-        return
-
-    norm_status = (
-        getattr(status_code, "name", str(status_code))
-        if status_code is not None
-        else None
-    )
-    if not _is_failed_attempt(norm_status, exc):
-        return
-
     try:
+        if not client_logging.is_error_logging_enabled(client_options):
+            return
+
+        norm_status = (
+            getattr(status_code, "name", str(status_code))
+            if status_code is not None
+            else None
+        )
+        if not _is_failed_attempt(norm_status, exc):
+            return
+
         rpc_system = _resolve_rpc_system(kind)
         extra_payload, resolved_status = _build_attempt_log_extra(
             span=span,
@@ -554,8 +557,9 @@ def log_transport_attempt(
             resolved_status or "ERROR",
             extra=extra_payload,
         )
+    # Intentionally catch broad Exception so telemetry logging fails open
+    # and never disrupts the caller's RPC flow.
     except Exception:
-        # Fail-open: never disrupt the caller's RPC flow on logging errors
         pass
 
 
@@ -860,7 +864,7 @@ def _capture_grpc_attempt_exception(
     method_name: str,
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> Iterator[None]:
-    """Logs any unhandled exception raised during gRPC continuation dispatch and re-raises.
+    """Logs and re-raises any unhandled exception during gRPC continuation.
 
     Args:
         method_name (str): Decoded gRPC method name.

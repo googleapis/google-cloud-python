@@ -62,7 +62,7 @@ def is_error_logging_enabled(
     client_options: ClientOptions | dict[str, Any] | None = None,
     env_var: str = "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED",
 ) -> bool:
-    """Determines if OpenTelemetry-correlated Production Error Logging (PEL) is enabled.
+    """Determines if OpenTelemetry Production Error Logging (PEL) is enabled.
 
     This feature gate controls action-oriented error and retry logging
     (configured via ``GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED`` and
@@ -76,6 +76,11 @@ def is_error_logging_enabled(
 
     Returns:
         bool: True if production error logging is enabled, False otherwise.
+
+    Raises:
+        google.api_core._feature_gating_helpers.FeatureGatingError: If
+            ``logger_provider`` is configured on ``client_options`` for an
+            experimental feature without enabling ``env_var``.
     """
     return _feature_gating_helpers.resolve_feature_flags(
         env_var=env_var,

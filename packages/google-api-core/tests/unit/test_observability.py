@@ -14,6 +14,7 @@
 
 import asyncio
 import enum
+import http
 import sys
 import types
 import urllib.parse
@@ -2480,6 +2481,11 @@ def test_extract_rpc_identity(
             id="status_int_only",
         ),
         pytest.param(
+            mock.Mock(spec_set=["status_code"], status_code=http.HTTPStatus.NOT_FOUND),
+            404,
+            id="int_enum_coerced_to_raw_int",
+        ),
+        pytest.param(
             mock.Mock(spec_set=["status_code"], status_code=True),
             None,
             id="bool_status_code_excluded",
@@ -2495,7 +2501,10 @@ def test_extract_rpc_identity(
 )
 def test_extract_http_status_code(response_obj, expected_status):
     """Proves _extract_http_status_code extracts genuine int status codes and ignores invalid types."""
-    assert _observability._extract_http_status_code(response_obj) == expected_status
+    result = _observability._extract_http_status_code(response_obj)
+    assert result == expected_status
+    if result is not None:
+        assert type(result) is int
 
 
 @pytest.mark.parametrize(
@@ -2528,15 +2537,33 @@ def test_resolve_rpc_system(kind, expected):
         ),
         pytest.param(
             "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+            mock.Mock(__module__="google.api_core.gapic_v1.method"),
+            "google.cloud.secretmanager_v1",
+            id="target_module_excludes_api_core_falls_back_to_method_name",
+        ),
+        pytest.param(
             None,
-            "google.cloud.secretmanager.v1",
+            mock.Mock(__module__="google.api_core.gapic_v1.method"),
+            _observability._LOGGER.name,
+            id="target_module_excludes_api_core_falls_back_to_default_logger",
+        ),
+        pytest.param(
+            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+            None,
+            "google.cloud.secretmanager_v1",
             id="str_method_name_fallback",
         ),
         pytest.param(
             b"/google.showcase.v1beta1.Echo/Echo",
             None,
-            "google.showcase.v1beta1",
+            "google.showcase_v1beta1",
             id="bytes_method_name_fallback",
+        ),
+        pytest.param(
+            "/google.longrunning.Operations/GetOperation",
+            None,
+            "google.longrunning",
+            id="unversioned_method_name_fallback",
         ),
         pytest.param(
             "https://example.com/api",
@@ -2654,6 +2681,26 @@ def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, 
         ),
         pytest.param(
             {
+                "target": "https://example.com/v1/echo",
+                "status_code": "404",
+                "kind": "http",
+                "http_method": "GET",
+            },
+            {
+                "rpc.system.name": "http",
+                "url.full": "https://example.com/v1/echo",
+                "httpRequest": {
+                    "requestMethod": "GET",
+                    "requestUrl": "https://example.com/v1/echo",
+                    "status": 404,
+                },
+                "error.type": "404",
+                "status.message": "HTTP 404",
+            },
+            id="http_string_decimal_status_coerced_to_int",
+        ),
+        pytest.param(
+            {
                 "target": "/google.showcase.v1beta1.Echo/Echo",
                 "status_code": "UNKNOWN",
                 "kind": "grpc",
@@ -2674,14 +2721,13 @@ def test_log_transport_attempt_emits_debug(
 ):
     """Proves that log_transport_attempt emits structured DEBUG logs on failed wire attempts."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
-    valid_ctx = SpanContext(
+    span = mock.create_autospec(Span, instance=True, spec_set=True)
+    span.get_span_context.return_value = SpanContext(
         trace_id=0x0123456789ABCDEF0123456789ABCDEF,
         span_id=0x0123456789ABCDEF,
         is_remote=False,
-        trace_flags=TraceFlags.SAMPLED,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
     )
-    span = mock.Mock(spec_set=["get_span_context", "set_attribute", "is_recording"])
-    span.get_span_context.return_value = valid_ctx
 
     _observability.log_transport_attempt(span=span, logger=mock_logger, **kwargs)
 
@@ -2691,37 +2737,83 @@ def test_log_transport_attempt_emits_debug(
         assert extra[key] == val
         assert extra["json_fields"][key] == val
 
-    # Verify fail-open resilience if logger.debug raises
+
+def test_log_transport_attempt_resolves_service_logger_when_logger_none(
+    mock_service_logger,
+):
+    """Proves log_transport_attempt resolves _get_service_logger transitively when logger=None."""
+    _observability.log_transport_attempt(
+        target="/google.showcase.v1beta1.Echo/Echo",
+        status_code="UNAVAILABLE",
+        kind="grpc",
+        exc=RuntimeError("transient error"),
+    )
+    mock_service_logger.debug.assert_called_once()
+
+
+def test_log_transport_attempt_fail_open_on_logger_error(monkeypatch, mock_logger):
+    """Proves that log_transport_attempt suppresses exceptions raised by the logger or feature gate."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
     mock_logger.debug.side_effect = RuntimeError("logger failed")
-    _observability.log_transport_attempt(span=span, logger=mock_logger, **kwargs)
+
+    _observability.log_transport_attempt(
+        target="/google.showcase.v1beta1.Echo/Echo",
+        status_code="UNAVAILABLE",
+        kind="grpc",
+        exc=RuntimeError("transient error"),
+        logger=mock_logger,
+    )
+
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "false")
+    _observability.log_transport_attempt(
+        target="/google.showcase.v1beta1.Echo/Echo",
+        status_code="UNAVAILABLE",
+        kind="grpc",
+        exc=RuntimeError("transient error"),
+        client_options={"logger_provider": object()},
+        logger=mock_logger,
+    )
+
+
+def test_capture_grpc_attempt_exception_success_no_op(mock_service_logger):
+    """Proves _capture_grpc_attempt_exception does not log when no exception is raised."""
+    with _observability._capture_grpc_attempt_exception(
+        "/google.showcase.v1beta1.Echo/Echo"
+    ):
+        pass
+    mock_service_logger.debug.assert_not_called()
 
 
 @pytest.mark.parametrize(
-    "exc_to_raise,should_log",
+    "interrupt_exc",
     [
-        pytest.param(None, False, id="no_exception"),
-        pytest.param(KeyboardInterrupt(), False, id="keyboard_interrupt_bypassed"),
-        pytest.param(SystemExit(), False, id="system_exit_bypassed"),
-        pytest.param(
-            RuntimeError("wire boom"), True, id="runtime_error_logged_and_reraised"
-        ),
+        pytest.param(KeyboardInterrupt, id="keyboard_interrupt"),
+        pytest.param(SystemExit, id="system_exit"),
+        pytest.param(GeneratorExit, id="generator_exit"),
     ],
 )
-def test_capture_grpc_attempt_exception(mock_service_logger, exc_to_raise, should_log):
-    """Proves _capture_grpc_attempt_exception logs and re-raises exceptions while bypassing system interrupts."""
-    method_name = "/google.showcase.v1beta1.Echo/Echo"
-    if exc_to_raise is None:
-        with _observability._capture_grpc_attempt_exception(method_name):
-            pass
-    else:
-        with pytest.raises(type(exc_to_raise)):
-            with _observability._capture_grpc_attempt_exception(method_name):
-                raise exc_to_raise
+def test_capture_grpc_attempt_exception_bypasses_interrupts(
+    mock_service_logger, interrupt_exc
+):
+    """Proves _capture_grpc_attempt_exception re-raises system interrupts without logging."""
+    with pytest.raises(interrupt_exc):
+        with _observability._capture_grpc_attempt_exception(
+            "/google.showcase.v1beta1.Echo/Echo"
+        ):
+            raise interrupt_exc()
+    mock_service_logger.debug.assert_not_called()
 
-    if should_log:
-        mock_service_logger.debug.assert_called_once()
-        assert (
-            mock_service_logger.debug.call_args[1]["extra"]["rpc.method"] == method_name
-        )
-    else:
-        mock_service_logger.debug.assert_not_called()
+
+def test_capture_grpc_attempt_exception_logs_and_reraises_error(mock_service_logger):
+    """Proves _capture_grpc_attempt_exception logs and re-raises standard RPC exceptions."""
+    with pytest.raises(RuntimeError, match="wire boom"):
+        with _observability._capture_grpc_attempt_exception(
+            "/google.showcase.v1beta1.Echo/Echo"
+        ):
+            raise RuntimeError("wire boom")
+
+    mock_service_logger.debug.assert_called_once()
+    assert (
+        mock_service_logger.debug.call_args[1]["extra"]["rpc.method"]
+        == "/google.showcase.v1beta1.Echo/Echo"
+    )
