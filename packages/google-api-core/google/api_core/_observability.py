@@ -344,10 +344,13 @@ def extract_rpc_identity(
 
     Args:
         method_name (str | bytes | None): Explicit gRPC method path
-            (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret").
+            (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"),
+            or None.
 
     Returns:
-        tuple[str, str, str]: A 3-tuple of (full_rpc_name, service_name, rpc_method_name).
+        tuple[str, str, str]: A 3-tuple of (full_rpc_name, service_name,
+            rpc_method_name). Returns ("", "", "") when ``method_name`` is None
+            or empty, and ("<method>", "", "<method>") when no "/" is present.
     """
     full_rpc_name = _decode_method_name(method_name).lstrip("/")
     service, _, method = full_rpc_name.rpartition("/")
@@ -358,10 +361,12 @@ def _resolve_rpc_system(kind: str | None = "grpc") -> str:
     """Normalizes a transport kind to an OpenTelemetry rpc.system.name.
 
     Args:
-        kind (str | None): The transport kind identifier.
+        kind (str | None): The transport kind identifier, or None to use the
+            default ("grpc").
 
     Returns:
-        str: "http" for REST/HTTP transports, or "grpc" otherwise.
+        str: "http" for REST/HTTP transports, or "grpc" otherwise (including
+            when ``kind`` is None or empty).
     """
     if kind and kind.startswith(("rest", "http")):
         return "http"
@@ -717,7 +722,7 @@ def get_otel_interceptor(
 
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
-    interceptor: grpc.ClientInterceptor = otel_grpc.client_interceptor(
+    interceptor: ClientInterceptor = otel_grpc.client_interceptor(
         **_build_otel_grpc_hook_kwargs(client_options, default_host)
     )
     suppressor = _SuppressingClientInterceptor()
