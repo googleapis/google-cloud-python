@@ -221,3 +221,42 @@ class TestUtils(SpannerSimpleTestClass):
                 },
             },
         )
+
+    def test_get_constraints_excludes_synthetic_not_null_check(self):
+        """Tests get_constraints filters synthetic CK_IS_NOT_NULL_* CHECK constraints."""
+        db_introspection = DatabaseIntrospection(self.connection)
+        cursor = mock.MagicMock()
+
+        def run_sql_in_snapshot(sql, *args, **kwargs):
+            if "CONSTRAINT_NAME, COLUMN_NAME" in sql:
+                return [
+                    ["CK_IS_NOT_NULL_Table_1_age", "age"],
+                    ["chk_age_non_negative", "age"],
+                ]
+            if "CONSTRAINT_NAME, CONSTRAINT_TYPE" in sql:
+                return [
+                    ["CK_IS_NOT_NULL_Table_1_age", "CHECK"],
+                    ["chk_age_non_negative", "CHECK"],
+                ]
+            return []
+
+        cursor.run_sql_in_snapshot = run_sql_in_snapshot
+        constraints = db_introspection.get_constraints(
+            cursor=cursor, table_name="Table_1"
+        )
+
+        self.assertEqual(
+            constraints,
+            {
+                "chk_age_non_negative": {
+                    "check": True,
+                    "columns": ["age"],
+                    "foreign_key": None,
+                    "index": False,
+                    "orders": [],
+                    "primary_key": False,
+                    "type": None,
+                    "unique": False,
+                },
+            },
+        )
