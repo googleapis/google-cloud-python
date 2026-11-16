@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
 
 import pytest
@@ -39,6 +40,92 @@ class AcceleratorTestBaseAsync(SystemTestRunner):
             yield
         finally:
             _daemon._resolve_binary_path = orig_resolve
+
+    @pytest.fixture(scope="session")
+    @classmethod
+    def column_family_config(cls):
+        from google.cloud.bigtable_admin_v2 import types
+
+        gc_rule = types.GcRule(max_age=datetime.timedelta(days=1))
+        int_aggregate_type = types.Type.Aggregate(
+            input_type=types.Type(int64_type={"encoding": {"big_endian_bytes": {}}}),
+            sum={},
+        )
+        return {
+            _harness.TEST_FAMILY: types.ColumnFamily(gc_rule=gc_rule),
+            _harness.TEST_FAMILY_2: types.ColumnFamily(gc_rule=gc_rule),
+            _harness.TEST_AGGREGATE_FAMILY: types.ColumnFamily(
+                gc_rule=gc_rule,
+                value_type=types.Type(aggregate_type=int_aggregate_type),
+            ),
+        }
+
+    @classmethod
+    def _ensure_table(
+        cls,
+        admin_client,
+        project_id,
+        instance_id,
+        table_id,
+        column_family_config,
+        column_split_config,
+    ):
+        from google.api_core import exceptions
+
+        assert len(table_id) <= 50
+        parent_path = f"projects/{project_id}/instances/{instance_id}"
+        try:
+            admin_client.table_admin_client.create_table(
+                request={
+                    "parent": parent_path,
+                    "table_id": table_id,
+                    "table": {"column_families": column_family_config},
+                    "initial_splits": [{"key": key} for key in column_split_config],
+                },
+            )
+        except exceptions.AlreadyExists:
+            pass
+        return table_id
+
+    @pytest.fixture(scope="session")
+    @classmethod
+    def table_id(
+        cls,
+        admin_client,
+        project_id,
+        instance_id,
+        column_family_config,
+        column_split_config,
+    ):
+        target_id = os.getenv("BIGTABLE_TEST_TABLE") or "accel-test-table-1"
+        yield cls._ensure_table(
+            admin_client,
+            project_id,
+            instance_id,
+            target_id,
+            column_family_config,
+            column_split_config,
+        )
+
+    @pytest.fixture(scope="session")
+    @classmethod
+    def second_table_id(
+        cls,
+        admin_client,
+        project_id,
+        instance_id,
+        column_family_config,
+        column_split_config,
+    ):
+        target_id = os.getenv("BIGTABLE_TEST_SECOND_TABLE") or "accel-test-table-2"
+        yield cls._ensure_table(
+            admin_client,
+            project_id,
+            instance_id,
+            target_id,
+            column_family_config,
+            column_split_config,
+        )
 
     def _project_id(self):
         return os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("PROJECT_ID") or None

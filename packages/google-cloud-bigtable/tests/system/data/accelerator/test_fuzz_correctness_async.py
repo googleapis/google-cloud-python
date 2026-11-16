@@ -38,43 +38,7 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
     CONCURRENCY = 8
     OPS_PER_WORKER = 64
     MULTITABLE_OPS_PER_WORKER = 50
-
-    @pytest.fixture(scope="session")
-    @classmethod
-    def second_table_id(
-        cls,
-        admin_client,
-        project_id,
-        instance_id,
-        column_family_config,
-        column_split_config,
-    ):
-        from google.api_core import exceptions, retry
-
-        second_id = f"test-table-2-{uuid.uuid4().hex[:12]}"
-        assert len(second_id) <= 50
-        retry_fn = retry.Retry(
-            predicate=retry.if_exception_type(exceptions.FailedPrecondition)
-        )
-        parent_path = f"projects/{project_id}/instances/{instance_id}"
-        admin_client.table_admin_client.create_table(
-            request={
-                "parent": parent_path,
-                "table_id": second_id,
-                "table": {"column_families": column_family_config},
-                "initial_splits": [{"key": key} for key in column_split_config],
-            },
-            retry=retry_fn,
-        )
-        try:
-            yield second_id
-        finally:
-            try:
-                admin_client.table_admin_client.delete_table(
-                    name=f"{parent_path}/tables/{second_id}"
-                )
-            except Exception as exc:
-                print(f"Failed to delete table {second_id}: {exc}")
+    SPOT_CHECK_INTERVAL = 8
 
     @CrossSync.convert
     async def _verify_key(self, accel_table, native_table, expected_state, key):
@@ -84,19 +48,28 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
         accel_cells = _harness.normalize_row(accel_row)
         native_cells = _harness.normalize_row(native_row)
         _harness.assert_rows_equivalent(
-            "accelerator", accel_cells, "expected", expected
+            label_a="accelerator",
+            cells_a=accel_cells,
+            label_b="expected",
+            cells_b=expected,
         )
         _harness.assert_rows_equivalent(
-            "accelerator", accel_cells, "native", native_cells
+            label_a="accelerator",
+            cells_a=accel_cells,
+            label_b="native",
+            cells_b=native_cells,
         )
 
     @CrossSync.convert
     async def _fuzz_worker(
         self, accel_table, native_table, janitor, seed, worker_id, run_id
     ):
+        assert 0 <= worker_id < 100, (
+            f"worker_id must be in [0, 100) to avoid RNG seed collisions, got {worker_id}"
+        )
         prefix = f"fuzz-{seed}-{run_id}-w{worker_id}-".encode()
         ops = _harness.RandomOps(
-            seed * 100 + worker_id,
+            seed=seed * 100 + worker_id,
             key_prefix=prefix,
             include_aggregate=True,
             include_deletes=False,
@@ -109,7 +82,10 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
             janitor.track(key)
             await accel_table.mutate_row(key, mutation)
             touched.add(key)
-            if touched and i % 8 == 7:
+            # Spot-check a random touched row every 8th mutation to catch
+            # intermediate state bugs before later mutations overwrite the row,
+            # without the latency overhead of reading back after every write.
+            if touched and i % self.SPOT_CHECK_INTERVAL == self.SPOT_CHECK_INTERVAL - 1:
                 vkey = ops._rand.choice(sorted(touched))
                 await self._verify_key(accel_table, native_table, expected_state, vkey)
 
@@ -163,7 +139,7 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
         expected_state = _harness.ExpectedState()
 
         for ts_ms, value in [(1000, b"v1"), (2000, b"v2"), (3000, b"v3")]:
-            ts = ts_ms * _harness.MS
+            ts = _harness.ms_ts(ts_ms)
             await accel_table.mutate_row(
                 key, expected_state.set_cell(key, family, qualifier, value, ts)
             )
@@ -174,30 +150,31 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
         accel_filtered = await accel_table.read_row(key, row_filter=row_filter)
         native_filtered = await native_table.read_row(key, row_filter=row_filter)
         _harness.assert_rows_equivalent(
-            "accel-filtered",
-            _harness.normalize_row(accel_filtered),
-            "native-filtered",
-            _harness.normalize_row(native_filtered),
+            label_a="accel-filtered",
+            cells_a=_harness.normalize_row(accel_filtered),
+            label_b="native-filtered",
+            cells_b=_harness.normalize_row(native_filtered),
         )
         assert len(accel_filtered.cells) == 1
         assert accel_filtered.cells[0].value == b"v3"
 
         # Delete middle version [2000ms, 3000ms).
-        expected_state.delete_range_from_column(
-            key, family, qualifier, 2000 * _harness.MS, 3000 * _harness.MS
-        )
+        t_start = _harness.ms_ts(2000)
+        t_end = _harness.ms_ts(3000)
+        expected_state.delete_range_from_column(key, family, qualifier, t_start, t_end)
         await accel_table.mutate_row(
             key,
-            DeleteRangeFromColumn(
-                family, qualifier, 2000 * _harness.MS, 3000 * _harness.MS
-            ),
+            DeleteRangeFromColumn(family, qualifier, t_start, t_end),
         )
         await self._verify_key(accel_table, native_table, expected_state, key)
 
     @CrossSync.convert
     async def _multitable_worker(self, table, worker_id, key_prefix, janitor=None):
+        assert 0 <= worker_id < 100, (
+            f"worker_id must be in [0, 100) to avoid RNG seed collisions, got {worker_id}"
+        )
         ops = _harness.RandomOps(
-            worker_id, key_prefix=key_prefix, include_deletes=False
+            seed=worker_id, key_prefix=key_prefix, include_deletes=False
         )
         expected_state = _harness.ExpectedState()
         touched = set()
@@ -210,10 +187,10 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
         for key in sorted(touched):
             row = await table.read_row(key)
             _harness.assert_rows_equivalent(
-                f"worker-{worker_id}",
-                _harness.normalize_row(row),
-                "model",
-                expected_state.expected_cells(key),
+                label_a=f"worker-{worker_id}",
+                cells_a=_harness.normalize_row(row),
+                label_b="model",
+                cells_b=expected_state.expected_cells(key),
             )
         return sorted(touched)
 
@@ -267,7 +244,7 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
                 await table_b.close()
                 assert _harness.daemon_pid(table_a) == daemon_pid_a
                 verify_ops = _harness.RandomOps(
-                    999,
+                    seed=999,
                     key_prefix=f"conc-mt-after-close-{run_id}-".encode(),
                     include_deletes=False,
                 )
@@ -281,8 +258,8 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
                 for vkey in sorted(verify_keys):
                     vrow = await table_a.read_row(vkey)
                     _harness.assert_rows_equivalent(
-                        "table_a-after-close",
-                        _harness.normalize_row(vrow),
-                        "model",
-                        verify_state.expected_cells(vkey),
+                        label_a="table_a-after-close",
+                        cells_a=_harness.normalize_row(vrow),
+                        label_b="model",
+                        cells_b=verify_state.expected_cells(vkey),
                     )

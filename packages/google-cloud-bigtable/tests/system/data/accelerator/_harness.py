@@ -35,6 +35,15 @@ from google.cloud.bigtable.data.row import Row
 # Millisecond timestamp granularity (Bigtable default).
 MS = 1000
 
+# Millisecond-aligned base timestamp (1 hour before session start) so cells are
+# recent enough not to be collected during the run by a 1-day max_age GC rule.
+BASE_TS = (int(time.time() * 1000) - 3_600_000) * MS
+
+
+def ms_ts(offset_ms: int = 1000) -> int:
+    return BASE_TS + offset_ms * MS
+
+
 # Column families created by the shared system-test conftest.
 TEST_FAMILY = "test-family"
 TEST_FAMILY_2 = "test-family-2"
@@ -323,7 +332,7 @@ class RandomOps:
         return bytes(self._rand.getrandbits(8) for _ in range(n))
 
     def ms_timestamp(self) -> int:
-        return self._rand.randint(1, 2_000_000) * MS
+        return BASE_TS + self._rand.randint(1, 2_000_000) * MS
 
     def family(self) -> str:
         return self._rand.choice(self._families)
