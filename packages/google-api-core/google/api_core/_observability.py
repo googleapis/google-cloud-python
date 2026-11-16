@@ -22,7 +22,8 @@ import contextlib
 import functools
 import traceback
 import urllib.parse
-from typing import TYPE_CHECKING, Any, Callable, Sequence
+from collections.abc import Callable, MutableMapping, Sequence
+from typing import TYPE_CHECKING, Any
 
 from google.api_core import _feature_gating_helpers, exceptions
 from google.api_core.client_options import ClientOptions
@@ -35,7 +36,7 @@ except ImportError:
     _suppress_instrumentation = contextlib.nullcontext
 
 if TYPE_CHECKING:
-    # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
+    # flake8: grpc, opentelemetry.trace, and ClientInterceptor are imported only for static analysis and type annotations
     # The 'noqa: F401' comment avoids flake8 "imported but not used" errors.
     import grpc  # noqa: F401
     import opentelemetry.trace  # noqa: F401
@@ -43,6 +44,16 @@ if TYPE_CHECKING:
     from google.api_core.grpc_helpers import ClientInterceptor  # noqa: F401
 
 _TRACER_PROVIDER = "tracer_provider"
+_TRACE_CONTEXT_PROPAGATOR: Any = None
+_CHANNEL_INTERCEPTOR_MAPPING = (
+    ("intercept_unary_unary", "_unary_unary_interceptors"),
+    ("intercept_unary_stream", "_unary_stream_interceptors"),
+    ("intercept_stream_unary", "_stream_unary_interceptors"),
+    ("intercept_stream_stream", "_stream_stream_interceptors"),
+)
+_STANDARD_INTERCEPTOR_METHODS = tuple(
+    method for method, _ in _CHANNEL_INTERCEPTOR_MAPPING
+)
 
 
 @functools.cache
@@ -65,7 +76,7 @@ def is_otel_capabilities_enabled(
     """Checks if OTel capabilities are enabled and installed.
 
     Args:
-        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+        client_options (ClientOptions | dict[str, Any] | None): The client options
             object or dictionary.
         env_var (str): The environment variable to check for enablement.
 
@@ -97,7 +108,7 @@ def extract_trace_context(span: Any = None) -> dict[str, Any]:
     span context exists or if OpenTelemetry is not installed.
 
     Args:
-        span (Optional[Any]): The active OpenTelemetry span, if any.
+        span (Any | None): The active OpenTelemetry span, if any.
 
     Returns:
         dict[str, Any]: Trace and span correlation attributes.
@@ -215,11 +226,11 @@ def build_telemetry_error_attributes(
       gcp.errors.metadata.*, status.message, and optional exception.* fields.
 
     Args:
-        exc (Optional[BaseException]): An exception (e.g. GoogleAPICallError
+        exc (BaseException | None): An exception (e.g. GoogleAPICallError
             or grpc.RpcError) or ErrorInfo object.
-        status_code (Optional[str]): Optional pre-extracted or HTTP status code
+        status_code (str | None): Optional pre-extracted or HTTP status code
             fallback when exc is None or lacks a status code.
-        status_message (Optional[str]): Optional status message fallback when
+        status_message (str | None): Optional status message fallback when
             exc is None or lacks a message.
         include_exception (bool): When True, also populates exception.type,
             exception.message, and exception.stacktrace.
@@ -295,12 +306,12 @@ def _extract_endpoint_attributes(
     client_options: ClientOptions | dict[str, Any] | None = None,
     default_host: str | None = None,
 ) -> dict[str, Any]:
-    """Extracts server.address, server.port (if non-default), and url.domain from client options if present.
+    """Extracts server.address, server.port, and url.domain from client options.
 
     Args:
-        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+        client_options (ClientOptions | dict[str, Any] | None): The client options
             object or dictionary.
-        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+        default_host (str | None): Fallback transport host when ``api_endpoint`` is not
             set on ``client_options``.
 
     Returns:
@@ -349,10 +360,10 @@ def _extract_endpoint_attributes(
 def _make_grpc_client_request_hook(
     endpoint_attrs: dict[str, Any] | None = None,
 ) -> Callable[[Any, Any], None]:
-    """Creates an OpenTelemetry gRPC client request hook with optional endpoint attributes.
+    """Creates an OTel gRPC client request hook with endpoint attributes.
 
     Args:
-        endpoint_attrs (Optional[dict[str, Any]]): Optional static endpoint attributes to attach
+        endpoint_attrs (dict[str, Any] | None): Optional static endpoint attributes to attach
             to every span.
 
     Returns:
@@ -415,7 +426,7 @@ def _grpc_client_response_hook(span: Any, response: Any) -> None:
         modern ``rpc.response.status_code`` in future releases, this hook can be retired.
 
     Args:
-        span (Optional[Any]): The OpenTelemetry span.
+        span (Any | None): The OpenTelemetry span.
         response (Any): The gRPC response object or details.
     """
     if span is None or not getattr(span, "is_recording", lambda: False)():
@@ -439,7 +450,7 @@ def _get_tracer_provider(
     """Extracts the OpenTelemetry tracer provider from client options if present.
 
     Args:
-        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+        client_options (ClientOptions | dict[str, Any] | None): The client options
             object or dictionary.
 
     Returns:
@@ -594,9 +605,9 @@ def get_otel_interceptor(
     """Returns an interceptor callable that wraps a sync gRPC channel with OpenTelemetry tracing.
 
     Args:
-        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+        client_options (ClientOptions | dict[str, Any] | None): The client options
             object or dictionary used for feature gating and extracting the tracer provider.
-        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+        default_host (str | None): Fallback transport host when ``api_endpoint`` is not
             set on ``client_options``.
 
     Returns:
@@ -640,9 +651,9 @@ def get_otel_async_interceptor(
     """Returns async gRPC client interceptors for OpenTelemetry tracing.
 
     Args:
-        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+        client_options (ClientOptions | dict[str, Any] | None): The client options
             object or dictionary used for feature gating and extracting the tracer provider.
-        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+        default_host (str | None): Fallback transport host when ``api_endpoint`` is not
             set on ``client_options``.
 
     Returns:
@@ -675,14 +686,6 @@ def get_otel_async_interceptor(
     return interceptors
 
 
-_CHANNEL_INTERCEPTOR_MAPPING = (
-    ("intercept_unary_unary", "_unary_unary_interceptors"),
-    ("intercept_unary_stream", "_unary_stream_interceptors"),
-    ("intercept_stream_unary", "_stream_unary_interceptors"),
-    ("intercept_stream_stream", "_stream_stream_interceptors"),
-)
-
-
 def apply_otel_async_channel_interceptors(
     channel: Any,
     client_options: ClientOptions | dict[str, Any] | Sequence[Any] | None = None,
@@ -697,10 +700,10 @@ def apply_otel_async_channel_interceptors(
 
     Args:
         channel: The async gRPC channel to intercept.
-        client_options (Optional[Union[ClientOptions, dict[str, Any], Sequence[Any]]]): The client
+        client_options (ClientOptions | dict[str, Any] | Sequence[Any] | None): The client
             options used to resolve feature flags and tracer provider, or a sequence of
             pre-resolved interceptors.
-        default_host (Optional[str]): Fallback transport host when ``api_endpoint`` is not
+        default_host (str | None): Fallback transport host when ``api_endpoint`` is not
             set on ``client_options``.
 
     Returns:
@@ -740,19 +743,16 @@ def apply_otel_async_channel_interceptors(
     # lacking standard method names directly to the unary-unary list.
     unary_list = getattr(channel, "_unary_unary_interceptors", None)
     if isinstance(unary_list, list):
-        standard_methods = tuple(method for method, _ in _CHANNEL_INTERCEPTOR_MAPPING)
         fallback_items = [
             i
             for i in interceptor_list
-            if not any(hasattr(i, m) for m in standard_methods) and i not in unary_list
+            if not any(hasattr(i, m) for m in _STANDARD_INTERCEPTOR_METHODS)
+            and i not in unary_list
         ]
         if fallback_items:
             unary_list[:0] = fallback_items
 
     return channel
-
-
-_TRACE_CONTEXT_PROPAGATOR: Any = None
 
 
 class _TraceContext:
@@ -793,7 +793,7 @@ class _TraceContext:
         method: str | None = None,
         url: str | None = None,
         url_template: str | None = None,
-        headers: dict[str, Any] | None = None,
+        headers: MutableMapping[str, Any] | None = None,
         body: Any = None,
         client_options: ClientOptions | dict[str, Any] | None = None,
     ) -> tuple[str, dict[str, Any], Any]:
@@ -888,7 +888,7 @@ class _TraceContext:
         method: str | None = None,
         url: str | None = None,
         url_template: str | None = None,
-        headers: dict[str, Any] | None = None,
+        headers: MutableMapping[str, Any] | None = None,
         body: Any = None,
         client_options: ClientOptions | dict[str, Any] | None = None,
     ):
@@ -951,6 +951,8 @@ class _TraceContext:
                     )
                 except Exception:
                     pass
+        # Intentionally catch broad Exception so telemetry span enrichment
+        # fails open and never disrupts the caller's RPC flow.
         except Exception:
             pass
 
@@ -972,7 +974,7 @@ class _TraceContext:
         - ``status.message``: Error description message.
 
         Args:
-            exc (Optional[BaseException]): The exception raised during dispatch.
+            exc (BaseException | None): The exception raised during dispatch.
         """
         span = self._span
         if span is None or exc is None:
@@ -990,7 +992,9 @@ class _TraceContext:
                 msg = str(exc)
                 if msg:
                     span.set_attribute("status.message", msg)
-        except Exception:  # Fail-open on error attribute extraction failure
+        # Intentionally catch broad Exception so telemetry span enrichment
+        # fails open and never disrupts the caller's RPC flow.
+        except Exception:
             pass
 
     # Alias for method name parity with Daniel's suggested convention
@@ -1077,7 +1081,7 @@ def trace_http_request(
     method: str | None = None,
     url: str | None = None,
     url_template: str | None = None,
-    headers: dict[str, Any] | None = None,
+    headers: MutableMapping[str, Any] | None = None,
     body: Any = None,
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> _TraceContext:
@@ -1097,13 +1101,13 @@ def trace_http_request(
        of instantiating a throwaway dummy request object on every single RPC execution.
 
     Args:
-        request (Optional[Any]): Bundled HTTP request object with .method, .url, .headers.
-        method (Optional[str]): Explicit HTTP method (e.g. "GET", "POST").
-        url (Optional[str]): Fully qualified request URL.
-        url_template (Optional[str]): Parameterized path template for url.template.
-        headers (Optional[dict[str, Any]]): Mutable dictionary of request headers.
-        body (Optional[Any]): Request payload (used for body size calculation).
-        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): Client options
+        request (Any | None): Bundled HTTP request object with .method, .url, .headers.
+        method (str | None): Explicit HTTP method (e.g. "GET", "POST").
+        url (str | None): Fully qualified request URL.
+        url_template (str | None): Parameterized path template for url.template.
+        headers (MutableMapping[str, Any] | None): Mutable mapping of request headers.
+        body (Any | None): Request payload (used for body size calculation).
+        client_options (ClientOptions | dict[str, Any] | None): Client options
             containing custom endpoint and tracer provider configurations.
 
     Returns:
