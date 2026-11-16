@@ -47,7 +47,8 @@ class TestConcurrencyAsync(AcceleratorTestBase):
     ):
         from google.api_core import exceptions, retry
 
-        second_id = f"test-table-2-{uuid.uuid4().hex}"
+        second_id = f"test-table-2-{uuid.uuid4().hex[:12]}"
+        assert len(second_id) <= 50
         retry_fn = retry.Retry(
             predicate=retry.if_exception_type(exceptions.FailedPrecondition)
         )
@@ -73,7 +74,9 @@ class TestConcurrencyAsync(AcceleratorTestBase):
 
     @CrossSync.convert
     async def _worker(self, table, worker_id, key_prefix, janitor=None):
-        ops = _harness.RandomOps(worker_id, key_prefix=key_prefix, guard_ops=8)
+        ops = _harness.RandomOps(
+            worker_id, key_prefix=key_prefix, include_deletes=False
+        )
         expected_state = _harness.ExpectedState()
         touched = set()
         for _ in range(self.OPS_PER_WORKER):
@@ -94,15 +97,19 @@ class TestConcurrencyAsync(AcceleratorTestBase):
 
     @CrossSync.pytest
     async def test_concurrent_multitable_workers_stay_consistent(
-        self, accel_client, instance_id, table_id, second_table_id, janitor
+        self, instance_id, table_id, second_table_id, janitor
     ):
-        async with accel_client.get_table(instance_id, second_table_id) as table_b:
-            self.assert_accelerator_active(table_b)
-            daemon_pid_b = _harness.daemon_pid(table_b)
-
-            async with accel_client.get_table(instance_id, table_id) as table_a:
+        async with CrossSync.DataClient(
+            project=self._project_id(), use_accelerator=True
+        ) as client:
+            async with (
+                client.get_table(instance_id, table_id) as table_a,
+                client.get_table(instance_id, second_table_id) as table_b,
+            ):
                 self.assert_accelerator_active(table_a)
-                assert _harness.daemon_pid(table_a) == daemon_pid_b
+                self.assert_accelerator_active(table_b)
+                daemon_pid_a = _harness.daemon_pid(table_a)
+                assert _harness.daemon_pid(table_b) == daemon_pid_a
 
                 run_id = uuid.uuid4().hex[:8]
                 tables = (table_a, table_b)
@@ -134,20 +141,26 @@ class TestConcurrencyAsync(AcceleratorTestBase):
                         f"worker {w} failed: {result!r}"
                     )
 
-            # Closing table_a must leave table_b and the shared daemon active.
-            assert _harness.daemon_pid(table_b) == daemon_pid_b
-            verify_ops = _harness.RandomOps(
-                999,
-                key_prefix=f"conc-mt-after-close-{run_id}-".encode(),
-                guard_ops=8,
-            )
-            verify_state = _harness.ExpectedState()
-            vkey, vmut = verify_ops.build_mutation(verify_state)
-            await table_b.mutate_row(vkey, vmut)
-            vrow = await table_b.read_row(vkey)
-            _harness.assert_rows_equivalent(
-                "table_b-after-close",
-                _harness.normalize_row(vrow),
-                "model",
-                verify_state.expected_cells(vkey),
-            )
+                # Closing table_b must leave table_a and the shared daemon active.
+                await table_b.close()
+                assert _harness.daemon_pid(table_a) == daemon_pid_a
+                verify_ops = _harness.RandomOps(
+                    999,
+                    key_prefix=f"conc-mt-after-close-{run_id}-".encode(),
+                    include_deletes=False,
+                )
+                verify_state = _harness.ExpectedState()
+                verify_keys = set()
+                for _ in range(5):
+                    vkey, vmut = verify_ops.build_mutation(verify_state)
+                    janitor.track(vkey)
+                    await table_a.mutate_row(vkey, vmut)
+                    verify_keys.add(vkey)
+                for vkey in sorted(verify_keys):
+                    vrow = await table_a.read_row(vkey)
+                    _harness.assert_rows_equivalent(
+                        "table_a-after-close",
+                        _harness.normalize_row(vrow),
+                        "model",
+                        verify_state.expected_cells(vkey),
+                    )

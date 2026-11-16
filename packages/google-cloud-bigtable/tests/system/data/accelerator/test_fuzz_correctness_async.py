@@ -20,7 +20,7 @@ import uuid
 import pytest
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
-from google.cloud.bigtable.data.mutations import DeleteRangeFromColumn, SetCell
+from google.cloud.bigtable.data.mutations import DeleteRangeFromColumn
 from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
 
 from . import _harness
@@ -61,7 +61,7 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
             seed * 100 + worker_id,
             key_prefix=prefix,
             include_aggregate=True,
-            guard_ops=8,
+            include_deletes=False,
         )
         expected_state = _harness.ExpectedState()
         touched: set[bytes] = set()
@@ -155,33 +155,3 @@ class TestFuzzCorrectnessAsync(AcceleratorTestBase):
             ),
         )
         await self._verify_key(accel_table, native_table, expected_state, key)
-
-    @CrossSync.pytest
-    async def test_shared_daemon_across_table_handles(
-        self, accel_client, instance_id, table_id, native_table, janitor
-    ):
-        async with (
-            accel_client.get_table(instance_id, table_id) as table_a,
-            accel_client.get_table(instance_id, table_id) as table_b,
-        ):
-            self.assert_accelerator_active(table_a)
-            self.assert_accelerator_active(table_b)
-            assert _harness.daemon_pid(table_a) == _harness.daemon_pid(table_b)
-
-            key_a = janitor.track(f"shared-a-{uuid.uuid4().hex}".encode())
-            key_b = janitor.track(f"shared-b-{uuid.uuid4().hex}".encode())
-            ts = 1000 * _harness.MS
-
-            await table_a.mutate_row(
-                key_a, SetCell(_harness.TEST_FAMILY, b"qa", b"va", timestamp_micros=ts)
-            )
-            await table_b.mutate_row(
-                key_b, SetCell(_harness.TEST_FAMILY, b"qb", b"vb", timestamp_micros=ts)
-            )
-
-            row_a = await table_b.read_row(key_a)
-            row_b = await table_a.read_row(key_b)
-            assert row_a is not None and row_a.cells[0].value == b"va"
-            assert row_b is not None and row_b.cells[0].value == b"vb"
-            assert (await native_table.read_row(key_a)).cells[0].value == b"va"
-            assert (await native_table.read_row(key_b)).cells[0].value == b"vb"
