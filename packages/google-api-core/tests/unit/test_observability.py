@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import enum
 import sys
 import types
 import urllib.parse
@@ -32,6 +33,10 @@ _INVALID_ARGUMENT_CODE = (
 _UNAVAILABLE_CODE = (
     "UNAVAILABLE" if exceptions.grpc is not None else "SERVICE_UNAVAILABLE"
 )
+
+
+class _DummyGrpcStatus(enum.Enum):
+    OK = 0
 
 
 def test_is_otel_capabilities_enabled_disabled(monkeypatch):
@@ -2515,7 +2520,7 @@ def test_resolve_rpc_system(kind, expected):
     [
         pytest.param(
             "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
-            types.SimpleNamespace(
+            mock.Mock(
                 __module__="google.cloud.secretmanager_v1.services.secret_manager_service.transports.rest"
             ),
             "google.cloud.secretmanager_v1.services.secret_manager_service.transports.rest",
@@ -2579,7 +2584,7 @@ def test_get_service_logger(method_name, target, expected_name):
             "true",
             {
                 "target": "/google.showcase.v1beta1.Echo/Echo",
-                "status_code": types.SimpleNamespace(name="OK"),
+                "status_code": _DummyGrpcStatus.OK,
                 "kind": "grpc",
             },
             id="grpc_enum_ok_status",
@@ -2669,11 +2674,11 @@ def test_log_transport_attempt_emits_debug(
 ):
     """Proves that log_transport_attempt emits structured DEBUG logs on failed wire attempts."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
-    valid_ctx = types.SimpleNamespace(
-        is_valid=True,
+    valid_ctx = SpanContext(
         trace_id=0x0123456789ABCDEF0123456789ABCDEF,
         span_id=0x0123456789ABCDEF,
-        trace_flags=0x01,
+        is_remote=False,
+        trace_flags=TraceFlags.SAMPLED,
     )
     span = mock.Mock(spec_set=["get_span_context", "set_attribute", "is_recording"])
     span.get_span_context.return_value = valid_ctx
