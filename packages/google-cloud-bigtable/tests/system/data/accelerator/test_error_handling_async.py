@@ -37,12 +37,19 @@ __CROSS_SYNC_OUTPUT__ = "tests.system.data.accelerator.test_error_handling_autog
 class TestErrorHandlingAsync(AcceleratorTestBase):
     CRASH_WORKERS = 8
     OPS_PER_CRASH_WORKER = 40
+    SPOT_CHECK_INTERVAL = 4
 
     @CrossSync.convert
-    async def _crash_worker(self, table, worker_id, kill_at_op):
+    async def _crash_worker(self, table, janitor, worker_id, kill_at_op):
+        assert 0 <= worker_id < 100, (
+            f"worker_id must be in [0, 100) to avoid RNG seed collisions, got {worker_id}"
+        )
         prefix = f"crash-w{worker_id}-{uuid.uuid4().hex[:8]}-".encode()
         ops = _harness.RandomOps(
-            100 + worker_id, key_prefix=prefix, include_aggregate=False
+            seed=100 + worker_id,
+            key_prefix=prefix,
+            include_aggregate=False,
+            include_deletes=False,
         )
         expected_state = _harness.ExpectedState()
         touched = set()
@@ -50,15 +57,18 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
             if i == kill_at_op:
                 _harness.force_kill_daemon(table._accelerator_daemon)
             key, mutation = ops.build_mutation(expected_state)
+            janitor.track(key)
             await table.mutate_row(key, mutation, operation_timeout=30)
             touched.add(key)
-            if i % 4 == 3:
+            # Spot-check every 4th mutation to verify reads across the mid-flight
+            # daemon kill and fallback transition without reading on every op.
+            if i % self.SPOT_CHECK_INTERVAL == self.SPOT_CHECK_INTERVAL - 1:
                 row = await table.read_row(key, operation_timeout=30)
                 _harness.assert_rows_equivalent(
-                    f"crash-worker-{worker_id}-op-{i}",
-                    _harness.normalize_row(row),
-                    "model",
-                    expected_state.expected_cells(key),
+                    label_a=f"crash-worker-{worker_id}-op-{i}",
+                    cells_a=_harness.normalize_row(row),
+                    label_b="model",
+                    cells_b=expected_state.expected_cells(key),
                 )
         return sorted(touched), expected_state
 
@@ -86,6 +96,7 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
                         functools.partial(
                             self._crash_worker,
                             table,
+                            janitor,
                             w,
                             self.OPS_PER_CRASH_WORKER // 3 if w == 0 else -1,
                         )
@@ -109,21 +120,20 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
                     )
                     keys, expected_state = res
                     for key in keys:
-                        janitor.track(key)
                         accel_row = await table.read_row(key)
                         native_row = await native_table.read_row(key)
                         expected = expected_state.expected_cells(key)
                         _harness.assert_rows_equivalent(
-                            "fallback-table",
-                            _harness.normalize_row(accel_row),
-                            "expected",
-                            expected,
+                            label_a="fallback-table",
+                            cells_a=_harness.normalize_row(accel_row),
+                            label_b="expected",
+                            cells_b=expected,
                         )
                         _harness.assert_rows_equivalent(
-                            "native-table",
-                            _harness.normalize_row(native_row),
-                            "expected",
-                            expected,
+                            label_a="native-table",
+                            cells_a=_harness.normalize_row(native_row),
+                            label_b="expected",
+                            cells_b=expected,
                         )
 
     @CrossSync.pytest
@@ -135,7 +145,7 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
         breaker, and route subsequent increments through native with exact totals."""
         agg_key = janitor.track(f"crash-agg-{uuid.uuid4().hex}".encode())
         srv_key = janitor.track(f"crash-srv-{uuid.uuid4().hex}".encode())
-        ts = 1000 * _harness.MS
+        ts = _harness.ms_ts(1000)
         expected_state = _harness.ExpectedState()
 
         async with self._make_client(use_accelerator=True) as client:
@@ -148,10 +158,10 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
                 )
                 row = await table.read_row(agg_key)
                 _harness.assert_rows_equivalent(
-                    "initial-agg",
-                    _harness.normalize_row(row),
-                    "expected",
-                    expected_state.expected_cells(agg_key),
+                    label_a="initial-agg",
+                    cells_a=_harness.normalize_row(row),
+                    label_b="expected",
+                    cells_b=expected_state.expected_cells(agg_key),
                 )
 
                 # 2. Kill the daemon before a non-idempotent AddToCell (+100).
@@ -180,10 +190,10 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
                 )
                 final_row = await native_table.read_row(agg_key)
                 _harness.assert_rows_equivalent(
-                    "final-agg",
-                    _harness.normalize_row(final_row),
-                    "expected",
-                    expected_state.expected_cells(agg_key),
+                    label_a="final-agg",
+                    cells_a=_harness.normalize_row(final_row),
+                    label_b="expected",
+                    cells_b=expected_state.expected_cells(agg_key),
                 )
 
         # Also verify server-assigned timestamp SetCell (timestamp_micros=-1)
@@ -207,18 +217,18 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
 
     @CrossSync.pytest
     async def test_shared_daemon_crash_falls_back_across_all_client_tables(
-        self, instance_id, table_id, native_table, janitor
+        self, instance_id, table_id, second_table_id, native_table, janitor
     ):
         async with self._make_client(use_accelerator=True) as client:
             async with (
                 client.get_table(instance_id, table_id) as table_a,
-                client.get_table(instance_id, table_id) as table_b,
+                client.get_table(instance_id, second_table_id) as table_b,
             ):
                 self.assert_accelerator_active(table_a)
                 self.assert_accelerator_active(table_b)
                 key_a = janitor.track(f"multi-a-{uuid.uuid4().hex}".encode())
-                key_b = janitor.track(f"multi-b-{uuid.uuid4().hex}".encode())
-                ts = 1000 * _harness.MS
+                key_b = f"multi-b-{uuid.uuid4().hex}".encode()
+                ts = _harness.ms_ts(1000)
 
                 await table_a.mutate_row(
                     key_a,
@@ -237,7 +247,7 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
                     key_b,
                     SetCell(_harness.TEST_FAMILY, b"q", b"b1", timestamp_micros=ts),
                 )
-                row_b = await native_table.read_row(key_b)
+                row_b = await table_b.read_row(key_b)
                 assert row_b is not None and row_b.cells[0].value == b"b1"
 
     @CrossSync.pytest
@@ -255,7 +265,9 @@ class TestErrorHandlingAsync(AcceleratorTestBase):
     @CrossSync.pytest
     async def test_backend_error_type_matches_native(self, accel_table, native_table):
         key = f"errtest-{uuid.uuid4().hex}".encode()
-        bad = SetCell("no-such-family", b"q", b"v", timestamp_micros=1000 * _harness.MS)
+        bad = SetCell(
+            "no-such-family", b"q", b"v", timestamp_micros=_harness.ms_ts(1000)
+        )
         with pytest.raises(Exception) as accel_ei:
             await accel_table.mutate_row(key, bad)
         with pytest.raises(Exception) as native_ei:
