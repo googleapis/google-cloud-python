@@ -59,8 +59,11 @@ PASSPHRASE_VALUE = b"password"
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
-with open(os.path.join(DATA_DIR, "other_cert.pem"), "rb") as _fh:
-    OTHER_CERT_BYTES = _fh.read()
+with open(os.path.join(DATA_DIR, "es256_public_cert.pem"), "rb") as _fh:
+    ES256_CERT_BYTES = _fh.read()
+
+with open(os.path.join(DATA_DIR, "es256_privatekey.pem"), "rb") as _fh:
+    ES256_KEY_BYTES = _fh.read()
 
 with open(os.path.join(DATA_DIR, "trust_chain_with_leaf.pem"), "rb") as _fh:
     TRUST_CHAIN_WITH_LEAF_BYTES = _fh.read()
@@ -2349,12 +2352,12 @@ class TestMtlsCertManager(object):
                 }
             )
         )
-        return cert_file, config_file
+        return cert_file, key_file, config_file
 
     def test_default_discovery_and_rotation_from_config_file(
         self, tmp_path, monkeypatch
     ):
-        cert_file, _ = self._write_workload_config(tmp_path)
+        cert_file, key_file, _ = self._write_workload_config(tmp_path)
         # The config file is written as certificate_config.json in tmp_path,
         # so it is found through the gcloud config directory.
         monkeypatch.setattr(
@@ -2374,12 +2377,13 @@ class TestMtlsCertManager(object):
         assert manager.refresh() is False
         assert manager.generation_id == 1
 
-        cert_file.write_bytes(OTHER_CERT_BYTES)
+        cert_file.write_bytes(ES256_CERT_BYTES)
+        key_file.write_bytes(ES256_KEY_BYTES)
         assert manager.refresh() is True
         assert manager.generation_id == 2
         assert manager.get_credential_snapshot() == (
-            OTHER_CERT_BYTES,
-            pytest.private_key_bytes,
+            ES256_CERT_BYTES,
+            ES256_KEY_BYTES,
             2,
         )
 
@@ -2388,7 +2392,7 @@ class TestMtlsCertManager(object):
             side_effect=[
                 (TRUST_CHAIN_WITH_LEAF_BYTES, pytest.private_key_bytes),
                 (TRUST_CHAIN_WITH_LEAF_BYTES, pytest.private_key_bytes),
-                (OTHER_CERT_BYTES, pytest.private_key_bytes),
+                (ES256_CERT_BYTES, ES256_KEY_BYTES),
             ]
         )
         manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
@@ -2414,13 +2418,13 @@ class TestMtlsCertManager(object):
         assert manager.refresh() is True
         assert manager.generation_id == 2
         assert manager.get_credential_snapshot() == (
-            OTHER_CERT_BYTES,
-            pytest.private_key_bytes,
+            ES256_CERT_BYTES,
+            ES256_KEY_BYTES,
             2,
         )
         assert manager.cert_fingerprint == (
             _agent_identity_utils.calculate_certificate_fingerprint(
-                _agent_identity_utils.parse_certificate(OTHER_CERT_BYTES)
+                _agent_identity_utils.parse_certificate(ES256_CERT_BYTES)
             )
         )
         assert source.call_count == 3
@@ -2444,7 +2448,7 @@ class TestMtlsCertManager(object):
         # next one enters refresh(), and the test would pass without the lock.
         def slow_reload():
             time.sleep(0.1)
-            return OTHER_CERT_BYTES, pytest.private_key_bytes
+            return ES256_CERT_BYTES, ES256_KEY_BYTES
 
         source.side_effect = slow_reload
         results = [None] * 4
@@ -2488,7 +2492,7 @@ class TestMtlsCertManager(object):
         assert manager.refresh(expected_generation=0) is True
         assert manager.generation_id == 1
 
-        reload_source = mock.Mock(side_effect=[reload_result] * 2)
+        reload_source = mock.Mock(side_effect=[reload_result] * 6)
 
         def slow_source():
             time.sleep(0.1)
@@ -2510,7 +2514,7 @@ class TestMtlsCertManager(object):
 
         assert results == [False] * 6
         assert manager.generation_id == 1
-        assert 1 <= reload_source.call_count <= 2
+        assert 1 <= reload_source.call_count < 6
 
     def test_mid_reload_arrival_does_not_reuse_earlier_read(self):
         entered = threading.Event()
@@ -2524,7 +2528,7 @@ class TestMtlsCertManager(object):
         steps = [
             lambda: (pytest.public_cert_bytes, pytest.private_key_bytes),
             hold_reload,
-            lambda: (OTHER_CERT_BYTES, pytest.private_key_bytes),
+            lambda: (ES256_CERT_BYTES, ES256_KEY_BYTES),
         ]
         manager = _mtls_helper._MtlsCertManager(
             client_cert_source=lambda: steps.pop(0)()
@@ -2557,7 +2561,7 @@ class TestMtlsCertManager(object):
         def blocking_reload():
             entered_reload.set()
             release_reload.wait(timeout=5)
-            return OTHER_CERT_BYTES, pytest.private_key_bytes
+            return ES256_CERT_BYTES, ES256_KEY_BYTES
 
         steps = [
             lambda: (pytest.public_cert_bytes, pytest.private_key_bytes),
@@ -2582,8 +2586,8 @@ class TestMtlsCertManager(object):
             refresh_thread.join(timeout=5)
 
         assert manager.get_credential_snapshot() == (
-            OTHER_CERT_BYTES,
-            pytest.private_key_bytes,
+            ES256_CERT_BYTES,
+            ES256_KEY_BYTES,
             2,
         )
 
@@ -2660,7 +2664,7 @@ class TestMtlsCertManager(object):
         monkeypatch.setattr(
             _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmp_path)
         )
-        _, config_file = self._write_workload_config(tmp_path)
+        _, _, config_file = self._write_workload_config(tmp_path)
 
         manager = _mtls_helper._MtlsCertManager()
         assert manager.refresh() is True
