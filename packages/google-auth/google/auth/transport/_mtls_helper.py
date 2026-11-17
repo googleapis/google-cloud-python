@@ -1133,18 +1133,13 @@ class _MtlsCertManager:
             Optional callback returning ``(cert_bytes, key_bytes)`` in PEM
             format. When ``None``, certificates are discovered via
             :func:`get_client_ssl_credentials`.
-        certificate_config_path (Optional[str]): Optional explicit path to a
-            ``certificate_config.json`` file used when ``client_cert_source``
-            is ``None``.
     """
 
     def __init__(
         self,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        certificate_config_path: Optional[str] = None,
     ) -> None:
         self._client_cert_source = client_cert_source
-        self._certificate_config_path = certificate_config_path
         self._snapshot = _CertSnapshot(None, None, 0, None)
         self._reload_id: int = 0
         self._completed_reload_id: int = 0
@@ -1174,8 +1169,7 @@ class _MtlsCertManager:
             cert_bytes, key_bytes = self._client_cert_source()
         else:
             has_cert, cert_bytes, key_bytes, _ = get_client_ssl_credentials(
-                generate_encrypted_key=False,
-                certificate_config_path=self._certificate_config_path,
+                generate_encrypted_key=False
             )
             if not has_cert and self._snapshot.generation_id == 0:
                 return None, None, None

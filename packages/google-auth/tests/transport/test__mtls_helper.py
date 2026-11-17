@@ -2366,24 +2366,16 @@ class TestMtlsCertManager(object):
         )
         return cert_file, config_file
 
-    @pytest.mark.parametrize(
-        "use_default_location", [False, True], ids=["explicit_path", "default_location"]
-    )
     def test_default_discovery_and_rotation_from_config_file(
-        self, tmp_path, monkeypatch, use_default_location
+        self, tmp_path, monkeypatch
     ):
-        cert_file, config_file = self._write_workload_config(tmp_path)
-        if use_default_location:
-            # The config file is written as certificate_config.json in tmp_path,
-            # so it is found through the gcloud config directory.
-            monkeypatch.setattr(
-                _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmp_path)
-            )
-            manager = _mtls_helper._MtlsCertManager()
-        else:
-            manager = _mtls_helper._MtlsCertManager(
-                certificate_config_path=str(config_file)
-            )
+        cert_file, _ = self._write_workload_config(tmp_path)
+        # The config file is written as certificate_config.json in tmp_path,
+        # so it is found through the gcloud config directory.
+        monkeypatch.setattr(
+            _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmp_path)
+        )
+        manager = _mtls_helper._MtlsCertManager()
         assert manager.get_credential_snapshot() == (None, None, 0)
 
         assert manager.refresh() is True
@@ -2700,11 +2692,12 @@ class TestMtlsCertManager(object):
             1,
         )
 
-    def test_copy_and_deepcopy_share_instance(self, tmp_path):
-        _, config_file = self._write_workload_config(tmp_path)
-        manager = _mtls_helper._MtlsCertManager(
-            certificate_config_path=str(config_file)
+    def test_copy_and_deepcopy_share_instance(self, tmp_path, monkeypatch):
+        self._write_workload_config(tmp_path)
+        monkeypatch.setattr(
+            _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmp_path)
         )
+        manager = _mtls_helper._MtlsCertManager()
         assert manager.refresh() is True
 
         assert copy.copy(manager) is manager
@@ -2715,12 +2708,12 @@ class TestMtlsCertManager(object):
         [None, lambda: (pytest.public_cert_bytes, pytest.private_key_bytes)],
         ids=["default_discovery", "callback"],
     )
-    def test_pickle_raises_type_error(self, tmp_path, client_cert_source):
-        _, config_file = self._write_workload_config(tmp_path)
-        manager = _mtls_helper._MtlsCertManager(
-            client_cert_source=client_cert_source,
-            certificate_config_path=str(config_file),
+    def test_pickle_raises_type_error(self, tmp_path, monkeypatch, client_cert_source):
+        self._write_workload_config(tmp_path)
+        monkeypatch.setattr(
+            _mtls_helper._cloud_sdk, "get_config_path", lambda: str(tmp_path)
         )
+        manager = _mtls_helper._MtlsCertManager(client_cert_source=client_cert_source)
         assert manager.refresh() is True
 
         with pytest.raises(TypeError, match="cannot pickle '_MtlsCertManager'"):
