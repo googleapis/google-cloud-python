@@ -39,6 +39,10 @@ Your directory should look like this. Follow the instructions below for creating
   system_tests/
       data/
         authorized_user.json
+        dpop_authorized_user.json
+        dpop_bad_key.pem
+        dpop_client_secrets.json
+        dpop_key.pem
         impersonated_service_account.json
         service_account.json
 
@@ -134,10 +138,11 @@ DPoP Authorized User System Tests
 DPoP authorized user system tests are completely separate from ``authorized_user.json``
 and the existing authorized user tests.
 
-Because the ``gcloud`` CLI does not yet support DPoP-bound credentials, generate
-two EC P-256 private keys with ``openssl`` (one valid key to bind the credentials
-and one mismatched key for negative testing) and use the included helper script
-to create ``system_tests/data/dpop_authorized_user.json``:
+Because the ``gcloud`` CLI does not support DPoP-bound credentials, we need to
+use a custom script. Start by generating two EC P-256 private keys with
+``openssl`` (one valid key to bind the credentials and one mismatched key for
+negative testing) and use the included helper script to create
+``system_tests/data/dpop_authorized_user.json``:
 
 1. Generate the valid and mismatched EC P-256 software keys::
 
@@ -148,7 +153,8 @@ to create ``system_tests/data/dpop_authorized_user.json``:
 
 2. In Google Cloud Console, go to **APIs & Services > Credentials**, create an
    **OAuth client ID** of type **Desktop app**, and save the downloaded client
-   secret JSON file to ``system_tests/data/dpop_client_secrets.json``. Ensure
+   secret JSON file to ``system_tests/data/dpop_client_secrets.json``. Googlers
+   and Workspace users should choose **Internal** for audience; otherwise ensure
    your test Google account is permitted on the OAuth consent screen (listed
    under Test Users if the app is in Testing status).
 3. Run the setup helper from ``packages/google-auth`` (with ``google-auth``
