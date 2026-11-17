@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
+import inspect
+import threading
+import time
+from concurrent import futures
 from unittest import mock
 
 import pytest
@@ -1444,3 +1449,409 @@ def test_create_channel_interconnect_gated_by_attempt_direct_path(
         compute_creds,
         compression=None,
     )
+
+
+_GRPC_SUPPORTS_REGISTERED_METHOD = (
+    "_registered_method" in inspect.signature(grpc.Channel.unary_unary).parameters
+)
+
+
+class _FakeCertManager:
+    """In-memory duck-typed certificate manager for _RotatingGrpcChannel tests."""
+
+    def __init__(self, generation_id=1):
+        self.generation_id = generation_id
+
+
+class _UnaryUnaryPassthroughInterceptor(grpc.UnaryUnaryClientInterceptor):
+    """Matches generated GAPIC _LoggingClientInterceptor (UnaryUnary only)."""
+
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        return continuation(client_call_details, request)
+
+
+def _make_mock_channel(name="channel"):
+    ch = mock.create_autospec(grpc.Channel, instance=True, name=name)
+    ch.custom_attr = f"attr_{name}"
+    return ch
+
+
+def _make_real_channel():
+    # Creating a channel opens no socket; tests never send an RPC on it.
+    return grpc.insecure_channel("127.0.0.1:9")
+
+
+class Test_RotatingGrpcChannel:
+    def test_wrap_errors_recognizes_rotating_multicallables(self):
+        ch1 = _make_mock_channel("ch1")
+        rotating = grpc_helpers._RotatingGrpcChannel(lambda: ch1)
+        intercepted = grpc.intercept_channel(
+            rotating, _UnaryUnaryPassthroughInterceptor()
+        )
+
+        assert isinstance(
+            rotating.unary_unary("/svc/Unary"), grpc.UnaryUnaryMultiCallable
+        )
+        assert isinstance(
+            intercepted.unary_stream("/svc/ServerStream"),
+            grpc.UnaryStreamMultiCallable,
+        )
+        assert isinstance(
+            intercepted.stream_unary("/svc/ClientStream"),
+            grpc.StreamUnaryMultiCallable,
+        )
+        assert isinstance(
+            intercepted.stream_stream("/svc/BidiStream"),
+            grpc.StreamStreamMultiCallable,
+        )
+
+    @pytest.mark.parametrize(
+        "registered_method",
+        [
+            False,
+            pytest.param(
+                True,
+                marks=pytest.mark.skipif(
+                    not _GRPC_SUPPORTS_REGISTERED_METHOD,
+                    reason="grpcio < 1.63 has no _registered_method",
+                ),
+            ),
+        ],
+    )
+    def test_registered_method_and_fresh_multicallable_across_swap(
+        self, registered_method
+    ):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        rotating = grpc_helpers._RotatingGrpcChannel(lambda: next(channels))
+        intercepted = grpc.intercept_channel(
+            rotating, _UnaryUnaryPassthroughInterceptor()
+        )
+
+        serializer = mock.sentinel.serializer
+        deserializer = mock.sentinel.deserializer
+        # The 4th positional argument only exists on grpcio 1.63+. The inner
+        # channel must only see it when it is True.
+        extra_args = (True,) if registered_method else ()
+        extra_kwargs = {"_registered_method": True} if registered_method else {}
+
+        uu_stub = intercepted.unary_unary(
+            "/svc/UU", serializer, deserializer, *extra_args
+        )
+        us_stub = intercepted.unary_stream(
+            "/svc/US", serializer, deserializer, *extra_args
+        )
+        su_stub = intercepted.stream_unary(
+            "/svc/SU", serializer, deserializer, *extra_args
+        )
+        ss_stub = intercepted.stream_stream(
+            "/svc/SS", serializer, deserializer, *extra_args
+        )
+
+        # Factory creation is side-effect free on the inner channels
+        ch1.unary_unary.assert_not_called()
+        ch1.unary_stream.assert_not_called()
+        ch1.stream_unary.assert_not_called()
+        ch1.stream_stream.assert_not_called()
+
+        for ch, suffix in ((ch1, "1"), (ch2, "2")):
+            ch.unary_unary.return_value.with_call.return_value = (
+                f"uu_{suffix}",
+                None,
+            )
+            uu_fut = mock.MagicMock()
+            uu_fut.result.return_value = f"uu_fut_{suffix}"
+            ch.unary_unary.return_value.future.return_value = uu_fut
+            ch.unary_stream.return_value.return_value = iter([f"us_{suffix}"])
+            ch.stream_unary.return_value.with_call.return_value = (
+                f"su_{suffix}",
+                None,
+            )
+            su_fut = mock.MagicMock()
+            su_fut.result.return_value = f"su_fut_{suffix}"
+            ch.stream_unary.return_value.future.return_value = su_fut
+            ch.stream_stream.return_value.return_value = iter([f"ss_{suffix}"])
+
+        assert uu_stub("req") == "uu_1"
+        assert uu_stub.future("req").result() == "uu_fut_1"
+        assert list(us_stub("req")) == ["us_1"]
+        assert su_stub(iter(["req"])) == "su_1"
+        assert su_stub.future(iter(["req"])).result() == "su_fut_1"
+        assert list(ss_stub(iter(["req"]))) == ["ss_1"]
+
+        # Swap channel (generic timer/Bigtable pattern with cert_manager=None)
+        prewarmed = rotating.create_channel()
+        assert prewarmed is ch2
+        old = rotating.swap_channel(prewarmed)
+        assert old is ch1
+        assert rotating.channel is ch2
+        ch1.close.assert_not_called()
+
+        # Same cached stubs now dispatch on ch2
+        assert uu_stub("req") == "uu_2"
+        assert uu_stub.future("req").result() == "uu_fut_2"
+        assert list(us_stub("req")) == ["us_2"]
+        assert su_stub(iter(["req"])) == "su_2"
+        assert su_stub.future(iter(["req"])).result() == "su_fut_2"
+        assert list(ss_stub(iter(["req"]))) == ["ss_2"]
+
+        for ch in (ch1, ch2):
+            assert ch.unary_unary.call_args_list == [
+                mock.call("/svc/UU", serializer, deserializer, **extra_kwargs),
+                mock.call("/svc/UU", serializer, deserializer, **extra_kwargs),
+            ]
+            ch.unary_stream.assert_called_once_with(
+                "/svc/US", serializer, deserializer, **extra_kwargs
+            )
+            assert ch.stream_unary.call_args_list == [
+                mock.call("/svc/SU", serializer, deserializer, **extra_kwargs),
+                mock.call("/svc/SU", serializer, deserializer, **extra_kwargs),
+            ]
+            ch.stream_stream.assert_called_once_with(
+                "/svc/SS", serializer, deserializer, **extra_kwargs
+            )
+
+    def test_proxy_call_kwargs_and_with_call_passthrough(self):
+        ch1 = _make_mock_channel("ch1")
+        rotating = grpc_helpers._RotatingGrpcChannel(lambda: ch1)
+        call_kwargs = dict(
+            timeout=12.5,
+            metadata=(("x-test", "1"),),
+            credentials=mock.sentinel.call_creds,
+            wait_for_ready=True,
+            compression=grpc.Compression.Gzip,
+        )
+
+        ch1.unary_unary.return_value.with_call.return_value = (
+            "uu_resp",
+            mock.sentinel.uu_call,
+        )
+        ch1.stream_unary.return_value.with_call.return_value = (
+            "su_resp",
+            mock.sentinel.su_call,
+        )
+
+        uu_stub = rotating.unary_unary("/svc/UU")
+        su_stub = rotating.stream_unary("/svc/SU")
+
+        assert uu_stub("req", **call_kwargs) == "uu_resp"
+        assert uu_stub.with_call("req", **call_kwargs) == (
+            "uu_resp",
+            mock.sentinel.uu_call,
+        )
+        uu_stub.future("req", **call_kwargs)
+        rotating.unary_stream("/svc/US")("req", **call_kwargs)
+        assert su_stub(iter(["req"]), **call_kwargs) == "su_resp"
+        assert su_stub.with_call(iter(["req"]), **call_kwargs) == (
+            "su_resp",
+            mock.sentinel.su_call,
+        )
+        su_stub.future(iter(["req"]), **call_kwargs)
+        rotating.stream_stream("/svc/SS")(iter(["req"]), **call_kwargs)
+
+        assert ch1.unary_unary.return_value.with_call.call_args_list == [
+            mock.call("req", **call_kwargs),
+            mock.call("req", **call_kwargs),
+        ]
+        ch1.unary_unary.return_value.future.assert_called_once_with(
+            "req", **call_kwargs
+        )
+        ch1.unary_stream.return_value.assert_called_once_with("req", **call_kwargs)
+        assert ch1.stream_unary.return_value.with_call.call_args_list == [
+            mock.call(mock.ANY, **call_kwargs),
+            mock.call(mock.ANY, **call_kwargs),
+        ]
+        ch1.stream_unary.return_value.future.assert_called_once_with(
+            mock.ANY, **call_kwargs
+        )
+        ch1.stream_stream.return_value.assert_called_once_with(mock.ANY, **call_kwargs)
+
+    def test_pre_rpc_generation_advance_swaps_before_call(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+
+        stub = rotating.unary_unary("/svc/UU")
+        ch2.unary_unary.return_value.with_call.return_value = (
+            "ok_from_ch2",
+            mock.sentinel.call,
+        )
+
+        # Simulate AuthMetadataPlugin advancing generation_id before next RPC
+        cert_manager.generation_id = 2
+
+        assert stub("req") == "ok_from_ch2"
+        ch1.unary_unary.assert_not_called()
+        assert rotating.channel is ch2
+
+    def test_concurrent_pre_rpc_checks_build_one_channel(self):
+        num_threads = 8
+        cert_manager = _FakeCertManager(generation_id=1)
+        built = []
+
+        def factory():
+            if built:
+                # Hold the channel lock long enough for the other threads to
+                # pass the lock-free generation check and queue on the lock.
+                time.sleep(0.05)
+            ch = _make_mock_channel(f"ch{len(built) + 1}")
+            ch.unary_unary.return_value.with_call.return_value = ("ok", None)
+            built.append(ch)
+            return ch
+
+        rotating = grpc_helpers._RotatingGrpcChannel(factory, cert_manager=cert_manager)
+        stub = rotating.unary_unary("/svc/UU")
+        cert_manager.generation_id = 2
+        barrier = threading.Barrier(num_threads)
+
+        def call_after_barrier():
+            barrier.wait()
+            return stub("req")
+
+        with futures.ThreadPoolExecutor(num_threads) as executor:
+            results = [executor.submit(call_after_barrier) for _ in range(num_threads)]
+            assert [f.result() for f in results] == ["ok"] * num_threads
+
+        assert len(built) == 2
+        assert rotating.channel is built[1]
+        built[0].unary_unary.assert_not_called()
+
+    def test_swap_in_channel_created_before_rotation(self):
+        ch1 = _make_mock_channel("ch1")
+        prewarmed = _make_mock_channel("prewarmed")
+        ch3 = _make_mock_channel("ch3")
+        factory = mock.Mock(side_effect=[ch1, prewarmed, ch3])
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(factory, cert_manager=cert_manager)
+        ch3.unary_unary.return_value.with_call.return_value = ("ok", None)
+
+        assert rotating.create_channel() is prewarmed
+        # The certificate rotates while the caller warms the channel.
+        cert_manager.generation_id = 2
+
+        # The old-certificate channel is closed and not installed; a new one is built.
+        assert rotating.swap_channel(prewarmed) is ch1
+        assert rotating.channel is ch3
+        assert rotating.unary_unary("/svc/UU")("req") == "ok"
+        prewarmed.unary_unary.assert_not_called()
+        prewarmed.close.assert_called_once_with()
+        assert factory.call_count == 3
+
+    def test_swap_in_current_or_external_channel_is_kept(self):
+        ch1 = _make_mock_channel("ch1")
+        prewarmed = _make_mock_channel("prewarmed")
+        external = _make_mock_channel("external")
+        factory = mock.Mock(side_effect=[ch1, prewarmed])
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(factory, cert_manager=cert_manager)
+        stub = rotating.unary_unary("/svc/UU")
+        prewarmed.unary_unary.return_value.with_call.return_value = ("prewarmed", None)
+        external.unary_unary.return_value.with_call.return_value = ("external", None)
+
+        rotating.swap_channel(rotating.create_channel())
+        assert stub("req") == "prewarmed"
+
+        # A channel that did not come from create_channel() is assumed current.
+        cert_manager.generation_id = 2
+        rotating.swap_channel(external)
+        assert stub("req") == "external"
+        assert factory.call_count == 2
+
+    def test_subscriber_migration_across_swap(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        rotating = grpc_helpers._RotatingGrpcChannel(lambda: next(channels))
+
+        cb1 = mock.Mock(name="cb1")
+        cb2 = mock.Mock(name="cb2")
+
+        rotating.subscribe(cb1, try_to_connect=False)
+        rotating.subscribe(cb1, try_to_connect=True)
+        rotating.subscribe(cb2, try_to_connect=False)
+
+        # Unsubscribing cb2 removes it; unsubscribing cb1 once leaves the second entry;
+        # unsubscribing an unregistered callback forwards cleanly without error.
+        rotating.unsubscribe(cb2)
+        rotating.unsubscribe(cb1)
+        rotating.unsubscribe(mock.Mock(name="unknown"))
+        ch1.unsubscribe.reset_mock()
+
+        old = rotating.swap_channel()
+        assert old is ch1
+        assert rotating.channel is ch2
+        ch1.unsubscribe.assert_called_once_with(cb1)
+        ch2.subscribe.assert_called_once_with(cb1, try_to_connect=True)
+        ch1.close.assert_not_called()
+
+    def test_getattr_and_context_manager(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        rotating = grpc_helpers._RotatingGrpcChannel(lambda: next(channels))
+
+        rotating.swap_channel()
+        assert rotating.custom_attr == "attr_ch2"
+
+        with rotating as ctx_ch:
+            assert ctx_ch is rotating
+        ch2.close.assert_called_once_with()
+        ch1.close.assert_not_called()
+
+    def test_close_stops_building_channels(self):
+        factory = mock.Mock(side_effect=_make_real_channel)
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(factory, cert_manager=cert_manager)
+        stub = rotating.unary_unary("/svc/UU")
+        registered_stub = rotating.unary_unary("/svc/UU", _registered_method=True)
+
+        rotating.close()
+        cert_manager.generation_id = 2
+
+        # Unregistered RPC stays on the closed channel; registered RPC raises
+        # before touching grpcio's _get_registered_call_handle().
+        with pytest.raises(ValueError):
+            stub(b"req")
+        with pytest.raises(ValueError):
+            registered_stub(b"req")
+        with pytest.raises(ValueError):
+            rotating.swap_channel()
+        with pytest.raises(ValueError):
+            rotating.create_channel()
+        # Post-close subscribe is a no-op and does not start a polling thread.
+        rotating.subscribe(lambda _: None, try_to_connect=True)
+        assert rotating._subscribers == []
+        assert factory.call_count == 1
+
+    def test_create_channel_closes_channel_when_closed_concurrently(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        rotating = None
+
+        def factory():
+            if rotating is None:
+                return ch1
+            rotating.close()
+            return ch2
+
+        rotating = grpc_helpers._RotatingGrpcChannel(factory)
+        with pytest.raises(ValueError):
+            rotating.create_channel()
+
+        ch1.close.assert_called_once_with()
+        ch2.close.assert_called_once_with()
+
+    def test_getattr_without_init_raises_attribute_error(self):
+        rotating = grpc_helpers._RotatingGrpcChannel(_make_mock_channel)
+        assert copy.copy(rotating).channel is rotating.channel
+
+        uninitialized = grpc_helpers._RotatingGrpcChannel.__new__(
+            grpc_helpers._RotatingGrpcChannel
+        )
+        with pytest.raises(AttributeError):
+            uninitialized.custom_attr
