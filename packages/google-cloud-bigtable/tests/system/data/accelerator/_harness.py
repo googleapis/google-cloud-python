@@ -35,6 +35,15 @@ from google.cloud.bigtable.data.row import Row
 # Millisecond timestamp granularity (Bigtable default).
 MS = 1000
 
+# Millisecond-aligned base timestamp (1 hour before session start) so cells are
+# recent enough not to be collected during the run by a 1-day max_age GC rule.
+BASE_TS = (int(time.time() * 1000) - 3_600_000) * MS
+
+
+def ms_ts(offset_ms: int = 1000) -> int:
+    return BASE_TS + offset_ms * MS
+
+
 # Column families created by the shared system-test conftest.
 TEST_FAMILY = "test-family"
 TEST_FAMILY_2 = "test-family-2"
@@ -47,6 +56,49 @@ DELETE_AFTER_WRITE_GUARD_OPS = 512
 
 # Env var used by tests / runners to override the binary location.
 BIN_ENV_VAR = "BIGTABLE_ACCELERATOR_BIN"
+
+
+class TestSettings:
+    """Centralized environment configuration for accelerator system tests."""
+
+    @property
+    def project_id(self) -> str | None:
+        return os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("PROJECT_ID") or None
+
+    @property
+    def instance_id(self) -> str | None:
+        return (
+            os.getenv("BIGTABLE_TEST_INSTANCE") or os.getenv("CBT_INSTANCE_ID") or None
+        )
+
+    @property
+    def table_id(self) -> str:
+        return os.getenv("BIGTABLE_TEST_TABLE") or "accel-test-table-1"
+
+    @property
+    def second_table_id(self) -> str:
+        return os.getenv("BIGTABLE_TEST_SECOND_TABLE") or "accel-test-table-2"
+
+    @property
+    def app_profile_id(self) -> str | None:
+        return (
+            os.getenv("BIGTABLE_TEST_APP_PROFILE")
+            or os.getenv("CBT_APP_PROFILE_ID")
+            or None
+        )
+
+    @property
+    def accelerator_bin(self) -> str | None:
+        return os.getenv(BIN_ENV_VAR) or None
+
+    @property
+    def emulator_host(self) -> str | None:
+        from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+        return os.getenv(BIGTABLE_EMULATOR) or None
+
+
+SETTINGS = TestSettings()
 
 Expected = tuple  # (family: str, qualifier: bytes, timestamp_micros: int, value: bytes)
 
@@ -162,7 +214,7 @@ def assert_rows_equivalent(
 
 
 def resolve_binary() -> str | None:
-    override = os.environ.get(BIN_ENV_VAR)
+    override = SETTINGS.accelerator_bin
     if override:
         return override if os.path.isfile(override) else None
     try:
@@ -185,11 +237,10 @@ def require_binary_or_skip() -> str:
 
 def require_real_bigtable_or_skip() -> None:
     import pytest
-    from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-    if os.environ.get(BIGTABLE_EMULATOR):
+    if SETTINGS.emulator_host:
         pytest.skip("accelerator is not supported against the emulator")
-    if not (os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("PROJECT_ID")):
+    if not SETTINGS.project_id:
         pytest.skip("no GOOGLE_CLOUD_PROJECT set for live accelerator tests")
 
 
@@ -300,6 +351,7 @@ class RandomOps:
         key_prefix: bytes = b"accel-",
         *,
         include_aggregate: bool = False,
+        include_deletes: bool = True,
     ):
         import random
 
@@ -309,6 +361,7 @@ class RandomOps:
         self._qualifiers = [f"q{i}".encode() for i in range(self._rand.randint(2, 16))]
         self._agg_qualifiers = [f"agg{i}".encode() for i in range(4)]
         self._include_aggregate = include_aggregate
+        self._include_deletes = include_deletes
         self._op_index = 0
         self._last_write_op: dict[bytes, int] = {}
         self._last_delete_op: dict[bytes, int] = {}
@@ -321,7 +374,7 @@ class RandomOps:
         return bytes(self._rand.getrandbits(8) for _ in range(n))
 
     def ms_timestamp(self) -> int:
-        return self._rand.randint(1, 2_000_000) * MS
+        return BASE_TS + self._rand.randint(1, 2_000_000) * MS
 
     def family(self) -> str:
         return self._rand.choice(self._families)
@@ -392,7 +445,7 @@ class RandomOps:
             return key, expected_state.add_to_cell(
                 key, self.agg_qualifier(), self.add_delta(), self.ms_timestamp()
             )
-        if roll < 0.70 or recently_written:
+        if roll < 0.70 or recently_written or not self._include_deletes:
             self._last_write_op[key] = self._op_index
             if self._rand.random() < 0.35:
                 return key, self._build_multi_cf_mutations(key, expected_state)

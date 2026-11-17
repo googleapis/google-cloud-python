@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import datetime
 
 import pytest
 
@@ -33,15 +33,109 @@ class AcceleratorTestBaseAsync(SystemTestRunner):
         _harness.require_real_bigtable_or_skip()
         path = _harness.require_binary_or_skip()
         orig_resolve = _daemon._resolve_binary_path
-        if os.environ.get(_harness.BIN_ENV_VAR):
+        if _harness.SETTINGS.accelerator_bin:
             _daemon._resolve_binary_path = lambda: path
         try:
             yield
         finally:
             _daemon._resolve_binary_path = orig_resolve
 
+    @pytest.fixture(scope="session")
+    @classmethod
+    def column_family_config(cls):
+        from google.cloud.bigtable_admin_v2 import types
+
+        gc_rule = types.GcRule(max_age=datetime.timedelta(days=1))
+        int_aggregate_type = types.Type.Aggregate(
+            input_type=types.Type(int64_type={"encoding": {"big_endian_bytes": {}}}),
+            sum={},
+        )
+        return {
+            _harness.TEST_FAMILY: types.ColumnFamily(gc_rule=gc_rule),
+            _harness.TEST_FAMILY_2: types.ColumnFamily(gc_rule=gc_rule),
+            _harness.TEST_AGGREGATE_FAMILY: types.ColumnFamily(
+                gc_rule=gc_rule,
+                value_type=types.Type(aggregate_type=int_aggregate_type),
+            ),
+        }
+
+    @classmethod
+    def _ensure_table(
+        cls,
+        admin_client,
+        project_id,
+        instance_id,
+        table_id,
+        column_family_config,
+        column_split_config,
+    ):
+        from google.api_core import exceptions
+        from google.cloud.bigtable.data import BigtableDataClient, ReadRowsQuery
+
+        assert len(table_id) <= 50
+        with BigtableDataClient(
+            project=project_id, use_accelerator=False
+        ) as probe_client:
+            with probe_client.get_table(instance_id, table_id) as probe_table:
+                try:
+                    probe_table.read_rows(ReadRowsQuery(limit=1))
+                    return table_id
+                except exceptions.NotFound:
+                    pass
+        parent_path = f"projects/{project_id}/instances/{instance_id}"
+        try:
+            admin_client.table_admin_client.create_table(
+                request={
+                    "parent": parent_path,
+                    "table_id": table_id,
+                    "table": {"column_families": column_family_config},
+                    "initial_splits": [{"key": key} for key in column_split_config],
+                },
+            )
+        except exceptions.AlreadyExists:
+            pass
+        return table_id
+
+    @pytest.fixture(scope="session")
+    @classmethod
+    def table_id(
+        cls,
+        admin_client,
+        project_id,
+        instance_id,
+        column_family_config,
+        column_split_config,
+    ):
+        yield cls._ensure_table(
+            admin_client,
+            project_id,
+            instance_id,
+            _harness.SETTINGS.table_id,
+            column_family_config,
+            column_split_config,
+        )
+
+    @pytest.fixture(scope="session")
+    @classmethod
+    def second_table_id(
+        cls,
+        admin_client,
+        project_id,
+        instance_id,
+        column_family_config,
+        column_split_config,
+    ):
+        yield cls._ensure_table(
+            admin_client,
+            project_id,
+            instance_id,
+            _harness.SETTINGS.second_table_id,
+            column_family_config,
+            column_split_config,
+        )
+
     def _project_id(self):
-        return os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("PROJECT_ID") or None
+        return _harness.SETTINGS.project_id
 
     def _make_client(self, use_accelerator=None, **kwargs):
         return CrossSync.DataClient(
