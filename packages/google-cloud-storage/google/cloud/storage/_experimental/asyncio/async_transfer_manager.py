@@ -39,7 +39,7 @@ async def upload_chunks_concurrently_from_filename(
     filename: str,
     *,
     blob: Optional[Blob] = None,
-    preferred_part_size_bytes: Optional[int] = None,
+    preferred_segment_size_bytes: Optional[int] = None,
     max_workers: int = DEFAULT_MAX_WORKERS,
     worker_type: str = COROUTINE,
     enable_checksum: bool = True,
@@ -54,8 +54,8 @@ async def upload_chunks_concurrently_from_filename(
         object_name: Name of the destination Cloud Storage object.
         filename: Path to the local file to upload.
         blob: Optional ``Blob`` supplying destination object metadata.
-        preferred_part_size_bytes: Optional preferred part size in bytes.
-        max_workers: Maximum number of concurrent part uploads. Defaults to
+        preferred_segment_size_bytes: Optional preferred segment size in bytes.
+        max_workers: Maximum number of concurrent segment uploads. Defaults to
             ``DEFAULT_MAX_WORKERS``.
         worker_type: Concurrency model for workers, either ``COROUTINE`` or
             ``PROCESS``. Defaults to ``COROUTINE``.
@@ -79,7 +79,7 @@ async def upload_chunks_concurrently_from_bytes(
     data: Union[bytes, bytearray, memoryview, io.BytesIO],
     *,
     blob: Optional[Blob] = None,
-    preferred_part_size_bytes: Optional[int] = None,
+    preferred_segment_size_bytes: Optional[int] = None,
     max_workers: int = DEFAULT_MAX_WORKERS,
     enable_checksum: bool = True,
     retry: Optional[AsyncRetry] = None,
@@ -94,8 +94,8 @@ async def upload_chunks_concurrently_from_bytes(
         data: In-memory payload to upload (``bytes``, ``bytearray``,
             ``memoryview``, or ``io.BytesIO``).
         blob: Optional ``Blob`` supplying destination object metadata.
-        preferred_part_size_bytes: Optional preferred part size in bytes.
-        max_workers: Maximum number of concurrent part uploads. Defaults to
+        preferred_segment_size_bytes: Optional preferred segment size in bytes.
+        max_workers: Maximum number of concurrent segment uploads. Defaults to
             ``DEFAULT_MAX_WORKERS``.
         enable_checksum: If ``True`` (default), enables checksum validation.
         retry: Optional ``AsyncRetry`` policy for upload requests.

@@ -36,7 +36,7 @@ from google.cloud.storage._experimental.asyncio.async_transfer_manager import (
 _BUCKET_NAME = "test-bucket"
 _OBJECT_NAME = "test-object"
 _FILENAME = "/tmp/test-upload.bin"
-_PREFERRED_PART_SIZE_BYTES = 32 * 1024 * 1024
+_PREFERRED_SEGMENT_SIZE_BYTES = 32 * 1024 * 1024
 _MAX_WORKERS = 8
 _TIMEOUT_SECONDS = 30.0
 _PAYLOAD_BYTES = b"parallel-upload-payload"
@@ -99,7 +99,7 @@ class TestUploadChunksConcurrentlyFromFilename:
                 ),
                 ("blob", inspect.Parameter.KEYWORD_ONLY, None),
                 (
-                    "preferred_part_size_bytes",
+                    "preferred_segment_size_bytes",
                     inspect.Parameter.KEYWORD_ONLY,
                     None,
                 ),
@@ -122,7 +122,7 @@ class TestUploadChunksConcurrentlyFromFilename:
             "object_name": str,
             "filename": str,
             "blob": Optional[Blob],
-            "preferred_part_size_bytes": Optional[int],
+            "preferred_segment_size_bytes": Optional[int],
             "max_workers": int,
             "worker_type": str,
             "enable_checksum": bool,
@@ -154,7 +154,7 @@ class TestUploadChunksConcurrentlyFromFilename:
 
     @pytest.mark.parametrize(
         "unexpected_kwarg",
-        ["chunk_size", "part_size_bytes"],
+        ["chunk_size", "segment_size_bytes"],
     )
     def test_rejects_unexpected_keyword_arg_with_type_error(
         self,
@@ -169,7 +169,7 @@ class TestUploadChunksConcurrentlyFromFilename:
                 _BUCKET_NAME,
                 _OBJECT_NAME,
                 _FILENAME,
-                **{unexpected_kwarg: _PREFERRED_PART_SIZE_BYTES},
+                **{unexpected_kwarg: _PREFERRED_SEGMENT_SIZE_BYTES},
             )
 
     @pytest.mark.asyncio
@@ -201,7 +201,7 @@ class TestUploadChunksConcurrentlyFromFilename:
                 object_name=_OBJECT_NAME,
                 filename=_FILENAME,
                 blob=mock_blob,
-                preferred_part_size_bytes=_PREFERRED_PART_SIZE_BYTES,
+                preferred_segment_size_bytes=_PREFERRED_SEGMENT_SIZE_BYTES,
                 max_workers=_MAX_WORKERS,
                 worker_type=PROCESS,
                 enable_checksum=False,
@@ -240,7 +240,7 @@ class TestUploadChunksConcurrentlyFromBytes:
                 ),
                 ("blob", inspect.Parameter.KEYWORD_ONLY, None),
                 (
-                    "preferred_part_size_bytes",
+                    "preferred_segment_size_bytes",
                     inspect.Parameter.KEYWORD_ONLY,
                     None,
                 ),
@@ -262,7 +262,7 @@ class TestUploadChunksConcurrentlyFromBytes:
             "object_name": str,
             "data": Union[bytes, bytearray, memoryview, io.BytesIO],
             "blob": Optional[Blob],
-            "preferred_part_size_bytes": Optional[int],
+            "preferred_segment_size_bytes": Optional[int],
             "max_workers": int,
             "enable_checksum": bool,
             "retry": Optional[AsyncRetry],
@@ -293,7 +293,7 @@ class TestUploadChunksConcurrentlyFromBytes:
 
     @pytest.mark.parametrize(
         "unexpected_kwarg",
-        ["chunk_size", "part_size_bytes", "worker_type"],
+        ["chunk_size", "segment_size_bytes", "worker_type"],
     )
     def test_rejects_unexpected_keyword_arg_with_type_error(
         self,
@@ -308,7 +308,7 @@ class TestUploadChunksConcurrentlyFromBytes:
                 _BUCKET_NAME,
                 _OBJECT_NAME,
                 _PAYLOAD_BYTES,
-                **{unexpected_kwarg: _PREFERRED_PART_SIZE_BYTES},
+                **{unexpected_kwarg: _PREFERRED_SEGMENT_SIZE_BYTES},
             )
 
     @pytest.mark.asyncio
@@ -340,7 +340,7 @@ class TestUploadChunksConcurrentlyFromBytes:
                 object_name=_OBJECT_NAME,
                 data=_PAYLOAD_BYTES,
                 blob=mock_blob,
-                preferred_part_size_bytes=_PREFERRED_PART_SIZE_BYTES,
+                preferred_segment_size_bytes=_PREFERRED_SEGMENT_SIZE_BYTES,
                 max_workers=_MAX_WORKERS,
                 enable_checksum=False,
                 retry=mock_retry,
