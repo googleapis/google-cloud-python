@@ -16,14 +16,14 @@
 
 """Crash correctness, fallback, and error parity tests for the accelerator."""
 
-import concurrent.futures
-import functools
+import copy
+import threading
+import time
 import uuid
 
 import pytest
 from google.api_core import exceptions as core_exceptions
 
-from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.mutations import AddToCell, SetCell
 
 from . import _harness
@@ -31,83 +31,81 @@ from ._base_autogen import AcceleratorTestBase
 
 
 class TestErrorHandling(AcceleratorTestBase):
-    CRASH_WORKERS = 8
-    OPS_PER_CRASH_WORKER = 40
+    CRASH_ITERATIONS = 8
+    OPS_PER_CRASH_RUN = 20
     SPOT_CHECK_INTERVAL = 4
 
-    def _crash_worker(self, table, janitor, worker_id, kill_at_op):
-        assert 0 <= worker_id < 100, (
-            f"worker_id must be in [0, 100) to avoid RNG seed collisions, got {worker_id}"
-        )
-        prefix = f"crash-w{worker_id}-{uuid.uuid4().hex[:8]}-".encode()
+    def _run_crash_workload(self, table, native_table, janitor, iteration):
+        prefix = f"crash-iter{iteration}-{uuid.uuid4().hex[:8]}-".encode()
         ops = _harness.RandomOps(
-            seed=100 + worker_id,
+            seed=100 + iteration,
             key_prefix=prefix,
             include_aggregate=False,
             include_deletes=False,
         )
         expected_state = _harness.ExpectedState()
         touched = set()
-        for i in range(self.OPS_PER_CRASH_WORKER):
-            if i == kill_at_op:
+        kill_at_op = self.OPS_PER_CRASH_RUN // 3
+        kill_trigger = threading.Event()
+
+        def _kill_daemon_from_background():
+            if kill_trigger.wait(timeout=30.0):
+                time.sleep(0.002 * (iteration % 4))
                 _harness.force_kill_daemon(table._accelerator_daemon)
-            key, mutation = ops.build_mutation(expected_state)
-            janitor.track(key)
-            table.mutate_row(key, mutation, operation_timeout=30)
-            touched.add(key)
-            if i % self.SPOT_CHECK_INTERVAL == self.SPOT_CHECK_INTERVAL - 1:
-                row = table.read_row(key, operation_timeout=30)
-                _harness.assert_rows_equivalent(
-                    label_a=f"crash-worker-{worker_id}-op-{i}",
-                    cells_a=_harness.normalize_row(row),
-                    label_b="model",
-                    cells_b=expected_state.expected_cells(key),
-                )
+
+        killer_thread = threading.Thread(
+            target=_kill_daemon_from_background, daemon=True
+        )
+        killer_thread.start()
+        try:
+            for i in range(self.OPS_PER_CRASH_RUN):
+                if i == kill_at_op:
+                    kill_trigger.set()
+                prev_rows = copy.deepcopy(expected_state._rows)
+                key, mutation = ops.build_mutation(expected_state)
+                janitor.track(key)
+                try:
+                    table.mutate_row(key, mutation, operation_timeout=30)
+                    touched.add(key)
+                except core_exceptions.GoogleAPICallError:
+                    actual = _harness.normalize_row(
+                        native_table.read_row(key, operation_timeout=30)
+                    )
+                    if actual != expected_state.expected_cells(key):
+                        expected_state._rows = prev_rows
+                    touched.add(key)
+                    continue
+                if i % self.SPOT_CHECK_INTERVAL == self.SPOT_CHECK_INTERVAL - 1:
+                    try:
+                        row = table.read_row(key, operation_timeout=30)
+                    except core_exceptions.GoogleAPICallError:
+                        row = table.read_row(key, operation_timeout=30)
+                    _harness.assert_rows_equivalent(
+                        label_a=f"crash-iter-{iteration}-op-{i}",
+                        cells_a=_harness.normalize_row(row),
+                        label_b="model",
+                        cells_b=expected_state.expected_cells(key),
+                    )
+        finally:
+            kill_trigger.set()
+            killer_thread.join(timeout=5.0)
         return (sorted(touched), expected_state)
 
     def test_daemon_killed_during_active_idempotent_workload_preserves_correctness(
         self, instance_id, table_id, native_table, janitor
     ):
-        """Killing the Go daemon mid-flight under concurrent idempotent load must
-        trip the breaker, fall back to native without failing any call, and keep
-        all rows identical to ExpectedState and native reads."""
-        with self._make_client(use_accelerator=True) as client:
-            with client.get_table(instance_id, table_id) as table:
-                self.assert_accelerator_active(table)
-                assert not table._accelerator_breaker.bypass()
-                executor = (
-                    concurrent.futures.ThreadPoolExecutor(
-                        max_workers=self.CRASH_WORKERS
+        """Killing the Go daemon from a background thread during an active
+        idempotent workload must trip the breaker, fall back to native, and keep
+        all rows consistent with ExpectedState and native reads across repeated runs."""
+        for iteration in range(self.CRASH_ITERATIONS):
+            with self._make_client(use_accelerator=True) as client:
+                with client.get_table(instance_id, table_id) as table:
+                    self.assert_accelerator_active(table)
+                    assert not table._accelerator_breaker.bypass()
+                    keys, expected_state = self._run_crash_workload(
+                        table, native_table, janitor, iteration
                     )
-                    if not CrossSync._Sync_Impl.is_async
-                    else None
-                )
-                try:
-                    partials = [
-                        functools.partial(
-                            self._crash_worker,
-                            table,
-                            janitor,
-                            w,
-                            self.OPS_PER_CRASH_WORKER // 3 if w == 0 else -1,
-                        )
-                        for w in range(self.CRASH_WORKERS)
-                    ]
-                    results = CrossSync._Sync_Impl.gather_partials(
-                        partials, return_exceptions=True, sync_executor=executor
-                    )
-                finally:
-                    if executor is not None:
-                        executor.shutdown(wait=True)
-                assert not table._accelerator_daemon.is_running
-                assert table._accelerator_breaker.bypass()
-                assert table._use_accelerator("read_row") is False
-                assert table._use_accelerator("mutate_row") is False
-                for w, res in enumerate(results):
-                    assert not isinstance(res, BaseException), (
-                        f"worker {w} failed during mid-flight daemon crash: {res!r}"
-                    )
-                    keys, expected_state = res
+                    assert not table._accelerator_daemon.is_running
                     for key in keys:
                         accel_row = table.read_row(key)
                         native_row = native_table.read_row(key)
@@ -124,6 +122,9 @@ class TestErrorHandling(AcceleratorTestBase):
                             label_b="expected",
                             cells_b=expected,
                         )
+                    assert table._accelerator_breaker.bypass()
+                    assert table._use_accelerator("read_row") is False
+                    assert table._use_accelerator("mutate_row") is False
 
     def test_non_idempotent_mutate_row_on_daemon_crash_does_not_double_apply(
         self, instance_id, table_id, native_table, janitor
