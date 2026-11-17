@@ -1077,12 +1077,16 @@ class TestUpdate:
 
 class TestWindowTypes:
     def test_document_window_frame_to_pb(self):
-        assert DocumentWindowFrame()._to_pb().map_value.fields == {}
-        pb = DocumentWindowFrame(1, WindowBound.CURRENT)._to_pb()
+        frame = DocumentWindowFrame(1, WindowBound.CURRENT)
+        pb = frame._to_pb()
         assert pb.map_value.fields == {
             "preceding": Value(integer_value=1),
             "following": Value(string_value="current"),
         }
+        assert frame == DocumentWindowFrame(1, "current")
+        assert frame != DocumentWindowFrame(2, WindowBound.CURRENT)
+        assert frame != RangeWindowFrame(1, WindowBound.CURRENT)
+
         expr_pb = DocumentWindowFrame(Field.of("offset"), "unbounded")._to_pb()
         assert expr_pb.map_value.fields == {
             "preceding": Value(field_reference_value="offset"),
@@ -1099,7 +1103,11 @@ class TestWindowTypes:
         ],
     )
     def test_range_window_frame_to_pb(self, unit, expected_unit):
-        assert RangeWindowFrame()._to_pb().map_value.fields == {}
+        no_unit_pb = RangeWindowFrame(10, 20)._to_pb()
+        assert no_unit_pb.map_value.fields == {
+            "preceding": Value(integer_value=10),
+            "following": Value(integer_value=20),
+        }
         pb = RangeWindowFrame(10.5, WindowBound.UNBOUNDED, unit)._to_pb()
         assert pb.map_value.fields == {
             "preceding": Value(double_value=10.5),
@@ -1123,45 +1131,65 @@ class TestWindowTypes:
     def test_window_spec_repr_and_equality(self):
         empty = WindowSpec()
         assert repr(empty) == "WindowSpec()"
-        spec = WindowSpec(
+        doc_spec = WindowSpec(
             partition="genre",
             sort=Field.of("rating").descending(),
             documents=DocumentWindowFrame(-1, WindowBound.CURRENT),
-            range=RangeWindowFrame(-5, 5, "day"),
         )
-        assert repr(spec) == (
+        assert repr(doc_spec) == (
             "WindowSpec("
             "partition=[Field.of('genre')], "
             "sort=[Field.of('rating').descending()], "
-            "documents=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>), "
+            "documents=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
+            ")"
+        )
+        assert doc_spec == WindowSpec(
+            partition=[Field.of("genre")],
+            sort=[Field.of("rating").descending()],
+            documents=DocumentWindowFrame(-1, "current"),
+        )
+        range_spec = WindowSpec(
+            sort=Field.of("published").ascending(),
+            range=RangeWindowFrame(-5, 5, "day"),
+        )
+        assert repr(range_spec) == (
+            "WindowSpec("
+            "sort=[Field.of('published').ascending()], "
             "range=RangeWindowFrame(preceding=-5, following=5, unit='day')"
             ")"
         )
-        assert spec == WindowSpec(
-            partition=[Field.of("genre")],
-            sort=[Field.of("rating").descending()],
-            documents=DocumentWindowFrame(-1, WindowBound.CURRENT),
-            range=RangeWindowFrame(-5, 5, "day"),
-        )
-        assert spec != empty
-        assert spec != object()
+        assert doc_spec != range_spec
+        assert doc_spec != empty
+        assert doc_spec != object()
 
     def test_window_spec_to_pb(self):
         assert WindowSpec()._to_pb().map_value.fields == {}
         order = Field.of("rating").descending()
         doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
-        range_frame = RangeWindowFrame(-5, 5, "day")
-        spec = WindowSpec(
-            partition="genre", sort=order, documents=doc_frame, range=range_frame
-        )
-        assert spec._to_pb().map_value.fields == {
+        doc_spec = WindowSpec(partition="genre", sort=order, documents=doc_frame)
+        assert doc_spec._to_pb().map_value.fields == {
             "partition": Value(
                 array_value={"values": [Value(field_reference_value="genre")]}
             ),
             "sort": Value(array_value={"values": [order._to_pb()]}),
             "documents": doc_frame._to_pb(),
+        }
+        range_frame = RangeWindowFrame(-5, 5, "day")
+        range_spec = WindowSpec(sort=order, range=range_frame)
+        assert range_spec._to_pb().map_value.fields == {
+            "sort": Value(array_value={"values": [order._to_pb()]}),
             "range": range_frame._to_pb(),
         }
+
+    def test_window_spec_both_frames_raises(self):
+        with pytest.raises(
+            ValueError,
+            match="Cannot specify both 'documents' and 'range' in WindowSpec",
+        ):
+            WindowSpec(
+                documents=DocumentWindowFrame(-1, WindowBound.CURRENT),
+                range=RangeWindowFrame(-5, 5, "day"),
+            )
 
 
 class TestAddWindowFields:

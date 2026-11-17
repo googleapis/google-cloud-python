@@ -30,9 +30,12 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Ordering,
     Rank,
     WindowFunction,
-    WindowSpec,
 )
-from google.cloud.firestore_v1.pipeline_types import DocumentWindowFrame, WindowBound
+from google.cloud.firestore_v1.pipeline_types import (
+    DocumentWindowFrame,
+    RangeWindowFrame,
+    WindowBound,
+)
 from google.cloud.firestore_v1.types import document as document_pb
 from google.cloud.firestore_v1.types import query as query_pb
 from google.cloud.firestore_v1.types.document import Value
@@ -2277,26 +2280,45 @@ class TestWindowExpressions:
 
     def test_over_repr_and_equality(self):
         agg = Field.of("rating").sum()
-        window = WindowSpec(documents=DocumentWindowFrame(1, WindowBound.CURRENT))
-        win_fn = agg.over(window)
+        frame = DocumentWindowFrame(1, WindowBound.CURRENT)
+        win_fn = agg.over(frame)
         assert isinstance(win_fn, WindowFunction)
         assert not isinstance(win_fn, AggregateFunction)
         assert (
             repr(win_fn)
-            == "Field.of('rating').sum().over(WindowSpec(documents=DocumentWindowFrame(preceding=1, following=<WindowBound.CURRENT: 'current'>)))"
+            == "Field.of('rating').sum().over(DocumentWindowFrame(preceding=1, following=<WindowBound.CURRENT: 'current'>))"
         )
-        assert win_fn == agg.over(
-            WindowSpec(documents=DocumentWindowFrame(1, WindowBound.CURRENT))
-        )
-        assert win_fn != agg.over(WindowSpec())
+        assert win_fn == agg.over(DocumentWindowFrame(1, WindowBound.CURRENT))
+        assert win_fn != agg.over(RangeWindowFrame(1, WindowBound.CURRENT))
         assert win_fn != agg
+
+    def test_over_chained_raises(self):
+        agg = Field.of("rating").sum()
+        frame = DocumentWindowFrame(1, WindowBound.CURRENT)
+        win_fn = agg.over(frame)
+        with pytest.raises(
+            TypeError,
+            match="Cannot call over\\(\\) on a WindowFunction that already has a window frame",
+        ):
+            win_fn.over(frame)
 
     def test_over_to_pb(self):
         agg = Field.of("rating").sum()
-        window = WindowSpec(documents=DocumentWindowFrame(-1, WindowBound.CURRENT))
-        pb = agg.over(window)._to_pb()
-        assert pb.function_value.name == "over"
-        assert list(pb.function_value.args) == [agg._to_pb(), window._to_pb()]
+        doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
+        doc_pb = agg.over(doc_frame)._to_pb()
+        assert doc_pb.function_value.name == "over"
+        assert list(doc_pb.function_value.args) == [
+            agg._to_pb(),
+            Value(map_value={"fields": {"documents": doc_frame._to_pb()}}),
+        ]
+
+        range_frame = RangeWindowFrame(-5, 5, "day")
+        range_pb = agg.over(range_frame)._to_pb()
+        assert range_pb.function_value.name == "over"
+        assert list(range_pb.function_value.args) == [
+            agg._to_pb(),
+            Value(map_value={"fields": {"range": range_frame._to_pb()}}),
+        ]
 
     def test_rank(self):
         rank = Rank()

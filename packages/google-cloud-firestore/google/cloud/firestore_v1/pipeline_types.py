@@ -365,12 +365,8 @@ class DocumentWindowFrame(_WindowFrame):
             A negative integer indicates a boundary preceding the current document.
     """
 
-    preceding: Optional[WindowBound | str | int | pipeline_expressions.Expression] = (
-        None
-    )
-    following: Optional[WindowBound | str | int | pipeline_expressions.Expression] = (
-        None
-    )
+    preceding: WindowBound | str | int | pipeline_expressions.Expression
+    following: WindowBound | str | int | pipeline_expressions.Expression
 
 
 @dataclass
@@ -384,19 +380,15 @@ class RangeWindowFrame(_WindowFrame):
             `"day"`, or an `Expression`).
     """
 
-    preceding: Optional[
-        WindowBound | str | int | float | pipeline_expressions.Expression
-    ] = None
-    following: Optional[
-        WindowBound | str | int | float | pipeline_expressions.Expression
-    ] = None
+    preceding: WindowBound | str | int | float | pipeline_expressions.Expression
+    following: WindowBound | str | int | float | pipeline_expressions.Expression
     unit: Optional[
         TimeUnit | TimeGranularity | str | pipeline_expressions.Expression
     ] = None
 
 
 class WindowSpec:
-    """Configuration for a window in an `AddWindowFields` pipeline stage or `.over()` expression.
+    """Configuration for a window in an `AddWindowFields` pipeline stage.
 
     Args:
         partition: Field paths or expressions used to partition documents into independent windows.
@@ -419,6 +411,10 @@ class WindowSpec:
         documents: Optional[DocumentWindowFrame] = None,
         range: Optional[RangeWindowFrame] = None,
     ):
+        if documents is not None and range is not None:
+            raise ValueError(
+                "Cannot specify both 'documents' and 'range' in WindowSpec."
+            )
         if partition is None:
             self.partition: list[pipeline_expressions.Expression] = []
         else:

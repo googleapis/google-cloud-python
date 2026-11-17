@@ -243,21 +243,17 @@ tests:
             - AliasedExpression:
                 - WindowFunction.over:
                     - Count
-                    - WindowSpec:
-                        range:
-                          RangeWindowFrame:
-                            preceding: 20
-                            following: current
+                    - RangeWindowFrame:
+                        preceding: 20
+                        following: current
                 - "books_within_20_years"
             - AliasedExpression:
                 - WindowFunction.over:
                     - FunctionExpression.array_agg:
                         - Field: title
-                    - WindowSpec:
-                        documents:
-                          DocumentWindowFrame:
-                            preceding: 1
-                            following: 1
+                    - DocumentWindowFrame:
+                        preceding: 1
+                        following: 1
                 - "nearby_titles"
       - Sort:
           - Ordering:

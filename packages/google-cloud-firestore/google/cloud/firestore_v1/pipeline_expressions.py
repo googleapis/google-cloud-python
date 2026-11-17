@@ -31,12 +31,13 @@ if TYPE_CHECKING:
 
 from google.cloud.firestore_v1._helpers import GeoPoint, decode_value, encode_value
 from google.cloud.firestore_v1.pipeline_types import (
+    DocumentWindowFrame,
     Ordering,
     PipelineDataType,
+    RangeWindowFrame,
     TimeGranularity,
     TimePart,
     TimeUnit,
-    WindowSpec,
 )
 from google.cloud.firestore_v1.types.document import Pipeline as Pipeline_pb
 from google.cloud.firestore_v1.types.document import Value
@@ -2688,40 +2689,58 @@ class WindowFunction(FunctionExpression):
 
     def over(
         self,
-        window: WindowSpec,
+        frame: DocumentWindowFrame | RangeWindowFrame,
     ) -> "WindowFunction":
-        """Configures a window over which this function is evaluated.
+        """Configures a window frame over which this function is evaluated.
 
         Args:
-            window: A `WindowSpec` specifying the window override for this function.
+            frame: A `DocumentWindowFrame` or `RangeWindowFrame` specifying the
+                window frame override for this function.
 
         Returns:
-            A `WindowFunction` with the specified window override.
+            A `WindowFunction` with the specified window frame override.
         """
-        return _OverExpression(self, window)
+        return _OverExpression(self, frame)
 
 
 class _OverExpression(WindowFunction):
-    """Internal expression binding a WindowFunction to a WindowSpec."""
+    """Internal expression binding a WindowFunction to a window frame."""
 
-    def __init__(self, func: WindowFunction, window: WindowSpec):
+    def __init__(
+        self,
+        func: WindowFunction,
+        frame: DocumentWindowFrame | RangeWindowFrame,
+    ):
         super().__init__(
             "over",
             [func],
-            repr_function=lambda expr: f"{expr.params[0]!r}.over({self._window!r})",
+            repr_function=lambda expr: f"{expr.params[0]!r}.over({self._frame!r})",
         )
-        self._window = window
+        self._frame = frame
+
+    def over(
+        self,
+        frame: DocumentWindowFrame | RangeWindowFrame,
+    ) -> "WindowFunction":
+        raise TypeError(
+            "Cannot call over() on a WindowFunction that already has a window frame. "
+            "A window frame can only be applied once."
+        )
 
     def __eq__(self, other):
         if not isinstance(other, _OverExpression):
             return False
-        return super().__eq__(other) and self._window == other._window
+        return super().__eq__(other) and self._frame == other._frame
 
     def _to_pb(self) -> Value:
+        frame_key = (
+            "documents" if isinstance(self._frame, DocumentWindowFrame) else "range"
+        )
+        frame_map = Value(map_value={"fields": {frame_key: self._frame._to_pb()}})
         return Value(
             function_value={
                 "name": self.name,
-                "args": [self.params[0]._to_pb(), self._window._to_pb()],
+                "args": [self.params[0]._to_pb(), frame_map],
             }
         )
 
