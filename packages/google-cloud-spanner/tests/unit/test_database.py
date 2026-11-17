@@ -1920,11 +1920,12 @@ class TestDatabase(_BaseTest):
                 session,
             ]
 
-            with self.assertRaises(ServiceUnavailable):
+            with self.assertRaisesRegex(ServiceUnavailable, "Session unavailable"):
                 database.run_in_transaction(unit_of_work)
 
             unit_of_work.assert_not_called()
             sessions_manager.put_session.assert_not_called()
+            self.assertFalse(database._local.transaction_running)
 
             result = database.run_in_transaction(unit_of_work)
 

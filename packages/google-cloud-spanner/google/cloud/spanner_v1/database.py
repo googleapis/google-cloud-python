@@ -1088,10 +1088,10 @@ class Database(object):
         ):
             if getattr(self._local, "transaction_running", False):
                 raise RuntimeError("Spanner does not support nested transactions.")
-            self._local.transaction_running = True
             transaction_type = TransactionType.READ_WRITE
             session = None
             try:
+                self._local.transaction_running = True
                 session = self._sessions_manager.get_session(transaction_type)
                 return session.run_in_transaction(func, *args, **kw)
             finally:

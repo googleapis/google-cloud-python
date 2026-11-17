@@ -2035,11 +2035,12 @@ class TestDatabase(_BaseTest):
             )
             sessions_manager.put_session = mock.AsyncMock()
 
-            with self.assertRaises(ServiceUnavailable):
+            with self.assertRaisesRegex(ServiceUnavailable, "Session unavailable"):
                 await database.run_in_transaction(unit_of_work)
 
             unit_of_work.assert_not_called()
             sessions_manager.put_session.assert_not_called()
+            self.assertFalse(database._local.transaction_running)
 
             result = await database.run_in_transaction(unit_of_work)
 

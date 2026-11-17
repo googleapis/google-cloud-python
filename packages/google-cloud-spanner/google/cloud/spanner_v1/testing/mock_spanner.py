@@ -177,6 +177,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
 
     def CreateSession(self, request, context):
         self._requests.append(request)
+        self.mock_spanner.pop_error(context)
         return self.__create_session(request.database, request.session)
 
     def BatchCreateSessions(self, request, context):

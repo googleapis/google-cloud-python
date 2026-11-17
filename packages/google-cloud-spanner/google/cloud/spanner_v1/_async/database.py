@@ -1228,14 +1228,13 @@ class Database(object):
             if getattr(self._local, "transaction_running", False):
                 raise RuntimeError("Spanner does not support nested transactions.")
 
-            self._local.transaction_running = True
-
             # Check out a session and run the function in a transaction; once
             # done, flip the sanity check bit back and return the session.
             transaction_type = TransactionType.READ_WRITE
             session = None
 
             try:
+                self._local.transaction_running = True
                 session = await self._sessions_manager.get_session(transaction_type)
                 return await session.run_in_transaction(func, *args, **kw)
 
