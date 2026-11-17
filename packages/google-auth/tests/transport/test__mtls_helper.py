@@ -2576,6 +2576,7 @@ class TestMtlsCertManager(object):
             mock.Mock(side_effect=exceptions.MutualTLSChannelError("channel error")),
             mock.Mock(side_effect=OSError("file missing")),
             mock.Mock(side_effect=ImportError("cryptography missing")),
+            mock.Mock(side_effect=RuntimeError("unexpected callback failure")),
             mock.Mock(return_value=(b"not a valid pem cert", pytest.private_key_bytes)),
             mock.Mock(return_value=(b"", pytest.private_key_bytes)),
             mock.Mock(return_value=(pytest.public_cert_bytes, b"")),
@@ -2592,7 +2593,11 @@ class TestMtlsCertManager(object):
 
     @pytest.mark.parametrize(
         "reload_error",
-        [OSError("transient read error"), ImportError("cryptography missing")],
+        [
+            OSError("transient read error"),
+            ImportError("cryptography missing"),
+            RuntimeError("unexpected callback failure"),
+        ],
     )
     def test_transient_reload_error_retains_last_known_good_cert(self, reload_error):
         source = mock.Mock(

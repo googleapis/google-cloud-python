@@ -1074,17 +1074,11 @@ class _MtlsCertManager:
             self._reload_id += 1
             try:
                 cert_bytes, key_bytes, fingerprint = self._load_cert_and_fingerprint()
-            except (
-                exceptions.ClientCertError,
-                exceptions.MutualTLSChannelError,
-                OSError,
-                ValueError,
-                ImportError,
-            ) as caught_exc:
+            except Exception as caught_exc:
                 if self._generation_id > 0:
                     _LOGGER.debug(
                         "Failed to reload mTLS client certificate; retaining "
-                        "previous certificate (generation %d): %s",
+                        "previous certificate (generation %d): %r",
                         self._generation_id,
                         caught_exc,
                     )
