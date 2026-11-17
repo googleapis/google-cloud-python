@@ -778,10 +778,16 @@ class AsyncAppendableObjectWriter:
         :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
         :param retry_policy: (Optional) The retry policy to use for the operation.
 
-        rtype: Union[int, _storage_v2.Object]
-        returns: Updated `self.persisted_size` by default after closing the
-            bidi-gRPC stream. However, if `finalize_on_close=True` is passed,
-            returns the finalized object resource.
+        :rtype: Union[int, _storage_v2.Object]
+        :returns: By default, ``self.persisted_size``. This is the size the
+            server last confirmed as persisted, from the most recent
+            ``flush()``, ``state_lookup()`` or flush inside ``append()``.
+            Closing persists any bytes appended after that, but this value is
+            not refreshed, so it can be smaller than the object size by up to
+            ``flush_interval`` bytes. For the exact size, call ``flush()``
+            before ``close()``, or use ``self.offset``. If
+            ``finalize_on_close=True`` is passed, returns the finalized object
+            resource, whose ``size`` is exact.
 
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
