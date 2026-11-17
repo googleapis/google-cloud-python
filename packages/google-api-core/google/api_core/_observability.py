@@ -119,8 +119,12 @@ def is_otel_capabilities_enabled(
     return False
 
 
-def _get_current_otel_span() -> Any:
-    """Returns the currently active OpenTelemetry span, or None."""
+def _get_current_otel_span() -> opentelemetry.trace.Span | None:
+    """Returns the current OpenTelemetry span (or INVALID_SPAN), or None.
+
+    Returns None only when OpenTelemetry is not installed or retrieval
+    fails.
+    """
     if not has_opentelemetry():
         return None
     try:
@@ -135,15 +139,18 @@ def _get_current_otel_span() -> Any:
         return None
 
 
-def extract_trace_context(span: Any = None) -> dict[str, Any]:
+def extract_trace_context(
+    span: opentelemetry.trace.Span | None = None,
+) -> dict[str, Any]:
     """Extracts trace_id, span_id, and Cloud Logging trace correlation fields.
 
-    If `span` is None, falls back to `_get_current_otel_span()` when
+    If `span` is None, falls back to the ambient OpenTelemetry span when
     OpenTelemetry is installed. Returns an empty dict if no valid recording
     span context exists or if OpenTelemetry is not installed.
 
     Args:
-        span (Any | None): The active OpenTelemetry span, if any.
+        span (opentelemetry.trace.Span | None): The active OpenTelemetry span,
+            if any.
 
     Returns:
         dict[str, Any]: Trace and span correlation attributes.
@@ -876,7 +883,7 @@ class _AsyncSuppressingClientInterceptor(
 def _capture_grpc_attempt_exception(
     method_name: str,
     client_options: ClientOptions | dict[str, Any] | None = None,
-    span: Any = None,
+    span: opentelemetry.trace.Span | None = None,
 ) -> Iterator[None]:
     """Logs and re-raises any unhandled exception during gRPC continuation.
 
@@ -884,7 +891,8 @@ def _capture_grpc_attempt_exception(
         method_name (str): Decoded gRPC method name.
         client_options (ClientOptions | dict[str, Any] | None): Client options
             used for error logging gating.
-        span (Any | None): Active OpenTelemetry span, if any.
+        span (opentelemetry.trace.Span | None): Captured OpenTelemetry span.
+            If None, falls back to the ambient span when logging.
 
     Yields:
         None
