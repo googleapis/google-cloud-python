@@ -395,6 +395,12 @@ class TestWriteResumptionStrategy:
             (20, 24, 4, 24, [(24, b"efgh"), (28, b"ij")]),
             # Cached persisted_size below initial_offset before stream reopen: clamp to 0.
             (20, 0, 0, 20, [(20, b"abcd"), (24, b"efgh"), (28, b"ij")]),
+            # persisted_size exactly at initial_offset: resend the whole buffer.
+            (20, 20, 0, 20, [(20, b"abcd"), (24, b"efgh"), (28, b"ij")]),
+            # Whole buffer persisted before the error: nothing left to send.
+            (20, 30, 10, 30, []),
+            # Stale cached persisted_size from an unaligned prior append: clamp to 0.
+            (20, 12, 0, 20, [(20, b"abcd"), (24, b"efgh"), (28, b"ij")]),
         ],
     )
     @pytest.mark.asyncio

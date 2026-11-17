@@ -38,6 +38,7 @@ GENERATION = 123
 WRITE_HANDLE = b"test-write-handle"
 PERSISTED_SIZE = 456
 EIGHT_MIB = 8 * 1024 * 1024
+MIB = 1024 * 1024
 DATA_LESS_THAN_FLUSH_INTERVAL = (
     b"test-data"  # 9 bytes, less than default flush interval
 )
@@ -839,18 +840,23 @@ class TestAsyncAppendableObjectWriter:
         return server_bytes, open_metadata
 
     @pytest.mark.parametrize(
-        "first_payload, second_payload, fail_at_offset, failure, expected_routing_token",
+        "flush_interval, first_payload, second_payload, fail_at_offset, failure, "
+        "expected_routing_token, expected_persisted_size, expected_since_last_flush",
         [
             # persisted_size > len(second_payload): must not seek past buffer EOF.
             (
+                _MAX_CHUNK_SIZE_BYTES,
                 b"A" * (2 * _MAX_CHUNK_SIZE_BYTES),
                 b"B" * _MAX_CHUNK_SIZE_BYTES + b"C" * 512,
                 3 * _MAX_CHUNK_SIZE_BYTES,
                 exceptions.ServiceUnavailable("transient 503"),
                 None,
+                3 * _MAX_CHUNK_SIZE_BYTES,
+                512,
             ),
             # initial_offset < persisted_size < len(second_payload): seek relative to initial_offset.
             (
+                _MAX_CHUNK_SIZE_BYTES,
                 b"0" * _MAX_CHUNK_SIZE_BYTES,
                 b"1" * _MAX_CHUNK_SIZE_BYTES
                 + b"2" * _MAX_CHUNK_SIZE_BYTES
@@ -858,9 +864,12 @@ class TestAsyncAppendableObjectWriter:
                 2 * _MAX_CHUNK_SIZE_BYTES,
                 exceptions.ServiceUnavailable("transient 503"),
                 None,
+                4 * _MAX_CHUNK_SIZE_BYTES,
+                0,
             ),
             # Redirect error during second append: forwards routing_token and preserves offset.
             (
+                _MAX_CHUNK_SIZE_BYTES,
                 b"M" * _MAX_CHUNK_SIZE_BYTES,
                 b"N" * 4096,
                 _MAX_CHUNK_SIZE_BYTES,
@@ -876,6 +885,21 @@ class TestAsyncAppendableObjectWriter:
                     ],
                 ),
                 "redirect-token-2",
+                _MAX_CHUNK_SIZE_BYTES,
+                4096,
+            ),
+            # Payloads not aligned to flush_interval (gcsfs put_file shape): the
+            # first append leaves 1 MiB unflushed, the retry starts mid-buffer
+            # after the flush at 9 MiB.
+            (
+                4 * MIB,
+                b"P" * (5 * MIB),
+                b"Q" * (5 * MIB),
+                9 * MIB,
+                exceptions.ServiceUnavailable("transient 503"),
+                None,
+                9 * MIB,
+                1 * MIB,
             ),
         ],
     )
@@ -883,18 +907,21 @@ class TestAsyncAppendableObjectWriter:
     async def test_append_multi_call_retry_preserves_alignment(
         self,
         mock_appendable_writer,
+        flush_interval,
         first_payload,
         second_payload,
         fail_at_offset,
         failure,
         expected_routing_token,
+        expected_persisted_size,
+        expected_since_last_flush,
     ):
         """Verify retries on subsequent append calls preserve byte alignment."""
         from google.api_core.retry_async import AsyncRetry
 
         writer = self._make_one(
             mock_appendable_writer["mock_client"],
-            writer_options={"FLUSH_INTERVAL_BYTES": _MAX_CHUNK_SIZE_BYTES},
+            writer_options={"FLUSH_INTERVAL_BYTES": flush_interval},
         )
         server_bytes, open_metadata = self._attach_in_memory_server(
             mock_appendable_writer["mock_stream"], fail_at_offset, failure
@@ -914,6 +941,8 @@ class TestAsyncAppendableObjectWriter:
         expected_payload = first_payload + second_payload
         assert bytes(server_bytes) == expected_payload
         assert writer.offset == len(expected_payload)
+        assert writer.persisted_size == expected_persisted_size
+        assert writer.bytes_appended_since_last_flush == expected_since_last_flush
         if expected_routing_token:
             assert (
                 "x-goog-request-params",
@@ -1353,5 +1382,39 @@ class TestAsyncAppendableObjectWriter:
         assert mock_appendable_writer["mock_stream"].close.await_count == 2
         assert writer._routing_token == "rt2"
         assert writer.write_handle.handle == b"h2"
+        writer.open.assert_awaited_once()
+        assert not writer._is_stream_open
+
+    @pytest.mark.parametrize("finalize_on_close", [False, True])
+    @pytest.mark.asyncio
+    async def test_close_reconnect_offset_mismatch_raises_data_loss_without_retry(
+        self, mock_appendable_writer, finalize_on_close
+    ):
+        """Verify close() and finalize() fail fast when a reconnect lost bytes."""
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        mock_stream = mock_appendable_writer["mock_stream"]
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_stream
+        writer.offset = 18 * MIB
+
+        transient = exceptions.ServiceUnavailable("stream reset")
+        if finalize_on_close:
+            mock_stream.recv.side_effect = transient
+        else:
+            mock_stream.close.side_effect = transient
+
+        async def reopen_with_lost_tail(*args, **kwargs):
+            writer._is_stream_open = True
+            writer.persisted_size = 16 * MIB
+            writer.offset = 16 * MIB
+
+        writer.open = mock.AsyncMock(side_effect=reopen_with_lost_tail)
+
+        with pytest.raises(
+            exceptions.DataLoss,
+            match=f"Expected offset {18 * MIB}, got {16 * MIB}",
+        ):
+            await writer.close(finalize_on_close=finalize_on_close)
+
         writer.open.assert_awaited_once()
         assert not writer._is_stream_open

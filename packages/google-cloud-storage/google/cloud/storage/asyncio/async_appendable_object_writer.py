@@ -441,6 +441,22 @@ class AsyncAppendableObjectWriter:
                     self._created_generation = True
                 self.generation = redirect_proto.generation
 
+    def _raise_if_offset_lost(self, expected_offset: Optional[int]) -> None:
+        """Raises DataLoss if a reconnect reports fewer bytes than were sent.
+
+        ``DataLoss`` is not retryable, so ``close()`` and ``finalize()`` fail
+        fast instead of reopening the stream until the retry deadline.
+        """
+        if (
+            self.offset is not None
+            and expected_offset is not None
+            and self.offset != expected_offset
+        ):
+            raise exceptions.DataLoss(
+                f"Unrecoverable data loss during reconnect. "
+                f"Expected offset {expected_offset}, got {self.offset}."
+            )
+
     def _merge_retry_policy(
         self, retry_policy: Optional[AsyncRetry] = None
     ) -> AsyncRetry:
@@ -553,10 +569,13 @@ class AsyncAppendableObjectWriter:
         calling `self.append` will append bytes at the end of the current size
         ie. `self.offset` bytes relative to the begining of the object.
 
-        This method sends the provided `data` to the GCS server in chunks.
-        and persists data in GCS at every `_DEFAULT_FLUSH_INTERVAL_BYTES` bytes
-        or at the last chunk whichever is earlier. Persisting is done by setting
-        `flush=True` on request.
+        This method sends the provided `data` to the GCS server in chunks and
+        requests persistence (``flush=True``) each time ``flush_interval``
+        bytes have been sent since the last flush. Bytes after the last
+        ``flush_interval`` boundary are only guaranteed durable after
+        ``flush()`` or ``close()``. If the stream breaks before then and the
+        server lost them, a later ``append()`` raises
+        :class:`~google.api_core.exceptions.DataLoss`.
 
         :type data: bytes
         :param data: The bytes to append to the object.
@@ -771,6 +790,8 @@ class AsyncAppendableObjectWriter:
         :raises google.api_core.exceptions.InvalidArgument: If the provided
             full_object_checksum does not match the checksum computed by the
             server.
+        :raises google.api_core.exceptions.DataLoss: If reconnecting after a
+            stream failure reveals that the server lost appended bytes.
 
         """
         if not self._is_stream_open:
@@ -803,14 +824,7 @@ class AsyncAppendableObjectWriter:
                     )
                     self._is_stream_open = False
                     await self.open()
-                    if (
-                        self.offset is not None
-                        and expected_offset is not None
-                        and self.offset != expected_offset
-                    ):
-                        raise exceptions.InternalServerError(
-                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
-                        )
+                    self._raise_if_offset_lost(expected_offset)
 
                 await self.write_obj_stream.close()
                 return self.persisted_size
@@ -860,6 +874,8 @@ class AsyncAppendableObjectWriter:
         :raises google.api_core.exceptions.InvalidArgument: If the provided
             full_object_checksum does not match the checksum computed by the
             server.
+        :raises google.api_core.exceptions.DataLoss: If reconnecting after a
+            stream failure reveals that the server lost appended bytes.
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before finalize().")
@@ -896,14 +912,7 @@ class AsyncAppendableObjectWriter:
                     )
                     self._is_stream_open = False
                     await self.open()
-                    if (
-                        self.offset is not None
-                        and expected_offset is not None
-                        and self.offset != expected_offset
-                    ):
-                        raise exceptions.InternalServerError(
-                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
-                        )
+                    self._raise_if_offset_lost(expected_offset)
 
                 await self.write_obj_stream.send(finalize_req)
                 response = await self.write_obj_stream.recv()
