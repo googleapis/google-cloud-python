@@ -12,12 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
+
 import pyarrow
+
+from google.cloud import bigquery
 
 from . import query_and_wait_arrow
 
 
-def test_query_and_wait_arrow():
+def test_query_and_wait_arrow(monkeypatch):
+    # TODO: Remove use_query_cache=False workaround once google-cloud-bigquery > 3.47.0
+    # (containing #18958) is released and pinned in requirements.txt.
+    monkeypatch.setattr(
+        query_and_wait_arrow.bigquery,
+        "Client",
+        functools.partial(
+            bigquery.Client,
+            default_query_job_config=bigquery.QueryJobConfig(use_query_cache=False),
+        ),
+    )
     batches = query_and_wait_arrow.query_and_wait_arrow()
 
     total_rows = 0
