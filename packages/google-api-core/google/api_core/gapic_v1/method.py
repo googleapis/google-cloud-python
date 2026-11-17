@@ -18,10 +18,12 @@ This is used by gapic clients to provide common error mapping, retry, timeout,
 compression, pagination, and long-running operations to gRPC methods.
 """
 
+from __future__ import annotations
+
 import contextlib
 import enum
 import functools
-from typing import Any, List, Optional, Tuple
+from typing import List, Tuple
 
 from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
@@ -110,160 +112,6 @@ def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
     return metric_str, arbitrary_metadata
 
 
-def _extract_rpc_identity(
-    method_name: str,
-) -> Tuple[str, str, str]:
-    """Extract (full_rpc_name, service_name, rpc_method_name) from an explicit method name.
-
-    Args:
-        method_name: Explicit RPC name (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
-
-    Returns:
-        Tuple[str, str, str]: A 3-tuple of (full_rpc_name, service_name, rpc_method_name).
-    """
-    method_str = method_name.lstrip("/")
-    service, _, method = method_str.rpartition("/")
-    return method_str, service, method
-
-
-def _extract_status_code(exc: Optional[BaseException]) -> str:
-    """Extract canonical status code name string from an exception.
-
-    Status code name strings are resolved by inspecting the following locations:
-    * Chained exceptions: Unwraps RetryError or __cause__ to the root exception.
-    * Enum & code attributes: Inspects .grpc_status_code on GoogleAPICallError or .code on gRPC errors.
-    * Integer status codes: Maps raw gRPC integer status codes to canonical enum names.
-    * Fallback: Defaults to the exception class name for standard Python errors.
-
-    Args:
-        exc (Optional[BaseException]): The exception to extract the status code name from.
-
-    Returns:
-        str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE") or class name.
-    """
-    if exc is None:
-        return ""
-
-    # 1. Unwrap chained exceptions: unwrap RetryError or __cause__ to the root failure
-    target = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
-
-    # 2. Check enum & code attributes: .grpc_status_code enum or callable/non-callable .code
-    status = getattr(target, "grpc_status_code", None)
-    if status is None and hasattr(target, "code"):
-        try:
-            status = target.code() if callable(target.code) else target.code
-        except Exception:
-            status = None
-
-    name = getattr(status, "name", None)
-    if name:
-        return str(name)
-
-    # 3. Check integer status codes: map raw gRPC integer status codes to canonical enum names
-    if isinstance(status, int):
-        from google.api_core import exceptions
-
-        status = exceptions._INT_TO_GRPC_CODE.get(status, status)
-        return getattr(status, "name", str(status))
-
-    # 4. Fallback: default to the exception class name for standard Python errors
-    return target.__class__.__name__
-
-
-def _extract_error_attributes(exc: Optional[BaseException]) -> dict[str, Any]:
-    """Extract gcp.errors.* and error.type attributes from an exception.
-
-    Error details and ErrorInfo structures are resolved by inspecting the following locations:
-    * Chained exceptions: Unwraps RetryError or __cause__ to the root exception.
-    * GoogleAPICallError attributes: Reads ErrorInfo from ._error_info or .error_info.
-    * Native gRPC trailing metadata: Parses google.rpc.Status binary details from trailing_metadata.
-    * Unified attribute extraction: Extracts domain, reason, and metadata from ErrorInfo or exception attributes.
-
-    Args:
-        exc (Optional[BaseException]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
-
-    Returns:
-        dict[str, Any]: Extracted error attributes (e.g. gcp.errors.domain, error.type, gcp.errors.metadata.*).
-    """
-    attrs: dict[str, Any] = {}
-    if exc is None:
-        return attrs
-
-    # 1. Unwrap chained exceptions: unwrap RetryError or __cause__ to the root failure
-    target_exc = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
-
-    # 2. Check GoogleAPICallError ErrorInfo attributes
-    error_info = getattr(target_exc, "_error_info", None) or getattr(
-        target_exc, "error_info", None
-    )
-
-    # 3. Check native gRPC trailing metadata for binary google.rpc.Status details
-    if error_info is None:
-        rpc_call = (
-            target_exc
-            if hasattr(target_exc, "trailing_metadata")
-            else getattr(target_exc, "response", None)
-        )
-        if rpc_call is not None and hasattr(rpc_call, "trailing_metadata"):
-            try:
-                from google.api_core import exceptions
-
-                _, error_info = exceptions._parse_grpc_error_details(rpc_call)
-            except Exception:
-                pass
-
-    # 4. Unified attribute extraction: extract domain, reason, and metadata from ErrorInfo or exception attributes
-    http_response = getattr(target_exc, "response", None)
-    http_status = (
-        getattr(http_response, "status_code", getattr(http_response, "status", None))
-        if http_response is not None and not hasattr(http_response, "trailing_metadata")
-        else None
-    )
-
-    source = error_info or target_exc
-    if isinstance(source, dict):
-        domain = source.get("domain")
-        reason = source.get("reason")
-        metadata = source.get("metadata")
-    else:
-        domain = getattr(source, "domain", None)
-        reason = getattr(source, "reason", None)
-        metadata = getattr(source, "metadata", None)
-
-    if domain:
-        attrs["gcp.errors.domain"] = domain
-    if reason:
-        attrs["error.type"] = reason
-    elif isinstance(http_status, int):
-        attrs["error.type"] = str(http_status)
-    else:
-        # Fallback per OpenTelemetry Semantic Conventions: every failed span should record
-        # a low-cardinality error.type. Use canonical status code name or exception class name.
-        status_code = _extract_status_code(target_exc)
-        attrs["error.type"] = status_code or target_exc.__class__.__name__
-    if metadata:
-        for k, v in metadata.items():
-            attrs[f"gcp.errors.metadata.{k}"] = str(v)
-
-    # 5. Extract human-readable error description for cross-language PRD parity
-    message = (
-        _observability._TraceContext._extract_http_error_message(http_response)
-        if http_status is not None
-        else None
-    )
-    if not message:
-        message = getattr(target_exc, "message", None)
-    if not message and hasattr(target_exc, "details"):
-        details = target_exc.details
-        message = details() if callable(details) else details
-    if not message and isinstance(target_exc, BaseException):
-        message = str(target_exc)
-    if message:
-        attrs["status.message"] = str(message)
-
-    return attrs
-
-
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
@@ -319,6 +167,9 @@ class _GapicCallable(object):
         self._retry = retry
         self._timeout = timeout
         self._compression = compression
+        self._client_options = client_options
+        self._method_name = method_name
+        self._rpc_system = _observability._resolve_rpc_system(kind)
 
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
@@ -343,22 +194,18 @@ class _GapicCallable(object):
             try:
                 from opentelemetry import trace
 
-                tracer_provider = None
-                if isinstance(client_options, dict):
-                    tracer_provider = client_options.get("tracer_provider")
-                elif client_options is not None:
-                    tracer_provider = getattr(client_options, "tracer_provider", None)
+                tracer_provider = _observability._get_tracer_provider(client_options)
                 if tracer_provider is not None:
                     tracer = tracer_provider.get_tracer("google.api_core")
                 else:
                     tracer = trace.get_tracer("google.api_core")
 
-                span_name, _, _ = _extract_rpc_identity(method_name)
+                span_name, _, _ = _observability.extract_rpc_identity(method_name)
                 endpoint_attrs = _observability._extract_endpoint_attributes(
                     client_options, default_host=default_host
                 )
                 span_attributes = {
-                    "rpc.system.name": "http" if kind.startswith("rest") else "grpc",
+                    "rpc.system.name": self._rpc_system,
                     "rpc.method": span_name,
                     **endpoint_attrs,
                 }
@@ -427,10 +274,9 @@ class _GapicCallable(object):
                 raise
             except BaseException as exc:
                 if span is not None and hasattr(span, "set_attribute"):
-                    span.set_attribute(
-                        "rpc.response.status_code", _extract_status_code(exc)
-                    )
-                    for k, v in _extract_error_attributes(exc).items():
+                    for k, v in _observability.build_telemetry_error_attributes(
+                        exc
+                    ).items():
                         span.set_attribute(k, v)
                 raise
 
