@@ -23,6 +23,7 @@ import contextlib
 import contextvars
 import enum
 import functools
+import inspect
 import logging
 import traceback
 import urllib.parse
@@ -225,25 +226,34 @@ def _extract_error_info_fields(target_exc: Any) -> tuple[Any, Any, Any]:
     )
 
 
-def _extract_http_status_code(response: Any) -> int | None:
-    """Extracts the numeric HTTP status code from an HTTP response object.
+def _extract_http_status_code(source: Any) -> int | None:
+    """Extracts the numeric HTTP status code from an HTTP response or exception.
 
-    Inspects ``response.status_code`` (used by ``requests.Response``) and falls
-    back to ``response.status`` (used by ``urllib3`` and ``aiohttp``), returning
-    the status code only when it is a genuine integer (excluding ``bool``).
+    Inspects ``status_code`` (used by ``requests.Response``), ``status`` (used
+    by ``urllib3`` and ``aiohttp``), and ``code`` (used by
+    ``GoogleAPICallError``) on ``source`` or an attached ``source.response``
+    (such as ``requests.HTTPError``), returning the status code only when it is
+    a genuine integer (excluding ``bool``).
 
     Args:
-        response (Any): An HTTP response object (or ``GoogleAPICallError.response``).
+        source (Any): An HTTP response object or HTTP exception.
 
     Returns:
         int | None: The integer HTTP status code (e.g. 200, 404, 503), or None
             if no integer status code is present.
     """
-    status = getattr(response, "status_code", None)
-    if status is None:
-        status = getattr(response, "status", None)
-    if isinstance(status, int) and not isinstance(status, bool):
-        return int(status)
+    try:
+        for target in (source, getattr(source, "response", None)):
+            if target is None:
+                continue
+            for attr in ("status_code", "status", "code"):
+                val = getattr(target, attr, None)
+                if isinstance(val, int) and not isinstance(val, bool):
+                    return int(val)
+    # Intentionally catch broad Exception so telemetry status extraction fails
+    # open and never disrupts the caller's RPC flow.
+    except Exception:
+        pass
     return None
 
 
@@ -1475,7 +1485,7 @@ class _TraceContext:
     def _extract_http_error_message(response: Any) -> str | None:
         """Extract a human-readable error message from an HTTP error response."""
         json_fn = getattr(response, "json", None)
-        if callable(json_fn):
+        if callable(json_fn) and not inspect.iscoroutinefunction(json_fn):
             try:
                 payload = json_fn()
                 if isinstance(payload, dict):
@@ -1522,38 +1532,48 @@ class _TraceContext:
         self._span: Any = None
         self._parent_span: Any = None
         self._cm: Any = None
+        self._attempt_logged: bool = False
 
     def _log_http_attempt(
         self,
-        status_code: int | str | None = None,
+        status_code: int | str | enum.Enum | None = None,
         exc: BaseException | None = None,
         status_message: str | None = None,
     ) -> None:
-        """Emits a DEBUG transport attempt log for a failed HTTP request (fail-open).
+        """Emits a fail-open DEBUG log for a failed HTTP transport attempt.
 
         Note:
-            In GAPIC REST transports (``_shared_macros.j2``), ``trace_http_request``
-            only wraps the raw ``session`` dispatch and ``record_response(response)``,
-            while HTTP status exceptions are raised outside the ``with`` block after
-            it exits. Because ``record_response`` and ``__exit__`` (``record_error``)
-            are mutually exclusive in transport execution, deduplication state is
-            not required here.
+            ``self._attempt_logged`` ensures at-most-once attempt logging per
+            ``_TraceContext`` instance even if a caller invokes both
+            ``record_response`` and ``record_error`` inside the ``with`` block.
 
         Args:
-            status_code (int | str | None): HTTP response status code or error code.
-            exc (BaseException | None): Exception raised during HTTP dispatch, if any.
-            status_message (str | None): Extracted HTTP error message fallback.
+            status_code (int | str | enum.Enum | None): HTTP status or error
+                code. If None, status is derived from ``exc``.
+            exc (BaseException | None): Exception raised during HTTP dispatch,
+                or None when logging an HTTP error response without an
+                exception.
+            status_message (str | None): Extracted HTTP error message fallback,
+                or None to derive the message from ``exc`` or ``status_code``.
         """
+        if self._attempt_logged:
+            return
+        self._attempt_logged = True
         try:
             resolved_url = (
-                getattr(self._request, "url", None)
+                (getattr(self._request, "url", None) or self._url)
                 if self._request is not None
                 else self._url
             )
-            resolved_method = (
-                getattr(self._request, "method", None)
+            raw_method = (
+                (getattr(self._request, "method", None) or self._method)
                 if self._request is not None
                 else self._method
+            )
+            resolved_method = (
+                raw_method.upper()
+                if isinstance(raw_method, str) and raw_method
+                else None
             )
             log_transport_attempt(
                 span=self._span,
@@ -1571,22 +1591,28 @@ class _TraceContext:
             pass
 
     def record_response(self, response: Any) -> None:
-        """Record HTTP response attributes on the active span and log failed attempts.
+        """Record HTTP span response attributes and log failed attempts.
 
         Args:
             response (Any): The HTTP response object (e.g. requests.Response).
         """
-        code_int = _extract_http_status_code(response)
-        error_msg: str | None = None
-        if code_int is not None and code_int >= 400:
-            error_msg = self._extract_http_error_message(response)
-            self._log_http_attempt(status_code=code_int, status_message=error_msg)
-
-        span = self._span
-        if span is None or not hasattr(span, "set_attribute"):
-            return
-
         try:
+            span = self._span
+            has_span = span is not None and hasattr(span, "set_attribute")
+            if not has_span and not client_logging.is_error_logging_enabled(
+                self._client_options
+            ):
+                return
+
+            code_int = _extract_http_status_code(response)
+            error_msg: str | None = None
+            if code_int is not None and code_int >= 400:
+                error_msg = self._extract_http_error_message(response)
+                self._log_http_attempt(status_code=code_int, status_message=error_msg)
+
+            if span is None or not hasattr(span, "set_attribute"):
+                return
+
             from opentelemetry.trace.status import (  # type: ignore[import-not-found]
                 Status,
                 StatusCode,
@@ -1623,26 +1649,31 @@ class _TraceContext:
     record_http_response = record_response
 
     def record_error(self, exc: BaseException | None) -> None:
-        """Record supplemental Cloud Observability error attributes on the active span and log failed attempts.
+        """Record error attributes on the active span and log failed attempts.
 
-        Upstream OpenTelemetry's ``start_as_current_span`` context manager automatically
-        records the exception event and marks the span status as ERROR when an unhandled
-        exception escapes (via its default ``record_exception=True`` and
-        ``set_status_on_exception=True`` settings).
+        Upstream OpenTelemetry's ``start_as_current_span`` context manager
+        automatically records the exception event and marks the span status as
+        ERROR when an unhandled exception escapes (via its default
+        ``record_exception=True`` and ``set_status_on_exception=True``
+        settings).
 
-        This method supplements that base OpenTelemetry behavior by enriching the span
-        with semantic attributes required by Cloud Trace and the Google Cloud Observability
-        specification:
-        - ``error.type``: Low-cardinality status code string (e.g. "404") or exception class name.
+        This method supplements that base OpenTelemetry behavior by enriching
+        the span with semantic attributes required by Cloud Trace and the
+        Google Cloud Observability specification:
+        - ``error.type``: Low-cardinality status code string (e.g. "404") or
+          exception class name.
         - ``status.message``: Error description message.
 
         Args:
-            exc (BaseException | None): The exception raised during dispatch.
+            exc (BaseException | None): The exception raised during dispatch,
+                or None (no-op).
         """
-        if exc is None:
+        if exc is None or isinstance(
+            exc, (KeyboardInterrupt, SystemExit, GeneratorExit)
+        ):
             return
 
-        status_code = getattr(exc, "code", None) or getattr(exc, "status_code", None)
+        status_code = _extract_http_status_code(exc)
         self._log_http_attempt(status_code=status_code, exc=exc)
 
         span = self._span
@@ -1650,7 +1681,7 @@ class _TraceContext:
             return
 
         try:
-            if status_code:
+            if status_code is not None:
                 span.set_attribute("error.type", str(status_code))
             else:
                 span.set_attribute("error.type", exc.__class__.__name__)
@@ -1730,14 +1761,12 @@ class _TraceContext:
             return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
-        if self._cm is not None:
-            try:
-                if exc_val is not None:
-                    self.record_error(exc_val)
-            finally:
+        try:
+            if exc_val is not None:
+                self.record_error(exc_val)
+        finally:
+            if self._cm is not None:
                 self._cm.__exit__(exc_type, exc_val, exc_tb)
-        elif exc_val is not None:
-            self.record_error(exc_val)
         # Always return None so caller exceptions are never suppressed
         return None
 
