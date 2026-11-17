@@ -37,7 +37,7 @@ __CROSS_SYNC_OUTPUT__ = "tests.system.data.accelerator.test_lifecycle_autogen"
 def _daemon_owner_process(project, instance_id, table_id, app_profile_id, result_queue):
     from google.cloud.bigtable.data import BigtableDataClient
 
-    override = os.environ.get(_harness.BIN_ENV_VAR)
+    override = _harness.SETTINGS.accelerator_bin
     if override:
         _daemon._resolve_binary_path = lambda: override
     with BigtableDataClient(project=project, use_accelerator=True) as client:
@@ -123,9 +123,7 @@ class TestLifecycleAsync(AcceleratorTestBase):
         self, instance_id, table_id
     ):
         project = self._project_id()
-        app_profile_id = os.getenv("BIGTABLE_TEST_APP_PROFILE") or os.getenv(
-            "CBT_APP_PROFILE_ID"
-        )
+        app_profile_id = _harness.SETTINGS.app_profile_id
         ctx = multiprocessing.get_context("spawn")
         result_queue = ctx.Queue()
         owner = ctx.Process(

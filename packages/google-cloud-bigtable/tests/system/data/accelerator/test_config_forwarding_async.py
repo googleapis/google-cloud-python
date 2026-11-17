@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import uuid
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
@@ -33,9 +32,7 @@ class TestConfigForwardingAsync(AcceleratorTestBase):
     @CrossSync.pytest
     async def test_endpoint_and_app_profile_round_trip(self, instance_id, table_id):
         ep = "bigtable.googleapis.com:443"
-        app_profile = os.getenv("BIGTABLE_TEST_APP_PROFILE") or os.getenv(
-            "CBT_APP_PROFILE_ID"
-        )
+        app_profile = _harness.SETTINGS.app_profile_id
         async with self._make_client(
             use_accelerator=True,
             client_options={"api_endpoint": ep},
