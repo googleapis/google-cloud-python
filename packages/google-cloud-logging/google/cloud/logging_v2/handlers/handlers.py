@@ -108,8 +108,8 @@ class CloudLoggingFilter(logging.Filter):
         logger_label = {"python_logger": record.name} if record.name else {}
         record._labels = {**logger_label, **self.default_labels, **user_labels} or None
         # create string representations for structured logging
-        record._trace_str = record._trace or ""
-        record._span_id_str = record._span_id or ""
+        record._trace_str = json.dumps(record._trace or "", ensure_ascii=False)[1:-1]
+        record._span_id_str = json.dumps(record._span_id or "", ensure_ascii=False)[1:-1]
         record._trace_sampled_str = "true" if record._trace_sampled else "false"
         record._http_request_str = json.dumps(
             record._http_request or {}, ensure_ascii=False
