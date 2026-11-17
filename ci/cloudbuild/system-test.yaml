@@ -23,6 +23,7 @@ steps:
       # Pass sharding and diff parameters consumed by ci/get_package_shards.py.
       - 'MAX_SHARDS=${_MAX_SHARDS}'
       - 'SHARD_INDEX=${_SHARD_INDEX}'
+      - 'MIN_SHARD_WEIGHT=${_MIN_SHARD_WEIGHT}'
       - 'BUILD_TYPE=${_BUILD_TYPE}'
       - 'TARGET_BRANCH=${_BASE_BRANCH}'
       - 'TEST_ALL_PACKAGES=${_TEST_ALL_PACKAGES}'
@@ -33,6 +34,7 @@ steps:
       - 'TEST_TYPE=${_NOX_SESSION}'
       # Configure parallel package execution, time budget/threshold, and unbuffered Python output.
       - 'PARALLEL_WORKERS=${_PARALLEL_WORKERS}'
+      - 'CONTINUE_ON_ERROR=true'
       - 'TIME_BUDGET_MINUTES=${_TIME_BUDGET_MINUTES}'
       - 'HARD_TIMEOUT_MINUTES=${_HARD_TIMEOUT_MINUTES}'
       - 'PYTHONUNBUFFERED=1'
@@ -147,10 +149,14 @@ steps:
       TEMP_LOG_FILE=$(mktemp)
       START_TIME=$(date +%s)
       echo "[${PACKAGE_NAME}] Starting nox $*" >&3
-      "$REAL_NOX" "$@" 2>&1 | awk -v package_prefix="[${PACKAGE_NAME}] " -v log_file="${TEMP_LOG_FILE}" '{
-        print $0 > log_file; fflush(log_file);
-        print package_prefix $0 > "/dev/fd/3"; fflush("/dev/fd/3");
-      }'
+      "$REAL_NOX" "$@" 2>&1 | python3 -u -c '
+      import os, sys
+      prefix = f"[{sys.argv[1]}] "
+      with open(sys.argv[2], "w", buffering=1) as log_f, os.fdopen(3, "w", buffering=1, closefd=False) as live_f:
+          for line in sys.stdin:
+              log_f.write(line)
+              live_f.write(prefix + line)
+      ' "${PACKAGE_NAME}" "${TEMP_LOG_FILE}"
       EXIT_CODE=${PIPESTATUS[0]}
 
       # Calculate elapsed time and percentage of the target time budget spent on this package.
@@ -172,8 +178,9 @@ steps:
       if [[ ${PROPOSED_WEIGHT} -lt 1 ]]; then
         PROPOSED_WEIGHT=1
       fi
-      CONFIGURED_WEIGHT=$(echo "${PACKAGE_WEIGHTS:-}" | tr ' ' '\n' | awk -F: -v package_name="${PACKAGE_NAME}" '
-        $1 == package_name { gsub(/[[:space:]]/, "", $2); if ($2 != "") print $2 }
+      CONFIGURED_WEIGHT=$(printf '%s\n' "${PACKAGE_WEIGHTS:-}" | awk -F: -v package_name="${PACKAGE_NAME}" '
+        { gsub(/^[[:space:]]+|[[:space:]]+$/, "", $1); gsub(/[[:space:]]/, "", $2) }
+        $1 == package_name && $2 != "" { print $2 }
       ' | tail -n 1)
       CONFIGURED_WEIGHT="${CONFIGURED_WEIGHT:-1}"
       WEIGHT_DIFFERENCE=$(( PROPOSED_WEIGHT - CONFIGURED_WEIGHT ))
@@ -222,6 +229,7 @@ timeout: 1800s
 substitutions:
   _MAX_SHARDS: '1'
   _SHARD_INDEX: '0'
+  _MIN_SHARD_WEIGHT: '1'
   _PARALLEL_WORKERS: '4'
   _TIME_BUDGET_MINUTES: '20'
   _HARD_TIMEOUT_MINUTES: '30'

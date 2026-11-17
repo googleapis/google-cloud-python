@@ -105,18 +105,23 @@ class Config(object):
 
 
 def setUpModule():
+    import google.auth
+    import google.auth.exceptions
+
     # Use GOOGLE_CLOUD_PROJECT or PROJECT_ID
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("PROJECT_ID")
 
-    # Check if we have credentials (either via file or environment)
-    # google.auth.default() will check GOOGLE_APPLICATION_CREDENTIALS
-    has_creds = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") is not None
-
-    # Guard: Skip the entire module if the environment is not ready
-    if not project_id or not has_creds:
+    if not project_id:
         raise unittest.SkipTest(
-            "System tests skipped: GOOGLE_CLOUD_PROJECT and "
-            "GOOGLE_APPLICATION_CREDENTIALS must be set."
+            "System tests skipped: GOOGLE_CLOUD_PROJECT or PROJECT_ID must be set."
+        )
+
+    # Check if we have credentials (either via GOOGLE_APPLICATION_CREDENTIALS or ADC)
+    try:
+        google.auth.default()
+    except google.auth.exceptions.DefaultCredentialsError:
+        raise unittest.SkipTest(
+            "System tests skipped: Application Default Credentials must be available."
         )
 
     # Explicitly pass the project to the client

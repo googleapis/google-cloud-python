@@ -31,10 +31,13 @@ class TestSystemLoggingServiceV2(object):
 
         # Guard: Skip if project or credentials are missing
         # This prevents the "prerelease_deps" job from failing
-        if not project_id or "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-            pytest.skip(
-                "System tests require GOOGLE_CLOUD_PROJECT and GOOGLE_APPLICATION_CREDENTIALS"
-            )
+        if not project_id:
+            pytest.skip("System tests require GOOGLE_CLOUD_PROJECT or PROJECT_ID")
+
+        try:
+            google.auth.default()
+        except google.auth.exceptions.DefaultCredentialsError:
+            pytest.skip("System tests require Application Default Credentials")
 
         # Instantiate the client
         # Since we've confirmed the env var exists, this call is now safe

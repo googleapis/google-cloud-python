@@ -13,6 +13,8 @@
 # limitations under the License.
 """py.test fixtures to be shared across multiple system test modules."""
 
+import os
+
 import google.auth.transport._aiohttp_requests as tr_requests  # type: ignore
 import pytest  # type: ignore
 from google.auth._default_async import default_async  # type: ignore
@@ -24,7 +26,12 @@ async def ensure_bucket(transport):
     get_response = await transport.request("GET", utils.BUCKET_URL)
     if get_response.status == 404:
         credentials = transport.credentials
-        query_params = {"project": credentials.project_id}
+        project_id = (
+            getattr(credentials, "project_id", None)
+            or os.environ.get("GOOGLE_CLOUD_PROJECT")
+            or os.environ.get("PROJECT_ID")
+        )
+        query_params = {"project": project_id}
         payload = {"name": utils.BUCKET_NAME}
         post_response = await transport.request(
             "POST", utils.BUCKET_POST_URL, params=query_params, json=payload
