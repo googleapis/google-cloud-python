@@ -250,6 +250,8 @@ class _Worker(object):
     def enqueue(self, record, message, **kwargs):
         """Queues a log entry to be written by the background thread.
 
+        Log entries emitted from the background worker thread itself are ignored.
+
         Args:
             record (logging.LogRecord): Python log record that the handler was called with.
             message (str or dict): The message from the ``LogRecord`` after being
@@ -257,6 +259,8 @@ class _Worker(object):
             kwargs: Additional optional arguments for the logger
         """
         if threading.current_thread() is self._thread:
+            # Ignore logs emitted by the worker thread itself (e.g. commit errors)
+            # to avoid infinite recursion when internal loggers propagate to root.
             return
         # set python logger name as label if missing
         labels = kwargs.pop("labels", {})
