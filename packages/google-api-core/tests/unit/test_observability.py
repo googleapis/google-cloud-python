@@ -29,6 +29,13 @@ from google.api_core import _observability, exceptions
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 
+_ECHO_METHOD = "/google.showcase.v1beta1.Echo/Echo"
+_ECHO_METHOD_BYTES = b"/google.showcase.v1beta1.Echo/Echo"
+_ECHO_URL = "https://example.com/v1/echo"
+_TEST_TRACE_ID = 0x0123456789ABCDEF0123456789ABCDEF
+_TEST_TRACE_ID_HEX = "0123456789abcdef0123456789abcdef"
+_TEST_SPAN_ID = 0x0123456789ABCDEF
+_TEST_SPAN_ID_HEX = "0123456789abcdef"
 _INVALID_ARGUMENT_CODE = (
     "INVALID_ARGUMENT" if exceptions.grpc is not None else "BAD_REQUEST"
 )
@@ -39,6 +46,20 @@ _UNAVAILABLE_CODE = (
 
 class _DummyGrpcStatus(enum.Enum):
     OK = 0
+    INTERNAL = 13
+    UNAVAILABLE = 14
+
+
+def _make_sampled_span():
+    """Creates a spec-constrained mock OpenTelemetry Span with sampled context."""
+    span = mock.create_autospec(Span, instance=True, spec_set=True)
+    span.get_span_context.return_value = SpanContext(
+        trace_id=_TEST_TRACE_ID,
+        span_id=_TEST_SPAN_ID,
+        is_remote=False,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
+    )
+    return span
 
 
 def test_is_otel_capabilities_enabled_disabled(monkeypatch):
@@ -1728,8 +1749,8 @@ def test_has_opentelemetry_missing_and_cached(monkeypatch):
 def test_extract_trace_context_with_real_span_context(flags, expected_sampled):
     """Proves extract_trace_context formats real OpenTelemetry SpanContext objects."""
     context = SpanContext(
-        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
-        span_id=0x0123456789ABCDEF,
+        trace_id=_TEST_TRACE_ID,
+        span_id=_TEST_SPAN_ID,
         is_remote=False,
         trace_flags=flags,
     )
@@ -1738,10 +1759,10 @@ def test_extract_trace_context_with_real_span_context(flags, expected_sampled):
     span.get_span_context.return_value = context
 
     expected = {
-        "trace_id": "0123456789abcdef0123456789abcdef",
-        "span_id": "0123456789abcdef",
-        "logging.googleapis.com/trace": "0123456789abcdef0123456789abcdef",
-        "logging.googleapis.com/spanId": "0123456789abcdef",
+        "trace_id": _TEST_TRACE_ID_HEX,
+        "span_id": _TEST_SPAN_ID_HEX,
+        "logging.googleapis.com/trace": _TEST_TRACE_ID_HEX,
+        "logging.googleapis.com/spanId": _TEST_SPAN_ID_HEX,
         "logging.googleapis.com/trace_sampled": expected_sampled,
     }
     assert _observability.extract_trace_context(span) == expected
@@ -1783,17 +1804,17 @@ def test_extract_trace_context_ambient_fallback(monkeypatch, mock_otel):
     """Proves extract_trace_context falls back to get_current_span() when span is None."""
     monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
     mock_otel.span.get_span_context.return_value = SpanContext(
-        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
-        span_id=0x0123456789ABCDEF,
+        trace_id=_TEST_TRACE_ID,
+        span_id=_TEST_SPAN_ID,
         is_remote=False,
         trace_flags=TraceFlags.SAMPLED,
     )
 
     assert _observability.extract_trace_context(None) == {
-        "trace_id": "0123456789abcdef0123456789abcdef",
-        "span_id": "0123456789abcdef",
-        "logging.googleapis.com/trace": "0123456789abcdef0123456789abcdef",
-        "logging.googleapis.com/spanId": "0123456789abcdef",
+        "trace_id": _TEST_TRACE_ID_HEX,
+        "span_id": _TEST_SPAN_ID_HEX,
+        "logging.googleapis.com/trace": _TEST_TRACE_ID_HEX,
+        "logging.googleapis.com/spanId": _TEST_SPAN_ID_HEX,
         "logging.googleapis.com/trace_sampled": True,
     }
 
@@ -2566,7 +2587,7 @@ def test_service_logger_context_preserves_outer_binding_and_resets_on_error():
         pytest.param(
             "false",
             {
-                "target": "/google.showcase.v1beta1.Echo/Echo",
+                "target": _ECHO_METHOD,
                 "status_code": "UNAVAILABLE",
                 "kind": "grpc",
                 "exc": RuntimeError("down"),
@@ -2576,7 +2597,7 @@ def test_service_logger_context_preserves_outer_binding_and_resets_on_error():
         pytest.param(
             "true",
             {
-                "target": "/google.showcase.v1beta1.Echo/Echo",
+                "target": _ECHO_METHOD,
                 "status_code": "OK",
                 "kind": "grpc",
             },
@@ -2585,7 +2606,7 @@ def test_service_logger_context_preserves_outer_binding_and_resets_on_error():
         pytest.param(
             "true",
             {
-                "target": "/google.showcase.v1beta1.Echo/Echo",
+                "target": _ECHO_METHOD,
                 "status_code": _DummyGrpcStatus.OK,
                 "kind": "grpc",
             },
@@ -2594,7 +2615,7 @@ def test_service_logger_context_preserves_outer_binding_and_resets_on_error():
         pytest.param(
             "true",
             {
-                "target": "https://example.com/v1/echo",
+                "target": _ECHO_URL,
                 "status_code": 200,
                 "kind": "http",
                 "http_method": "POST",
@@ -2617,36 +2638,36 @@ def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, 
     [
         pytest.param(
             {
-                "target": "/google.showcase.v1beta1.Echo/Echo",
-                "status_code": "UNAVAILABLE",
+                "target": _ECHO_METHOD,
+                "status_code": _DummyGrpcStatus.UNAVAILABLE,
                 "kind": "grpc",
                 "exc": RuntimeError("transient error"),
             },
             {
                 "rpc.system.name": "grpc",
-                "rpc.method": "/google.showcase.v1beta1.Echo/Echo",
+                "rpc.method": _ECHO_METHOD,
                 "rpc.response.status_code": "UNAVAILABLE",
                 "error.type": "UNAVAILABLE",
                 "status.message": "transient error",
                 "exception.type": "RuntimeError",
-                "trace_id": "0123456789abcdef0123456789abcdef",
-                "span_id": "0123456789abcdef",
+                "trace_id": _TEST_TRACE_ID_HEX,
+                "span_id": _TEST_SPAN_ID_HEX,
             },
             id="failed_grpc_attempt_with_span",
         ),
         pytest.param(
             {
-                "target": "https://example.com/v1/echo",
+                "target": _ECHO_URL,
                 "status_code": 503,
                 "kind": "http",
                 "http_method": "POST",
             },
             {
                 "rpc.system.name": "http",
-                "url.full": "https://example.com/v1/echo",
+                "url.full": _ECHO_URL,
                 "httpRequest": {
                     "requestMethod": "POST",
-                    "requestUrl": "https://example.com/v1/echo",
+                    "requestUrl": _ECHO_URL,
                     "status": 503,
                 },
                 "error.type": "503",
@@ -2656,17 +2677,17 @@ def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, 
         ),
         pytest.param(
             {
-                "target": "https://example.com/v1/echo",
+                "target": _ECHO_URL,
                 "status_code": "404",
                 "kind": "http",
                 "http_method": "GET",
             },
             {
                 "rpc.system.name": "http",
-                "url.full": "https://example.com/v1/echo",
+                "url.full": _ECHO_URL,
                 "httpRequest": {
                     "requestMethod": "GET",
-                    "requestUrl": "https://example.com/v1/echo",
+                    "requestUrl": _ECHO_URL,
                     "status": 404,
                 },
                 "error.type": "404",
@@ -2676,13 +2697,13 @@ def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, 
         ),
         pytest.param(
             {
-                "target": "/google.showcase.v1beta1.Echo/Echo",
+                "target": _ECHO_METHOD,
                 "status_code": "UNKNOWN",
                 "kind": "grpc",
             },
             {
                 "rpc.system.name": "grpc",
-                "rpc.method": "/google.showcase.v1beta1.Echo/Echo",
+                "rpc.method": _ECHO_METHOD,
                 "rpc.response.status_code": "UNKNOWN",
                 "error.type": "UNKNOWN",
                 "status.message": "HTTP UNKNOWN",
@@ -2696,13 +2717,7 @@ def test_log_transport_attempt_emits_debug(
 ):
     """Proves that log_transport_attempt emits structured DEBUG logs on failed wire attempts."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
-    span = mock.create_autospec(Span, instance=True, spec_set=True)
-    span.get_span_context.return_value = SpanContext(
-        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
-        span_id=0x0123456789ABCDEF,
-        is_remote=False,
-        trace_flags=TraceFlags(TraceFlags.SAMPLED),
-    )
+    span = _make_sampled_span()
 
     _observability.log_transport_attempt(
         span=span, service_logger=mock_logger, **kwargs
@@ -2720,8 +2735,8 @@ def test_log_transport_attempt_uses_active_service_logger_when_omitted(
 ):
     """Proves log_transport_attempt uses _ACTIVE_SERVICE_LOGGER when service_logger is omitted."""
     _observability.log_transport_attempt(
-        target="/google.showcase.v1beta1.Echo/Echo",
-        status_code="UNAVAILABLE",
+        target=_ECHO_METHOD,
+        status_code=_DummyGrpcStatus.UNAVAILABLE,
         kind="grpc",
         exc=RuntimeError("transient error"),
     )
@@ -2734,8 +2749,8 @@ def test_log_transport_attempt_fail_open_on_logger_error(monkeypatch, mock_logge
     mock_logger.debug.side_effect = RuntimeError("logger failed")
 
     _observability.log_transport_attempt(
-        target="/google.showcase.v1beta1.Echo/Echo",
-        status_code="UNAVAILABLE",
+        target=_ECHO_METHOD,
+        status_code=_DummyGrpcStatus.UNAVAILABLE,
         kind="grpc",
         exc=RuntimeError("transient error"),
         service_logger=mock_logger,
@@ -2743,8 +2758,8 @@ def test_log_transport_attempt_fail_open_on_logger_error(monkeypatch, mock_logge
 
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "false")
     _observability.log_transport_attempt(
-        target="/google.showcase.v1beta1.Echo/Echo",
-        status_code="UNAVAILABLE",
+        target=_ECHO_METHOD,
+        status_code=_DummyGrpcStatus.UNAVAILABLE,
         kind="grpc",
         exc=RuntimeError("transient error"),
         client_options={"logger_provider": object()},
@@ -2753,10 +2768,8 @@ def test_log_transport_attempt_fail_open_on_logger_error(monkeypatch, mock_logge
 
 
 def test_capture_grpc_attempt_exception_success_no_op(mock_service_logger):
-    """Proves _capture_grpc_attempt_exception does not log when no exception is raised."""
-    with _observability._capture_grpc_attempt_exception(
-        "/google.showcase.v1beta1.Echo/Echo"
-    ):
+    """Proves _capture_grpc_attempt_exception is a no-op when no error occurs."""
+    with _observability._capture_grpc_attempt_exception(_ECHO_METHOD):
         pass
     mock_service_logger.debug.assert_not_called()
 
@@ -2772,25 +2785,22 @@ def test_capture_grpc_attempt_exception_success_no_op(mock_service_logger):
 def test_capture_grpc_attempt_exception_bypasses_interrupts(
     mock_service_logger, interrupt_exc
 ):
-    """Proves _capture_grpc_attempt_exception re-raises system interrupts without logging."""
+    """Proves _capture_grpc_attempt_exception re-raises interrupts unlogged."""
     with pytest.raises(interrupt_exc):
-        with _observability._capture_grpc_attempt_exception(
-            "/google.showcase.v1beta1.Echo/Echo"
-        ):
+        with _observability._capture_grpc_attempt_exception(_ECHO_METHOD):
             raise interrupt_exc()
     mock_service_logger.debug.assert_not_called()
 
 
 def test_capture_grpc_attempt_exception_logs_and_reraises_error(mock_service_logger):
-    """Proves _capture_grpc_attempt_exception logs and re-raises standard RPC exceptions."""
+    """Proves _capture_grpc_attempt_exception logs and re-raises RPC errors."""
+    span = _make_sampled_span()
     with pytest.raises(RuntimeError, match="wire boom"):
-        with _observability._capture_grpc_attempt_exception(
-            "/google.showcase.v1beta1.Echo/Echo"
-        ):
+        with _observability._capture_grpc_attempt_exception(_ECHO_METHOD, span=span):
             raise RuntimeError("wire boom")
 
     mock_service_logger.debug.assert_called_once()
-    assert (
-        mock_service_logger.debug.call_args[1]["extra"]["rpc.method"]
-        == "/google.showcase.v1beta1.Echo/Echo"
-    )
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    assert extra["rpc.method"] == _ECHO_METHOD
+    assert extra["trace_id"] == _TEST_TRACE_ID_HEX
+    assert extra["span_id"] == _TEST_SPAN_ID_HEX

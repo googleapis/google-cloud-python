@@ -119,11 +119,27 @@ def is_otel_capabilities_enabled(
     return False
 
 
+def _get_current_otel_span() -> Any:
+    """Returns the currently active OpenTelemetry span, or None."""
+    if not has_opentelemetry():
+        return None
+    try:
+        # Ignored by mypy: Optional dependency only loaded after
+        # has_opentelemetry() check
+        from opentelemetry import trace  # type: ignore[import-not-found]
+
+        return trace.get_current_span()
+    except Exception:
+        # Error logging and tracing are non-critical; fail open and never
+        # break the caller's RPC on unexpected telemetry failures.
+        return None
+
+
 def extract_trace_context(span: Any = None) -> dict[str, Any]:
     """Extracts trace_id, span_id, and Cloud Logging trace correlation fields.
 
-    If `span` is None, falls back to `opentelemetry.trace.get_current_span()`
-    when OpenTelemetry is installed. Returns an empty dict if no valid recording
+    If `span` is None, falls back to `_get_current_otel_span()` when
+    OpenTelemetry is installed. Returns an empty dict if no valid recording
     span context exists or if OpenTelemetry is not installed.
 
     Args:
@@ -134,13 +150,9 @@ def extract_trace_context(span: Any = None) -> dict[str, Any]:
     """
     try:
         if span is None:
-            if not has_opentelemetry():
+            span = _get_current_otel_span()
+            if span is None:
                 return {}
-            # Ignored by mypy: Optional dependency only loaded after
-            # has_opentelemetry() check
-            from opentelemetry import trace  # type: ignore[import-not-found]
-
-            span = trace.get_current_span()
 
         ctx = span.get_span_context()
         if not ctx or not ctx.is_valid:
@@ -864,6 +876,7 @@ class _AsyncSuppressingClientInterceptor(
 def _capture_grpc_attempt_exception(
     method_name: str,
     client_options: ClientOptions | dict[str, Any] | None = None,
+    span: Any = None,
 ) -> Iterator[None]:
     """Logs and re-raises any unhandled exception during gRPC continuation.
 
@@ -871,6 +884,7 @@ def _capture_grpc_attempt_exception(
         method_name (str): Decoded gRPC method name.
         client_options (ClientOptions | dict[str, Any] | None): Client options
             used for error logging gating.
+        span (Any | None): Active OpenTelemetry span, if any.
 
     Yields:
         None
@@ -881,6 +895,7 @@ def _capture_grpc_attempt_exception(
         raise
     except BaseException as exc:
         log_transport_attempt(
+            span=span,
             target=method_name,
             kind="grpc",
             exc=exc,
