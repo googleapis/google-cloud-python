@@ -15,6 +15,7 @@
 import asyncio
 import enum
 import http
+import logging
 import sys
 import types
 import urllib.parse
@@ -2525,64 +2526,53 @@ def test_resolve_rpc_system(kind, expected):
 
 
 @pytest.mark.parametrize(
-    "method_name,target,expected_name",
+    "target,active_logger_name,expected_name",
     [
         pytest.param(
-            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
             mock.Mock(
                 __module__="google.cloud.secretmanager_v1.services.secret_manager_service.transports.rest"
             ),
+            "google.cloud.bigtable_v2",
             "google.cloud.secretmanager_v1.services.secret_manager_service.transports.rest",
             id="target_module_takes_precedence",
         ),
         pytest.param(
-            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
             mock.Mock(__module__="google.api_core.gapic_v1.method"),
-            "google.cloud.secretmanager_v1",
-            id="target_module_excludes_api_core_falls_back_to_method_name",
+            "google.cloud.bigtable_v2",
+            "google.cloud.bigtable_v2",
+            id="target_module_excludes_api_core_falls_back_to_active_logger",
         ),
         pytest.param(
             None,
+            "google.cloud.secretmanager_v1",
+            "google.cloud.secretmanager_v1",
+            id="active_logger_contextvar_fallback",
+        ),
+        pytest.param(
             mock.Mock(__module__="google.api_core.gapic_v1.method"),
-            _observability._LOGGER.name,
+            None,
+            _observability._DEFAULT_LOGGER.name,
             id="target_module_excludes_api_core_falls_back_to_default_logger",
         ),
         pytest.param(
-            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
-            None,
-            "google.cloud.secretmanager_v1",
-            id="str_method_name_fallback",
-        ),
-        pytest.param(
-            b"/google.showcase.v1beta1.Echo/Echo",
-            None,
-            "google.showcase_v1beta1",
-            id="bytes_method_name_fallback",
-        ),
-        pytest.param(
-            "/google.longrunning.Operations/GetOperation",
-            None,
-            "google.longrunning",
-            id="unversioned_method_name_fallback",
-        ),
-        pytest.param(
-            "https://example.com/api",
-            None,
-            _observability._LOGGER.name,
-            id="non_google_url_fallback_to_module_logger",
-        ),
-        pytest.param(
             None,
             None,
-            _observability._LOGGER.name,
-            id="none_inputs_fallback_to_module_logger",
+            _observability._DEFAULT_LOGGER.name,
+            id="none_inputs_fallback_to_default_logger",
         ),
     ],
 )
-def test_get_service_logger(method_name, target, expected_name):
-    """Proves that _get_service_logger resolves target module, RPC method name, or fallback logger."""
-    resolved = _observability._get_service_logger(method_name, target)
-    assert resolved.name == expected_name
+def test_get_service_logger(target, active_logger_name, expected_name):
+    """Proves that _get_service_logger resolves target module, active context logger, or default logger."""
+    ctx = (
+        _observability._service_logger_context(logging.getLogger(active_logger_name))
+        if active_logger_name
+        else _observability.contextlib.nullcontext()
+    )
+    with ctx:
+        resolved = _observability._get_service_logger(target)
+        assert resolved.name == expected_name
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is None
 
 
 @pytest.mark.parametrize(

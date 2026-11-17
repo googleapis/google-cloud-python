@@ -27,8 +27,8 @@ except ImportError:
 
 import google.api_core.gapic_v1.method
 import google.api_core.page_iterator
+from google.api_core import _observability, exceptions, retry, timeout
 from google.api_core import client_options as client_options_lib
-from google.api_core import exceptions, retry, timeout
 from google.api_core.gapic_v1 import client_info
 from tests.helpers import assert_uninstrumented_gapic_callable
 
@@ -848,3 +848,24 @@ def test_wrap_method_uninstrumented_exception():
 
     with pytest.raises(RuntimeError, match="uninstrumented error"):
         wrapped()
+
+
+def test_wrap_method_binds_active_service_logger_context():
+    """Proves _GapicCallable binds self._service_logger into _ACTIVE_SERVICE_LOGGER during call."""
+    observed_loggers = []
+
+    def fake_rpc(*args, **kwargs):
+        observed_loggers.append(_observability._get_service_logger())
+        return "ok"
+
+    fake_rpc.__module__ = "google.cloud.bigtable_v2.services.bigtable.transports.grpc"
+    wrapped = google.api_core.gapic_v1.method.wrap_method(fake_rpc)
+
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is None
+    assert wrapped() == "ok"
+    assert len(observed_loggers) == 1
+    assert (
+        observed_loggers[0].name
+        == "google.cloud.bigtable_v2.services.bigtable.transports.grpc"
+    )
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is None

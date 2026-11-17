@@ -170,6 +170,7 @@ class _GapicCallable(object):
         self._client_options = client_options
         self._method_name = method_name
         self._rpc_system = _observability._resolve_rpc_system(kind)
+        self._service_logger = _observability._get_service_logger(target)
 
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
@@ -265,7 +266,10 @@ class _GapicCallable(object):
                 # Fail-open: proceed without span if tracing initialization fails
                 span_cm = contextlib.nullcontext()
 
-        with span_cm as span:
+        with (
+            _observability._service_logger_context(self._service_logger),
+            span_cm as span,
+        ):
             try:
                 yield
                 if span is not None and hasattr(span, "set_attribute"):

@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import contextlib
+import contextvars
 import enum
 import functools
 import logging
@@ -45,7 +46,10 @@ if TYPE_CHECKING:
 
     from google.api_core.grpc_helpers import ClientInterceptor  # noqa: F401
 
-_LOGGER = logging.getLogger(__name__)
+_DEFAULT_LOGGER = logging.getLogger(__name__)
+_ACTIVE_SERVICE_LOGGER: contextvars.ContextVar[logging.Logger | None] = (
+    contextvars.ContextVar("_ACTIVE_SERVICE_LOGGER", default=None)
+)
 _TRACER_PROVIDER = "tracer_provider"
 _TRACE_CONTEXT_PROPAGATOR: Any = None
 _CHANNEL_INTERCEPTOR_MAPPING = (
@@ -376,21 +380,28 @@ def _resolve_rpc_system(kind: str | None = "grpc") -> str:
     return "grpc"
 
 
+@contextlib.contextmanager
+def _service_logger_context(logger: logging.Logger) -> Iterator[None]:
+    """Binds the active service logger for downstream transport wire attempts."""
+    token = _ACTIVE_SERVICE_LOGGER.set(logger)
+    try:
+        yield
+    finally:
+        _ACTIVE_SERVICE_LOGGER.reset(token)
+
+
 def _get_service_logger(
-    method_name: str | bytes | None = None,
     target: Callable[..., Any] | None = None,
 ) -> logging.Logger:
     """Resolves a service-scoped logger matching GOOGLE_SDK_PYTHON_LOGGING_SCOPE.
 
     - If `target` has a `__module__` starting with `google.` (excluding `google.api_core`),
       returns `logging.getLogger(target.__module__)`.
-    - Otherwise, if `method_name` is a full gRPC method path (e.g.
-      `/google.cloud.secretmanager.v1.SecretManagerService/GetSecret`), extracts
-      the Python service package prefix (`google.cloud.secretmanager_v1`).
-    - Falls back to `logging.getLogger("google.api_core._observability")`.
+    - Else if an active service logger is bound in `_ACTIVE_SERVICE_LOGGER` (from
+      `_GapicCallable`), returns that logger.
+    - Falls back to `_DEFAULT_LOGGER` (`logging.getLogger("google.api_core._observability")`).
 
     Args:
-        method_name (str | bytes | None): Full gRPC method path.
         target (Callable[..., Any] | None): The low-level RPC target callable.
 
     Returns:
@@ -403,19 +414,9 @@ def _get_service_logger(
         and not target_mod.startswith("google.api_core")
     ):
         return logging.getLogger(target_mod)
-    if method_name:
-        # Example transformation:
-        #   Input:        "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
-        #   service_name: "google.cloud.secretmanager.v1.SecretManagerService"
-        #   pkg:          "google.cloud.secretmanager_v1"
-        _, service_name, _ = extract_rpc_identity(method_name)
-        pkg = service_name.rpartition(".")[0]
-        if pkg.startswith("google."):
-            base, _, tail = pkg.rpartition(".")
-            if base and len(tail) > 1 and tail.startswith("v") and tail[1].isdigit():
-                pkg = f"{base}_{tail}"
-            return logging.getLogger(pkg)
-    return _LOGGER
+    if (active_logger := _ACTIVE_SERVICE_LOGGER.get()) is not None:
+        return active_logger
+    return _DEFAULT_LOGGER
 
 
 def _is_failed_attempt(
@@ -548,9 +549,7 @@ def log_transport_attempt(
             exc=exc,
             status_message=status_message,
         )
-        target_logger = logger or _get_service_logger(
-            target if rpc_system == "grpc" else None
-        )
+        target_logger = logger or _get_service_logger()
         target_logger.debug(
             "Transport attempt failed for %s (status=%s)",
             target or "unknown_target",
