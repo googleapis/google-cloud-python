@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import datetime
-import os
 
 import pytest
 
@@ -34,7 +33,7 @@ class AcceleratorTestBaseAsync(SystemTestRunner):
         _harness.require_real_bigtable_or_skip()
         path = _harness.require_binary_or_skip()
         orig_resolve = _daemon._resolve_binary_path
-        if os.environ.get(_harness.BIN_ENV_VAR):
+        if _harness.SETTINGS.accelerator_bin:
             _daemon._resolve_binary_path = lambda: path
         try:
             yield
@@ -71,8 +70,18 @@ class AcceleratorTestBaseAsync(SystemTestRunner):
         column_split_config,
     ):
         from google.api_core import exceptions
+        from google.cloud.bigtable.data import BigtableDataClient, ReadRowsQuery
 
         assert len(table_id) <= 50
+        with BigtableDataClient(
+            project=project_id, use_accelerator=False
+        ) as probe_client:
+            with probe_client.get_table(instance_id, table_id) as probe_table:
+                try:
+                    probe_table.read_rows(ReadRowsQuery(limit=1))
+                    return table_id
+                except exceptions.NotFound:
+                    pass
         parent_path = f"projects/{project_id}/instances/{instance_id}"
         try:
             admin_client.table_admin_client.create_table(
@@ -97,12 +106,11 @@ class AcceleratorTestBaseAsync(SystemTestRunner):
         column_family_config,
         column_split_config,
     ):
-        target_id = os.getenv("BIGTABLE_TEST_TABLE") or "accel-test-table-1"
         yield cls._ensure_table(
             admin_client,
             project_id,
             instance_id,
-            target_id,
+            _harness.SETTINGS.table_id,
             column_family_config,
             column_split_config,
         )
@@ -117,18 +125,17 @@ class AcceleratorTestBaseAsync(SystemTestRunner):
         column_family_config,
         column_split_config,
     ):
-        target_id = os.getenv("BIGTABLE_TEST_SECOND_TABLE") or "accel-test-table-2"
         yield cls._ensure_table(
             admin_client,
             project_id,
             instance_id,
-            target_id,
+            _harness.SETTINGS.second_table_id,
             column_family_config,
             column_split_config,
         )
 
     def _project_id(self):
-        return os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("PROJECT_ID") or None
+        return _harness.SETTINGS.project_id
 
     def _make_client(self, use_accelerator=None, **kwargs):
         return CrossSync.DataClient(

@@ -57,6 +57,49 @@ DELETE_AFTER_WRITE_GUARD_OPS = 512
 # Env var used by tests / runners to override the binary location.
 BIN_ENV_VAR = "BIGTABLE_ACCELERATOR_BIN"
 
+
+class TestSettings:
+    """Centralized environment configuration for accelerator system tests."""
+
+    @property
+    def project_id(self) -> str | None:
+        return os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("PROJECT_ID") or None
+
+    @property
+    def instance_id(self) -> str | None:
+        return (
+            os.getenv("BIGTABLE_TEST_INSTANCE") or os.getenv("CBT_INSTANCE_ID") or None
+        )
+
+    @property
+    def table_id(self) -> str:
+        return os.getenv("BIGTABLE_TEST_TABLE") or "accel-test-table-1"
+
+    @property
+    def second_table_id(self) -> str:
+        return os.getenv("BIGTABLE_TEST_SECOND_TABLE") or "accel-test-table-2"
+
+    @property
+    def app_profile_id(self) -> str | None:
+        return (
+            os.getenv("BIGTABLE_TEST_APP_PROFILE")
+            or os.getenv("CBT_APP_PROFILE_ID")
+            or None
+        )
+
+    @property
+    def accelerator_bin(self) -> str | None:
+        return os.getenv(BIN_ENV_VAR) or None
+
+    @property
+    def emulator_host(self) -> str | None:
+        from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+        return os.getenv(BIGTABLE_EMULATOR) or None
+
+
+SETTINGS = TestSettings()
+
 Expected = tuple  # (family: str, qualifier: bytes, timestamp_micros: int, value: bytes)
 
 
@@ -171,7 +214,7 @@ def assert_rows_equivalent(
 
 
 def resolve_binary() -> str | None:
-    override = os.environ.get(BIN_ENV_VAR)
+    override = SETTINGS.accelerator_bin
     if override:
         return override if os.path.isfile(override) else None
     try:
@@ -194,11 +237,10 @@ def require_binary_or_skip() -> str:
 
 def require_real_bigtable_or_skip() -> None:
     import pytest
-    from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-    if os.environ.get(BIGTABLE_EMULATOR):
+    if SETTINGS.emulator_host:
         pytest.skip("accelerator is not supported against the emulator")
-    if not (os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("PROJECT_ID")):
+    if not SETTINGS.project_id:
         pytest.skip("no GOOGLE_CLOUD_PROJECT set for live accelerator tests")
 
 

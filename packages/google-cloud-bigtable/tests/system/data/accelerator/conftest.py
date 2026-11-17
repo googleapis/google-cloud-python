@@ -13,16 +13,17 @@
 # limitations under the License.
 
 import functools
-import os
 import tempfile
 
 import pytest
+
+from . import _harness
 
 
 @pytest.fixture(scope="session", autouse=True)
 def _default_app_profile():
     """Default ``get_table`` to ``BIGTABLE_TEST_APP_PROFILE`` when set."""
-    profile = os.getenv("BIGTABLE_TEST_APP_PROFILE") or os.getenv("CBT_APP_PROFILE_ID")
+    profile = _harness.SETTINGS.app_profile_id
     if not profile:
         yield
         return
