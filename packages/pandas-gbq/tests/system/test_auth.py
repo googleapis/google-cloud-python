@@ -11,7 +11,7 @@ import pytest
 
 from pandas_gbq import auth
 
-IS_RUNNING_ON_CI = "KOKORO_BUILD_ID" in os.environ
+IS_RUNNING_ON_CI = bool(os.environ.get("KOKORO_BUILD_ID") or os.environ.get("CI"))
 
 
 def mock_default_credentials(scopes=None, request=None):
