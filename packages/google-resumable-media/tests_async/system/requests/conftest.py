@@ -51,6 +51,14 @@ async def cleanup_bucket(transport):
 
 def _get_authorized_transport():
     credentials, project_id = default_async(scopes=(utils.GCS_RW_SCOPE,))
+    if not hasattr(credentials, "project_id") or not credentials.token:
+        import google.auth.transport.requests
+        import google.oauth2.credentials
+
+        sync_creds, sync_project = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
+        sync_creds.refresh(google.auth.transport.requests.Request())
+        credentials = google.oauth2.credentials.Credentials(token=sync_creds.token)
+        credentials.project_id = getattr(sync_creds, "project_id", None) or sync_project
     return tr_requests.AuthorizedSession(credentials)
 
 

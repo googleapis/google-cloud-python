@@ -16,7 +16,9 @@ steps:
   - name: 'us-central1-docker.pkg.dev/client-library-releases/release-images-prod/python-multi@sha256:d529954c373542171f9fc411e0102cebe542b511e320a965edf8820285f4f122'
     id: 'run-system-tests-shard'
     env:
-      # Populate standard GCP project environment variables expected by system test suites.
+      # Populate standard GCP project and CI environment variables expected by system test suites.
+      - 'CI=true'
+      - 'RUN_COMPLIANCE_TESTS=false'
       - 'GOOGLE_CLOUD_PROJECT=${PROJECT_ID}'
       - 'GCLOUD_PROJECT=${PROJECT_ID}'
       - 'PROJECT_ID=${PROJECT_ID}'
@@ -191,6 +193,7 @@ steps:
         WEIGHT_MESSAGE="Weight adjustment needed for ${PACKAGE_NAME}: configured=${CONFIGURED_WEIGHT}, proposed=${PROPOSED_WEIGHT} (${PACKAGE_NAME}:${PROPOSED_WEIGHT})"
         echo "[${PACKAGE_NAME}] ${WEIGHT_MESSAGE}" >&3
         echo "${WEIGHT_MESSAGE}"
+        echo "  ${PACKAGE_NAME}: ${PROPOSED_WEIGHT}  # was ${CONFIGURED_WEIGHT} (actual: $(( ELAPSED_SECONDS / 60 ))m $(printf '%02d' $(( ELAPSED_SECONDS % 60 )))s)" >> /tmp/cloudbuild_weight_adjustments.txt
       fi
 
       # Emit failure details to stdout (captured by run_conditional_tests.sh) only when tests fail
@@ -219,6 +222,20 @@ steps:
       exec 3>&1
 
       # Export PACKAGE_LIST and delegate execution to the existing monorepo test runner script.
+      rm -f /tmp/cloudbuild_weight_adjustments.txt
+      print_weight_summary() {
+        echo ""
+        echo "============================================================"
+        if [[ -s /tmp/cloudbuild_weight_adjustments.txt ]]; then
+          echo "⚠️  WEIGHT ADJUSTMENTS NEEDED (drifted >= 3m from configured weight):"
+          sort -u /tmp/cloudbuild_weight_adjustments.txt
+        else
+          echo "✅ WEIGHT SUMMARY: No weight adjustments needed (all packages within 2m of configured weight)."
+        fi
+        echo "============================================================"
+      }
+      trap print_weight_summary EXIT
+
       export PACKAGE_LIST
       echo "=== System Shard ${SHARD_INDEX}/${MAX_SHARDS} running ${NOX_SESSION} for: ${PACKAGE_LIST} ==="
       ./ci/run_conditional_tests.sh
@@ -227,9 +244,9 @@ steps:
 timeout: 1800s
 
 substitutions:
-  _MAX_SHARDS: '1'
+  _MAX_SHARDS: '5'
   _SHARD_INDEX: '0'
-  _MIN_SHARD_WEIGHT: '1'
+  _MIN_SHARD_WEIGHT: '10'
   _PARALLEL_WORKERS: '4'
   _TIME_BUDGET_MINUTES: '20'
   _HARD_TIMEOUT_MINUTES: '30'
@@ -248,7 +265,17 @@ substitutions:
     packages/pandas-gbq
     packages/sqlalchemy-bigquery
   _NOX_SESSION: 'system-3.12'
-  _PACKAGE_WEIGHTS: ''
+  _PACKAGE_WEIGHTS: |
+    bigquery-magics: 2
+    google-cloud-bigquery-storage: 8
+    google-cloud-compute: 8
+    google-cloud-datastore: 8
+    google-cloud-dns: 1
+    google-cloud-error-reporting: 1
+    google-cloud-logging: 10
+    google-resumable-media: 1
+    pandas-gbq: 12
+    sqlalchemy-bigquery: 11
 
 options:
   machineType: 'E2_HIGHCPU_8'
