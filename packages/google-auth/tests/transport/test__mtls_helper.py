@@ -2558,6 +2558,43 @@ class TestMtlsCertManager(object):
         assert results == [False, True]
         assert manager.generation_id == 2
 
+    def test_get_credential_snapshot_does_not_block_during_refresh(self):
+        entered_reload = threading.Event()
+        release_reload = threading.Event()
+
+        def blocking_reload():
+            entered_reload.set()
+            release_reload.wait(timeout=5)
+            return OTHER_CERT_BYTES, pytest.private_key_bytes
+
+        steps = [
+            lambda: (pytest.public_cert_bytes, pytest.private_key_bytes),
+            blocking_reload,
+        ]
+        manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=lambda: steps.pop(0)()
+        )
+        assert manager.refresh() is True
+
+        refresh_thread = threading.Thread(target=manager.refresh)
+        refresh_thread.start()
+        try:
+            assert entered_reload.wait(timeout=5)
+            assert manager.get_credential_snapshot() == (
+                pytest.public_cert_bytes,
+                pytest.private_key_bytes,
+                1,
+            )
+        finally:
+            release_reload.set()
+            refresh_thread.join(timeout=5)
+
+        assert manager.get_credential_snapshot() == (
+            OTHER_CERT_BYTES,
+            pytest.private_key_bytes,
+            2,
+        )
+
     def test_initial_load_no_default_cert_returns_false(self, tmp_path, monkeypatch):
         monkeypatch.setenv("HOME", str(tmp_path))
         monkeypatch.setenv("USERPROFILE", str(tmp_path))

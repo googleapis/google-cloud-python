@@ -24,7 +24,7 @@ import sys
 import tempfile
 import threading
 from os import environ, getenv, path
-from typing import Callable, Generator, List, Optional, Tuple, Union, cast
+from typing import Callable, Generator, List, NamedTuple, Optional, Tuple, Union, cast
 from urllib.parse import urlsplit
 
 from google.auth import _agent_identity_utils, _cloud_sdk, environment_vars, exceptions
@@ -970,6 +970,13 @@ def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
     return hostname in _MTLS_EXACT_HOSTS or hostname.endswith(_MTLS_HOST_SUFFIXES)
 
 
+class _CertSnapshot(NamedTuple):
+    cert: Optional[bytes]
+    key: Optional[bytes]
+    generation_id: int
+    fingerprint: Optional[str]
+
+
 class _MtlsCertManager:
     """Thread-safe manager for mTLS client certificates and generation tracking.
 
@@ -994,29 +1001,26 @@ class _MtlsCertManager:
     ) -> None:
         self._client_cert_source = client_cert_source
         self._certificate_config_path = certificate_config_path
-        self._cert: Optional[bytes] = None
-        self._key: Optional[bytes] = None
-        self._cert_fingerprint: Optional[str] = None
-        self._generation_id: int = 0
+        self._snapshot = _CertSnapshot(None, None, 0, None)
         self._reload_id: int = 0
         self._completed_reload_id: int = 0
         self._lock = threading.Lock()
 
     @property
     def generation_id(self) -> int:
-        return self._generation_id
+        return self._snapshot.generation_id
 
     @property
     def cert_fingerprint(self) -> Optional[str]:
         """Fingerprint of the current leaf certificate, or ``None`` if not loaded."""
-        return self._cert_fingerprint
+        return self._snapshot.fingerprint
 
     def get_credential_snapshot(
         self,
     ) -> Tuple[Optional[bytes], Optional[bytes], int]:
-        """Returns the current ``(cert_bytes, key_bytes, generation_id)`` under the lock."""
-        with self._lock:
-            return self._cert, self._key, self._generation_id
+        """Returns the current ``(cert_bytes, key_bytes, generation_id)`` snapshot."""
+        snap = self._snapshot
+        return snap.cert, snap.key, snap.generation_id
 
     def _load_cert_and_fingerprint(
         self,
@@ -1029,7 +1033,7 @@ class _MtlsCertManager:
                 generate_encrypted_key=False,
                 certificate_config_path=self._certificate_config_path,
             )
-            if not has_cert and self._generation_id == 0:
+            if not has_cert and self._snapshot.generation_id == 0:
                 return None, None, None
 
         if not cert_bytes or not key_bytes:
@@ -1065,7 +1069,7 @@ class _MtlsCertManager:
         reload_id_at_entry = self._reload_id
         with self._lock:
             if expected_generation is not None:
-                if self._generation_id > expected_generation:
+                if self._snapshot.generation_id > expected_generation:
                     return True
                 # Only reuse a reload that started after entry and did not raise.
                 if self._completed_reload_id > reload_id_at_entry:
@@ -1075,11 +1079,11 @@ class _MtlsCertManager:
             try:
                 cert_bytes, key_bytes, fingerprint = self._load_cert_and_fingerprint()
             except Exception as caught_exc:
-                if self._generation_id > 0:
+                if self._snapshot.generation_id > 0:
                     _LOGGER.debug(
                         "Failed to reload mTLS client certificate; retaining "
                         "previous certificate (generation %d): %r",
-                        self._generation_id,
+                        self._snapshot.generation_id,
                         caught_exc,
                     )
                     self._completed_reload_id = self._reload_id
@@ -1088,12 +1092,12 @@ class _MtlsCertManager:
                     raise
                 raise exceptions.ClientCertError(caught_exc) from caught_exc
 
-            changed = cert_bytes is not None and fingerprint != self._cert_fingerprint
+            snap = self._snapshot
+            changed = cert_bytes is not None and fingerprint != snap.fingerprint
             if changed:
-                self._cert = cert_bytes
-                self._key = key_bytes
-                self._cert_fingerprint = fingerprint
-                self._generation_id += 1
+                self._snapshot = _CertSnapshot(
+                    cert_bytes, key_bytes, snap.generation_id + 1, fingerprint
+                )
 
             self._completed_reload_id = self._reload_id
             return changed
