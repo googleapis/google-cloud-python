@@ -1105,32 +1105,32 @@ class TestWindowTypes:
     def test_window_spec_repr_and_equality(self):
         empty = WindowSpec()
         assert repr(empty) == "WindowSpec()"
-        doc_spec = WindowSpec(
+        spec = WindowSpec(
             partition="genre",
             sort=Field.of("rating").descending(),
             documents=DocumentWindowFrame(-1, WindowBound.CURRENT),
         )
-        assert repr(doc_spec) == (
+        assert repr(spec) == (
             "WindowSpec("
             "partition=[Field.of('genre')], "
             "sort=[Field.of('rating').descending()], "
             "documents=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
             ")"
         )
-        assert doc_spec == WindowSpec(
+        assert spec == WindowSpec(
             partition=[Field.of("genre")],
             sort=[Field.of("rating").descending()],
             documents=DocumentWindowFrame(-1, "current"),
         )
-        assert doc_spec != empty
-        assert doc_spec != object()
+        assert spec != empty
+        assert spec != object()
 
     def test_window_spec_to_pb(self):
         assert WindowSpec()._to_pb().map_value.fields == {}
         order = Field.of("rating").descending()
         doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
-        doc_spec = WindowSpec(partition="genre", sort=order, documents=doc_frame)
-        assert doc_spec._to_pb().map_value.fields == {
+        spec = WindowSpec(partition="genre", sort=order, documents=doc_frame)
+        assert spec._to_pb().map_value.fields == {
             "partition": Value(
                 array_value={"values": [Value(field_reference_value="genre")]}
             ),
