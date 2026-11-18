@@ -91,16 +91,52 @@ class _ErrorInjectorInterceptor(
         self._exc_list.clear()
         self.fail_mid_stream = False
 
+    def _make_deadline_exceeded(self):
+        if CrossSync.is_async:
+            return AioRpcError(StatusCode.DEADLINE_EXCEEDED, Metadata(), Metadata())
+        else:
+            exc = RpcError(StatusCode.DEADLINE_EXCEEDED)
+            exc.trailing_metadata = lambda: []
+            exc.initial_metadata = lambda: []
+            exc.code = lambda: StatusCode.DEADLINE_EXCEEDED
+            exc.details = lambda: "Deadline Exceeded"
+
+            def _result():
+                raise exc
+
+            exc.result = _result
+            return exc
+
     @CrossSync.convert
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         if self._exc_list:
             raise self._exc_list.pop(0)
+        # Deterministic client-side timeout for *_failure_timeout tests:
+        # When the CI worker and Bigtable cluster sit in the same GCP region
+        # (e.g. Cloud Build in us-central1 with <1ms RTT), tiny 1–5ms timeouts
+        # race against Bigtable returning server headers (setting cluster_id) on
+        # one hand, and expiring inside Python's local shard-dispatch loop before
+        # all shards start on the other. Using a 50ms timeout gives Python ample
+        # headroom to start all sub-requests under xdist CPU load, while sleeping
+        # past the deadline here guarantees DEADLINE_EXCEEDED with no server headers.
+        if (
+            client_call_details.timeout is not None
+            and client_call_details.timeout <= 0.1
+        ):
+            await CrossSync.sleep(client_call_details.timeout + 0.01)
+            raise self._make_deadline_exceeded()
         return await continuation(client_call_details, request)
 
     @CrossSync.convert
     async def intercept_unary_stream(self, continuation, client_call_details, request):
         if not self.fail_mid_stream and self._exc_list:
             raise self._exc_list.pop(0)
+        if (
+            client_call_details.timeout is not None
+            and client_call_details.timeout <= 0.1
+        ):
+            await CrossSync.sleep(client_call_details.timeout + 0.01)
+            raise self._make_deadline_exceeded()
 
         response = await continuation(client_call_details, request)
 
@@ -333,7 +369,7 @@ class TestMetricsAsync(SystemTestRunner):
         await temp_rows.add_row(b"row_key_1")
         handler.clear()
         with pytest.raises(GoogleAPICallError):
-            await table.read_rows(ReadRowsQuery(), operation_timeout=0.001)
+            await table.read_rows(ReadRowsQuery(), operation_timeout=0.05)
         # validate counts
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
@@ -525,7 +561,7 @@ class TestMetricsAsync(SystemTestRunner):
         await temp_rows.add_row(b"row_key_1")
         handler.clear()
         generator = await table.read_rows_stream(
-            ReadRowsQuery(), operation_timeout=0.001
+            ReadRowsQuery(), operation_timeout=0.05
         )
         with pytest.raises(GoogleAPICallError):
             [_ async for _ in generator]
@@ -752,7 +788,7 @@ class TestMetricsAsync(SystemTestRunner):
         await temp_rows.add_row(b"row_key_1")
         handler.clear()
         with pytest.raises(GoogleAPICallError):
-            await table.read_row(b"row_key_1", operation_timeout=0.001)
+            await table.read_row(b"row_key_1", operation_timeout=0.05)
         # validate counts
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
@@ -921,7 +957,7 @@ class TestMetricsAsync(SystemTestRunner):
         query2 = ReadRowsQuery(row_keys=[b"b"])
         handler.clear()
         with pytest.raises(ShardedReadRowsExceptionGroup) as e:
-            await table.read_rows_sharded([query1, query2], operation_timeout=0.0001)
+            await table.read_rows_sharded([query1, query2], operation_timeout=0.05)
         assert len(e.value.exceptions) == 2
         for sub_exc in e.value.exceptions:
             assert isinstance(sub_exc.__cause__, DeadlineExceeded)
@@ -1163,7 +1199,7 @@ class TestMetricsAsync(SystemTestRunner):
 
         handler.clear()
         with pytest.raises(MutationsExceptionGroup):
-            await table.bulk_mutate_rows([entry], operation_timeout=0.001)
+            await table.bulk_mutate_rows([entry], operation_timeout=0.05)
         # validate counts
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
@@ -1386,7 +1422,7 @@ class TestMetricsAsync(SystemTestRunner):
 
         with pytest.raises(MutationsExceptionGroup):
             async with table.mutations_batcher(
-                batch_operation_timeout=0.001
+                batch_operation_timeout=0.05
             ) as batcher:
                 await batcher.append(entry)
         # validate counts
@@ -1563,7 +1599,7 @@ class TestMetricsAsync(SystemTestRunner):
         mutation = SetCell(TEST_FAMILY, b"q", b"v")
 
         with pytest.raises(GoogleAPICallError):
-            await table.mutate_row(row_key, [mutation], operation_timeout=0.001)
+            await table.mutate_row(row_key, [mutation], operation_timeout=0.05)
         # validate counts
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
@@ -1805,7 +1841,7 @@ class TestMetricsAsync(SystemTestRunner):
         No grpc headers expected
         """
         with pytest.raises(GoogleAPICallError):
-            await table.sample_row_keys(operation_timeout=0.001)
+            await table.sample_row_keys(operation_timeout=0.05)
         # validate counts
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
@@ -1971,7 +2007,7 @@ class TestMetricsAsync(SystemTestRunner):
         await temp_rows.add_row(row_key, value=0, family=family, qualifier=qualifier)
         rule = IncrementRule(family, qualifier, 1)
         with pytest.raises(GoogleAPICallError):
-            await table.read_modify_write_row(row_key, rule, operation_timeout=0.001)
+            await table.read_modify_write_row(row_key, rule, operation_timeout=0.05)
         # validate counts
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
@@ -2162,7 +2198,7 @@ class TestMetricsAsync(SystemTestRunner):
                 row_key,
                 predicate=ValueRangeFilter(0, 2),
                 true_case_mutations=true_mutation,
-                operation_timeout=0.001,
+                operation_timeout=0.05,
             )
         # validate counts
         assert len(handler.completed_operations) == 1
