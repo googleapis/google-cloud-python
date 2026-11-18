@@ -1421,9 +1421,7 @@ class TestMetricsAsync(SystemTestRunner):
         entry = RowMutationEntry(row_key, [mutation])
 
         with pytest.raises(MutationsExceptionGroup):
-            async with table.mutations_batcher(
-                batch_operation_timeout=0.05
-            ) as batcher:
+            async with table.mutations_batcher(batch_operation_timeout=0.05) as batcher:
                 await batcher.append(entry)
         # validate counts
         assert len(handler.completed_operations) == 1
