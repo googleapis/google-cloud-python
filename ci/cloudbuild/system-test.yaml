@@ -29,7 +29,7 @@ steps:
       - 'BUILD_TYPE=${_BUILD_TYPE}'
       - 'TARGET_BRANCH=${_BASE_BRANCH}'
       - 'TEST_ALL_PACKAGES=${_TEST_ALL_PACKAGES}'
-      - 'ENABLED_PACKAGES=${_ENABLED_PACKAGES}'
+      - 'DISABLED_PACKAGES=${_DISABLED_PACKAGES}'
       - 'PACKAGE_WEIGHTS=${_PACKAGE_WEIGHTS}'
       # Specify the nox session consumed by ci/run_conditional_tests.sh and ci/run_single_test.sh.
       - 'NOX_SESSION=${_NOX_SESSION}'
@@ -58,7 +58,7 @@ steps:
         --depth=200 || true
 
       # Import ci/get_package_shards.py without modifying the script on disk.
-      # Filter get_packages() in memory to _ENABLED_PACKAGES so unmigrated packages are ignored.
+      # Filter get_packages() in memory to exclude _DISABLED_PACKAGES.
       PACKAGE_LIST=$(python3 -c '
       import os
       import sys
@@ -66,33 +66,28 @@ steps:
       sys.path.insert(0, "ci")
       import get_package_shards
 
-      # Normalize enabled package paths to include a trailing slash so they match
-      # the directory format ("packages/<name>/") returned by get_package_shards.get_packages().
-      # When CI infrastructure (ci/, .github/) or core dependencies change,
-      # get_package_shards.get_packages_to_test() automatically selects all packages
-      # returned by get_packages(). Passing handwritten_only=False to original_get_packages
-      # ensures every package explicitly listed in _ENABLED_PACKAGES is included.
-      enabled_packages = {
+      # Normalize disabled package paths to include a trailing slash.
+      disabled_packages = {
           package_path.strip().rstrip("/") + "/"
-          for package_path in os.environ.get("ENABLED_PACKAGES", "").replace(",", " ").split()
+          for package_path in os.environ.get("DISABLED_PACKAGES", "").replace(",", " ").split()
           if package_path.strip()
       }
-      if enabled_packages:
-          original_get_packages = get_package_shards.get_packages
 
-          def filtered_get_packages(*args, **kwargs):
-              filtered_packages = {}
-              for package_name, package_paths in original_get_packages(
-                  handwritten_only=False
-              ).items():
-                  kept_paths = [
-                      path for path in package_paths if path in enabled_packages
-                  ]
-                  if kept_paths:
-                      filtered_packages[package_name] = kept_paths
-              return filtered_packages
+      original_get_packages = get_package_shards.get_packages
+      def filtered_get_packages(*args, **kwargs):
+          filtered_packages = {}
+          for package_name, package_paths in original_get_packages(
+              handwritten_only=False
+          ).items():
+              # Keep only paths that are NOT in the disabled_packages set
+              kept_paths = [
+                  path for path in package_paths if path not in disabled_packages
+              ]
+              if kept_paths:
+                  filtered_packages[package_name] = kept_paths
+          return filtered_packages
 
-          get_package_shards.get_packages = filtered_get_packages
+      get_package_shards.get_packages = filtered_get_packages
 
       # Compute the packages that need testing and distribute them across balanced shards.
       packages_to_test = get_package_shards.get_packages_to_test()
@@ -102,9 +97,9 @@ steps:
       print(shards[shard_index].get("packages", "") if shard_index < len(shards) else "")
       ')
 
-      # Report immediate green (< 10s) if no enabled packages in this PR map to this shard index.
+      # Report immediate green (< 10s) if no packages in this PR map to this shard index.
       if [[ -z "${PACKAGE_LIST}" ]]; then
-        echo "No enabled packages assigned to shard ${SHARD_INDEX}. Exiting 0."
+        echo "No packages assigned to shard ${SHARD_INDEX}. Exiting 0."
         exit 0
       fi
 
@@ -253,17 +248,7 @@ substitutions:
   _BUILD_TYPE: 'presubmit'
   _BASE_BRANCH: 'main'
   _TEST_ALL_PACKAGES: 'false'
-  _ENABLED_PACKAGES: >-
-    packages/bigquery-magics
-    packages/google-cloud-bigquery-storage
-    packages/google-cloud-compute
-    packages/google-cloud-datastore
-    packages/google-cloud-dns
-    packages/google-cloud-error-reporting
-    packages/google-cloud-logging
-    packages/google-resumable-media
-    packages/pandas-gbq
-    packages/sqlalchemy-bigquery
+  _DISABLED_PACKAGES: ''
   _NOX_SESSION: 'system-3.12'
   _PACKAGE_WEIGHTS: |
     bigquery-magics: 2
