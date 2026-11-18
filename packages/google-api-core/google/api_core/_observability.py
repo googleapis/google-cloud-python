@@ -928,6 +928,31 @@ class _GrpcAttemptLoggingInterceptor(_SyncUnaryUnaryClientInterceptor):
     ) -> None:
         self._client_options = client_options
 
+    def _inspect_sync_response(
+        self,
+        resp: Any,
+        *,
+        method_name: str,
+        active_span: opentelemetry.trace.Span | None,
+    ) -> None:
+        """Inspects a completed sync gRPC response/future and logs failures."""
+        try:
+            exc_fn = getattr(resp, "exception", None)
+            if callable(exc_fn) and (resp_exc := exc_fn()) is not None:
+                code_fn = getattr(resp, "code", None)
+                log_transport_attempt(
+                    span=active_span,
+                    target=method_name,
+                    status_code=code_fn() if callable(code_fn) else None,
+                    kind="grpc",
+                    exc=resp_exc,
+                    client_options=self._client_options,
+                )
+        # Intentionally catch broad Exception so telemetry logging fails open
+        # and never disrupts the caller's RPC flow.
+        except (Exception, asyncio.CancelledError):
+            pass
+
     def intercept_unary_unary(
         self,
         continuation: Callable[..., Any],
@@ -954,29 +979,19 @@ class _GrpcAttemptLoggingInterceptor(_SyncUnaryUnaryClientInterceptor):
         ):
             response = continuation(client_call_details, request)
 
-        def _inspect_sync_response(resp: Any) -> None:
-            try:
-                exc_fn = getattr(resp, "exception", None)
-                if callable(exc_fn) and (resp_exc := exc_fn()) is not None:
-                    code_fn = getattr(resp, "code", None)
-                    log_transport_attempt(
-                        span=active_span,
-                        target=method_name,
-                        status_code=code_fn() if callable(code_fn) else None,
-                        kind="grpc",
-                        exc=resp_exc,
-                        client_options=self._client_options,
-                    )
-            # Intentionally catch broad Exception so telemetry logging fails open
-            # and never disrupts the caller's RPC flow.
-            except (Exception, asyncio.CancelledError):
-                pass
-
         add_callback = getattr(response, "add_done_callback", None)
         if callable(add_callback):
-            add_callback(_inspect_sync_response)
+            add_callback(
+                functools.partial(
+                    self._inspect_sync_response,
+                    method_name=method_name,
+                    active_span=active_span,
+                )
+            )
         else:
-            _inspect_sync_response(response)
+            self._inspect_sync_response(
+                response, method_name=method_name, active_span=active_span
+            )
         return response
 
 
@@ -996,11 +1011,87 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
         self._client_options = client_options
         self._background_tasks: set[asyncio.Future[Any]] = set()
 
-    def _schedule_inspection(self, coro: Any) -> None:
-        """Schedules an async inspection coroutine and retains a strong task reference."""
-        task = asyncio.ensure_future(coro)
+    def _schedule_call_inspection(
+        self,
+        target_call: Any,
+        *,
+        method_name: str,
+        active_span: opentelemetry.trace.Span | None,
+    ) -> None:
+        """Schedules async call inspection and retains a strong task reference."""
+        task = asyncio.ensure_future(
+            self._inspect_async_call(
+                target_call, method_name=method_name, active_span=active_span
+            )
+        )
         self._background_tasks.add(task)
         task.add_done_callback(self._background_tasks.discard)
+
+    @staticmethod
+    async def _build_async_rpc_error(
+        target_call: Any,
+        code: Any,
+        details: str,
+    ) -> Exception | None:
+        """Builds a grpc.aio.AioRpcError snapshot from a failed async call.
+
+        Preserves initial/trailing metadata (including ``google.rpc.ErrorInfo``
+        in ``grpc-status-details-bin``) and ``debug_error_string`` when
+        ``grpc.aio`` is available, falling back to ``Exception(details)``
+        otherwise.
+        """
+        aio_mod = getattr(grpc, "aio", None)
+        aio_error_cls: type[grpc.aio.AioRpcError] | None = getattr(
+            aio_mod, "AioRpcError", None
+        )
+        if aio_error_cls is not None:
+            init_md_fn = getattr(target_call, "initial_metadata", None)
+            trail_md_fn = getattr(target_call, "trailing_metadata", None)
+            debug_fn = getattr(target_call, "debug_error_string", None)
+            initial_metadata = await init_md_fn() if callable(init_md_fn) else None
+            trailing_metadata = await trail_md_fn() if callable(trail_md_fn) else None
+            debug_error_string = await debug_fn() if callable(debug_fn) else None
+            return aio_error_cls(
+                code=code,
+                initial_metadata=initial_metadata,
+                trailing_metadata=trailing_metadata,
+                details=details or None,
+                debug_error_string=debug_error_string,
+            )
+        return Exception(details) if details else None
+
+    async def _inspect_async_call(
+        self,
+        target_call: Any,
+        *,
+        method_name: str,
+        active_span: opentelemetry.trace.Span | None,
+    ) -> None:
+        """Inspects a completed async gRPC call and logs failed attempts."""
+        try:
+            code_fn = getattr(target_call, "code", None)
+            if (
+                callable(code_fn)
+                and getattr(code := await code_fn(), "name", str(code)) != "OK"
+            ):
+                details_fn = getattr(target_call, "details", None)
+                details = await details_fn() if callable(details_fn) else ""
+                rpc_error = await self._build_async_rpc_error(
+                    target_call, code, details
+                )
+                log_transport_attempt(
+                    span=active_span,
+                    target=method_name,
+                    status_code=code,
+                    kind="grpc",
+                    exc=rpc_error,
+                    client_options=self._client_options,
+                    status_message=details or None,
+                )
+        # Intentionally catch broad Exception so telemetry logging fails open
+        # and never disrupts the caller's RPC flow.
+        except (Exception, asyncio.CancelledError):
+            pass
 
     async def intercept_unary_unary(
         self,
@@ -1028,38 +1119,19 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
         ):
             call = await continuation(client_call_details, request)
 
-        async def _inspect_async_call(target_call: Any) -> None:
-            try:
-                code_fn = getattr(target_call, "code", None)
-                if (
-                    callable(code_fn)
-                    and getattr(code := await code_fn(), "name", str(code)) != "OK"
-                ):
-                    details_fn = getattr(target_call, "details", None)
-                    details = await details_fn() if callable(details_fn) else ""
-                    log_transport_attempt(
-                        span=active_span,
-                        target=method_name,
-                        status_code=code,
-                        kind="grpc",
-                        exc=Exception(details) if details else None,
-                        client_options=self._client_options,
-                        status_message=details or None,
-                    )
-            # Intentionally catch broad Exception so telemetry logging fails open
-            # and never disrupts the caller's RPC flow.
-            except (Exception, asyncio.CancelledError):
-                pass
-
         add_callback = getattr(call, "add_done_callback", None)
         if callable(add_callback):
             add_callback(
-                lambda finished_call: self._schedule_inspection(
-                    _inspect_async_call(finished_call)
+                functools.partial(
+                    self._schedule_call_inspection,
+                    method_name=method_name,
+                    active_span=active_span,
                 )
             )
         else:
-            self._schedule_inspection(_inspect_async_call(call))
+            self._schedule_call_inspection(
+                call, method_name=method_name, active_span=active_span
+            )
         return call
 
 
@@ -1099,19 +1171,32 @@ def get_otel_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
     default_host: str | None = None,
 ) -> Callable[[grpc.Channel], grpc.Channel] | None:
-    """Returns a callable that wraps a sync gRPC channel.
+    """Returns a callable that wraps a sync gRPC channel with observability.
 
-    The wrapper configures OpenTelemetry tracing and/or error logging.
+    Assembles the enabled observability interceptor stack in outer-to-inner
+    execution order:
+
+    1. OpenTelemetry gRPC tracing interceptor (when tracing is enabled): starts
+       the Tier 4 transport span with Cloud Observability request/response
+       hooks.
+    2. ``_GrpcAttemptLoggingInterceptor`` (when error logging is enabled): logs
+       failed wire attempts at ``DEBUG`` level while the Tier 4 span is active
+       for trace correlation.
+    3. ``_SuppressingClientInterceptor`` (when tracing is enabled): suppresses
+       redundant downstream generic auto-instrumentation spans without
+       suppressing our attempt logs.
 
     Args:
-        client_options (ClientOptions | dict[str, Any] | None): The client options
-            object or dictionary used for feature gating and extracting the tracer provider.
-        default_host (str | None): Fallback transport host when ``api_endpoint`` is not
-            set on ``client_options``.
+        client_options (ClientOptions | dict[str, Any] | None): Client options
+            object or dictionary used for feature gating and extracting the
+            tracer provider and endpoint attributes.
+        default_host (str | None): Fallback transport host when
+            ``api_endpoint`` is not set on ``client_options``.
 
     Returns:
-        Callable[[grpc.Channel], grpc.Channel] | None: A channel-wrapping callable if
-            OpenTelemetry tracing or error logging is enabled, None otherwise.
+        Callable[[grpc.Channel], grpc.Channel] | None: A channel-wrapping
+            callable if OpenTelemetry tracing or error logging is enabled, or
+            None otherwise.
     """
     tracing_enabled = is_otel_capabilities_enabled(client_options)
     error_logging_enabled = client_logging.is_error_logging_enabled(client_options)
@@ -1121,16 +1206,11 @@ def get_otel_interceptor(
     custom_interceptors: list[ClientInterceptor] = []
     tracing_interceptor: ClientInterceptor | None = None
 
-    # Order matters (outer -> inner):
-    #   1. tracing_interceptor (outermost: starts the Tier 4 gRPC span)
-    #   2. _GrpcAttemptLoggingInterceptor (middle: logs failed attempts with the
-    #      Tier 4 span active, outside of suppress_instrumentation)
-    #   3. _SuppressingClientInterceptor (innermost: suppresses downstream
-    #      generic auto-instrumentation without suppressing our attempt logs)
     if error_logging_enabled:
         custom_interceptors.append(_GrpcAttemptLoggingInterceptor(client_options))
 
     if tracing_enabled:
+        # Ignored by mypy: Optional dependency only loaded if tracing_enabled is True
         import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
         tracing_interceptor = otel_grpc.client_interceptor(
@@ -1147,16 +1227,14 @@ def get_otel_interceptor(
         Returns:
             grpc.Channel: The intercepted gRPC channel.
         """
-        # Step 1 (inner layers): Wrap channel with custom_interceptors
-        # ([logging, suppressing]), where logging executes outside suppressing.
+        # Wrap inside-out: apply inner [logging, suppressing] before outer
+        # tracing so execution runs [tracing -> logging -> suppressing -> channel].
         if grpc is not None and custom_interceptors:
             try:
                 channel = grpc.intercept_channel(channel, *custom_interceptors)
             except (AttributeError, TypeError):
                 # Fallback if grpc lacks intercept_channel or custom channel type rejects it.
                 pass
-        # Step 2 (outermost layer): Wrap tracing_interceptor around the outside
-        # of the channel, yielding: [tracing -> logging -> suppressing -> channel].
         if tracing_interceptor is not None:
             return otel_grpc.intercept_channel(channel, tracing_interceptor)
         return channel
@@ -1170,31 +1248,38 @@ def get_otel_async_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
     default_host: str | None = None,
 ) -> Sequence[grpc.aio.ClientInterceptor] | None:
-    """Returns async gRPC client interceptors.
+    """Returns async gRPC client interceptors for observability.
 
-    The interceptors configure OpenTelemetry tracing and/or error logging.
+    Assembles the enabled observability interceptor stack in outer-to-inner
+    execution order:
+
+    1. OpenTelemetry async gRPC tracing interceptors (when tracing is enabled):
+       start the Tier 4 async transport span with Cloud Observability
+       request/response hooks.
+    2. ``_AsyncGrpcAttemptLoggingInterceptor`` (when error logging is enabled):
+       logs failed wire attempts at ``DEBUG`` level while the Tier 4 span is
+       active for trace correlation.
+    3. ``_AsyncSuppressingClientInterceptor`` (when tracing is enabled):
+       suppresses redundant downstream generic auto-instrumentation spans
+       without suppressing our attempt logs.
 
     Args:
-        client_options (ClientOptions | dict[str, Any] | None): The client options
-            object or dictionary used for feature gating and extracting the tracer provider.
-        default_host (str | None): Fallback transport host when ``api_endpoint`` is not
-            set on ``client_options``.
+        client_options (ClientOptions | dict[str, Any] | None): Client options
+            object or dictionary used for feature gating and extracting the
+            tracer provider and endpoint attributes.
+        default_host (str | None): Fallback transport host when
+            ``api_endpoint`` is not set on ``client_options``.
 
     Returns:
-        Sequence[grpc.aio.ClientInterceptor] | None: Instantiated async client interceptors
-            if OpenTelemetry tracing or error logging is enabled, None otherwise.
+        Sequence[grpc.aio.ClientInterceptor] | None: Instantiated async client
+            interceptors if OpenTelemetry tracing or error logging is enabled,
+            or None otherwise.
     """
     tracing_enabled = is_otel_capabilities_enabled(client_options)
     error_logging_enabled = client_logging.is_error_logging_enabled(client_options)
     if not tracing_enabled and not error_logging_enabled:
         return None
 
-    # Order matters (outer -> inner):
-    #   1. tracing_interceptors (outermost: starts the Tier 4 async gRPC span)
-    #   2. _AsyncGrpcAttemptLoggingInterceptor (middle: logs failed attempts with
-    #      the Tier 4 span active, outside of suppress_instrumentation)
-    #   3. _AsyncSuppressingClientInterceptor (innermost: suppresses downstream
-    #      generic auto-instrumentation without suppressing our attempt logs)
     interceptors: list[grpc.aio.ClientInterceptor] = []
     if error_logging_enabled:
         interceptors.append(_AsyncGrpcAttemptLoggingInterceptor(client_options))
@@ -1211,8 +1296,7 @@ def get_otel_async_interceptor(
             if isinstance(raw_interceptors, (list, tuple))
             else [raw_interceptors]
         )
-        # Sandwich logging between outer tracing and inner suppression (outer -> inner):
-        # [*tracing_interceptors, *logging_interceptor, _AsyncSuppressingClientInterceptor]
+        # Assemble outer-to-inner: [tracing..., logging?, suppressing].
         interceptors = [
             *tracing_interceptors,
             *interceptors,

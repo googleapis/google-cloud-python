@@ -23,7 +23,8 @@ from unittest import mock
 
 import opentelemetry.trace as otel_trace
 import pytest
-from google.rpc import error_details_pb2
+from google.protobuf import any_pb2
+from google.rpc import error_details_pb2, status_pb2
 from opentelemetry.trace import (
     INVALID_SPAN,
     NonRecordingSpan,
@@ -3116,23 +3117,52 @@ def test_grpc_attempt_logging_interceptor_sync_exceptions(
     )
 
 
-def _make_callback_async_call(code=_DummyGrpcStatus.OK, details=""):
-    call_obj = mock.Mock(spec_set=["add_done_callback", "code", "details"])
+def _make_callback_async_call(
+    code=_DummyGrpcStatus.OK,
+    details="",
+    initial_metadata=None,
+    trailing_metadata=None,
+    debug_error_string=None,
+):
+    call_obj = mock.Mock(
+        spec_set=[
+            "add_done_callback",
+            "code",
+            "details",
+            "initial_metadata",
+            "trailing_metadata",
+            "debug_error_string",
+        ]
+    )
     call_obj.code = mock.AsyncMock(spec_set=["__call__"], return_value=code)
     call_obj.details = mock.AsyncMock(spec_set=["__call__"], return_value=details)
+    call_obj.initial_metadata = mock.AsyncMock(
+        spec_set=["__call__"], return_value=initial_metadata
+    )
+    call_obj.trailing_metadata = mock.AsyncMock(
+        spec_set=["__call__"], return_value=trailing_metadata
+    )
+    call_obj.debug_error_string = mock.AsyncMock(
+        spec_set=["__call__"], return_value=debug_error_string
+    )
     call_obj.add_done_callback = mock.Mock(
         spec_set=["__call__"], side_effect=lambda cb: cb(call_obj)
     )
     return call_obj
 
 
+@pytest.mark.skipif(_observability.grpc is None, reason="grpc is not installed")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "call_factory,expect_log,expected_code_name,expected_message",
+    "call_factory,expect_log,expected_code_name,expected_message,"
+    "expected_init_md,expected_trail_md,expected_debug",
     [
         pytest.param(
             lambda: _make_callback_async_call(code=_DummyGrpcStatus.OK),
             False,
+            None,
+            None,
+            None,
             None,
             None,
             id="ok_call_via_callback_no_log",
@@ -3142,15 +3172,25 @@ def _make_callback_async_call(code=_DummyGrpcStatus.OK, details=""):
             False,
             None,
             None,
+            None,
+            None,
+            None,
             id="plain_object_without_callback_no_log",
         ),
         pytest.param(
             lambda: _make_callback_async_call(
-                code=_DummyGrpcStatus.UNAVAILABLE, details="backend unavailable"
+                code=_DummyGrpcStatus.UNAVAILABLE,
+                details="backend unavailable",
+                initial_metadata=(("x-init", "1"),),
+                trailing_metadata=(("x-trail", "2"),),
+                debug_error_string="debug trace",
             ),
             True,
             "UNAVAILABLE",
             "backend unavailable",
+            (("x-init", "1"),),
+            (("x-trail", "2"),),
+            "debug trace",
             id="failed_call_via_callback_logs",
         ),
         pytest.param(
@@ -3168,6 +3208,9 @@ def _make_callback_async_call(code=_DummyGrpcStatus.OK, details=""):
             True,
             "UNAVAILABLE",
             "direct await unavailable",
+            None,
+            None,
+            None,
             id="direct_call_without_callback_logs",
         ),
         pytest.param(
@@ -3181,6 +3224,9 @@ def _make_callback_async_call(code=_DummyGrpcStatus.OK, details=""):
             True,
             "UNAVAILABLE",
             None,
+            None,
+            None,
+            None,
             id="failed_call_no_details_method_logs",
         ),
         pytest.param(
@@ -3192,6 +3238,9 @@ def _make_callback_async_call(code=_DummyGrpcStatus.OK, details=""):
                 ),
             ),
             False,
+            None,
+            None,
+            None,
             None,
             None,
             id="broken_code_inspection_fails_open",
@@ -3207,12 +3256,22 @@ def _make_callback_async_call(code=_DummyGrpcStatus.OK, details=""):
             False,
             None,
             None,
+            None,
+            None,
+            None,
             id="cancelled_call_code_inspection_fails_open",
         ),
     ],
 )
 async def test_grpc_attempt_logging_interceptor_async(
-    monkeypatch, call_factory, expect_log, expected_code_name, expected_message
+    monkeypatch,
+    call_factory,
+    expect_log,
+    expected_code_name,
+    expected_message,
+    expected_init_md,
+    expected_trail_md,
+    expected_debug,
 ):
     """Proves _AsyncGrpcAttemptLoggingInterceptor logs failed async attempts."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
@@ -3241,12 +3300,104 @@ async def test_grpc_attempt_logging_interceptor_async(
             assert call_kwargs["kind"] == "grpc"
             assert call_kwargs["client_options"] is None
             assert call_kwargs["status_message"] == expected_message
-            if expected_message is not None:
-                assert str(call_kwargs["exc"]) == expected_message
-            else:
-                assert call_kwargs["exc"] is None
+            exc = call_kwargs["exc"]
+            assert isinstance(exc, _observability.grpc.aio.AioRpcError)
+            assert exc.code().name == expected_code_name
+            assert exc.details() == expected_message
+            assert exc.initial_metadata() == expected_init_md
+            assert exc.trailing_metadata() == expected_trail_md
+            assert exc.debug_error_string() == expected_debug
         else:
             mock_log.assert_not_called()
+
+
+@pytest.mark.skipif(_observability.grpc is None, reason="grpc is not installed")
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_extracts_error_info(
+    mock_service_logger,
+):
+    """Proves async attempt logging preserves AioRpcError and ErrorInfo."""
+    error_info = error_details_pb2.ErrorInfo(
+        domain="googleapis.com",
+        reason="RATE_LIMIT_EXCEEDED",
+        metadata={"consumer": "projects/123"},
+    )
+    packed_detail = any_pb2.Any()
+    packed_detail.Pack(error_info)
+    status_proto = status_pb2.Status(
+        code=14,
+        message="quota exceeded",
+        details=[packed_detail],
+    )
+    trailing_md = _observability.grpc.aio.Metadata(
+        ("grpc-status-details-bin", status_proto.SerializeToString())
+    )
+    call_obj = _make_callback_async_call(
+        code=_observability.grpc.StatusCode.UNAVAILABLE,
+        details="quota exceeded",
+        initial_metadata=_observability.grpc.aio.Metadata(),
+        trailing_metadata=trailing_md,
+        debug_error_string="UNAVAILABLE:quota exceeded",
+    )
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    res = await interceptor.intercept_unary_unary(
+        fake_continuation, call_details, "req"
+    )
+    await asyncio.sleep(0)
+    assert res is call_obj
+
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    assert extra["rpc.method"] == _ECHO_METHOD
+    assert extra["rpc.response.status_code"] == "UNAVAILABLE"
+    assert extra["exception.type"] == "AioRpcError"
+    assert extra["gcp.errors.domain"] == "googleapis.com"
+    assert extra["error.type"] == "RATE_LIMIT_EXCEEDED"
+    assert extra["gcp.errors.metadata.consumer"] == "projects/123"
+    assert extra["status.message"] == "quota exceeded"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "details,expected_exc_msg",
+    [
+        pytest.param("backend down", "backend down", id="details_present"),
+        pytest.param("", None, id="details_empty"),
+    ],
+)
+async def test_grpc_attempt_logging_interceptor_async_without_grpc(
+    monkeypatch, details, expected_exc_msg
+):
+    """Proves async inspection falls back to Exception when grpc is absent."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    monkeypatch.setattr(_observability, "grpc", None)
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+    call_obj = _make_callback_async_call(
+        code=_DummyGrpcStatus.UNAVAILABLE, details=details
+    )
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    with mock.patch.object(
+        _observability, "log_transport_attempt", autospec=True, spec_set=True
+    ) as mock_log:
+        await interceptor.intercept_unary_unary(fake_continuation, call_details, "req")
+        await asyncio.sleep(0)
+
+    mock_log.assert_called_once()
+    call_kwargs = mock_log.call_args[1]
+    if expected_exc_msg is not None:
+        assert type(call_kwargs["exc"]) is Exception
+        assert str(call_kwargs["exc"]) == expected_exc_msg
+    else:
+        assert call_kwargs["exc"] is None
 
 
 @pytest.mark.parametrize(
