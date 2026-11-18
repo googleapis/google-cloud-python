@@ -149,7 +149,8 @@ class _GapicCallable(object):
             logger for the calling client library. Bound into
             ``_observability._ACTIVE_SERVICE_LOGGER`` during each RPC call so
             downstream transport logs route to the library's logger. Defaults
-            to None (falls back to ``_observability._DEFAULT_LOGGER``).
+            to None (which causes a fall back to
+            ``_observability._DEFAULT_LOGGER``).
     """
 
     _SUPPORTED_TRACING_KINDS = (_TRANSPORT_KIND_GRPC, _TRANSPORT_KIND_REST)
