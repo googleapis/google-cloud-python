@@ -58,7 +58,7 @@ def location_id():
 
 @pytest.fixture(scope="session")
 def serve_nodes():
-    return 3
+    return 1
 
 
 @pytest.fixture(scope="session")

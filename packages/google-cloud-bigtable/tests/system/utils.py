@@ -27,15 +27,23 @@ def clear_stale_instances(
     prefix: Union[str, Tuple[str, ...]] = (
         "python-bigtable-tests",
         "g-c-p",
+        "ndef-",
+        "new-",
+        "dif-",
+        "dif-cmek-",
+        "ndif-",
         "admin-overlay-instance",
         "bt-samples-",
+        "metric-scale-test-",
+        "instanceadmin-",
+        "instance-admin-",
     ),
-    older_than_days: int = 1,
-    max_deletions: int = 5,
+    older_than_days: float = 1,
+    max_deletions: int = 50,
 ):
     """
     Synchronously deletes any instances in the given project that are older
-    than older_than_days and whose name or display name matches the given prefix.
+    than older_than_days and whose name, display name, or test label matches.
     """
     if os.getenv(BIGTABLE_EMULATOR):
         return
@@ -57,11 +65,12 @@ def clear_stale_instances(
             break
 
         for instance in response.instances:
-            # Check if instance matches the prefix
+            # Check if instance matches the prefix or python-system test label
             display_name_matches = instance.display_name.startswith(prefix)
             name_matches = instance.name.split("/")[-1].startswith(prefix)
+            label_matches = "python-system" in getattr(instance, "labels", {})
 
-            if display_name_matches or name_matches:
+            if display_name_matches or name_matches or label_matches:
                 if instance.create_time:
                     try:
                         create_time = instance.create_time
