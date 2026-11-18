@@ -51,12 +51,12 @@ _DEFAULT_LOGGER = logging.getLogger(__name__)
 # (e.g., logging.getLogger("google.cloud.bigtable_v2...")).
 #
 # Lifecycle:
-# - Set by _GapicCallable._trace_span() via _service_logger_context() whenever
-#   a client passes an explicit `service_logger` to `wrap_method()`.
+# - _ACTIVE_SERVICE_LOGGER is set by _GapicCallable._trace_span() via
+#   _service_logger_context() whenever a client passes an explicit `service_logger`
+#   to `wrap_method()`.
 # - Read by `log_transport_attempt()` when no explicit `service_logger` override
 #   is supplied, allowing downstream gRPC interceptors and HTTP `_TraceContext`
-#   wire-attempt logs to route to the calling library's logger without threading
-#   a logger argument through grpcio, requests, or Retry.
+#   wire-attempt logs to route to the calling library's logger.
 # - Defaults to `_DEFAULT_LOGGER` ("google.api_core._observability") outside a
 #   `_GapicCallable` call or when the caller did not supply a `service_logger`.
 _ACTIVE_SERVICE_LOGGER: contextvars.ContextVar[logging.Logger] = contextvars.ContextVar(
