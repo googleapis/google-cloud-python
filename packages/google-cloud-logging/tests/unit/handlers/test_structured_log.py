@@ -474,6 +474,27 @@ class TestStructuredLogHandler(unittest.TestCase):
 
         self.assertEqual(result["logging.googleapis.com/trace"], trace)
         self.assertEqual(result["logging.googleapis.com/spanId"], span_id)
+
+    def test_format_with_integer_trace_and_span_id(self):
+        import json
+        import logging
+
+        handler = self._make_one()
+        trace = 123456789
+        span_id = 987654321
+
+        record = logging.LogRecord(
+            "loggername", logging.INFO, "", 0, "hello", None, None
+        )
+        record.trace = trace
+        record.span_id = span_id
+
+        handler.filter(record)
+        result = json.loads(handler.format(record))
+
+        self.assertEqual(result["logging.googleapis.com/trace"], str(trace))
+        self.assertEqual(result["logging.googleapis.com/spanId"], str(span_id))
+
     def test_format_overrides(self):
         """
         Allow users to override log fields using `logging.info("", extra={})`
