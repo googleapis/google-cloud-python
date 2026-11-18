@@ -68,16 +68,17 @@ steps:
       sys.path.insert(0, "ci")
       import get_package_shards
 
-      # Normalize disabled package paths to include a trailing slash.
+      # Normalize disabled package paths by stripping trailing slashes.
       disabled_packages = {
-          package_path.strip().rstrip("/") + "/"
+          package_path.strip().rstrip("/")
           for package_path in os.environ.get("DISABLED_PACKAGES", "").replace(",", " ").split()
           if package_path.strip()
       }
 
       def has_system_tests(package_path):
-          return package_path.startswith("packages/") and any(
-              os.path.exists(os.path.join(package_path, rel_path))
+          normalized = package_path.strip().rstrip("/")
+          return normalized.startswith("packages/") and any(
+              os.path.exists(os.path.join(normalized, rel_path))
               for rel_path in ("tests/system", "system_tests", "tests/system.py")
           )
 
@@ -91,7 +92,8 @@ steps:
               kept_paths = [
                   path
                   for path in package_paths
-                  if path not in disabled_packages and has_system_tests(path)
+                  if path.strip().rstrip("/") not in disabled_packages
+                  and has_system_tests(path)
               ]
               if kept_paths:
                   filtered_packages[package_name] = kept_paths
