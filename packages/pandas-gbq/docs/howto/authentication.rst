@@ -211,7 +211,7 @@ credentials are not found.
       credentials = pydata_google_auth.get_user_credentials(
           SCOPES,
           # Use the NOOP cache to avoid writing credentials to disk.
-          cache=pydata_google_auth.cache.NOOP,
+          credentials_cache=pydata_google_auth.cache.NOOP,
       )
 
 Additional information on the user credentials authentication mechanism
