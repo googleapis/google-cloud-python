@@ -27,7 +27,7 @@ import inspect
 import logging
 import traceback
 import urllib.parse
-from collections.abc import Callable, Iterator, MutableMapping, Sequence
+from collections.abc import Callable, Iterator, Mapping, MutableMapping, Sequence
 from typing import TYPE_CHECKING, Any
 
 from google.api_core import _feature_gating_helpers, client_logging, exceptions
@@ -65,6 +65,7 @@ _ACTIVE_SERVICE_LOGGER: contextvars.ContextVar[logging.Logger] = contextvars.Con
     "_ACTIVE_SERVICE_LOGGER", default=_DEFAULT_LOGGER
 )
 _TRACER_PROVIDER = "tracer_provider"
+_ERROR_INFO_TYPE_URL = "type.googleapis.com/google.rpc.ErrorInfo"
 _TRACE_CONTEXT_PROPAGATOR: Any = None
 _CHANNEL_INTERCEPTOR_MAPPING = (
     ("intercept_unary_unary", "_unary_unary_interceptors"),
@@ -213,7 +214,7 @@ def _extract_error_info_fields(target_exc: Any) -> tuple[Any, Any, Any]:
                 pass
 
     source = error_info if error_info is not None else target_exc
-    if isinstance(source, dict):
+    if isinstance(source, Mapping):
         return (
             source.get("domain"),
             source.get("reason"),
@@ -284,6 +285,7 @@ def build_telemetry_error_attributes(
     status_code: str | None = None,
     status_message: str | None = None,
     include_exception: bool = False,
+    error_info: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Extracts rpc.response.status_code, gcp.errors.*, error.type, status.message, and exception.* fields.
 
@@ -298,13 +300,16 @@ def build_telemetry_error_attributes(
 
     Args:
         exc (BaseException | None): An exception (e.g. GoogleAPICallError
-            or grpc.RpcError) or ErrorInfo object.
+            or grpc.RpcError) or None when logging an HTTP status response.
         status_code (str | None): Optional pre-extracted or HTTP status code
             fallback when exc is None or lacks a status code.
         status_message (str | None): Optional status message fallback when
             exc is None or lacks a message.
-        include_exception (bool): When True, also populates exception.type,
-            exception.message, and exception.stacktrace.
+        include_exception (bool): When True and ``exc`` is provided, populates
+            exception.type, exception.message, and exception.stacktrace.
+        error_info (Mapping[str, Any] | None): Optional parsed
+            ``google.rpc.ErrorInfo`` mapping extracted from an HTTP JSON error
+            response when ``exc`` is None.
 
     Returns:
         dict[str, Any]: Extracted error and exception attributes.
@@ -313,11 +318,23 @@ def build_telemetry_error_attributes(
         if status_code is None:
             return {}
         code_str = str(status_code)
-        return {
+        domain, reason, metadata = (
+            _extract_error_info_fields(error_info)
+            if error_info is not None
+            else (None, None, None)
+        )
+        http_attrs: dict[str, Any] = {
             "rpc.response.status_code": code_str,
-            "error.type": code_str,
+            "error.type": str(reason) if reason else code_str,
             "status.message": status_message or f"HTTP {code_str}",
         }
+        if domain:
+            http_attrs["gcp.errors.domain"] = str(domain)
+        if isinstance(metadata, Mapping) and metadata:
+            http_attrs.update(
+                {f"gcp.errors.metadata.{k}": str(v) for k, v in metadata.items()}
+            )
+        return http_attrs
 
     # Unwrap RetryError by one level to reach the underlying RPC failure without
     # unwrapping past a GoogleAPICallError or transport error to its __cause__.
@@ -478,6 +495,7 @@ def _build_attempt_log_extra(
     http_method: str | None,
     exc: BaseException | None,
     status_message: str | None,
+    error_info: Mapping[str, Any] | None = None,
 ) -> tuple[dict[str, Any], str | None]:
     """Builds the extra dictionary and status for a failed wire attempt.
 
@@ -490,6 +508,8 @@ def _build_attempt_log_extra(
         http_method (str | None): HTTP request method (e.g. "GET", "POST").
         exc (BaseException | None): Exception raised or returned during the attempt.
         status_message (str | None): Explicit status message fallback.
+        error_info (Mapping[str, Any] | None): Optional parsed ``ErrorInfo``
+            mapping from an HTTP JSON error response.
 
     Returns:
         tuple[dict[str, Any], str | None]: A 2-tuple of (extra_payload, resolved_status).
@@ -499,6 +519,7 @@ def _build_attempt_log_extra(
         status_code=norm_status,
         status_message=status_message,
         include_exception=True,
+        error_info=error_info,
     )
     resolved_status = norm_status or error_attrs.get("rpc.response.status_code")
     extra_payload: dict[str, Any] = {
@@ -538,6 +559,7 @@ def log_transport_attempt(
     client_options: ClientOptions | dict[str, Any] | None = None,
     service_logger: logging.Logger | None = None,
     status_message: str | None = None,
+    error_info: Mapping[str, Any] | None = None,
 ) -> None:
     """Emits a DEBUG log for a failed wire attempt (retry or transport failure).
 
@@ -557,6 +579,8 @@ def log_transport_attempt(
             Defaults to the active ``_ACTIVE_SERVICE_LOGGER`` context binding
             (or ``_DEFAULT_LOGGER`` when unset).
         status_message (str | None): Explicit status message fallback.
+        error_info (Mapping[str, Any] | None): Optional parsed ``ErrorInfo``
+            mapping from an HTTP JSON error response.
     """
     try:
         if not client_logging.is_error_logging_enabled(client_options):
@@ -580,6 +604,7 @@ def log_transport_attempt(
             http_method=http_method,
             exc=exc,
             status_message=status_message,
+            error_info=error_info,
         )
         target_logger = service_logger or _ACTIVE_SERVICE_LOGGER.get()
         target_logger.debug(
@@ -1482,34 +1507,65 @@ class _TraceContext:
         return span_name, span_attributes, resolved_headers
 
     @staticmethod
-    def _extract_http_error_message(response: Any) -> str | None:
-        """Extract a human-readable error message from an HTTP error response."""
+    def _extract_error_info_from_details(details: Any) -> dict[str, Any] | None:
+        """Return the first google.rpc.ErrorInfo dict from an HTTP error details list."""
+        if not isinstance(details, list):
+            return None
+        for detail in details:
+            if isinstance(detail, dict) and detail.get("@type") == _ERROR_INFO_TYPE_URL:
+                return detail
+        return None
+
+    @classmethod
+    def _extract_http_error_payload(
+        cls, response: Any
+    ) -> tuple[str | None, dict[str, Any] | None]:
+        """Extract (error_message, error_info) from an HTTP error response in one pass."""
+        error_msg: str | None = None
+        error_info: dict[str, Any] | None = None
+
         json_fn = getattr(response, "json", None)
         if callable(json_fn) and not inspect.iscoroutinefunction(json_fn):
             try:
                 payload = json_fn()
-                if isinstance(payload, dict):
-                    err_obj = payload.get("error")
-                    if isinstance(err_obj, dict):
-                        msg = err_obj.get("message")
-                        if isinstance(msg, str) and msg:
-                            return msg
-                    elif isinstance(err_obj, str) and err_obj:
-                        return err_obj
+                if isinstance(payload, list):
+                    payload = next(
+                        (item for item in payload if isinstance(item, dict)), None
+                    )
+                err_obj = payload.get("error") if isinstance(payload, dict) else None
+                if isinstance(err_obj, dict):
+                    msg = err_obj.get("message")
+                    if isinstance(msg, str) and msg:
+                        error_msg = msg
+                    error_info = cls._extract_error_info_from_details(
+                        err_obj.get("details")
+                    )
+                elif isinstance(err_obj, str) and err_obj:
+                    error_msg = err_obj
             # Intentionally catch broad Exception so telemetry extraction
             # fails open and never disrupts the caller's RPC flow.
             except Exception:
                 pass
-        for attr in ("text", "reason"):
-            try:
-                val = getattr(response, attr, None)
-                if isinstance(val, str) and val.strip():
-                    return val.strip()
-            # Intentionally catch broad Exception so telemetry extraction
-            # fails open and never disrupts the caller's RPC flow.
-            except Exception:
-                continue
-        return None
+
+        if error_msg is None:
+            for attr in ("text", "reason"):
+                try:
+                    val = getattr(response, attr, None)
+                    if isinstance(val, str) and val.strip():
+                        error_msg = val.strip()
+                        break
+                # Intentionally catch broad Exception so telemetry extraction
+                # fails open and never disrupts the caller's RPC flow.
+                except Exception:
+                    continue
+
+        return error_msg, error_info
+
+    @classmethod
+    def _extract_http_error_message(cls, response: Any) -> str | None:
+        """Extract a human-readable error message from an HTTP error response."""
+        error_msg, _ = cls._extract_http_error_payload(response)
+        return error_msg
 
     def __init__(
         self,
@@ -1539,6 +1595,7 @@ class _TraceContext:
         status_code: int | str | enum.Enum | None = None,
         exc: BaseException | None = None,
         status_message: str | None = None,
+        error_info: Mapping[str, Any] | None = None,
     ) -> None:
         """Emits a fail-open DEBUG log for a failed HTTP transport attempt.
 
@@ -1555,6 +1612,8 @@ class _TraceContext:
                 exception.
             status_message (str | None): Extracted HTTP error message fallback,
                 or None to derive the message from ``exc`` or ``status_code``.
+            error_info (Mapping[str, Any] | None): Optional parsed ``ErrorInfo``
+                mapping extracted from the HTTP JSON error body.
         """
         if self._attempt_logged:
             return
@@ -1584,6 +1643,7 @@ class _TraceContext:
                 exc=exc,
                 client_options=self._client_options,
                 status_message=status_message,
+                error_info=error_info,
             )
         # Intentionally catch broad Exception so telemetry logging fails open
         # and never disrupts the caller's RPC flow.
@@ -1607,8 +1667,12 @@ class _TraceContext:
             code_int = _extract_http_status_code(response)
             error_msg: str | None = None
             if code_int is not None and code_int >= 400:
-                error_msg = self._extract_http_error_message(response)
-                self._log_http_attempt(status_code=code_int, status_message=error_msg)
+                error_msg, error_info = self._extract_http_error_payload(response)
+                self._log_http_attempt(
+                    status_code=code_int,
+                    status_message=error_msg,
+                    error_info=error_info,
+                )
 
             if span is None or not hasattr(span, "set_attribute"):
                 return
