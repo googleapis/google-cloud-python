@@ -73,15 +73,23 @@ steps:
           if package_path.strip()
       }
 
+      def has_system_tests(package_path):
+          return package_path.startswith("packages/") and any(
+              os.path.exists(os.path.join(package_path, rel_path))
+              for rel_path in ("tests/system", "system_tests", "tests/system.py")
+          )
+
       original_get_packages = get_package_shards.get_packages
       def filtered_get_packages(*args, **kwargs):
           filtered_packages = {}
           for package_name, package_paths in original_get_packages(
               handwritten_only=False
           ).items():
-              # Keep only paths that are NOT in the disabled_packages set
+              # Keep only packages/ paths with system tests that are NOT in disabled_packages
               kept_paths = [
-                  path for path in package_paths if path not in disabled_packages
+                  path
+                  for path in package_paths
+                  if path not in disabled_packages and has_system_tests(path)
               ]
               if kept_paths:
                   filtered_packages[package_name] = kept_paths
@@ -106,15 +114,27 @@ steps:
       # Create runtime shims in /tmp/cloudbuild_shims so tracked repository files remain unmodified.
       mkdir -p /tmp/cloudbuild_shims
 
-      # 1. Pytest plugin (cloudbuild_pytest_plugin.py):
+      # 1. Python startup hook (sitecustomize.py) & Pytest plugin (cloudbuild_pytest_plugin.py):
       #    - Package noxfile.py files skip the system session if GOOGLE_APPLICATION_CREDENTIALS
       #      is unset. We export a placeholder value ("CLOUD_BUILD_ADC") to satisfy noxfile.py,
-      #      then remove it here at pytest startup so google.auth.default() automatically uses
-      #      the Cloud Build worker VM's Application Default Credentials (ADC).
+      #      then remove it in sitecustomize.py for every non-nox Python subprocess (such as
+      #      sqlalchemy-spanner's create_test_database.py and pytest) so google.auth.default()
+      #      uses the Cloud Build worker VM's Application Default Credentials (ADC).
       #    - Package noxfile.py files invoke `py.test --quiet`, which only outputs dots (".")
       #      without newlines and causes Cloud Build logs to appear frozen for several minutes.
       #      Overriding `quiet = 0` and `verbose = 1` makes pytest print one newline-terminated
       #      status line as each individual test finishes.
+      cat << 'EOF' > /tmp/cloudbuild_shims/sitecustomize.py
+      import os
+      import sys
+
+      if (
+          os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") == "CLOUD_BUILD_ADC"
+          and os.path.basename(sys.argv[0]) != "nox"
+      ):
+          os.environ.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
+      EOF
+
       cat << 'EOF' > /tmp/cloudbuild_shims/cloudbuild_pytest_plugin.py
       import os
 
@@ -248,16 +268,21 @@ substitutions:
   _BUILD_TYPE: 'presubmit'
   _BASE_BRANCH: 'main'
   _TEST_ALL_PACKAGES: 'false'
-  _DISABLED_PACKAGES: ''
+  _DISABLED_PACKAGES: 'packages/gapic-generator/ packages/google-auth/ packages/google-cloud-firestore/'
   _NOX_SESSION: 'system-3.12'
   _PACKAGE_WEIGHTS: |
     bigquery-magics: 2
+    google-cloud-bigquery: 5
     google-cloud-bigquery-storage: 8
     google-cloud-compute: 8
     google-cloud-datastore: 8
     google-cloud-dns: 1
     google-cloud-error-reporting: 1
     google-cloud-logging: 10
+    google-cloud-ndb: 12
+    google-cloud-pubsub: 15
+    google-cloud-spanner: 17
+    google-cloud-storage: 5
     google-resumable-media: 1
     pandas-gbq: 12
     sqlalchemy-bigquery: 11
