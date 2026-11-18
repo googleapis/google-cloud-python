@@ -2526,53 +2526,38 @@ def test_resolve_rpc_system(kind, expected):
 
 
 @pytest.mark.parametrize(
-    "target,active_logger_name,expected_name",
+    "logger_name,expected_name",
     [
         pytest.param(
-            mock.Mock(
-                __module__="google.cloud.secretmanager_v1.services.secret_manager_service.transports.rest"
-            ),
-            "google.cloud.bigtable_v2",
-            "google.cloud.secretmanager_v1.services.secret_manager_service.transports.rest",
-            id="target_module_takes_precedence",
-        ),
-        pytest.param(
-            mock.Mock(__module__="google.api_core.gapic_v1.method"),
             "google.cloud.bigtable_v2",
             "google.cloud.bigtable_v2",
-            id="target_module_excludes_api_core_falls_back_to_active_logger",
+            id="explicit_service_logger_bound",
         ),
         pytest.param(
-            None,
-            "google.cloud.secretmanager_v1",
-            "google.cloud.secretmanager_v1",
-            id="active_logger_contextvar_fallback",
-        ),
-        pytest.param(
-            mock.Mock(__module__="google.api_core.gapic_v1.method"),
             None,
             _observability._DEFAULT_LOGGER.name,
-            id="target_module_excludes_api_core_falls_back_to_default_logger",
-        ),
-        pytest.param(
-            None,
-            None,
-            _observability._DEFAULT_LOGGER.name,
-            id="none_inputs_fallback_to_default_logger",
+            id="none_leaves_default_logger",
         ),
     ],
 )
-def test_get_service_logger(target, active_logger_name, expected_name):
-    """Proves that _get_service_logger resolves target module, active context logger, or default logger."""
-    ctx = (
-        _observability._service_logger_context(logging.getLogger(active_logger_name))
-        if active_logger_name
-        else _observability.contextlib.nullcontext()
-    )
-    with ctx:
-        resolved = _observability._get_service_logger(target)
-        assert resolved.name == expected_name
-    assert _observability._ACTIVE_SERVICE_LOGGER.get() is None
+def test_service_logger_context(logger_name, expected_name):
+    """Proves _service_logger_context binds and resets _ACTIVE_SERVICE_LOGGER."""
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+    service_logger = logging.getLogger(logger_name) if logger_name else None
+    with _observability._service_logger_context(service_logger):
+        assert _observability._ACTIVE_SERVICE_LOGGER.get().name == expected_name
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+
+
+def test_service_logger_context_preserves_outer_binding_and_resets_on_error():
+    """Proves None inherits an outer binding and exceptions still reset the ContextVar."""
+    outer_logger = logging.getLogger("google.cloud.secretmanager_v1")
+    with pytest.raises(RuntimeError, match="inner boom"):
+        with _observability._service_logger_context(outer_logger):
+            with _observability._service_logger_context(None):
+                assert _observability._ACTIVE_SERVICE_LOGGER.get() is outer_logger
+            raise RuntimeError("inner boom")
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
 
 
 @pytest.mark.parametrize(
@@ -2623,7 +2608,7 @@ def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, 
     monkeypatch.setenv(
         "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", logging_enabled
     )
-    _observability.log_transport_attempt(logger=mock_logger, **kwargs)
+    _observability.log_transport_attempt(service_logger=mock_logger, **kwargs)
     mock_logger.debug.assert_not_called()
 
 
@@ -2719,7 +2704,9 @@ def test_log_transport_attempt_emits_debug(
         trace_flags=TraceFlags(TraceFlags.SAMPLED),
     )
 
-    _observability.log_transport_attempt(span=span, logger=mock_logger, **kwargs)
+    _observability.log_transport_attempt(
+        span=span, service_logger=mock_logger, **kwargs
+    )
 
     mock_logger.debug.assert_called_once()
     extra = mock_logger.debug.call_args[1]["extra"]
@@ -2728,10 +2715,10 @@ def test_log_transport_attempt_emits_debug(
         assert extra["json_fields"][key] == val
 
 
-def test_log_transport_attempt_resolves_service_logger_when_logger_none(
+def test_log_transport_attempt_uses_active_service_logger_when_omitted(
     mock_service_logger,
 ):
-    """Proves log_transport_attempt resolves _get_service_logger transitively when logger=None."""
+    """Proves log_transport_attempt uses _ACTIVE_SERVICE_LOGGER when service_logger is omitted."""
     _observability.log_transport_attempt(
         target="/google.showcase.v1beta1.Echo/Echo",
         status_code="UNAVAILABLE",
@@ -2751,7 +2738,7 @@ def test_log_transport_attempt_fail_open_on_logger_error(monkeypatch, mock_logge
         status_code="UNAVAILABLE",
         kind="grpc",
         exc=RuntimeError("transient error"),
-        logger=mock_logger,
+        service_logger=mock_logger,
     )
 
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "false")
@@ -2761,7 +2748,7 @@ def test_log_transport_attempt_fail_open_on_logger_error(monkeypatch, mock_logge
         kind="grpc",
         exc=RuntimeError("transient error"),
         client_options={"logger_provider": object()},
-        logger=mock_logger,
+        service_logger=mock_logger,
     )
 
 

@@ -110,15 +110,9 @@ def mock_logger():
 
 @pytest.fixture
 def mock_service_logger(monkeypatch, mock_logger):
-    """Enables experimental error logging and patches _observability._get_service_logger."""
+    """Enables experimental error logging and binds mock_logger as the active service logger."""
     from google.api_core import _observability
 
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
-    with mock.patch.object(
-        _observability,
-        "_get_service_logger",
-        return_value=mock_logger,
-        autospec=True,
-        spec_set=True,
-    ):
+    with _observability._service_logger_context(mock_logger):
         yield mock_logger

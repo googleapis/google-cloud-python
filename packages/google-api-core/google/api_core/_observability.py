@@ -47,8 +47,20 @@ if TYPE_CHECKING:
     from google.api_core.grpc_helpers import ClientInterceptor  # noqa: F401
 
 _DEFAULT_LOGGER = logging.getLogger(__name__)
-_ACTIVE_SERVICE_LOGGER: contextvars.ContextVar[logging.Logger | None] = (
-    contextvars.ContextVar("_ACTIVE_SERVICE_LOGGER", default=None)
+# Per-RPC ContextVar holding the calling client library's service-scoped logger
+# (e.g., logging.getLogger("google.cloud.bigtable_v2...")).
+#
+# Lifecycle:
+# - Set by _GapicCallable._trace_span() via _service_logger_context() whenever
+#   a client passes an explicit `service_logger` to `wrap_method()`.
+# - Read by `log_transport_attempt()` when no explicit `service_logger` override
+#   is supplied, allowing downstream gRPC interceptors and HTTP `_TraceContext`
+#   wire-attempt logs to route to the calling library's logger without threading
+#   a logger argument through grpcio, requests, or Retry.
+# - Defaults to `_DEFAULT_LOGGER` ("google.api_core._observability") outside a
+#   `_GapicCallable` call or when the caller did not supply a `service_logger`.
+_ACTIVE_SERVICE_LOGGER: contextvars.ContextVar[logging.Logger] = contextvars.ContextVar(
+    "_ACTIVE_SERVICE_LOGGER", default=_DEFAULT_LOGGER
 )
 _TRACER_PROVIDER = "tracer_provider"
 _TRACE_CONTEXT_PROPAGATOR: Any = None
@@ -381,42 +393,30 @@ def _resolve_rpc_system(kind: str | None = "grpc") -> str:
 
 
 @contextlib.contextmanager
-def _service_logger_context(logger: logging.Logger) -> Iterator[None]:
-    """Binds the active service logger for downstream transport wire attempts."""
-    token = _ACTIVE_SERVICE_LOGGER.set(logger)
+def _service_logger_context(
+    service_logger: logging.Logger | None,
+) -> Iterator[None]:
+    """Binds ``service_logger`` into ``_ACTIVE_SERVICE_LOGGER`` for the active RPC.
+
+    When ``service_logger`` is ``None``, yields without modifying the active
+    context so callers inherit any outer binding or fall back to
+    ``_DEFAULT_LOGGER``.
+
+    Args:
+        service_logger (logging.Logger | None): Service-scoped logger for the
+            calling client library, or ``None`` to leave the context unchanged.
+
+    Yields:
+        None
+    """
+    if service_logger is None:
+        yield
+        return
+    token = _ACTIVE_SERVICE_LOGGER.set(service_logger)
     try:
         yield
     finally:
         _ACTIVE_SERVICE_LOGGER.reset(token)
-
-
-def _get_service_logger(
-    target: Callable[..., Any] | None = None,
-) -> logging.Logger:
-    """Resolves a service-scoped logger matching GOOGLE_SDK_PYTHON_LOGGING_SCOPE.
-
-    - If `target` has a `__module__` starting with `google.` (excluding `google.api_core`),
-      returns `logging.getLogger(target.__module__)`.
-    - Else if an active service logger is bound in `_ACTIVE_SERVICE_LOGGER` (from
-      `_GapicCallable`), returns that logger.
-    - Falls back to `_DEFAULT_LOGGER` (`logging.getLogger("google.api_core._observability")`).
-
-    Args:
-        target (Callable[..., Any] | None): The low-level RPC target callable.
-
-    Returns:
-        logging.Logger: The resolved service-scoped logger.
-    """
-    target_mod = getattr(target, "__module__", None)
-    if (
-        isinstance(target_mod, str)
-        and target_mod.startswith("google.")
-        and not target_mod.startswith("google.api_core")
-    ):
-        return logging.getLogger(target_mod)
-    if (active_logger := _ACTIVE_SERVICE_LOGGER.get()) is not None:
-        return active_logger
-    return _DEFAULT_LOGGER
 
 
 def _is_failed_attempt(
@@ -506,7 +506,7 @@ def log_transport_attempt(
     http_method: str | None = None,
     exc: BaseException | None = None,
     client_options: ClientOptions | dict[str, Any] | None = None,
-    logger: logging.Logger | None = None,
+    service_logger: logging.Logger | None = None,
     status_message: str | None = None,
 ) -> None:
     """Emits a DEBUG log for a failed wire attempt (retry or transport failure).
@@ -523,7 +523,9 @@ def log_transport_attempt(
         exc (BaseException | None): Exception raised or returned during the attempt.
         client_options (ClientOptions | dict[str, Any] | None): Client options
             used for feature gating.
-        logger (logging.Logger | None): Explicit logger override.
+        service_logger (logging.Logger | None): Explicit service logger override.
+            Defaults to the active ``_ACTIVE_SERVICE_LOGGER`` context binding
+            (or ``_DEFAULT_LOGGER`` when unset).
         status_message (str | None): Explicit status message fallback.
     """
     try:
@@ -549,7 +551,7 @@ def log_transport_attempt(
             exc=exc,
             status_message=status_message,
         )
-        target_logger = logger or _get_service_logger()
+        target_logger = service_logger or _ACTIVE_SERVICE_LOGGER.get()
         target_logger.debug(
             "Transport attempt failed for %s (status=%s)",
             target or "unknown_target",
