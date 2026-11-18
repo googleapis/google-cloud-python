@@ -381,6 +381,35 @@ class DocumentWindowFrame(_WindowFrame):
     following: WindowBound | str | int | pipeline_expressions.Expression
 
 
+@dataclass
+class RangeWindowFrame(_WindowFrame):
+    """Defines a value-based or time-range window frame relative to the current document's sort value.
+
+    Example:
+        >>> from google.cloud.firestore_v1.pipeline_types import (
+        ...     RangeWindowFrame,
+        ...     TimeUnit,
+        ...     WindowBound,
+        ...     WindowSpec,
+        ... )
+        >>> window = WindowSpec(
+        ...     range=RangeWindowFrame(12, WindowBound.CURRENT, unit=TimeUnit.HOUR)
+        ... )
+
+    Args:
+        preceding: The lower bound of the frame (a numeric offset, `WindowBound`, or `Expression`).
+        following: The upper bound of the frame (a numeric offset, `WindowBound`, or `Expression`).
+        unit: Optional duration unit for time-range frames (e.g., `TimeUnit.DAY`, `TimeGranularity.MONTH`,
+            `"day"`, or an `Expression`).
+    """
+
+    preceding: WindowBound | str | int | float | pipeline_expressions.Expression
+    following: WindowBound | str | int | float | pipeline_expressions.Expression
+    unit: Optional[
+        TimeUnit | TimeGranularity | str | pipeline_expressions.Expression
+    ] = None
+
+
 class WindowSpec:
     """Configuration for a window in an `AddWindowFields` pipeline stage.
 
@@ -388,6 +417,9 @@ class WindowSpec:
         partition: Field paths or expressions used to partition documents into independent windows.
         sort: Orderings specifying how documents are sorted within each partition.
         documents: A `DocumentWindowFrame` defining a document-count window frame.
+            Mutually exclusive with `range`.
+        range: A `RangeWindowFrame` defining a value-based or time-range window frame.
+            Mutually exclusive with `documents`.
     """
 
     def __init__(
@@ -400,6 +432,7 @@ class WindowSpec:
         ] = None,
         sort: Optional[Sequence[Ordering] | Ordering] = None,
         documents: Optional[DocumentWindowFrame] = None,
+        range: Optional[RangeWindowFrame] = None,
     ):
         if partition is None:
             partition_list = []
@@ -418,6 +451,7 @@ class WindowSpec:
             self.sort = [sort] if isinstance(sort, Ordering) else list(sort)
 
         self.documents: Optional[DocumentWindowFrame] = documents
+        self.range: Optional[RangeWindowFrame] = range
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, WindowSpec):
@@ -432,6 +466,8 @@ class WindowSpec:
             args.append(f"sort={self.sort!r}")
         if self.documents is not None:
             args.append(f"documents={self.documents!r}")
+        if self.range is not None:
+            args.append(f"range={self.range!r}")
         return f"{self.__class__.__name__}({', '.join(args)})"
 
     def _to_pb(self) -> Value:
@@ -446,4 +482,6 @@ class WindowSpec:
             )
         if self.documents is not None:
             fields["documents"] = self.documents._to_pb()
+        if self.range is not None:
+            fields["range"] = self.range._to_pb()
         return Value(map_value={"fields": fields})
