@@ -14,11 +14,14 @@
 Provides helper logic used across samples
 """
 
+import inspect
+
 from google.api_core import exceptions
 from google.api_core.retry import Retry, if_exception_type
 
 from google.cloud import bigtable, bigtable_admin_v2
 from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable.data import BigtableDataClient, ReadRowsQuery
 from google.cloud.bigtable_admin_v2.types import ColumnFamily as ColumnFamily_pb
 
 delete_retry = Retry(
@@ -93,7 +96,7 @@ def create_table(project, instance_id, table_id, column_families={}):
 
 
 @Retry(
-    on_error=if_exception_type(
+    predicate=if_exception_type(
         exceptions.PreconditionFailed,
         exceptions.FailedPrecondition,
         exceptions.NotFound,
@@ -109,13 +112,28 @@ def wait_for_table(table):
     """
     if hasattr(table, "exists"):
         if not table.exists():
-            raise exceptions.NotFound
-    else:
-        table_path = table.table_name if hasattr(table, "table_name") else str(table)
-        admin_client = bigtable_admin_v2.BigtableTableAdminClient()
-        admin_client.get_table(
-            request={
-                "name": table_path,
-                "view": bigtable_admin_v2.Table.View.NAME_ONLY,
-            }
-        )
+            raise exceptions.NotFound("Table does not exist yet")
+        return
+
+    # Data-client Table / TableAsync instances and raw table_path strings (e.g.
+    # from create_table) do not expose .exists(), so verify via admin + data plane.
+    table_path = table.table_name if hasattr(table, "table_name") else str(table)
+    admin_client = bigtable_admin_v2.BigtableTableAdminClient()
+    admin_client.get_table(
+        request={
+            "name": table_path,
+            "view": bigtable_admin_v2.Table.View.NAME_ONLY,
+        }
+    )
+
+    # Probe the data plane as well: get_table() can succeed while mutations
+    # still return FailedPrecondition ("table ... is still being created").
+    if hasattr(table, "read_rows") and not inspect.iscoroutinefunction(table.read_rows):
+        table.read_rows(ReadRowsQuery(limit=1))
+        return
+
+    parts = table_path.split("/")
+    if len(parts) == 6 and parts[0] == "projects":
+        with BigtableDataClient(project=parts[1]) as data_client:
+            with data_client.get_table(parts[3], parts[5]) as data_table:
+                data_table.read_rows(ReadRowsQuery(limit=1))

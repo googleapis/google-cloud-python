@@ -124,6 +124,10 @@ class _ErrorInjectorInterceptor(
                     if not self._raised:
                         self._raised = True
                         if self._exc:
+                            if callable(getattr(self._call, "cancel", None)):
+                                self._call.cancel()
+                            elif callable(getattr(self._call, "close", None)):
+                                self._call.close()
                             raise self._exc
                     return await self._call.__anext__()
 
@@ -917,7 +921,7 @@ class TestMetricsAsync(SystemTestRunner):
         query2 = ReadRowsQuery(row_keys=[b"b"])
         handler.clear()
         with pytest.raises(ShardedReadRowsExceptionGroup) as e:
-            await table.read_rows_sharded([query1, query2], operation_timeout=0.005)
+            await table.read_rows_sharded([query1, query2], operation_timeout=0.0001)
         assert len(e.value.exceptions) == 2
         for sub_exc in e.value.exceptions:
             assert isinstance(sub_exc.__cause__, DeadlineExceeded)
