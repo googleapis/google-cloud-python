@@ -18,7 +18,11 @@ import sys
 import unittest
 from unittest import mock
 
-from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import (
+    Aborted,
+    DeadlineExceeded,
+    InternalServerError,
+)
 from google.auth.credentials import AnonymousCredentials
 from google.rpc.code_pb2 import ABORTED
 
@@ -1214,6 +1218,7 @@ class TestCursor(unittest.TestCase):
         connection = connect("test-instance", "test-database")
         cursor = connection.cursor()
         transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+        transaction_helper_mock._cursor_map = {cursor: mock.Mock()}
 
         with mock.patch(
             "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
@@ -1233,9 +1238,10 @@ class TestCursor(unittest.TestCase):
 
         with mock.patch(
             "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
-            side_effect=(Aborted("Aborted"), iter([])),
+            side_effect=Aborted("Aborted"),
         ):
-            cursor.fetchone()
+            with self.assertRaisesRegex(Aborted, "Aborted"):
+                cursor.fetchone()
 
         transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
         transaction_helper_mock.retry_transaction.assert_not_called()
@@ -1245,6 +1251,7 @@ class TestCursor(unittest.TestCase):
         connection = connect("test-instance", "test-database")
         cursor = connection.cursor()
         transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+        transaction_helper_mock._cursor_map = {cursor: mock.Mock()}
 
         with mock.patch(
             "google.cloud.spanner_dbapi.cursor.Cursor.__iter__",
@@ -1264,9 +1271,10 @@ class TestCursor(unittest.TestCase):
 
         with mock.patch(
             "google.cloud.spanner_dbapi.cursor.Cursor.__iter__",
-            side_effect=(Aborted("Aborted"), iter([])),
+            side_effect=Aborted("Aborted"),
         ):
-            cursor.fetchall()
+            with self.assertRaisesRegex(Aborted, "Aborted"):
+                cursor.fetchall()
 
         transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
         transaction_helper_mock.retry_transaction.assert_not_called()
@@ -1276,6 +1284,7 @@ class TestCursor(unittest.TestCase):
         connection = connect("test-instance", "test-database")
         cursor = connection.cursor()
         transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+        transaction_helper_mock._cursor_map = {cursor: mock.Mock()}
 
         with mock.patch(
             "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
@@ -1295,9 +1304,10 @@ class TestCursor(unittest.TestCase):
 
         with mock.patch(
             "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
-            side_effect=(Aborted("Aborted"), iter([])),
+            side_effect=Aborted("Aborted"),
         ):
-            cursor.fetchmany()
+            with self.assertRaisesRegex(Aborted, "Aborted"):
+                cursor.fetchmany()
 
         transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
         transaction_helper_mock.retry_transaction.assert_not_called()
@@ -1312,7 +1322,8 @@ class TestCursor(unittest.TestCase):
             "google.cloud.spanner_dbapi.cursor.Cursor.__iter__",
             side_effect=Exception("Exception"),
         ):
-            cursor.fetchall()
+            with self.assertRaisesRegex(Exception, "Exception"):
+                cursor.fetchall()
 
         transaction_helper_mock.add_fetch_statement_for_retry.assert_called_once()
         transaction_helper_mock.retry_transaction.assert_not_called()
@@ -1328,10 +1339,385 @@ class TestCursor(unittest.TestCase):
             "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
             side_effect=Exception("Exception"),
         ):
-            cursor.fetchmany()
+            with self.assertRaisesRegex(Exception, "Exception"):
+                cursor.fetchmany()
 
         transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
         transaction_helper_mock.retry_transaction.assert_not_called()
+
+    def _make_streamed_result_set(self, rows, error=None, on_close=None):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        metadata = ResultSetMetadata(
+            row_type=StructType(
+                fields=[StructType.Field(name="id", type_=Type(code=TypeCode.INT64))]
+            )
+        )
+
+        def response_generator():
+            try:
+                if not rows and error is None:
+                    yield PartialResultSet(metadata=metadata, last=True)
+                    return
+                for index, row_value in enumerate(rows):
+                    partial = PartialResultSet(
+                        metadata=metadata if index == 0 else None,
+                        last=error is None and index == len(rows) - 1,
+                    )
+                    partial.values.append(Value(string_value=str(row_value)))
+                    yield partial
+                if error is not None:
+                    if not rows:
+                        yield PartialResultSet(metadata=metadata)
+                    raise error
+            finally:
+                if on_close is not None:
+                    on_close()
+
+        return StreamedResultSet(response_generator())
+
+    def test_fetchall_midstream_non_aborted_error_raises(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        connection.run_statement = mock.Mock(
+            return_value=self._make_streamed_result_set(
+                [1, 2],
+                error=DeadlineExceeded("Deadline exceeded mid-stream"),
+            )
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        with mock.patch.object(
+            cursor.transaction_helper,
+            "retry_transaction",
+            wraps=cursor.transaction_helper.retry_transaction,
+        ) as retry_spy:
+            with self.assertRaisesRegex(
+                DeadlineExceeded, "Deadline exceeded mid-stream"
+            ):
+                cursor.fetchall()
+            retry_spy.assert_not_called()
+
+    def test_fetchmany_midstream_non_aborted_error_raises(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        connection.run_statement = mock.Mock(
+            return_value=self._make_streamed_result_set(
+                [1, 2],
+                error=InternalServerError("Internal error mid-stream"),
+            )
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        with self.assertRaisesRegex(InternalServerError, "Internal error mid-stream"):
+            cursor.fetchmany(5)
+
+    def test_fetchone_midstream_non_aborted_error_raises(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        connection.run_statement = mock.Mock(
+            return_value=self._make_streamed_result_set(
+                [1],
+                error=DeadlineExceeded("Deadline exceeded on row 2"),
+            )
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        self.assertEqual(cursor.fetchone(), (1,))
+        with self.assertRaisesRegex(DeadlineExceeded, "Deadline exceeded on row 2"):
+            cursor.fetchone()
+
+    def test_fetch_aborted_in_non_rw_mode_raises(self):
+        """Verify mid-stream Aborted propagates in read-only and autocommit modes.
+
+        Spanner never returns Aborted for read-only transactions (including
+        autocommit queries, which execute in single-use read-only snapshots), so
+        this covers the defensive/theoretical case to ensure errors are raised
+        instead of returning partial results or triggering transaction retry.
+        """
+        for read_only, autocommit in ((True, False), (True, True), (False, True)):
+            for fetch_method in ("fetchall", "fetchmany", "fetchone"):
+                with self.subTest(
+                    read_only=read_only,
+                    autocommit=autocommit,
+                    fetch_method=fetch_method,
+                ):
+                    mock_database = mock.MagicMock()
+                    connection = self._make_connection(
+                        self.INSTANCE, mock_database, read_only=read_only
+                    )
+                    connection.autocommit = autocommit
+                    mock_snapshot = mock.MagicMock()
+                    mock_snapshot.execute_sql.return_value = (
+                        self._make_streamed_result_set(
+                            [1],
+                            error=Aborted("Aborted in non-RW mode"),
+                        )
+                    )
+                    if autocommit:
+                        mock_database.snapshot.return_value.__enter__.return_value = (
+                            mock_snapshot
+                        )
+                    else:
+                        connection.snapshot_checkout = mock.Mock(
+                            return_value=mock_snapshot
+                        )
+                    cursor = self._make_one(connection)
+
+                    cursor.execute("SELECT id FROM table_name")
+                    if autocommit:
+                        self.assertFalse(connection._client_transaction_started)
+                    with (
+                        mock.patch.object(
+                            cursor.transaction_helper,
+                            "retry_transaction",
+                            wraps=cursor.transaction_helper.retry_transaction,
+                        ) as retry_spy,
+                        mock.patch.object(
+                            cursor.transaction_helper,
+                            "_set_connection_for_retry",
+                            wraps=cursor.transaction_helper._set_connection_for_retry,
+                        ) as reset_spy,
+                    ):
+                        if fetch_method == "fetchone":
+                            self.assertEqual(cursor.fetchone(), (1,))
+                            with self.assertRaisesRegex(
+                                Aborted, "Aborted in non-RW mode"
+                            ):
+                                cursor.fetchone()
+                        elif fetch_method == "fetchmany":
+                            with self.assertRaisesRegex(
+                                Aborted, "Aborted in non-RW mode"
+                            ):
+                                cursor.fetchmany(5)
+                        else:
+                            with self.assertRaisesRegex(
+                                Aborted, "Aborted in non-RW mode"
+                            ):
+                                cursor.fetchall()
+                        retry_spy.assert_not_called()
+                        reset_spy.assert_not_called()
+
+    def test_fetch_aborted_in_retry_mode_with_real_helper_raises(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        cursor._in_retry_mode = True
+        connection.run_statement = mock.Mock(
+            return_value=self._make_streamed_result_set(
+                [1],
+                error=Aborted("Aborted during retry"),
+            )
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        with mock.patch.object(
+            cursor.transaction_helper,
+            "retry_transaction",
+            wraps=cursor.transaction_helper.retry_transaction,
+        ) as retry_spy:
+            with self.assertRaisesRegex(Aborted, "Aborted during retry"):
+                cursor.fetchall()
+            retry_spy.assert_not_called()
+        self.assertEqual(cursor.transaction_helper._statement_result_details_list, [])
+
+    def test_fetchall_aborted_in_rw_transaction_resumes_from_retried_cursor(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+
+        first_result_set = self._make_streamed_result_set(
+            [1, 2],
+            error=Aborted("Aborted mid-stream"),
+        )
+        second_result_set = self._make_streamed_result_set([1, 2, 3])
+        connection.run_statement = mock.Mock(
+            side_effect=[first_result_set, second_result_set]
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        rows = cursor.fetchall()
+
+        self.assertEqual(rows, [(1,), (2,), (3,)])
+        self.assertEqual(connection.run_statement.call_count, 2)
+        self.assertIs(cursor._result_set, second_result_set)
+
+    def test_fetchmany_aborted_in_rw_transaction_resumes_from_retried_cursor(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+
+        first_result_set = self._make_streamed_result_set(
+            [1, 2],
+            error=Aborted("Aborted mid-stream"),
+        )
+        second_result_set = self._make_streamed_result_set([1, 2, 3])
+        connection.run_statement = mock.Mock(
+            side_effect=[first_result_set, second_result_set]
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        self.assertEqual(cursor.fetchmany(1), [(1,)])
+        rows = cursor.fetchmany(2)
+
+        self.assertEqual(rows, [(2,), (3,)])
+        self.assertEqual(connection.run_statement.call_count, 2)
+        self.assertIs(cursor._result_set, second_result_set)
+
+    def test_fetchone_aborted_in_rw_transaction_resumes_from_retried_cursor(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+
+        first_result_set = self._make_streamed_result_set(
+            [1],
+            error=Aborted("Aborted before row 2"),
+        )
+        second_result_set = self._make_streamed_result_set([1, 2])
+        connection.run_statement = mock.Mock(
+            side_effect=[first_result_set, second_result_set]
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        self.assertEqual(cursor.fetchone(), (1,))
+        self.assertEqual(cursor.fetchone(), (2,))
+        self.assertIsNone(cursor.fetchone())
+        self.assertEqual(connection.run_statement.call_count, 2)
+        self.assertIs(cursor._result_set, second_result_set)
+
+    def test_fetch_aborted_missing_retried_cursor_raises(self):
+        """Verify Aborted re-raises if retry_transaction() has no replay entry.
+
+        If a cursor was not replayed into TransactionRetryHelper._cursor_map
+        (for example, fetch*() called without a tracked execute() in the
+        transaction), _fetch_with_retry should re-raise the Aborted error
+        instead of failing with AttributeError on None._result_set.
+        """
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+        cursor._itr = mock.MagicMock()
+        cursor._itr.__next__.side_effect = Aborted("Aborted without replay")
+        cursor.transaction_helper = mock.Mock()
+        cursor.transaction_helper._cursor_map = {}
+
+        with self.assertRaisesRegex(Aborted, "Aborted without replay"):
+            cursor.fetchall()
+        cursor.transaction_helper.retry_transaction.assert_called_once_with()
+
+    def test_fetchall_multiple_aborts_in_rw_transaction_recovers(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+
+        first_result_set = self._make_streamed_result_set(
+            [1, 2],
+            error=Aborted("Aborted attempt 1"),
+        )
+        second_result_set = self._make_streamed_result_set(
+            [1],
+            error=Aborted("Aborted attempt 2"),
+        )
+        third_result_set = self._make_streamed_result_set([1, 2, 3])
+        connection.run_statement = mock.Mock(
+            side_effect=[first_result_set, second_result_set, third_result_set]
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        rows = cursor.fetchall()
+
+        self.assertEqual(rows, [(1,), (2,), (3,)])
+        self.assertEqual(connection.run_statement.call_count, 3)
+        self.assertIs(cursor._result_set, third_result_set)
+
+    def test_close_superseded_unexhausted_stream_on_aborted_retry(self):
+        mock_database = mock.MagicMock()
+        connection = self._make_connection(self.INSTANCE, mock_database)
+        cursor = self._make_one(connection)
+
+        superseded_closed = False
+
+        def on_close():
+            nonlocal superseded_closed
+            superseded_closed = True
+
+        # Two chunks without error: PeekIterator pulls chunk 1 during execute(),
+        # leaving response_generator suspended (open) before chunk 2.
+        first_result_set = self._make_streamed_result_set([1, 2], on_close=on_close)
+        second_result_set = self._make_streamed_result_set([1, 2, 3])
+        connection.run_statement = mock.Mock(
+            side_effect=[first_result_set, second_result_set]
+        )
+
+        cursor.execute("SELECT id FROM table_name")
+        self.assertFalse(superseded_closed)
+
+        # Simulate Aborted occurring while the superseded generator is still open.
+        def aborting_iterator():
+            self.assertFalse(superseded_closed)
+            yield (1,)
+            self.assertFalse(superseded_closed)
+            raise Aborted("Aborted while stream open")
+
+        cursor._itr = aborting_iterator()
+        rows = cursor.fetchall()
+
+        self.assertTrue(superseded_closed)
+        self.assertEqual(rows, [(1,), (2,), (3,)])
+        self.assertIs(cursor._result_set, second_result_set)
+
+    def test_close_result_set_edge_cases(self):
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        cursor = self._make_one(connection)
+
+        # 1. No active result set: should be a safe no-op.
+        cursor._result_set = None
+        cursor._close_result_set()
+
+        # 2. result_set.close() raises and _response_iterator is None: error is
+        # suppressed and missing _response_iterator is ignored.
+        failing_result_set = mock.Mock()
+        failing_result_set.close.side_effect = RuntimeError("close failed")
+        failing_result_set._response_iterator = None
+        cursor._result_set = failing_result_set
+        cursor._close_result_set()
+        failing_result_set.close.assert_called_once_with()
+
+        # 3. Result set without .close() whose _response_iterator is a plain
+        # iterator (e.g. iter([...]) used by client-side statements) without .close().
+        non_closable_iter_result_set = mock.Mock(spec=["_response_iterator"])
+        non_closable_iter_result_set._response_iterator = iter([])
+        cursor._result_set = non_closable_iter_result_set
+        cursor._close_result_set()
+
+        # 4. _response_iterator.close() raises: error is suppressed so cleanup
+        # never masks the Aborted retry flow.
+        failing_iter_result_set = mock.Mock(spec=["_response_iterator"])
+        failing_iter_result_set._response_iterator = mock.Mock()
+        failing_iter_result_set._response_iterator.close.side_effect = RuntimeError(
+            "iterator close failed"
+        )
+        cursor._result_set = failing_iter_result_set
+        cursor._close_result_set()
+        failing_iter_result_set._response_iterator.close.assert_called_once_with()
+
+    def test_fetch_unsupported_statement_type_raises(self):
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        cursor = self._make_one(connection)
+        with self.assertRaisesRegex(
+            ValueError, "Unsupported cursor statement type: INVALID_TYPE"
+        ):
+            cursor._fetch("INVALID_TYPE")
 
     @mock.patch("google.cloud.spanner_v1.Client")
     def test_ddls_with_semicolon(self, mock_client):
