@@ -15,6 +15,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass, fields
 from enum import Enum
 from typing import Optional, Sequence
 
@@ -329,12 +330,64 @@ class UnnestOptions:
         return f"{self.__class__.__name__}(index_field={self.index_field.path!r})"
 
 
+class WindowBound(str, Enum):
+    """Enumeration of symbolic window frame boundary keywords."""
+
+    CURRENT = "current"
+    UNBOUNDED = "unbounded"
+
+
+@dataclass
+class _WindowFrame:
+    """Base class for window frame specifications."""
+
+    def _to_pb(self) -> Value:
+        pb_fields = {
+            f.name: pipeline_expressions.Expression._cast_to_expr_or_convert_to_constant(
+                getattr(self, f.name)
+            )._to_pb()
+            for f in fields(self)
+            if getattr(self, f.name) is not None
+        }
+        return Value(map_value={"fields": pb_fields})
+
+
+@dataclass
+class DocumentWindowFrame(_WindowFrame):
+    """Defines a document-count based window frame relative to the current document.
+
+    Example:
+        >>> from google.cloud.firestore_v1.pipeline_types import (
+        ...     DocumentWindowFrame,
+        ...     WindowBound,
+        ...     WindowSpec,
+        ... )
+        >>> window = WindowSpec(
+        ...     documents=DocumentWindowFrame(
+        ...         WindowBound.UNBOUNDED, WindowBound.CURRENT
+        ...     )
+        ... )
+
+    Args:
+        preceding: The lower bound of the frame (an integer offset, `WindowBound`, or `Expression`).
+            A positive integer includes up to that many documents before the current document.
+            A negative integer indicates a boundary following the current document.
+        following: The upper bound of the frame (an integer offset, `WindowBound`, or `Expression`).
+            A positive integer includes up to that many documents after the current document.
+            A negative integer indicates a boundary preceding the current document.
+    """
+
+    preceding: WindowBound | str | int | pipeline_expressions.Expression
+    following: WindowBound | str | int | pipeline_expressions.Expression
+
+
 class WindowSpec:
     """Configuration for a window in an `AddWindowFields` pipeline stage.
 
     Args:
         partition: Field paths or expressions used to partition documents into independent windows.
         sort: Orderings specifying how documents are sorted within each partition.
+        documents: A `DocumentWindowFrame` defining a document-count window frame.
     """
 
     def __init__(
@@ -346,6 +399,7 @@ class WindowSpec:
             | str
         ] = None,
         sort: Optional[Sequence[Ordering] | Ordering] = None,
+        documents: Optional[DocumentWindowFrame] = None,
     ):
         if partition is None:
             partition_list = []
@@ -363,6 +417,8 @@ class WindowSpec:
         else:
             self.sort = [sort] if isinstance(sort, Ordering) else list(sort)
 
+        self.documents: Optional[DocumentWindowFrame] = documents
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, WindowSpec):
             return NotImplemented
@@ -374,6 +430,8 @@ class WindowSpec:
             args.append(f"partition={self.partition!r}")
         if self.sort:
             args.append(f"sort={self.sort!r}")
+        if self.documents is not None:
+            args.append(f"documents={self.documents!r}")
         return f"{self.__class__.__name__}({', '.join(args)})"
 
     def _to_pb(self) -> Value:
@@ -386,4 +444,6 @@ class WindowSpec:
             fields["sort"] = Value(
                 array_value={"values": [s._to_pb() for s in self.sort]}
             )
+        if self.documents is not None:
+            fields["documents"] = self.documents._to_pb()
         return Value(map_value={"fields": fields})
