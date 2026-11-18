@@ -20,3 +20,31 @@ import sys
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(script_path)
+
+
+def pytest_configure(config) -> None:
+    """Clean up leaked test instances in the controller before workers start."""
+    from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+    if (
+        os.getenv(BIGTABLE_EMULATOR)
+        or getattr(config.option, "help", False)
+        or getattr(config.option, "collectonly", False)
+        or hasattr(config, "workerinput")
+    ):
+        return
+
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    if not project_id:
+        try:
+            import google.auth
+
+            _, project_id = google.auth.default()
+        except Exception:
+            return
+
+    if project_id:
+        from utils import clear_stale_instances
+
+        # Purge leaked test instances older than 1 hour before allocating nodes.
+        clear_stale_instances(project_id, older_than_days=1 / 24, max_deletions=100)
