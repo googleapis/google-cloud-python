@@ -24,9 +24,11 @@ if typing.TYPE_CHECKING:
 
 
 def mock_credentials(*args: Any, **kwargs: Any) -> google.auth.credentials.Credentials:
-    credentials, _ = google.auth.default(
+    credentials, project_id = google.auth.default(
         ["https://www.googleapis.com/auth/cloud-platform"]
     )
+    if not hasattr(credentials, "project_id"):
+        credentials.project_id = project_id  # type: ignore[attr-defined]
     return credentials
 
 
