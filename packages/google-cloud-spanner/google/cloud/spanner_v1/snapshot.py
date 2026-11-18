@@ -223,6 +223,9 @@ def _restart_on_unavailable(
                 elif not retry_predicate(exc):
                     raise _augment_error_with_request_id(exc, current_request_id)
                 sleep_or_raise(exc)
+                else:
+                    stream_finished = True
+            except ServiceUnavailable:
                 del item_buffer[:]
                 request.resume_token = resume_token
                 if transaction is not None:
@@ -254,10 +257,18 @@ def _restart_on_unavailable(
             if len(item_buffer) == 0:
                 iterator = None
                 break
+            if stream_finished and metrics_tracer is not None:
+                try:
+                    metrics_tracer.record_operation_completion()
+                except Exception:
+                    pass
+                finally:
+                    metrics_tracer = None
             for item in item_buffer:
                 yield item
             del item_buffer[:]
             if stream_finished:
+                iterator = None
                 break
     finally:
         try:
