@@ -15,7 +15,7 @@ tests:
                 - Ordering:
                     - Field: published
                     - ASCENDING
-              documents:
+              frame:
                 DocumentWindowFrame:
                   preceding: unbounded
                   following: current

@@ -1080,6 +1080,7 @@ class TestWindowTypes:
             "preceding": Value(integer_value=1),
             "following": Value(string_value="current"),
         }
+        assert frame._to_dict() == {"documents": pb}
         assert frame == DocumentWindowFrame(1, "current")
         assert frame != DocumentWindowFrame(2, WindowBound.CURRENT)
 
@@ -1108,19 +1109,24 @@ class TestWindowTypes:
         spec = WindowSpec(
             partition="genre",
             sort=Field.of("rating").descending(),
-            documents=DocumentWindowFrame(-1, WindowBound.CURRENT),
+            frame=DocumentWindowFrame(-1, WindowBound.CURRENT),
         )
         assert repr(spec) == (
             "WindowSpec("
             "partition=[Field.of('genre')], "
             "sort=[Field.of('rating').descending()], "
-            "documents=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
+            "frame=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
             ")"
         )
         assert spec == WindowSpec(
             partition=[Field.of("genre")],
             sort=[Field.of("rating").descending()],
-            documents=DocumentWindowFrame(-1, "current"),
+            frame=DocumentWindowFrame(-1, "current"),
+        )
+        assert spec != WindowSpec(
+            partition="genre",
+            sort=Field.of("rating").descending(),
+            frame=DocumentWindowFrame(0, WindowBound.CURRENT),
         )
         assert spec != empty
         assert spec != object()
@@ -1129,7 +1135,7 @@ class TestWindowTypes:
         assert WindowSpec()._to_pb().map_value.fields == {}
         order = Field.of("rating").descending()
         doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
-        spec = WindowSpec(partition="genre", sort=order, documents=doc_frame)
+        spec = WindowSpec(partition="genre", sort=order, frame=doc_frame)
         assert spec._to_pb().map_value.fields == {
             "partition": Value(
                 array_value={"values": [Value(field_reference_value="genre")]}
