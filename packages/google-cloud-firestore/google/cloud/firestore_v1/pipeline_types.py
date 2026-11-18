@@ -386,6 +386,7 @@ class RangeWindowFrame(_WindowFrame):
     """Defines a value-based or time-range window frame relative to the current document's sort value.
 
     Example:
+        >>> from google.cloud.firestore_v1.pipeline_expressions import Field
         >>> from google.cloud.firestore_v1.pipeline_types import (
         ...     RangeWindowFrame,
         ...     TimeUnit,
@@ -393,7 +394,8 @@ class RangeWindowFrame(_WindowFrame):
         ...     WindowSpec,
         ... )
         >>> window = WindowSpec(
-        ...     range=RangeWindowFrame(12, WindowBound.CURRENT, unit=TimeUnit.HOUR)
+        ...     sort=Field.of("time").ascending(),
+        ...     range=RangeWindowFrame(12, WindowBound.CURRENT, unit=TimeUnit.HOUR),
         ... )
 
     Args:
