@@ -277,7 +277,7 @@ substitutions:
   _NOX_SESSION: 'system-3.12'
   _PACKAGE_WEIGHTS: |
     bigquery-magics: 2
-    google-cloud-bigquery: 5
+    google-cloud-bigquery: 8
     google-cloud-bigquery-storage: 8
     google-cloud-bigtable: 15
     google-cloud-compute: 8
