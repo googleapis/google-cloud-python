@@ -245,7 +245,7 @@ def signing_bucket_name():
 
 
 @pytest.fixture(scope="session")
-def signing_bucket(storage_client, signing_bucket_name):
+def signing_bucket(storage_client, signing_bucket_name, service_account):
     bucket = storage_client.bucket(signing_bucket_name)
     # Create the bucket only if it doesn't yet exist.
     try:
