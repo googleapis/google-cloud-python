@@ -15,7 +15,7 @@ tests:
                 - Ordering:
                     - Field: published
                     - ASCENDING
-              documents:
+              frame:
                 DocumentWindowFrame:
                   preceding: unbounded
                   following: current
@@ -235,7 +235,7 @@ tests:
                 - Ordering:
                     - Field: time
                     - ASCENDING
-              range:
+              frame:
                 RangeWindowFrame:
                   preceding: 12
                   following: current
@@ -293,7 +293,7 @@ tests:
       - AddWindowFields:
           window:
             WindowSpec:
-              range:
+              frame:
                 RangeWindowFrame:
                   preceding: unbounded
                   following: current

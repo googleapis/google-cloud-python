@@ -1083,6 +1083,7 @@ class TestWindowTypes:
             "preceding": Value(integer_value=1),
             "following": Value(string_value="current"),
         }
+        assert frame._to_dict() == {"documents": pb}
         assert frame == DocumentWindowFrame(1, "current")
         assert frame != DocumentWindowFrame(2, WindowBound.CURRENT)
         assert frame != RangeWindowFrame(1, WindowBound.CURRENT)
@@ -1108,12 +1109,14 @@ class TestWindowTypes:
             "preceding": Value(integer_value=10),
             "following": Value(integer_value=20),
         }
-        pb = RangeWindowFrame(10.5, WindowBound.UNBOUNDED, unit)._to_pb()
+        frame = RangeWindowFrame(10.5, WindowBound.UNBOUNDED, unit)
+        pb = frame._to_pb()
         assert pb.map_value.fields == {
             "preceding": Value(double_value=10.5),
             "following": Value(string_value="unbounded"),
             "unit": Value(string_value=expected_unit),
         }
+        assert frame._to_dict() == {"range": pb}
 
     def test_window_spec_coercions(self):
         order = Field.of("rating").descending()
@@ -1134,28 +1137,33 @@ class TestWindowTypes:
         spec = WindowSpec(
             partition="genre",
             sort=Field.of("rating").descending(),
-            documents=DocumentWindowFrame(-1, WindowBound.CURRENT),
+            frame=DocumentWindowFrame(-1, WindowBound.CURRENT),
         )
         assert repr(spec) == (
             "WindowSpec("
             "partition=[Field.of('genre')], "
             "sort=[Field.of('rating').descending()], "
-            "documents=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
+            "frame=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
             ")"
         )
         assert spec == WindowSpec(
             partition=[Field.of("genre")],
             sort=[Field.of("rating").descending()],
-            documents=DocumentWindowFrame(-1, "current"),
+            frame=DocumentWindowFrame(-1, "current"),
+        )
+        assert spec != WindowSpec(
+            partition="genre",
+            sort=Field.of("rating").descending(),
+            frame=DocumentWindowFrame(0, WindowBound.CURRENT),
         )
         range_spec = WindowSpec(
             sort=Field.of("published").ascending(),
-            range=RangeWindowFrame(-5, 5, "day"),
+            frame=RangeWindowFrame(-5, 5, "day"),
         )
         assert repr(range_spec) == (
             "WindowSpec("
             "sort=[Field.of('published').ascending()], "
-            "range=RangeWindowFrame(preceding=-5, following=5, unit='day')"
+            "frame=RangeWindowFrame(preceding=-5, following=5, unit='day')"
             ")"
         )
         assert spec != range_spec
@@ -1166,7 +1174,7 @@ class TestWindowTypes:
         assert WindowSpec()._to_pb().map_value.fields == {}
         order = Field.of("rating").descending()
         doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
-        spec = WindowSpec(partition="genre", sort=order, documents=doc_frame)
+        spec = WindowSpec(partition="genre", sort=order, frame=doc_frame)
         assert spec._to_pb().map_value.fields == {
             "partition": Value(
                 array_value={"values": [Value(field_reference_value="genre")]}
@@ -1175,7 +1183,7 @@ class TestWindowTypes:
             "documents": doc_frame._to_pb(),
         }
         range_frame = RangeWindowFrame(-5, 5, "day")
-        range_spec = WindowSpec(sort=order, range=range_frame)
+        range_spec = WindowSpec(sort=order, frame=range_frame)
         assert range_spec._to_pb().map_value.fields == {
             "sort": Value(array_value={"values": [order._to_pb()]}),
             "range": range_frame._to_pb(),

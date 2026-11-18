@@ -357,15 +357,17 @@ class DocumentWindowFrame(_WindowFrame):
     """Defines a document-count based window frame relative to the current document.
 
     Example:
+        >>> from google.cloud.firestore_v1.pipeline_expressions import Field
         >>> from google.cloud.firestore_v1.pipeline_types import (
         ...     DocumentWindowFrame,
         ...     WindowBound,
         ...     WindowSpec,
         ... )
         >>> window = WindowSpec(
-        ...     documents=DocumentWindowFrame(
+        ...     sort=Field.of("published").ascending(),
+        ...     frame=DocumentWindowFrame(
         ...         WindowBound.UNBOUNDED, WindowBound.CURRENT
-        ...     )
+        ...     ),
         ... )
 
     Args:
@@ -379,6 +381,9 @@ class DocumentWindowFrame(_WindowFrame):
 
     preceding: WindowBound | str | int | pipeline_expressions.Expression
     following: WindowBound | str | int | pipeline_expressions.Expression
+
+    def _to_dict(self) -> dict[str, Value]:
+        return {"documents": self._to_pb()}
 
 
 @dataclass
@@ -395,7 +400,7 @@ class RangeWindowFrame(_WindowFrame):
         ... )
         >>> window = WindowSpec(
         ...     sort=Field.of("time").ascending(),
-        ...     range=RangeWindowFrame(12, WindowBound.CURRENT, unit=TimeUnit.HOUR),
+        ...     frame=RangeWindowFrame(12, WindowBound.CURRENT, unit=TimeUnit.HOUR),
         ... )
 
     Args:
@@ -411,6 +416,9 @@ class RangeWindowFrame(_WindowFrame):
         TimeUnit | TimeGranularity | str | pipeline_expressions.Expression
     ] = None
 
+    def _to_dict(self) -> dict[str, Value]:
+        return {"range": self._to_pb()}
+
 
 class WindowSpec:
     """Configuration for a window in an `AddWindowFields` pipeline stage.
@@ -418,10 +426,7 @@ class WindowSpec:
     Args:
         partition: Field paths or expressions used to partition documents into independent windows.
         sort: Orderings specifying how documents are sorted within each partition.
-        documents: A `DocumentWindowFrame` defining a document-count window frame.
-            Mutually exclusive with `range`.
-        range: A `RangeWindowFrame` defining a value-based or time-range window frame.
-            Mutually exclusive with `documents`.
+        frame: A `DocumentWindowFrame` or `RangeWindowFrame` defining a sliding window frame.
     """
 
     def __init__(
@@ -433,8 +438,7 @@ class WindowSpec:
             | str
         ] = None,
         sort: Optional[Sequence[Ordering] | Ordering] = None,
-        documents: Optional[DocumentWindowFrame] = None,
-        range: Optional[RangeWindowFrame] = None,
+        frame: Optional[DocumentWindowFrame | RangeWindowFrame] = None,
     ):
         if partition is None:
             partition_list = []
@@ -452,8 +456,7 @@ class WindowSpec:
         else:
             self.sort = [sort] if isinstance(sort, Ordering) else list(sort)
 
-        self.documents: Optional[DocumentWindowFrame] = documents
-        self.range: Optional[RangeWindowFrame] = range
+        self.frame: Optional[DocumentWindowFrame | RangeWindowFrame] = frame
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, WindowSpec):
@@ -466,10 +469,8 @@ class WindowSpec:
             args.append(f"partition={self.partition!r}")
         if self.sort:
             args.append(f"sort={self.sort!r}")
-        if self.documents is not None:
-            args.append(f"documents={self.documents!r}")
-        if self.range is not None:
-            args.append(f"range={self.range!r}")
+        if self.frame is not None:
+            args.append(f"frame={self.frame!r}")
         return f"{self.__class__.__name__}({', '.join(args)})"
 
     def _to_pb(self) -> Value:
@@ -482,8 +483,6 @@ class WindowSpec:
             fields["sort"] = Value(
                 array_value={"values": [s._to_pb() for s in self.sort]}
             )
-        if self.documents is not None:
-            fields["documents"] = self.documents._to_pb()
-        if self.range is not None:
-            fields["range"] = self.range._to_pb()
+        if self.frame is not None:
+            fields.update(self.frame._to_dict())
         return Value(map_value={"fields": fields})
