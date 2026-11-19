@@ -19,13 +19,16 @@
 from __future__ import annotations
 
 import contextlib
+import contextvars
+import enum
 import functools
+import logging
 import traceback
 import urllib.parse
-from collections.abc import Callable, MutableMapping, Sequence
+from collections.abc import Callable, Iterator, MutableMapping, Sequence
 from typing import TYPE_CHECKING, Any
 
-from google.api_core import _feature_gating_helpers, exceptions
+from google.api_core import _feature_gating_helpers, client_logging, exceptions
 from google.api_core.client_options import ClientOptions
 
 try:
@@ -43,6 +46,22 @@ if TYPE_CHECKING:
 
     from google.api_core.grpc_helpers import ClientInterceptor  # noqa: F401
 
+_DEFAULT_LOGGER = logging.getLogger(__name__)
+# Per-RPC ContextVar holding the calling client library's service-scoped logger
+# (e.g., logging.getLogger("google.cloud.bigtable_v2...")).
+#
+# Lifecycle:
+# - _ACTIVE_SERVICE_LOGGER is set by _GapicCallable._trace_span() via
+#   _service_logger_context() whenever a client passes an explicit `service_logger`
+#   to `wrap_method()`.
+# - Read by `log_transport_attempt()` when no explicit `service_logger` override
+#   is supplied, allowing downstream gRPC interceptors and HTTP `_TraceContext`
+#   wire-attempt logs to route to the calling library's logger.
+# - Defaults to `_DEFAULT_LOGGER` ("google.api_core._observability") outside a
+#   `_GapicCallable` call or when the caller did not supply a `service_logger`.
+_ACTIVE_SERVICE_LOGGER: contextvars.ContextVar[logging.Logger] = contextvars.ContextVar(
+    "_ACTIVE_SERVICE_LOGGER", default=_DEFAULT_LOGGER
+)
 _TRACER_PROVIDER = "tracer_provider"
 _TRACE_CONTEXT_PROPAGATOR: Any = None
 _CHANNEL_INTERCEPTOR_MAPPING = (
@@ -204,7 +223,7 @@ def _extract_http_status_code(response: Any) -> int | None:
     if status is None:
         status = getattr(response, "status", None)
     if isinstance(status, int) and not isinstance(status, bool):
-        return status
+        return int(status)
     return None
 
 
@@ -371,6 +390,178 @@ def _resolve_rpc_system(kind: str | None = "grpc") -> str:
     if kind and kind.startswith(("rest", "http")):
         return "http"
     return "grpc"
+
+
+@contextlib.contextmanager
+def _service_logger_context(
+    service_logger: logging.Logger | None,
+) -> Iterator[None]:
+    """Binds ``service_logger`` into ``_ACTIVE_SERVICE_LOGGER`` for the active RPC.
+
+    When ``service_logger`` is ``None``, yields without modifying the active
+    context so callers inherit any outer binding or fall back to
+    ``_DEFAULT_LOGGER``.
+
+    Args:
+        service_logger (logging.Logger | None): Service-scoped logger for the
+            calling client library, or ``None`` to leave the context unchanged.
+
+    Yields:
+        None
+    """
+    if service_logger is None:
+        yield
+        return
+    token = _ACTIVE_SERVICE_LOGGER.set(service_logger)
+    try:
+        yield
+    finally:
+        _ACTIVE_SERVICE_LOGGER.reset(token)
+
+
+def _is_failed_attempt(
+    norm_status: str | None,
+    exc: BaseException | None,
+) -> bool:
+    """Determines whether a transport attempt ended with an error or exception.
+
+    Args:
+        norm_status (str | None): Normalized status code string (e.g. "OK", "200", "503").
+        exc (BaseException | None): Exception raised or returned during the attempt.
+
+    Returns:
+        bool: True if the attempt failed, False if it succeeded.
+    """
+    if exc is not None:
+        return True
+    if norm_status is None or norm_status == "OK":
+        return False
+    return not (norm_status.isdecimal() and int(norm_status) < 400)
+
+
+def _build_attempt_log_extra(
+    span: opentelemetry.trace.Span | None,
+    target: str | None,
+    status_code: int | str | enum.Enum | None,
+    norm_status: str | None,
+    rpc_system: str,
+    http_method: str | None,
+    exc: BaseException | None,
+    status_message: str | None,
+) -> tuple[dict[str, Any], str | None]:
+    """Builds the extra dictionary and status for a failed wire attempt.
+
+    Args:
+        span (opentelemetry.trace.Span | None): Active OpenTelemetry span, if any.
+        target (str | None): Full RPC method name (gRPC) or request URL (HTTP).
+        status_code (int | str | enum.Enum | None): Raw HTTP status code or gRPC status name/enum.
+        norm_status (str | None): Stringified status code if provided.
+        rpc_system (str): Normalized OTel RPC system identifier ("grpc" or "http").
+        http_method (str | None): HTTP request method (e.g. "GET", "POST").
+        exc (BaseException | None): Exception raised or returned during the attempt.
+        status_message (str | None): Explicit status message fallback.
+
+    Returns:
+        tuple[dict[str, Any], str | None]: A 2-tuple of (extra_payload, resolved_status).
+    """
+    error_attrs = build_telemetry_error_attributes(
+        exc,
+        status_code=norm_status,
+        status_message=status_message,
+        include_exception=True,
+    )
+    resolved_status = norm_status or error_attrs.get("rpc.response.status_code")
+    extra_payload: dict[str, Any] = {
+        "rpc.system.name": rpc_system,
+        **error_attrs,
+        "rpc.response.status_code": resolved_status,
+        **extract_trace_context(span),
+    }
+    if rpc_system == "http":
+        extra_payload["url.full"] = target
+        extra_payload["httpRequest"] = {
+            "requestMethod": http_method,
+            "requestUrl": target,
+            "status": (
+                int(status_code)
+                if isinstance(status_code, int)
+                or (isinstance(status_code, str) and status_code.isdecimal())
+                else status_code
+            ),
+        }
+    else:
+        extra_payload["rpc.method"] = target
+
+    # Take a shallow copy before assigning json_fields so json_fields does not
+    # reference extra_payload itself and cause a circular reference in json.dumps.
+    extra_payload["json_fields"] = extra_payload.copy()
+    return extra_payload, resolved_status
+
+
+def log_transport_attempt(
+    span: opentelemetry.trace.Span | None = None,
+    target: str | None = None,
+    status_code: int | str | enum.Enum | None = None,
+    kind: str = "grpc",
+    http_method: str | None = None,
+    exc: BaseException | None = None,
+    client_options: ClientOptions | dict[str, Any] | None = None,
+    service_logger: logging.Logger | None = None,
+    status_message: str | None = None,
+) -> None:
+    """Emits a DEBUG log for a failed wire attempt (retry or transport failure).
+
+    Non-error transport attempts (< 400 HTTP or OK gRPC) return immediately without
+    emitting logs to avoid hot-path allocations.
+
+    Args:
+        span (opentelemetry.trace.Span | None): Active OpenTelemetry span, if any.
+        target (str | None): Full RPC method name (gRPC) or request URL (HTTP).
+        status_code (int | str | enum.Enum | None): HTTP status code or gRPC status name/enum.
+        kind (str): Transport kind identifier ("grpc", "rest", "rest_asyncio", or "http").
+        http_method (str | None): HTTP request method (e.g. "GET", "POST").
+        exc (BaseException | None): Exception raised or returned during the attempt.
+        client_options (ClientOptions | dict[str, Any] | None): Client options
+            used for feature gating.
+        service_logger (logging.Logger | None): Explicit service logger override.
+            Defaults to the active ``_ACTIVE_SERVICE_LOGGER`` context binding
+            (or ``_DEFAULT_LOGGER`` when unset).
+        status_message (str | None): Explicit status message fallback.
+    """
+    try:
+        if not client_logging.is_error_logging_enabled(client_options):
+            return
+
+        norm_status = (
+            getattr(status_code, "name", str(status_code))
+            if status_code is not None
+            else None
+        )
+        if not _is_failed_attempt(norm_status, exc):
+            return
+
+        rpc_system = _resolve_rpc_system(kind)
+        extra_payload, resolved_status = _build_attempt_log_extra(
+            span=span,
+            target=target,
+            status_code=status_code,
+            norm_status=norm_status,
+            rpc_system=rpc_system,
+            http_method=http_method,
+            exc=exc,
+            status_message=status_message,
+        )
+        target_logger = service_logger or _ACTIVE_SERVICE_LOGGER.get()
+        target_logger.debug(
+            "Transport attempt failed for %s (status=%s)",
+            target or "unknown_target",
+            resolved_status or "ERROR",
+            extra=extra_payload,
+        )
+    # Intentionally catch broad Exception so telemetry logging fails open
+    # and never disrupts the caller's RPC flow.
+    except Exception:
+        pass
 
 
 def _extract_endpoint_attributes(
@@ -667,6 +858,35 @@ class _AsyncSuppressingClientInterceptor(
     ) -> Any:
         with _suppress_instrumentation():
             return await continuation(client_call_details, request_iterator)
+
+
+@contextlib.contextmanager
+def _capture_grpc_attempt_exception(
+    method_name: str,
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> Iterator[None]:
+    """Logs and re-raises any unhandled exception during gRPC continuation.
+
+    Args:
+        method_name (str): Decoded gRPC method name.
+        client_options (ClientOptions | dict[str, Any] | None): Client options
+            used for error logging gating.
+
+    Yields:
+        None
+    """
+    try:
+        yield
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
+    except BaseException as exc:
+        log_transport_attempt(
+            target=method_name,
+            kind="grpc",
+            exc=exc,
+            client_options=client_options,
+        )
+        raise
 
 
 def _build_otel_grpc_hook_kwargs(
