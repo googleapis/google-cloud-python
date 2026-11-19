@@ -65,6 +65,7 @@ def wrap_method(
     method_name=None,
     is_streaming=False,
     default_host=None,
+    service_logger=None,
 ):
     """Wrap an async RPC method with common behavior.
 
@@ -96,6 +97,8 @@ def wrap_method(
             Streaming methods are currently gated and do not generate Tier 3 spans.
         default_host (Optional[str]): Fallback transport host when ``api_endpoint``
             is not set on ``client_options``. Defaults to None.
+        service_logger (Optional[logging.Logger]): Optional service-scoped
+            logger for the calling client library. Defaults to None.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -120,5 +123,6 @@ def wrap_method(
             client_info=client_info,
             kind=kind,
             default_host=default_host,
+            service_logger=service_logger,
         )
     )
