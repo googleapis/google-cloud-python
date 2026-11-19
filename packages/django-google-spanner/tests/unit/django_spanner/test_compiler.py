@@ -299,3 +299,30 @@ class TestCompiler(SpannerSimpleTestClass):
         sub_convs, _ = sub_converters[0]
         self.assertIn(self.connection.ops.convert_jsonfield_value, sub_convs)
         self.assertIn(sub_field.from_db_value, sub_convs)
+
+    def test_bare_select_uses_from_unnest(self):
+        """Test that model-less SELECT queries emit FROM UNNEST([1])."""
+        from django.db.models import BooleanField, Value
+        from django.db.models.functions import Coalesce
+        from django.db.models.sql import Query
+
+        query = Query(None)
+        query.add_annotation(Value(1), "_check")
+        compiler = SQLCompiler(query, self.connection, "default")
+        sql, parameters = compiler.as_sql()
+        self.assertEqual(sql, "SELECT %s AS _check  FROM UNNEST([1])")
+        self.assertEqual(parameters, (1,))
+
+        query_with_where = Query(None)
+        query_with_where.add_annotation(Value(10), "num", select=False)
+        query_with_where.add_annotation(Value(1), "_check")
+        query_with_where.add_q(
+            Q(Coalesce(Q(num__gt=0), True, output_field=BooleanField()))
+        )
+        compiler = SQLCompiler(query_with_where, self.connection, "default")
+        sql, parameters = compiler.as_sql()
+        self.assertEqual(
+            sql,
+            "SELECT %s AS _check  FROM UNNEST([1]) WHERE COALESCE((%s > %s), %s)",
+        )
+        self.assertEqual(parameters, (1, 10, 0, True))

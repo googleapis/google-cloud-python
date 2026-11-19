@@ -168,7 +168,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 sql += " " + tablespace_sql
         # Prevent using [] as params, in the case a literal '%' is used in the
         # definition
-        trace_attributes = {"model_name": self.quote_name(model._meta.db_table)}
+        trace_attributes = {"model_name": model._meta.db_table}
 
         with trace_call(
             "CloudSpannerDjango.create_model",
@@ -199,7 +199,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         index_names = self._constraint_names(model, index=True, primary_key=False)
         for index_name in index_names:
             trace_attributes = {
-                "model_name": self.quote_name(model._meta.db_table),
+                "model_name": model._meta.db_table,
                 "index_name": index_name,
             }
             with trace_call(
@@ -208,7 +208,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 trace_attributes,
             ):
                 self.execute(self._delete_index_sql(model, index_name))
-        trace_attributes = {"model_name": self.quote_name(model._meta.db_table)}
+        trace_attributes = {"model_name": model._meta.db_table}
         with trace_call(
             "CloudSpannerDjango.delete_model",
             self.connection,
@@ -319,7 +319,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         index_names = self._constraint_names(model, [field.column], index=True)
         for index_name in index_names:
             trace_attributes = {
-                "model_name": self.quote_name(model._meta.db_table),
+                "model_name": model._meta.db_table,
                 "field": field.column,
                 "index_name": index_name,
             }
@@ -331,7 +331,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 self.execute(self._delete_index_sql(model, index_name))
 
         trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table),
+            "model_name": model._meta.db_table,
             "field": field.column,
         }
         with trace_call(
@@ -443,7 +443,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             for field_name, order in index.fields_orders
         ]
         trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table),
+            "model_name": model._meta.db_table,
             "index": "|".join(index.fields),
         }
         with trace_call(
@@ -492,7 +492,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 )
             for index_name in index_names:
                 trace_attributes = {
-                    "model_name": self.quote_name(model._meta.db_table),
+                    "model_name": model._meta.db_table,
                     "alter_field": old_field.column,
                     "index_name": index_name,
                 }
@@ -503,7 +503,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 ):
                     self.execute(self._delete_index_sql(model, index_name))
         trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table),
+            "model_name": model._meta.db_table,
             "alter_field": old_field.column,
         }
         with trace_call(
@@ -524,7 +524,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # Recreate the index that was dropped earlier.
         if nullability_changed and new_field.db_index:
             trace_attributes = {
-                "model_name": self.quote_name(model._meta.db_table),
+                "model_name": model._meta.db_table,
                 "alter_field": new_field.column,
             }
             with trace_call(
