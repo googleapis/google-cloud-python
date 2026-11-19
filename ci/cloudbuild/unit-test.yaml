@@ -1,0 +1,305 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+steps:
+  - name: 'us-central1-docker.pkg.dev/client-library-releases/release-images-prod/python-multi@sha256:d529954c373542171f9fc411e0102cebe542b511e320a965edf8820285f4f122'
+    id: 'run-unit-tests-shard'
+    env:
+      - 'CI=true'
+      - 'PIP_BREAK_SYSTEM_PACKAGES=1'
+      # Use uv for fast isolated virtualenvs per package worker without shared-env lock races.
+      - 'NOX_DEFAULT_VENV_BACKEND=uv'
+      - 'UV_VENV_SEED=1'
+      - 'UV_CONCURRENT_BUILDS=1'
+      - 'PACKAGE_DIRS=packages preview-packages'
+      # Pass sharding and diff parameters consumed by ci/get_package_shards.py.
+      - 'MAX_SHARDS=${_MAX_SHARDS}'
+      - 'SHARD_INDEX=${_SHARD_INDEX}'
+      - 'MIN_SHARD_WEIGHT=${_MIN_SHARD_WEIGHT}'
+      - 'BUILD_TYPE=${_BUILD_TYPE}'
+      - 'TARGET_BRANCH=${_BASE_BRANCH}'
+      - 'TEST_ALL_PACKAGES=${_TEST_ALL_PACKAGES}'
+      - 'DISABLED_PACKAGES=${_DISABLED_PACKAGES}'
+      - 'PACKAGE_WEIGHTS=${_PACKAGE_WEIGHTS}'
+      # Accept _NOX_SESSION from Cloud Build trigger substitutions while running the full matrix.
+      - 'TRIGGER_NOX_SESSION=${_NOX_SESSION}'
+      - 'PYTHON_VERSIONS=${_PYTHON_VERSIONS}'
+      - 'CORE_DEPS_PYTHON_VERSION=${_CORE_DEPS_PYTHON_VERSION}'
+      - 'RUN_COVERAGE=${_RUN_COVERAGE}'
+      - 'DEFAULT_FAIL_UNDER=${_DEFAULT_FAIL_UNDER}'
+      # Configure parallel package execution, time budget/threshold, and unbuffered Python output.
+      - 'PARALLEL_WORKERS=${_PARALLEL_WORKERS}'
+      - 'CONTINUE_ON_ERROR=true'
+      - 'TIME_BUDGET_MINUTES=${_TIME_BUDGET_MINUTES}'
+      - 'HARD_TIMEOUT_MINUTES=${_HARD_TIMEOUT_MINUTES}'
+      - 'PYTHONUNBUFFERED=1'
+    script: |
+      #!/usr/bin/env bash
+      set -eo pipefail
+
+      # Deepen both the checked-out PR commit and target branch history so git diff in
+      # ci/get_package_shards.py finds the merge base in Cloud Build's shallow checkout,
+      # and populate local refs/heads/${TARGET_BRANCH} so ci/run_conditional_tests.sh's
+      # local insteadOf fetch succeeds silently.
+      git fetch --no-tags --quiet origin \
+        "$(git rev-parse HEAD)" \
+        "+refs/heads/${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" \
+        "+refs/heads/${TARGET_BRANCH}:refs/heads/${TARGET_BRANCH}" \
+        --depth=200 || true
+
+      # Import ci/get_package_shards.py without modifying the script on disk.
+      # Include all packages (handwritten + GAPIC_AUTO) and exclude _DISABLED_PACKAGES.
+      PACKAGE_LIST=$(python3 -c '
+      import os
+      import sys
+
+      sys.path.insert(0, "ci")
+      import get_package_shards
+
+      disabled_packages = {
+          package_path.strip().rstrip("/")
+          for package_path in os.environ.get("DISABLED_PACKAGES", "").replace(",", " ").split()
+          if package_path.strip()
+      }
+
+      original_get_packages = get_package_shards.get_packages
+      def filtered_get_packages(*args, **kwargs):
+          filtered_packages = {}
+          for package_name, package_paths in original_get_packages(
+              handwritten_only=False
+          ).items():
+              kept_paths = [
+                  path
+                  for path in package_paths
+                  if path.strip().rstrip("/") not in disabled_packages
+              ]
+              if kept_paths:
+                  filtered_packages[package_name] = kept_paths
+          return filtered_packages
+
+      get_package_shards.get_packages = filtered_get_packages
+
+      packages_to_test = get_package_shards.get_packages_to_test()
+      shards = get_package_shards.group_packages(packages_to_test)
+
+      shard_index = int(os.environ.get("SHARD_INDEX", "0"))
+      print(shards[shard_index].get("packages", "") if shard_index < len(shards) else "")
+      ')
+
+      # Report immediate green (< 10s) if no packages in this PR map to this shard index.
+      if [[ -z "${PACKAGE_LIST}" ]]; then
+        echo "No packages assigned to shard ${SHARD_INDEX}. Exiting 0."
+        exit 0
+      fi
+
+      echo "Installing nox, nox-uv, uv, and coverage..."
+      python3 -m pip install --quiet --upgrade setuptools pip wheel nox nox-uv uv coverage
+
+      # Ensure every requested Python version (e.g. pre-release 3.15) is available to uv/nox.
+      for py_ver in ${PYTHON_VERSIONS}; do
+        if ! command -v "python${py_ver}" >/dev/null 2>&1; then
+          echo "Installing Python ${py_ver} via uv..."
+          uv python install "${py_ver}"
+        fi
+      done
+
+      # Create runtime shims in /tmp/cloudbuild_shims so tracked repository files remain unmodified.
+      mkdir -p /tmp/cloudbuild_shims /tmp/cloudbuild_pkg_times
+
+      # Nox wrapper (/tmp/cloudbuild_shims/nox):
+      # - Streams live output prefixed with `[<package_name>:<phase>]` to fd 3 so Cloud Build
+      #   logs show real-time progress across parallel workers.
+      # - Records per-session elapsed seconds in /tmp/cloudbuild_pkg_times/<package_name> so the
+      #   EXIT summary evaluates cumulative package runtime across all Python versions and phases.
+      # - Emits full session output on failure so pytest tracebacks appear in the end-of-phase
+      #   failure summary from ci/run_conditional_tests.sh.
+      cat << 'EOF' > /tmp/cloudbuild_shims/nox
+      #!/usr/bin/env bash
+      PACKAGE_NAME=$(basename "$PWD")
+      SESSION_LABEL="${TEST_TYPE:-nox}-${PY_VERSION:-all}"
+      TEMP_LOG_FILE=$(mktemp)
+      START_TIME=$(date +%s)
+      echo "[${PACKAGE_NAME}:${SESSION_LABEL}] Starting nox $*" >&3
+      python3 -m nox "$@" 2>&1 | python3 -u -c '
+      import os, sys
+      sys.stdin.reconfigure(encoding="utf-8", errors="replace")
+      prefix = f"[{sys.argv[1]}] "
+      with open(sys.argv[2], "w", buffering=1, encoding="utf-8", errors="replace") as log_f, \
+           os.fdopen(3, "w", buffering=1, closefd=False, encoding="utf-8", errors="replace") as live_f:
+          for line in sys.stdin:
+              log_f.write(line)
+              live_f.write(prefix + line)
+      ' "${PACKAGE_NAME}:${SESSION_LABEL}" "${TEMP_LOG_FILE}"
+      EXIT_CODE=${PIPESTATUS[0]}
+
+      ELAPSED_SECONDS=$(( $(date +%s) - START_TIME ))
+      echo "${ELAPSED_SECONDS}" >> "/tmp/cloudbuild_pkg_times/${PACKAGE_NAME}"
+      echo "[${PACKAGE_NAME}:${SESSION_LABEL}] Completed in $(( ELAPSED_SECONDS / 60 ))m $(printf '%02d' $(( ELAPSED_SECONDS % 60 )))s (exit=${EXIT_CODE})" >&3
+
+      if [[ ${EXIT_CODE} -ne 0 ]]; then
+        cat "${TEMP_LOG_FILE}"
+      fi
+      rm -f "${TEMP_LOG_FILE}"
+      exit ${EXIT_CODE}
+      EOF
+      chmod +x /tmp/cloudbuild_shims/nox
+
+      export PATH="/tmp/cloudbuild_shims:${PATH}"
+      exec 3>&1
+
+      print_weight_summary() {
+        python3 -c '
+      import glob
+      import os
+
+      budget_minutes = int(os.environ.get("TIME_BUDGET_MINUTES", "20"))
+      hard_minutes = int(os.environ.get("HARD_TIMEOUT_MINUTES", "30"))
+      budget_seconds = budget_minutes * 60
+
+      weights = {}
+      for line in os.environ.get("PACKAGE_WEIGHTS", "").splitlines():
+          line = line.strip()
+          if not line or line.startswith("#") or ":" not in line:
+              continue
+          pkg, weight = line.split(":", 1)
+          try:
+              weights[pkg.strip()] = int(weight.strip())
+          except ValueError:
+              pass
+
+      adjustments = []
+      print("")
+      print("============================================================")
+      print("PER-PACKAGE CUMULATIVE UNIT TEST RUNTIME SUMMARY:")
+      for path in sorted(glob.glob("/tmp/cloudbuild_pkg_times/*")):
+          pkg = os.path.basename(path)
+          with open(path) as f:
+              elapsed = sum(int(line.strip()) for line in f if line.strip().isdigit())
+          pct = (elapsed * 100 + budget_seconds // 2) // budget_seconds
+          mins, secs = divmod(elapsed, 60)
+          configured = weights.get(pkg, 1)
+          proposed = max(1, (elapsed + 30) // 60)
+          print(f"  {pkg}: {mins}m {secs:02d}s ({pct}% of {budget_minutes}m budget, {hard_minutes}m hard threshold)")
+          if abs(proposed - configured) >= 3:
+              adjustments.append(
+                  f"  {pkg}: {proposed}  # was {configured} (actual: {mins}m {secs:02d}s)"
+              )
+
+      print("============================================================")
+      if adjustments:
+          print("⚠️  WEIGHT ADJUSTMENTS NEEDED (drifted >= 3m from configured weight):")
+          for item in adjustments:
+              print(item)
+      else:
+          print("✅ WEIGHT SUMMARY: No weight adjustments needed (all packages within 2m of configured weight).")
+      print("============================================================")
+      '
+      }
+      trap print_weight_summary EXIT
+
+      export PACKAGE_LIST
+      echo "=== Unit Test Shard ${SHARD_INDEX}/${MAX_SHARDS} running Python [${PYTHON_VERSIONS}] + core_deps (${CORE_DEPS_PYTHON_VERSION}) + coverage for: ${PACKAGE_LIST} ==="
+
+      # 1. Run unit tests across all configured Python versions.
+      UNIT_EXIT=0
+      for py_ver in ${PYTHON_VERSIONS}; do
+        echo ""
+        echo ">>> Starting phase: TEST_TYPE=unit PY_VERSION=${py_ver} <<<"
+        TEST_TYPE="unit" PY_VERSION="${py_ver}" ./ci/run_conditional_tests.sh || UNIT_EXIT=1
+      done
+
+      # 2. Aggregate and enforce coverage for the packages tested in this shard
+      #    (mirrors the cover job in .github/workflows/unittest.yml).
+      COVERAGE_EXIT=0
+      if [[ "${RUN_COVERAGE}" == "true" && ${UNIT_EXIT} -eq 0 ]]; then
+        echo ""
+        echo ">>> Starting phase: coverage report (DEFAULT_FAIL_UNDER=${DEFAULT_FAIL_UNDER}) <<<"
+        mkdir -p /dev/shm/.coverage-results
+        shopt -s nullglob
+        cov_files=(.coverage.*)
+        if [[ ${#cov_files[@]} -gt 0 ]]; then
+          mv "${cov_files[@]}" /dev/shm/.coverage-results/
+        fi
+        shopt -u nullglob
+        RESULTS_DIR="/dev/shm/.coverage-results" ./ci/report_coverage.sh || COVERAGE_EXIT=1
+      fi
+
+      # 3. Run core_deps_from_source on the designated Python version
+      #    (mirrors the core-deps job in .github/workflows/unittest.yml).
+      CORE_DEPS_EXIT=0
+      if [[ -n "${CORE_DEPS_PYTHON_VERSION}" ]]; then
+        echo ""
+        echo ">>> Starting phase: TEST_TYPE=core_deps_from_source PY_VERSION=${CORE_DEPS_PYTHON_VERSION} <<<"
+        TEST_TYPE="core_deps_from_source" \
+        PY_VERSION="${CORE_DEPS_PYTHON_VERSION}" \
+        NOX_DEFAULT_VENV_BACKEND="virtualenv" \
+        NOXFORCEPYTHON="${CORE_DEPS_PYTHON_VERSION}" \
+        ./ci/run_conditional_tests.sh || CORE_DEPS_EXIT=1
+      fi
+
+      if [[ ${UNIT_EXIT} -ne 0 || ${COVERAGE_EXIT} -ne 0 || ${CORE_DEPS_EXIT} -ne 0 ]]; then
+        exit 1
+      fi
+
+# Hard 30-minute (1800s) CI timeout ceiling.
+timeout: 1800s
+
+substitutions:
+  _MAX_SHARDS: '10'
+  _SHARD_INDEX: '0'
+  _MIN_SHARD_WEIGHT: '10'
+  _PARALLEL_WORKERS: '4'
+  _TIME_BUDGET_MINUTES: '20'
+  _HARD_TIMEOUT_MINUTES: '30'
+  _BUILD_TYPE: 'presubmit'
+  _BASE_BRANCH: 'main'
+  _TEST_ALL_PACKAGES: 'false'
+  _DISABLED_PACKAGES: ''
+  _NOX_SESSION: 'unit-3.12'
+  _PYTHON_VERSIONS: '3.10 3.11 3.12 3.13 3.14 3.15'
+  _CORE_DEPS_PYTHON_VERSION: '3.14'
+  _RUN_COVERAGE: 'true'
+  _DEFAULT_FAIL_UNDER: '99'
+  _PACKAGE_WEIGHTS: |
+    django-google-spanner: 2
+    gapic-generator: 3
+    google-ai-generativelanguage: 3
+    google-api-core: 2
+    google-auth: 2
+    google-cloud-bigquery: 4
+    google-cloud-bigquery-storage: 2
+    google-cloud-bigtable: 4
+    google-cloud-compute: 12
+    google-cloud-compute-v1beta: 12
+    google-cloud-datastore: 3
+    google-cloud-dialogflow: 4
+    google-cloud-dialogflow-cx: 4
+    google-cloud-discoveryengine: 4
+    google-cloud-firestore: 3
+    google-cloud-logging: 3
+    google-cloud-monitoring: 3
+    google-cloud-ndb: 2
+    google-cloud-pubsub: 2
+    google-cloud-retail: 3
+    google-cloud-spanner: 4
+    google-cloud-storage: 4
+    google-shopping-merchant-accounts: 3
+    pandas-gbq: 2
+    proto-plus: 1
+    sqlalchemy-bigquery: 2
+    sqlalchemy-spanner: 2
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
