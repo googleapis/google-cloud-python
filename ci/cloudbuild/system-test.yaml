@@ -24,9 +24,6 @@ steps:
       - 'GOOGLE_CLOUD_PROJECT=${PROJECT_ID}'
       - 'GCLOUD_PROJECT=${PROJECT_ID}'
       - 'PROJECT_ID=${PROJECT_ID}'
-      # Cloud Build built-ins used by ci/cancel_superseded_builds.py to cancel outdated PR runs.
-      - 'LOCATION=${LOCATION}'
-      - 'BUILD_ID=${BUILD_ID}'
       # Pass sharding and diff parameters consumed by ci/get_package_shards.py.
       - 'MAX_SHARDS=${_MAX_SHARDS}'
       - 'SHARD_INDEX=${_SHARD_INDEX}'
@@ -48,10 +45,6 @@ steps:
     script: |
       #!/usr/bin/env bash
       set -eo pipefail
-
-      # Cancel any older QUEUED/WORKING builds for this PR and shard so newer pushes
-      # immediately take precedence instead of piling up in the Cloud Build queue.
-      python3 ci/cancel_superseded_builds.py --cancel-older || true
 
       # Derive PY_VERSION (e.g. "3.12" from "system-3.12") required by ci/run_single_test.sh.
       export PY_VERSION="${NOX_SESSION#system-}"
@@ -252,12 +245,7 @@ steps:
 
       # Export PACKAGE_LIST and delegate execution to the existing monorepo test runner script.
       rm -f /tmp/cloudbuild_weight_adjustments.txt
-      CANCEL_WATCHDOG_PID=""
-      cleanup_on_exit() {
-        # Stop the background cancellation watchdog so it never keeps the build container open.
-        if [[ -n "${CANCEL_WATCHDOG_PID}" ]]; then
-          kill "${CANCEL_WATCHDOG_PID}" 2>/dev/null || true
-        fi
+      print_weight_summary() {
         echo ""
         echo "============================================================"
         if [[ -s /tmp/cloudbuild_weight_adjustments.txt ]]; then
@@ -268,12 +256,7 @@ steps:
         fi
         echo "============================================================"
       }
-      trap cleanup_on_exit EXIT
-
-      # Run a background watchdog that self-cancels this build if a newer commit is pushed
-      # to the same PR while all Cloud Build worker slots are occupied.
-      python3 ci/cancel_superseded_builds.py --watch &
-      CANCEL_WATCHDOG_PID=$!
+      trap print_weight_summary EXIT
 
       export PACKAGE_LIST
       echo "=== System Shard ${SHARD_INDEX}/${MAX_SHARDS} running ${NOX_SESSION} for: ${PACKAGE_LIST} ==="
