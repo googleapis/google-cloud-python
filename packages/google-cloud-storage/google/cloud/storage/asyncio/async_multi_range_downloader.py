@@ -322,12 +322,23 @@ class AsyncMultiRangeDownloader:
             await self.close()
 
     def _on_open_error(self, exc):
-        """Extracts routing token and read handle on redirect error during open."""
+        """Records redirect details from a failed open for the next attempt.
+
+        The routing token is always kept. The redirect's read handle is used
+        only if the downloader already has a read handle or the redirect has no
+        routing token; otherwise the next attempt opens without a read handle
+        so that its first response carries the object metadata.
+        """
         logger.warning(f"Error occurred while opening MRD: {exc}")
         routing_token, read_handle = _handle_redirect(exc)
         if routing_token:
             self._routing_token = routing_token
-        if read_handle:
+        # A stream opened with a read handle gets no object metadata in its
+        # first response, which would leave persisted_size, is_finalized and
+        # full_obj_server_crc32c unset. Unless a read handle is already in use,
+        # retry with the routing token alone. Without a routing token the
+        # handle is all that changes the retry, so it is still used.
+        if read_handle and (self.read_handle or not routing_token):
             self.read_handle = read_handle
 
     async def open(
