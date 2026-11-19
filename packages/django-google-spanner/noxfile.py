@@ -136,15 +136,16 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session, django_version="5.2"):
+def _resolve_django_dependency(session, django_version):
     # Django 6.0 dropped support for Python 3.10 and 3.11 (requires Python >= 3.12)
     if django_version == "6.0" and session.python in ("3.10", "3.11"):
         session.skip(f"Django {django_version} requires Python >= 3.12")
+    return f"django~={django_version}.0"
 
+
+def default(session, django_version="5.2"):
     # Target specific Django version
-    django_dep = (
-        f"django~={django_version}.0" if django_version == "6.0" else "django~=5.2.0"
-    )
+    django_dep = _resolve_django_dependency(session, django_version)
 
     # Install all test dependencies, then install this package in-place.
     session.install(
@@ -184,8 +185,10 @@ def mockserver(session, django):
     default(session, django_version=django)
 
 
-def system_test(session):
+def system_test(session, django_version="5.2"):
     """Run the system test suite."""
+    django_dep = _resolve_django_dependency(session, django_version)
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -215,7 +218,7 @@ def system_test(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install(
-        "django~=5.2",
+        django_dep,
         "mock",
         "pytest",
         "google-cloud-testutils",
@@ -231,14 +234,17 @@ def system_test(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system(session):
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16099):
-    # System tests were disabled in the split repo to speed up the build process.
-    # See: https://github.com/googleapis/python-spanner-django/pull/929.
-    session.skip("System tests are temporarily disabled.")
+@nox.parametrize("django", DJANGO_VERSIONS)
+def system(session, django):
+    if not os.environ.get("SPANNER_EMULATOR_HOST", ""):
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/16099):
+        # System tests were disabled in the split repo to speed up the build
+        # process against live Spanner.
+        # See: https://github.com/googleapis/python-spanner-django/pull/929.
+        session.skip("System tests against live Spanner are temporarily disabled.")
 
-    print("System tests with django 5.2")
-    system_test(session)
+    print(f"System tests with django {django}")
+    system_test(session, django_version=django)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

@@ -38,6 +38,8 @@ class TestFeatures(SpannerSimpleTestClass):
         self.assertTrue(features.supports_json_field)
         self.assertTrue(features.supports_primitives_in_json_field)
         self.assertFalse(features.supports_json_field_contains)
+        self.assertTrue(features.supports_column_check_constraints)
+        self.assertTrue(features.supports_table_check_constraints)
         self.assertEqual(features.bare_select_suffix, " FROM UNNEST([1])")
 
     def test_check_constraint_validate_not_skipped(self):

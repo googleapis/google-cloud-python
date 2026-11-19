@@ -8,8 +8,8 @@
 from unittest import mock
 
 from django.db import NotSupportedError, connection, connections, models
-from django.db.models import Index
-from django.db.models.fields import AutoField, IntegerField
+from django.db.models import CheckConstraint, Index, Q
+from django.db.models.fields import AutoField, IntegerField, PositiveIntegerField
 from django.test.utils import isolate_apps
 from google.api_core.exceptions import InvalidArgument
 
@@ -519,6 +519,68 @@ class TestUtils(SpannerSimpleTestClass):
 
         normal_field = mock.MagicMock(generated=False, db_default=None)
         self.assertTrue(schema_editor.skip_default(normal_field))
+
+    def test_check_sql(self):
+        """Tests _check_sql generates CHECK constraint SQL."""
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        self.assertEqual(
+            schema_editor._check_sql("check_age", "age >= 0"),
+            "CONSTRAINT check_age CHECK (age >= 0)",
+        )
+
+    # Keep the inline CheckedModel out of Django's global app registry.
+    @isolate_apps("tests")
+    def test_create_model_with_check_constraint(self):
+        """Tests create_model includes table-level CHECK constraints."""
+
+        class CheckedModel(models.Model):
+            num = models.IntegerField()
+
+            class Meta:
+                app_label = "tests"
+                db_table = "tests_checked_model"
+                constraints = [
+                    CheckConstraint(
+                        condition=Q(num__gte=0),
+                        name="num_gte_0",
+                    ),
+                ]
+
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            schema_editor.create_model(CheckedModel)
+
+            schema_editor.execute.assert_called_once_with(
+                "CREATE TABLE tests_checked_model (id INT64 NOT NULL, "
+                "num INT64 NOT NULL, CONSTRAINT num_gte_0 CHECK (num >= 0)) "
+                "PRIMARY KEY(id)",
+                None,
+            )
+
+    def test_alter_field_add_check_constraint(self):
+        """Tests altering IntegerField to PositiveIntegerField emits ADD CONSTRAINT CHECK."""
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            old_field = IntegerField()
+            old_field.set_attributes_from_name("num")
+            old_field.model = Author
+            new_field = PositiveIntegerField()
+            new_field.set_attributes_from_name("num")
+            new_field.model = Author
+
+            schema_editor.alter_field(Author, old_field, new_field)
+
+            schema_editor.execute.assert_called_once()
+            positional_args, keyword_args = schema_editor.execute.call_args
+            self.assertEqual(len(positional_args), 1)
+            self.assertEqual(keyword_args, {})
+            statement = positional_args[0]
+            self.assertIsNotNone(statement)
+            self.assertEqual(
+                str(statement),
+                "ALTER TABLE tests_author ADD CONSTRAINT "
+                "tests_author_num_f8282a0e_check CHECK (num >= 0)",
+            )
 
     def _assert_recorded_spans(
         self,
