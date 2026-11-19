@@ -59,6 +59,22 @@ if grpc is not None:  # pragma: no branch
     for x in grpc.StatusCode:
         _INT_TO_GRPC_CODE[x.value[0]] = x
 
+# Canonical HTTP-to-google.rpc.Code mapping per google/rpc/code.proto (AIP-193).
+_HTTP_STATUS_TO_CANONICAL_CODE: Dict[int, str] = {
+    200: "OK",
+    400: "INVALID_ARGUMENT",
+    401: "UNAUTHENTICATED",
+    403: "PERMISSION_DENIED",
+    404: "NOT_FOUND",
+    409: "ABORTED",
+    429: "RESOURCE_EXHAUSTED",
+    499: "CANCELLED",
+    500: "INTERNAL",
+    501: "UNIMPLEMENTED",
+    503: "UNAVAILABLE",
+    504: "DEADLINE_EXCEEDED",
+}
+
 
 class GoogleAPIError(Exception):
     """Base class for all exceptions raised by Google API Clients."""
@@ -141,6 +157,8 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
 
     This may be ``None`` if the exception does not match up to a gRPC error.
     """
+
+    _http_error_message: Optional[str] = None
 
     def __init__(self, message, errors=(), details=(), response=None, error_info=None):
         super(GoogleAPICallError, self).__init__(message)
@@ -567,10 +585,12 @@ def format_http_response_error(
     if isinstance(payload, list):
         payload = next((item for item in payload if isinstance(item, dict)), {})
     payload = {} if not payload else payload
-    error_message = payload.get("error", {}).get("message", "unknown error")
-    errors = payload.get("error", {}).get("errors", ())
+    error_dict = payload.get("error", {})
+    raw_error_message = error_dict.get("message")
+    error_message = error_dict.get("message", "unknown error")
+    errors = error_dict.get("errors", ())
     # In JSON, details are already formatted in developer-friendly way.
-    details = payload.get("error", {}).get("details", ())
+    details = error_dict.get("details", ())
     error_info_list = list(
         filter(
             lambda detail: detail.get("@type", "")
@@ -589,6 +609,8 @@ def format_http_response_error(
         response=response,
         error_info=error_info,
     )
+    if isinstance(raw_error_message, str) and raw_error_message:
+        exception._http_error_message = raw_error_message
     return exception
 
 
@@ -606,7 +628,7 @@ def from_http_response(response):
     try:
         payload = response.json()
     except ValueError:
-        payload = {"error": {"message": response.text or "unknown error"}}
+        payload = {"error": {"message": response.text}} if response.text else {}
     return format_http_response_error(
         response, response.request.method, response.request.url, payload
     )
@@ -650,16 +672,20 @@ def from_grpc_status(status_code, message, **kwargs):
     return error
 
 
-def _extract_status_code(exc: BaseException | None, default: str | None = None) -> str:
+def _extract_status_code(
+    exc: BaseException | None, default: str | None = None
+) -> str | None:
     """Extract canonical status code name string from an exception.
 
     Status code name strings are resolved by inspecting the following:
     * Enum & code attributes: Inspects .grpc_status_code on GoogleAPICallError
       or .code on gRPC/HTTP errors.
     * Integer status codes: Maps raw gRPC integer status codes or HTTP status
-      codes to canonical enum names.
-    * Fallback: Uses ``default`` if provided, otherwise defaults to the
-      exception class name.
+      codes to canonical ``google.rpc.Code`` names (falling back to
+      ``http.HTTPStatus`` names for non-canonical HTTP codes).
+    * Fallback: Uses ``default`` if provided, otherwise returns ``None`` so
+      callers omit ``rpc.response.status_code`` when no server or RPC status
+      code exists (for example, on client-side HTTP timeouts).
 
     Args:
         exc (BaseException | None): The exception to extract the status code
@@ -668,11 +694,11 @@ def _extract_status_code(exc: BaseException | None, default: str | None = None) 
             ``exc`` carries no status code.
 
     Returns:
-        str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE",
-            "BAD_REQUEST") or class name.
+        str | None: The canonical status code name (e.g. "NOT_FOUND",
+            "UNAVAILABLE", "INVALID_ARGUMENT"), ``default``, or ``None``.
     """
     if exc is None:
-        return default or ""
+        return default
 
     # Check enum & code attributes: .grpc_status_code enum or callable/non-callable .code
     status = getattr(exc, "grpc_status_code", None)
@@ -684,11 +710,17 @@ def _extract_status_code(exc: BaseException | None, default: str | None = None) 
         except Exception:
             status = None
 
+    # Map HTTP status ints / HTTPStatus IntEnums to canonical google.rpc.Code
+    # names before reading enum .name (otherwise HTTPStatus.BAD_REQUEST returns
+    # "BAD_REQUEST" instead of "INVALID_ARGUMENT").
+    if isinstance(status, int) and status in _HTTP_STATUS_TO_CANONICAL_CODE:
+        return _HTTP_STATUS_TO_CANONICAL_CODE[status]
+
     name = getattr(status, "name", None)
     if name:
         return str(name)
 
-    # Map raw gRPC integer codes or HTTP status codes to canonical names
+    # Map raw gRPC integer codes or remaining HTTP status codes to names
     if isinstance(status, int):
         if status in _INT_TO_GRPC_CODE:
             grpc_code = _INT_TO_GRPC_CODE[status]
@@ -698,8 +730,8 @@ def _extract_status_code(exc: BaseException | None, default: str | None = None) 
         except ValueError:
             return str(status)
 
-    # Default to explicit default or exception class name for standard Python errors
-    return default or exc.__class__.__name__
+    # Return explicit default or None when no server/RPC status code exists
+    return default
 
 
 def _is_informative_grpc_error(rpc_exc):
