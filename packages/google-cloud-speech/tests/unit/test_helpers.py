@@ -51,3 +51,21 @@ def test_streaming_recognize():
     ]
     assert "retry" in kwargs
     assert "timeout" in kwargs
+
+
+def test_streaming_recognize_passes_metadata():
+    client = make_speech_client()
+
+    config = types.StreamingRecognitionConfig()
+    requests = [types.StreamingRecognizeRequest(audio_content=b"...")]
+    metadata = [("x-custom-header", "value")]
+    super_patch = mock.patch(
+        "google.cloud.speech_v1.services.speech.SpeechClient.streaming_recognize",
+        autospec=True,
+    )
+
+    with super_patch as streaming_recognize:
+        client.streaming_recognize(config, requests, metadata=metadata)
+
+    _, args, kwargs = streaming_recognize.mock_calls[0]
+    assert kwargs["metadata"] == metadata
