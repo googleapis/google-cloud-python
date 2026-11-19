@@ -944,6 +944,51 @@ def test_set_initial_regional_access_boundary_with_value():
     assert manager._data.expiry == expiry
 
 
+def test_set_initial_regional_access_boundary_skipped_when_disabled(monkeypatch):
+    creds = CredentialsImpl()
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        "false",
+    )
+    creds._set_regional_access_boundary(
+        {
+            "encodedLocations": "0xNEW",
+            "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+        }
+    )
+
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP
+    )
+    assert creds.regional_access_boundary is None
+    assert creds.regional_access_boundary_expiry is None
+
+
+def test_apply_headers_strips_header_when_disabled(monkeypatch):
+    creds = CredentialsImpl()
+    creds.token = "access-token"
+    creds._set_regional_access_boundary(
+        {
+            "encodedLocations": "0xABC",
+            "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+        }
+    )
+
+    headers = {}
+    creds.apply(headers)
+    assert headers["x-allowed-locations"] == "0xABC"
+
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        "false",
+    )
+    assert creds.regional_access_boundary is None
+    assert creds.regional_access_boundary_expiry is None
+    creds.apply(headers)
+    assert "x-allowed-locations" not in headers
+    assert headers["authorization"] == "Bearer access-token"
+
+
 def test_sync_refresh_manager_start_refresh_executes():
     manager = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager()
     creds = mock.Mock()

@@ -346,11 +346,15 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     @property
     def regional_access_boundary(self):
         """Optional[str]: The encoded Regional Access Boundary locations."""
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return None
         return self._rab_manager._data.encoded_locations
 
     @property
     def regional_access_boundary_expiry(self):
         """Optional[datetime.datetime]: The expiration time of the Regional Access Boundary."""
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return None
         return self._rab_manager._data.expiry
 
     @abc.abstractmethod

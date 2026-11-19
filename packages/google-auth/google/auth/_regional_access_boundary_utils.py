@@ -135,12 +135,18 @@ class _RegionalAccessBoundaryManager(object):
     def set_initial_regional_access_boundary(self, encoded_locations=None, expiry=None):
         """Manually sets the regional access boundary to the client provided initial values.
 
+        If Regional Access Boundary lookup is disabled via environment variable,
+        any existing or provided boundary values are cleared to None.
+
         Args:
             encoded_locations (Optional[str]): The encoded locations string.
             expiry (Optional[datetime.datetime]): The expiry time for the boundary.
                 If encoded_locations is not provided, expiry is ignored.
         """
-        if not encoded_locations:
+        if not is_regional_access_boundary_lookup_enabled():
+            encoded_locations = None
+            expiry = None
+        elif not encoded_locations:
             expiry = None
 
         self._data = _RegionalAccessBoundaryData(
@@ -153,17 +159,19 @@ class _RegionalAccessBoundaryManager(object):
     def apply_headers(self, headers):
         """Applies the Regional Access Boundary header to the provided dictionary.
 
-        If the boundary is valid, the 'x-allowed-locations' header is added
-        or updated. Otherwise, the header is removed to ensure no stale
-        data is sent.
+        If the boundary is valid and Regional Access Boundary lookup is enabled,
+        the 'x-allowed-locations' header is added or updated. Otherwise, the
+        header is removed to ensure no stale data is sent.
 
         Args:
             headers (MutableMapping[str, str]): The headers dictionary to update.
         """
         rab_data = self._data
 
-        if rab_data.encoded_locations and (
-            rab_data.expiry is not None and _helpers.utcnow() < rab_data.expiry
+        if (
+            is_regional_access_boundary_lookup_enabled()
+            and rab_data.encoded_locations
+            and (rab_data.expiry is not None and _helpers.utcnow() < rab_data.expiry)
         ):
             headers[_REGIONAL_ACCESS_BOUNDARY_HEADER] = rab_data.encoded_locations
         else:
