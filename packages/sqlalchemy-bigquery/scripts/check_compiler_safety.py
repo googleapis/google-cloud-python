@@ -178,11 +178,24 @@ def _is_escaping_sanitizer_call(node: ast.Call) -> bool:
     return False
 
 
+def _is_compiler_receiver(node: ast.AST) -> bool:
+    if (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "super"
+    ):
+        return True
+    receiver = _base_name(node).lower()
+    return "compiler" in receiver or receiver == "self"
+
+
 def _is_dispatch_sanitizer_call(node: ast.Call) -> bool:
     """Return True for SQLAlchemy compiler dispatch calls returning compiled SQL."""
     func = node.func
-    return isinstance(func, ast.Attribute) and (
-        func.attr == "process" or func.attr.startswith("visit_")
+    return (
+        isinstance(func, ast.Attribute)
+        and _is_compiler_receiver(func.value)
+        and (func.attr == "process" or func.attr.startswith("visit_"))
     )
 
 
