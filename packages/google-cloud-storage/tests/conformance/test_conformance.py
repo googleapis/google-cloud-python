@@ -17,10 +17,7 @@
 import functools
 import logging
 import os
-import subprocess
 import tempfile
-import time
-import urllib
 import uuid
 
 import pytest
@@ -36,14 +33,6 @@ _CONFORMANCE_TESTS = _read_local_json("retry_strategy_test_data.json")["retryTes
 
 """Environment variable or default host for Storage testbench emulator."""
 _HOST = os.environ.get("STORAGE_EMULATOR_HOST", "http://localhost:9000")
-_PORT = urllib.parse.urlsplit(_HOST).port
-
-"""The storage testbench docker image info and commands."""
-_DEFAULT_IMAGE_NAME = "gcr.io/cloud-devrel-public-resources/storage-testbench"
-_DEFAULT_IMAGE_TAG = "latest"
-_DOCKER_IMAGE = f"{_DEFAULT_IMAGE_NAME}:{_DEFAULT_IMAGE_TAG}"
-_PULL_CMD = ["docker", "pull", _DOCKER_IMAGE]
-_RUN_CMD = ["docker", "run", "--rm", "-d", "-p", f"{_PORT}:9000", _DOCKER_IMAGE]
 
 _CONF_TEST_PROJECT_ID = "my-project-id"
 _CONF_TEST_SERVICE_ACCOUNT_EMAIL = (
@@ -922,6 +911,7 @@ def run_test_case(
     hmac_key,
     file_data,
 ):
+    host = host or os.environ.get("STORAGE_EMULATOR_HOST", _HOST)
     scenario = _CONFORMANCE_TESTS[scenario_id - 1]
     expect_success = scenario["expectSuccess"]
     precondition_provided = scenario["preconditionProvided"]
@@ -979,29 +969,22 @@ def run_test_case(
 ### Run Conformance Tests for Retry Strategy ###########################################################################################
 ########################################################################################################################################
 
-# Pull storage-testbench docker image
-subprocess.run(_PULL_CMD)
-time.sleep(5)
+# Register retry conformance tests (storage-testbench lifecycle is managed
+# once by conftest.pytest_configure / pytest_unconfigure).
+for scenario in _CONFORMANCE_TESTS:
+    id = scenario["id"]
+    methods = scenario["methods"]
+    cases = scenario["cases"]
+    for i, c in enumerate(cases):
+        for m in methods:
+            method_name = m["name"]
+            method_group = m["group"] if m.get("group", None) else m["name"]
+            if method_group not in method_mapping:
+                logging.info(f"No tests for operation {method_name}")
+                continue
 
-# Run docker image to start storage-testbench
-with subprocess.Popen(_RUN_CMD) as proc:
-    # Run retry conformance tests
-    for scenario in _CONFORMANCE_TESTS:
-        id = scenario["id"]
-        methods = scenario["methods"]
-        cases = scenario["cases"]
-        for i, c in enumerate(cases):
-            for m in methods:
-                method_name = m["name"]
-                method_group = m["group"] if m.get("group", None) else m["name"]
-                if method_group not in method_mapping:
-                    logging.info(f"No tests for operation {method_name}")
-                    continue
-
-                for lib_func in method_mapping[method_group]:
-                    test_name = f"test-S{id}-{method_name}-{lib_func.__name__}-{i}"
-                    globals()[test_name] = functools.partial(
-                        run_test_case, id, m, c, lib_func, _HOST
-                    )
-    time.sleep(5)
-    proc.kill()
+            for lib_func in method_mapping[method_group]:
+                test_name = f"test-S{id}-{method_name}-{lib_func.__name__}-{i}"
+                globals()[test_name] = functools.partial(
+                    run_test_case, id, m, c, lib_func, None
+                )

@@ -33,6 +33,32 @@ ID_RANGE = 1000
 INSTANCE = INSTANCE_ID_FORMAT.format(random.randrange(ID_RANGE), int(time.time()))
 CLUSTER1 = CLUSTER_ID_FORMAT.format(random.randrange(ID_RANGE))
 CLUSTER2 = CLUSTER_ID_FORMAT.format(random.randrange(ID_RANGE))
+FALLBACK_ZONES = (
+    "us-central1-f",
+    "us-central1-b",
+    "us-central1-c",
+    "us-east1-b",
+    "us-west1-b",
+)
+
+
+def _is_zone_stockout(exc):
+    message = str(exc).lower()
+    return "sold out" in message or "not enough servers" in message
+
+
+def _run_with_zone_fallback(fn, zones, capsys, *args):
+    last_exc = None
+    for zone in zones:
+        capsys.readouterr()
+        try:
+            fn(*args, location_id=zone)
+            return zone
+        except exceptions.GoogleAPICallError as exc:
+            if not _is_zone_stockout(exc):
+                raise
+            last_exc = exc
+    raise last_exc
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -73,7 +99,14 @@ def dispose_of():
 def test_run_instance_operations(capsys, dispose_of):
     dispose_of(INSTANCE)
 
-    instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
+    primary_zone = _run_with_zone_fallback(
+        instanceadmin.run_instance_operations,
+        FALLBACK_ZONES,
+        capsys,
+        PROJECT,
+        INSTANCE,
+        CLUSTER1,
+    )
     out = capsys.readouterr().out
     assert f"Instance {INSTANCE} does not exist." in out
     assert "Creating an instance" in out
@@ -85,7 +118,9 @@ def test_run_instance_operations(capsys, dispose_of):
     assert "Listing clusters..." in out
     assert f"\n{CLUSTER1}\n" in out
 
-    instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
+    instanceadmin.run_instance_operations(
+        PROJECT, INSTANCE, CLUSTER1, location_id=primary_zone
+    )
     out = capsys.readouterr().out
     assert f"Instance {INSTANCE} already exists." in out
     assert "Listing instances" in out
@@ -110,7 +145,14 @@ def test_delete_instance(capsys, dispose_of):
         assert f"Instance {INSTANCE} does not exist" in out
 
         # Ok, create it then
-        instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
+        _run_with_zone_fallback(
+            instanceadmin.run_instance_operations,
+            FALLBACK_ZONES,
+            capsys,
+            PROJECT,
+            INSTANCE,
+            CLUSTER1,
+        )
         capsys.readouterr()  # throw away output
 
     _set_up_instance()
@@ -135,17 +177,33 @@ def test_add_and_delete_cluster(capsys, dispose_of):
         assert f"Instance {INSTANCE} does not exist" in out
 
         # Get the instance created
-        instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
+        primary_zone = _run_with_zone_fallback(
+            instanceadmin.run_instance_operations,
+            FALLBACK_ZONES,
+            capsys,
+            PROJECT,
+            INSTANCE,
+            CLUSTER1,
+        )
         capsys.readouterr()  # throw away output
+        return primary_zone
 
-    _set_up_instance()
+    primary_zone = _set_up_instance()
 
     # Add a cluster to that instance
     # Avoid failing for "instance is currently being changed" by
     # applying an exponential backoff
     backoff_503 = backoff.on_exception(backoff.expo, exceptions.ServiceUnavailable)
 
-    backoff_503(instanceadmin.add_cluster)(PROJECT, INSTANCE, CLUSTER2)
+    secondary_zones = tuple(z for z in FALLBACK_ZONES if z != primary_zone)
+    secondary_zone = _run_with_zone_fallback(
+        backoff_503(instanceadmin.add_cluster),
+        secondary_zones,
+        capsys,
+        PROJECT,
+        INSTANCE,
+        CLUSTER2,
+    )
     out = capsys.readouterr().out
     assert f"Adding cluster to instance {INSTANCE}" in out
     assert "Listing clusters..." in out
@@ -153,7 +211,7 @@ def test_add_and_delete_cluster(capsys, dispose_of):
     assert f"Cluster created: {CLUSTER2}" in out
 
     # Try to add the same cluster again, won't work
-    instanceadmin.add_cluster(PROJECT, INSTANCE, CLUSTER2)
+    instanceadmin.add_cluster(PROJECT, INSTANCE, CLUSTER2, location_id=secondary_zone)
     out = capsys.readouterr().out
     assert "Listing clusters..." in out
     assert f"\n{CLUSTER1}\n" in out
