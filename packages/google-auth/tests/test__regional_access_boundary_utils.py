@@ -23,6 +23,7 @@ from google.auth import (
     _helpers,
     _regional_access_boundary_utils,
     credentials,
+    environment_vars,
 )
 from google.oauth2 import credentials as oauth2_credentials
 
@@ -72,6 +73,45 @@ class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
 
 
 class TestCredentialsWithRegionalAccessBoundary(object):
+    @pytest.mark.parametrize(
+        "env_value,expected",
+        [
+            ("", True),
+            ("true", True),
+            ("unexpected", True),
+            ("false", False),
+            ("  FALSE \n", False),
+            (" 0 ", False),
+        ],
+    )
+    def test_is_regional_access_boundary_lookup_enabled_values(
+        self, monkeypatch, env_value, expected
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            env_value,
+        )
+        assert (
+            _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled()
+            is expected
+        )
+
+    def test_maybe_start_refresh_is_skipped_when_disabled_by_env_var(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            "false",
+        )
+        creds = CredentialsImpl()
+        creds.token = "access-token"
+        request = mock.Mock()
+        headers = {}
+
+        creds.before_request(request, "GET", "http://example.com", headers)
+
+        request.assert_not_called()
+        assert creds._rab_manager.refresh_manager._worker is None
+        assert headers == {"authorization": "Bearer access-token"}
+
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
     )
@@ -590,6 +630,25 @@ class AsyncCredentialsImpl(_credentials_async.CredentialsWithRegionalAccessBound
 
 
 class TestAsyncCredentialsWithRegionalAccessBoundary(object):
+    @pytest.mark.asyncio
+    async def test_maybe_start_refresh_async_skipped_when_disabled_by_env_var(
+        self, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            "false",
+        )
+        creds = AsyncCredentialsImpl()
+        creds.token = "access-token"
+        request = mock.AsyncMock()
+        headers = {}
+
+        await creds.before_request(request, "GET", "http://example.com", headers)
+
+        request.assert_not_called()
+        assert creds._rab_manager.refresh_manager._worker_task is None
+        assert headers == {"authorization": "Bearer access-token"}
+
     @pytest.mark.asyncio
     async def test_maybe_start_refresh_async_blocking(self):
         creds = AsyncCredentialsImpl()

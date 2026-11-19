@@ -490,11 +490,15 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     def _is_regional_access_boundary_lookup_required(self):
         """Checks if a Regional Access Boundary lookup is required.
 
-        A lookup is required if the universe domain is supported.
+        A lookup is required if Regional Access Boundary lookup is enabled and
+        the universe domain is supported.
 
         Returns:
             bool: True if a Regional Access Boundary lookup is required, False otherwise.
         """
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return False
+
         # Skip for non-default universe domains.
         if self.universe_domain != DEFAULT_UNIVERSE_DOMAIN:
             return False

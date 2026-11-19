@@ -20,16 +20,34 @@ import datetime
 import functools
 import inspect
 import logging
+import os
 import threading
 from typing import TYPE_CHECKING, NamedTuple, Optional
 
-from google.auth import _helpers
+from google.auth import _helpers, environment_vars
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.credentials
     import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def is_regional_access_boundary_lookup_enabled() -> bool:
+    """Checks if Regional Access Boundary lookup is enabled via environment variable.
+
+    Defaults to enabled unless
+    ``GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP`` is set to a
+    case-insensitive ``"false"`` or ``"0"`` (ignoring surrounding whitespace).
+
+    Returns:
+        bool: True if Regional Access Boundary lookup is enabled, False otherwise.
+    """
+    value = os.environ.get(
+        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        "",
+    ).strip()
+    return value.lower() not in ("false", "0")
 
 
 # The default lifetime for a cached Regional Access Boundary.

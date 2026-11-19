@@ -455,6 +455,9 @@ class Credentials(
                 HTTP requests.
             url (str): The URL of the request.
         """
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return
+
         if self._should_initialize_impersonated_credentials():
             with self._impersonation_lock:
                 if self._impersonated_credentials is None:

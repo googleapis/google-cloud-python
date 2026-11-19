@@ -20,7 +20,13 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, exceptions, external_account, transport
+from google.auth import (
+    _helpers,
+    environment_vars,
+    exceptions,
+    external_account,
+    transport,
+)
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN, TokenState
 
 IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
@@ -1059,6 +1065,27 @@ class TestCredentials(object):
 
             # Verify delegation occurred.
             mock_rab_refresh.assert_called_once_with(request, "https://example.com")
+
+    def test_cached_token_skips_impersonated_init_when_rab_disabled(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            "false",
+        )
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            scopes=self.SCOPES,
+        )
+        credentials.token = "CACHED_SA_TOKEN"
+        credentials.expiry = _helpers.utcnow() + datetime.timedelta(seconds=3600)
+
+        request = self.make_mock_request(status=http_client.OK, data={})
+        headers = {}
+        credentials.before_request(request, "GET", "https://example.com", headers)
+
+        assert credentials._impersonated_credentials is None
+        assert headers["authorization"] == "Bearer CACHED_SA_TOKEN"
+        assert "x-allowed-locations" not in headers
+        request.assert_not_called()
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",

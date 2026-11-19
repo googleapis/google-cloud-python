@@ -18,6 +18,8 @@ from unittest import mock
 
 import pytest  # type: ignore
 
+from google.auth import environment_vars
+
 
 def pytest_configure():
     """Load public certificate and private key."""
@@ -30,6 +32,14 @@ def pytest_configure():
 
     with open(os.path.join(pytest.data_dir, "public_cert.pem"), "rb") as fh:
         pytest.public_cert_bytes = fh.read()
+
+
+@pytest.fixture(autouse=True)
+def clean_rab_env(monkeypatch):
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        raising=False,
+    )
 
 
 @pytest.fixture
