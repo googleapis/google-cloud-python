@@ -137,11 +137,18 @@ async def retry_target_stream(
                 target_is_generator = bool(getattr(target_iterator, "asend", None))
 
             sent_in = None
+            # set when the target handled an exception passed through `athrow`
+            # and yielded a value in response. That value must be passed to the
+            # caller before the target is advanced again.
+            value_from_throw = False
             while True:
                 ## Read from target_iterator
                 # If the target is a generator, we will advance it with `asend`
                 # otherwise, we will use `anext`
-                if target_is_generator:
+                if value_from_throw:
+                    # next_value was already produced by `athrow`
+                    value_from_throw = False
+                elif target_is_generator:
                     next_value = await target_iterator.asend(sent_in)  # type: ignore
                 else:
                     next_value = await target_iterator.__anext__()
@@ -162,10 +169,13 @@ async def retry_target_stream(
                 except:  # noqa: E722
                     # bare except catches any exception passed to `athrow`
                     if target_is_generator:
-                        # delegate error handling to target_iterator
-                        await cast(AsyncGenerator["_Y", None], target_iterator).athrow(
-                            cast(BaseException, sys.exc_info()[1])
-                        )
+                        # delegate error handling to target_iterator. If the
+                        # target handles the error and yields a value, that
+                        # value is yielded to the caller on the next loop iteration
+                        next_value = await cast(
+                            AsyncGenerator["_Y", None], target_iterator
+                        ).athrow(cast(BaseException, sys.exc_info()[1]))
+                        value_from_throw = True
                     else:
                         raise
             return
