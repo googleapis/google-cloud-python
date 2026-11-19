@@ -13,13 +13,27 @@
 # limitations under the License.
 
 import datetime
+import http.client as http_client
 import json
 from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _jwt_async as jwt_async
-from google.auth import crypt, exceptions
+from google.auth import (
+    _helpers,
+    _regional_access_boundary_utils,
+    crypt,
+    exceptions,
+)
+from google.auth import (
+    _jwt_async as jwt_async,
+)
+from google.auth import (
+    credentials as auth_credentials,
+)
+from google.auth.aio import transport as aio_transport
+from google.auth.transport import _mtls_helper
+from google.oauth2 import service_account
 from tests import test_jwt
 
 
@@ -119,6 +133,44 @@ class TestCredentials(object):
         assert not self.credentials.valid
         # Expiration hasn't been set yet
         assert not self.credentials.expired
+        assert (
+            self.credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert isinstance(
+            self.credentials, auth_credentials.CredentialsWithUniverseDomain
+        )
+
+    def test_universe_domain(self):
+        info = {
+            **test_jwt.SERVICE_ACCOUNT_INFO,
+            "universe_domain": test_jwt.FAKE_UNIVERSE_DOMAIN,
+        }
+        from_info = jwt_async.Credentials.from_service_account_info(
+            info, audience=self.AUDIENCE
+        )
+        assert isinstance(from_info, jwt_async.Credentials)
+        assert from_info.universe_domain == test_jwt.FAKE_UNIVERSE_DOMAIN
+
+        sa_creds = service_account.Credentials.from_service_account_info(info)
+        from_signing = jwt_async.Credentials.from_signing_credentials(
+            sa_creds, audience=self.AUDIENCE
+        )
+        assert isinstance(from_signing, jwt_async.Credentials)
+        assert from_signing.universe_domain == test_jwt.FAKE_UNIVERSE_DOMAIN
+
+        self.credentials._rab_manager._data = mock.sentinel.rab_data
+        non_default = self.credentials.with_universe_domain(
+            test_jwt.FAKE_UNIVERSE_DOMAIN
+        )
+        assert isinstance(non_default, jwt_async.Credentials)
+        assert non_default.universe_domain == test_jwt.FAKE_UNIVERSE_DOMAIN
+        assert non_default._rab_manager._data.encoded_locations is None
+        assert non_default._rab_manager._data.expiry is None
+        assert non_default._rab_manager is not self.credentials._rab_manager
+        assert isinstance(
+            non_default._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
 
     def test_with_claims(self):
         new_audience = "new_audience"
@@ -244,6 +296,60 @@ class TestCredentials(object):
         )
         assert self.credentials.valid
 
+    @pytest.mark.asyncio
+    async def test_before_request_default_universe_performs_rab_lookup(
+        self, monkeypatch
+    ):
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+        self.credentials._set_blocking_regional_access_boundary_lookup()
+
+        response = mock.AsyncMock(spec=aio_transport.Response)
+        response.status_code = http_client.OK
+        response.read = mock.AsyncMock(
+            return_value=json.dumps(
+                {"locations": ["us-central1"], "encodedLocations": "0xA30"}
+            ).encode("utf-8")
+        )
+        request = mock.AsyncMock(spec=aio_transport.Request, return_value=response)
+
+        headers = {}
+        await self.credentials.before_request(
+            request,
+            "GET",
+            "https://pubsub.googleapis.com/v1/projects/p/topics",
+            headers,
+        )
+
+        assert "authorization" in headers
+        assert headers["x-allowed-locations"] == "0xA30"
+        request.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    async def test_before_request_with_universe_domain_clears_cached_rab(self):
+        self.credentials._set_regional_access_boundary(
+            {
+                "encodedLocations": "0xA30",
+                "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+            }
+        )
+        non_default = self.credentials.with_universe_domain(
+            test_jwt.FAKE_UNIVERSE_DOMAIN
+        )
+        non_default._set_blocking_regional_access_boundary_lookup()
+
+        request = mock.AsyncMock(spec=aio_transport.Request)
+        headers = {}
+        await non_default.before_request(
+            request,
+            "GET",
+            f"https://pubsub.{test_jwt.FAKE_UNIVERSE_DOMAIN}/v1/projects/p/topics",
+            headers,
+        )
+
+        assert "authorization" in headers
+        assert "x-allowed-locations" not in headers
+        request.assert_not_called()
+
 
 class TestOnDemandCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"
@@ -323,6 +429,32 @@ class TestOnDemandCredentials(object):
         assert self.credentials.valid
         # Credentials *never* expire.
         assert not self.credentials.expired
+        assert (
+            self.credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert isinstance(
+            self.credentials, auth_credentials.CredentialsWithUniverseDomain
+        )
+
+    def test_universe_domain(self):
+        info = {
+            **test_jwt.SERVICE_ACCOUNT_INFO,
+            "universe_domain": test_jwt.FAKE_UNIVERSE_DOMAIN,
+        }
+        from_info = jwt_async.OnDemandCredentials.from_service_account_info(info)
+        assert isinstance(from_info, jwt_async.OnDemandCredentials)
+        assert from_info.universe_domain == test_jwt.FAKE_UNIVERSE_DOMAIN
+
+        sa_creds = service_account.Credentials.from_service_account_info(info)
+        from_signing = jwt_async.OnDemandCredentials.from_signing_credentials(sa_creds)
+        assert isinstance(from_signing, jwt_async.OnDemandCredentials)
+        assert from_signing.universe_domain == test_jwt.FAKE_UNIVERSE_DOMAIN
+
+        non_default = self.credentials.with_universe_domain(
+            test_jwt.FAKE_UNIVERSE_DOMAIN
+        )
+        assert isinstance(non_default, jwt_async.OnDemandCredentials)
+        assert non_default.universe_domain == test_jwt.FAKE_UNIVERSE_DOMAIN
 
     def test_with_claims(self):
         new_claims = {"meep": "moop"}
