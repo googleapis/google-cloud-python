@@ -268,3 +268,61 @@ class TestCompiler(SpannerSimpleTestClass):
         end_index = sql.index(")")
         subquery_sql = sql[start_index:end_index]
         self.assertNotIn("WHERE", subquery_sql)
+
+    def test_get_converters_deduplicates_jsonfield_from_db_value(self):
+        from django.db.models import JSONField
+        from django.db.models.expressions import Col
+        from django.db.models.sql import Query
+
+        from django_spanner.compiler import SQLCompiler
+        from tests.unit.django_spanner.models import Number
+
+        field = JSONField()
+        field.set_attributes_from_name("value")
+        expr = Col("tests_detail", field)
+        query = Query(Number)
+        compiler = SQLCompiler(query, self.connection, "default")
+        converters = compiler.get_converters([expr])
+        self.assertIn(0, converters)
+        convs, _ = converters[0]
+        self.assertIn(self.connection.ops.convert_jsonfield_value, convs)
+        self.assertNotIn(field.from_db_value, convs)
+
+        class TaggedJSONField(JSONField):
+            def from_db_value(self, value, expression, connection):
+                return value
+
+        sub_field = TaggedJSONField()
+        sub_field.set_attributes_from_name("value")
+        sub_expr = Col("tests_detail", sub_field)
+        sub_converters = compiler.get_converters([sub_expr])
+        sub_convs, _ = sub_converters[0]
+        self.assertIn(self.connection.ops.convert_jsonfield_value, sub_convs)
+        self.assertIn(sub_field.from_db_value, sub_convs)
+
+    def test_bare_select_uses_from_unnest(self):
+        """Test that model-less SELECT queries emit FROM UNNEST([1])."""
+        from django.db.models import BooleanField, Value
+        from django.db.models.functions import Coalesce
+        from django.db.models.sql import Query
+
+        query = Query(None)
+        query.add_annotation(Value(1), "_check")
+        compiler = SQLCompiler(query, self.connection, "default")
+        sql, parameters = compiler.as_sql()
+        self.assertEqual(sql, "SELECT %s AS _check  FROM UNNEST([1])")
+        self.assertEqual(parameters, (1,))
+
+        query_with_where = Query(None)
+        query_with_where.add_annotation(Value(10), "num", select=False)
+        query_with_where.add_annotation(Value(1), "_check")
+        query_with_where.add_q(
+            Q(Coalesce(Q(num__gt=0), True, output_field=BooleanField()))
+        )
+        compiler = SQLCompiler(query_with_where, self.connection, "default")
+        sql, parameters = compiler.as_sql()
+        self.assertEqual(
+            sql,
+            "SELECT %s AS _check  FROM UNNEST([1]) WHERE COALESCE((%s > %s), %s)",
+        )
+        self.assertEqual(parameters, (1, 10, 0, True))

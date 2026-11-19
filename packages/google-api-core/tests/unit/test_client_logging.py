@@ -2,11 +2,19 @@ import json
 import logging
 from unittest import mock
 
+import pytest
+
+from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_logging import (
     StructuredLogFormatter,
     initialize_logging,
+    is_error_logging_enabled,
     setup_logging,
 )
+
+DEFAULT_CONSUMER_PROJECT = "projects/123"
+SAMPLE_TRACE_ID = "0123456789abcdef0123456789abcdef"
+SAMPLE_SPAN_ID = "0123456789abcdef"
 
 
 def reset_logger(scope):
@@ -139,11 +147,6 @@ def test_structured_log_formatter():
     assert parsed_msg["rpcName"] == "bar"
 
 
-DEFAULT_CONSUMER_PROJECT = "projects/123"
-SAMPLE_TRACE_ID = "0123456789abcdef0123456789abcdef"
-SAMPLE_SPAN_ID = "0123456789abcdef"
-
-
 def test_structured_log_formatter_json_fields_and_wildcard_metadata():
     record = logging.LogRecord(
         name="google.cloud.secretmanager_v1",
@@ -223,3 +226,82 @@ def test_structured_log_formatter_json_fields_only():
         "gcp.errors.metadata.service",
         "custom_from_json_fields",
     ]
+
+
+@pytest.mark.parametrize(
+    "env_var_name,env_val,kwargs,expected",
+    [
+        pytest.param(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED",
+            None,
+            {},
+            False,
+            id="experimental_env_missing_default_false",
+        ),
+        pytest.param(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED",
+            "true",
+            {},
+            True,
+            id="experimental_env_true",
+        ),
+        pytest.param(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED",
+            "true",
+            {"client_options": {"logger_provider": object()}},
+            True,
+            id="experimental_env_true_with_logger_provider",
+        ),
+        pytest.param(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED",
+            "false",
+            {},
+            False,
+            id="experimental_env_false",
+        ),
+        pytest.param(
+            "GOOGLE_SDK_PYTHON_LOGGING_ENABLED",
+            None,
+            {"env_var": "GOOGLE_SDK_PYTHON_LOGGING_ENABLED"},
+            False,
+            id="ga_env_missing_default_false",
+        ),
+        pytest.param(
+            "GOOGLE_SDK_PYTHON_LOGGING_ENABLED",
+            None,
+            {
+                "client_options": {"logger_provider": object()},
+                "env_var": "GOOGLE_SDK_PYTHON_LOGGING_ENABLED",
+            },
+            True,
+            id="ga_enabled_via_logger_provider",
+        ),
+        pytest.param(
+            "GOOGLE_SDK_PYTHON_LOGGING_ENABLED",
+            "true",
+            {"env_var": "GOOGLE_SDK_PYTHON_LOGGING_ENABLED"},
+            True,
+            id="ga_enabled_via_env_var",
+        ),
+    ],
+)
+def test_is_error_logging_enabled(monkeypatch, env_var_name, env_val, kwargs, expected):
+    if env_val is None:
+        monkeypatch.delenv(env_var_name, raising=False)
+    else:
+        monkeypatch.setenv(env_var_name, env_val)
+
+    assert is_error_logging_enabled(**kwargs) is expected
+
+
+@pytest.mark.parametrize("env_val", [None, "false"], ids=["env_missing", "env_false"])
+def test_is_error_logging_enabled_experimental_requires_env_var(monkeypatch, env_val):
+    if env_val is None:
+        monkeypatch.delenv(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", raising=False
+        )
+    else:
+        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", env_val)
+
+    with pytest.raises(FeatureGatingError):
+        is_error_logging_enabled({"logger_provider": object()})
