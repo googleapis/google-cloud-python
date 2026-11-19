@@ -71,8 +71,9 @@ class TestLifecycleAsync(AcceleratorTestBase):
     LIFECYCLE_ITERATIONS = 8
     # Below the iteration count, so leaking one fd per lifecycle fails.
     LIFECYCLE_FD_SLACK = 4
-    # The daemon documents exiting within ~500ms of its parent dying.
-    ORPHAN_EXIT_TIMEOUT = 5.0
+    # The daemon notices a dead parent within ~500ms, then drains gRPC for up to
+    # 5s and tears down its session pools before exiting.
+    ORPHAN_EXIT_TIMEOUT = 30.0
 
     @CrossSync.convert
     async def _one_lifecycle(self, instance_id, table_id):

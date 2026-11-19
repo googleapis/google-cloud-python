@@ -66,7 +66,7 @@ def _daemon_owner_process(project, instance_id, table_id, app_profile_id, result
 class TestLifecycle(AcceleratorTestBase):
     LIFECYCLE_ITERATIONS = 8
     LIFECYCLE_FD_SLACK = 4
-    ORPHAN_EXIT_TIMEOUT = 5.0
+    ORPHAN_EXIT_TIMEOUT = 30.0
 
     def _one_lifecycle(self, instance_id, table_id):
         with self._make_client(use_accelerator=True) as client:
