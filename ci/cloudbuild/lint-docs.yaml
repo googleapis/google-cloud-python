@@ -67,7 +67,7 @@ steps:
       import get_package_shards
 
       disabled_packages = {
-          package_path.strip().rstrip("/") + "/"
+          package_path.strip().rstrip("/")
           for package_path in os.environ.get("DISABLED_PACKAGES", "").replace(",", " ").split()
           if package_path.strip()
       }
@@ -76,10 +76,12 @@ steps:
       def filtered_get_packages(*args, **kwargs):
           filtered_packages = {}
           for package_name, package_paths in original_get_packages(
-              *args, **kwargs
+              handwritten_only=False
           ).items():
               kept_paths = [
-                  path for path in package_paths if path not in disabled_packages
+                  path
+                  for path in package_paths
+                  if path.strip().rstrip("/") not in disabled_packages
               ]
               if kept_paths:
                   filtered_packages[package_name] = kept_paths
