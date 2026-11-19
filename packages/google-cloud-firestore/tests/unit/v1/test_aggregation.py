@@ -722,18 +722,11 @@ def _aggregation_query_stream_w_retriable_exc_helper(
     if transaction is not None:
         expect_retry = False
 
-    # Create a minimal fake GAPIC.
-    firestore_api = mock.Mock(spec=["run_aggregation_query", "_transport"])
-    transport = firestore_api._transport = mock.Mock(spec=["run_aggregation_query"])
-    stub = transport.run_aggregation_query = mock.create_autospec(
-        gapic_v1.method._GapicCallable
-    )
-    stub._retry = mock.Mock(spec=["_predicate"])
-    stub._predicate = lambda exc: True  # pragma: NO COVER
-
-    # Attach the fake GAPIC to a real client.
+    # Use the client's real GAPIC client and transport, so the default retry
+    # policy is looked up as it is in production. Stub out only the RPC.
     client = make_client()
-    client._firestore_api_internal = firestore_api
+    firestore_api = client._firestore_api
+    firestore_api.run_aggregation_query = mock.Mock()
 
     # Make a **real** collection reference as parent.
     parent = client.collection("dee")
@@ -744,10 +737,13 @@ def _aggregation_query_stream_w_retriable_exc_helper(
     retriable_exc = exceptions.ServiceUnavailable("testing")
 
     def _stream_w_exception(*_args, **_kw):
-        yield response_pb
         raise retriable_exc
+        yield  # pragma: NO COVER
 
-    firestore_api.run_aggregation_query.side_effect = [_stream_w_exception(), iter([])]
+    firestore_api.run_aggregation_query.side_effect = [
+        _stream_w_exception(),
+        iter([response_pb]),
+    ]
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
@@ -759,14 +755,16 @@ def _aggregation_query_stream_w_retriable_exc_helper(
     )
 
     assert isinstance(get_response, stream_generator.StreamGenerator)
-    if expect_retry:
-        returned = list(get_response)
-    else:
-        returned = [next(get_response)]
-        with pytest.raises(exceptions.ServiceUnavailable):
-            next(get_response)
+    with mock.patch("time.sleep") as sleep:
+        if expect_retry:
+            returned = list(get_response)
+        else:
+            with pytest.raises(exceptions.ServiceUnavailable):
+                next(get_response)
+            returned = []
 
-    assert len(returned) == 1
+    assert sleep.call_count == (1 if expect_retry else 0)
+    assert len(returned) == (1 if expect_retry else 0)
 
     for result in returned:
         for r in result:
@@ -839,6 +837,103 @@ def test_aggregation_query_stream_w_retriable_exc_w_transaction():
     txn = transaction.Transaction(client=mock.Mock(spec=[]))
     txn._id = b"DEADBEEF"
     _aggregation_query_stream_w_retriable_exc_helper(transaction=txn)
+
+
+def test_aggregation_query__retry_query_after_exception_w_default_retry():
+    # Regression test for #19129: the default retry policy must be read from
+    # the wrapped GAPIC method, not from the raw gRPC stub.
+    from google.api_core import exceptions, gapic_v1
+
+    client = make_client()
+    aggregation_query = make_aggregation_query(make_query(client.collection("dee")))
+    default = gapic_v1.method.DEFAULT
+
+    assert aggregation_query._retry_query_after_exception(
+        exceptions.ServiceUnavailable("x"), default, None
+    )
+    assert not aggregation_query._retry_query_after_exception(
+        exceptions.PermissionDenied("x"), default, None
+    )
+    assert not aggregation_query._retry_query_after_exception(
+        exceptions.ServiceUnavailable("x"), None, None
+    )
+
+
+@pytest.mark.parametrize("retriable", [True, False])
+def test_aggregation_query_stream_not_resumed_after_result_yielded(retriable):
+    # An aggregation has a single result. Re-running the query after that
+    # result was yielded would yield it a second time. A retryable error
+    # therefore ends the stream cleanly, and other errors are raised.
+    from google.api_core import exceptions
+
+    client = make_client()
+    client._firestore_api.run_aggregation_query = mock.Mock()
+    response_pb = make_aggregation_query_response(
+        [AggregationResult(alias="total", value=5)]
+    )
+    if retriable:
+        exc = exceptions.ServiceUnavailable("testing")
+    else:
+        exc = exceptions.PermissionDenied("testing")
+
+    def _stream_w_exception(*_args, **_kw):
+        yield response_pb
+        raise exc
+
+    client._firestore_api.run_aggregation_query.side_effect = [
+        _stream_w_exception(),
+        iter([response_pb]),
+    ]
+    aggregation_query = make_aggregation_query(make_query(client.collection("dee")))
+
+    stream = aggregation_query.stream()
+    with mock.patch("time.sleep") as sleep:
+        assert len(next(stream)) == 1
+        if retriable:
+            assert list(stream) == []
+        else:
+            with pytest.raises(exceptions.PermissionDenied) as exc_info:
+                next(stream)
+            assert exc_info.value is exc
+
+    sleep.assert_not_called()
+    assert client._firestore_api.run_aggregation_query.call_count == 1
+
+
+def test_aggregation_query_stream_resume_gives_up_after_retry_timeout():
+    from google.api_core import exceptions
+    from google.api_core import retry as retries
+
+    client = make_client()
+    exc = exceptions.ServiceUnavailable("testing")
+
+    def _stream_w_exception(*_args, **_kw):
+        raise exc
+        yield  # pragma: NO COVER
+
+    client._firestore_api.run_aggregation_query = mock.Mock(
+        side_effect=_stream_w_exception
+    )
+    aggregation_query = make_aggregation_query(make_query(client.collection("dee")))
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
+        initial=1.0,
+        maximum=1.0,
+        timeout=10.0,
+    )
+
+    # The clock advances 4 seconds per check: give up on the third attempt.
+    clock = iter(range(0, 100, 4))
+    with (
+        mock.patch("time.sleep") as sleep,
+        mock.patch("time.monotonic", side_effect=lambda: next(clock)),
+    ):
+        with pytest.raises(exceptions.ServiceUnavailable) as exc_info:
+            list(aggregation_query.stream(retry=retry))
+
+    assert exc_info.value is exc
+    assert sleep.call_count == 2
+    assert client._firestore_api.run_aggregation_query.call_count == 3
 
 
 def _aggregation_query_stream_helper(

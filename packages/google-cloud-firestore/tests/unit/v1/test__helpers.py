@@ -2709,3 +2709,92 @@ def _make_field_path(*fields):
     from google.cloud.firestore_v1 import field_path
 
     return field_path.FieldPath(*fields)
+
+
+@pytest.mark.parametrize("method_name", ["run_query", "run_aggregation_query"])
+def test_resolve_stream_retry_w_default(method_name):
+    from google.api_core.gapic_v1.method import DEFAULT
+
+    from google.cloud.firestore_v1._helpers import resolve_stream_retry
+    from tests.unit.v1._test_helpers import make_client
+
+    client = make_client()
+    transport = client._firestore_api._transport
+    wrapped = transport._wrapped_methods[getattr(transport, method_name)]
+
+    retry = resolve_stream_retry(client, method_name, DEFAULT)
+
+    assert retry is wrapped._retry
+    assert retry is not None
+
+
+def test_resolve_stream_retry_w_default_missing_wrapped_method():
+    from google.api_core.gapic_v1.method import DEFAULT
+
+    from google.cloud.firestore_v1._helpers import resolve_stream_retry
+
+    client = mock.Mock(spec=["_firestore_api"])
+    client._firestore_api._transport._wrapped_methods = {}
+
+    assert resolve_stream_retry(client, "run_query", DEFAULT) is None
+
+
+@pytest.mark.parametrize("retry", [None, mock.sentinel.retry])
+def test_resolve_stream_retry_w_explicit(retry):
+    from google.cloud.firestore_v1._helpers import resolve_stream_retry
+
+    client = mock.Mock(spec=[])
+
+    assert resolve_stream_retry(client, "run_query", retry) is retry
+
+
+def test_stream_resume_backoff_uses_retry_settings():
+    from google.api_core.retry import Retry
+
+    from google.cloud.firestore_v1._helpers import StreamResumeBackoff
+
+    retry = Retry(initial=2.0, maximum=3.0, multiplier=10.0, timeout=None)
+    with (
+        mock.patch("random.uniform", side_effect=lambda lo, hi: hi),
+        mock.patch("time.sleep") as sleep,
+    ):
+        backoff = StreamResumeBackoff(retry)
+        assert all(backoff.wait() for _ in range(3))
+
+    assert sleep.call_args_list == [mock.call(2.0), mock.call(3.0), mock.call(3.0)]
+
+
+def test_stream_resume_backoff_gives_up_at_deadline():
+    from google.api_core.retry import Retry
+
+    from google.cloud.firestore_v1._helpers import StreamResumeBackoff
+
+    retry = Retry(initial=1.0, maximum=1.0, timeout=5.0)
+    with (
+        mock.patch("random.uniform", side_effect=lambda lo, hi: hi),
+        mock.patch("time.sleep") as sleep,
+        mock.patch("time.monotonic", side_effect=[100.0, 103.0, 104.5]),
+    ):
+        backoff = StreamResumeBackoff(retry)  # deadline: 105.0
+        assert backoff.wait() is True  # 103.0 + 1.0 <= 105.0
+        assert backoff.wait() is False  # 104.5 + 1.0 > 105.0
+
+    assert sleep.call_args_list == [mock.call(1.0)]
+
+
+def test_stream_resume_backoff_defaults_for_minimal_retry():
+    from google.cloud.firestore_v1._helpers import StreamResumeBackoff
+
+    # A retry object that defines only ``_predicate`` gets the
+    # ``google.api_core.retry.Retry`` defaults.
+    retry = mock.Mock(spec=["_predicate"])
+    with (
+        mock.patch("random.uniform", side_effect=lambda lo, hi: hi),
+        mock.patch("time.sleep") as sleep,
+        mock.patch("time.monotonic", side_effect=[0.0, 119.0, 119.5]),
+    ):
+        backoff = StreamResumeBackoff(retry)  # deadline: 120.0
+        assert backoff.wait() is True
+        assert backoff.wait() is False  # 119.5 + 2.0 > 120.0
+
+    assert sleep.call_args_list == [mock.call(1.0)]

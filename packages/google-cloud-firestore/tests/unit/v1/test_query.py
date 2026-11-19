@@ -778,16 +778,11 @@ def _query_stream_w_retriable_exc_helper(
     if transaction is not None:
         expect_retry = False
 
-    # Create a minimal fake GAPIC.
-    firestore_api = mock.Mock(spec=["run_query", "_transport"])
-    transport = firestore_api._transport = mock.Mock(spec=["run_query"])
-    stub = transport.run_query = mock.create_autospec(gapic_v1.method._GapicCallable)
-    stub._retry = mock.Mock(spec=["_predicate"])
-    stub._predicate = lambda exc: True  # pragma: NO COVER
-
-    # Attach the fake GAPIC to a real client.
+    # Use the client's real GAPIC client and transport, so the default retry
+    # policy is looked up as it is in production. Stub out only the RPC.
     client = make_client(database=database)
-    client._firestore_api_internal = firestore_api
+    firestore_api = client._firestore_api
+    firestore_api.run_query = mock.Mock()
 
     # Make a **real** collection reference as parent.
     parent = client.collection("dee")
@@ -812,13 +807,15 @@ def _query_stream_w_retriable_exc_helper(
     get_response = query.stream(transaction=transaction, read_time=read_time, **kwargs)
 
     assert isinstance(get_response, StreamGenerator)
-    if expect_retry:
-        returned = list(get_response)
-    else:
-        returned = [next(get_response)]
-        with pytest.raises(exceptions.ServiceUnavailable):
-            next(get_response)
+    with mock.patch("time.sleep") as sleep:
+        if expect_retry:
+            returned = list(get_response)
+        else:
+            returned = [next(get_response)]
+            with pytest.raises(exceptions.ServiceUnavailable):
+                next(get_response)
 
+    assert sleep.call_count == (1 if expect_retry else 0)
     assert len(returned) == 1
     snapshot = returned[0]
     assert snapshot.reference._path == ("dee", "sleep")
@@ -889,6 +886,214 @@ def test_query_stream_w_retriable_exc_w_transaction():
 def test_query_stream_w_retriable_exc_w_read_time():
     read_time = datetime.datetime.now(tz=datetime.timezone.utc)
     _query_stream_w_retriable_exc_helper(read_time=read_time)
+
+
+def _make_resumable_query(*query_methods, database=None):
+    """A query on a real client whose ``run_query`` RPC is stubbed out."""
+    client = make_client(database=database)
+    client._firestore_api.run_query = mock.Mock()
+    query = make_query(client.collection("dee"))
+    for name, args in query_methods:
+        query = getattr(query, name)(*args)
+    return client, query
+
+
+def _doc_response(client, doc_id):
+    _, expected_prefix = client.collection("dee")._parent_info()
+    return _make_query_response(
+        name="{}/{}".format(expected_prefix, doc_id), data={"id": doc_id}
+    )
+
+
+def _stream_then_raise(responses, exc):
+    yield from responses
+    raise exc
+
+
+def _sent_query(call):
+    return call.kwargs["request"]["structured_query"]
+
+
+@pytest.mark.parametrize(
+    "exc_class, expected",
+    [
+        ("ServiceUnavailable", True),
+        ("InternalServerError", True),
+        ("DeadlineExceeded", True),
+        ("PermissionDenied", False),
+        ("InvalidArgument", False),
+    ],
+)
+def test_query__retry_query_after_exception_w_default_retry(exc_class, expected):
+    # Regression test for #19129: the default retry policy must be read from
+    # the wrapped GAPIC method, not from the raw gRPC stub.
+    from google.api_core import exceptions, gapic_v1
+
+    client, query = _make_resumable_query()
+    exc = getattr(exceptions, exc_class)("testing")
+
+    assert (
+        query._retry_query_after_exception(exc, gapic_v1.method.DEFAULT, None)
+        is expected
+    )
+
+
+def test_query__retry_query_after_exception_w_retry_none():
+    from google.api_core import exceptions
+
+    client, query = _make_resumable_query()
+    exc = exceptions.ServiceUnavailable("testing")
+
+    assert query._retry_query_after_exception(exc, None, None) is False
+
+
+def test_query_stream_w_retry_none_reraises_original_exc():
+    from google.api_core import exceptions
+
+    client, query = _make_resumable_query()
+    exc = exceptions.ServiceUnavailable("testing")
+    client._firestore_api.run_query.side_effect = [_stream_then_raise([], exc)]
+
+    with pytest.raises(exceptions.ServiceUnavailable) as exc_info:
+        list(query.stream(retry=None))
+
+    assert exc_info.value is exc
+    assert client._firestore_api.run_query.call_count == 1
+
+
+def test_query_stream_w_default_retry_non_retriable_exc():
+    from google.api_core import exceptions
+
+    client, query = _make_resumable_query()
+    exc = exceptions.PermissionDenied("testing")
+    client._firestore_api.run_query.side_effect = [_stream_then_raise([], exc)]
+
+    with pytest.raises(exceptions.PermissionDenied) as exc_info:
+        list(query.stream())
+
+    assert exc_info.value is exc
+    assert client._firestore_api.run_query.call_count == 1
+
+
+def test_query_stream_resume_before_first_doc_keeps_original_cursor():
+    from google.api_core import exceptions
+
+    client, query = _make_resumable_query(
+        ("order_by", ("a",)), ("start_at", ({"a": 5},))
+    )
+    run_query = client._firestore_api.run_query
+    run_query.side_effect = [
+        _stream_then_raise([], exceptions.ServiceUnavailable("testing")),
+        iter([_doc_response(client, "one")]),
+    ]
+
+    with mock.patch("time.sleep"):
+        returned = list(query.stream())
+
+    assert [snap.id for snap in returned] == ["one"]
+    first, second = run_query.call_args_list
+    # The resumed query is the original query, start cursor included.
+    assert _sent_query(second) == _sent_query(first) == query._to_protobuf()
+    assert _sent_query(second).start_at.values
+
+
+def test_query_stream_resume_adjusts_limit_and_offset():
+    from google.api_core import exceptions
+
+    client, query = _make_resumable_query(("limit", (3,)), ("offset", (2,)))
+    run_query = client._firestore_api.run_query
+    run_query.side_effect = [
+        _stream_then_raise(
+            [_doc_response(client, "one")], exceptions.ServiceUnavailable("x")
+        ),
+        iter([_doc_response(client, "two"), _doc_response(client, "three")]),
+    ]
+
+    with mock.patch("time.sleep"):
+        returned = list(query.stream())
+
+    assert [snap.id for snap in returned] == ["one", "two", "three"]
+    resumed = _sent_query(run_query.call_args_list[1])
+    expected = query.start_after(returned[0])._copy(limit=2, offset=None)
+    assert resumed == expected._to_protobuf()
+    assert resumed.limit == 2
+    assert resumed.offset == 0
+
+
+def test_query_stream_resume_skipped_when_limit_reached():
+    from google.api_core import exceptions
+
+    client, query = _make_resumable_query(("limit", (1,)))
+    run_query = client._firestore_api.run_query
+    run_query.side_effect = [
+        _stream_then_raise(
+            [_doc_response(client, "one")], exceptions.ServiceUnavailable("x")
+        ),
+    ]
+
+    with mock.patch("time.sleep") as sleep:
+        returned = list(query.stream())
+
+    assert [snap.id for snap in returned] == ["one"]
+    assert run_query.call_count == 1
+    sleep.assert_not_called()
+
+
+def test_query_stream_resume_gives_up_after_retry_timeout():
+    from google.api_core import exceptions
+    from google.api_core import retry as retries
+
+    client, query = _make_resumable_query()
+    exc = exceptions.ServiceUnavailable("testing")
+    client._firestore_api.run_query.side_effect = lambda **_: _stream_then_raise(
+        [], exc
+    )
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
+        initial=1.0,
+        maximum=1.0,
+        timeout=10.0,
+    )
+
+    # The clock advances 4 seconds per check: give up on the third attempt.
+    clock = iter(range(0, 100, 4))
+    with (
+        mock.patch("time.sleep") as sleep,
+        mock.patch("time.monotonic", side_effect=lambda: next(clock)),
+    ):
+        with pytest.raises(exceptions.ServiceUnavailable) as exc_info:
+            list(query.stream(retry=retry))
+
+    assert exc_info.value is exc
+    assert sleep.call_count == 2
+    assert client._firestore_api.run_query.call_count == 3
+
+
+def test_query_stream_resume_backoff_resets_after_progress():
+    from google.api_core import exceptions
+
+    client, query = _make_resumable_query()
+    run_query = client._firestore_api.run_query
+    run_query.side_effect = [
+        _stream_then_raise(
+            [_doc_response(client, "one")], exceptions.ServiceUnavailable("x")
+        ),
+        _stream_then_raise(
+            [_doc_response(client, "two")], exceptions.ServiceUnavailable("x")
+        ),
+        iter([]),
+    ]
+
+    with mock.patch(
+        "google.cloud.firestore_v1._helpers.StreamResumeBackoff"
+    ) as backoff_class:
+        backoff_class.return_value.wait.return_value = True
+        returned = list(query.stream())
+
+    assert [snap.id for snap in returned] == ["one", "two"]
+    # A document arrived between the two failures, so a fresh backoff is used.
+    assert backoff_class.call_count == 2
+    assert run_query.call_count == 3
 
 
 def test_query_stream_w_explain_options():
