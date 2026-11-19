@@ -4,6 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import re
 import uuid
 from base64 import b64encode
 from datetime import timedelta
@@ -1004,15 +1005,16 @@ class TestOperations(SpannerSimpleTestClass):
             123,
         ]
         for lookup_type in invalid_lookups:
-            with self.assertRaises(ValueError):
+            expected_message = rf"^Invalid lookup type: {re.escape(repr(lookup_type))}$"
+            with self.assertRaisesRegex(ValueError, expected_message):
                 self.db_operations._validate_lookup_type(lookup_type)
-            with self.assertRaises(ValueError):
+            with self.assertRaisesRegex(ValueError, expected_message):
                 self.db_operations.date_extract_sql(lookup_type, "field")
-            with self.assertRaises(ValueError):
+            with self.assertRaisesRegex(ValueError, expected_message):
                 self.db_operations.datetime_extract_sql(
                     lookup_type, "field", None, "UTC"
                 )
-            with self.assertRaises(ValueError):
+            with self.assertRaisesRegex(ValueError, expected_message):
                 self.db_operations.time_extract_sql(lookup_type, "field")
 
     def test_trunc_lookup_type_validation(self):
@@ -1027,7 +1029,9 @@ class TestOperations(SpannerSimpleTestClass):
             "second",
         ]
         for lookup_type in valid_lookups:
-            self.db_operations._validate_trunc_lookup_type(lookup_type)
+            self.db_operations._validate_lookup_type(
+                lookup_type, error_class=OperationalError
+            )
 
         invalid_lookups = [
             "year' OR 1=1--",
@@ -1039,15 +1043,18 @@ class TestOperations(SpannerSimpleTestClass):
             123,
         ]
         for lookup_type in invalid_lookups:
-            with self.assertRaises(OperationalError):
-                self.db_operations._validate_trunc_lookup_type(lookup_type)
-            with self.assertRaises(OperationalError):
+            expected_message = rf"^Invalid lookup type: {re.escape(repr(lookup_type))}$"
+            with self.assertRaisesRegex(OperationalError, expected_message):
+                self.db_operations._validate_lookup_type(
+                    lookup_type, error_class=OperationalError
+                )
+            with self.assertRaisesRegex(OperationalError, expected_message):
                 self.db_operations.date_trunc_sql(lookup_type, "field", None)
-            with self.assertRaises(OperationalError):
+            with self.assertRaisesRegex(OperationalError, expected_message):
                 self.db_operations.datetime_trunc_sql(
                     lookup_type, "field", None, tzname="UTC"
                 )
-            with self.assertRaises(OperationalError):
+            with self.assertRaisesRegex(OperationalError, expected_message):
                 self.db_operations.time_trunc_sql(lookup_type, "field", None)
 
     @override_settings(USE_TZ=True)

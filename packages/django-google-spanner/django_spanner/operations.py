@@ -548,20 +548,16 @@ class DatabaseOperations(BaseDatabaseOperations):
             return self._prepare_tzname_delta(tzname) if tzname else None
         return self._prepare_tzname_delta(tzname) if tzname else "UTC"
 
-    def _validate_lookup_type(self, lookup_type):
-        if not isinstance(
-            lookup_type, str
-        ) or not self.extract_trunc_lookup_pattern.fullmatch(lookup_type):
-            raise ValueError(f"Invalid lookup type: {lookup_type!r}")
-
     # Django's test_trunc_lookup_name_sql_injection catches only (DataError, OperationalError),
     # unlike test_extract_lookup_name_sql_injection which also catches ValueError.
-    # OperationalError is raised here to satisfy Django's trunc exception contract.
-    def _validate_trunc_lookup_type(self, lookup_type):
+    # Callers for trunc operations pass error_class=OperationalError to satisfy Django's contract.
+    def _validate_lookup_type(
+        self, lookup_type: str, error_class: type[Exception] = ValueError
+    ) -> None:
         if not isinstance(
             lookup_type, str
         ) or not self.extract_trunc_lookup_pattern.fullmatch(lookup_type):
-            raise OperationalError(f"Invalid trunc lookup type: {lookup_type!r}")
+            raise error_class(f"Invalid lookup type: {lookup_type!r}")
 
     def date_extract_sql(self, lookup_type, field_name, params=None):
         """Extract date from the lookup.
@@ -652,7 +648,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :rtype: str
         :returns: A SQL statement for truncating.
         """
-        self._validate_trunc_lookup_type(lookup_type)
+        self._validate_lookup_type(lookup_type, error_class=OperationalError)
         params = () if params is None else tuple(params)
         # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc
         if lookup_type == "week":
@@ -685,7 +681,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :returns: A SQL statement for truncating.
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-        self._validate_trunc_lookup_type(lookup_type)
+        self._validate_lookup_type(lookup_type, error_class=OperationalError)
         params = () if params is None else tuple(params)
         if lookup_type == "week":
             # Spanner truncates to Sunday but Django expects Monday. First,
@@ -722,7 +718,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :returns: A SQL statement for truncating.
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-        self._validate_trunc_lookup_type(lookup_type)
+        self._validate_lookup_type(lookup_type, error_class=OperationalError)
         params = () if params is None else tuple(params)
         # Time is stored as TIMESTAMP with UTC time zone.
         tzname = tzname if settings.USE_TZ and tzname else "UTC"
