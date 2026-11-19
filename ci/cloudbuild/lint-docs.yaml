@@ -1,0 +1,266 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+steps:
+  - name: 'us-central1-docker.pkg.dev/client-library-releases/release-images-prod/python-multi@sha256:d529954c373542171f9fc411e0102cebe542b511e320a965edf8820285f4f122'
+    id: 'run-lint-docs-shard'
+    env:
+      - 'CI=true'
+      - 'PIP_BREAK_SYSTEM_PACKAGES=1'
+      # Use uv for fast isolated virtualenvs per package worker without shared-env lock races.
+      - 'NOX_DEFAULT_VENV_BACKEND=uv'
+      - 'UV_VENV_SEED=1'
+      - 'UV_CONCURRENT_BUILDS=1'
+      # Pass sharding and diff parameters consumed by ci/get_package_shards.py.
+      - 'MAX_SHARDS=${_MAX_SHARDS}'
+      - 'SHARD_INDEX=${_SHARD_INDEX}'
+      - 'MIN_SHARD_WEIGHT=${_MIN_SHARD_WEIGHT}'
+      - 'BUILD_TYPE=${_BUILD_TYPE}'
+      - 'TARGET_BRANCH=${_BASE_BRANCH}'
+      - 'TEST_ALL_PACKAGES=${_TEST_ALL_PACKAGES}'
+      - 'DISABLED_PACKAGES=${_DISABLED_PACKAGES}'
+      - 'PACKAGE_WEIGHTS=${_PACKAGE_WEIGHTS}'
+      # Accept _NOX_SESSION from Cloud Build trigger substitutions while running all configured _TEST_TYPES.
+      - 'TRIGGER_NOX_SESSION=${_NOX_SESSION}'
+      - 'TEST_TYPES=${_TEST_TYPES}'
+      # Configure parallel package execution, time budget/threshold, and unbuffered Python output.
+      - 'PARALLEL_WORKERS=${_PARALLEL_WORKERS}'
+      - 'CONTINUE_ON_ERROR=true'
+      - 'TIME_BUDGET_MINUTES=${_TIME_BUDGET_MINUTES}'
+      - 'HARD_TIMEOUT_MINUTES=${_HARD_TIMEOUT_MINUTES}'
+      - 'PYTHONUNBUFFERED=1'
+    script: |
+      #!/usr/bin/env bash
+      set -eo pipefail
+
+      # ci/run_single_test.sh requires PY_VERSION to be non-empty even for unversioned sessions.
+      export PY_VERSION="unused"
+
+      # Deepen both the checked-out PR commit and target branch history so git diff in
+      # ci/get_package_shards.py finds the merge base in Cloud Build's shallow checkout,
+      # and populate local refs/heads/${TARGET_BRANCH} so ci/run_conditional_tests.sh's
+      # local insteadOf fetch succeeds silently.
+      git fetch --no-tags --quiet origin \
+        "$(git rev-parse HEAD)" \
+        "+refs/heads/${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" \
+        "+refs/heads/${TARGET_BRANCH}:refs/heads/${TARGET_BRANCH}" \
+        --depth=200 || true
+
+      # Import ci/get_package_shards.py without modifying the script on disk.
+      # Filter get_packages() in memory to exclude _DISABLED_PACKAGES.
+      PACKAGE_LIST=$(python3 -c '
+      import os
+      import sys
+
+      sys.path.insert(0, "ci")
+      import get_package_shards
+
+      disabled_packages = {
+          package_path.strip().rstrip("/")
+          for package_path in os.environ.get("DISABLED_PACKAGES", "").replace(",", " ").split()
+          if package_path.strip()
+      }
+
+      original_get_packages = get_package_shards.get_packages
+      def filtered_get_packages(*args, **kwargs):
+          filtered_packages = {}
+          for package_name, package_paths in original_get_packages(
+              handwritten_only=False
+          ).items():
+              kept_paths = [
+                  path
+                  for path in package_paths
+                  if path.strip().rstrip("/") not in disabled_packages
+              ]
+              if kept_paths:
+                  filtered_packages[package_name] = kept_paths
+          return filtered_packages
+
+      get_package_shards.get_packages = filtered_get_packages
+
+      packages_to_test = get_package_shards.get_packages_to_test()
+      shards = get_package_shards.group_packages(packages_to_test)
+
+      shard_index = int(os.environ.get("SHARD_INDEX", "0"))
+      print(shards[shard_index].get("packages", "") if shard_index < len(shards) else "")
+      ')
+
+      # Report immediate green (< 10s) if no packages in this PR map to this shard index.
+      if [[ -z "${PACKAGE_LIST}" ]]; then
+        echo "No packages assigned to shard ${SHARD_INDEX}. Exiting 0."
+        exit 0
+      fi
+
+      echo "Installing build, twine, nox, and uv..."
+      python3 -m pip install --quiet --upgrade setuptools pip wheel build twine nox uv
+
+      # Create runtime shims in /tmp/cloudbuild_shims so tracked repository files remain unmodified.
+      mkdir -p /tmp/cloudbuild_shims /tmp/cloudbuild_pkg_times
+
+      # Nox wrapper (/tmp/cloudbuild_shims/nox):
+      # - Streams live output prefixed with `[<package_name>:<test_type>]` to fd 3 so Cloud Build
+      #   logs show real-time progress across parallel workers.
+      # - Records per-session elapsed seconds in /tmp/cloudbuild_pkg_times/<package_name> so the
+      #   EXIT summary evaluates cumulative package runtime across all lint/docs checks.
+      # - Emits full session output on failure so ruff/flake8/mypy/sphinx errors appear in the
+      #   end-of-phase failure summary from ci/run_conditional_tests.sh.
+      cat << 'EOF' > /tmp/cloudbuild_shims/nox
+      #!/usr/bin/env bash
+      PACKAGE_NAME=$(basename "$PWD")
+      SESSION_LABEL="${TEST_TYPE:-nox}"
+      TEMP_LOG_FILE=$(mktemp)
+      START_TIME=$(date +%s)
+      echo "[${PACKAGE_NAME}:${SESSION_LABEL}] Starting nox $*" >&3
+      python3 -m nox "$@" 2>&1 | python3 -u -c '
+      import os, sys
+      sys.stdin.reconfigure(encoding="utf-8", errors="replace")
+      prefix = f"[{sys.argv[1]}] "
+      with open(sys.argv[2], "w", buffering=1, encoding="utf-8", errors="replace") as log_f, \
+           os.fdopen(3, "w", buffering=1, closefd=False, encoding="utf-8", errors="replace") as live_f:
+          for line in sys.stdin:
+              log_f.write(line)
+              live_f.write(prefix + line)
+      ' "${PACKAGE_NAME}:${SESSION_LABEL}" "${TEMP_LOG_FILE}"
+      EXIT_CODE=${PIPESTATUS[0]}
+
+      ELAPSED_SECONDS=$(( $(date +%s) - START_TIME ))
+      echo "${ELAPSED_SECONDS}" >> "/tmp/cloudbuild_pkg_times/${PACKAGE_NAME}"
+      echo "[${PACKAGE_NAME}:${SESSION_LABEL}] Completed in $(( ELAPSED_SECONDS / 60 ))m $(printf '%02d' $(( ELAPSED_SECONDS % 60 )))s (exit=${EXIT_CODE})" >&3
+
+      if [[ ${EXIT_CODE} -ne 0 ]]; then
+        cat "${TEMP_LOG_FILE}"
+      fi
+      rm -f "${TEMP_LOG_FILE}"
+      exit ${EXIT_CODE}
+      EOF
+      chmod +x /tmp/cloudbuild_shims/nox
+
+      export PATH="/tmp/cloudbuild_shims:${PATH}"
+      exec 3>&1
+
+      print_weight_summary() {
+        python3 -c '
+      import glob
+      import os
+
+      budget_minutes = int(os.environ.get("TIME_BUDGET_MINUTES", "20"))
+      hard_minutes = int(os.environ.get("HARD_TIMEOUT_MINUTES", "30"))
+      budget_seconds = budget_minutes * 60
+
+      weights = {}
+      for line in os.environ.get("PACKAGE_WEIGHTS", "").splitlines():
+          line = line.strip()
+          if line and not line.startswith("#") and ":" in line:
+              k, v = line.split(":", 1)
+              try:
+                  weights[k.strip()] = int(v.strip())
+              except ValueError:
+                  pass
+
+      adjustments = []
+      print("\n============================================================")
+      print("Per-package cumulative lint & docs runtime:")
+      for path in sorted(glob.glob("/tmp/cloudbuild_pkg_times/*")):
+          pkg = os.path.basename(path)
+          with open(path) as f:
+              elapsed = sum(int(x.strip()) for x in f if x.strip().isdigit())
+          pct = (elapsed * 100 + budget_seconds // 2) // budget_seconds
+          mins, secs = divmod(elapsed, 60)
+          configured = weights.get(pkg, 1)
+          proposed = max(1, (elapsed + 30) // 60)
+          print(
+              f"  {pkg}: {mins}m {secs:02d}s ({pct}% of {budget_minutes}m budget, "
+              f"{hard_minutes}m hard threshold; weight={configured})"
+          )
+          if abs(proposed - configured) >= 3:
+              adjustments.append(
+                  f"  {pkg}: {proposed}  # was {configured} (actual: {mins}m {secs:02d}s)"
+              )
+
+      print("------------------------------------------------------------")
+      if adjustments:
+          print("⚠️  WEIGHT ADJUSTMENTS NEEDED (drifted >= 3m from configured weight):")
+          for item in adjustments:
+              print(item)
+      else:
+          print("✅ WEIGHT SUMMARY: No weight adjustments needed (all packages within 2m of configured weight).")
+      print("============================================================")
+      '
+      }
+      trap print_weight_summary EXIT
+
+      export PACKAGE_LIST
+      echo "=== Lint & Docs Shard ${SHARD_INDEX}/${MAX_SHARDS} running [${TEST_TYPES}] for: ${PACKAGE_LIST} ==="
+
+      # Pre-build local gcp-sphinx-docfx-yaml wheel if docfx is included in TEST_TYPES
+      # (mirrors .github/workflows/docs.yml so local changes to gcp-sphinx-docfx-yaml are tested).
+      if [[ " ${TEST_TYPES} " == *" docfx "* ]] && [[ -d "packages/gcp-sphinx-docfx-yaml" ]]; then
+        mkdir -p /tmp/local_wheels
+        python3 -m pip wheel --quiet --no-deps packages/gcp-sphinx-docfx-yaml -w /tmp/local_wheels
+        WHEEL_PATHS=(/tmp/local_wheels/gcp_sphinx_docfx_yaml-*.whl)
+        if [[ -f "${WHEEL_PATHS[0]}" ]]; then
+          echo "gcp-sphinx-docfx-yaml @ file://${WHEEL_PATHS[0]}" > /tmp/uv_overrides.txt
+        else
+          echo "ERROR: Expected local wheel /tmp/local_wheels/gcp_sphinx_docfx_yaml-*.whl not found." >&2
+          exit 1
+        fi
+      fi
+
+      OVERALL_EXIT=0
+      for test_type in ${TEST_TYPES}; do
+        echo ""
+        echo ">>> Starting phase: TEST_TYPE=${test_type} <<<"
+        export TEST_TYPE="${test_type}"
+        if [[ "${test_type}" == "docfx" ]] && [[ -f /tmp/uv_overrides.txt ]]; then
+          UV_OVERRIDE=/tmp/uv_overrides.txt \
+          UV_FIND_LINKS=/tmp/local_wheels \
+          PIP_FIND_LINKS=/tmp/local_wheels \
+          ./ci/run_conditional_tests.sh || OVERALL_EXIT=1
+        else
+          ./ci/run_conditional_tests.sh || OVERALL_EXIT=1
+        fi
+      done
+
+      exit ${OVERALL_EXIT}
+
+# Hard 30-minute (1800s) CI timeout ceiling.
+timeout: 1800s
+
+substitutions:
+  _MAX_SHARDS: '5'
+  _SHARD_INDEX: '0'
+  _MIN_SHARD_WEIGHT: '10'
+  _PARALLEL_WORKERS: '4'
+  _TIME_BUDGET_MINUTES: '20'
+  _HARD_TIMEOUT_MINUTES: '30'
+  _BUILD_TYPE: 'presubmit'
+  _BASE_BRANCH: 'main'
+  _TEST_ALL_PACKAGES: 'false'
+  _DISABLED_PACKAGES: ''
+  _NOX_SESSION: 'lint'
+  _TEST_TYPES: 'lint lint_setup_py twine_check mypy docs docfx'
+  # Initial weights seeded from .github/workflows/docs.yml for large autodoc workloads.
+  _PACKAGE_WEIGHTS: |
+    google-ads-admanager: 9
+    google-cloud-compute: 50
+    google-cloud-compute-v1beta: 120
+    google-cloud-dialogflow: 9
+    google-cloud-dialogflow-cx: 9
+    google-cloud-discoveryengine: 15
+    google-cloud-network-security: 9
+    google-cloud-retail: 9
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
