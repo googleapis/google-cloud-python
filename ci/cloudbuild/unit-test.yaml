@@ -106,16 +106,17 @@ steps:
       echo "Installing nox, nox-uv, uv, and coverage..."
       python3 -m pip install --quiet --upgrade setuptools pip wheel nox nox-uv uv coverage
 
-      # Ensure every requested Python version (e.g. pre-release 3.15) is available to uv/nox.
-      for py_ver in ${PYTHON_VERSIONS}; do
-        if ! command -v "python${py_ver}" >/dev/null 2>&1; then
-          echo "Installing Python ${py_ver} via uv..."
-          uv python install "${py_ver}"
-        fi
-      done
-
       # Create runtime shims in /tmp/cloudbuild_shims so tracked repository files remain unmodified.
       mkdir -p /tmp/cloudbuild_shims /tmp/cloudbuild_pkg_times
+
+      # Ensure every requested Python version (e.g. pre-release 3.15) is on PATH for both uv and virtualenv.
+      for py_ver in ${PYTHON_VERSIONS} ${CORE_DEPS_PYTHON_VERSION}; do
+        if ! command -v "python${py_ver}" >/dev/null 2>&1 && [[ ! -x "/tmp/cloudbuild_shims/python${py_ver}" ]]; then
+          echo "Installing Python ${py_ver} via uv..."
+          uv python install "${py_ver}"
+          ln -sf "$(uv python find "${py_ver}")" "/tmp/cloudbuild_shims/python${py_ver}"
+        fi
+      done
 
       # Nox wrapper (/tmp/cloudbuild_shims/nox):
       # - Streams live output prefixed with `[<package_name>:<phase>]` to fd 3 so Cloud Build
@@ -126,22 +127,33 @@ steps:
       #   failure summary from ci/run_conditional_tests.sh.
       cat << 'EOF' > /tmp/cloudbuild_shims/nox
       #!/usr/bin/env bash
+      set -eo pipefail
+      # Fall back fd 3 to stdout if invoked outside the parent script (e.g. local debugging).
+      { true >&3; } 2>/dev/null || exec 3>&1
       PACKAGE_NAME=$(basename "$PWD")
       SESSION_LABEL="${TEST_TYPE:-nox}-${PY_VERSION:-all}"
       TEMP_LOG_FILE=$(mktemp)
+      # Ensure the temporary log file is always removed on normal exit, errors, or signals.
+      trap 'rm -f "${TEMP_LOG_FILE}"' EXIT
       START_TIME=$(date +%s)
       echo "[${PACKAGE_NAME}:${SESSION_LABEL}] Starting nox $*" >&3
+      # Temporarily disable -e rather than appending `|| true`, which would overwrite PIPESTATUS[0].
+      set +e
       python3 -m nox "$@" 2>&1 | python3 -u -c '
       import os, sys
       sys.stdin.reconfigure(encoding="utf-8", errors="replace")
       prefix = f"[{sys.argv[1]}] "
-      with open(sys.argv[2], "w", buffering=1, encoding="utf-8", errors="replace") as log_f, \
-           os.fdopen(3, "w", buffering=1, closefd=False, encoding="utf-8", errors="replace") as live_f:
+      try:
+          live_f = os.fdopen(3, "w", buffering=1, closefd=False, encoding="utf-8", errors="replace")
+      except OSError:
+          live_f = sys.stdout
+      with open(sys.argv[2], "w", buffering=1, encoding="utf-8", errors="replace") as log_f:
           for line in sys.stdin:
               log_f.write(line)
               live_f.write(prefix + line)
       ' "${PACKAGE_NAME}:${SESSION_LABEL}" "${TEMP_LOG_FILE}"
       EXIT_CODE=${PIPESTATUS[0]}
+      set -e
 
       ELAPSED_SECONDS=$(( $(date +%s) - START_TIME ))
       echo "${ELAPSED_SECONDS}" >> "/tmp/cloudbuild_pkg_times/${PACKAGE_NAME}"
@@ -150,7 +162,6 @@ steps:
       if [[ ${EXIT_CODE} -ne 0 ]]; then
         cat "${TEMP_LOG_FILE}"
       fi
-      rm -f "${TEMP_LOG_FILE}"
       exit ${EXIT_CODE}
       EOF
       chmod +x /tmp/cloudbuild_shims/nox
