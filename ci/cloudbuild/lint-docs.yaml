@@ -119,14 +119,15 @@ steps:
       #!/usr/bin/env bash
       PACKAGE_NAME=$(basename "$PWD")
       SESSION_LABEL="${TEST_TYPE:-nox}"
-      REAL_NOX=$(which -a nox | grep -v '/tmp/cloudbuild_shims' | head -n 1)
       TEMP_LOG_FILE=$(mktemp)
       START_TIME=$(date +%s)
       echo "[${PACKAGE_NAME}:${SESSION_LABEL}] Starting nox $*" >&3
-      "$REAL_NOX" "$@" 2>&1 | python3 -u -c '
+      python3 -m nox "$@" 2>&1 | python3 -u -c '
       import os, sys
+      sys.stdin.reconfigure(encoding="utf-8", errors="replace")
       prefix = f"[{sys.argv[1]}] "
-      with open(sys.argv[2], "w", buffering=1) as log_f, os.fdopen(3, "w", buffering=1, closefd=False) as live_f:
+      with open(sys.argv[2], "w", buffering=1, encoding="utf-8", errors="replace") as log_f, \
+           os.fdopen(3, "w", buffering=1, closefd=False, encoding="utf-8", errors="replace") as live_f:
           for line in sys.stdin:
               log_f.write(line)
               live_f.write(prefix + line)
