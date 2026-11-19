@@ -208,8 +208,13 @@ steps:
       if [[ " ${TEST_TYPES} " == *" docfx "* ]] && [[ -d "packages/gcp-sphinx-docfx-yaml" ]]; then
         mkdir -p /tmp/local_wheels
         python3 -m pip wheel --quiet --no-deps packages/gcp-sphinx-docfx-yaml -w /tmp/local_wheels
-        WHEEL_PATH=$(ls /tmp/local_wheels/gcp_sphinx_docfx_yaml-*.whl)
-        echo "gcp-sphinx-docfx-yaml @ file://${WHEEL_PATH}" > /tmp/uv_overrides.txt
+        WHEEL_PATHS=(/tmp/local_wheels/gcp_sphinx_docfx_yaml-*.whl)
+        if [[ -f "${WHEEL_PATHS[0]}" ]]; then
+          echo "gcp-sphinx-docfx-yaml @ file://${WHEEL_PATHS[0]}" > /tmp/uv_overrides.txt
+        else
+          echo "ERROR: Expected local wheel /tmp/local_wheels/gcp_sphinx_docfx_yaml-*.whl not found." >&2
+          exit 1
+        fi
       fi
 
       OVERALL_EXIT=0
