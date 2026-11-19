@@ -23,9 +23,10 @@ import stat
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from os import environ, getenv, path
-from typing import Generator, List, Optional, Tuple, Union, cast
+from typing import Callable, Generator, List, NamedTuple, Optional, Tuple, Union, cast
 from urllib.parse import urlsplit
 
 from google.auth import _agent_identity_utils, _cloud_sdk, environment_vars, exceptions
@@ -1111,3 +1112,144 @@ def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
         return False
 
     return hostname in _MTLS_EXACT_HOSTS or hostname.endswith(_MTLS_HOST_SUFFIXES)
+
+
+class _CertSnapshot(NamedTuple):
+    cert: Optional[bytes]
+    key: Optional[bytes]
+    generation_id: int
+    fingerprint: Optional[str]
+
+
+class _MtlsCertManager:
+    """Thread-safe manager for mTLS client certificates and generation tracking.
+
+    Tracks the active client certificate bytes, private key bytes, leaf
+    certificate SHA-256 fingerprint, and a ``generation_id`` counter that
+    increments only when the loaded certificate changes.
+
+    Args:
+        client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+            Optional callback returning ``(cert_bytes, key_bytes)`` in PEM
+            format. When ``None``, certificates are discovered via
+            :func:`get_client_ssl_credentials`.
+    """
+
+    def __init__(
+        self,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+    ) -> None:
+        self._client_cert_source = client_cert_source
+        self._snapshot = _CertSnapshot(None, None, 0, None)
+        self._reload_id: int = 0
+        self._completed_reload_id: int = 0
+        self._lock = threading.Lock()
+
+    @property
+    def generation_id(self) -> int:
+        return self._snapshot.generation_id
+
+    @property
+    def cert_fingerprint(self) -> Optional[str]:
+        """Fingerprint of the current leaf certificate, or ``None`` if not loaded."""
+        return self._snapshot.fingerprint
+
+    def get_credential_snapshot(
+        self,
+    ) -> Tuple[Optional[bytes], Optional[bytes], int]:
+        """Returns the current ``(cert_bytes, key_bytes, generation_id)`` snapshot."""
+        snap = self._snapshot
+        return snap.cert, snap.key, snap.generation_id
+
+    def _load_cert_and_fingerprint(
+        self,
+    ) -> Tuple[Optional[bytes], Optional[bytes], Optional[str]]:
+        """Loads the certificate, private key, and leaf SHA-256 fingerprint."""
+        if self._client_cert_source is not None:
+            cert_bytes, key_bytes = self._client_cert_source()
+        else:
+            has_cert, cert_bytes, key_bytes, _ = get_client_ssl_credentials(
+                generate_encrypted_key=False
+            )
+            if not has_cert and self._snapshot.generation_id == 0:
+                return None, None, None
+
+        if not cert_bytes or not key_bytes:
+            raise exceptions.ClientCertError(
+                "Client certificate or private key is empty."
+            )
+
+        cert_obj = _agent_identity_utils.parse_certificate(cert_bytes)
+        fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(cert_obj)
+
+        return cert_bytes, key_bytes, fingerprint
+
+    def refresh(self, expected_generation: Optional[int] = None) -> bool:
+        """Loads the client certificate and increments ``generation_id`` if it changed.
+
+        Args:
+            expected_generation (Optional[int]): Generation ID the caller was
+                using when a request failed. If ``generation_id`` is already
+                greater than ``expected_generation``, returns ``True`` without
+                reloading. If another thread started and finished a reload while
+                this call waited for the lock and the certificate did not change,
+                returns ``False`` without reloading. If ``None``, always reloads.
+
+        Returns:
+            bool: ``True`` if the certificate changed (or ``generation_id`` is
+                already greater than ``expected_generation``), ``False``
+                otherwise.
+
+        Raises:
+            google.auth.exceptions.ClientCertError: If loading or parsing the
+                certificate fails on the initial load (``generation_id == 0``).
+        """
+        reload_id_at_entry = self._reload_id
+        with self._lock:
+            if expected_generation is not None:
+                if self._snapshot.generation_id > expected_generation:
+                    return True
+                # Only reuse a reload that started after entry and did not raise.
+                if self._completed_reload_id > reload_id_at_entry:
+                    return False
+
+            self._reload_id += 1
+            try:
+                cert_bytes, key_bytes, fingerprint = self._load_cert_and_fingerprint()
+            except Exception as caught_exc:
+                if self._snapshot.generation_id > 0:
+                    _LOGGER.debug(
+                        "Failed to reload mTLS client certificate; retaining "
+                        "previous certificate (generation %d): %r",
+                        self._snapshot.generation_id,
+                        caught_exc,
+                    )
+                    self._completed_reload_id = self._reload_id
+                    return False
+                if isinstance(caught_exc, exceptions.ClientCertError):
+                    raise
+                raise exceptions.ClientCertError(caught_exc) from caught_exc
+
+            snap = self._snapshot
+            changed = cert_bytes is not None and fingerprint != snap.fingerprint
+            if changed:
+                self._snapshot = _CertSnapshot(
+                    cert_bytes, key_bytes, snap.generation_id + 1, fingerprint
+                )
+
+            self._completed_reload_id = self._reload_id
+            return changed
+
+    def __copy__(self):
+        # Share the same thread-safe manager instance across shallow copies.
+        return self
+
+    def __deepcopy__(self, memo):
+        # Share the same thread-safe manager instance across deep copies.
+        return self
+
+    def __reduce_ex__(self, protocol):
+        # The manager holds the private key and often an unpicklable callback
+        # (such as the closure from mtls.default_client_cert_source()). Objects
+        # that hold a manager must leave it out of their own pickled state.
+        raise TypeError(f"cannot pickle {type(self).__name__!r} object")
