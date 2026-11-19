@@ -244,9 +244,10 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             if constraint_type == "FOREIGN KEY" or (
                 constraint_type == "CHECK" and constraint.startswith("CK_IS_NOT_NULL_")
             ):
-                # FOREIGN KEY constraints are not yet supported
-                # (https://github.com/googleapis/python-spanner-django/issues/313),
-                # and CK_IS_NOT_NULL_* entries are Spanner's synthetic NOT NULL
+                # TODO(https://github.com/googleapis/google-cloud-python/issues/19145):
+                # Foreign key introspection is not yet implemented in this
+                # Django backend (can_introspect_foreign_keys = False), and
+                # CK_IS_NOT_NULL_* entries are Spanner's synthetic NOT NULL
                 # constraints that cannot be dropped via DROP CONSTRAINT.
                 if already_added:
                     del constraints[constraint]
