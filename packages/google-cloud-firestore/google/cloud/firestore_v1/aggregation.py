@@ -26,6 +26,7 @@ from typing import TYPE_CHECKING, Any, Generator, List, Optional, Union
 from google.api_core import exceptions, gapic_v1
 from google.api_core import retry as retries
 
+from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.base_aggregation import (
     AggregationResult,
     BaseAggregationQuery,
@@ -126,14 +127,16 @@ class AggregationQuery(BaseAggregationQuery):
 
     def _retry_query_after_exception(self, exc, retry, transaction):
         """Helper method for :meth:`stream`."""
-        if transaction is None:  # no snapshot-based retry inside transaction
-            if retry is gapic_v1.method.DEFAULT:
-                transport = self._client._firestore_api._transport
-                gapic_callable = transport.run_aggregation_query
-                retry = gapic_callable._retry
-            return retry._predicate(exc)
+        if transaction is not None:  # no snapshot-based retry inside transaction
+            return False
 
-        return False
+        retry = _helpers.resolve_stream_retry(
+            self._client, "run_aggregation_query", retry
+        )
+        if retry is None:
+            return False
+
+        return retry._predicate(exc)
 
     def _make_stream(
         self,
@@ -186,21 +189,39 @@ class AggregationQuery(BaseAggregationQuery):
             explain_options,
             read_time,
         )
+        backoff = None
+        result_yielded = False
+
         while True:
             try:
                 response = next(response_iterator, None)
             except exceptions.GoogleAPICallError as exc:
-                if self._retry_query_after_exception(exc, retry, transaction):
-                    response_iterator = self._get_stream_iterator(
-                        transaction,
-                        retry,
-                        timeout,
-                        explain_options,
-                        read_time,
-                    )
-                    continue
-                else:
+                if not self._retry_query_after_exception(exc, retry, transaction):
                     raise
+
+                # An aggregation produces a single result. Once it has been
+                # yielded, the caller has everything, and re-running the query
+                # would only yield the same result again.
+                if result_yielded:
+                    break
+
+                if backoff is None:
+                    backoff = _helpers.StreamResumeBackoff(
+                        _helpers.resolve_stream_retry(
+                            self._client, "run_aggregation_query", retry
+                        )
+                    )
+                if not backoff.wait():
+                    raise
+
+                response_iterator = self._get_stream_iterator(
+                    transaction,
+                    retry,
+                    timeout,
+                    explain_options,
+                    read_time,
+                )
+                continue
 
             if response is None:  # EOI
                 break
@@ -210,6 +231,7 @@ class AggregationQuery(BaseAggregationQuery):
 
             result = _query_response_to_result(response)
             if result:
+                result_yielded = True
                 yield result
 
         return metrics

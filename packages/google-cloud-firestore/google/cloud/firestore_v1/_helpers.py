@@ -19,6 +19,7 @@ from __future__ import annotations
 import datetime
 import json
 import re
+import time
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -1238,6 +1239,60 @@ def make_retry_timeout_kwargs(
         kwargs["timeout"] = timeout
 
     return kwargs
+
+
+def resolve_stream_retry(
+    client, method_name: str, retry: retries.Retry | object | None
+) -> retries.Retry | None:
+    """Return the retry policy that governs resuming a broken stream.
+
+    When ``retry`` is :data:`~google.api_core.gapic_v1.method.DEFAULT`, this
+    looks up the default policy that the GAPIC layer configured for
+    ``method_name``. The raw gRPC stub on the transport (for example,
+    ``transport.run_query``) has no retry policy. The wrapped method in
+    ``transport._wrapped_methods`` does.
+
+    Returns:
+        The retry policy, or ``None`` if the stream should not be resumed.
+    """
+    if retry is gapic_v1.method.DEFAULT:
+        transport = client._firestore_api._transport
+        wrapped = transport._wrapped_methods.get(getattr(transport, method_name))
+        retry = getattr(wrapped, "_retry", None)
+    return cast(Optional[retries.Retry], retry)
+
+
+class StreamResumeBackoff:
+    """Limits how often, and for how long, a broken stream is resumed.
+
+    Uses the retry policy's ``initial``, ``maximum`` and ``multiplier``
+    settings for exponential backoff between attempts, and its ``timeout``
+    as an overall limit measured from when this object is created.
+    Attributes that the policy does not define fall back to the
+    :class:`google.api_core.retry.Retry` defaults.
+    """
+
+    def __init__(self, retry):
+        self._sleeps = retries.exponential_sleep_generator(
+            getattr(retry, "_initial", 1.0),
+            getattr(retry, "_maximum", 60.0),
+            multiplier=getattr(retry, "_multiplier", 2.0),
+        )
+        timeout = getattr(retry, "_timeout", 120.0)
+        self._deadline = None if timeout is None else time.monotonic() + timeout
+
+    def wait(self) -> bool:
+        """Sleep before the next resume attempt.
+
+        Returns:
+            ``False``, without sleeping, if the next attempt would start after
+            the deadline. The caller should then give up.
+        """
+        delay = next(self._sleeps)
+        if self._deadline is not None and time.monotonic() + delay > self._deadline:
+            return False
+        time.sleep(delay)
+        return True
 
 
 def build_timestamp(
