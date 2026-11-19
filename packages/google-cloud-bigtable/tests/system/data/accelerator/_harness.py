@@ -344,6 +344,13 @@ def pid_alive(pid: int) -> bool:
         return False
 
 
+def pid_exists(pid: int) -> bool:
+    """True if the pid is still in the process table, zombies included."""
+    import psutil
+
+    return psutil.pid_exists(pid)
+
+
 class RandomOps:
     def __init__(
         self,

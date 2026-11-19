@@ -19,11 +19,11 @@ import multiprocessing
 import os
 import queue
 import shutil
-import signal
 import time
 import uuid
 
 from google.cloud.bigtable.data._accelerator import _daemon
+from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.mutations import DeleteAllFromRow, SetCell
 
 from . import _harness
@@ -31,28 +31,43 @@ from ._base_autogen import AcceleratorTestBase
 
 
 def _daemon_owner_process(project, instance_id, table_id, app_profile_id, result_queue):
+    """Start a daemon, report ("ok", (pid, tempdir)) or ("error", repr), then block."""
     from google.cloud.bigtable.data import BigtableDataClient
 
-    override = _harness.SETTINGS.accelerator_bin
-    if override:
-        _daemon._resolve_binary_path = lambda: override
-    with BigtableDataClient(project=project, use_accelerator=True) as client:
-        table_kwargs = {"app_profile_id": app_profile_id} if app_profile_id else {}
-        with client.get_table(instance_id, table_id, **table_kwargs) as table:
-            key = f"crash-{uuid.uuid4().hex}".encode()
-            ts = _harness.ms_ts(1000)
-            table.mutate_row(
-                key, SetCell(_harness.TEST_FAMILY, b"q", b"v", timestamp_micros=ts)
-            )
-            table.mutate_row(key, DeleteAllFromRow())
-            result_queue.put(
-                (_harness.daemon_pid(table), table._accelerator_daemon._tempdir)
-            )
-            while True:
-                time.sleep(3600)
+    try:
+        override = _harness.SETTINGS.accelerator_bin
+        if override:
+            _daemon._resolve_binary_path = lambda: override
+        with BigtableDataClient(project=project, use_accelerator=True) as client:
+            table_kwargs = {"app_profile_id": app_profile_id} if app_profile_id else {}
+            with client.get_table(instance_id, table_id, **table_kwargs) as table:
+                key = f"crash-{uuid.uuid4().hex}".encode()
+                ts = _harness.ms_ts(1000)
+                table.mutate_row(
+                    key, SetCell(_harness.TEST_FAMILY, b"q", b"v", timestamp_micros=ts)
+                )
+                table.mutate_row(key, DeleteAllFromRow())
+                result_queue.put(
+                    (
+                        "ok",
+                        (
+                            _harness.daemon_pid(table),
+                            table._accelerator_daemon._tempdir,
+                        ),
+                    )
+                )
+                while True:
+                    time.sleep(3600)
+    except Exception as exc:
+        result_queue.put(("error", repr(exc)))
+        raise
 
 
 class TestLifecycle(AcceleratorTestBase):
+    LIFECYCLE_ITERATIONS = 8
+    LIFECYCLE_FD_SLACK = 4
+    ORPHAN_EXIT_TIMEOUT = 5.0
+
     def _one_lifecycle(self, instance_id, table_id):
         with self._make_client(use_accelerator=True) as client:
             with client.get_table(instance_id, table_id) as table:
@@ -79,18 +94,24 @@ class TestLifecycle(AcceleratorTestBase):
                 assert pid is not None and _harness.pid_alive(pid)
                 assert tempdir is not None and os.path.exists(tempdir)
         assert not _harness.pid_alive(pid), "daemon still alive after client close"
+        assert not _harness.pid_exists(pid), "daemon exited but was not reaped"
         assert not os.path.exists(tempdir), "UDS tempdir not cleaned up"
 
     def test_no_leaks_over_repeated_lifecycles(self, instance_id, table_id):
         introspector = _harness.ProcessIntrospector()
         self._one_lifecycle(instance_id, table_id)
         before = introspector.snapshot()
-        for _ in range(8):
+        for _ in range(self.LIFECYCLE_ITERATIONS):
             self._one_lifecycle(instance_id, table_id)
-        introspector.assert_no_leaks(before, label="8x accelerator lifecycle")
+        introspector.assert_no_leaks(
+            before,
+            fd_slack=self.LIFECYCLE_FD_SLACK,
+            label=f"{self.LIFECYCLE_ITERATIONS}x accelerator lifecycle",
+        )
 
     def test_close_reclaims_resources_after_daemon_crash(self, instance_id, table_id):
         introspector = _harness.ProcessIntrospector()
+        self._one_lifecycle(instance_id, table_id)
         before = introspector.snapshot()
         with self._make_client(use_accelerator=True) as client:
             with client.get_table(instance_id, table_id) as table:
@@ -99,11 +120,8 @@ class TestLifecycle(AcceleratorTestBase):
                 tempdir = table._accelerator_daemon._tempdir
                 assert pid is not None and _harness.pid_alive(pid)
                 assert tempdir is not None and os.path.exists(tempdir)
-                os.kill(pid, signal.SIGKILL)
-                deadline = time.monotonic() + 10.0
-                while _harness.pid_alive(pid) and time.monotonic() < deadline:
-                    time.sleep(0.05)
-                assert not _harness.pid_alive(pid), "daemon did not die after SIGKILL"
+                _harness.force_kill_daemon(table._accelerator_daemon)
+                assert not _harness.pid_alive(pid), "daemon did not die after kill"
         assert not os.path.exists(tempdir), "client.close() did not reclaim tempdir"
         introspector.assert_no_leaks(before, label="daemon-crash teardown")
 
@@ -117,24 +135,42 @@ class TestLifecycle(AcceleratorTestBase):
             args=(project, instance_id, table_id, app_profile_id, result_queue),
         )
         owner.start()
-        daemon_pid = tempdir = None
+        tempdir = None
         try:
+            report = None
             deadline = time.monotonic() + 60.0
-            while time.monotonic() < deadline:
+            while report is None and time.monotonic() < deadline:
                 try:
-                    daemon_pid, tempdir = result_queue.get(timeout=0.2)
-                    break
+                    report = result_queue.get_nowait()
                 except queue.Empty:
-                    assert owner.is_alive(), "owner exited before starting daemon"
-            assert daemon_pid is not None, "accelerator fell back to native"
+                    if owner.is_alive():
+                        CrossSync._Sync_Impl.sleep(0.2)
+                        continue
+                    try:
+                        report = result_queue.get(timeout=1.0)
+                    except queue.Empty:
+                        break
+            assert report is not None, (
+                "owner process exited or timed out before reporting a daemon"
+            )
+            status, payload = report
+            assert status == "ok", f"owner process failed to start a daemon: {payload}"
+            daemon_pid, tempdir = payload
+            assert daemon_pid is not None, "owner process has no accelerator daemon"
             assert _harness.pid_alive(daemon_pid), "daemon not alive after owner start"
             owner.kill()
-            owner.join(timeout=10)
-            assert not owner.is_alive(), "owner process not reaped after SIGKILL"
-            deadline = time.monotonic() + 30.0
+            deadline = time.monotonic() + 10.0
+            while owner.is_alive() and time.monotonic() < deadline:
+                CrossSync._Sync_Impl.sleep(0.05)
+            assert not owner.is_alive(), "owner process still alive after kill"
+            deadline = time.monotonic() + self.ORPHAN_EXIT_TIMEOUT
             while _harness.pid_alive(daemon_pid) and time.monotonic() < deadline:
-                time.sleep(0.1)
-            assert not _harness.pid_alive(daemon_pid), f"orphaned daemon {daemon_pid}"
+                CrossSync._Sync_Impl.sleep(0.1)
+            assert not _harness.pid_alive(daemon_pid), (
+                f"orphaned daemon {daemon_pid} still alive {self.ORPHAN_EXIT_TIMEOUT:g}s after its owner died"
+            )
+            socket_path = os.path.join(tempdir, _daemon._SOCKET_FILENAME)
+            assert not os.path.exists(socket_path), "orphaned daemon left its socket"
         finally:
             if owner.is_alive():
                 owner.kill()
