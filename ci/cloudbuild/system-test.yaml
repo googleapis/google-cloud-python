@@ -281,7 +281,7 @@ substitutions:
     bigquery-magics: 2
     google-cloud-bigquery: 8
     google-cloud-bigquery-storage: 8
-    google-cloud-bigtable: 15
+    google-cloud-bigtable: 12
     google-cloud-compute: 8
     google-cloud-datastore: 8
     google-cloud-dns: 1
@@ -290,7 +290,7 @@ substitutions:
     google-cloud-ndb: 12
     google-cloud-pubsub: 15
     google-cloud-spanner: 17
-    google-cloud-storage: 5
+    google-cloud-storage: 7
     google-resumable-media: 1
     pandas-gbq: 12
     sqlalchemy-bigquery: 11

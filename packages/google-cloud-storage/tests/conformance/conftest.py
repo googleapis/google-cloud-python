@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import atexit
 import os
 import random
 import uuid
+from typing import Optional
 
 import pytest
 from google.auth.credentials import AnonymousCredentials
@@ -22,8 +24,55 @@ from google.cloud.exceptions import NotFound
 
 from google.cloud import storage
 
+from ._utils import start_testbench, stop_testbench
+
 """Environment variable or default host for Storage testbench emulator."""
 _HOST = os.environ.get("STORAGE_EMULATOR_HOST", "http://localhost:9000")
+_TESTBENCH_CONTAINER: Optional[str] = None
+
+
+def _cleanup_testbench() -> None:
+    global _TESTBENCH_CONTAINER
+    container = _TESTBENCH_CONTAINER
+    if container:
+        _TESTBENCH_CONTAINER = None
+        stop_testbench(container)
+
+
+def _running_retry_conformance(config) -> bool:
+    args = [str(arg) for arg in (config.args or [])]
+    if not args:
+        return True
+    return any("test_conformance" in arg or os.path.isdir(arg) for arg in args)
+
+
+def pytest_configure(config) -> None:
+    """Start a single shared storage-testbench container for retry conformance tests.
+
+    Under pytest-xdist, only the controller starts and stops the container;
+    workers inherit STORAGE_EMULATOR_HOST via os.environ.
+    """
+    global _TESTBENCH_CONTAINER
+    if getattr(config.option, "help", False) or getattr(
+        config.option, "collectonly", False
+    ):
+        return
+    if hasattr(config, "workerinput"):
+        return
+    if os.environ.get("STORAGE_EMULATOR_HOST"):
+        return
+    if not _running_retry_conformance(config):
+        return
+
+    container_name = f"storage-conformance-{uuid.uuid4().hex[:8]}"
+    http_endpoint, _ = start_testbench(container_name, host_http_port=9000)
+    _TESTBENCH_CONTAINER = container_name
+    atexit.register(_cleanup_testbench)
+    os.environ["STORAGE_EMULATOR_HOST"] = http_endpoint
+
+
+def pytest_unconfigure(config) -> None:
+    _cleanup_testbench()
 
 
 """Emulated project information for the storage testbench."""
@@ -57,10 +106,11 @@ _SIZE_9MB = 9216  # 9*1024 KiB
 
 @pytest.fixture
 def client():
+    host = os.environ.get("STORAGE_EMULATOR_HOST", _HOST)
     client = storage.Client(
         project=_CONF_TEST_PROJECT_ID,
         credentials=AnonymousCredentials(),
-        client_options={"api_endpoint": _HOST},
+        client_options={"api_endpoint": host},
     )
     return client
 

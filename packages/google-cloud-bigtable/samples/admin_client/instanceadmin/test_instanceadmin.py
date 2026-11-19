@@ -28,18 +28,59 @@ PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 INSTANCE_ID = f"instance-admin-{str(uuid.uuid4())[:8]}"
 CLUSTER_ID = f"cluster-admin-{str(uuid.uuid4())[:8]}"
 NEW_CLUSTER_ID = f"cluster-add-{str(uuid.uuid4())[:8]}"
+FALLBACK_ZONES = (
+    "us-central1-f",
+    "us-central1-b",
+    "us-central1-c",
+    "us-east1-b",
+    "us-west1-b",
+)
+
+
+def _is_zone_stockout(exc):
+    message = str(exc).lower()
+    return "sold out" in message or "not enough servers" in message
+
+
+def _run_with_zone_fallback(fn, zones, capsys, *args):
+    last_exc = None
+    for zone in zones:
+        capsys.readouterr()
+        try:
+            fn(*args, location_id=zone)
+            return zone
+        except exceptions.GoogleAPICallError as exc:
+            if not _is_zone_stockout(exc):
+                raise
+            last_exc = exc
+    raise last_exc
 
 
 def test_instance_operations(capsys):
     try:
-        run_instance_operations(PROJECT, INSTANCE_ID, CLUSTER_ID)
+        primary_zone = _run_with_zone_fallback(
+            run_instance_operations,
+            FALLBACK_ZONES,
+            capsys,
+            PROJECT,
+            INSTANCE_ID,
+            CLUSTER_ID,
+        )
         out, _ = capsys.readouterr()
         assert f"Created instance: {INSTANCE_ID}" in out
         assert "Listing instances:" in out
         assert "Listing clusters..." in out
 
         backoff_503 = backoff.on_exception(backoff.expo, exceptions.ServiceUnavailable)
-        backoff_503(add_cluster)(PROJECT, INSTANCE_ID, NEW_CLUSTER_ID)
+        secondary_zones = tuple(z for z in FALLBACK_ZONES if z != primary_zone)
+        _run_with_zone_fallback(
+            backoff_503(add_cluster),
+            secondary_zones,
+            capsys,
+            PROJECT,
+            INSTANCE_ID,
+            NEW_CLUSTER_ID,
+        )
         out, _ = capsys.readouterr()
         assert f"Cluster created: {NEW_CLUSTER_ID}" in out
 

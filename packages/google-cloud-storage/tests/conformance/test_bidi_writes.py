@@ -1,6 +1,3 @@
-import subprocess
-import time
-import urllib
 import uuid
 
 import grpc
@@ -15,51 +12,36 @@ from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
-from tests.conformance._utils import start_grpc_server
+from tests.conformance._utils import start_grpc_server, start_testbench, stop_testbench
 
 # --- Configuration ---
 TEST_BENCH_ENDPOINT = (
     "http://localhost:9002"  # 9000 in VM is taken by test_conformance.py, 9001 by reads
 )
-_PORT = urllib.parse.urlsplit(TEST_BENCH_ENDPOINT).port
+_HTTP_PORT = 9002
 _GRPC_PORT = 8888
 
 PROJECT_NUMBER = "12345"  # A dummy project number is fine for the testbench.
 GRPC_ENDPOINT = f"localhost:{_GRPC_PORT}"
 HTTP_ENDPOINT = TEST_BENCH_ENDPOINT
 
-_DEFAULT_IMAGE_NAME = "gcr.io/cloud-devrel-public-resources/storage-testbench"
-_DEFAULT_IMAGE_TAG = "latest"
-_DOCKER_IMAGE = f"{_DEFAULT_IMAGE_NAME}:{_DEFAULT_IMAGE_TAG}"
-_PULL_CMD = ["docker", "pull", _DOCKER_IMAGE]
-_RUN_CMD = [
-    "docker",
-    "run",
-    "--name",
-    "bidi_writes_container",
-    "--rm",
-    "-d",
-    "-p",
-    f"{_PORT}:9000",
-    "-p",
-    f"{_GRPC_PORT}:8888",
-    _DOCKER_IMAGE,
-]
-_DOCKER_STOP_CMD = [
-    "docker",
-    "stop",
-    "bidi_writes_container",
-]
-
 
 @pytest.fixture(scope="module")
 def testbench():
-    subprocess.run(_PULL_CMD)
-    proc = subprocess.Popen(_RUN_CMD)
-    time.sleep(10)
-    yield GRPC_ENDPOINT, HTTP_ENDPOINT
-    subprocess.run(_DOCKER_STOP_CMD)
-    proc.kill()
+    global TEST_BENCH_ENDPOINT, HTTP_ENDPOINT, GRPC_ENDPOINT
+    container_name = f"bidi-writes-{uuid.uuid4().hex[:8]}"
+    http_endpoint, grpc_endpoint = start_testbench(
+        container_name,
+        host_http_port=_HTTP_PORT,
+        host_grpc_port=_GRPC_PORT,
+    )
+    TEST_BENCH_ENDPOINT = http_endpoint
+    HTTP_ENDPOINT = http_endpoint
+    GRPC_ENDPOINT = grpc_endpoint
+    try:
+        yield GRPC_ENDPOINT, HTTP_ENDPOINT
+    finally:
+        stop_testbench(container_name)
 
 
 CONTENT = b"A" * 1024 * 1024 * 10  # 10 MiB
