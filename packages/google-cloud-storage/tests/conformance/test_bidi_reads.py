@@ -1,8 +1,5 @@
 import io
-import subprocess
-import time
 import traceback
-import urllib
 import uuid
 
 import pytest
@@ -17,7 +14,7 @@ from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
-from tests.conformance._utils import start_grpc_server
+from tests.conformance._utils import start_grpc_server, start_testbench, stop_testbench
 
 # --- Configuration ---
 
@@ -25,45 +22,29 @@ from tests.conformance._utils import start_grpc_server
 TEST_BENCH_ENDPOINT = (
     "http://localhost:9001"  # 9000 in VM is taken by test_conformance.py
 )
-_PORT = urllib.parse.urlsplit(TEST_BENCH_ENDPOINT).port
+_HTTP_PORT = 9001
 _GRPC_PORT = 8888
 
 PROJECT_NUMBER = "12345"  # A dummy project number is fine for the testbench.
 GRPC_ENDPOINT = f"localhost:{_GRPC_PORT}"
 CONTENT_LENGTH = 1024 * 10  # 10 KB
 
-_DEFAULT_IMAGE_NAME = "gcr.io/cloud-devrel-public-resources/storage-testbench"
-_DEFAULT_IMAGE_TAG = "latest"
-_DOCKER_IMAGE = f"{_DEFAULT_IMAGE_NAME}:{_DEFAULT_IMAGE_TAG}"
-_PULL_CMD = ["docker", "pull", _DOCKER_IMAGE]
-_RUN_CMD = [
-    "docker",
-    "run",
-    "--name",
-    "bidi_reads_container",
-    "--rm",
-    "-d",
-    "-p",
-    f"{_PORT}:9000",
-    "-p",
-    f"{_GRPC_PORT}:{_GRPC_PORT}",
-    _DOCKER_IMAGE,
-]
-_DOCKER_STOP_CMD = [
-    "docker",
-    "stop",
-    "bidi_reads_container",
-]
-
 
 @pytest.fixture(scope="module")
 def testbench():
-    subprocess.run(_PULL_CMD)
-    proc = subprocess.Popen(_RUN_CMD)
-    time.sleep(10)
-    yield GRPC_ENDPOINT, TEST_BENCH_ENDPOINT
-    subprocess.run(_DOCKER_STOP_CMD)
-    proc.kill()
+    global TEST_BENCH_ENDPOINT, GRPC_ENDPOINT
+    container_name = f"bidi-reads-{uuid.uuid4().hex[:8]}"
+    http_endpoint, grpc_endpoint = start_testbench(
+        container_name,
+        host_http_port=_HTTP_PORT,
+        host_grpc_port=_GRPC_PORT,
+    )
+    TEST_BENCH_ENDPOINT = http_endpoint
+    GRPC_ENDPOINT = grpc_endpoint
+    try:
+        yield GRPC_ENDPOINT, TEST_BENCH_ENDPOINT
+    finally:
+        stop_testbench(container_name)
 
 
 def _is_retriable(exc):
