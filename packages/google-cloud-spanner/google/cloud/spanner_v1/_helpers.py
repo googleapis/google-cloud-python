@@ -817,6 +817,28 @@ def _parse_timestamp(value_pb):
         raise ValueError("Timestamp: {} does not match pattern".format(val)) from e
 
 
+def _get_read_timestamp(transaction_pb):
+    """Return the read timestamp of a ``Transaction``, or ``None``.
+
+    ``None`` is also returned when the timestamp is outside the range of
+    :class:`datetime.datetime`, which Spanner can return for change stream
+    queries. proto-plus raises ``OverflowError`` when converting it.
+
+    :type transaction_pb: :class:`~google.cloud.spanner_v1.types.Transaction`
+    :param transaction_pb: the transaction returned by Spanner.
+
+    :rtype: :class:`~google.api_core.datetime_helpers.DatetimeWithNanoseconds`
+        or None
+    :returns: the read timestamp, or ``None``.
+    """
+    if not transaction_pb._pb.HasField("read_timestamp"):
+        return None
+    try:
+        return transaction_pb.read_timestamp
+    except OverflowError:
+        return None
+
+
 def _parse_proto(value_pb, column_info, field_name):
     bytes_value = base64.b64decode(value_pb.string_value)
     if column_info is not None and column_info.get(field_name) is not None:
