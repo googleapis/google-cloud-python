@@ -34,7 +34,12 @@ from google.cloud.location import locations_pb2 # type: ignore
 from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
-from google.cloud.redis_v1._compat import transcode_request, trace_http_request
+from google.cloud.redis_v1._compat import (
+    async_rest_request_kwargs,
+    record_http_response_async,
+    trace_http_request,
+    transcode_request,
+)
 
 import google.protobuf
 
@@ -978,8 +983,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -1135,8 +1141,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -1292,8 +1299,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -1450,8 +1458,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -1607,8 +1616,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -1760,8 +1770,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -1914,8 +1925,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -2071,8 +2083,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -2227,8 +2240,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -2385,8 +2399,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -2543,8 +2558,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -2826,8 +2842,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -2977,8 +2994,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -3128,8 +3146,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -3253,8 +3272,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -3378,8 +3398,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -3529,8 +3550,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,
@@ -3681,8 +3703,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
+                    **async_rest_request_kwargs(session),
                     )
-                trace_ctx.record_response(response)
+                await record_http_response_async(trace_ctx, response)
                 return response
 
         async def __call__(self,

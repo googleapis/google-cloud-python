@@ -15,6 +15,7 @@
 #
 """Tests for the compatibility module for older versions of google-api-core."""
 
+import asyncio
 import json
 import pytest
 import os
@@ -33,6 +34,8 @@ from google.showcase_v1beta1._compat import (
     read_environment_variables,
     _observability,
     trace_http_request,
+    record_http_response_async,
+    async_rest_request_kwargs,
     apply_channel_interceptors,
     apply_async_channel_interceptors,
 )
@@ -589,10 +592,39 @@ def test_observability_compat_fallback(monkeypatch):
         assert reloaded._observability is None
         with reloaded.trace_http_request(method="GET", url="https://example.com") as trace_ctx:
             trace_ctx.record_response(None)
+            asyncio.run(trace_ctx.record_response_async(None))
     finally:
         # Restore _compat to normal environment
         monkeypatch.undo()
         importlib.reload(_compat)
+
+
+def test_record_http_response_async_compat():
+    resp = mock.Mock()
+
+    async_ctx = mock.Mock(spec_set=["record_response_async"])
+    async_ctx.record_response_async = mock.AsyncMock()
+    asyncio.run(record_http_response_async(async_ctx, resp))
+    async_ctx.record_response_async.assert_awaited_once_with(resp)
+
+    sync_only_ctx = mock.Mock(spec_set=["record_response"])
+    asyncio.run(record_http_response_async(sync_only_ctx, resp))
+    sync_only_ctx.record_response.assert_called_once_with(resp)
+
+
+def test_async_rest_request_kwargs_compat(monkeypatch):
+    from google.showcase_v1beta1 import _compat
+
+    class _FakeAsyncSession:
+        pass
+
+    monkeypatch.setattr(_compat, "_AsyncAuthorizedSession", _FakeAsyncSession)
+    monkeypatch.setattr(_compat, "ASYNC_SESSION_SUPPORTS_TOTAL_ATTEMPTS", True)
+    assert async_rest_request_kwargs(_FakeAsyncSession()) == {"total_attempts": 1}
+    assert async_rest_request_kwargs(object()) == {}
+
+    monkeypatch.setattr(_compat, "ASYNC_SESSION_SUPPORTS_TOTAL_ATTEMPTS", False)
+    assert async_rest_request_kwargs(_FakeAsyncSession()) == {}
 
 
 def test_apply_channel_interceptors_compat():
