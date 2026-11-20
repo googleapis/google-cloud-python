@@ -23,7 +23,6 @@ from google.auth.credentials import AnonymousCredentials
 from google.cloud.storage import __version__
 from google.cloud.storage.asyncio import async_grpc_client
 
-
 _EXPECTED_KEEPALIVE_OPTIONS = (
     ("grpc.keepalive_time_ms", 30000),
     ("grpc.keepalive_timeout_ms", 20000),
