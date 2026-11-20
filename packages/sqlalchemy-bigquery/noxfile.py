@@ -36,6 +36,7 @@ ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = [
     "third_party",
     "docs",
+    "scripts",
     "sqlalchemy_bigquery",
     "tests",
     "noxfile.py",
@@ -213,7 +214,14 @@ def lint(session):
 
     session.run("python", "-m", "pip", "freeze")
 
-    session.run("flake8", "sqlalchemy_bigquery", "tests")
+    session.run("flake8", "scripts", "sqlalchemy_bigquery", "tests")
+
+    # 3. Check SQLAlchemy compiler safety (no unescaped `.value` interpolation)
+    session.run(
+        "python",
+        "scripts/check_compiler_safety.py",
+        "sqlalchemy_bigquery",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
