@@ -396,12 +396,13 @@ def _assert_http_request_fields(
 
 
 def _assert_trace_correlation(
+    record: logging.LogRecord,
     record_dict: Mapping[str, Any],
     json_payload: Mapping[str, Any],
     row: Mapping[str, str],
     spans: Sequence[ReadableSpan],
 ) -> None:
-    """Validates `trace_id`, `span_id`, and `logging.googleapis.com/*` correlation fields."""
+    """Validates `trace_id`, `span_id`, span window containment, and Cloud Logging trace fields."""
     expected_trace = row["trace_id"]
     expected_span = row["span_id"]
     expected_cloud = row["Cloud Logging Trace Fields"]
@@ -429,6 +430,14 @@ def _assert_trace_correlation(
         target_span = t4_attempt_span
     else:
         raise ValueError(f"Unsupported span_id sentinel: {expected_span!r}")
+
+    created_unix_nano = int(record.created * 1_000_000_000)
+    assert target_span.start_time is not None and target_span.end_time is not None
+    assert target_span.start_time <= created_unix_nano <= target_span.end_time, (
+        f"Log emitted outside active {target_span.kind.name} span window: "
+        f"created_unix_nano={created_unix_nano}, "
+        f"span=[{target_span.start_time}, {target_span.end_time}]"
+    )
 
     expected_trace_hex = f"{t3_spans[0].context.trace_id:032x}"
     expected_span_hex = f"{target_span.context.span_id:016x}"
@@ -472,15 +481,10 @@ def assert_log_record_matches_row(
     assert json_payload["name"] == row["Logger Name"]
 
     message = record.getMessage()
-    expected_prefix = _expected_value(row, "Message Prefix", is_async=is_async)
-    if "*" in expected_prefix:
-        assert fnmatch.fnmatchcase(message, f"{expected_prefix}*"), (
-            f"Message {message!r} did not match prefix pattern {expected_prefix!r}"
-        )
-    else:
-        assert message.startswith(expected_prefix), (
-            f"Message {message!r} did not start with {expected_prefix!r}"
-        )
+    expected_message = _expected_value(row, "Message Prefix", is_async=is_async)
+    _assert_string_or_glob(
+        message, expected_message, field_label="LogRecord['message']"
+    )
     assert json_payload["message"] == message
 
     expected_exc_info = row["exc_info Present"] == "True"
@@ -539,9 +543,11 @@ def assert_log_record_matches_row(
                 isinstance(stack, str)
                 and "Traceback (most recent call last):" in stack
                 and '\n  File "' in stack
+                and "_build_attempt_log_extra" not in stack
+                and "build_telemetry_error_attributes" not in stack
             ), (
-                f"{container_name}['exception.stacktrace']: expected multi-frame Python "
-                f"traceback, got {stack!r}"
+                f"{container_name}['exception.stacktrace']: expected authentic "
+                f"multi-frame Python exception traceback, got {stack!r}"
             )
     else:
         raise ValueError(
@@ -549,7 +555,7 @@ def assert_log_record_matches_row(
         )
 
     # 6. Trace & Span correlation
-    _assert_trace_correlation(record_dict, json_payload, row, spans)
+    _assert_trace_correlation(record, record_dict, json_payload, row, spans)
 
 
 # ---------------------------------------------------------------------------
