@@ -4,6 +4,8 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import unittest
+
 from django.db import connection, models
 from django.test import TransactionTestCase
 
@@ -17,6 +19,10 @@ from tests.system.django_spanner.utils import (
 from .models import Detail
 
 
+@unittest.skip(
+    "TODO(https://github.com/googleapis/google-cloud-python/issues/19088): "
+    "Re-enable once JSONField key-transform equality lookup is fixed."
+)
 class TestJsonField(TransactionTestCase):
     @classmethod
     def setUpClass(cls):

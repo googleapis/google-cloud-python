@@ -19,8 +19,6 @@
 
 import datetime
 
-import packaging.version
-import pytest
 import sqlalchemy
 
 import sqlalchemy_bigquery
@@ -117,7 +115,7 @@ def test_complex_literals_pr_67(engine, bigquery_dataset, metadata):
         sqlalchemy.select((table.c.dimensions.x__count + 5).label("c")).compile(engine)
     )
     want = (
-        f"SELECT `{table_name}`.`dimensions`.x__count + %(param_1:INT64)s AS `c` \n"
+        f"SELECT `{table_name}`.`dimensions`.`x__count` + %(param_1:INT64)s AS `c` \n"
         f"FROM `{table_name}`"
     )
 
@@ -127,10 +125,6 @@ def test_complex_literals_pr_67(engine, bigquery_dataset, metadata):
     # test_unnest_and_struct_access_233 below :)
 
 
-@pytest.mark.skipif(
-    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
-    reason="unnest (and other table-valued-function) support required version 1.4",
-)
 def test_unnest_and_struct_access_233(engine, bigquery_dataset, metadata):
     # https://github.com/googleapis/python-bigquery-sqlalchemy/issues/233
 
@@ -185,7 +179,7 @@ def test_unnest_and_struct_access_233(engine, bigquery_dataset, metadata):
         f" AS `another_mock_objects`"
         f") AS `anon_1` "
         f"ON "
-        f"`anon_1`.`another_mock_objects`.object_id = "
+        f"`anon_1`.`another_mock_objects`.`object_id` = "
         f"`{bigquery_dataset}.Mock`.`mock_id`"
     )
     assert got == want
