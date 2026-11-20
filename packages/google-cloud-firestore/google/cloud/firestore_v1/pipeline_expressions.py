@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import datetime
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from enum import Enum
 from typing import (
     TYPE_CHECKING,
@@ -31,8 +32,10 @@ if TYPE_CHECKING:
 
 from google.cloud.firestore_v1._helpers import GeoPoint, decode_value, encode_value
 from google.cloud.firestore_v1.pipeline_types import (
+    DocumentWindowFrame,
     Ordering,
     PipelineDataType,
+    RangeWindowFrame,
     TimeGranularity,
     TimePart,
     TimeUnit,
@@ -2685,6 +2688,38 @@ class FunctionExpression(Expression):
 class WindowFunction(FunctionExpression):
     """A base class for window functions that operate over a window of documents."""
 
+    def over(
+        self,
+        frame: DocumentWindowFrame | RangeWindowFrame,
+    ) -> "WindowFunction":
+        """Configures a window frame over which this function is evaluated.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Field
+            >>> from google.cloud.firestore_v1.pipeline_types import (
+            ...     DocumentWindowFrame,
+            ...     WindowBound,
+            ... )
+            >>> expr = (
+            ...     Field.of("rating")
+            ...     .average()
+            ...     .over(DocumentWindowFrame(1, WindowBound.CURRENT))
+            ...     .as_("moving_avg")
+            ... )
+
+        Args:
+            frame: A `DocumentWindowFrame` or `RangeWindowFrame` specifying the
+                window frame override for this function.
+
+        Returns:
+            A `WindowFunction` with the specified window frame override.
+        """
+        return WindowFunction(
+            "over",
+            [self, _WindowFrameExpression(frame)],
+            repr_function=lambda _: f"{self!r}.over({frame!r})",
+        )
+
 
 class AggregateFunction(WindowFunction):
     """A base class for aggregation functions that operate across multiple inputs."""
@@ -2876,6 +2911,16 @@ class _PipelineValueExpression(Expression):
     def _to_pb(self) -> Value:
         pipeline_pb = Pipeline_pb(stages=[s._to_pb() for s in self.pipeline.stages])
         return Value(pipeline_value=pipeline_pb)
+
+
+@dataclass
+class _WindowFrameExpression(Expression):
+    """Internal wrapper to represent a window frame as an expression."""
+
+    frame: DocumentWindowFrame | RangeWindowFrame
+
+    def _to_pb(self) -> Value:
+        return Value(map_value={"fields": self.frame._to_dict()})
 
 
 class Array(FunctionExpression):
