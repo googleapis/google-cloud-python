@@ -14,12 +14,16 @@
 
 import concurrent.futures
 import datetime
+import json
 import logging
 import sys
+import time
 import types
 from unittest import mock
 
 import pytest
+from google.rpc import error_details_pb2
+from opentelemetry.trace import SpanContext, TraceFlags
 
 try:
     import grpc  # noqa: F401
@@ -543,11 +547,14 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
     )
 
 
-@pytest.mark.parametrize("interrupt_exc", [KeyboardInterrupt, SystemExit])
+@pytest.mark.parametrize(
+    "interrupt_exc",
+    [KeyboardInterrupt, SystemExit, GeneratorExit],
+)
 def test_wrap_method_otel_tracing_interrupt_bypasses_error_attributes(
-    mock_otel, interrupt_exc
+    mock_otel, mock_service_logger, interrupt_exc
 ):
-    """Proves that process-level interrupts are re-raised without polluting span error attributes."""
+    """Proves process-level interrupts bypass span error attributes and error logs."""
     mock_target = mock.Mock(side_effect=interrupt_exc())
 
     wrapped = google.api_core.gapic_v1.method.wrap_method(
@@ -565,6 +572,7 @@ def test_wrap_method_otel_tracing_interrupt_bypasses_error_attributes(
             "error.type",
             "status.message",
         )
+    mock_service_logger.log.assert_not_called()
 
 
 @pytest.mark.parametrize(
@@ -900,123 +908,437 @@ def test_wrap_method_grpc_stub_binds_service_logger():
     assert wrapped._service_logger is bigtable_logger
 
 
+def _make_sync_rpc_stub(*, return_value="ok", exc=None):
+    def rpc_stub(*args, metadata=None):
+        if exc is not None:
+            raise exc
+        return return_value
+
+    return rpc_stub
+
+
 def test_gapic_callable_logging_silent_on_success(mock_service_logger):
-    """Proves _GapicCallable does not emit error logs when the RPC succeeds."""
+    """Does not emit error logs when the RPC succeeds."""
     wrapped_ok = google.api_core.gapic_v1.method.wrap_method(
-        mock.Mock(return_value="ok"),
+        _make_sync_rpc_stub(return_value="ok"),
         method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
     )
-    assert wrapped_ok() == "ok"
+
+    result = wrapped_ok()
+
+    assert result == "ok"
+    mock_service_logger.log.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "env_val,use_otel",
+    [
+        pytest.param(None, False, id="env_unset_without_span"),
+        pytest.param("false", False, id="env_false_without_span"),
+        pytest.param("false", True, id="env_false_with_span"),
+    ],
+)
+def test_gapic_callable_logging_disabled_on_error(
+    request, monkeypatch, mock_service_logger, env_val, use_otel
+):
+    """Emits no error logs on failure when experimental error logging is disabled."""
+    if use_otel:
+        request.getfixturevalue("mock_otel")
+    if env_val is None:
+        monkeypatch.delenv(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", raising=False
+        )
+    else:
+        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", env_val)
+    wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=exceptions.NotFound("Secret missing")),
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
+        wrapped_fail()
+
     mock_service_logger.log.assert_not_called()
 
 
 def test_gapic_callable_logging_terminal_error(mock_otel, mock_service_logger):
-    """Proves _GapicCallable enriches spans and emits a WARNING log with ErrorInfo on failure."""
-    error_info = types.SimpleNamespace(
+    """Enriches spans (excluding exception.*) and emits a WARNING log on failure."""
+    error_info = error_details_pb2.ErrorInfo(
         domain="googleapis.com",
         reason="SECRET_NOT_FOUND",
         metadata={"project": "my-proj"},
     )
-    err = exceptions.NotFound("Secret missing")
-    err._error_info = error_info
-    mock_otel.span.get_span_context.return_value = types.SimpleNamespace(
-        is_valid=True,
-        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
-        span_id=0x0123456789ABCDEF,
-        trace_flags=0x01,
-    )
+    err = exceptions.NotFound("Secret missing", error_info=error_info)
+    method_name = "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
     wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
-        mock.Mock(side_effect=err),
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+        _make_sync_rpc_stub(exc=err),
+        method_name=method_name,
         kind="rest",
     )
 
-    with pytest.raises(exceptions.NotFound):
+    with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
         wrapped_fail()
+
+    span_attrs = {
+        call.args[0]: call.args[1]
+        for call in mock_otel.span.set_attribute.call_args_list
+    }
+    assert span_attrs["error.type"] == "SECRET_NOT_FOUND"
+    assert not any(key.startswith("exception.") for key in span_attrs)
+
+    mock_service_logger.log.assert_called_once()
+    args, kwargs = mock_service_logger.log.call_args
+    assert args == (logging.WARNING, "RPC failed for %s: %s", method_name, err)
+    assert kwargs["exc_info"] is True
+
+    extra = kwargs["extra"]
+    expected_extra = {
+        "rpcName": method_name,
+        "rpc.system.name": "http",
+        "rpc.response.status_code": "NOT_FOUND",
+        "error.type": "SECRET_NOT_FOUND",
+        "gcp.errors.metadata.project": "my-proj",
+        "exception.type": "NotFound",
+    }
+    assert {k: extra.get(k) for k in expected_extra} == expected_extra
+    assert "exception.stacktrace" in extra
+    assert extra["json_fields"] is not extra
+    assert "json_fields" not in extra["json_fields"]
+    assert extra["json_fields"]["error.type"] == "SECRET_NOT_FOUND"
+    assert json.loads(json.dumps(extra))["json_fields"]["rpcName"] == method_name
+
+
+def test_gapic_callable_logging_trace_correlation(mock_otel, mock_service_logger):
+    """Correlates trace_id and span_id from an active valid OpenTelemetry span."""
+    mock_otel.span.get_span_context.return_value = SpanContext(
+        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
+        span_id=0x0123456789ABCDEF,
+        is_remote=False,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
+    )
+    wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=exceptions.NotFound("Secret missing")),
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
+        wrapped_fail()
+
+    extra = mock_service_logger.log.call_args.kwargs["extra"]
+    expected_trace = {
+        "trace_id": "0123456789abcdef0123456789abcdef",
+        "span_id": "0123456789abcdef",
+    }
+    assert {k: extra.get(k) for k in expected_trace} == expected_trace
+
+
+def test_gapic_callable_logging_explicit_service_logger_override(
+    monkeypatch, mock_logger
+):
+    """Routes terminal WARNING logs to explicit wrap_method(..., service_logger=...)."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=exceptions.NotFound("Secret missing")),
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+        service_logger=mock_logger,
+    )
+
+    with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
+        wrapped_fail()
+
+    mock_logger.log.assert_called_once()
+
+
+class _CustomFuturesCancelledError(concurrent.futures.CancelledError):
+    """Subclass exercising isinstance(..., concurrent.futures.CancelledError)."""
+
+
+class _RawCancelledTransportError(Exception):
+    """Non-Cancelled transport error exposing gRPC CANCELLED status."""
+
+    def code(self):
+        return grpc.StatusCode.CANCELLED
+
+
+def _make_rest_only_cancelled(message: str) -> exceptions.Cancelled:
+    err = exceptions.Cancelled(message)
+    err.grpc_status_code = None
+    return err
+
+
+@pytest.mark.parametrize(
+    "cancel_exc_factory,expected_cls,expected_msg,expected_error_type,expected_exc_type",
+    [
+        pytest.param(
+            lambda: exceptions.Cancelled("Call cancelled"),
+            exceptions.Cancelled,
+            r"Call cancelled",
+            "CANCELLED",
+            "Cancelled",
+            id="google_api_core_cancelled",
+        ),
+        pytest.param(
+            lambda: _make_rest_only_cancelled("REST 499 cancelled"),
+            exceptions.Cancelled,
+            r"REST 499 cancelled",
+            "CANCELLED",
+            "Cancelled",
+            id="rest_cancelled_without_grpc_status",
+        ),
+        pytest.param(
+            lambda: concurrent.futures.CancelledError("Future cancelled"),
+            concurrent.futures.CancelledError,
+            r"Future cancelled",
+            "CancelledError",
+            "CancelledError",
+            id="concurrent_futures_cancelled_error",
+        ),
+        pytest.param(
+            lambda: _CustomFuturesCancelledError("Subclass future cancelled"),
+            _CustomFuturesCancelledError,
+            r"Subclass future cancelled",
+            "_CustomFuturesCancelledError",
+            "_CustomFuturesCancelledError",
+            id="concurrent_futures_cancelled_subclass",
+        ),
+        pytest.param(
+            lambda: _RawCancelledTransportError("Transport cancelled"),
+            _RawCancelledTransportError,
+            r"Transport cancelled",
+            "CANCELLED",
+            "_RawCancelledTransportError",
+            id="raw_transport_cancelled_status",
+        ),
+    ],
+)
+def test_gapic_callable_logging_cancellation(
+    mock_otel,
+    mock_service_logger,
+    cancel_exc_factory,
+    expected_cls,
+    expected_msg,
+    expected_error_type,
+    expected_exc_type,
+):
+    """Emits DEBUG without stacktrace on RPC, Future, or transport cancellation."""
+    err = cancel_exc_factory()
+    method_name = "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
+    wrapped_cancel = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=err),
+        method_name=method_name,
+    )
+
+    with pytest.raises(expected_cls, match=expected_msg):
+        wrapped_cancel()
+
+    mock_otel.span.set_attribute.assert_any_call(
+        "rpc.response.status_code", "CANCELLED"
+    )
+    mock_service_logger.log.assert_called_once()
+    args, kwargs = mock_service_logger.log.call_args
+    assert args == (logging.DEBUG, "RPC cancelled for %s: %s", method_name, err)
+    assert kwargs["exc_info"] is False
+
+    extra = kwargs["extra"]
+    expected_extra = {
+        "rpc.response.status_code": "CANCELLED",
+        "error.type": expected_error_type,
+        "exception.type": expected_exc_type,
+    }
+    assert {k: extra.get(k) for k in expected_extra} == expected_extra
+    assert "exception.stacktrace" not in extra
+    assert "exception.stacktrace" not in extra["json_fields"]
+
+
+@pytest.mark.parametrize(
+    "span_side_effect,logger_side_effect",
+    [
+        pytest.param(
+            RuntimeError("span broken"),
+            None,
+            id="span_set_attribute_raises_still_emits_log",
+        ),
+        pytest.param(
+            None,
+            RuntimeError("logger broken"),
+            id="service_logger_raises_still_reraises_rpc_error",
+        ),
+    ],
+)
+def test_gapic_callable_logging_fail_open_resilience(
+    mock_otel,
+    mock_service_logger,
+    span_side_effect,
+    logger_side_effect,
+):
+    """Isolates span and logger failures while re-raising the caller RPC error."""
+    mock_otel.span.set_attribute.side_effect = span_side_effect
+    mock_service_logger.log.side_effect = logger_side_effect
+    wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=exceptions.NotFound("Secret missing")),
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
+        wrapped_fail()
+
+    mock_otel.span.set_attribute.assert_called()
+    mock_service_logger.log.assert_called_once()
+
+
+def test_gapic_callable_logging_fail_open_on_feature_gate_and_attr_errors(
+    monkeypatch, mock_otel, mock_service_logger
+):
+    """Suppresses FeatureGatingError and attribute extraction failures without masking RPC errors."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "false")
+    wrapped_gate_err = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=exceptions.NotFound("Secret missing")),
+        client_options={"logger_provider": object()},
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
+        wrapped_gate_err()
+
+    mock_otel.span.set_attribute.assert_any_call(
+        "rpc.response.status_code", "NOT_FOUND"
+    )
+    mock_service_logger.log.assert_not_called()
+
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    with mock.patch.object(
+        _observability,
+        "build_telemetry_error_attributes",
+        autospec=True,
+        spec_set=True,
+        side_effect=RuntimeError("attr extraction broken"),
+    ):
+        wrapped_attr_err = google.api_core.gapic_v1.method.wrap_method(
+            _make_sync_rpc_stub(exc=exceptions.NotFound("Secret missing")),
+            method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+        )
+        with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
+            wrapped_attr_err()
+
+    mock_service_logger.log.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "wrap_kwargs,expected_rpc_system,expected_rpc_name,expected_target_arg",
+    [
+        pytest.param(
+            {
+                "method_name": "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+                "kind": "grpc",
+            },
+            "grpc",
+            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+            id="tracing_disabled_grpc_named",
+        ),
+        pytest.param(
+            {"method_name": None, "kind": "rest"},
+            "http",
+            None,
+            "unknown_rpc",
+            id="method_name_none_omits_rpc_name",
+        ),
+        pytest.param(
+            {"method_name": "", "kind": "grpc"},
+            "grpc",
+            "",
+            "unknown_rpc",
+            id="method_name_empty_uses_unknown_rpc",
+        ),
+        pytest.param(
+            {
+                "method_name": "/google.cloud.secretmanager.v1.SecretManagerService/StreamSecrets",
+                "is_streaming": True,
+            },
+            "grpc",
+            "/google.cloud.secretmanager.v1.SecretManagerService/StreamSecrets",
+            "/google.cloud.secretmanager.v1.SecretManagerService/StreamSecrets",
+            id="streaming_rpc_without_span",
+        ),
+    ],
+)
+def test_gapic_callable_logging_without_tracing_span(
+    monkeypatch,
+    mock_service_logger,
+    wrap_kwargs,
+    expected_rpc_system,
+    expected_rpc_name,
+    expected_target_arg,
+):
+    """Emits a WARNING log when span is None and handles empty/None method_name."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    err = exceptions.NotFound("Secret missing")
+    wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=err),
+        **wrap_kwargs,
+    )
+
+    with pytest.raises(exceptions.NotFound, match=r"Secret missing"):
+        wrapped_fail()
+
+    mock_service_logger.log.assert_called_once()
+    args, kwargs = mock_service_logger.log.call_args
+    assert args == (logging.WARNING, "RPC failed for %s: %s", expected_target_arg, err)
+    extra = kwargs["extra"]
+    expected_extra = {
+        "rpc.system.name": expected_rpc_system,
+        "rpc.response.status_code": "NOT_FOUND",
+    }
+    assert {k: extra.get(k) for k in expected_extra} == expected_extra
+    assert "trace_id" not in extra
+    assert ("rpcName" in extra) == (expected_rpc_name is not None)
+    assert ("rpcName" in extra["json_fields"]) == (expected_rpc_name is not None)
+    assert extra.get("rpcName") == expected_rpc_name
+
+
+@mock.patch.object(time, "sleep", autospec=True, spec_set=True)
+def test_gapic_callable_logging_retry_recovery_and_exhaustion(
+    unused_sleep, mock_service_logger
+):
+    """Emits 0 logs on transient retry recovery and 1 WARNING log on RetryError exhaustion."""
+    attempts = 0
+
+    def recovering_rpc(*args, metadata=None):
+        nonlocal attempts
+        attempts += 1
+        if attempts == 1:
+            raise exceptions.ServiceUnavailable("transient")
+        return "recovered"
+
+    wrapped_recover = google.api_core.gapic_v1.method.wrap_method(
+        recovering_rpc,
+        default_retry=retry.Retry(),
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    assert wrapped_recover() == "recovered"
+    assert attempts == 2
+    mock_service_logger.log.assert_not_called()
+
+    cause = exceptions.Cancelled("Attempt cancelled")
+    exhausted_err = exceptions.RetryError("Deadline of 60.0s exceeded", cause=cause)
+    wrapped_exhausted = google.api_core.gapic_v1.method.wrap_method(
+        _make_sync_rpc_stub(exc=exhausted_err),
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.RetryError, match=r"Deadline of 60\.0s exceeded"):
+        wrapped_exhausted()
 
     mock_service_logger.log.assert_called_once()
     args, kwargs = mock_service_logger.log.call_args
     assert args[0] == logging.WARNING
     assert kwargs["exc_info"] is True
     extra = kwargs["extra"]
-    assert (
-        extra["rpcName"]
-        == "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
-    )
-    assert extra["rpc.system.name"] == "http"
-    assert extra["rpc.response.status_code"] == "NOT_FOUND"
-    assert extra["error.type"] == "SECRET_NOT_FOUND"
-    assert extra["gcp.errors.domain"] == "googleapis.com"
-    assert extra["gcp.errors.metadata.project"] == "my-proj"
-    assert extra["status.message"] == "Secret missing"
-    assert extra["exception.type"] == "NotFound"
+    expected_extra = {
+        "rpc.response.status_code": "CANCELLED",
+        "status.message": "Attempt cancelled",
+        "exception.type": "RetryError",
+    }
+    assert {k: extra.get(k) for k in expected_extra} == expected_extra
     assert "exception.stacktrace" in extra
-    assert extra["trace_id"] == "0123456789abcdef0123456789abcdef"
-    assert extra["span_id"] == "0123456789abcdef"
-    assert extra["json_fields"]["error.type"] == "SECRET_NOT_FOUND"
-
-
-@pytest.mark.parametrize(
-    "cancel_exc_factory,expected_error_type",
-    [
-        pytest.param(
-            lambda: exceptions.Cancelled("Call cancelled"),
-            "CANCELLED",
-            id="google_api_core_cancelled",
-        ),
-        pytest.param(
-            lambda: concurrent.futures.CancelledError("Future cancelled"),
-            "CancelledError",
-            id="concurrent_futures_cancelled_error",
-        ),
-    ],
-)
-def test_gapic_callable_logging_cancellation(
-    mock_otel, mock_service_logger, cancel_exc_factory, expected_error_type
-):
-    """Proves _GapicCallable emits DEBUG without stacktrace on RPC or Future cancellation."""
-    err = cancel_exc_factory()
-    wrapped_cancel = google.api_core.gapic_v1.method.wrap_method(
-        mock.Mock(side_effect=err),
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
-    )
-    with pytest.raises(type(err)):
-        wrapped_cancel()
-
-    mock_service_logger.log.assert_called_once()
-    c_args, c_kwargs = mock_service_logger.log.call_args
-    assert c_args[0] == logging.DEBUG
-    assert c_kwargs["exc_info"] is False
-    assert "exception.stacktrace" not in c_kwargs["extra"]
-    assert c_kwargs["extra"]["rpc.response.status_code"] == "CANCELLED"
-    assert c_kwargs["extra"]["error.type"] == expected_error_type
-
-
-def test_gapic_callable_logging_fail_open_resilience(mock_otel, mock_service_logger):
-    """Proves _GapicCallable fails open and re-raises caller exception if span or logger raises."""
-    mock_otel.span.set_attribute.side_effect = RuntimeError("span broken")
-    mock_service_logger.log.side_effect = RuntimeError("logger broken")
-
-    wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
-        mock.Mock(side_effect=exceptions.NotFound("Secret missing")),
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
-    )
-    with pytest.raises(exceptions.NotFound, match="Secret missing"):
-        wrapped_fail()
-
-
-def test_gapic_callable_logging_without_tracing_span(monkeypatch, mock_service_logger):
-    """Proves _GapicCallable emits a WARNING log when tracing is disabled and span is None."""
-    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
-    wrapped_fail = google.api_core.gapic_v1.method.wrap_method(
-        mock.Mock(side_effect=exceptions.NotFound("Secret missing")),
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
-    )
-    with pytest.raises(exceptions.NotFound, match="Secret missing"):
-        wrapped_fail()
-
-    mock_service_logger.log.assert_called_once()
-    args, kwargs = mock_service_logger.log.call_args
-    assert args[0] == logging.WARNING
-    assert kwargs["extra"]["rpc.response.status_code"] == "NOT_FOUND"
-    assert "trace_id" not in kwargs["extra"]

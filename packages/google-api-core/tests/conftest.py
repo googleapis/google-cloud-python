@@ -19,6 +19,7 @@ import types
 from unittest import mock
 
 import pytest
+from opentelemetry.trace import Span, SpanContext, TraceFlags
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -37,8 +38,16 @@ def mock_mtls_env():
 @pytest.fixture
 def mock_otel(monkeypatch):
     """Provides a mocked OpenTelemetry environment with tracing enabled."""
+    from google.api_core import _observability
+
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    mock_span = mock.MagicMock()
+    mock_span = mock.create_autospec(Span, instance=True, spec_set=True)
+    mock_span.get_span_context.return_value = SpanContext(
+        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
+        span_id=0x0123456789ABCDEF,
+        is_remote=False,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
+    )
     mock_tracer = mock.MagicMock()
     mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
 
@@ -50,8 +59,11 @@ def mock_otel(monkeypatch):
     mock_trace.StatusCode.ERROR = "ERROR"
 
     with (
-        mock.patch(
-            "google.api_core._observability.is_otel_capabilities_enabled",
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
+            autospec=True,
+            spec_set=True,
             return_value=True,
         ),
         mock.patch.dict(

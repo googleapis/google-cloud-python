@@ -688,53 +688,135 @@ async def test_wrap_method_async_grpc_stub_binds_service_logger():
     assert wrapped._service_logger is bigtable_logger
 
 
+def _make_async_rpc_stub(*, return_value="ok", exc=None):
+    async def async_rpc_stub(*args, metadata=None):
+        if exc is not None:
+            raise exc
+        return return_value
+
+    return async_rpc_stub
+
+
+class _CustomAsyncCancelledError(asyncio.CancelledError):
+    """Subclass exercising isinstance(exc, asyncio.CancelledError)."""
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_logging_silent_on_success(mock_service_logger):
+    """Does not emit error logs when the async RPC succeeds."""
+    wrapped_ok = gapic_v1.method_async.wrap_method(
+        _make_async_rpc_stub(return_value="ok"),
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    result = await wrapped_ok(mock.sentinel.request)
+
+    assert result == "ok"
+    mock_service_logger.log.assert_not_called()
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "exc_factory,expected_level,expected_exc_info,expected_status,expect_stacktrace",
+    "kind,expected_rpc_system",
+    [
+        pytest.param("grpc_asyncio", "grpc", id="grpc_asyncio"),
+        pytest.param("rest_asyncio", "http", id="rest_asyncio"),
+    ],
+)
+async def test_wrap_method_async_logging_terminal_error(
+    mock_otel,
+    mock_service_logger,
+    kind,
+    expected_rpc_system,
+):
+    """Enriches spans and emits WARNING log with stacktrace on async failure."""
+    err = exceptions.NotFound("Secret not found")
+    method_name = "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
+    wrapped = gapic_v1.method_async.wrap_method(
+        _make_async_rpc_stub(exc=err),
+        method_name=method_name,
+        kind=kind,
+    )
+
+    with pytest.raises(exceptions.NotFound, match=r"Secret not found"):
+        await wrapped(mock.sentinel.request)
+
+    span_attrs = {
+        call.args[0]: call.args[1]
+        for call in mock_otel.span.set_attribute.call_args_list
+    }
+    assert span_attrs["rpc.response.status_code"] == "NOT_FOUND"
+    assert not any(key.startswith("exception.") for key in span_attrs)
+
+    mock_service_logger.log.assert_called_once()
+    args, kwargs = mock_service_logger.log.call_args
+    assert args == (logging.WARNING, "RPC failed for %s: %s", method_name, err)
+    assert kwargs["exc_info"] is True
+
+    extra = kwargs["extra"]
+    expected_extra = {
+        "rpc.system.name": expected_rpc_system,
+        "rpc.response.status_code": "NOT_FOUND",
+    }
+    assert {k: extra.get(k) for k in expected_extra} == expected_extra
+    assert "exception.stacktrace" in extra
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "cancel_exc_cls,cancel_msg,expected_error_type",
     [
         pytest.param(
-            lambda: exceptions.NotFound("Secret not found"),
-            logging.WARNING,
-            True,
-            "NOT_FOUND",
-            True,
-            id="terminal_error",
+            asyncio.CancelledError,
+            "Task cancelled",
+            "CancelledError",
+            id="asyncio_cancelled_error",
         ),
         pytest.param(
-            lambda: asyncio.CancelledError("Task cancelled"),
-            logging.DEBUG,
-            False,
+            exceptions.Cancelled,
+            "Call cancelled",
             "CANCELLED",
-            False,
-            id="cancelled_error",
+            id="google_api_core_cancelled",
+        ),
+        pytest.param(
+            _CustomAsyncCancelledError,
+            "Subclass cancelled",
+            "_CustomAsyncCancelledError",
+            id="asyncio_cancelled_subclass",
         ),
     ],
 )
-async def test_wrap_method_async_logging_error_and_cancelled(
+async def test_wrap_method_async_logging_cancellation(
     mock_otel,
     mock_service_logger,
-    exc_factory,
-    expected_level,
-    expected_exc_info,
-    expected_status,
-    expect_stacktrace,
+    cancel_exc_cls,
+    cancel_msg,
+    expected_error_type,
 ):
-    """Proves that _AsyncGapicCallable emits WARNING on terminal failure and DEBUG without traceback on asyncio.CancelledError."""
-    err = exc_factory()
-    mock_target = mock.AsyncMock(side_effect=err)
+    """Emits DEBUG without stacktrace and normalizes status on async cancellation."""
+    err = cancel_exc_cls(cancel_msg)
+    method_name = "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
     wrapped = gapic_v1.method_async.wrap_method(
-        mock_target,
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+        _make_async_rpc_stub(exc=err),
+        method_name=method_name,
     )
-    with pytest.raises(type(err)):
-        await wrapped()
+
+    with pytest.raises(cancel_exc_cls, match=cancel_msg):
+        await wrapped(mock.sentinel.request)
 
     mock_otel.span.set_attribute.assert_any_call(
-        "rpc.response.status_code", expected_status
+        "rpc.response.status_code", "CANCELLED"
     )
     mock_service_logger.log.assert_called_once()
     args, kwargs = mock_service_logger.log.call_args
-    assert args[0] == expected_level
-    assert kwargs["exc_info"] is expected_exc_info
-    assert kwargs["extra"]["rpc.response.status_code"] == expected_status
-    assert ("exception.stacktrace" in kwargs["extra"]) is expect_stacktrace
+    assert args == (logging.DEBUG, "RPC cancelled for %s: %s", method_name, err)
+    assert kwargs["exc_info"] is False
+
+    extra = kwargs["extra"]
+    expected_extra = {
+        "rpc.response.status_code": "CANCELLED",
+        "error.type": expected_error_type,
+    }
+    assert {k: extra.get(k) for k in expected_extra} == expected_extra
+    assert "exception.stacktrace" not in extra
+    assert "exception.stacktrace" not in extra["json_fields"]
