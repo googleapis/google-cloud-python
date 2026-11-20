@@ -521,6 +521,8 @@ class TestUtils(SpannerSimpleTestClass):
     def _make_batch_ddl_mock_conn(
         self, events, batch_ddl=True, flush_exc=None, rollback_exc=None
     ):
+        from django_spanner.base import DatabaseWrapper
+
         class FakeDBAPIConn:
             def __init__(self):
                 self._ac = True
@@ -534,11 +536,14 @@ class TestUtils(SpannerSimpleTestClass):
             @autocommit.setter
             def autocommit(self, value):
                 events.append(("autocommit", value))
-                if value and not self._ac and self.flush_exc is not None:
+                self._ac = value
+
+            def run_prior_DDL_statements(self):
+                events.append("run_prior_DDL_statements")
+                if self.flush_exc is not None:
                     exc = self.flush_exc
                     self.flush_exc = None
                     raise exc
-                self._ac = value
 
             def rollback(self):
                 events.append("rollback")
@@ -546,6 +551,7 @@ class TestUtils(SpannerSimpleTestClass):
                     raise self.rollback_exc
 
         mock_conn = mock.MagicMock()
+        mock_conn.autocommit = True
         mock_conn.in_atomic_block = False
         mock_conn.features.can_rollback_ddl = False
         mock_conn.get_autocommit.return_value = True
@@ -553,6 +559,11 @@ class TestUtils(SpannerSimpleTestClass):
             {"OPTIONS": {"batch_ddl": batch_ddl}} if batch_ddl is not None else {}
         )
         mock_conn.connection = FakeDBAPIConn()
+
+        def call_flush_ddl_batch():
+            return DatabaseWrapper.flush_ddl_batch(mock_conn)
+
+        mock_conn.flush_ddl_batch.side_effect = call_flush_ddl_batch
         wrappers = []
 
         def fake_execute_wrapper(wrapper):
@@ -600,6 +611,7 @@ class TestUtils(SpannerSimpleTestClass):
                     "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)",
                 ),
                 ("cursor_execute", "CREATE INDEX idx_t1 ON t1 (id)"),
+                "run_prior_DDL_statements",
                 ("autocommit", True),
             ],
         )
@@ -619,7 +631,7 @@ class TestUtils(SpannerSimpleTestClass):
         mock_conn.set_autocommit.assert_not_called()
 
     def test_schema_editor_flushes_ddl_before_non_ddl_and_resumes_batching(self):
-        """Flushes queued DDLs via autocommit=True before DML/DQL, then resumes batching on next DDL."""
+        """Flushes queued DDLs via run_prior_DDL_statements() before DML/DQL, then resumes batching on next DDL."""
         events = []
         mock_conn = self._make_batch_ddl_mock_conn(events)
 
@@ -634,11 +646,13 @@ class TestUtils(SpannerSimpleTestClass):
             [
                 ("autocommit", False),
                 ("cursor_execute", "ALTER TABLE t1 ADD COLUMN c1 INT64"),
+                "run_prior_DDL_statements",
                 ("autocommit", True),
                 ("cursor_execute", "UPDATE t1 SET c1 = %s WHERE 1=1"),
                 ("autocommit", False),
                 ("cursor_execute", "ALTER TABLE t1 ALTER COLUMN c1 INT64 NOT NULL"),
                 ("cursor_execute", "CREATE INDEX idx_t1_c1 ON t1 (c1)"),
+                "run_prior_DDL_statements",
                 ("autocommit", True),
             ],
         )
@@ -705,7 +719,7 @@ class TestUtils(SpannerSimpleTestClass):
             self.assertTrue(mock_conn.connection.autocommit)
 
     def test_schema_editor_restores_autocommit_when_commit_raises(self):
-        """Restores connection.autocommit=True even if setting autocommit=True raises."""
+        """Restores connection.autocommit=True even if run_prior_DDL_statements() raises."""
         events = []
         mock_conn = self._make_batch_ddl_mock_conn(
             events, flush_exc=RuntimeError("server DDL error")
@@ -725,7 +739,7 @@ class TestUtils(SpannerSimpleTestClass):
                     "cursor_execute",
                     "CREATE TABLE t1 (id INT64 NOT NULL) PRIMARY KEY(id)",
                 ),
-                ("autocommit", True),
+                "run_prior_DDL_statements",
                 ("autocommit", True),
             ],
         )

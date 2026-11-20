@@ -7,22 +7,9 @@ import os
 import uuid
 
 import django
-from django.db import (
-    IntegrityError,
-    NotSupportedError,
-    OperationalError,
-    ProgrammingError,
-)
+from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 from django.db.models.fields import NOT_PROVIDED
-from google.api_core.exceptions import (
-    AlreadyExists,
-    FailedPrecondition,
-    GoogleAPICallError,
-    InternalServerError,
-    InvalidArgument,
-    OutOfRange,
-)
 from google.cloud.spanner_dbapi import parse_utils
 from google.cloud.spanner_dbapi.parsed_statement import StatementType
 
@@ -170,28 +157,8 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         return execute(sql, params, many, context)
 
     def flush_ddl_batch(self):
-        """Flush buffered DDL statements by restoring DB-API autocommit=True."""
-        if (
-            self.connection.connection is not None
-            and not self.connection.connection.autocommit
-        ):
-            try:
-                # Transitioning autocommit from False to True calls commit() in
-                # DB-API, which flushes all buffered DDL statements and clears
-                # _ddl_statements in its finally block.
-                self.connection.connection.autocommit = True
-            except (AlreadyExists, FailedPrecondition, OutOfRange) as exc:
-                raise IntegrityError(getattr(exc, "details", exc)) from exc
-            except InvalidArgument as exc:
-                raise ProgrammingError(getattr(exc, "details", exc)) from exc
-            except (InternalServerError, GoogleAPICallError) as exc:
-                raise OperationalError(getattr(exc, "details", exc)) from exc
-            finally:
-                # If commit() raised inside the autocommit setter before
-                # _autocommit was updated to True, restore autocommit=True
-                # (_ddl_statements is already cleared by DB-API commit()).
-                if not self.connection.connection.autocommit:
-                    self.connection.connection.autocommit = True
+        """Flush buffered DDL statements via run_prior_DDL_statements() and restore autocommit."""
+        self.connection.flush_ddl_batch()
 
     def create_model(self, model):
         """

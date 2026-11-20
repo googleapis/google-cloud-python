@@ -851,3 +851,69 @@ class TestBasics(MockServerTestBase):
 
         self.assertEqual(len(self.database_admin_service.requests), 0)
         self.assertEqual(len(editor.collected_sql), 1)
+
+    def test_manual_set_autocommit_false_twice_does_not_commit(self):
+        """Calling transaction.set_autocommit(False) twice in manual transaction mode must not commit active DML."""
+        add_single_result(
+            "INSERT INTO tests_singer "
+            "(id, first_name, last_name) "
+            "VALUES (@a0, @a1, @a2) "
+            "THEN RETURN id",
+            "id",
+            TypeCode.INT64,
+            [("1",)],
+        )
+        transaction.set_autocommit(False)
+        try:
+            Singer.objects.create(first_name="Alice", last_name="Smith")
+            # Calling set_autocommit(False) again while already in manual transaction mode
+            transaction.set_autocommit(False)
+            transaction.rollback()
+        finally:
+            transaction.set_autocommit(True)
+
+        self.assertFalse(
+            any(isinstance(r, CommitRequest) for r in self.spanner_service.requests)
+        )
+        self.assertTrue(
+            any(isinstance(r, RollbackRequest) for r in self.spanner_service.requests)
+        )
+
+    def test_schema_editor_server_ddl_error_on_atomic_flush_raises_programming_error(
+        self,
+    ):
+        """Maps server DDL errors flushed on entering atomic() or set_autocommit(False) to Django DatabaseErrors."""
+        from django.db import IntegrityError, ProgrammingError
+        from google.api_core.exceptions import FailedPrecondition, InvalidArgument
+
+        connection.ensure_connection()
+        connection.settings_dict["OPTIONS"]["batch_ddl"] = True
+        try:
+            with mock.patch.object(
+                connection.connection.database,
+                "update_ddl",
+                side_effect=InvalidArgument("400 Invalid DDL syntax"),
+            ):
+                with self.assertRaises(ProgrammingError):
+                    with connection.schema_editor() as editor:
+                        editor.create_model(Singer)
+                        with transaction.atomic():
+                            pass
+
+            self.assertTrue(transaction.get_autocommit())
+            self.assertTrue(connection.connection.autocommit)
+
+            with mock.patch.object(
+                connection.connection.database,
+                "update_ddl",
+                side_effect=FailedPrecondition("400 Duplicate name in schema"),
+            ):
+                with self.assertRaises(IntegrityError):
+                    with connection.schema_editor() as editor:
+                        editor.create_model(Singer)
+                        transaction.set_autocommit(False)
+        finally:
+            connection.settings_dict["OPTIONS"].pop("batch_ddl", None)
+
+        self.assertTrue(transaction.get_autocommit())
+        self.assertTrue(connection.connection.autocommit)
