@@ -3925,3 +3925,92 @@ def test_trace_context_http_logging_fails_open_on_internal_errors(monkeypatch):
 
     assert mock_log.call_count == 2
     assert mock_log.call_args.kwargs["client_options"] is options
+
+
+@pytest.mark.parametrize(
+    "body,expected_error_type,expected_domain,expected_metadata,expected_message",
+    [
+        pytest.param(
+            b'{"error": {"code": 400, "message": "Invalid argument.", "details": ['
+            b'{"@type": "type.googleapis.com/google.rpc.RetryInfo"}, '
+            b'{"@type": "type.googleapis.com/google.rpc.ErrorInfo", '
+            b'"reason": "INVALID_ARGUMENT_REASON", '
+            b'"domain": "showcase.googleapis.com", '
+            b'"metadata": {"zone": "us-east1-a"}}]}}',
+            "INVALID_ARGUMENT_REASON",
+            "showcase.googleapis.com",
+            {"gcp.errors.metadata.zone": "us-east1-a"},
+            "Invalid argument.",
+            id="dict_payload_with_error_info_after_other_detail",
+        ),
+        pytest.param(
+            b'[{"error": {"code": 400, "message": "Stream failed.", "details": ['
+            b'"malformed_item", '
+            b'{"@type": "type.googleapis.com/google.rpc.ErrorInfo", '
+            b'"reason": "STREAM_BROKEN", "domain": "pubsub.googleapis.com"}]}}]',
+            "STREAM_BROKEN",
+            "pubsub.googleapis.com",
+            {},
+            "Stream failed.",
+            id="list_payload_with_error_info_without_metadata",
+        ),
+        pytest.param(
+            b'{"error": {"code": 400, "message": "Partial info.", "details": ['
+            b'{"@type": "type.googleapis.com/google.rpc.ErrorInfo", '
+            b'"metadata": "invalid-metadata"}]}}',
+            "400",
+            None,
+            {},
+            "Partial info.",
+            id="partial_error_info_without_reason_or_valid_metadata",
+        ),
+        pytest.param(
+            b'{"error": {"code": 400, "message": "No error info.", "details": ['
+            b'{"@type": "type.googleapis.com/google.rpc.BadRequest"}]}}',
+            "400",
+            None,
+            {},
+            "No error info.",
+            id="details_list_without_error_info_entry",
+        ),
+    ],
+)
+def test_trace_context_record_response_extracts_http_error_info(
+    monkeypatch,
+    mock_otel,
+    mock_service_logger,
+    body,
+    expected_error_type,
+    expected_domain,
+    expected_metadata,
+    expected_message,
+):
+    """Proves record_response enriches L4 HTTP logs with ErrorInfo while keeping T4 span error.type as HTTP status."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    mock_otel.span.get_span_context.return_value = SpanContext(
+        trace_id=_TEST_TRACE_ID,
+        span_id=_TEST_SPAN_ID,
+        is_remote=False,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
+    )
+    resp = _make_requests_response(400, body=body, reason="Bad Request")
+
+    with mock.patch.object(resp, "json", wraps=resp.json) as spy_json:
+        with _observability.trace_http_request(method="POST", url=_ECHO_URL) as ctx:
+            ctx.record_response(resp)
+
+    assert spy_json.call_count == 1
+    mock_otel.span.set_attribute.assert_any_call("error.type", "400")
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args.kwargs["extra"]
+    assert extra["rpc.response.status_code"] == "400"
+    assert extra["error.type"] == expected_error_type
+    assert extra["status.message"] == expected_message
+    assert "exception.type" not in extra
+    assert "exception.stacktrace" not in extra
+    if expected_domain is not None:
+        assert extra["gcp.errors.domain"] == expected_domain
+    else:
+        assert "gcp.errors.domain" not in extra
+    for k, v in expected_metadata.items():
+        assert extra[k] == v
