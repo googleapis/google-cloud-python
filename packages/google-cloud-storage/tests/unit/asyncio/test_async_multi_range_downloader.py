@@ -860,6 +860,8 @@ class TestAsyncMultiRangeDownloader:
         task.cancel()
         with pytest.raises(asyncio.CancelledError):
             await task
+        assert not mrd.is_stream_open
+        assert mrd.object_metadata is None
 
     @pytest.mark.asyncio
     async def test_close_mrd_not_opened_should_throw_error(self):
@@ -2689,8 +2691,7 @@ class TestAsyncMultiRangeDownloader:
                 s.is_stream_open = False
 
             async def _send(req):
-                if not s.is_stream_open:
-                    raise ValueError("Stream is not open")
+                assert s.is_stream_open
 
             s.open = AsyncMock(side_effect=_open)
             s.close = AsyncMock(side_effect=_close)
@@ -2713,8 +2714,7 @@ class TestAsyncMultiRangeDownloader:
         resp_q: asyncio.Queue = asyncio.Queue()
 
         async def _echo_send(req):
-            if not stream_3.is_stream_open:
-                raise ValueError("Stream is not open")
+            assert stream_3.is_stream_open
             for rr in req.read_ranges:
                 await resp_q.put(_zero_copy_response(data, 0, rr.read_id, True))
 
