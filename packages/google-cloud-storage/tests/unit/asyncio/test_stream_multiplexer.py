@@ -17,6 +17,7 @@ from unittest.mock import AsyncMock
 
 import grpc
 import pytest
+from google.api_core import exceptions
 
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio._stream_multiplexer import (
@@ -553,6 +554,50 @@ class TestReopenStream:
         assert mux.stream_generation == 1
         assert mux._stream is new_stream
         assert mux._recv_task is not None and not mux._recv_task.done()
+
+    @pytest.mark.asyncio
+    async def test_send_after_cancelled_reopen_raises_retryable_error(self):
+        """A reopen cancelled while awaiting stream_factory leaves the closed
+        old stream on the multiplexer at the same generation. send() must
+        raise a retryable error without touching the closed stream so the next
+        caller's retry reopens it."""
+        old_stream = AsyncMock()
+        old_stream.is_stream_open = True
+        old_stream.recv = AsyncMock(side_effect=asyncio.Event().wait)
+
+        async def _close():
+            old_stream.is_stream_open = False
+
+        old_stream.close = AsyncMock(side_effect=_close)
+        mux = _StreamMultiplexer(old_stream)
+        mux.register({1})
+
+        factory_entered = asyncio.Event()
+
+        async def hanging_factory():
+            factory_entered.set()
+            await asyncio.Event().wait()
+
+        reopen_task = asyncio.create_task(mux.reopen_stream(0, hanging_factory))
+        await factory_entered.wait()
+        reopen_task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await reopen_task
+
+        assert mux.stream_generation == 0
+        assert not old_stream.is_stream_open
+
+        with pytest.raises(exceptions.ServiceUnavailable):
+            await mux.send(_storage_v2.BidiReadObjectRequest())
+        assert old_stream.send.await_count == 0
+
+        new_stream = AsyncMock()
+        new_stream.is_stream_open = True
+        new_stream.recv = AsyncMock(side_effect=asyncio.Event().wait)
+        await mux.reopen_stream(0, AsyncMock(return_value=new_stream))
+
+        assert mux.stream_generation == 1
+        assert await mux.send(_storage_v2.BidiReadObjectRequest()) == 1
 
 
 class TestClose:
