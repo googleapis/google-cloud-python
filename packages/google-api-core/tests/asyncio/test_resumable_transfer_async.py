@@ -2059,28 +2059,31 @@ async def test_async_upload_already_finished_raises_value_error() -> None:
 
 
 @pytest.mark.asyncio
-async def test_async_resume_already_finished_raises_value_error() -> None:
-    session = AsyncResumableUploadSession()
-    session._state._upload_url = "https://upload.example.com/resumable-async"
+async def test_async_resume_already_finished_returns_final_response() -> None:
+    """A query that reports the upload as final returns its resource (#19114)."""
+    query_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b'{"name": "committed_async.txt", "size": 4}',
+    )
+    sess_transport = DummyAsyncSession([query_resp])
+    session = AsyncResumableUploadSession(response_type=DummyResponse)
 
-    async def mark_finished(*args, **kwargs):
-        session._state._finished = True
+    op = session.resume(
+        upload_url="https://upload.example.com/resumable-async",
+        stream=b"data",
+        chunk_size=1024,
+        transport=sess_transport,
+    )
+    progress = [item async for item in op]
 
-    sess_transport = DummyAsyncSession([])
-    with mock.patch.object(
-        session, "_recover", new_callable=mock.AsyncMock, side_effect=mark_finished
-    ):
-        op = session.resume(
-            upload_url="https://upload.example.com/resumable-async",
-            stream=b"data",
-            chunk_size=1024,
-            transport=sess_transport,
-        )
-        with pytest.raises(
-            ValueError,
-            match="Upload completed without receiving a final response",
-        ):
-            await op
+    assert session.response.name == "committed_async.txt"
+    assert session.finished is True
+    assert len(sess_transport.requests) == 1
+    assert [p.state for p in progress] == [
+        ProgressState.OFFSET_RECEIVED,
+        ProgressState.FINALIZED,
+    ]
 
 
 @pytest.mark.asyncio
