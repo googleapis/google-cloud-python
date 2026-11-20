@@ -78,12 +78,11 @@ if [ ! -d "${BENCH_VENV}" ]; then
 fi
 source "${BENCH_VENV}/bin/activate"
 
-# Check and install all dependencies into virtual environment
-if ! python3 -c "import pytest, psutil, yaml, google.cloud.storage" 2>/dev/null; then
-  echo "Installing dependencies into virtual environment..."
-  pip install --upgrade pip
-  pip install -e ".[grpc,testing]"
-fi
+# Install dependencies on every run: the standing VM reuses ${BENCH_VENV}, so
+# new releases (e.g. google-crc32c) are only picked up through an upgrade.
+echo "Installing dependencies into virtual environment..."
+pip install --upgrade pip
+pip install --upgrade -e ".[grpc,testing]" google-crc32c
 
 echo "--- 2. Executing pytest benchmark suite (${ROUNDS} rounds) ---"
 set +e

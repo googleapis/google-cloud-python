@@ -65,6 +65,11 @@ def display_results(result_path: str) -> None:
         else:
             net_str = "N/A"
         cpu = extra.get("cpu_max_global", "N/A")
+        if (
+            extra.get("accepts_memoryview")
+            and extra.get("crc32c_memoryview_supported") is False
+        ):
+            name = f"{name} (bytes fallback)"
         rows.append((name, f"{avg_mib} MiB/s", net_str, str(cpu)))
 
     if not rows:
@@ -105,7 +110,14 @@ def display_results(result_path: str) -> None:
             f"| {net_str:<{net_width}} "
             f"| {cpu_str:<{cpu_width}} |"
         )
-    print("=" * table_width + "\n")
+    print("=" * table_width)
+    if any(row[0].endswith(" (bytes fallback)") for row in rows):
+        print(
+            "NOTE: Installed google-crc32c does not support memoryview "
+            "(crc32c_memoryview_supported=False); *_zero_copy_memoryview rows "
+            "ran using the bytes-slice fallback."
+        )
+    print()
 
 
 if __name__ == "__main__":

@@ -48,20 +48,24 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
         else common_params["bucket_types"]
     )
     zero_copy_options = (
-        [
-            _parse_bool(z, "ZERO_COPY")
-            for z in os.environ["ZERO_COPY"].split(",")
-            if z.strip()
-        ]
+        list(
+            dict.fromkeys(
+                _parse_bool(z, "ZERO_COPY")
+                for z in os.environ["ZERO_COPY"].split(",")
+                if z.strip()
+            )
+        )
         if os.environ.get("ZERO_COPY", "").strip()
         else common_params.get("zero_copy", [False])
     )
     accepts_memoryview_options = (
-        [
-            _parse_bool(v, "ACCEPTS_MEMORYVIEW")
-            for v in os.environ["ACCEPTS_MEMORYVIEW"].split(",")
-            if v.strip()
-        ]
+        list(
+            dict.fromkeys(
+                _parse_bool(v, "ACCEPTS_MEMORYVIEW")
+                for v in os.environ["ACCEPTS_MEMORYVIEW"].split(",")
+                if v.strip()
+            )
+        )
         if os.environ.get("ACCEPTS_MEMORYVIEW", "").strip()
         else common_params.get("accepts_memoryview", [False])
     )
@@ -186,4 +190,6 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
                     accepts_memoryview=accepts_memoryview,
                 )
             )
+    if not any(params.values()):
+        raise ValueError("No time-based read benchmark cases match the env overrides.")
     return params

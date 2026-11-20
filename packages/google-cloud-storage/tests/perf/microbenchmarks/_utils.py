@@ -23,7 +23,7 @@ import psutil
 from google.cloud.storage.asyncio import _zero_copy_bidi_read
 
 _C4_STANDARD_192_NIC = "ens3"  # can be fetched via ip link show
-_ZERO_COPY_ENV_VAR = "GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ"
+_ZERO_COPY_ENV_VAR = _zero_copy_bidi_read._ENV_VAR
 
 
 @contextlib.contextmanager

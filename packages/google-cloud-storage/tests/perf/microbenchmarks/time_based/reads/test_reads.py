@@ -105,10 +105,10 @@ worker_json_client = None
 def _worker_init(bucket_type, zero_copy=False):
     """Initializes a persistent event loop and client for each worker process."""
     cpu_affinity = get_irq_affinity()
-    if cpu_affinity:
-        os.sched_setaffinity(
-            0, {i for i in range(0, os.cpu_count()) if i not in cpu_affinity}
-        )
+    if cpu_affinity and hasattr(os, "sched_getaffinity"):
+        available_cpus = os.sched_getaffinity(0) - cpu_affinity
+        if available_cpus:
+            os.sched_setaffinity(0, available_cpus)
 
     global worker_loop, worker_client, worker_json_client
     if bucket_type == "rapid":
@@ -304,20 +304,25 @@ def test_downloads_multi_proc_multi_coro(
                     rounds=params.rounds,
                     args=(files_names, params, params.bucket_type),
                 )
-        finally:
+        except BaseException:
+            pool.terminate()
+            raise
+        else:
             pool.close()
+        finally:
             pool.join()
-            throughput_mib_s = _calculate_average_throughput_mib_s(
-                download_bytes_list, download_elapsed_times
-            )
-            benchmark.extra_info["avg_throughput_mib_s"] = f"{throughput_mib_s:.2f}"
-            print(
-                f"Avg Throughput of {params.rounds} round(s): {throughput_mib_s:.2f} MiB/s"
-            )
-            publish_benchmark_extra_info(
-                benchmark,
-                params,
-                download_bytes_list=download_bytes_list,
-                duration=download_elapsed_times,
-            )
-            publish_resource_metrics(benchmark, m)
+
+        throughput_mib_s = _calculate_average_throughput_mib_s(
+            download_bytes_list, download_elapsed_times
+        )
+        benchmark.extra_info["avg_throughput_mib_s"] = f"{throughput_mib_s:.2f}"
+        print(
+            f"Avg Throughput of {params.rounds} round(s): {throughput_mib_s:.2f} MiB/s"
+        )
+        publish_benchmark_extra_info(
+            benchmark,
+            params,
+            download_bytes_list=download_bytes_list,
+            duration=download_elapsed_times,
+        )
+        publish_resource_metrics(benchmark, m)

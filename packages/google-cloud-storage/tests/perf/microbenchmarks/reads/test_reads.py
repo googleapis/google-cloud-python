@@ -60,9 +60,9 @@ async def download_chunks_using_mrd_async(client, filename, other_params, chunks
     start_time = time.monotonic_ns()
 
     total_bytes_downloaded = 0
-    mrd = AsyncMultiRangeDownloader(client, other_params.bucket_name, filename)
-    await mrd.open()
-    try:
+    async with AsyncMultiRangeDownloader(
+        client, other_params.bucket_name, filename
+    ) as mrd:
         for offset, size in chunks:
             buffer = BytesIO()
             await mrd.download_ranges(
@@ -70,8 +70,6 @@ async def download_chunks_using_mrd_async(client, filename, other_params, chunks
                 accepts_memoryview=other_params.accepts_memoryview,
             )
             total_bytes_downloaded += buffer.tell()
-    finally:
-        await mrd.close()
 
     assert total_bytes_downloaded == other_params.file_size_bytes
 
@@ -425,11 +423,15 @@ def test_downloads_multi_proc_multi_coro(
                         params.bucket_type,
                     ),
                 )
-        finally:
+        except BaseException:
+            pool.terminate()
+            raise
+        else:
             pool.close()
+        finally:
             pool.join()
-            publish_benchmark_extra_info(benchmark, params, true_times=output_times)
-            publish_resource_metrics(benchmark, m)
+        publish_benchmark_extra_info(benchmark, params, true_times=output_times)
+        publish_resource_metrics(benchmark, m)
 
     blobs_to_delete.extend(
         storage_client.bucket(params.bucket_name).blob(f) for f in files_names
