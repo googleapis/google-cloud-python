@@ -245,19 +245,27 @@ class TestRequestResponse(compliance.RequestResponseTests):
         mock_get_cert.assert_called_once()
 
     @pytest.mark.parametrize(
-        "cert_bytes,expected_cause",
+        "cert_bytes,expected_cause,expected_sleeps",
         [
-            (None, FileNotFoundError),
-            (b"invalid", exceptions.ClientCertError),
+            (None, FileNotFoundError, [mock.call(0.1), mock.call(0.1)]),
+            (b"invalid", exceptions.ClientCertError, [mock.call(0.1), mock.call(0.1)]),
             (
                 b"-----BEGIN CERTIFICATE-----\ninvalid\n-----END CERTIFICATE-----\n",
                 exceptions.MutualTLSChannelError,
+                [],
             ),
         ],
     )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
     def test_mtls_cert_error_raises_transport_error_and_recovers(
-        self, mock_send, cert_bytes, expected_cause, workload_cert_config
+        self,
+        mock_send,
+        mock_sleep,
+        cert_bytes,
+        expected_cause,
+        expected_sleeps,
+        workload_cert_config,
     ):
         mock_send.return_value = make_response()
         if cert_bytes is None:
@@ -270,6 +278,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
             request("https://iamcredentials.mtls.googleapis.com/v1/token")
         assert isinstance(exc_info.value.__cause__, expected_cause)
         assert request._mtls_unavailable is False
+        assert mock_sleep.call_args_list == expected_sleeps
 
         workload_cert_config.write_binary(pytest.public_cert_bytes)
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
@@ -1517,6 +1526,39 @@ class TestAuthorizedSession(object):
         # Token refresh should still be called despite discovery failure
         credentials.refresh.assert_called_once()
         assert result.status_code == http_client.OK
+        assert not authed_session._mtls_reauth_lock.locked()
+
+    @mock.patch.object(google.auth.transport.requests._LOGGER, "warning", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_unauthorized_persistent_cert_key_mismatch_proceeds_to_token_refresh(
+        self, mock_sleep, mock_warning, workload_cert_config
+    ):
+        with open(os.path.join(pytest.data_dir, "other_cert.pem"), "rb") as fh:
+            workload_cert_config.write_binary(fh.read())
+
+        credentials = mock.Mock(wraps=CredentialsStub())
+        adapter = AdapterStub(
+            [
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ]
+        )
+        authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
+        authed_session.mount(self.MTLS_TEST_URL, adapter)
+        authed_session._is_mtls = True
+        authed_session._cached_cert = pytest.public_cert_bytes
+
+        result = authed_session.request("GET", self.MTLS_TEST_URL)
+
+        assert result.status_code == http_client.OK
+        credentials.refresh.assert_called_once()
+        assert authed_session._cached_cert == pytest.public_cert_bytes
+        assert authed_session.get_adapter(self.MTLS_TEST_URL) is adapter
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+        mock_warning.assert_called_once()
+        assert "do not match after 3 attempts" in (
+            mock_warning.call_args[0][0] % mock_warning.call_args[0][1:]
+        )
         assert not authed_session._mtls_reauth_lock.locked()
 
     def test_cert_check_skipped_when_cert_rotated_during_request(self):

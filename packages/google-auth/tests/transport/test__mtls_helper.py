@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+import inspect
 import json
 import os
 import re
@@ -21,8 +23,9 @@ from unittest import mock
 
 import pytest  # type: ignore
 import urllib3.util
+from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.asymmetric import ec, rsa
 
 from google.auth import _agent_identity_utils, environment_vars, exceptions
 from google.auth.transport import _mtls_helper
@@ -815,39 +818,315 @@ class TestGetWorkloadCertAndKey(object):
 
 
 class TestReadCertAndKeyFile(object):
-    def test_success(self):
-        cert_path = os.path.join(pytest.data_dir, "public_cert.pem")
-        key_path = os.path.join(pytest.data_dir, "privatekey.pem")
+    @pytest.mark.parametrize(
+        "cert_name, key_name",
+        [
+            ("public_cert.pem", "privatekey.pem"),
+            ("es256_public_cert.pem", "es256_privatekey.pem"),
+        ],
+    )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_success(self, mock_sleep, cert_name, key_name):
+        cert_path = os.path.join(pytest.data_dir, cert_name)
+        key_path = os.path.join(pytest.data_dir, key_name)
 
         actual_cert, actual_key = _mtls_helper._read_cert_and_key_files(
             cert_path, key_path
         )
+        with open(cert_path, "rb") as cert_file:
+            assert actual_cert == cert_file.read()
+        with open(key_path, "rb") as key_file:
+            assert actual_key == key_file.read()
+        mock_sleep.assert_not_called()
+
+    @pytest.mark.parametrize(
+        "cert_names, key_name",
+        [
+            (["es256_public_cert.pem"], "es384_privatekey.pem"),
+            # The key belongs to the second certificate, not the leaf.
+            (["other_cert.pem", "public_cert.pem"], "privatekey.pem"),
+        ],
+        ids=["different_key_pair", "key_matches_non_leaf"],
+    )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_key_mismatch_raises_after_retries(
+        self, mock_sleep, tmp_path, cert_names, key_name
+    ):
+        cert_file = tmp_path / "cert.pem"
+        cert_chain = b""
+        for cert_name in cert_names:
+            with open(os.path.join(pytest.data_dir, cert_name), "rb") as fh:
+                cert_chain += fh.read()
+        cert_file.write_bytes(cert_chain)
+        key_path = os.path.join(pytest.data_dir, key_name)
+
+        with pytest.raises(
+            exceptions.ClientCertError, match="do not match after 3 attempts"
+        ):
+            _mtls_helper._read_cert_and_key_files(str(cert_file), key_path)
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+
+    @pytest.mark.parametrize(
+        "initial_cert_name, initial_key_name, lagging_file, rotated_bytes",
+        [
+            (
+                "public_cert.pem",
+                "es256_privatekey.pem",
+                "key",
+                pytest.private_key_bytes,
+            ),
+            (
+                "es256_public_cert.pem",
+                "privatekey.pem",
+                "cert",
+                pytest.public_cert_bytes,
+            ),
+        ],
+        ids=["key_catches_up", "cert_catches_up"],
+    )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_key_mismatch_recovers_after_rotation(
+        self,
+        mock_sleep,
+        tmp_path,
+        initial_cert_name,
+        initial_key_name,
+        lagging_file,
+        rotated_bytes,
+    ):
+        cert_file = tmp_path / "cert.pem"
+        key_file = tmp_path / "key.pem"
+        with open(os.path.join(pytest.data_dir, initial_cert_name), "rb") as fh:
+            cert_file.write_bytes(fh.read())
+        with open(os.path.join(pytest.data_dir, initial_key_name), "rb") as fh:
+            key_file.write_bytes(fh.read())
+
+        target_file = key_file if lagging_file == "key" else cert_file
+        mock_sleep.side_effect = lambda _: target_file.write_bytes(rotated_bytes)
+
+        actual_cert, actual_key = _mtls_helper._read_cert_and_key_files(
+            str(cert_file), str(key_file)
+        )
         assert actual_cert == pytest.public_cert_bytes
         assert actual_key == pytest.private_key_bytes
+        mock_sleep.assert_called_once_with(0.1)
 
-    def test_no_cert_file(self):
+    @pytest.mark.parametrize(
+        "cert_bytes, key_bytes",
+        [
+            (pytest.public_cert_bytes, ENCRYPTED_EC_PRIVATE_KEY),
+            (
+                b"-----BEGIN CERTIFICATE-----\nMIIB\n-----END CERTIFICATE-----\n",
+                pytest.private_key_bytes,
+            ),
+        ],
+        ids=["encrypted_key", "unparsable_cert"],
+    )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_uninspectable_pair_skips_match_check(
+        self, mock_sleep, tmp_path, cert_bytes, key_bytes
+    ):
+        cert_file = tmp_path / "cert.pem"
+        key_file = tmp_path / "key.pem"
+        cert_file.write_bytes(cert_bytes)
+        key_file.write_bytes(key_bytes)
+
+        assert _mtls_helper._read_cert_and_key_files(str(cert_file), str(key_file)) == (
+            cert_bytes,
+            key_bytes,
+        )
+        mock_sleep.assert_not_called()
+
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_invalid_version_cert_skips_match_check(self, mock_sleep, tmp_path):
+        der = bytearray(
+            x509.load_pem_x509_certificate(pytest.public_cert_bytes).public_bytes(
+                serialization.Encoding.DER
+            )
+        )
+        # Patch the X.509 explicit [0] version integer to an invalid version (9).
+        version_idx = der.index(b"\xa0\x03\x02\x01\x02")
+        der[version_idx + 4] = 9
+        cert_bytes = (
+            b"-----BEGIN CERTIFICATE-----\n"
+            + base64.encodebytes(bytes(der))
+            + b"-----END CERTIFICATE-----\n"
+        )
+        cert_file = tmp_path / "cert.pem"
+        key_file = tmp_path / "key.pem"
+        cert_file.write_bytes(cert_bytes)
+        key_file.write_bytes(pytest.private_key_bytes)
+
+        assert _mtls_helper._read_cert_and_key_files(str(cert_file), str(key_file)) == (
+            cert_bytes,
+            pytest.private_key_bytes,
+        )
+        mock_sleep.assert_not_called()
+
+    @pytest.mark.skipif(
+        not _mtls_helper._KEY_MATCH_LOAD_KWARGS,
+        reason="Requires unsafe_skip_rsa_key_validation (cryptography >= 39.0.0)",
+    )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_corrupted_rsa_key_still_detects_mismatch(self, mock_sleep, tmp_path):
+        cert_path = os.path.join(pytest.data_dir, "other_cert.pem")
+        nums = serialization.load_pem_private_key(
+            pytest.private_key_bytes,
+            password=None,
+            unsafe_skip_rsa_key_validation=True,
+        ).private_numbers()
+        corrupted_key = rsa.RSAPrivateNumbers(
+            p=nums.p,
+            q=nums.q,
+            d=nums.d,
+            dmp1=nums.dmp1,
+            dmq1=nums.dmq1,
+            iqmp=nums.iqmp ^ 2,
+            public_numbers=nums.public_numbers,
+        ).private_key(unsafe_skip_rsa_key_validation=True)
+        key_file = tmp_path / "corrupted_key.pem"
+        key_file.write_bytes(
+            corrupted_key.private_bytes(
+                serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8,
+                serialization.NoEncryption(),
+            )
+        )
+
+        with pytest.raises(
+            exceptions.ClientCertError, match="do not match after 3 attempts"
+        ):
+            _mtls_helper._read_cert_and_key_files(cert_path, str(key_file))
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+
+    @pytest.mark.parametrize(
+        "signature_side_effect, expected_kwargs",
+        [
+            (
+                [
+                    inspect.Signature(
+                        [
+                            inspect.Parameter(
+                                "unsafe_skip_rsa_key_validation",
+                                inspect.Parameter.KEYWORD_ONLY,
+                                default=False,
+                            )
+                        ]
+                    )
+                ],
+                {"unsafe_skip_rsa_key_validation": True},
+            ),
+            ([inspect.Signature()], {}),
+            (ValueError("no signature found"), {}),
+            (TypeError("not a callable"), {}),
+        ],
+        ids=[
+            "supported",
+            "unsupported_cryptography",
+            "missing_builtin_signature",
+            "non_callable",
+        ],
+    )
+    def test_get_key_match_load_kwargs(self, signature_side_effect, expected_kwargs):
+        with mock.patch(
+            "google.auth.transport._mtls_helper.inspect.signature",
+            autospec=True,
+            side_effect=signature_side_effect,
+        ):
+            assert _mtls_helper._get_key_match_load_kwargs() == expected_kwargs
+
+    @pytest.mark.parametrize(
+        "initial_cert, initial_key",
+        [
+            (None, pytest.private_key_bytes),
+            (pytest.public_cert_bytes, None),
+            (b"-----BEGIN CERTIFICATE-----\nMIIB", pytest.private_key_bytes),
+            (pytest.public_cert_bytes, b""),
+        ],
+        ids=["missing_cert", "missing_key", "partial_cert", "empty_key"],
+    )
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_missing_or_partial_file_recovers_after_rotation(
+        self, mock_sleep, tmp_path, initial_cert, initial_key
+    ):
+        cert_file = tmp_path / "cert.pem"
+        key_file = tmp_path / "key.pem"
+        if initial_cert is not None:
+            cert_file.write_bytes(initial_cert)
+        if initial_key is not None:
+            key_file.write_bytes(initial_key)
+
+        def finish_rotation(_):
+            cert_file.write_bytes(pytest.public_cert_bytes)
+            key_file.write_bytes(pytest.private_key_bytes)
+
+        mock_sleep.side_effect = finish_rotation
+
+        actual_cert, actual_key = _mtls_helper._read_cert_and_key_files(
+            str(cert_file), str(key_file)
+        )
+        assert actual_cert == pytest.public_cert_bytes
+        assert actual_key == pytest.private_key_bytes
+        mock_sleep.assert_called_once_with(0.1)
+
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_read_error_then_mismatch_raises_mismatch_error(self, mock_sleep, tmp_path):
+        cert_file = tmp_path / "cert.pem"
+        cert_file.write_bytes(b"-----BEGIN CERTIFICATE-----\nMIIB")
+        key_path = os.path.join(pytest.data_dir, "es256_privatekey.pem")
+        mock_sleep.side_effect = lambda _: cert_file.write_bytes(
+            pytest.public_cert_bytes
+        )
+
+        with pytest.raises(
+            exceptions.ClientCertError, match="do not match after 3 attempts"
+        ):
+            _mtls_helper._read_cert_and_key_files(str(cert_file), key_path)
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_mismatch_then_read_error_raises_read_error(self, mock_sleep, tmp_path):
+        cert_path = os.path.join(pytest.data_dir, "public_cert.pem")
+        key_file = tmp_path / "key.pem"
+        with open(os.path.join(pytest.data_dir, "es256_privatekey.pem"), "rb") as fh:
+            key_file.write_bytes(fh.read())
+        mock_sleep.side_effect = lambda _: key_file.unlink(missing_ok=True)
+
+        with pytest.raises(FileNotFoundError):
+            _mtls_helper._read_cert_and_key_files(cert_path, str(key_file))
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_no_cert_file(self, mock_sleep):
         cert_path = "fake/file/path"
         key_path = os.path.join(pytest.data_dir, "privatekey.pem")
         with pytest.raises(FileNotFoundError):
             _mtls_helper._read_cert_and_key_files(cert_path, key_path)
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
-    def test_no_key_file(self):
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_no_key_file(self, mock_sleep):
         cert_path = os.path.join(pytest.data_dir, "public_cert.pem")
         key_path = "fake/file/path"
         with pytest.raises(FileNotFoundError):
             _mtls_helper._read_cert_and_key_files(cert_path, key_path)
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
-    def test_invalid_cert_file(self):
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_invalid_cert_file(self, mock_sleep):
         cert_path = os.path.join(pytest.data_dir, "service_account.json")
         key_path = os.path.join(pytest.data_dir, "privatekey.pem")
-        with pytest.raises(exceptions.ClientCertError):
+        with pytest.raises(exceptions.ClientCertError, match="invalid format"):
             _mtls_helper._read_cert_and_key_files(cert_path, key_path)
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
-    def test_invalid_key_file(self):
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_invalid_key_file(self, mock_sleep):
         cert_path = os.path.join(pytest.data_dir, "public_cert.pem")
         key_path = os.path.join(pytest.data_dir, "public_cert.pem")
-        with pytest.raises(exceptions.ClientCertError):
+        with pytest.raises(exceptions.ClientCertError, match="invalid format"):
             _mtls_helper._read_cert_and_key_files(cert_path, key_path)
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
     def test_combined_bundle_with_interleaved_key(self, tmp_path):
         bundle_file = tmp_path / "credentialbundle.pem"
@@ -862,12 +1141,14 @@ class TestReadCertAndKeyFile(object):
         assert actual_cert == pytest.public_cert_bytes + pytest.public_cert_bytes
         assert actual_key == pytest.private_key_bytes
 
-    def test_multiple_keys_raises_error(self, tmp_path):
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_multiple_keys_raises_error(self, mock_sleep, tmp_path):
         cert_path = os.path.join(pytest.data_dir, "public_cert.pem")
         key_file = tmp_path / "two_keys.pem"
         key_file.write_bytes(pytest.private_key_bytes + pytest.private_key_bytes)
-        with pytest.raises(exceptions.ClientCertError):
+        with pytest.raises(exceptions.ClientCertError, match="invalid format"):
             _mtls_helper._read_cert_and_key_files(cert_path, str(key_file))
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
     @pytest.mark.parametrize(
         "trailing_bytes",
@@ -876,12 +1157,16 @@ class TestReadCertAndKeyFile(object):
             b"MIIB\n-----END CERTIFICATE-----\n",
         ],
     )
-    def test_truncated_multi_cert_raises_error(self, tmp_path, trailing_bytes):
+    @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+    def test_truncated_multi_cert_raises_error(
+        self, mock_sleep, tmp_path, trailing_bytes
+    ):
         cert_file = tmp_path / "truncated_chain.pem"
         cert_file.write_bytes(pytest.public_cert_bytes + trailing_bytes)
         key_path = os.path.join(pytest.data_dir, "privatekey.pem")
-        with pytest.raises(exceptions.ClientCertError):
+        with pytest.raises(exceptions.ClientCertError, match="invalid format"):
             _mtls_helper._read_cert_and_key_files(str(cert_file), key_path)
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
 
 class TestGetCertConfigPath(object):
@@ -2577,7 +2862,7 @@ class TestSpiffeWorkloadPolling(object):
         ],
     )
     @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
-    def test_truncated_pem_fails_immediately_without_polling(
+    def test_truncated_pem_fails_without_polling(
         self, mock_sleep, spiffe_dir, monkeypatch, cert_bytes, key_bytes, error_match
     ):
         cert_file = spiffe_dir / "certificates.pem"
@@ -2593,7 +2878,9 @@ class TestSpiffeWorkloadPolling(object):
         with pytest.raises(exceptions.ClientCertError, match=error_match):
             _mtls_helper._get_workload_cert_and_key()
 
-        mock_sleep.assert_not_called()
+        assert _mtls_helper._spiffe_poll_timed_out is False
+        # Only _read_cert_and_key_files's short read retries run, not startup polling.
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
     @mock.patch("google.auth.transport._mtls_helper._read_key_file", autospec=True)
     @mock.patch("google.auth.transport._mtls_helper._read_cert_file", autospec=True)
@@ -2764,7 +3051,7 @@ class TestSpiffeWorkloadPolling(object):
         mock_sleep.assert_not_called()
 
     @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
-    def test_cert_path_is_directory_fails_immediately_without_polling(
+    def test_cert_path_is_directory_fails_without_polling(
         self, mock_sleep, spiffe_dir, monkeypatch
     ):
         cert_dir = spiffe_dir / "certificates.pem"
@@ -2780,7 +3067,9 @@ class TestSpiffeWorkloadPolling(object):
         with pytest.raises(IsADirectoryError):
             _mtls_helper._get_workload_cert_and_key()
 
-        mock_sleep.assert_not_called()
+        assert _mtls_helper._spiffe_poll_timed_out is False
+        # Only _read_cert_and_key_files's short read retries run, not startup polling.
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
 
     @mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
     def test_config_without_workload_section_does_not_poll(
@@ -2860,7 +3149,9 @@ class TestSpiffeWorkloadPolling(object):
 
         with pytest.raises(FileNotFoundError):
             _mtls_helper._get_workload_cert_and_key(str(config_file))
-        mock_sleep.assert_not_called()
+        assert _mtls_helper._spiffe_poll_timed_out is False
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+        mock_sleep.reset_mock()
 
         external_cert.write_bytes(b"invalid pem")
         with pytest.raises(
@@ -2868,7 +3159,9 @@ class TestSpiffeWorkloadPolling(object):
             match="Certificate file .* is in an invalid format",
         ):
             _mtls_helper._get_workload_cert_and_key(str(config_file))
-        mock_sleep.assert_not_called()
+        assert _mtls_helper._spiffe_poll_timed_out is False
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+        mock_sleep.reset_mock()
 
         external_cert.write_bytes(pytest.public_cert_bytes)
         spiffe_cert = spiffe_dir / "certificates.pem"
@@ -2876,7 +3169,9 @@ class TestSpiffeWorkloadPolling(object):
         self._write_workload_config(config_file, spiffe_cert, external_key)
         with pytest.raises(FileNotFoundError):
             _mtls_helper._get_workload_cert_and_key(str(config_file))
-        mock_sleep.assert_not_called()
+        assert _mtls_helper._spiffe_poll_timed_out is False
+        assert mock_sleep.call_args_list == [mock.call(0.1), mock.call(0.1)]
+        mock_sleep.reset_mock()
 
         self._write_workload_config(config_file, external_cert, external_key)
         external_key.write_bytes(pytest.private_key_bytes)
