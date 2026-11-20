@@ -839,6 +839,28 @@ class TestAsyncMultiRangeDownloader:
         assert not mrd.is_stream_open
         assert mrd.object_metadata is None
 
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_close_propagates_caller_cancellation(
+        self, mock_cls_async_read_object_stream
+    ):
+        mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        close_entered = asyncio.Event()
+
+        async def _hanging_close():
+            close_entered.set()
+            await asyncio.Event().wait()
+
+        mrd.read_obj_str.close = AsyncMock(side_effect=_hanging_close)
+
+        task = asyncio.create_task(mrd.close())
+        await close_entered.wait()
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+
     @pytest.mark.asyncio
     async def test_close_mrd_not_opened_should_throw_error(self):
         # Arrange

@@ -1015,7 +1015,6 @@ class AsyncMultiRangeDownloader:
                             await res
                 except (
                     ValueError,
-                    asyncio.CancelledError,
                     exceptions.GoogleAPICallError,
                 ):
                     pass
