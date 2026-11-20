@@ -73,6 +73,11 @@ else:  # pragma: NO COVER
 
         record_http_response = record_response
 
+        async def record_response_async(self, response: Any) -> None:
+            pass
+
+        record_http_response_async = record_response_async
+
         def record_error(self, exc: BaseException | None) -> None:
             pass
 
@@ -84,6 +89,14 @@ else:  # pragma: NO COVER
     # Remove once lowest constraints require google-api-core >= 2.36.0.
     def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:  # type: ignore[misc]
         return _FallbackTraceContext()
+
+
+async def record_http_response_async(trace_ctx: Any, response: Any) -> None:
+    """Records an async HTTP response with fallback for older google-api-core."""
+    if hasattr(trace_ctx, "record_response_async"):
+        await trace_ctx.record_response_async(response)
+    else:
+        trace_ctx.record_response(response)
 
 # The `kind` parameter in gapic_v1.method_async.wrap_method was introduced in
 # google-api-core 2.29.0 (PR #688) alongside _DEFAULT_ASYNC_TRANSPORT_KIND to prevent
@@ -103,6 +116,36 @@ ASYNC_WRAP_METHOD_SUPPORTS_KIND = WRAP_METHOD_SUPPORTS_TRACING or hasattr(
 SUPPORTS_DEFAULT_HOST = (
     "default_host" in inspect.signature(gapic_v1.method.wrap_method).parameters
 )
+
+# google-auth >= 2.49.0 accepts `total_attempts` on AsyncAuthorizedSession
+# methods so GAPIC can disable google-auth's internal 5xx status-code retries
+# and let GAPIC retry and observability wrappers observe every wire attempt.
+_AsyncAuthorizedSession: Any = None
+try:
+    from google.auth.aio.transport import sessions as _ga_async_sessions
+
+    _AsyncAuthorizedSession = getattr(  # pragma: NO COVER
+        _ga_async_sessions, "AsyncAuthorizedSession", None
+    )
+except ImportError:  # pragma: NO COVER
+    _AsyncAuthorizedSession = None
+
+ASYNC_SESSION_SUPPORTS_TOTAL_ATTEMPTS = (
+    _AsyncAuthorizedSession is not None
+    and "total_attempts"
+    in inspect.signature(_AsyncAuthorizedSession.request).parameters
+)
+
+
+def async_rest_request_kwargs(session: Any) -> Dict[str, Any]:
+    """Returns extra kwargs for async REST dispatch when supported by google-auth."""
+    if (
+        ASYNC_SESSION_SUPPORTS_TOTAL_ATTEMPTS
+        and _AsyncAuthorizedSession is not None
+        and isinstance(session, _AsyncAuthorizedSession)
+    ):
+        return {"total_attempts": 1}
+    return {}
 
 try:
     from google.api_core import grpc_helpers

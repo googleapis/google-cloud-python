@@ -41,7 +41,16 @@ from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+{% if rest_async_io_enabled %}
+from {{package_path}}._compat import (
+    async_rest_request_kwargs,
+    record_http_response_async,
+    trace_http_request,
+    transcode_request,
+)
+{% else %}
 from {{package_path}}._compat import transcode_request, trace_http_request
+{% endif %}
 
 import google.protobuf
 

@@ -185,6 +185,9 @@ def _get_http_options():
             {% if body_spec %}
             data=body,
             {% endif %}
+            {% if is_async %}
+            **async_rest_request_kwargs(session),
+            {% endif %}
             {% if not is_async and is_streaming_method %}
             {# NOTE: The underlying `requests` library used for making a sync request
              # requires us to set `stream=True` to avoid loading the entire response
@@ -194,7 +197,11 @@ def _get_http_options():
             stream=True,
             {% endif %}
             )
+        {% if is_async %}
+        await record_http_response_async(trace_ctx, response)
+        {% else %}
         trace_ctx.record_response(response)
+        {% endif %}
         return response
 {% endmacro %}
 
