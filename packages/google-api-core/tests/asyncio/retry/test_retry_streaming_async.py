@@ -375,6 +375,92 @@ class TestAsyncStreamingRetry(Test_BaseRetry):
         # calling next on generator should not raise error, because it was retried
         assert await generator.__anext__() == 1
 
+    @mock.patch("asyncio.sleep", autospec=True)
+    @pytest.mark.asyncio
+    async def test___call___with_generator_throw_handled(self, sleep):
+        """
+        If the target handles an exception passed through athrow and yields
+        a value, athrow should return that value, and the next value sent in
+        should reach the target
+        """
+
+        class Recoverable(Exception):
+            pass
+
+        async def _mock_recover_gen():
+            try:
+                yield "start"
+            except Recoverable:
+                sent = yield "recovered"
+                yield ("received", sent)
+            yield "tail"
+
+        retry_ = retry_streaming_async.AsyncStreamingRetry(
+            predicate=retry_async.if_exception_type(ValueError),
+        )
+        generator = await retry_(_mock_recover_gen)()
+        assert await generator.__anext__() == "start"
+        assert await generator.athrow(Recoverable("test")) == "recovered"
+        assert await generator.asend("reply") == ("received", "reply")
+        assert await generator.__anext__() == "tail"
+        with pytest.raises(StopAsyncIteration):
+            await generator.__anext__()
+        sleep.assert_not_called()
+
+    @mock.patch("asyncio.sleep", autospec=True)
+    @pytest.mark.asyncio
+    async def test___call___with_generator_throw_handled_last_value(self, sleep):
+        """
+        If the value yielded while handling an exception passed through athrow
+        is the last value of the target, athrow should still return it
+        """
+
+        class Recoverable(Exception):
+            pass
+
+        async def _mock_recover_gen():
+            try:
+                yield "start"
+            except Recoverable:
+                yield "recovered"
+
+        retry_ = retry_streaming_async.AsyncStreamingRetry(
+            predicate=retry_async.if_exception_type(ValueError),
+        )
+        generator = await retry_(_mock_recover_gen)()
+        assert await generator.__anext__() == "start"
+        assert await generator.athrow(Recoverable("test")) == "recovered"
+        with pytest.raises(StopAsyncIteration):
+            await generator.__anext__()
+        sleep.assert_not_called()
+
+    @mock.patch("asyncio.sleep", autospec=True)
+    @pytest.mark.asyncio
+    async def test___call___with_generator_throw_handled_return(self, sleep):
+        """
+        If the target handles an exception passed through athrow and returns,
+        athrow should raise StopAsyncIteration
+        """
+
+        class Recoverable(Exception):
+            pass
+
+        async def _mock_recover_gen():
+            try:
+                yield "start"
+            except Recoverable:
+                return
+            yield "tail"  # pragma: NO COVER
+
+        retry_ = retry_streaming_async.AsyncStreamingRetry(
+            predicate=retry_async.if_exception_type(ValueError),
+        )
+        generator = await retry_(_mock_recover_gen)()
+        assert await generator.__anext__() == "start"
+        with pytest.raises(StopAsyncIteration):
+            await generator.athrow(Recoverable("test"))
+        sleep.assert_not_called()
+
     @pytest.mark.parametrize("awaitable_wrapped", [True, False])
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio
