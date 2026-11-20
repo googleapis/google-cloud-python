@@ -759,6 +759,8 @@ class TestBigtableDataClient:
 
         with self._make_client(project="project-id") as client:
             with client.get_table("instance_1", "table_1") as table_1:
+                assert table_1._register_instance_future is not None
+                table_1._register_instance_future.result()
                 instance_1_path = client._gapic_client.instance_path(
                     client.project, "instance_1"
                 )
@@ -883,7 +885,8 @@ class TestBigtableDataClient:
             )
         else:
             raise TypeError(f"unexpected method: {method}")
-        CrossSync._Sync_Impl.yield_to_event_loop()
+        assert surface._register_instance_future is not None
+        CrossSync._Sync_Impl.wait([surface._register_instance_future])
         if method != "get_materialized_view":
             assert surface.table_id == expected_table_id
             assert (
@@ -983,7 +986,8 @@ class TestBigtableDataClient:
                 else:
                     raise TypeError(f"unexpected method: {method}")
                 with fn() as table:
-                    CrossSync._Sync_Impl.yield_to_event_loop()
+                    assert table._register_instance_future is not None
+                    CrossSync._Sync_Impl.wait([table._register_instance_future])
                     assert isinstance(table, surface_type)
                     if method != "get_materialized_view":
                         assert table.table_id == expected_table_id
@@ -1176,6 +1180,8 @@ class TestTable:
         expected_mutate_rows_attempt_timeout = 0.75
         client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
+        if not use_emulator:
+            client._ping_and_warm_instances = CrossSync._Sync_Impl.Mock()
         table = self._get_target_class()(
             client,
             expected_instance_id,
@@ -1188,7 +1194,8 @@ class TestTable:
             default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
             default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
         )
-        CrossSync._Sync_Impl.yield_to_event_loop()
+        assert table._register_instance_future is not None
+        CrossSync._Sync_Impl.wait([table._register_instance_future])
         assert table.table_id == expected_table_id
         assert table.instance_id == expected_instance_id
         assert (
@@ -1232,7 +1239,6 @@ class TestTable:
             == expected_mutate_rows_attempt_timeout
         )
         if use_emulator:
-            table._register_instance_future
             assert table._register_instance_future.done()
             assert not table._register_instance_future.cancelled()
             assert table._register_instance_future.exception() is None
@@ -1531,6 +1537,8 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
         expected_mutate_rows_attempt_timeout = 0.75
         client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
+        if not use_emulator:
+            client._ping_and_warm_instances = CrossSync._Sync_Impl.Mock()
         view = self._get_target_class()(
             client,
             expected_instance_id,
@@ -1544,7 +1552,8 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
             default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
             default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
         )
-        CrossSync._Sync_Impl.yield_to_event_loop()
+        assert view._register_instance_future is not None
+        CrossSync._Sync_Impl.wait([view._register_instance_future])
         assert view.table_id == expected_table_id
         assert (
             view.table_name
@@ -1592,7 +1601,6 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
             == expected_mutate_rows_attempt_timeout
         )
         if use_emulator:
-            view._register_instance_future
             assert view._register_instance_future.done()
             assert not view._register_instance_future.cancelled()
             assert view._register_instance_future.exception() is None
@@ -1654,6 +1662,8 @@ class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
         expected_mutate_rows_attempt_timeout = 0.75
         client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
+        if not use_emulator:
+            client._ping_and_warm_instances = CrossSync._Sync_Impl.Mock()
         view = self._get_target_class()(
             client,
             expected_instance_id,
@@ -1666,7 +1676,8 @@ class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
             default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
             default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
         )
-        CrossSync._Sync_Impl.yield_to_event_loop()
+        assert view._register_instance_future is not None
+        CrossSync._Sync_Impl.wait([view._register_instance_future])
         assert view.instance_id == expected_instance_id
         assert (
             view.instance_name
@@ -1709,7 +1720,6 @@ class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
             == expected_mutate_rows_attempt_timeout
         )
         if use_emulator:
-            view._register_instance_future
             assert view._register_instance_future.done()
             assert not view._register_instance_future.cancelled()
             assert view._register_instance_future.exception() is None
@@ -2788,10 +2798,7 @@ class TestMutateRow:
                     ]
                     mutation = mutations.DeleteAllFromRow()
                     table.mutate_row(
-                        "row_key",
-                        mutation,
-                        operation_timeout=10.0,
-                        attempt_timeout=5.0,
+                        "row_key", mutation, operation_timeout=10.0, attempt_timeout=5.0
                     )
                     mock_timeout_gen.assert_called_once_with(5.0, 10.0)
                     assert mock_gapic.call_count == 2

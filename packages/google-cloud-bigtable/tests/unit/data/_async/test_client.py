@@ -908,6 +908,12 @@ class TestBigtableDataClientAsync:
 
         async with self._make_client(project="project-id") as client:
             async with client.get_table("instance_1", "table_1") as table_1:
+                assert table_1._register_instance_future is not None
+                if not CrossSync.is_async:
+                    # TODO(https://github.com/googleapis/google-cloud-python/issues/19158):
+                    # Wait for background registration until client._register_instance
+                    # records ownership synchronously.
+                    table_1._register_instance_future.result()
                 instance_1_path = client._gapic_client.instance_path(
                     client.project, "instance_1"
                 )
@@ -1052,7 +1058,12 @@ class TestBigtableDataClientAsync:
             )
         else:
             raise TypeError(f"unexpected method: {method}")
-        await CrossSync.yield_to_event_loop()
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/19158):
+        # Wait for the background registration task instead of yield_to_event_loop()
+        # (a no-op in sync mode) until client._register_instance records ownership
+        # synchronously.
+        assert surface._register_instance_future is not None
+        await CrossSync.wait([surface._register_instance_future])
         if method != "get_materialized_view":
             assert surface.table_id == expected_table_id
             assert (
@@ -1167,7 +1178,12 @@ class TestBigtableDataClientAsync:
                 else:
                     raise TypeError(f"unexpected method: {method}")
                 async with fn() as table:
-                    await CrossSync.yield_to_event_loop()
+                    # TODO(https://github.com/googleapis/google-cloud-python/issues/19158):
+                    # Wait for the background registration task instead of
+                    # yield_to_event_loop() (a no-op in sync mode) until
+                    # client._register_instance records ownership synchronously.
+                    assert table._register_instance_future is not None
+                    await CrossSync.wait([table._register_instance_future])
                     assert isinstance(table, surface_type)
                     if method != "get_materialized_view":
                         assert table.table_id == expected_table_id
@@ -1407,6 +1423,10 @@ class TestTableAsync:
         expected_mutate_rows_attempt_timeout = 0.75
         client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
+        if not use_emulator:
+            # Avoid opening a real PingAndWarm RPC so background registration
+            # completes deterministically in sync and async modes.
+            client._ping_and_warm_instances = CrossSync.Mock()
 
         table = self._get_target_class()(
             client,
@@ -1420,7 +1440,12 @@ class TestTableAsync:
             default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
             default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
         )
-        await CrossSync.yield_to_event_loop()
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/19158):
+        # Wait for the background registration task instead of yield_to_event_loop()
+        # (a no-op in sync mode) until client._register_instance records ownership
+        # synchronously.
+        assert table._register_instance_future is not None
+        await CrossSync.wait([table._register_instance_future])
         assert table.table_id == expected_table_id
         assert table.instance_id == expected_instance_id
         assert (
@@ -1464,7 +1489,6 @@ class TestTableAsync:
             == expected_mutate_rows_attempt_timeout
         )
         if use_emulator:
-            await table._register_instance_future
             assert table._register_instance_future.done()
             assert not table._register_instance_future.cancelled()
             assert table._register_instance_future.exception() is None
@@ -1853,6 +1877,10 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         expected_mutate_rows_attempt_timeout = 0.75
         client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
+        if not use_emulator:
+            # Avoid opening a real PingAndWarm RPC so background registration
+            # completes deterministically in sync and async modes.
+            client._ping_and_warm_instances = CrossSync.Mock()
 
         view = self._get_target_class()(
             client,
@@ -1867,7 +1895,12 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
             default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
             default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
         )
-        await CrossSync.yield_to_event_loop()
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/19158):
+        # Wait for the background registration task instead of yield_to_event_loop()
+        # (a no-op in sync mode) until client._register_instance records ownership
+        # synchronously.
+        assert view._register_instance_future is not None
+        await CrossSync.wait([view._register_instance_future])
         assert view.table_id == expected_table_id
         assert (
             view.table_name
@@ -1915,7 +1948,6 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
             == expected_mutate_rows_attempt_timeout
         )
         if use_emulator:
-            await view._register_instance_future
             assert view._register_instance_future.done()
             assert not view._register_instance_future.cancelled()
             assert view._register_instance_future.exception() is None
@@ -1982,6 +2014,10 @@ class TestMaterializedViewsAsync(CrossSync.TestTable):
         expected_mutate_rows_attempt_timeout = 0.75
         client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
+        if not use_emulator:
+            # Avoid opening a real PingAndWarm RPC so background registration
+            # completes deterministically in sync and async modes.
+            client._ping_and_warm_instances = CrossSync.Mock()
 
         view = self._get_target_class()(
             client,
@@ -1995,7 +2031,12 @@ class TestMaterializedViewsAsync(CrossSync.TestTable):
             default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
             default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
         )
-        await CrossSync.yield_to_event_loop()
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/19158):
+        # Wait for the background registration task instead of yield_to_event_loop()
+        # (a no-op in sync mode) until client._register_instance records ownership
+        # synchronously.
+        assert view._register_instance_future is not None
+        await CrossSync.wait([view._register_instance_future])
         assert view.instance_id == expected_instance_id
         assert (
             view.instance_name
@@ -2038,7 +2079,6 @@ class TestMaterializedViewsAsync(CrossSync.TestTable):
             == expected_mutate_rows_attempt_timeout
         )
         if use_emulator:
-            await view._register_instance_future
             assert view._register_instance_future.done()
             assert not view._register_instance_future.cancelled()
             assert view._register_instance_future.exception() is None

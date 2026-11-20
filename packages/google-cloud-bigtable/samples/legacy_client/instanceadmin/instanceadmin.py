@@ -36,7 +36,9 @@ from google.cloud import bigtable
 from google.cloud.bigtable import enums
 
 
-def run_instance_operations(project_id, instance_id, cluster_id):
+def run_instance_operations(
+    project_id, instance_id, cluster_id, location_id="us-central1-f"
+):
     """Check Instance exists.
         Creates a Production instance with default Cluster.
         List instances in a project.
@@ -49,7 +51,6 @@ def run_instance_operations(project_id, instance_id, cluster_id):
     :param instance_id: Instance of the client.
     """
     client = bigtable.Client(project=project_id, admin=True)
-    location_id = "us-central1-f"
     serve_nodes = 1
     storage_type = enums.StorageType.SSD
     labels = {"prod-label": "prod-label"}
@@ -121,7 +122,7 @@ def delete_instance(project_id, instance_id):
     # [END bigtable_delete_instance_legacy]
 
 
-def add_cluster(project_id, instance_id, cluster_id):
+def add_cluster(project_id, instance_id, cluster_id, location_id="us-central1-b"):
     """Add Cluster
 
     :type project_id: str
@@ -136,7 +137,6 @@ def add_cluster(project_id, instance_id, cluster_id):
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
 
-    location_id = "us-central1-a"
     serve_nodes = 1
     storage_type = enums.StorageType.SSD
 

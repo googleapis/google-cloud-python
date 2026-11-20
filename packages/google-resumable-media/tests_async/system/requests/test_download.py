@@ -23,7 +23,6 @@ import os
 import google.auth.transport._aiohttp_requests as tr_requests  # type: ignore
 import multidict  # type: ignore
 import pytest  # type: ignore
-from google.auth._default_async import default_async  # type: ignore
 
 import google._async_resumable_media.requests as resumable_requests
 import google._async_resumable_media.requests.download as download_mod
@@ -181,9 +180,8 @@ async def secret_file(authorized_transport, bucket):
 
 # Transport that returns corrupt data, so we can exercise checksum handling.
 @pytest.fixture(scope="module")
-async def corrupting_transport():
-    credentials, _ = default_async(scopes=(utils.GCS_RW_SCOPE,))
-    yield CorruptingAuthorizedSession(credentials)
+async def corrupting_transport(authorized_transport):
+    yield CorruptingAuthorizedSession(authorized_transport.credentials)
 
 
 @pytest.fixture(scope="module")

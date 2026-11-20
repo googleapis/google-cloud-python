@@ -76,6 +76,11 @@ def pytest_configure(config) -> None:
     ):
         return
 
+    # Under pytest-xdist, only the controller provisions and tears down the
+    # shared sample test instance; workers inherit BIGTABLE_INSTANCE via os.environ.
+    if hasattr(config, "workerinput"):
+        return
+
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     if not project_id:
         raise pytest.UsageError(
@@ -106,23 +111,45 @@ def pytest_configure(config) -> None:
     signal.signal(signal.SIGTERM, _sigterm_handler)
 
     print(f"\nCreating temporary sample test instance: {instance_name}")
+    fallback_zones = (
+        "us-central1-b",
+        "us-central1-c",
+        "us-central1-f",
+        "us-east1-b",
+        "us-west1-b",
+    )
     try:
-        operation = client.create_instance(
-            parent=project_path,
-            instance_id=instance_id,
-            instance=bigtable_admin.Instance(
-                display_name=instance_id,
-                type_=bigtable_admin.Instance.Type.PRODUCTION,
-            ),
-            clusters={
-                f"{instance_id}-c1": bigtable_admin.Cluster(
-                    location=client.common_location_path(project_id, "us-central1-b"),
-                    serve_nodes=1,
-                    default_storage_type=bigtable_admin.StorageType.SSD,
+        last_exc = None
+        for zone in fallback_zones:
+            try:
+                operation = client.create_instance(
+                    parent=project_path,
+                    instance_id=instance_id,
+                    instance=bigtable_admin.Instance(
+                        display_name=instance_id,
+                        type_=bigtable_admin.Instance.Type.PRODUCTION,
+                    ),
+                    clusters={
+                        f"{instance_id}-c1": bigtable_admin.Cluster(
+                            location=client.common_location_path(project_id, zone),
+                            serve_nodes=1,
+                            default_storage_type=bigtable_admin.StorageType.SSD,
+                        )
+                    },
                 )
-            },
-        )
-        operation.result(timeout=240)
+                operation.result(timeout=240)
+                last_exc = None
+                break
+            except exceptions.GoogleAPICallError as exc:
+                message = str(exc).lower()
+                if "sold out" not in message and "not enough servers" not in message:
+                    raise
+                print(
+                    f"Zone {zone} temporarily sold out for {instance_id}, trying next zone..."
+                )
+                last_exc = exc
+        if last_exc is not None:
+            raise last_exc
         os.environ["BIGTABLE_INSTANCE"] = instance_id
         print(f"Created temporary sample test instance: {instance_id}")
     except Exception:
