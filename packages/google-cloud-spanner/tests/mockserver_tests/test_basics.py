@@ -1035,10 +1035,6 @@ class TestBasics(MockServerTestBase):
             lazy_rows = list(lazy_results)
             self.assertEqual([7, "hello world"], lazy_results.decode_row(lazy_rows[0]))
 
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/19079):
-    # Remove @unittest.expectedFailure once Cursor._fetch raises mid-stream
-    # errors instead of silently returning truncated partial rows.
-    @unittest.expectedFailure
     def test_dbapi_fetchall_mid_stream_deadline_exceeded_issue_19079(self):
         sql = "select id from issue_19079_deadline"
         add_single_result(sql, "id", TypeCode.INT64, [("1",), ("2",)])
