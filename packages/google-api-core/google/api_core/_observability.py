@@ -24,6 +24,7 @@ import contextvars
 import enum
 import functools
 import inspect
+import json
 import logging
 import traceback
 import urllib.parse
@@ -266,7 +267,7 @@ def _extract_error_message(
         _TraceContext._extract_http_error_message(http_response)
         if http_response is not None
         else None
-    )
+    ) or getattr(target_exc, "_http_error_message", None)
     details = getattr(target_exc, "details", None)
     details_msg = details() if callable(details) else details
     exc_msg = str(target_exc) if isinstance(target_exc, BaseException) else None
@@ -359,7 +360,9 @@ def build_telemetry_error_attributes(
         http_response = None
 
     # Populate OpenTelemetry semantic error attributes and ErrorInfo metadata
-    attrs: dict[str, Any] = {"rpc.response.status_code": resolved_code}
+    attrs: dict[str, Any] = {}
+    if resolved_code:
+        attrs["rpc.response.status_code"] = resolved_code
     if domain:
         attrs["gcp.errors.domain"] = domain
     if reason:
@@ -369,7 +372,7 @@ def build_telemetry_error_attributes(
     else:
         # Every failed span or log records a low-cardinality error.type; reuse
         # the resolved canonical status code name or exception class name.
-        attrs["error.type"] = resolved_code
+        attrs["error.type"] = resolved_code or target_exc.__class__.__name__
 
     if metadata:
         attrs.update({f"gcp.errors.metadata.{k}": str(v) for k, v in metadata.items()})
@@ -384,7 +387,16 @@ def build_telemetry_error_attributes(
     if include_exception:
         attrs["exception.type"] = exc.__class__.__name__
         attrs["exception.message"] = str(exc)
-        attrs["exception.stacktrace"] = "".join(traceback.format_exception(exc))
+        if exc.__traceback__ is not None:
+            attrs["exception.stacktrace"] = "".join(traceback.format_exception(exc))
+        else:
+            # Synthesize a call-site traceback when an exception is constructed
+            # without being raised (e.g., grpc.aio AioRpcError snapshots).
+            attrs["exception.stacktrace"] = (
+                "Traceback (most recent call last):\n"
+                + "".join(traceback.format_stack()[:-1])
+                + "".join(traceback.format_exception_only(type(exc), exc))
+            )
 
     return attrs
 
@@ -525,28 +537,33 @@ def _build_attempt_log_extra(
     extra_payload: dict[str, Any] = {
         "rpc.system.name": rpc_system,
         **error_attrs,
-        "rpc.response.status_code": resolved_status,
         **extract_trace_context(span),
     }
     if rpc_system == "http":
+        extra_payload.pop("rpc.response.status_code", None)
         extra_payload["url.full"] = target
-        extra_payload["httpRequest"] = {
+        http_request: dict[str, Any] = {
             "requestMethod": http_method,
             "requestUrl": target,
-            "status": (
+        }
+        if status_code is not None:
+            http_request["status"] = (
                 int(status_code)
                 if isinstance(status_code, int)
                 or (isinstance(status_code, str) and status_code.isdecimal())
                 else status_code
-            ),
-        }
+            )
+        extra_payload["httpRequest"] = http_request
     else:
-        extra_payload["rpc.method"] = target
+        if resolved_status:
+            extra_payload["rpc.response.status_code"] = resolved_status
+        extra_payload["rpc.method"] = extract_rpc_identity(target)[0] or None
 
     # Take a shallow copy before assigning json_fields so json_fields does not
     # reference extra_payload itself and cause a circular reference in json.dumps.
     extra_payload["json_fields"] = extra_payload.copy()
-    return extra_payload, resolved_status
+    display_status = resolved_status or error_attrs.get("error.type")
+    return extra_payload, display_status
 
 
 def log_transport_attempt(
@@ -697,10 +714,11 @@ def _make_grpc_client_request_hook(
         # and ensure rpc.method is always captured as the clean, fully-qualified name.
         span_name = getattr(span, "name", None)
         if isinstance(span_name, str) and span_name:
-            clean_method_name = span_name.lstrip("/")
-            if span_name.startswith("/") and hasattr(span, "update_name"):
-                span.update_name(clean_method_name)
-            span.set_attribute("rpc.method", clean_method_name)
+            clean_method_name = extract_rpc_identity(span_name)[0]
+            if clean_method_name:
+                if span_name.startswith("/") and hasattr(span, "update_name"):
+                    span.update_name(clean_method_name)
+                span.set_attribute("rpc.method", clean_method_name)
 
         attrs: dict[str, Any] = {
             "rpc.system.name": "grpc",
@@ -1038,29 +1056,12 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
             used for error logging gating.
     """
 
-    __slots__ = ("_client_options", "_background_tasks")
+    __slots__ = ("_client_options",)
 
     def __init__(
         self, client_options: ClientOptions | dict[str, Any] | None = None
     ) -> None:
         self._client_options = client_options
-        self._background_tasks: set[asyncio.Future[Any]] = set()
-
-    def _schedule_call_inspection(
-        self,
-        target_call: Any,
-        *,
-        method_name: str,
-        active_span: opentelemetry.trace.Span | None,
-    ) -> None:
-        """Schedules async call inspection and retains a strong task reference."""
-        task = asyncio.ensure_future(
-            self._inspect_async_call(
-                target_call, method_name=method_name, active_span=active_span
-            )
-        )
-        self._background_tasks.add(task)
-        task.add_done_callback(self._background_tasks.discard)
 
     @staticmethod
     async def _build_async_rpc_error(
@@ -1102,7 +1103,7 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
         method_name: str,
         active_span: opentelemetry.trace.Span | None,
     ) -> None:
-        """Inspects a completed async gRPC call and logs failed attempts."""
+        """Inspects a non-awaitable async gRPC call and logs failed attempts."""
         try:
             code_fn = getattr(target_call, "code", None)
             if (
@@ -1136,6 +1137,11 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
     ) -> Any:
         """Intercepts an async unary-unary gRPC call and logs failed wire attempts.
 
+        Awaits re-awaitable unary calls (such as ``grpc.aio.UnaryUnaryCall``)
+        inline before returning ``call`` so failed wire attempts are logged
+        with the genuine raised ``AioRpcError`` traceback while the enclosing
+        Tier 4 OpenTelemetry span is still active.
+
         Args:
             continuation (Callable[..., Any]): Next async interceptor or channel
                 continuation callable.
@@ -1154,17 +1160,26 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
         ):
             call = await continuation(client_call_details, request)
 
-        add_callback = getattr(call, "add_done_callback", None)
-        if callable(add_callback):
-            add_callback(
-                functools.partial(
-                    self._schedule_call_inspection,
-                    method_name=method_name,
-                    active_span=active_span,
+        if inspect.isawaitable(call) and not inspect.iscoroutine(call):
+            try:
+                await call
+            except (
+                KeyboardInterrupt,
+                SystemExit,
+                GeneratorExit,
+                asyncio.CancelledError,
+            ):
+                raise
+            except BaseException as exc:
+                log_transport_attempt(
+                    span=active_span,
+                    target=method_name,
+                    kind="grpc",
+                    exc=exc,
+                    client_options=self._client_options,
                 )
-            )
         else:
-            self._schedule_call_inspection(
+            await self._inspect_async_call(
                 call, method_name=method_name, active_span=active_span
             )
         return call
@@ -1517,6 +1532,39 @@ class _TraceContext:
         return None
 
     @classmethod
+    def _parse_http_error_json(
+        cls, payload: Any
+    ) -> tuple[str | None, dict[str, Any] | None]:
+        """Extract (error_message, error_info) from a decoded JSON error payload."""
+        error_msg: str | None = None
+        error_info: dict[str, Any] | None = None
+        if isinstance(payload, list):
+            payload = next((item for item in payload if isinstance(item, dict)), None)
+        err_obj = payload.get("error") if isinstance(payload, dict) else None
+        if isinstance(err_obj, dict):
+            msg = err_obj.get("message")
+            if isinstance(msg, str) and msg:
+                error_msg = msg
+            error_info = cls._extract_error_info_from_details(err_obj.get("details"))
+        elif isinstance(err_obj, str) and err_obj:
+            error_msg = err_obj
+        return error_msg, error_info
+
+    @staticmethod
+    def _extract_http_error_fallback_text(response: Any) -> str | None:
+        """Extract fallback error text from ``response.text`` or ``response.reason``."""
+        for attr in ("text", "reason"):
+            try:
+                val = getattr(response, attr, None)
+                if isinstance(val, str) and val.strip():
+                    return val.strip()
+            # Intentionally catch broad Exception so telemetry extraction
+            # fails open and never disrupts the caller's RPC flow.
+            except Exception:
+                continue
+        return None
+
+    @classmethod
     def _extract_http_error_payload(
         cls, response: Any
     ) -> tuple[str | None, dict[str, Any] | None]:
@@ -1527,39 +1575,52 @@ class _TraceContext:
         json_fn = getattr(response, "json", None)
         if callable(json_fn) and not inspect.iscoroutinefunction(json_fn):
             try:
-                payload = json_fn()
-                if isinstance(payload, list):
-                    payload = next(
-                        (item for item in payload if isinstance(item, dict)), None
-                    )
-                err_obj = payload.get("error") if isinstance(payload, dict) else None
-                if isinstance(err_obj, dict):
-                    msg = err_obj.get("message")
-                    if isinstance(msg, str) and msg:
-                        error_msg = msg
-                    error_info = cls._extract_error_info_from_details(
-                        err_obj.get("details")
-                    )
-                elif isinstance(err_obj, str) and err_obj:
-                    error_msg = err_obj
+                error_msg, error_info = cls._parse_http_error_json(json_fn())
             # Intentionally catch broad Exception so telemetry extraction
             # fails open and never disrupts the caller's RPC flow.
             except Exception:
                 pass
 
         if error_msg is None:
-            for attr in ("text", "reason"):
-                try:
-                    val = getattr(response, attr, None)
-                    if isinstance(val, str) and val.strip():
-                        error_msg = val.strip()
-                        break
-                # Intentionally catch broad Exception so telemetry extraction
-                # fails open and never disrupts the caller's RPC flow.
-                except Exception:
-                    continue
+            error_msg = cls._extract_http_error_fallback_text(response)
 
         return error_msg, error_info
+
+    @classmethod
+    async def _extract_http_error_payload_async(
+        cls, response: Any
+    ) -> tuple[str | None, dict[str, Any] | None]:
+        """Extract (error_message, error_info) asynchronously from an HTTP error response."""
+        read_fn = getattr(response, "read", None)
+        if callable(read_fn) and inspect.iscoroutinefunction(read_fn):
+            error_msg: str | None = None
+            error_info: dict[str, Any] | None = None
+            try:
+                raw_body = await read_fn()
+                if isinstance(raw_body, (bytes, bytearray)):
+                    body_text = raw_body.decode("utf-8", errors="replace")
+                elif isinstance(raw_body, str):
+                    body_text = raw_body
+                else:
+                    body_text = ""
+                if body_text.strip():
+                    try:
+                        error_msg, error_info = cls._parse_http_error_json(
+                            json.loads(body_text)
+                        )
+                    except ValueError:
+                        error_msg = body_text.strip()
+            # Intentionally catch broad Exception so telemetry extraction
+            # fails open and never disrupts the caller's RPC flow.
+            except Exception:
+                pass
+
+            if error_msg is None:
+                error_msg = cls._extract_http_error_fallback_text(response)
+
+            return error_msg, error_info
+
+        return cls._extract_http_error_payload(response)
 
     @classmethod
     def _extract_http_error_message(cls, response: Any) -> str | None:
@@ -1650,6 +1711,56 @@ class _TraceContext:
         except Exception:
             pass
 
+    def _should_record_response(self) -> bool:
+        """Returns True when tracing or error logging requires inspecting the response."""
+        has_span = self._span is not None and hasattr(self._span, "set_attribute")
+        return has_span or client_logging.is_error_logging_enabled(self._client_options)
+
+    def _finalize_http_response(
+        self,
+        response: Any,
+        code_int: int | None,
+        error_msg: str | None,
+        error_info: Mapping[str, Any] | None,
+    ) -> None:
+        """Logs failed HTTP attempts and enriches the active HTTP span."""
+        if code_int is not None and code_int >= 400:
+            self._log_http_attempt(
+                status_code=code_int,
+                status_message=error_msg,
+                error_info=error_info,
+            )
+
+        span = self._span
+        if span is None or not hasattr(span, "set_attribute"):
+            return
+
+        from opentelemetry.trace.status import (  # type: ignore[import-not-found]
+            Status,
+            StatusCode,
+        )
+
+        if code_int is not None:
+            span.set_attribute("http.response.status_code", code_int)
+            if self._parent_span is not None:
+                self._parent_span.set_attribute("http.response.status_code", code_int)
+            if code_int >= 400:
+                span.set_status(Status(StatusCode.ERROR))
+                span.set_attribute("error.type", str(code_int))
+                if error_msg:
+                    span.set_attribute("status.message", error_msg)
+
+        headers = getattr(response, "headers", None)
+        if headers and "Content-Length" in headers:
+            try:
+                span.set_attribute(
+                    "http.response.body.size", int(headers["Content-Length"])
+                )
+            except (ValueError, TypeError):
+                pass
+        elif getattr(response, "_content", None) is not None:
+            span.set_attribute("http.response.body.size", len(response._content))
+
     def record_response(self, response: Any) -> None:
         """Record HTTP span response attributes and log failed attempts.
 
@@ -1657,53 +1768,16 @@ class _TraceContext:
             response (Any): The HTTP response object (e.g. requests.Response).
         """
         try:
-            span = self._span
-            has_span = span is not None and hasattr(span, "set_attribute")
-            if not has_span and not client_logging.is_error_logging_enabled(
-                self._client_options
-            ):
+            if not self._should_record_response():
                 return
 
             code_int = _extract_http_status_code(response)
             error_msg: str | None = None
+            error_info: dict[str, Any] | None = None
             if code_int is not None and code_int >= 400:
                 error_msg, error_info = self._extract_http_error_payload(response)
-                self._log_http_attempt(
-                    status_code=code_int,
-                    status_message=error_msg,
-                    error_info=error_info,
-                )
 
-            if span is None or not hasattr(span, "set_attribute"):
-                return
-
-            from opentelemetry.trace.status import (  # type: ignore[import-not-found]
-                Status,
-                StatusCode,
-            )
-
-            if code_int is not None:
-                span.set_attribute("http.response.status_code", code_int)
-                if self._parent_span is not None:
-                    self._parent_span.set_attribute(
-                        "http.response.status_code", code_int
-                    )
-                if code_int >= 400:
-                    span.set_status(Status(StatusCode.ERROR))
-                    span.set_attribute("error.type", str(code_int))
-                    if error_msg:
-                        span.set_attribute("status.message", error_msg)
-
-            headers = getattr(response, "headers", None)
-            if headers and "Content-Length" in headers:
-                try:
-                    span.set_attribute(
-                        "http.response.body.size", int(headers["Content-Length"])
-                    )
-                except (ValueError, TypeError):
-                    pass
-            elif getattr(response, "_content", None) is not None:
-                span.set_attribute("http.response.body.size", len(response._content))
+            self._finalize_http_response(response, code_int, error_msg, error_info)
         # Intentionally catch broad Exception so telemetry span enrichment
         # fails open and never disrupts the caller's RPC flow.
         except Exception:
@@ -1711,6 +1785,37 @@ class _TraceContext:
 
     # Alias for method name parity with Daniel's suggested convention
     record_http_response = record_response
+
+    async def record_response_async(self, response: Any) -> None:
+        """Asynchronously record HTTP span response attributes and log failed attempts.
+
+        Awaits ``response.read()`` only on failed HTTP responses (``>= 400``)
+        when tracing or error logging is enabled so ``2xx`` paths incur zero
+        extra work.
+
+        Args:
+            response (Any): The async HTTP response object
+                (e.g. ``google.auth.aio.transport.aiohttp.Response``).
+        """
+        try:
+            if not self._should_record_response():
+                return
+
+            code_int = _extract_http_status_code(response)
+            error_msg: str | None = None
+            error_info: dict[str, Any] | None = None
+            if code_int is not None and code_int >= 400:
+                error_msg, error_info = await self._extract_http_error_payload_async(
+                    response
+                )
+
+            self._finalize_http_response(response, code_int, error_msg, error_info)
+        # Intentionally catch broad Exception so telemetry span enrichment
+        # fails open and never disrupts the caller's RPC flow.
+        except Exception:
+            pass
+
+    record_http_response_async = record_response_async
 
     def record_error(self, exc: BaseException | None) -> None:
         """Record error attributes on the active span and log failed attempts.

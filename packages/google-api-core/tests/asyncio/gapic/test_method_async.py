@@ -750,11 +750,14 @@ async def test_wrap_method_async_logging_terminal_error(
 
     mock_service_logger.log.assert_called_once()
     args, kwargs = mock_service_logger.log.call_args
-    assert args == (logging.WARNING, "RPC failed for %s: %s", method_name, err)
+    normalized_method = "google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
+    assert args == (logging.WARNING, "RPC failed for %s: %s", normalized_method, err)
     assert kwargs["exc_info"] is True
 
     extra = kwargs["extra"]
+    assert "rpcName" not in extra
     expected_extra = {
+        "rpc.method": normalized_method,
         "rpc.system.name": expected_rpc_system,
         "rpc.response.status_code": "NOT_FOUND",
     }
@@ -809,7 +812,8 @@ async def test_wrap_method_async_logging_cancellation(
     )
     mock_service_logger.log.assert_called_once()
     args, kwargs = mock_service_logger.log.call_args
-    assert args == (logging.DEBUG, "RPC cancelled for %s: %s", method_name, err)
+    normalized_method = "google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
+    assert args == (logging.DEBUG, "RPC cancelled for %s: %s", normalized_method, err)
     assert kwargs["exc_info"] is False
 
     extra = kwargs["extra"]

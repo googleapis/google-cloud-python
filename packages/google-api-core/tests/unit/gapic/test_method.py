@@ -538,9 +538,8 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
         wrapped()
 
     mock_target.assert_called_once()
-    mock_otel.span.set_attribute.assert_any_call(
-        "rpc.response.status_code", "RuntimeError"
-    )
+    attr_names = [c[0][0] for c in mock_otel.span.set_attribute.call_args_list]
+    assert "rpc.response.status_code" not in attr_names
     mock_otel.span.set_attribute.assert_any_call("error.type", "RuntimeError")
     mock_otel.span.set_attribute.assert_any_call(
         "status.message", "gRPC connection reset"
@@ -834,7 +833,8 @@ def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
     )
     with pytest.raises(ValueError):
         wrapped1()
-    mock_span1.set_attribute.assert_any_call("rpc.response.status_code", "ValueError")
+    attr_names = [c[0][0] for c in mock_span1.set_attribute.call_args_list]
+    assert "rpc.response.status_code" not in attr_names
     mock_span1.set_attribute.assert_any_call("error.type", "ValueError")
 
     # Test span without set_attribute (e.g. mock or stub lacking set_attribute)
@@ -988,12 +988,14 @@ def test_gapic_callable_logging_terminal_error(mock_otel, mock_service_logger):
 
     mock_service_logger.log.assert_called_once()
     args, kwargs = mock_service_logger.log.call_args
-    assert args == (logging.WARNING, "RPC failed for %s: %s", method_name, err)
+    normalized_method = "google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
+    assert args == (logging.WARNING, "RPC failed for %s: %s", normalized_method, err)
     assert kwargs["exc_info"] is True
 
     extra = kwargs["extra"]
+    assert "rpcName" not in extra
     expected_extra = {
-        "rpcName": method_name,
+        "rpc.method": normalized_method,
         "rpc.system.name": "http",
         "rpc.response.status_code": "NOT_FOUND",
         "error.type": "SECRET_NOT_FOUND",
@@ -1005,7 +1007,9 @@ def test_gapic_callable_logging_terminal_error(mock_otel, mock_service_logger):
     assert extra["json_fields"] is not extra
     assert "json_fields" not in extra["json_fields"]
     assert extra["json_fields"]["error.type"] == "SECRET_NOT_FOUND"
-    assert json.loads(json.dumps(extra))["json_fields"]["rpcName"] == method_name
+    assert (
+        json.loads(json.dumps(extra))["json_fields"]["rpc.method"] == normalized_method
+    )
 
 
 def test_gapic_callable_logging_trace_correlation(mock_otel, mock_service_logger):
@@ -1061,7 +1065,8 @@ class _RawCancelledTransportError(Exception):
 
 
 def _make_rest_only_cancelled(message: str) -> exceptions.Cancelled:
-    err = exceptions.Cancelled(message)
+    http_resp = mock.Mock(spec_set=["status_code"], status_code=499)
+    err = exceptions.Cancelled(message, response=http_resp)
     err.grpc_status_code = None
     return err
 
@@ -1136,7 +1141,8 @@ def test_gapic_callable_logging_cancellation(
     )
     mock_service_logger.log.assert_called_once()
     args, kwargs = mock_service_logger.log.call_args
-    assert args == (logging.DEBUG, "RPC cancelled for %s: %s", method_name, err)
+    normalized_method = "google.cloud.secretmanager.v1.SecretManagerService/GetSecret"
+    assert args == (logging.DEBUG, "RPC cancelled for %s: %s", normalized_method, err)
     assert kwargs["exc_info"] is False
 
     extra = kwargs["extra"]
@@ -1224,7 +1230,7 @@ def test_gapic_callable_logging_fail_open_on_feature_gate_and_attr_errors(
 
 
 @pytest.mark.parametrize(
-    "wrap_kwargs,expected_rpc_system,expected_rpc_name,expected_target_arg",
+    "wrap_kwargs,expected_rpc_system,expected_rpc_method,expected_target_arg",
     [
         pytest.param(
             {
@@ -1232,8 +1238,8 @@ def test_gapic_callable_logging_fail_open_on_feature_gate_and_attr_errors(
                 "kind": "grpc",
             },
             "grpc",
-            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
-            "/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+            "google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+            "google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
             id="tracing_disabled_grpc_named",
         ),
         pytest.param(
@@ -1241,14 +1247,21 @@ def test_gapic_callable_logging_fail_open_on_feature_gate_and_attr_errors(
             "http",
             None,
             "unknown_rpc",
-            id="method_name_none_omits_rpc_name",
+            id="method_name_none_omits_rpc_method",
         ),
         pytest.param(
             {"method_name": "", "kind": "grpc"},
             "grpc",
-            "",
+            None,
             "unknown_rpc",
-            id="method_name_empty_uses_unknown_rpc",
+            id="method_name_empty_omits_rpc_method",
+        ),
+        pytest.param(
+            {"method_name": "///", "kind": "grpc"},
+            "grpc",
+            None,
+            "unknown_rpc",
+            id="method_name_slash_only_omits_rpc_method",
         ),
         pytest.param(
             {
@@ -1256,8 +1269,8 @@ def test_gapic_callable_logging_fail_open_on_feature_gate_and_attr_errors(
                 "is_streaming": True,
             },
             "grpc",
-            "/google.cloud.secretmanager.v1.SecretManagerService/StreamSecrets",
-            "/google.cloud.secretmanager.v1.SecretManagerService/StreamSecrets",
+            "google.cloud.secretmanager.v1.SecretManagerService/StreamSecrets",
+            "google.cloud.secretmanager.v1.SecretManagerService/StreamSecrets",
             id="streaming_rpc_without_span",
         ),
     ],
@@ -1267,7 +1280,7 @@ def test_gapic_callable_logging_without_tracing_span(
     mock_service_logger,
     wrap_kwargs,
     expected_rpc_system,
-    expected_rpc_name,
+    expected_rpc_method,
     expected_target_arg,
 ):
     """Emits a WARNING log when span is None and handles empty/None method_name."""
@@ -1291,9 +1304,11 @@ def test_gapic_callable_logging_without_tracing_span(
     }
     assert {k: extra.get(k) for k in expected_extra} == expected_extra
     assert "trace_id" not in extra
-    assert ("rpcName" in extra) == (expected_rpc_name is not None)
-    assert ("rpcName" in extra["json_fields"]) == (expected_rpc_name is not None)
-    assert extra.get("rpcName") == expected_rpc_name
+    assert "rpcName" not in extra
+    assert "rpcName" not in extra["json_fields"]
+    assert ("rpc.method" in extra) == (expected_rpc_method is not None)
+    assert ("rpc.method" in extra["json_fields"]) == (expected_rpc_method is not None)
+    assert extra.get("rpc.method") == expected_rpc_method
 
 
 @mock.patch.object(time, "sleep", autospec=True, spec_set=True)

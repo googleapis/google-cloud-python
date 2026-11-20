@@ -41,6 +41,7 @@ from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 
 _ECHO_METHOD = "/google.showcase.v1beta1.Echo/Echo"
+_NORMALIZED_ECHO_METHOD = "google.showcase.v1beta1.Echo/Echo"
 _ECHO_METHOD_BYTES = b"/google.showcase.v1beta1.Echo/Echo"
 _ECHO_URL = "https://example.com/v1/echo"
 _TEST_TRACE_ID = 0x0123456789ABCDEF0123456789ABCDEF
@@ -49,12 +50,8 @@ _TEST_SPAN_ID = 0x0123456789ABCDEF
 _TEST_SPAN_ID_HEX = "0123456789abcdef"
 _AMBIENT_SPAN_ID = 0x1111111111111111
 _AMBIENT_SPAN_ID_HEX = "1111111111111111"
-_INVALID_ARGUMENT_CODE = (
-    "INVALID_ARGUMENT" if exceptions.grpc is not None else "BAD_REQUEST"
-)
-_UNAVAILABLE_CODE = (
-    "UNAVAILABLE" if exceptions.grpc is not None else "SERVICE_UNAVAILABLE"
-)
+_INVALID_ARGUMENT_CODE = "INVALID_ARGUMENT"
+_UNAVAILABLE_CODE = "UNAVAILABLE"
 
 
 class _DummyGrpcStatus(enum.Enum):
@@ -616,6 +613,19 @@ def test_grpc_client_request_hook_span_edge_cases():
     assert not any(
         call.args[0] == "rpc.method"
         for call in mock_span_empty_name.set_attribute.call_args_list
+    )
+
+    # 4. Span with slash-only name does not overwrite span name or rpc.method with ""
+    mock_span_slash_only = mock.Mock(
+        spec=["is_recording", "name", "set_attribute", "update_name"]
+    )
+    mock_span_slash_only.is_recording.return_value = True
+    mock_span_slash_only.name = "/"
+    _observability._grpc_client_request_hook(mock_span_slash_only, None)
+    mock_span_slash_only.update_name.assert_not_called()
+    assert not any(
+        call.args[0] == "rpc.method"
+        for call in mock_span_slash_only.set_attribute.call_args_list
     )
 
 
@@ -2153,6 +2163,18 @@ def test_extract_error_info_fields_grpc_trailing_metadata(
             id="base_exception_subclass_with_msg",
         ),
         pytest.param(
+            exceptions.format_http_response_error(
+                types.SimpleNamespace(status_code=400),
+                "POST",
+                _ECHO_URL,
+                {"error": {"message": "Clean async server error."}},
+            ),
+            types.SimpleNamespace(status_code=400),
+            None,
+            "Clean async server error.",
+            id="async_http_error_preserves_clean_server_message",
+        ),
+        pytest.param(
             asyncio.CancelledError(),
             None,
             None,
@@ -2197,7 +2219,6 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             ValueError("fail"),
             {},
             {
-                "rpc.response.status_code": "ValueError",
                 "error.type": "ValueError",
                 "status.message": "fail",
             },
@@ -2207,7 +2228,6 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             ValueError(""),
             {},
             {
-                "rpc.response.status_code": "ValueError",
                 "error.type": "ValueError",
             },
             id="standard_exception_empty_message",
@@ -2236,7 +2256,7 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             ),
             {},
             {
-                "rpc.response.status_code": "BAD_REQUEST",
+                "rpc.response.status_code": "INVALID_ARGUMENT",
                 "gcp.errors.domain": "googleapis.com",
                 "error.type": "SERVICE_DISABLED",
                 "gcp.errors.metadata.service": "secretmanager.googleapis.com",
@@ -2252,8 +2272,8 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             ),
             {},
             {
-                "rpc.response.status_code": "BAD_REQUEST",
-                "error.type": "BAD_REQUEST",
+                "rpc.response.status_code": "INVALID_ARGUMENT",
+                "error.type": "INVALID_ARGUMENT",
                 "status.message": "bad request",
             },
             id="empty_error_info_falls_back_to_resolved_code",
@@ -2266,7 +2286,6 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             },
             {"status_message": "Quota exceeded"},
             {
-                "rpc.response.status_code": "dict",
                 "gcp.errors.domain": "googleapis.com",
                 "error.type": "RATE_LIMIT_EXCEEDED",
                 "gcp.errors.metadata.quota": "100",
@@ -2287,7 +2306,7 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             ),
             {},
             {
-                "rpc.response.status_code": "BAD_REQUEST",
+                "rpc.response.status_code": "INVALID_ARGUMENT",
                 "gcp.errors.domain": "d",
                 "error.type": "r",
                 "gcp.errors.metadata.k": "v",
@@ -2307,7 +2326,7 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             ),
             {},
             {
-                "rpc.response.status_code": "BAD_REQUEST",
+                "rpc.response.status_code": "INVALID_ARGUMENT",
                 "gcp.errors.domain": "d",
                 "error.type": "r",
                 "gcp.errors.metadata.k": "v",
@@ -2428,7 +2447,7 @@ def test_extract_error_message(target_exc, http_response, fallback, expected):
             ),
             {},
             {
-                "rpc.response.status_code": "BAD_REQUEST",
+                "rpc.response.status_code": "INVALID_ARGUMENT",
                 "gcp.errors.domain": "googleapis.com",
                 "error.type": "RATE_LIMIT_EXCEEDED",
                 "gcp.errors.metadata.service": "showcase.googleapis.com",
@@ -2515,6 +2534,26 @@ def test_build_telemetry_error_attributes_include_exception(
     assert expected_exc_msg_substr in attrs_inc["exception.message"]
     assert "Traceback (most recent call last):" in attrs_inc["exception.stacktrace"]
     assert "raise exc_factory()" in attrs_inc["exception.stacktrace"]
+
+
+def test_build_telemetry_error_attributes_include_exception_without_traceback():
+    """Proves include_exception=True synthesizes stack frames when __traceback__ is None."""
+    exc = RuntimeError("unraised failure")
+    assert exc.__traceback__ is None
+
+    attrs_inc = _observability.build_telemetry_error_attributes(
+        exc,
+        include_exception=True,
+    )
+    stacktrace = attrs_inc["exception.stacktrace"]
+    assert stacktrace.startswith("Traceback (most recent call last):\n")
+    assert '\n  File "' in stacktrace
+    assert (
+        "test_build_telemetry_error_attributes_include_exception_without_traceback"
+        in stacktrace
+    )
+    assert "in build_telemetry_error_attributes\n" not in stacktrace
+    assert stacktrace.endswith("RuntimeError: unraised failure\n")
 
 
 @pytest.mark.parametrize(
@@ -2750,7 +2789,7 @@ def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, 
             },
             {
                 "rpc.system.name": "grpc",
-                "rpc.method": _ECHO_METHOD,
+                "rpc.method": _NORMALIZED_ECHO_METHOD,
                 "rpc.response.status_code": "UNAVAILABLE",
                 "error.type": "UNAVAILABLE",
                 "status.message": "transient error",
@@ -2802,18 +2841,94 @@ def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, 
         ),
         pytest.param(
             {
+                "target": _ECHO_URL,
+                "status_code": None,
+                "kind": "http",
+                "http_method": "POST",
+                "exc": requests.ReadTimeout("Read timed out"),
+            },
+            {
+                "rpc.system.name": "http",
+                "url.full": _ECHO_URL,
+                "httpRequest": {
+                    "requestMethod": "POST",
+                    "requestUrl": _ECHO_URL,
+                },
+                "error.type": "ReadTimeout",
+                "status.message": "Read timed out",
+            },
+            id="http_client_timeout_omits_null_status_and_rpc_status_code",
+        ),
+        pytest.param(
+            {
                 "target": _ECHO_METHOD,
                 "status_code": "UNKNOWN",
                 "kind": "grpc",
             },
             {
                 "rpc.system.name": "grpc",
-                "rpc.method": _ECHO_METHOD,
+                "rpc.method": _NORMALIZED_ECHO_METHOD,
                 "rpc.response.status_code": "UNKNOWN",
                 "error.type": "UNKNOWN",
                 "status.message": "HTTP UNKNOWN",
             },
             id="failed_grpc_attempt_without_exception",
+        ),
+        pytest.param(
+            {
+                "target": _NORMALIZED_ECHO_METHOD,
+                "status_code": "UNKNOWN",
+                "kind": "grpc",
+            },
+            {
+                "rpc.system.name": "grpc",
+                "rpc.method": _NORMALIZED_ECHO_METHOD,
+                "rpc.response.status_code": "UNKNOWN",
+                "error.type": "UNKNOWN",
+            },
+            id="failed_grpc_attempt_already_normalized_method",
+        ),
+        pytest.param(
+            {
+                "target": None,
+                "status_code": "UNKNOWN",
+                "kind": "grpc",
+            },
+            {
+                "rpc.system.name": "grpc",
+                "rpc.method": None,
+                "rpc.response.status_code": "UNKNOWN",
+                "error.type": "UNKNOWN",
+            },
+            id="failed_grpc_attempt_none_target_preserves_none_method",
+        ),
+        pytest.param(
+            {
+                "target": "",
+                "status_code": "UNKNOWN",
+                "kind": "grpc",
+            },
+            {
+                "rpc.system.name": "grpc",
+                "rpc.method": None,
+                "rpc.response.status_code": "UNKNOWN",
+                "error.type": "UNKNOWN",
+            },
+            id="failed_grpc_attempt_empty_target_normalizes_to_none",
+        ),
+        pytest.param(
+            {
+                "target": "/",
+                "status_code": "UNKNOWN",
+                "kind": "grpc",
+            },
+            {
+                "rpc.system.name": "grpc",
+                "rpc.method": None,
+                "rpc.response.status_code": "UNKNOWN",
+                "error.type": "UNKNOWN",
+            },
+            id="failed_grpc_attempt_slash_only_target_normalizes_to_none",
         ),
     ],
 )
@@ -2830,6 +2945,9 @@ def test_log_transport_attempt_emits_debug(
 
     mock_logger.debug.assert_called_once()
     extra = mock_logger.debug.call_args[1]["extra"]
+    if kwargs.get("kind") == "http":
+        assert "rpc.response.status_code" not in extra
+        assert "rpc.response.status_code" not in extra["json_fields"]
     for key, val in expected_extra.items():
         assert extra[key] == val
         assert extra["json_fields"][key] == val
@@ -2981,7 +3099,7 @@ def test_capture_grpc_attempt_exception_logs_and_reraises_error(
 
     mock_service_logger.debug.assert_called_once()
     extra = mock_service_logger.debug.call_args[1]["extra"]
-    assert extra["rpc.method"] == _ECHO_METHOD
+    assert extra["rpc.method"] == _NORMALIZED_ECHO_METHOD
     assert extra.get("trace_id") == expected_trace_id
     assert extra.get("span_id") == expected_span_id
 
@@ -3117,18 +3235,19 @@ class _BadCodeSyncRpcError(Exception):
 
 
 @pytest.mark.parametrize(
-    "exc_cls,expected_status",
+    "exc_cls,expected_status,expected_error_type",
     [
-        pytest.param(_FakeSyncRpcError, "INTERNAL", id="valid_status_code"),
+        pytest.param(_FakeSyncRpcError, "INTERNAL", "INTERNAL", id="valid_status_code"),
         pytest.param(
             _BadCodeSyncRpcError,
+            None,
             "_BadCodeSyncRpcError",
             id="status_code_method_raises",
         ),
     ],
 )
 def test_grpc_attempt_logging_interceptor_sync_exceptions(
-    mock_service_logger, exc_cls, expected_status
+    mock_service_logger, exc_cls, expected_status, expected_error_type
 ):
     """Proves _GrpcAttemptLoggingInterceptor logs sync continuation errors."""
     interceptor = _observability._GrpcAttemptLoggingInterceptor()
@@ -3140,10 +3259,12 @@ def test_grpc_attempt_logging_interceptor_sync_exceptions(
     with pytest.raises(exc_cls, match=r"sync wire error"):
         interceptor.intercept_unary_unary(raising_continuation, call_details, "req")
     mock_service_logger.debug.assert_called_once()
-    assert (
-        mock_service_logger.debug.call_args[1]["extra"]["rpc.response.status_code"]
-        == expected_status
-    )
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    if expected_status is None:
+        assert "rpc.response.status_code" not in extra
+    else:
+        assert extra["rpc.response.status_code"] == expected_status
+    assert extra["error.type"] == expected_error_type
 
 
 def _make_callback_async_call(
@@ -3382,13 +3503,17 @@ async def test_grpc_attempt_logging_interceptor_async_extracts_error_info(
 
     mock_service_logger.debug.assert_called_once()
     extra = mock_service_logger.debug.call_args[1]["extra"]
-    assert extra["rpc.method"] == _ECHO_METHOD
+    assert extra["rpc.method"] == _NORMALIZED_ECHO_METHOD
     assert extra["rpc.response.status_code"] == "UNAVAILABLE"
     assert extra["exception.type"] == "AioRpcError"
     assert extra["gcp.errors.domain"] == "googleapis.com"
     assert extra["error.type"] == "RATE_LIMIT_EXCEEDED"
     assert extra["gcp.errors.metadata.consumer"] == "projects/123"
     assert extra["status.message"] == "quota exceeded"
+    stacktrace = extra["exception.stacktrace"]
+    assert stacktrace.startswith("Traceback (most recent call last):\n")
+    assert '\n  File "' in stacktrace
+    assert "AioRpcError" in stacktrace
 
 
 @pytest.mark.asyncio
@@ -3430,11 +3555,12 @@ async def test_grpc_attempt_logging_interceptor_async_without_grpc(
 
 
 @pytest.mark.parametrize(
-    "exc_cls,expected_status",
+    "exc_cls,expected_status,expected_error_type",
     [
-        pytest.param(_FakeSyncRpcError, "INTERNAL", id="valid_status_code"),
+        pytest.param(_FakeSyncRpcError, "INTERNAL", "INTERNAL", id="valid_status_code"),
         pytest.param(
             _BadCodeSyncRpcError,
+            None,
             "_BadCodeSyncRpcError",
             id="status_code_method_raises",
         ),
@@ -3442,7 +3568,7 @@ async def test_grpc_attempt_logging_interceptor_async_without_grpc(
 )
 @pytest.mark.asyncio
 async def test_grpc_attempt_logging_interceptor_async_exceptions(
-    mock_service_logger, exc_cls, expected_status
+    mock_service_logger, exc_cls, expected_status, expected_error_type
 ):
     """Proves _AsyncGrpcAttemptLoggingInterceptor logs continuation errors."""
     interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
@@ -3456,10 +3582,168 @@ async def test_grpc_attempt_logging_interceptor_async_exceptions(
             raising_continuation, call_details, "req"
         )
     mock_service_logger.debug.assert_called_once()
-    assert (
-        mock_service_logger.debug.call_args[1]["extra"]["rpc.response.status_code"]
-        == expected_status
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    if expected_status is None:
+        assert "rpc.response.status_code" not in extra
+    else:
+        assert extra["rpc.response.status_code"] == expected_status
+    assert extra["error.type"] == expected_error_type
+
+
+class _ReawaitableAsyncCall:
+    """Fake re-awaitable unary call mirroring grpc.aio.UnaryUnaryCall.__await__."""
+
+    def __init__(self, *, result=None, error=None):
+        self._result = result
+        self._error = error
+        self.await_count = 0
+
+    def __await__(self):
+        async def _resolve():
+            self.await_count += 1
+            if self._error is not None:
+                raise self._error
+            return self._result
+
+        return _resolve().__await__()
+
+
+@pytest.mark.skipif(_observability.grpc is None, reason="grpc is not installed")
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_awaitable_call_failure(
+    mock_service_logger,
+):
+    """Proves re-awaitable async calls log synchronously before return with real traceback."""
+    error_info = error_details_pb2.ErrorInfo(
+        domain="showcase.googleapis.com",
+        reason="INVALID_ARGUMENT_REASON",
+        metadata={"zone": "us-east1-a"},
     )
+    packed_detail = any_pb2.Any()
+    packed_detail.Pack(error_info)
+    status_proto = status_pb2.Status(
+        code=3,
+        message="bad request",
+        details=[packed_detail],
+    )
+    trailing_md = _observability.grpc.aio.Metadata(
+        ("grpc-status-details-bin", status_proto.SerializeToString())
+    )
+    rpc_error = _observability.grpc.aio.AioRpcError(
+        code=_observability.grpc.StatusCode.INVALID_ARGUMENT,
+        initial_metadata=_observability.grpc.aio.Metadata(),
+        trailing_metadata=trailing_md,
+        details="bad request",
+        debug_error_string="INVALID_ARGUMENT:bad request",
+    )
+    call_obj = _ReawaitableAsyncCall(error=rpc_error)
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    # Must log before intercept_unary_unary returns (no event-loop sleep needed)
+    # and return call_obj so upstream OTel can close the T4 span cleanly.
+    res = await interceptor.intercept_unary_unary(
+        fake_continuation, call_details, "req"
+    )
+    assert res is call_obj
+    assert call_obj.await_count == 1
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    assert extra["rpc.method"] == _NORMALIZED_ECHO_METHOD
+    assert extra["rpc.response.status_code"] == "INVALID_ARGUMENT"
+    assert extra["error.type"] == "INVALID_ARGUMENT_REASON"
+    assert extra["gcp.errors.domain"] == "showcase.googleapis.com"
+    assert extra["gcp.errors.metadata.zone"] == "us-east1-a"
+    assert extra["status.message"] == "bad request"
+    assert extra["exception.type"] == "AioRpcError"
+    stacktrace = extra["exception.stacktrace"]
+    assert stacktrace.startswith("Traceback (most recent call last):\n")
+    assert "intercept_unary_unary" in stacktrace
+    assert "_resolve" in stacktrace
+    assert "_build_attempt_log_extra" not in stacktrace
+    assert "build_telemetry_error_attributes" not in stacktrace
+
+    # Caller can still await the returned call and observe the AioRpcError.
+    with pytest.raises(_observability.grpc.aio.AioRpcError):
+        await res
+
+
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_awaitable_call_success(
+    mock_service_logger,
+):
+    """Proves re-awaitable async calls emit zero logs on success and remain awaitable."""
+    call_obj = _ReawaitableAsyncCall(result="ok_response")
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    res = await interceptor.intercept_unary_unary(
+        fake_continuation, call_details, "req"
+    )
+    assert res is call_obj
+    mock_service_logger.debug.assert_not_called()
+    assert await res == "ok_response"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "fatal_exc",
+    [
+        pytest.param(asyncio.CancelledError("cancelled"), id="cancelled_error"),
+        pytest.param(KeyboardInterrupt("ctrl-c"), id="keyboard_interrupt"),
+    ],
+)
+async def test_grpc_attempt_logging_interceptor_async_awaitable_reraises_control_flow(
+    mock_service_logger, fatal_exc
+):
+    """Proves CancelledError and BaseException control flow errors propagate without logging."""
+    call_obj = _ReawaitableAsyncCall(error=fatal_exc)
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    with pytest.raises(type(fatal_exc)):
+        await interceptor.intercept_unary_unary(fake_continuation, call_details, "req")
+    mock_service_logger.debug.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_skips_raw_coroutine(
+    mock_service_logger,
+):
+    """Proves single-use raw coroutines are not consumed by the interceptor."""
+    awaited = False
+
+    async def raw_coro():
+        nonlocal awaited
+        awaited = True
+        return "coro_result"
+
+    coro = raw_coro()
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return coro
+
+    try:
+        res = await interceptor.intercept_unary_unary(
+            fake_continuation, call_details, "req"
+        )
+        assert res is coro
+        assert awaited is False
+        mock_service_logger.debug.assert_not_called()
+        assert await res == "coro_result"
+    finally:
+        coro.close()
 
 
 @pytest.mark.parametrize(
@@ -3653,8 +3937,13 @@ def test_trace_context_record_response_logs_http_errors_when_tracing_disabled(
         "requestUrl": expected_url,
         "status": expected_status,
     }
-    assert extra["rpc.response.status_code"] == str(expected_status)
+    assert "rpc.response.status_code" not in extra
     assert extra["status.message"] == expected_message
+    formatted_msg = (
+        mock_service_logger.debug.call_args.args[0]
+        % mock_service_logger.debug.call_args.args[1:]
+    )
+    assert f"(status={expected_status})" in formatted_msg
 
 
 @pytest.mark.parametrize(
@@ -3699,7 +3988,7 @@ def test_trace_context_record_response_skips_body_parsing_when_telemetry_disable
 
 
 @pytest.mark.parametrize(
-    "exc_factory,expected_rpc_status,expected_http_status,expected_exc_type",
+    "exc_factory,expected_display_status,expected_http_status,expected_exc_type",
     [
         pytest.param(
             lambda: requests.ConnectionError("reset"),
@@ -3751,7 +4040,7 @@ def test_trace_context_exit_logs_dispatch_exceptions_when_tracing_disabled(
     monkeypatch,
     mock_service_logger,
     exc_factory,
-    expected_rpc_status,
+    expected_display_status,
     expected_http_status,
     expected_exc_type,
 ):
@@ -3766,12 +4055,19 @@ def test_trace_context_exit_logs_dispatch_exceptions_when_tracing_disabled(
     mock_service_logger.debug.assert_called_once()
     extra = mock_service_logger.debug.call_args.kwargs["extra"]
     assert extra["rpc.system.name"] == "http"
-    assert extra["rpc.response.status_code"] == expected_rpc_status
-    assert extra["httpRequest"] == {
+    assert "rpc.response.status_code" not in extra
+    formatted_msg = (
+        mock_service_logger.debug.call_args.args[0]
+        % mock_service_logger.debug.call_args.args[1:]
+    )
+    assert f"(status={expected_display_status})" in formatted_msg
+    expected_http_request: dict[str, object] = {
         "requestMethod": "GET",
         "requestUrl": _ECHO_URL,
-        "status": expected_http_status,
     }
+    if expected_http_status is not None:
+        expected_http_request["status"] = expected_http_status
+    assert extra["httpRequest"] == expected_http_request
     assert extra["exception.type"] == expected_exc_type
 
 
@@ -4003,7 +4299,7 @@ def test_trace_context_record_response_extracts_http_error_info(
     mock_otel.span.set_attribute.assert_any_call("error.type", "400")
     mock_service_logger.debug.assert_called_once()
     extra = mock_service_logger.debug.call_args.kwargs["extra"]
-    assert extra["rpc.response.status_code"] == "400"
+    assert "rpc.response.status_code" not in extra
     assert extra["error.type"] == expected_error_type
     assert extra["status.message"] == expected_message
     assert "exception.type" not in extra
@@ -4014,3 +4310,230 @@ def test_trace_context_record_response_extracts_http_error_info(
         assert "gcp.errors.domain" not in extra
     for k, v in expected_metadata.items():
         assert extra[k] == v
+
+
+class _FakeAsyncHttpResponse:
+    """Minimal async HTTP response matching google.auth.aio.transport.aiohttp.Response."""
+
+    def __init__(
+        self,
+        status_code: int,
+        *,
+        body: object = b"",
+        headers: dict[str, str] | None = None,
+        reason: str | None = None,
+        read_error: Exception | None = None,
+    ) -> None:
+        self.status_code = status_code
+        self._body = body
+        self.headers = headers or {}
+        self.reason = reason
+        self._read_error = read_error
+        self.read_calls = 0
+
+    async def read(self) -> object:
+        self.read_calls += 1
+        if self._read_error is not None:
+            raise self._read_error
+        return self._body
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "response_factory,expected_status,expected_error_type,expected_domain,expected_metadata,expected_message,expect_read_calls",
+    [
+        pytest.param(
+            lambda: _FakeAsyncHttpResponse(
+                400,
+                body=(
+                    b'{"error": {"code": 400, "message": "Invalid argument.", '
+                    b'"details": [{"@type": "type.googleapis.com/google.rpc.ErrorInfo", '
+                    b'"reason": "INVALID_ARGUMENT_REASON", "domain": "showcase.googleapis.com", '
+                    b'"metadata": {"zone": "us-east1-a"}}]}}'
+                ),
+                headers={"Content-Length": "188"},
+            ),
+            400,
+            "INVALID_ARGUMENT_REASON",
+            "showcase.googleapis.com",
+            {"gcp.errors.metadata.zone": "us-east1-a"},
+            "Invalid argument.",
+            1,
+            id="async_bytes_json_with_error_info",
+        ),
+        pytest.param(
+            lambda: _FakeAsyncHttpResponse(
+                400,
+                body='{"error": "String error detail"}',
+            ),
+            400,
+            "400",
+            None,
+            {},
+            "String error detail",
+            1,
+            id="async_str_json_with_string_error",
+        ),
+        pytest.param(
+            lambda: _FakeAsyncHttpResponse(
+                502,
+                body=b"Bad Gateway",
+            ),
+            502,
+            "502",
+            None,
+            {},
+            "Bad Gateway",
+            1,
+            id="async_plain_text_non_json_bytes",
+        ),
+        pytest.param(
+            lambda: _FakeAsyncHttpResponse(
+                503,
+                body=b"   ",
+                reason="Service Unavailable",
+            ),
+            503,
+            "503",
+            None,
+            {},
+            "Service Unavailable",
+            1,
+            id="async_whitespace_body_falls_back_to_reason",
+        ),
+        pytest.param(
+            lambda: _FakeAsyncHttpResponse(
+                400,
+                body=12345,
+                reason="Bad Request",
+            ),
+            400,
+            "400",
+            None,
+            {},
+            "Bad Request",
+            1,
+            id="async_non_string_body_falls_back_to_reason",
+        ),
+        pytest.param(
+            lambda: _FakeAsyncHttpResponse(
+                504,
+                reason="Gateway Timeout",
+                read_error=RuntimeError("stream closed"),
+            ),
+            504,
+            "504",
+            None,
+            {},
+            "Gateway Timeout",
+            1,
+            id="async_read_raises_fails_open_to_reason",
+        ),
+        pytest.param(
+            lambda: _make_requests_response(
+                400,
+                body=b'{"error": {"message": "Sync fallback body"}}',
+                reason="Bad Request",
+            ),
+            400,
+            "400",
+            None,
+            {},
+            "Sync fallback body",
+            None,
+            id="sync_response_without_async_read_delegates_to_sync_extractor",
+        ),
+    ],
+)
+async def test_trace_context_record_response_async_extracts_error_info(
+    monkeypatch,
+    mock_otel,
+    mock_service_logger,
+    response_factory,
+    expected_status,
+    expected_error_type,
+    expected_domain,
+    expected_metadata,
+    expected_message,
+    expect_read_calls,
+):
+    """Proves record_response_async parses async JSON ErrorInfo and enriches L4 logs and T4 spans."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    mock_otel.span.get_span_context.return_value = SpanContext(
+        trace_id=_TEST_TRACE_ID,
+        span_id=_TEST_SPAN_ID,
+        is_remote=False,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
+    )
+    resp = response_factory()
+
+    with _observability.trace_http_request(method="POST", url=_ECHO_URL) as ctx:
+        await ctx.record_response_async(resp)
+
+    if expect_read_calls is not None:
+        assert resp.read_calls == expect_read_calls
+    mock_otel.span.set_attribute.assert_any_call(
+        "http.response.status_code", expected_status
+    )
+    mock_otel.span.set_attribute.assert_any_call("error.type", str(expected_status))
+    mock_otel.span.set_attribute.assert_any_call("status.message", expected_message)
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args.kwargs["extra"]
+    assert "rpc.response.status_code" not in extra
+    assert extra["httpRequest"]["status"] == expected_status
+    assert extra["error.type"] == expected_error_type
+    assert extra["status.message"] == expected_message
+    if expected_domain is not None:
+        assert extra["gcp.errors.domain"] == expected_domain
+    else:
+        assert "gcp.errors.domain" not in extra
+    for k, v in expected_metadata.items():
+        assert extra[k] == v
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "status_code,tracing_flag,logging_flag",
+    [
+        pytest.param(200, "true", "true", id="status_200_skips_body_read"),
+        pytest.param(503, "false", "false", id="telemetry_disabled_skips_body_read"),
+    ],
+)
+async def test_trace_context_record_response_async_skips_unnecessary_reads(
+    monkeypatch,
+    mock_service_logger,
+    status_code,
+    tracing_flag,
+    logging_flag,
+):
+    """Proves record_response_async never reads bodies on 2xx responses or when telemetry is disabled."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", tracing_flag)
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", logging_flag)
+    resp = _FakeAsyncHttpResponse(
+        status_code, body=b'{"error": {"message": "ignored"}}'
+    )
+
+    with _observability.trace_http_request(method="POST", url=_ECHO_URL) as ctx:
+        await ctx.record_http_response_async(resp)
+
+    assert resp.read_calls == 0
+    mock_service_logger.debug.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_trace_context_record_response_async_fails_open_on_exception(
+    monkeypatch,
+    mock_service_logger,
+):
+    """Proves record_response_async fails open when inspecting the response raises."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    monkeypatch.setattr(
+        _observability,
+        "_extract_http_status_code",
+        mock.Mock(side_effect=RuntimeError("broken status extractor")),
+    )
+
+    with _observability.trace_http_request(method="POST", url=_ECHO_URL) as ctx:
+        await ctx.record_response_async(_FakeAsyncHttpResponse(500))
+
+    mock_service_logger.debug.assert_not_called()

@@ -190,6 +190,7 @@ class _GapicCallable(object):
         self._compression = compression
         self._client_options = client_options
         self._method_name = method_name
+        self._rpc_method = _observability.extract_rpc_identity(method_name)[0] or None
         self._rpc_system = _observability._resolve_rpc_system(kind)
         self._service_logger = service_logger
 
@@ -302,8 +303,8 @@ class _GapicCallable(object):
                 **error_attrs,
                 **_observability.extract_trace_context(span),
             }
-            if self._method_name is not None:
-                extra_payload["rpcName"] = self._method_name
+            if self._rpc_method:
+                extra_payload["rpc.method"] = self._rpc_method
             if is_cancelled:
                 extra_payload.pop("exception.stacktrace", None)
             # Copy before assigning json_fields so json_fields does not
@@ -321,7 +322,7 @@ class _GapicCallable(object):
                     if is_cancelled
                     else "RPC failed for %s: %s"
                 ),
-                self._method_name or "unknown_rpc",
+                self._rpc_method or "unknown_rpc",
                 exc,
                 exc_info=not is_cancelled,
                 extra=extra_payload,

@@ -150,6 +150,7 @@ def test_from_http_response_no_content():
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: unknown error"
+    assert exception._http_error_message is None
     assert exception.response == response
 
 
@@ -176,6 +177,7 @@ def test_from_http_response_json_content():
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: json message"
+    assert exception._http_error_message == "json message"
     assert exception.errors == ["1", "2"]
 
 
@@ -191,6 +193,7 @@ def test_from_http_response_json_list_content():
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: json message"
+    assert exception._http_error_message == "json message"
     assert exception.errors == ["1", "2"]
 
 
@@ -202,6 +205,7 @@ def test_from_http_response_json_list_content_without_error_dict():
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: unknown error"
+    assert exception._http_error_message is None
 
 
 def test_from_http_response_bad_json_content():
@@ -212,6 +216,7 @@ def test_from_http_response_bad_json_content():
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: unknown error"
+    assert exception._http_error_message is None
 
 
 def test_from_http_response_json_unicode_content():
@@ -530,7 +535,7 @@ def _raising_code():
 @pytest.mark.parametrize(
     "exc_obj, kwargs, expected_code",
     [
-        pytest.param(None, {}, "", id="none_no_default"),
+        pytest.param(None, {}, None, id="none_no_default"),
         pytest.param(
             None, {"default": "UNAVAILABLE"}, "UNAVAILABLE", id="none_with_default"
         ),
@@ -543,14 +548,44 @@ def _raising_code():
         pytest.param(
             exceptions.BadRequest("invalid"),
             {},
-            "BAD_REQUEST",
-            id="google_api_call_error_http_only",
+            "INVALID_ARGUMENT",
+            id="google_api_call_error_http_400_maps_to_invalid_argument",
+        ),
+        pytest.param(
+            exceptions.Unauthorized("unauth"),
+            {},
+            "UNAUTHENTICATED",
+            id="google_api_call_error_http_401_maps_to_unauthenticated",
+        ),
+        pytest.param(
+            exceptions.Forbidden("denied"),
+            {},
+            "PERMISSION_DENIED",
+            id="google_api_call_error_http_403_maps_to_permission_denied",
+        ),
+        pytest.param(
+            exceptions.Conflict("conflict"),
+            {},
+            "ABORTED",
+            id="google_api_call_error_http_409_maps_to_aborted",
+        ),
+        pytest.param(
+            exceptions.TooManyRequests("throttled"),
+            {},
+            "RESOURCE_EXHAUSTED",
+            id="google_api_call_error_http_429_maps_to_resource_exhausted",
+        ),
+        pytest.param(
+            exceptions.GatewayTimeout("timed out"),
+            {},
+            "DEADLINE_EXCEEDED",
+            id="google_api_call_error_http_504_maps_to_deadline_exceeded",
         ),
         pytest.param(
             types.SimpleNamespace(grpc_status_code=types.SimpleNamespace(name=None)),
             {},
-            "SimpleNamespace",
-            id="grpc_status_code_without_name_falls_back",
+            None,
+            id="grpc_status_code_without_name_returns_none",
         ),
         pytest.param(
             types.SimpleNamespace(
@@ -563,14 +598,14 @@ def _raising_code():
         pytest.param(
             types.SimpleNamespace(code=lambda: types.SimpleNamespace(name=None)),
             {},
-            "SimpleNamespace",
-            id="callable_code_without_name_falls_back",
+            None,
+            id="callable_code_without_name_returns_none",
         ),
         pytest.param(
             types.SimpleNamespace(code=_raising_code),
             {},
-            "SimpleNamespace",
-            id="callable_code_raises_falls_back_to_class_name",
+            None,
+            id="callable_code_raises_returns_none",
         ),
         pytest.param(
             types.SimpleNamespace(code=_raising_code),
@@ -592,6 +627,12 @@ def _raising_code():
             id="int_http_status_code_mapped",
         ),
         pytest.param(
+            types.SimpleNamespace(code=405),
+            {},
+            "METHOD_NOT_ALLOWED",
+            id="int_non_canonical_http_status_falls_back_to_http_status_name",
+        ),
+        pytest.param(
             types.SimpleNamespace(code=999),
             {},
             "999",
@@ -600,14 +641,14 @@ def _raising_code():
         pytest.param(
             types.SimpleNamespace(code="unknown_code"),
             {},
-            "SimpleNamespace",
-            id="non_int_code_without_name_falls_back",
+            None,
+            id="non_int_code_without_name_returns_none",
         ),
         pytest.param(
             ValueError("bad val"),
             {},
-            "ValueError",
-            id="standard_exception_class_name",
+            None,
+            id="standard_exception_returns_none",
         ),
         pytest.param(
             ValueError("bad val"),
