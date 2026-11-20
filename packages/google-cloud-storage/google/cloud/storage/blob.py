@@ -4314,6 +4314,7 @@ class Blob(_PropertyMixin):
             # Execute consecutive rewrite operations until operation is done
             token, _, _ = self.rewrite(
                 self,
+                client=client,
                 if_generation_match=if_generation_match,
                 if_generation_not_match=if_generation_not_match,
                 if_metageneration_match=if_metageneration_match,
@@ -4329,6 +4330,7 @@ class Blob(_PropertyMixin):
                 token, _, _ = self.rewrite(
                     self,
                     token=token,
+                    client=client,
                     if_generation_match=if_generation_match,
                     if_generation_not_match=if_generation_not_match,
                     if_metageneration_match=if_metageneration_match,
