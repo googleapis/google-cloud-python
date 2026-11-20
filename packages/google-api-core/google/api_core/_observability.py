@@ -1056,29 +1056,12 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
             used for error logging gating.
     """
 
-    __slots__ = ("_client_options", "_background_tasks")
+    __slots__ = ("_client_options",)
 
     def __init__(
         self, client_options: ClientOptions | dict[str, Any] | None = None
     ) -> None:
         self._client_options = client_options
-        self._background_tasks: set[asyncio.Future[Any]] = set()
-
-    def _schedule_call_inspection(
-        self,
-        target_call: Any,
-        *,
-        method_name: str,
-        active_span: opentelemetry.trace.Span | None,
-    ) -> None:
-        """Schedules async call inspection and retains a strong task reference."""
-        task = asyncio.ensure_future(
-            self._inspect_async_call(
-                target_call, method_name=method_name, active_span=active_span
-            )
-        )
-        self._background_tasks.add(task)
-        task.add_done_callback(self._background_tasks.discard)
 
     @staticmethod
     async def _build_async_rpc_error(
@@ -1120,7 +1103,7 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
         method_name: str,
         active_span: opentelemetry.trace.Span | None,
     ) -> None:
-        """Inspects a completed async gRPC call and logs failed attempts."""
+        """Inspects a non-awaitable async gRPC call and logs failed attempts."""
         try:
             code_fn = getattr(target_call, "code", None)
             if (
@@ -1154,6 +1137,11 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
     ) -> Any:
         """Intercepts an async unary-unary gRPC call and logs failed wire attempts.
 
+        Awaits re-awaitable unary calls (such as ``grpc.aio.UnaryUnaryCall``)
+        inline before returning ``call`` so failed wire attempts are logged
+        with the genuine raised ``AioRpcError`` traceback while the enclosing
+        Tier 4 OpenTelemetry span is still active.
+
         Args:
             continuation (Callable[..., Any]): Next async interceptor or channel
                 continuation callable.
@@ -1172,17 +1160,26 @@ class _AsyncGrpcAttemptLoggingInterceptor(_AsyncUnaryUnaryClientInterceptor):
         ):
             call = await continuation(client_call_details, request)
 
-        add_callback = getattr(call, "add_done_callback", None)
-        if callable(add_callback):
-            add_callback(
-                functools.partial(
-                    self._schedule_call_inspection,
-                    method_name=method_name,
-                    active_span=active_span,
+        if inspect.isawaitable(call) and not inspect.iscoroutine(call):
+            try:
+                await call
+            except (
+                KeyboardInterrupt,
+                SystemExit,
+                GeneratorExit,
+                asyncio.CancelledError,
+            ):
+                raise
+            except BaseException as exc:
+                log_transport_attempt(
+                    span=active_span,
+                    target=method_name,
+                    kind="grpc",
+                    exc=exc,
+                    client_options=self._client_options,
                 )
-            )
         else:
-            self._schedule_call_inspection(
+            await self._inspect_async_call(
                 call, method_name=method_name, active_span=active_span
             )
         return call

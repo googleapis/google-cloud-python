@@ -3590,6 +3590,162 @@ async def test_grpc_attempt_logging_interceptor_async_exceptions(
     assert extra["error.type"] == expected_error_type
 
 
+class _ReawaitableAsyncCall:
+    """Fake re-awaitable unary call mirroring grpc.aio.UnaryUnaryCall.__await__."""
+
+    def __init__(self, *, result=None, error=None):
+        self._result = result
+        self._error = error
+        self.await_count = 0
+
+    def __await__(self):
+        async def _resolve():
+            self.await_count += 1
+            if self._error is not None:
+                raise self._error
+            return self._result
+
+        return _resolve().__await__()
+
+
+@pytest.mark.skipif(_observability.grpc is None, reason="grpc is not installed")
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_awaitable_call_failure(
+    mock_service_logger,
+):
+    """Proves re-awaitable async calls log synchronously before return with real traceback."""
+    error_info = error_details_pb2.ErrorInfo(
+        domain="showcase.googleapis.com",
+        reason="INVALID_ARGUMENT_REASON",
+        metadata={"zone": "us-east1-a"},
+    )
+    packed_detail = any_pb2.Any()
+    packed_detail.Pack(error_info)
+    status_proto = status_pb2.Status(
+        code=3,
+        message="bad request",
+        details=[packed_detail],
+    )
+    trailing_md = _observability.grpc.aio.Metadata(
+        ("grpc-status-details-bin", status_proto.SerializeToString())
+    )
+    rpc_error = _observability.grpc.aio.AioRpcError(
+        code=_observability.grpc.StatusCode.INVALID_ARGUMENT,
+        initial_metadata=_observability.grpc.aio.Metadata(),
+        trailing_metadata=trailing_md,
+        details="bad request",
+        debug_error_string="INVALID_ARGUMENT:bad request",
+    )
+    call_obj = _ReawaitableAsyncCall(error=rpc_error)
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    # Must log before intercept_unary_unary returns (no event-loop sleep needed)
+    # and return call_obj so upstream OTel can close the T4 span cleanly.
+    res = await interceptor.intercept_unary_unary(
+        fake_continuation, call_details, "req"
+    )
+    assert res is call_obj
+    assert call_obj.await_count == 1
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    assert extra["rpc.method"] == _NORMALIZED_ECHO_METHOD
+    assert extra["rpc.response.status_code"] == "INVALID_ARGUMENT"
+    assert extra["error.type"] == "INVALID_ARGUMENT_REASON"
+    assert extra["gcp.errors.domain"] == "showcase.googleapis.com"
+    assert extra["gcp.errors.metadata.zone"] == "us-east1-a"
+    assert extra["status.message"] == "bad request"
+    assert extra["exception.type"] == "AioRpcError"
+    stacktrace = extra["exception.stacktrace"]
+    assert stacktrace.startswith("Traceback (most recent call last):\n")
+    assert "intercept_unary_unary" in stacktrace
+    assert "_resolve" in stacktrace
+    assert "_build_attempt_log_extra" not in stacktrace
+    assert "build_telemetry_error_attributes" not in stacktrace
+
+    # Caller can still await the returned call and observe the AioRpcError.
+    with pytest.raises(_observability.grpc.aio.AioRpcError):
+        await res
+
+
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_awaitable_call_success(
+    mock_service_logger,
+):
+    """Proves re-awaitable async calls emit zero logs on success and remain awaitable."""
+    call_obj = _ReawaitableAsyncCall(result="ok_response")
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    res = await interceptor.intercept_unary_unary(
+        fake_continuation, call_details, "req"
+    )
+    assert res is call_obj
+    mock_service_logger.debug.assert_not_called()
+    assert await res == "ok_response"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "fatal_exc",
+    [
+        pytest.param(asyncio.CancelledError("cancelled"), id="cancelled_error"),
+        pytest.param(KeyboardInterrupt("ctrl-c"), id="keyboard_interrupt"),
+    ],
+)
+async def test_grpc_attempt_logging_interceptor_async_awaitable_reraises_control_flow(
+    mock_service_logger, fatal_exc
+):
+    """Proves CancelledError and BaseException control flow errors propagate without logging."""
+    call_obj = _ReawaitableAsyncCall(error=fatal_exc)
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    with pytest.raises(type(fatal_exc)):
+        await interceptor.intercept_unary_unary(fake_continuation, call_details, "req")
+    mock_service_logger.debug.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_skips_raw_coroutine(
+    mock_service_logger,
+):
+    """Proves single-use raw coroutines are not consumed by the interceptor."""
+    awaited = False
+
+    async def raw_coro():
+        nonlocal awaited
+        awaited = True
+        return "coro_result"
+
+    coro = raw_coro()
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return coro
+
+    try:
+        res = await interceptor.intercept_unary_unary(
+            fake_continuation, call_details, "req"
+        )
+        assert res is coro
+        assert awaited is False
+        mock_service_logger.debug.assert_not_called()
+        assert await res == "coro_result"
+    finally:
+        coro.close()
+
+
 @pytest.mark.parametrize(
     "tracing_enabled,expected_sync_arg_len",
     [
