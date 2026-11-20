@@ -32,6 +32,7 @@ class IsolatedAsyncioTestCase(IsolatedAsyncioTestCase):
                 try:
                     return loop.run_until_complete(testMethod(*args, **kwargs))
                 finally:
+                    loop.run_until_complete(loop.shutdown_asyncgens())
                     loop.close()
 
             setattr(self, self._testMethodName, wrapper)
@@ -2921,12 +2922,321 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         self.assertTrue(res.list_value.values[0].HasField("null_value"))
         self.assertEqual(res.list_value.values[1].string_value, "v1")
 
+    def _make_int_partial(self, values, *, with_metadata=False, last=False):
+        from google.cloud.spanner_v1 import TypeCode
+
+        metadata = None
+        if with_metadata:
+            fields = [self._make_scalar_field("id", TypeCode.INT64)]
+            metadata = self._make_result_set_metadata(fields)
+        return self._make_partial_result_set(
+            [self._make_value(value) for value in values],
+            metadata=metadata,
+            last=last,
+        )
+
+    @CrossSync.pytest
+    async def test_close_is_private_and_no_public_close(self):
+        iterator = _MockCancellableIterator()
+        result_set = self._make_one(iterator)
+        self.assertFalse(hasattr(result_set, "close"))
+        self.assertTrue(hasattr(result_set, "_close"))
+
+    @CrossSync.pytest
+    async def test_close_with_none_iterator(self):
+        result_set = self._make_one(None)
+        await result_set._close()
+        self.assertTrue(result_set._closed)
+        self.assertEqual([row async for row in result_set], [])
+
+    @CrossSync.pytest
+    async def test_close_without_close_method(self):
+        class PlainIterator:
+            pass
+
+        result_set = self._make_one(PlainIterator())
+        await result_set._close()
+        self.assertTrue(result_set._closed)
+        self.assertEqual([row async for row in result_set], [])
+
+    @CrossSync.pytest
+    async def test_close_idempotent_with_generator(self):
+        generator_closed = []
+
+        async def generator():
+            try:
+                yield self._make_partial_result_set([], last=False)
+            finally:
+                generator_closed.append(True)
+
+        response_iterator = generator()
+        await response_iterator.__anext__()
+        result_set = self._make_one(response_iterator)
+
+        await result_set._close()
+        await result_set._close()
+
+        self.assertEqual(generator_closed, [True])
+
+    @CrossSync.pytest
+    async def test_close_supports_sync_close_method(self):
+        class SyncCloseIterator:
+            def __init__(self):
+                self.close_calls = 0
+
+            def close(self):
+                self.close_calls += 1
+
+        iterator = SyncCloseIterator()
+        result_set = self._make_one(iterator)
+
+        await result_set._close()
+        await result_set._close()
+
+        self.assertEqual(iterator.close_calls, 1)
+
+    @CrossSync.pytest
+    async def test_close_falls_back_to_cancel(self):
+        class CancelOnlyIterator:
+            def __init__(self):
+                self.cancel_calls = 0
+
+            def cancel(self):
+                self.cancel_calls += 1
+
+        iterator = CancelOnlyIterator()
+        result_set = self._make_one(iterator)
+
+        await result_set._close()
+        await result_set._close()
+
+        self.assertEqual(iterator.cancel_calls, 1)
+
+    @CrossSync.pytest
+    async def test_close_suppresses_iterator_close_error(self):
+        class FailingCloseIterator:
+            async def aclose(self):
+                raise RuntimeError("close failure")
+
+        result_set = self._make_one(FailingCloseIterator())
+        await result_set._close()
+        self.assertTrue(result_set._closed)
+        self.assertEqual([row async for row in result_set], [])
+
+        class FailingCancelIterator:
+            def cancel(self):
+                raise RuntimeError("cancel failure")
+
+        cancel_result_set = self._make_one(FailingCancelIterator())
+        await cancel_result_set._close()
+        self.assertTrue(cancel_result_set._closed)
+        self.assertEqual([row async for row in cancel_result_set], [])
+
+    @CrossSync.pytest
+    async def test_close_clears_buffered_rows_and_stops_iteration(self):
+        partial = self._make_int_partial([1, 2, 3], with_metadata=True, last=False)
+        result_set = self._make_one(_MockCancellableIterator(partial))
+
+        collected = []
+        async for row in result_set:
+            collected.append(row)
+            await result_set._close()
+
+        self.assertEqual(collected, [[1]])
+        self.assertEqual(result_set._rows, [])
+        self.assertEqual([row async for row in result_set], [])
+        self.assertIsNotNone(result_set.metadata)
+        self.assertEqual(len(result_set.fields), 1)
+        self.assertEqual(result_set.decode_row(partial._pb.values[:1]), [1])
+
+        closed_before_consume = self._make_one(_MockCancellableIterator(partial))
+        await closed_before_consume._close()
+        self.assertIsNone(await closed_before_consume.one_or_none())
+
+    @CrossSync.pytest
+    async def test_close_method_precedence(self):
+        calls = []
+
+        class DualCloseIterator:
+            async def aclose(self):
+                calls.append("aclose")
+
+            def close(self):
+                calls.append("close")
+
+            def cancel(self):
+                calls.append("cancel")
+
+        result_set = self._make_one(DualCloseIterator())
+        await result_set._close()
+        if CrossSync.is_async:
+            self.assertEqual(calls, ["aclose"])
+        else:
+            self.assertEqual(calls, ["close"])
+
+    @CrossSync.pytest
+    async def test_stats_preserved_after_completion(self):
+        from google.cloud.spanner_v1.types import ResultSetStats
+
+        partial = self._make_int_partial([1], with_metadata=True, last=True)
+        partial.stats = ResultSetStats(query_stats={"rows_returned": "1"})
+        stats_result_set = self._make_one(_MockCancellableIterator(partial))
+        self.assertEqual([row async for row in stats_result_set], [[1]])
+        self.assertEqual(stats_result_set.stats.query_stats["rows_returned"], "1")
+
+    @CrossSync.pytest
+    async def test_iter_closes_on_normal_completion(self):
+        generator_closed = []
+        partial = self._make_int_partial([1], with_metadata=True, last=True)
+
+        async def generator():
+            try:
+                yield partial
+            finally:
+                generator_closed.append(True)
+
+        result_set = self._make_one(generator())
+        rows = [row async for row in result_set]
+
+        self.assertEqual(rows, [[1]])
+        self.assertEqual(generator_closed, [True])
+        self.assertTrue(result_set._closed)
+
+    @CrossSync.pytest
+    async def test_iter_closes_on_mid_stream_error(self):
+        from google.cloud.exceptions import NotFound
+
+        generator_closed = []
+        first_partial = self._make_int_partial([1], with_metadata=True, last=False)
+
+        async def generator():
+            try:
+                yield first_partial
+                raise NotFound("row missing")
+            finally:
+                generator_closed.append(True)
+
+        result_set = self._make_one(generator())
+        collected_rows = []
+        with pytest.raises(NotFound, match="row missing"):
+            async for row in result_set:
+                collected_rows.append(row)
+
+        self.assertEqual(collected_rows, [[1]])
+        self.assertEqual(generator_closed, [True])
+        self.assertTrue(result_set._closed)
+
+    @CrossSync.pytest
+    async def test_iter_closes_on_early_break(self):
+        generator_closed = []
+        first_partial = self._make_int_partial([1], with_metadata=True, last=False)
+        second_partial = self._make_int_partial([2], last=True)
+
+        async def generator():
+            try:
+                yield first_partial
+                yield second_partial
+            finally:
+                generator_closed.append(True)
+
+        result_set = self._make_one(generator())
+        collected_rows = []
+        if CrossSync.is_async:
+            rows = result_set.__aiter__()
+            try:
+                async for row in rows:
+                    collected_rows.append(row)
+                    break
+            finally:
+                await rows.aclose()
+        else:
+            for row in result_set:
+                collected_rows.append(row)
+                break
+
+        self.assertEqual(collected_rows, [[1]])
+        self.assertEqual(generator_closed, [True])
+        self.assertTrue(result_set._closed)
+
+    @CrossSync.pytest
+    async def test_one_and_one_or_none_close_across_outcomes(self):
+        from google.cloud.exceptions import NotFound
+
+        empty_partial = self._make_int_partial([], with_metadata=True, last=True)
+        empty_iter = _MockCancellableIterator(empty_partial)
+        empty_result_set = self._make_one(empty_iter)
+        self.assertIsNone(await empty_result_set.one_or_none())
+        self.assertEqual(empty_iter.cancel_calls, 1)
+
+        not_found_iter = _MockCancellableIterator(empty_partial)
+        not_found_result_set = self._make_one(not_found_iter)
+        with pytest.raises(NotFound, match="No rows matched the given query."):
+            await not_found_result_set.one()
+        self.assertEqual(not_found_iter.cancel_calls, 1)
+
+        one_partial = self._make_int_partial([7], with_metadata=True, last=True)
+        single_iter = _MockCancellableIterator(one_partial)
+        single_result_set = self._make_one(single_iter)
+        self.assertEqual(await single_result_set.one(), [7])
+        self.assertEqual(single_iter.cancel_calls, 1)
+
+        multi_partial = self._make_int_partial([7, 8], with_metadata=True, last=True)
+        multi_iter = _MockCancellableIterator(multi_partial)
+        multi_result_set = self._make_one(multi_iter)
+        with pytest.raises(ValueError, match="Expected one result; got more."):
+            await multi_result_set.one_or_none()
+        self.assertEqual(multi_iter.cancel_calls, 1)
+
+        generator_closed = []
+        first_partial = self._make_int_partial([1], with_metadata=True, last=False)
+
+        async def failing_generator():
+            try:
+                yield first_partial
+                raise NotFound("one failed")
+            finally:
+                generator_closed.append(True)
+
+        error_result_set = self._make_one(failing_generator())
+        with pytest.raises(NotFound, match="one failed"):
+            await error_result_set.one()
+        self.assertEqual(generator_closed, [True])
+
+    @CrossSync.pytest
+    async def test_to_dict_list_closes_on_completion_and_error(self):
+        from google.cloud.exceptions import NotFound
+
+        partial = self._make_int_partial([1], with_metadata=True, last=True)
+        ok_iter = _MockCancellableIterator(partial)
+        ok_result_set = self._make_one(ok_iter)
+        self.assertEqual(await ok_result_set.to_dict_list(), [{"id": 1}])
+        self.assertEqual(ok_iter.cancel_calls, 1)
+
+        generator_closed = []
+        first_partial = self._make_int_partial([1], with_metadata=True, last=False)
+
+        async def failing_generator():
+            try:
+                yield first_partial
+                raise NotFound("stream failed")
+            finally:
+                generator_closed.append(True)
+
+        failing_result_set = self._make_one(failing_generator())
+        with pytest.raises(NotFound, match="stream failed"):
+            await failing_result_set.to_dict_list()
+        self.assertEqual(generator_closed, [True])
+        self.assertTrue(failing_result_set._closed)
+
 
 class _MockCancellableIterator(object):
     cancel_calls = 0
 
     def __init__(self, *values):
         self.iter_values = iter(values)
+
+    def cancel(self):
+        self.cancel_calls += 1
 
     def __aiter__(self):
         return self

@@ -20,6 +20,7 @@
 from google.protobuf.struct_pb2 import ListValue, Value
 
 from google.cloud import exceptions
+from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._helpers import _get_type_decoder, _parse_nullable
 from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSetMetadata
 from google.cloud.spanner_v1.types.type import TypeCode
@@ -54,6 +55,7 @@ class StreamedResultSet(object):
         self._field_decoders = None
         self._lazy_decode = lazy_decode
         self._done = False
+        self._closed = False
 
     @property
     def fields(self):
@@ -264,20 +266,44 @@ class StreamedResultSet(object):
         if response_pb.last:
             self._done = True
 
+    def _close(self) -> None:
+        """Close the underlying response iterator idempotently."""
+        if self._closed:
+            return
+        self._closed = True
+        self._rows = []
+        iterator = self._response_iterator
+        if iterator is None:
+            return
+        close_methods = ("close", "cancel")
+        try:
+            for method_name in close_methods:
+                close_method = getattr(iterator, method_name, None)
+                if close_method is not None:
+                    CrossSync._Sync_Impl.run_if_async(close_method)
+                    return
+        except Exception:
+            pass
+
     def __iter__(self):
-        while True:
-            if not self._rows:
+        try:
+            while True:
+                if self._closed:
+                    return
+                if not self._rows:
+                    try:
+                        self._consume_next()
+                    except StopIteration:
+                        return
+                iter_rows, self._rows = (self._rows, [])
+                for row in iter_rows:
+                    if self._closed:
+                        return
+                    yield row
                 if self._done:
                     return
-                try:
-                    self._consume_next()
-                except StopIteration:
-                    return
-            iter_rows, self._rows = (self._rows, [])
-            for row in iter_rows:
-                yield row
-            if self._done:
-                return
+        finally:
+            self._close()
 
     def decode_row(self, row: []) -> []:
         """Decodes a row from protobuf values to Python objects. This function
@@ -327,16 +353,21 @@ class StreamedResultSet(object):
             raise RuntimeError(
                 "Can not call `.one` or `.one_or_none` after stream consumption has already started."
             )
-        while not self._done and len(self._rows) < 2:
-            try:
-                self._consume_next()
-            except StopIteration:
-                break
-        if len(self._rows) == 1:
-            return self._rows.pop()
-        if not self._rows:
+        if self._closed:
             return None
-        raise ValueError("Expected one result; got more.")
+        try:
+            while not self._done and len(self._rows) < 2:
+                try:
+                    self._consume_next()
+                except StopIteration:
+                    break
+            if len(self._rows) == 1:
+                return self._rows.pop()
+            if not self._rows:
+                return None
+            raise ValueError("Expected one result; got more.")
+        finally:
+            self._close()
 
     def to_dict_list(self):
         """Return the result of a query as a list of dictionaries.
@@ -348,12 +379,15 @@ class StreamedResultSet(object):
         :returns: result rows as a list of dictionaries"""
         rows = []
         column_names = None
-        for row in self:
-            if column_names is None:
-                column_names = [
-                    column.name for column in self._metadata.row_type.fields
-                ]
-            rows.append(dict(zip(column_names, row)))
+        try:
+            for row in self:
+                if column_names is None:
+                    column_names = [
+                        column.name for column in self._metadata.row_type.fields
+                    ]
+                rows.append(dict(zip(column_names, row)))
+        finally:
+            self._close()
         return rows
 
 

@@ -3164,6 +3164,76 @@ class TestSnapshot(OpenTelemetryBase):
             ),
         )
 
+    def test_streamed_result_set_records_metrics_completion_on_close(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import (
+            PartialResultSet,
+            ResultSetMetadata,
+            StructType,
+            Type,
+            TypeCode,
+        )
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+
+        class CancellableStream:
+            def __init__(self, items):
+                self._items = iter(items)
+                self.cancel = mock.Mock()
+
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                return next(self._items)
+
+        fields = [StructType.Field(name="col", type_=Type(code=TypeCode.INT64))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        first_partial = PartialResultSet(
+            metadata=metadata_pb, resume_token=b"tok-1", last=False
+        )
+        first_partial.values.append(Value(string_value="1"))
+        second_partial = PartialResultSet(last=True)
+        second_partial.values.append(Value(string_value="2"))
+
+        raw_stream = CancellableStream([first_partial, second_partial])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        database.spanner_api.execute_streaming_sql = mock.Mock(return_value=raw_stream)
+        session = _Session(database)
+        snapshot = self._make_one(session=session, multi_use=False)
+
+        mock_tracer = mock.Mock()
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            result_set = snapshot.execute_sql(SQL_QUERY)
+            result_iter = iter(result_set)
+            first_row = next(result_iter)
+
+            self.assertEqual(first_row, [1])
+            mock_tracer.record_operation_start.assert_called_once()
+            mock_tracer.record_operation_completion.assert_not_called()
+            raw_stream.cancel.assert_not_called()
+
+            result_set._close()
+            mock_tracer.record_operation_completion.assert_called_once()
+            raw_stream.cancel.assert_called_once()
+            result_iter.close()
+            mock_tracer.record_operation_completion.assert_called_once()
+
+            mock_tracer.reset_mock()
+            database.spanner_api.execute_streaming_sql.reset_mock()
+            unstarted_snapshot = self._make_one(session=session, multi_use=False)
+            unstarted = unstarted_snapshot.execute_sql(SQL_QUERY)
+            unstarted._close()
+            self.assertEqual(list(unstarted), [])
+            database.spanner_api.execute_streaming_sql.assert_not_called()
+            mock_tracer.record_operation_start.assert_not_called()
+            mock_tracer.record_operation_completion.assert_not_called()
+
 
 class _Client(object):
     NTH_CLIENT = AtomicCounter()
