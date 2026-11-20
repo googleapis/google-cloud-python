@@ -176,6 +176,33 @@ def test_GbqConnector_download_results_warns_for_large_tables(default_bigquery_c
         connector._download_results(rows_iter)
 
 
+def test_GbqConnector_download_results_uses_provided_client(default_bigquery_client):
+    gbq._test_google_api_imports()
+    provided_client = mock.MagicMock()
+    provided_client.project = "my-proj"
+    provided_client._credentials = mock.sentinel.credentials
+    connector = gbq.GbqConnector(None, bigquery_client=provided_client)
+    rows_iter = mock.create_autospec(
+        google.cloud.bigquery.table.RowIterator, instance=True
+    )
+    rows_iter._table = google.cloud.bigquery.Table.from_api_repr(
+        {
+            "tableReference": {
+                "projectId": "my-proj",
+                "datasetId": "my-dset",
+                "tableId": "my_tbl",
+            },
+            "numBytes": 1,
+        },
+    )
+    provided_client.get_table.return_value = rows_iter._table
+
+    connector._download_results(rows_iter)
+
+    provided_client.get_table.assert_called_once()
+    default_bigquery_client.get_table.assert_not_called()
+
+
 def test_GbqConnector_download_results_doesnt_warn_for_small_tables(
     default_bigquery_client,
 ):

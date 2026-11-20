@@ -65,6 +65,30 @@ def test_to_gbq_create_dataset_translates_exception(mock_bigquery_client):
         gbq.to_gbq(DataFrame([[1]]), "my_dataset.my_table", project_id="1234")
 
 
+def test_to_gbq_creates_table_and_dataset_with_provided_client(mock_bigquery_client):
+    provided_client = mock.MagicMock()
+    provided_client.project = "1234"
+    provided_client._credentials = mock.sentinel.credentials
+    provided_client.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "my_table"
+    )
+    provided_client.get_dataset.side_effect = google.api_core.exceptions.NotFound(
+        "my_dataset"
+    )
+
+    gbq.to_gbq(
+        DataFrame([[1]]),
+        "my_dataset.my_table",
+        bigquery_client=provided_client,
+    )
+
+    assert provided_client.create_dataset.called
+    assert provided_client.create_table.called
+    # No second client should be constructed behind the caller's back.
+    assert not mock_bigquery_client.create_dataset.called
+    assert not mock_bigquery_client.create_table.called
+
+
 def test_to_gbq_load_method_translates_exception(
     mock_bigquery_client, expected_load_method
 ):
