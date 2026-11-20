@@ -24,6 +24,13 @@ from google.cloud.storage import __version__
 from google.cloud.storage.asyncio import async_grpc_client
 
 
+_EXPECTED_KEEPALIVE_OPTIONS = (
+    ("grpc.keepalive_time_ms", 30000),
+    ("grpc.keepalive_timeout_ms", 20000),
+    ("grpc.http2.ping_timeout_ms", 20000),
+)
+
+
 def _make_credentials(spec=None):
     if spec is None:
         return mock.Mock(spec=auth_credentials.Credentials)
@@ -50,7 +57,9 @@ class TestAsyncGrpcClient:
         agent_version = f"gcloud-python/{__version__}"
         assert agent_version in client_info.user_agent
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
@@ -81,7 +90,9 @@ class TestAsyncGrpcClient:
         agent_version = f"gcloud-python/{__version__}"
         assert agent_version in client_info.user_agent
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
@@ -112,7 +123,9 @@ class TestAsyncGrpcClient:
         kwargs = mock_async_storage_client.call_args.kwargs
         client_info = kwargs["client_info"]
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="custom-endpoint.com",
@@ -137,7 +150,9 @@ class TestAsyncGrpcClient:
         agent_version = f"gcloud-python/{__version__}"
         assert agent_version in client_info.user_agent
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
@@ -282,7 +297,9 @@ class TestAsyncGrpcClient:
         assert "test-user-agent" in client_info.user_agent
 
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
@@ -549,7 +566,9 @@ class TestAsyncGrpcClient:
         kwargs = mock_async_storage_client.call_args.kwargs
         client_info = kwargs["client_info"]
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage-direct.googleapis.com",
@@ -581,7 +600,9 @@ class TestAsyncGrpcClient:
         kwargs = mock_async_storage_client.call_args.kwargs
         client_info = kwargs["client_info"]
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="custom.endpoint.com",
@@ -613,7 +634,9 @@ class TestAsyncGrpcClient:
         kwargs = mock_async_storage_client.call_args.kwargs
         client_info = kwargs["client_info"]
         primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+        expected_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _EXPECTED_KEEPALIVE_OPTIONS
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage-direct.googleapis.com",
@@ -648,3 +671,25 @@ class TestAsyncGrpcClient:
         ):
             with pytest.raises(ValueError):
                 async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
+
+    @pytest.mark.parametrize("attempt_direct_path_xds_over_interconnect", [False, True])
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_channel_options_send_keepalive_pings(
+        self,
+        mock_async_storage_client,
+        attempt_direct_path_xds_over_interconnect,
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+
+        async_grpc_client.AsyncGrpcClient(
+            credentials=mock_creds,
+            attempt_direct_path_xds_over_interconnect=attempt_direct_path_xds_over_interconnect,
+        )
+
+        options = dict(mock_transport_cls.create_channel.call_args.kwargs["options"])
+        assert options["grpc.keepalive_time_ms"] == 30000
+        assert options["grpc.keepalive_timeout_ms"] == 20000
+        assert options["grpc.http2.ping_timeout_ms"] == 20000
+        assert "grpc.keepalive_permit_without_calls" not in options
