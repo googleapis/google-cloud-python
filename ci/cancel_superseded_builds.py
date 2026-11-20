@@ -29,9 +29,9 @@ Cloud Build REST API (authenticated via the GCE metadata server):
 2. ``--watch`` (run in the background while tests execute):
    Polls every ``--interval`` seconds (default 30s) for any ``QUEUED`` /
    ``WORKING`` build for the same trigger and PR number whose ``createTime`` is
-   newer than this build and targets a different ``COMMIT_SHA``. If found, this
-   build cancels itself via ``builds:cancel`` so its concurrency slot is freed
-   immediately for the newer commit.
+   newer than this build (whether from a new commit or a duplicate re-run). If
+   found, this build cancels itself via ``builds:cancel`` so its concurrency
+   slot is freed immediately for the newer run.
 
 Requires ``PROJECT_ID``, ``LOCATION``, and ``BUILD_ID`` environment variables
 (populated from Cloud Build built-in substitutions) and
@@ -183,15 +183,17 @@ def _cancel_older_builds(
         other_subs = other.get("substitutions") or {}
         if other_subs.get("_PR_NUMBER") != pr_number:
             continue
-        # Only cancel builds for an earlier commit so manual re-runs of the same
-        # commit or older timestamps are handled safely.
         other_sha = other_subs.get("COMMIT_SHA", "")
-        if my_commit_sha and other_sha == my_commit_sha:
-            continue
         other_create_raw = other.get("createTime", "")
         if not other_create_raw:
             continue
-        if _parse_timestamp(other_create_raw) < my_create_time:
+        # Cancel any earlier build for the same PR and trigger — including
+        # duplicate runs / manual re-runs of the same commit SHA — using
+        # build ID as a deterministic tie-breaker if timestamps match.
+        if (_parse_timestamp(other_create_raw), other_id) < (
+            my_create_time,
+            my_build_id,
+        ):
             print(
                 f"[cancel-superseded] Cancelling older {other.get('status')} build "
                 f"{other_id} (PR #{pr_number}, commit {other_sha[:8]}) superseded by "
@@ -235,12 +237,13 @@ def _watch_for_newer_build(
                 if other_subs.get("_PR_NUMBER") != pr_number:
                     continue
                 other_sha = other_subs.get("COMMIT_SHA", "")
-                if my_commit_sha and other_sha == my_commit_sha:
-                    continue
                 other_create_raw = other.get("createTime", "")
                 if not other_create_raw:
                     continue
-                if _parse_timestamp(other_create_raw) > my_create_time:
+                if (_parse_timestamp(other_create_raw), other_id) > (
+                    my_create_time,
+                    my_build_id,
+                ):
                     print(
                         f"[cancel-superseded] Newer {other.get('status')} build {other_id} "
                         f"(PR #{pr_number}, commit {other_sha[:8]}) detected; "
