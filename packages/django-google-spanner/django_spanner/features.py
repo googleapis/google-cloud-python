@@ -10,8 +10,6 @@ import django
 from django.db.backends.base.features import BaseDatabaseFeatures
 from django.db.utils import InterfaceError
 
-from django_spanner import USE_EMULATOR
-
 
 class DatabaseFeatures(BaseDatabaseFeatures):
     can_introspect_big_integer_field = False
@@ -56,13 +54,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     supports_sequence_reset = False
     supports_timezones = False
     supports_transactions = True
-    if USE_EMULATOR:
-        # Emulator does not support check constraints.
-        supports_column_check_constraints = False
-        supports_table_check_constraints = False
-    else:
-        supports_column_check_constraints = True
-        supports_table_check_constraints = True
+    supports_column_check_constraints = True
+    supports_table_check_constraints = True
     has_native_json_field = True
     supports_json_field = True
     supports_primitives_in_json_field = True
@@ -82,6 +75,11 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # example: CREATE INDEX index_name ON table (LOWER(column_name))
     supports_expression_indexes = False
     supports_stored_generated_columns = True
+    # Spanner GoogleSQL requires a FROM clause when WHERE/GROUP BY/HAVING/ORDER BY
+    # is present (such as in Q.check() / CheckConstraint.validate()). Include a
+    # leading space (like Oracle's " FROM DUAL") because some Django callers
+    # concatenate bare_select_suffix directly without adding whitespace.
+    bare_select_suffix = " FROM UNNEST([1])"
 
     # Django tests that aren't supported by Spanner.
     skip_tests = (
@@ -103,16 +101,20 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "backends.tests.LastExecutedQueryTest.test_last_executed_query_with_duplicate_params",
         # Constraints tests
         "constraints.tests.CheckConstraintTests.test_database_default",
-        "constraints.tests.CheckConstraintTests.test_validate",
-        "constraints.tests.CheckConstraintTests.test_validate_boolean_expressions",
-        "constraints.tests.CheckConstraintTests.test_validate_custom_error",
-        "constraints.tests.CheckConstraintTests.test_validate_generated_field_stored",
         "constraints.tests.CheckConstraintTests.test_validate_jsonfield_exact",
-        "constraints.tests.CheckConstraintTests.test_validate_pk_field",
         "constraints.tests.UniqueConstraintTests.test_validate_case_when",
         "constraints.tests.UniqueConstraintTests.test_validate_expression_condition",
         "constraints.tests.UniqueConstraintTests.test_validate_expression_generated_field_stored",
         "constraints.tests.UniqueConstraintTests.test_validate_fields_generated_field_stored_nulls_distinct",
+        "constraints.tests.UniqueConstraintTests.test_validate_nullable_textfield_with_isnull_true",
+        # Schema tests
+        "schema.tests.SchemaTests.test_check_constraint_exact_jsonfield",
+        "schema.tests.SchemaTests.test_rename_field_with_check_to_truncated_name",
+        # Model Fields tests
+        "model_fields.test_generatedfield.StoredGeneratedFieldTests.test_full_clean_with_check_constraint",
+        # Validation tests
+        "validation.test_constraints.PerformConstraintChecksTest.test_full_clean_with_check_constraints",
+        "validation.test_constraints.PerformConstraintChecksTest.test_full_clean_with_check_constraints_on_child_model",
         # Custom PK tests
         "custom_pk.tests.CustomPKTests.test_auto_field_subclass_create",
         # Datetimes tests
@@ -2331,6 +2333,11 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "model_fields.test_jsonfield.TestQuerying.test_deep_negative_lookup_array",
         "model_fields.test_jsonfield.TestQuerying.test_deep_negative_lookup_mixed",
         "model_fields.test_jsonfield.TestQuerying.test_shallow_list_negative_lookup",
+        # CheckConstraint.validate() uses Q.check() (SELECT 1 WHERE ... without FROM),
+        # which Spanner rejects and poisons the atomic block.
+        "foreign_object.tests.ForeignObjectModelValidationTests.test_validate_constraints_with_foreign_object",
+        "model_forms.tests.ConstraintValidationTests.test_check_constraint_refs_excluded_field",
+        "model_forms.tests.ConstraintValidationTests.test_unique_constraint_refs_excluded_field",
     )
 
     if django.VERSION >= (6, 0):

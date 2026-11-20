@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import logging
 import sys
 import types
 from unittest import mock
@@ -27,8 +28,8 @@ except ImportError:
 
 import google.api_core.gapic_v1.method
 import google.api_core.page_iterator
+from google.api_core import _observability, exceptions, retry, timeout
 from google.api_core import client_options as client_options_lib
-from google.api_core import exceptions, retry, timeout
 from google.api_core.gapic_v1 import client_info
 from tests.helpers import assert_uninstrumented_gapic_callable
 
@@ -848,3 +849,52 @@ def test_wrap_method_uninstrumented_exception():
 
     with pytest.raises(RuntimeError, match="uninstrumented error"):
         wrapped()
+
+
+@pytest.mark.parametrize(
+    "service_logger,expected_logger",
+    [
+        pytest.param(
+            logging.getLogger("google.cloud.bigtable_v2"),
+            logging.getLogger("google.cloud.bigtable_v2"),
+            id="explicit_service_logger_bound",
+        ),
+        pytest.param(
+            None,
+            _observability._DEFAULT_LOGGER,
+            id="unset_service_logger_uses_default",
+        ),
+    ],
+)
+def test_wrap_method_binds_service_logger_context(service_logger, expected_logger):
+    """Proves _GapicCallable binds service_logger into _ACTIVE_SERVICE_LOGGER during call."""
+    observed_loggers = []
+
+    def record_active_logger(*args, **kwargs):
+        observed_loggers.append(_observability._ACTIVE_SERVICE_LOGGER.get())
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        record_active_logger, service_logger=service_logger
+    )
+
+    # Live ContextVar before the RPC starts (no leaked state).
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+    wrapped()
+    # Snapshot captured inside wrapped() while _trace_span() was active.
+    assert observed_loggers == [expected_logger]
+    # Live ContextVar after wrapped() returns (cleanly reset).
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+
+
+def test_wrap_method_grpc_stub_binds_service_logger():
+    """Proves wrap_method preserves an explicit service_logger on a real gRPC stub."""
+    bigtable_logger = logging.getLogger("google.cloud.bigtable_v2")
+    channel = grpc.insecure_channel("localhost:1")
+    try:
+        stub = channel.unary_unary("/google.bigtable.v2.Bigtable/MutateRow")
+        wrapped = google.api_core.gapic_v1.method.wrap_method(
+            stub, kind="grpc", service_logger=bigtable_logger
+        )
+    finally:
+        channel.close()
+    assert wrapped._service_logger is bigtable_logger

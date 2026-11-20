@@ -145,6 +145,12 @@ class _GapicCallable(object):
             Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
         default_host (Optional[str]): Fallback transport host when ``api_endpoint``
             is not set on ``client_options``. Defaults to None.
+        service_logger (Optional[logging.Logger]): Optional service-scoped
+            logger for the calling client library. Bound into
+            ``_observability._ACTIVE_SERVICE_LOGGER`` during each RPC call so
+            downstream transport logs route to the library's logger. Defaults
+            to None (which causes a fall back to
+            ``_observability._DEFAULT_LOGGER``).
     """
 
     _SUPPORTED_TRACING_KINDS = (_TRANSPORT_KIND_GRPC, _TRANSPORT_KIND_REST)
@@ -162,6 +168,7 @@ class _GapicCallable(object):
         client_info=None,
         kind=_DEFAULT_TRANSPORT_KIND,
         default_host=None,
+        service_logger=None,
     ):
         self._target = target
         self._retry = retry
@@ -170,6 +177,7 @@ class _GapicCallable(object):
         self._client_options = client_options
         self._method_name = method_name
         self._rpc_system = _observability._resolve_rpc_system(kind)
+        self._service_logger = service_logger
 
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
@@ -265,7 +273,10 @@ class _GapicCallable(object):
                 # Fail-open: proceed without span if tracing initialization fails
                 span_cm = contextlib.nullcontext()
 
-        with span_cm as span:
+        with (
+            _observability._service_logger_context(self._service_logger),
+            span_cm as span,
+        ):
             try:
                 yield
                 if span is not None and hasattr(span, "set_attribute"):
@@ -302,6 +313,7 @@ def wrap_method(
     is_streaming=False,
     kind=_DEFAULT_TRANSPORT_KIND,
     default_host=None,
+    service_logger=None,
 ):
     """Wrap an RPC method with common behavior.
 
@@ -398,6 +410,8 @@ def wrap_method(
             Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
         default_host (Optional[str]): Fallback transport host when ``api_endpoint``
             is not set on ``client_options``. Defaults to None.
+        service_logger (Optional[logging.Logger]): Optional service-scoped
+            logger for the calling client library. Defaults to None.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -431,5 +445,6 @@ def wrap_method(
             client_info=client_info,
             kind=kind,
             default_host=default_host,
+            service_logger=service_logger,
         )
     )

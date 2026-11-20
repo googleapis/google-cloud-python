@@ -19,6 +19,8 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     ExecuteBatchDmlRequest,
     ExecuteSqlRequest,
+    KeySet,
+    ReadRequest,
     TypeCode,
 )
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
@@ -28,7 +30,9 @@ from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     aborted_status,
     add_error,
+    add_execute_streaming_sql_error,
     add_single_result,
+    add_streaming_read_error,
     add_update_count,
 )
 
@@ -92,6 +96,74 @@ class TestAbortedTransaction(MockServerTestBase):
         self.assert_requests_sequence(
             requests,
             [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    def test_run_in_transaction_query_mid_stream_aborted(self):
+        # Verify mid-stream Aborted on ExecuteStreamingSql triggers full transaction
+        # retry after yielding partial rows from the first attempt.
+        sql = "select value from my_table where id=1"
+        add_single_result(
+            sql,
+            "value",
+            TypeCode.STRING,
+            [("row1",), ("row2",)],
+        )
+        add_execute_streaming_sql_error(sql, 1, aborted_status())
+
+        observed_attempts = []
+        partial_rows_seen = []
+
+        def _query_tracking_partials(transaction: Transaction):
+            attempt_rows = []
+            for row in transaction.execute_sql(sql):
+                attempt_rows.append(row)
+                partial_rows_seen.append(row)
+            observed_attempts.append(attempt_rows)
+            return attempt_rows
+
+        result = self.database.run_in_transaction(_query_tracking_partials)
+        self.assertEqual([["row1"], ["row2"]], result)
+        self.assertEqual([[["row1"], ["row2"]]], observed_attempts)
+        self.assertEqual([["row1"], ["row1"], ["row2"]], partial_rows_seen)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    def test_run_in_transaction_streaming_read_mid_stream_aborted(self):
+        # Verify mid-stream Aborted on StreamingRead triggers full transaction retry
+        # after yielding partial rows from the first attempt.
+        add_single_result(
+            "SELECT value FROM my_table",
+            "value",
+            TypeCode.STRING,
+            [("row1",), ("row2",)],
+        )
+        add_streaming_read_error("my_table", ["value"], 1, aborted_status())
+
+        partial_rows_seen = []
+
+        def _read_tracking_partials(transaction: Transaction):
+            attempt_rows = []
+            for row in transaction.read(
+                table="my_table",
+                columns=["value"],
+                keyset=KeySet(all_=True),
+            ):
+                attempt_rows.append(row)
+                partial_rows_seen.append(row)
+            return attempt_rows
+
+        result = self.database.run_in_transaction(_read_tracking_partials)
+        self.assertEqual([["row1"], ["row2"]], result)
+        self.assertEqual([["row1"], ["row1"], ["row2"]], partial_rows_seen)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ReadRequest, ReadRequest, CommitRequest],
             TransactionType.READ_WRITE,
         )
 

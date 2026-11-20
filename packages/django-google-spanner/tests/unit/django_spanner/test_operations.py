@@ -282,6 +282,10 @@ class TestOperations(SpannerSimpleTestClass):
             self.assertEqual(self.db_operations.quote_name("`already`"), "`already`")
             self.assertEqual(self.db_operations.quote_name(""), "")
             self.assertEqual(self.db_operations.quote_name("   "), "___")
+            self.assertEqual(
+                self.db_operations.quote_name("Generated model check constraint a > 0"),
+                "Generated_model_check_constraint_a___0",
+            )
             for sample in ("my col-name", "SELECT", "`a b-c`", "a b\nc"):
                 once = self.db_operations.quote_name(sample)
                 self.assertEqual(self.db_operations.quote_name(once), once)
@@ -292,6 +296,10 @@ class TestOperations(SpannerSimpleTestClass):
         ):
             self.assertEqual(
                 self.db_operations.quote_name("my col-name"), "`my col-name`"
+            )
+            self.assertEqual(
+                self.db_operations.quote_name("a > 0"),
+                "`a > 0`",
             )
 
         with mock.patch.dict("django_spanner.operations.os.environ", {}, clear=True):

@@ -13,25 +13,80 @@
 # limitations under the License.
 
 import asyncio
+import enum
+import http
+import logging
+import re
 import sys
 import types
 import urllib.parse
 from unittest import mock
 
+import opentelemetry.trace as otel_trace
 import pytest
-from google.rpc import error_details_pb2
-from opentelemetry.trace import INVALID_SPAN, Span, SpanContext, TraceFlags
+import requests
+import urllib3
+from google.protobuf import any_pb2
+from google.rpc import error_details_pb2, status_pb2
+from opentelemetry.trace import (
+    INVALID_SPAN,
+    NonRecordingSpan,
+    Span,
+    SpanContext,
+    TraceFlags,
+)
 
 from google.api_core import _observability, exceptions
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 
+_ECHO_METHOD = "/google.showcase.v1beta1.Echo/Echo"
+_ECHO_METHOD_BYTES = b"/google.showcase.v1beta1.Echo/Echo"
+_ECHO_URL = "https://example.com/v1/echo"
+_TEST_TRACE_ID = 0x0123456789ABCDEF0123456789ABCDEF
+_TEST_TRACE_ID_HEX = "0123456789abcdef0123456789abcdef"
+_TEST_SPAN_ID = 0x0123456789ABCDEF
+_TEST_SPAN_ID_HEX = "0123456789abcdef"
+_AMBIENT_SPAN_ID = 0x1111111111111111
+_AMBIENT_SPAN_ID_HEX = "1111111111111111"
 _INVALID_ARGUMENT_CODE = (
     "INVALID_ARGUMENT" if exceptions.grpc is not None else "BAD_REQUEST"
 )
 _UNAVAILABLE_CODE = (
     "UNAVAILABLE" if exceptions.grpc is not None else "SERVICE_UNAVAILABLE"
 )
+
+
+class _DummyGrpcStatus(enum.Enum):
+    OK = 0
+    INTERNAL = 13
+    UNAVAILABLE = 14
+
+
+def _make_sampled_span(trace_id: int = _TEST_TRACE_ID, span_id: int = _TEST_SPAN_ID):
+    """Creates a sealed, autospecced Span with a sampled SpanContext."""
+    span = mock.create_autospec(Span, instance=True, spec_set=True)
+    span.get_span_context.return_value = SpanContext(
+        trace_id=trace_id,
+        span_id=span_id,
+        is_remote=False,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
+    )
+    mock.seal(span)
+    return span
+
+
+def _make_requests_response(
+    status_code: int,
+    body: bytes = b"",
+    reason: str = "",
+) -> requests.Response:
+    """Constructs a real requests.Response instance for HTTP telemetry tests."""
+    resp = requests.Response()
+    resp.status_code = status_code
+    resp._content = body
+    resp.reason = reason
+    return resp
 
 
 def test_is_otel_capabilities_enabled_disabled(monkeypatch):
@@ -1721,20 +1776,19 @@ def test_has_opentelemetry_missing_and_cached(monkeypatch):
 def test_extract_trace_context_with_real_span_context(flags, expected_sampled):
     """Proves extract_trace_context formats real OpenTelemetry SpanContext objects."""
     context = SpanContext(
-        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
-        span_id=0x0123456789ABCDEF,
+        trace_id=_TEST_TRACE_ID,
+        span_id=_TEST_SPAN_ID,
         is_remote=False,
         trace_flags=flags,
     )
 
-    span = mock.Mock(spec_set=["get_span_context"])
-    span.get_span_context.return_value = context
+    span = NonRecordingSpan(context)
 
     expected = {
-        "trace_id": "0123456789abcdef0123456789abcdef",
-        "span_id": "0123456789abcdef",
-        "logging.googleapis.com/trace": "0123456789abcdef0123456789abcdef",
-        "logging.googleapis.com/spanId": "0123456789abcdef",
+        "trace_id": _TEST_TRACE_ID_HEX,
+        "span_id": _TEST_SPAN_ID_HEX,
+        "logging.googleapis.com/trace": _TEST_TRACE_ID_HEX,
+        "logging.googleapis.com/spanId": _TEST_SPAN_ID_HEX,
         "logging.googleapis.com/trace_sampled": expected_sampled,
     }
     assert _observability.extract_trace_context(span) == expected
@@ -1772,36 +1826,102 @@ def test_extract_trace_context_fail_open_on_broken_spans(span):
     assert _observability.extract_trace_context(span) == {}
 
 
-def test_extract_trace_context_ambient_fallback(monkeypatch, mock_otel):
-    """Proves extract_trace_context falls back to get_current_span() when span is None."""
+def test_extract_trace_context_ambient_fallback(monkeypatch):
+    """Proves extract_trace_context falls back to get_current_span()."""
     monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
-    mock_otel.span.get_span_context.return_value = SpanContext(
-        trace_id=0x0123456789ABCDEF0123456789ABCDEF,
-        span_id=0x0123456789ABCDEF,
-        is_remote=False,
-        trace_flags=TraceFlags.SAMPLED,
-    )
+    with mock.patch.object(
+        otel_trace,
+        "get_current_span",
+        autospec=True,
+        spec_set=True,
+        return_value=_make_sampled_span(),
+    ):
+        assert _observability.extract_trace_context() == {
+            "trace_id": _TEST_TRACE_ID_HEX,
+            "span_id": _TEST_SPAN_ID_HEX,
+            "logging.googleapis.com/trace": _TEST_TRACE_ID_HEX,
+            "logging.googleapis.com/spanId": _TEST_SPAN_ID_HEX,
+            "logging.googleapis.com/trace_sampled": True,
+        }
 
-    assert _observability.extract_trace_context(None) == {
-        "trace_id": "0123456789abcdef0123456789abcdef",
-        "span_id": "0123456789abcdef",
-        "logging.googleapis.com/trace": "0123456789abcdef0123456789abcdef",
-        "logging.googleapis.com/spanId": "0123456789abcdef",
-        "logging.googleapis.com/trace_sampled": True,
-    }
 
-
-def test_extract_trace_context_ambient_get_current_span_error(monkeypatch, mock_otel):
+def test_extract_trace_context_ambient_get_current_span_error(monkeypatch):
     """Proves extract_trace_context fails open to {} if get_current_span() raises."""
     monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
-    mock_otel.trace.get_current_span.side_effect = RuntimeError("ambient error")
-    assert _observability.extract_trace_context(None) == {}
+    with mock.patch.object(
+        otel_trace,
+        "get_current_span",
+        autospec=True,
+        spec_set=True,
+        side_effect=RuntimeError("ambient error"),
+    ):
+        assert _observability.extract_trace_context() == {}
 
 
 def test_extract_trace_context_ambient_otel_missing(monkeypatch):
-    """Proves extract_trace_context returns {} when span is None and OTel is not installed."""
+    """Proves extract_trace_context returns {} when OTel is not installed."""
     monkeypatch.setattr(_observability, "has_opentelemetry", lambda: False)
-    assert _observability.extract_trace_context(None) == {}
+    assert _observability.extract_trace_context() == {}
+
+
+@pytest.mark.parametrize(
+    "ambient_span",
+    [
+        pytest.param(INVALID_SPAN, id="invalid_span_when_idle"),
+        pytest.param(None, id="none_when_tracer_returns_none"),
+    ],
+)
+def test_extract_trace_context_ambient_inactive_span(monkeypatch, ambient_span):
+    """Proves extract_trace_context returns {} for idle ambient spans."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    with mock.patch.object(
+        otel_trace,
+        "get_current_span",
+        autospec=True,
+        spec_set=True,
+        return_value=ambient_span,
+    ):
+        assert _observability.extract_trace_context() == {}
+
+
+def test_get_current_otel_span_returns_active_span(monkeypatch):
+    """Proves _get_current_otel_span returns the active ambient OTel span."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    expected_span = _make_sampled_span()
+    with mock.patch.object(
+        otel_trace,
+        "get_current_span",
+        autospec=True,
+        spec_set=True,
+        return_value=expected_span,
+    ):
+        assert _observability._get_current_otel_span() is expected_span
+
+
+def test_get_current_otel_span_otel_missing(monkeypatch):
+    """Proves _get_current_otel_span returns None when OTel is missing."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: False)
+    assert _observability._get_current_otel_span() is None
+
+
+def test_get_current_otel_span_fail_open_on_import_error(monkeypatch):
+    """Proves _get_current_otel_span returns None if trace import fails."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    monkeypatch.setitem(sys.modules, "opentelemetry", None)
+    assert _observability._get_current_otel_span() is None
+
+
+def test_get_current_otel_span_fail_open_on_runtime_error(monkeypatch):
+    """Proves _get_current_otel_span fails open without outer masking."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    with mock.patch.object(
+        otel_trace,
+        "get_current_span",
+        autospec=True,
+        spec_set=True,
+        side_effect=RuntimeError("context broken"),
+    ):
+        assert _observability._get_current_otel_span() is None
 
 
 def _with_cause(exc: BaseException, cause: BaseException) -> BaseException:
@@ -2475,6 +2595,11 @@ def test_extract_rpc_identity(
             id="status_int_only",
         ),
         pytest.param(
+            mock.Mock(spec_set=["status_code"], status_code=http.HTTPStatus.NOT_FOUND),
+            404,
+            id="int_enum_coerced_to_raw_int",
+        ),
+        pytest.param(
             mock.Mock(spec_set=["status_code"], status_code=True),
             None,
             id="bool_status_code_excluded",
@@ -2484,13 +2609,29 @@ def test_extract_rpc_identity(
             None,
             id="string_status_code_excluded",
         ),
+        pytest.param(
+            exceptions.NotFound("not found"),
+            404,
+            id="google_api_call_error_code_attr",
+        ),
+        pytest.param(
+            requests.HTTPError(
+                "bad gateway",
+                response=_make_requests_response(502),
+            ),
+            502,
+            id="requests_http_error_nested_response",
+        ),
         pytest.param(object(), None, id="missing_status_attributes"),
         pytest.param(None, None, id="none_response"),
     ],
 )
 def test_extract_http_status_code(response_obj, expected_status):
     """Proves _extract_http_status_code extracts genuine int status codes and ignores invalid types."""
-    assert _observability._extract_http_status_code(response_obj) == expected_status
+    result = _observability._extract_http_status_code(response_obj)
+    assert result == expected_status
+    if result is not None:
+        assert type(result) is int
 
 
 @pytest.mark.parametrize(
@@ -2508,3 +2649,1279 @@ def test_extract_http_status_code(response_obj, expected_status):
 def test_resolve_rpc_system(kind, expected):
     """Proves _resolve_rpc_system normalizes transport kinds to OTel rpc.system.name."""
     assert _observability._resolve_rpc_system(kind) == expected
+
+
+@pytest.mark.parametrize(
+    "logger_name,expected_name",
+    [
+        pytest.param(
+            "google.cloud.bigtable_v2",
+            "google.cloud.bigtable_v2",
+            id="explicit_service_logger_bound",
+        ),
+        pytest.param(
+            None,
+            _observability._DEFAULT_LOGGER.name,
+            id="none_leaves_default_logger",
+        ),
+    ],
+)
+def test_service_logger_context(logger_name, expected_name):
+    """Proves _service_logger_context binds and resets _ACTIVE_SERVICE_LOGGER."""
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+    service_logger = logging.getLogger(logger_name) if logger_name else None
+    with _observability._service_logger_context(service_logger):
+        assert _observability._ACTIVE_SERVICE_LOGGER.get().name == expected_name
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+
+
+def test_service_logger_context_preserves_outer_binding_and_resets_on_error():
+    """Proves None inherits an outer binding and exceptions still reset the ContextVar."""
+    outer_logger = logging.getLogger("google.cloud.secretmanager_v1")
+    with pytest.raises(RuntimeError, match="inner boom"):
+        with _observability._service_logger_context(outer_logger):
+            with _observability._service_logger_context(None):
+                assert _observability._ACTIVE_SERVICE_LOGGER.get() is outer_logger
+            raise RuntimeError("inner boom")
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+
+
+@pytest.mark.parametrize(
+    "logging_enabled,kwargs",
+    [
+        pytest.param(
+            "false",
+            {
+                "target": _ECHO_METHOD,
+                "status_code": "UNAVAILABLE",
+                "kind": "grpc",
+                "exc": RuntimeError("down"),
+            },
+            id="logging_disabled",
+        ),
+        pytest.param(
+            "true",
+            {
+                "target": _ECHO_METHOD,
+                "status_code": "OK",
+                "kind": "grpc",
+            },
+            id="grpc_ok_status",
+        ),
+        pytest.param(
+            "true",
+            {
+                "target": _ECHO_METHOD,
+                "status_code": _DummyGrpcStatus.OK,
+                "kind": "grpc",
+            },
+            id="grpc_enum_ok_status",
+        ),
+        pytest.param(
+            "true",
+            {
+                "target": _ECHO_URL,
+                "status_code": 200,
+                "kind": "http",
+                "http_method": "POST",
+            },
+            id="http_200_status",
+        ),
+    ],
+)
+def test_log_transport_attempt_no_op(monkeypatch, mock_logger, logging_enabled, kwargs):
+    """Proves that log_transport_attempt is a no-op when disabled or when an attempt succeeds."""
+    monkeypatch.setenv(
+        "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", logging_enabled
+    )
+    _observability.log_transport_attempt(service_logger=mock_logger, **kwargs)
+    mock_logger.debug.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "kwargs,expected_extra",
+    [
+        pytest.param(
+            {
+                "target": _ECHO_METHOD,
+                "status_code": _DummyGrpcStatus.UNAVAILABLE,
+                "kind": "grpc",
+                "exc": RuntimeError("transient error"),
+            },
+            {
+                "rpc.system.name": "grpc",
+                "rpc.method": _ECHO_METHOD,
+                "rpc.response.status_code": "UNAVAILABLE",
+                "error.type": "UNAVAILABLE",
+                "status.message": "transient error",
+                "exception.type": "RuntimeError",
+                "trace_id": _TEST_TRACE_ID_HEX,
+                "span_id": _TEST_SPAN_ID_HEX,
+            },
+            id="failed_grpc_attempt_with_span",
+        ),
+        pytest.param(
+            {
+                "target": _ECHO_URL,
+                "status_code": 503,
+                "kind": "http",
+                "http_method": "POST",
+            },
+            {
+                "rpc.system.name": "http",
+                "url.full": _ECHO_URL,
+                "httpRequest": {
+                    "requestMethod": "POST",
+                    "requestUrl": _ECHO_URL,
+                    "status": 503,
+                },
+                "error.type": "503",
+                "status.message": "HTTP 503",
+            },
+            id="failed_http_attempt_without_exception",
+        ),
+        pytest.param(
+            {
+                "target": _ECHO_URL,
+                "status_code": "404",
+                "kind": "http",
+                "http_method": "GET",
+            },
+            {
+                "rpc.system.name": "http",
+                "url.full": _ECHO_URL,
+                "httpRequest": {
+                    "requestMethod": "GET",
+                    "requestUrl": _ECHO_URL,
+                    "status": 404,
+                },
+                "error.type": "404",
+                "status.message": "HTTP 404",
+            },
+            id="http_string_decimal_status_coerced_to_int",
+        ),
+        pytest.param(
+            {
+                "target": _ECHO_METHOD,
+                "status_code": "UNKNOWN",
+                "kind": "grpc",
+            },
+            {
+                "rpc.system.name": "grpc",
+                "rpc.method": _ECHO_METHOD,
+                "rpc.response.status_code": "UNKNOWN",
+                "error.type": "UNKNOWN",
+                "status.message": "HTTP UNKNOWN",
+            },
+            id="failed_grpc_attempt_without_exception",
+        ),
+    ],
+)
+def test_log_transport_attempt_emits_debug(
+    monkeypatch, mock_logger, kwargs, expected_extra
+):
+    """Proves that log_transport_attempt emits structured DEBUG logs on failed wire attempts."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    span = _make_sampled_span()
+
+    _observability.log_transport_attempt(
+        span=span, service_logger=mock_logger, **kwargs
+    )
+
+    mock_logger.debug.assert_called_once()
+    extra = mock_logger.debug.call_args[1]["extra"]
+    for key, val in expected_extra.items():
+        assert extra[key] == val
+        assert extra["json_fields"][key] == val
+
+
+def test_log_transport_attempt_uses_active_service_logger_when_omitted(
+    mock_service_logger,
+):
+    """Proves log_transport_attempt uses _ACTIVE_SERVICE_LOGGER when service_logger is omitted."""
+    _observability.log_transport_attempt(
+        target=_ECHO_METHOD,
+        status_code=_DummyGrpcStatus.UNAVAILABLE,
+        kind="grpc",
+        exc=RuntimeError("transient error"),
+    )
+    mock_service_logger.debug.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "logging_enabled,client_options,expected_debug_calls",
+    [
+        pytest.param(
+            "true",
+            None,
+            1,
+            id="logger_debug_raises_runtime_error",
+        ),
+        pytest.param(
+            "false",
+            {"logger_provider": object()},
+            0,
+            id="feature_gate_raises_feature_gating_error",
+        ),
+    ],
+)
+def test_log_transport_attempt_fail_open_on_logger_error(
+    monkeypatch, mock_logger, logging_enabled, client_options, expected_debug_calls
+):
+    """Proves log_transport_attempt suppresses logger and gate errors."""
+    monkeypatch.setenv(
+        "GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", logging_enabled
+    )
+    mock_logger.debug.side_effect = RuntimeError("logger failed")
+
+    _observability.log_transport_attempt(
+        target=_ECHO_METHOD,
+        status_code=_DummyGrpcStatus.UNAVAILABLE,
+        kind="grpc",
+        exc=RuntimeError("transient error"),
+        client_options=client_options,
+        service_logger=mock_logger,
+    )
+
+    assert mock_logger.debug.call_count == expected_debug_calls
+
+
+def test_capture_grpc_attempt_exception_success_no_op(mock_service_logger):
+    """Proves _capture_grpc_attempt_exception is a NOOP when no error occurs."""
+    with _observability._capture_grpc_attempt_exception(_ECHO_METHOD):
+        pass
+    mock_service_logger.debug.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "interrupt_exc",
+    [
+        pytest.param(KeyboardInterrupt, id="keyboard_interrupt"),
+        pytest.param(SystemExit, id="system_exit"),
+        pytest.param(GeneratorExit, id="generator_exit"),
+    ],
+)
+def test_capture_grpc_attempt_exception_bypasses_interrupts(
+    mock_service_logger, interrupt_exc
+):
+    """Proves _capture_grpc_attempt_exception re-raises interrupts unlogged."""
+    span = _make_sampled_span()
+    with pytest.raises(interrupt_exc, match=r"^abort signal$"):
+        with _observability._capture_grpc_attempt_exception(_ECHO_METHOD, span=span):
+            raise interrupt_exc("abort signal")
+    span.get_span_context.assert_not_called()
+    mock_service_logger.debug.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "make_call_kwargs,make_ambient_span,expected_trace_id,expected_span_id",
+    [
+        pytest.param(
+            dict,
+            lambda: INVALID_SPAN,
+            None,
+            None,
+            id="default_span_omitted_without_ambient_span",
+        ),
+        pytest.param(
+            dict,
+            lambda: _make_sampled_span(span_id=_AMBIENT_SPAN_ID),
+            _TEST_TRACE_ID_HEX,
+            _AMBIENT_SPAN_ID_HEX,
+            id="default_span_omitted_falls_back_to_ambient_span",
+        ),
+        pytest.param(
+            lambda: {"span": None},
+            lambda: _make_sampled_span(span_id=_AMBIENT_SPAN_ID),
+            _TEST_TRACE_ID_HEX,
+            _AMBIENT_SPAN_ID_HEX,
+            id="explicit_none_falls_back_to_ambient_span",
+        ),
+        pytest.param(
+            lambda: {"span": _make_sampled_span(span_id=_TEST_SPAN_ID)},
+            lambda: _make_sampled_span(span_id=_AMBIENT_SPAN_ID),
+            _TEST_TRACE_ID_HEX,
+            _TEST_SPAN_ID_HEX,
+            id="explicit_sampled_span_overrides_ambient_span",
+        ),
+        pytest.param(
+            lambda: {"span": INVALID_SPAN},
+            lambda: _make_sampled_span(span_id=_AMBIENT_SPAN_ID),
+            None,
+            None,
+            id="explicit_invalid_span_suppresses_ambient_fallback",
+        ),
+    ],
+)
+def test_capture_grpc_attempt_exception_logs_and_reraises_error(
+    monkeypatch,
+    mock_service_logger,
+    make_call_kwargs,
+    make_ambient_span,
+    expected_trace_id,
+    expected_span_id,
+):
+    """Proves _capture_grpc_attempt_exception logs and re-raises RPC errors."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    call_kwargs = make_call_kwargs()
+    ambient_span = make_ambient_span()
+
+    with mock.patch.object(
+        otel_trace,
+        "get_current_span",
+        autospec=True,
+        spec_set=True,
+        return_value=ambient_span,
+    ):
+        with pytest.raises(RuntimeError, match=r"^wire boom$"):
+            with _observability._capture_grpc_attempt_exception(
+                _ECHO_METHOD, **call_kwargs
+            ):
+                raise RuntimeError("wire boom")
+
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    assert extra["rpc.method"] == _ECHO_METHOD
+    assert extra.get("trace_id") == expected_trace_id
+    assert extra.get("span_id") == expected_span_id
+
+
+def _make_callback_sync_response(exc=None, code=None):
+    resp = mock.Mock(spec_set=["add_done_callback", "exception", "code"])
+    resp.exception = mock.Mock(spec_set=["__call__"], return_value=exc)
+    resp.code = mock.Mock(spec_set=["__call__"], return_value=code)
+    resp.add_done_callback = mock.Mock(
+        spec_set=["__call__"], side_effect=lambda cb: cb(resp)
+    )
+    return resp
+
+
+@pytest.mark.parametrize(
+    "response_factory,expect_log,expected_code_name",
+    [
+        pytest.param(
+            lambda: _make_callback_sync_response(exc=None),
+            False,
+            None,
+            id="ok_future_response_via_callback_no_log",
+        ),
+        pytest.param(
+            object,
+            False,
+            None,
+            id="plain_object_without_callback_no_log",
+        ),
+        pytest.param(
+            lambda: _make_callback_sync_response(
+                exc=RuntimeError("wire failure"),
+                code=_DummyGrpcStatus.UNAVAILABLE,
+            ),
+            True,
+            "UNAVAILABLE",
+            id="failed_future_response_via_callback_logs",
+        ),
+        pytest.param(
+            lambda: mock.Mock(
+                spec_set=["exception"],
+                exception=mock.Mock(
+                    spec_set=["__call__"],
+                    return_value=RuntimeError("wire failure without code"),
+                ),
+            ),
+            True,
+            None,
+            id="direct_response_no_code_logs_none",
+        ),
+        pytest.param(
+            lambda: mock.Mock(
+                spec_set=["exception"],
+                exception=mock.Mock(
+                    spec_set=["__call__"],
+                    side_effect=RuntimeError("FutureCancelledError"),
+                ),
+            ),
+            False,
+            None,
+            id="exception_in_inspection_fails_open",
+        ),
+        pytest.param(
+            lambda: mock.Mock(
+                spec_set=["exception"],
+                exception=mock.Mock(
+                    spec_set=["__call__"],
+                    side_effect=asyncio.CancelledError("cancelled"),
+                ),
+            ),
+            False,
+            None,
+            id="cancelled_error_in_inspection_fails_open",
+        ),
+        pytest.param(
+            lambda: mock.Mock(
+                spec_set=["exception", "code"],
+                exception=mock.Mock(
+                    spec_set=["__call__"],
+                    return_value=RuntimeError("wire failure"),
+                ),
+                code=mock.Mock(
+                    spec_set=["__call__"],
+                    side_effect=RuntimeError("broken code inspection"),
+                ),
+            ),
+            False,
+            None,
+            id="code_in_inspection_fails_open",
+        ),
+    ],
+)
+def test_grpc_attempt_logging_interceptor_sync_responses(
+    monkeypatch, response_factory, expect_log, expected_code_name
+):
+    """Proves _GrpcAttemptLoggingInterceptor logs failed sync gRPC responses."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    interceptor = _observability._GrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+    response = response_factory()
+
+    with mock.patch.object(
+        _observability, "log_transport_attempt", autospec=True, spec_set=True
+    ) as mock_log:
+        res = interceptor.intercept_unary_unary(
+            lambda d, r: response, call_details, "req"
+        )
+        assert res is response
+        if expect_log:
+            mock_log.assert_called_once()
+            call_kwargs = mock_log.call_args[1]
+            assert call_kwargs["span"] is not None
+            assert call_kwargs["target"] == _ECHO_METHOD
+            assert call_kwargs["kind"] == "grpc"
+            assert isinstance(call_kwargs["exc"], RuntimeError)
+            assert call_kwargs["client_options"] is None
+            if expected_code_name is not None:
+                assert call_kwargs["status_code"].name == expected_code_name
+            else:
+                assert call_kwargs["status_code"] is None
+        else:
+            mock_log.assert_not_called()
+
+
+class _FakeSyncRpcError(Exception):
+    def code(self):
+        return _DummyGrpcStatus.INTERNAL
+
+
+class _BadCodeSyncRpcError(Exception):
+    def code(self):
+        raise RuntimeError("bad code")
+
+
+@pytest.mark.parametrize(
+    "exc_cls,expected_status",
+    [
+        pytest.param(_FakeSyncRpcError, "INTERNAL", id="valid_status_code"),
+        pytest.param(
+            _BadCodeSyncRpcError,
+            "_BadCodeSyncRpcError",
+            id="status_code_method_raises",
+        ),
+    ],
+)
+def test_grpc_attempt_logging_interceptor_sync_exceptions(
+    mock_service_logger, exc_cls, expected_status
+):
+    """Proves _GrpcAttemptLoggingInterceptor logs sync continuation errors."""
+    interceptor = _observability._GrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    def raising_continuation(d, r):
+        raise exc_cls("sync wire error")
+
+    with pytest.raises(exc_cls, match=r"sync wire error"):
+        interceptor.intercept_unary_unary(raising_continuation, call_details, "req")
+    mock_service_logger.debug.assert_called_once()
+    assert (
+        mock_service_logger.debug.call_args[1]["extra"]["rpc.response.status_code"]
+        == expected_status
+    )
+
+
+def _make_callback_async_call(
+    code=_DummyGrpcStatus.OK,
+    details="",
+    initial_metadata=None,
+    trailing_metadata=None,
+    debug_error_string=None,
+):
+    call_obj = mock.Mock(
+        spec_set=[
+            "add_done_callback",
+            "code",
+            "details",
+            "initial_metadata",
+            "trailing_metadata",
+            "debug_error_string",
+        ]
+    )
+    call_obj.code = mock.AsyncMock(spec_set=["__call__"], return_value=code)
+    call_obj.details = mock.AsyncMock(spec_set=["__call__"], return_value=details)
+    call_obj.initial_metadata = mock.AsyncMock(
+        spec_set=["__call__"], return_value=initial_metadata
+    )
+    call_obj.trailing_metadata = mock.AsyncMock(
+        spec_set=["__call__"], return_value=trailing_metadata
+    )
+    call_obj.debug_error_string = mock.AsyncMock(
+        spec_set=["__call__"], return_value=debug_error_string
+    )
+    call_obj.add_done_callback = mock.Mock(
+        spec_set=["__call__"], side_effect=lambda cb: cb(call_obj)
+    )
+    return call_obj
+
+
+@pytest.mark.skipif(_observability.grpc is None, reason="grpc is not installed")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "call_factory,expect_log,expected_code_name,expected_message,"
+    "expected_init_md,expected_trail_md,expected_debug",
+    [
+        pytest.param(
+            lambda: _make_callback_async_call(code=_DummyGrpcStatus.OK),
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            id="ok_call_via_callback_no_log",
+        ),
+        pytest.param(
+            object,
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            id="plain_object_without_callback_no_log",
+        ),
+        pytest.param(
+            lambda: _make_callback_async_call(
+                code=_DummyGrpcStatus.UNAVAILABLE,
+                details="backend unavailable",
+                initial_metadata=(("x-init", "1"),),
+                trailing_metadata=(("x-trail", "2"),),
+                debug_error_string="debug trace",
+            ),
+            True,
+            "UNAVAILABLE",
+            "backend unavailable",
+            (("x-init", "1"),),
+            (("x-trail", "2"),),
+            "debug trace",
+            id="failed_call_via_callback_logs",
+        ),
+        pytest.param(
+            lambda: mock.AsyncMock(
+                spec_set=["code", "details"],
+                code=mock.AsyncMock(
+                    spec_set=["__call__"],
+                    return_value=_DummyGrpcStatus.UNAVAILABLE,
+                ),
+                details=mock.AsyncMock(
+                    spec_set=["__call__"],
+                    return_value="direct await unavailable",
+                ),
+            ),
+            True,
+            "UNAVAILABLE",
+            "direct await unavailable",
+            None,
+            None,
+            None,
+            id="direct_call_without_callback_logs",
+        ),
+        pytest.param(
+            lambda: mock.AsyncMock(
+                spec_set=["code"],
+                code=mock.AsyncMock(
+                    spec_set=["__call__"],
+                    return_value=_DummyGrpcStatus.UNAVAILABLE,
+                ),
+            ),
+            True,
+            "UNAVAILABLE",
+            None,
+            None,
+            None,
+            None,
+            id="failed_call_no_details_method_logs",
+        ),
+        pytest.param(
+            lambda: mock.AsyncMock(
+                spec_set=["code"],
+                code=mock.AsyncMock(
+                    spec_set=["__call__"],
+                    side_effect=RuntimeError("broken code inspection"),
+                ),
+            ),
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            id="broken_code_inspection_fails_open",
+        ),
+        pytest.param(
+            lambda: mock.AsyncMock(
+                spec_set=["code"],
+                code=mock.AsyncMock(
+                    spec_set=["__call__"],
+                    side_effect=asyncio.CancelledError("cancelled"),
+                ),
+            ),
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            id="cancelled_call_code_inspection_fails_open",
+        ),
+    ],
+)
+async def test_grpc_attempt_logging_interceptor_async(
+    monkeypatch,
+    call_factory,
+    expect_log,
+    expected_code_name,
+    expected_message,
+    expected_init_md,
+    expected_trail_md,
+    expected_debug,
+):
+    """Proves _AsyncGrpcAttemptLoggingInterceptor logs failed async attempts."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+    call_obj = call_factory()
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    with mock.patch.object(
+        _observability, "log_transport_attempt", autospec=True, spec_set=True
+    ) as mock_log:
+        res = await interceptor.intercept_unary_unary(
+            fake_continuation, call_details, "req"
+        )
+        # Allow any scheduled done-callback task to run on the event loop
+        await asyncio.sleep(0)
+        assert res is call_obj
+        if expect_log:
+            mock_log.assert_called_once()
+            call_kwargs = mock_log.call_args[1]
+            assert call_kwargs["span"] is not None
+            assert call_kwargs["target"] == _ECHO_METHOD
+            assert call_kwargs["status_code"].name == expected_code_name
+            assert call_kwargs["kind"] == "grpc"
+            assert call_kwargs["client_options"] is None
+            assert call_kwargs["status_message"] == expected_message
+            exc = call_kwargs["exc"]
+            assert isinstance(exc, _observability.grpc.aio.AioRpcError)
+            assert exc.code().name == expected_code_name
+            assert exc.details() == expected_message
+            assert exc.initial_metadata() == expected_init_md
+            assert exc.trailing_metadata() == expected_trail_md
+            assert exc.debug_error_string() == expected_debug
+        else:
+            mock_log.assert_not_called()
+
+
+@pytest.mark.skipif(_observability.grpc is None, reason="grpc is not installed")
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_extracts_error_info(
+    mock_service_logger,
+):
+    """Proves async attempt logging preserves AioRpcError and ErrorInfo."""
+    error_info = error_details_pb2.ErrorInfo(
+        domain="googleapis.com",
+        reason="RATE_LIMIT_EXCEEDED",
+        metadata={"consumer": "projects/123"},
+    )
+    packed_detail = any_pb2.Any()
+    packed_detail.Pack(error_info)
+    status_proto = status_pb2.Status(
+        code=14,
+        message="quota exceeded",
+        details=[packed_detail],
+    )
+    trailing_md = _observability.grpc.aio.Metadata(
+        ("grpc-status-details-bin", status_proto.SerializeToString())
+    )
+    call_obj = _make_callback_async_call(
+        code=_observability.grpc.StatusCode.UNAVAILABLE,
+        details="quota exceeded",
+        initial_metadata=_observability.grpc.aio.Metadata(),
+        trailing_metadata=trailing_md,
+        debug_error_string="UNAVAILABLE:quota exceeded",
+    )
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    res = await interceptor.intercept_unary_unary(
+        fake_continuation, call_details, "req"
+    )
+    await asyncio.sleep(0)
+    assert res is call_obj
+
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args[1]["extra"]
+    assert extra["rpc.method"] == _ECHO_METHOD
+    assert extra["rpc.response.status_code"] == "UNAVAILABLE"
+    assert extra["exception.type"] == "AioRpcError"
+    assert extra["gcp.errors.domain"] == "googleapis.com"
+    assert extra["error.type"] == "RATE_LIMIT_EXCEEDED"
+    assert extra["gcp.errors.metadata.consumer"] == "projects/123"
+    assert extra["status.message"] == "quota exceeded"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "details,expected_exc_msg",
+    [
+        pytest.param("backend down", "backend down", id="details_present"),
+        pytest.param("", None, id="details_empty"),
+    ],
+)
+async def test_grpc_attempt_logging_interceptor_async_without_grpc(
+    monkeypatch, details, expected_exc_msg
+):
+    """Proves async inspection falls back to Exception when grpc is absent."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    monkeypatch.setattr(_observability, "grpc", None)
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+    call_obj = _make_callback_async_call(
+        code=_DummyGrpcStatus.UNAVAILABLE, details=details
+    )
+
+    async def fake_continuation(d, r):
+        return call_obj
+
+    with mock.patch.object(
+        _observability, "log_transport_attempt", autospec=True, spec_set=True
+    ) as mock_log:
+        await interceptor.intercept_unary_unary(fake_continuation, call_details, "req")
+        await asyncio.sleep(0)
+
+    mock_log.assert_called_once()
+    call_kwargs = mock_log.call_args[1]
+    if expected_exc_msg is not None:
+        assert type(call_kwargs["exc"]) is Exception
+        assert str(call_kwargs["exc"]) == expected_exc_msg
+    else:
+        assert call_kwargs["exc"] is None
+
+
+@pytest.mark.parametrize(
+    "exc_cls,expected_status",
+    [
+        pytest.param(_FakeSyncRpcError, "INTERNAL", id="valid_status_code"),
+        pytest.param(
+            _BadCodeSyncRpcError,
+            "_BadCodeSyncRpcError",
+            id="status_code_method_raises",
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_grpc_attempt_logging_interceptor_async_exceptions(
+    mock_service_logger, exc_cls, expected_status
+):
+    """Proves _AsyncGrpcAttemptLoggingInterceptor logs continuation errors."""
+    interceptor = _observability._AsyncGrpcAttemptLoggingInterceptor()
+    call_details = mock.Mock(spec_set=["method"], method=_ECHO_METHOD_BYTES)
+
+    async def raising_continuation(d, r):
+        raise exc_cls("async wire error")
+
+    with pytest.raises(exc_cls, match=r"async wire error"):
+        await interceptor.intercept_unary_unary(
+            raising_continuation, call_details, "req"
+        )
+    mock_service_logger.debug.assert_called_once()
+    assert (
+        mock_service_logger.debug.call_args[1]["extra"]["rpc.response.status_code"]
+        == expected_status
+    )
+
+
+@pytest.mark.parametrize(
+    "tracing_enabled,expected_sync_arg_len",
+    [
+        ("false", 2),
+        ("true", 3),
+    ],
+    ids=["logging_only", "tracing_and_logging"],
+)
+def test_get_otel_interceptor_with_logging_enabled(
+    monkeypatch,
+    mock_otel_grpc,
+    tracing_enabled,
+    expected_sync_arg_len,
+):
+    """Proves get_otel_interceptor attaches sync logging interceptors."""
+    monkeypatch.setenv(
+        "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", tracing_enabled
+    )
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+
+    sync_fn = _observability.get_otel_interceptor()
+    assert callable(sync_fn)
+    mock_channel = mock.Mock(spec_set=[])
+    if _observability.grpc is not None:
+        with mock.patch.object(
+            _observability.grpc,
+            "intercept_channel",
+            autospec=True,
+            spec_set=True,
+            return_value=mock_channel,
+        ) as mock_ic:
+            sync_fn(mock_channel)
+            mock_ic.assert_called_once()
+            assert len(mock_ic.call_args[0]) == expected_sync_arg_len
+            if tracing_enabled == "true":
+                assert isinstance(
+                    mock_ic.call_args[0][1],
+                    _observability._GrpcAttemptLoggingInterceptor,
+                )
+                assert isinstance(
+                    mock_ic.call_args[0][2],
+                    _observability._SuppressingClientInterceptor,
+                )
+        with mock.patch.object(
+            _observability.grpc,
+            "intercept_channel",
+            autospec=True,
+            spec_set=True,
+            side_effect=TypeError("bad"),
+        ):
+            assert sync_fn(mock_channel) is not None
+    with mock.patch.object(_observability, "grpc", None):
+        assert sync_fn(mock_channel) is not None
+
+
+@pytest.mark.parametrize(
+    "tracing_enabled,expected_async_len",
+    [
+        ("false", 1),
+        ("true", 3),
+    ],
+    ids=["logging_only", "tracing_and_logging"],
+)
+def test_get_otel_async_interceptor_with_logging_enabled(
+    monkeypatch,
+    mock_otel_grpc,
+    tracing_enabled,
+    expected_async_len,
+):
+    """Proves get_otel_async_interceptor attaches async logging interceptors."""
+    monkeypatch.setenv(
+        "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", tracing_enabled
+    )
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    mock_otel_grpc.aio_client_interceptors.return_value = [mock.Mock(spec_set=[])]
+
+    async_list = _observability.get_otel_async_interceptor()
+    assert len(async_list) == expected_async_len
+    assert any(
+        isinstance(i, _observability._AsyncGrpcAttemptLoggingInterceptor)
+        for i in async_list
+    )
+    if tracing_enabled == "true":
+        assert isinstance(
+            async_list[1], _observability._AsyncGrpcAttemptLoggingInterceptor
+        )
+        assert isinstance(
+            async_list[2], _observability._AsyncSuppressingClientInterceptor
+        )
+
+
+class _BrokenCodePropertyError(Exception):
+    @property
+    def code(self) -> int:
+        raise RuntimeError("broken code property")
+
+
+class _BrokenStatusResponse:
+    @property
+    def status_code(self) -> int:
+        raise RuntimeError("broken status_code property")
+
+
+class _AsyncJsonResponse:
+    status_code = 503
+    headers: dict[str, str] = {}
+    reason = "Async Service Unavailable"
+
+    async def json(self) -> dict[str, str]:  # pragma: NO COVER
+        return {"error": "should not be called synchronously"}
+
+
+@pytest.mark.parametrize(
+    "record_method,trace_args,trace_kwargs,response_factory,expected_method,expected_url,expected_status,expected_message",
+    [
+        pytest.param(
+            "record_response",
+            (),
+            {"method": "post", "url": _ECHO_URL},
+            lambda: _make_requests_response(
+                400,
+                body=b'{"error": {"message": "Invalid filter"}}',
+            ),
+            "POST",
+            _ECHO_URL,
+            400,
+            "Invalid filter",
+            id="kwargs_lowercase_post_400_boundary_json_message",
+        ),
+        pytest.param(
+            "record_http_response",
+            (),
+            {"method": "get", "url": _ECHO_URL},
+            lambda: urllib3.HTTPResponse(status=503, reason="Service Unavailable"),
+            "GET",
+            _ECHO_URL,
+            503,
+            "Service Unavailable",
+            id="kwargs_urllib3_status_503_via_alias",
+        ),
+        pytest.param(
+            "record_response",
+            (requests.Request("DELETE", "https://example.com/v1/items/1").prepare(),),
+            {"method": "ignored", "url": "https://ignored.example.com"},
+            lambda: _make_requests_response(404),
+            "DELETE",
+            "https://example.com/v1/items/1",
+            404,
+            "HTTP 404",
+            id="prepared_request_object_404_default_message",
+        ),
+        pytest.param(
+            "record_response",
+            (),
+            {"method": "post", "url": _ECHO_URL},
+            _AsyncJsonResponse,
+            "POST",
+            _ECHO_URL,
+            503,
+            "Async Service Unavailable",
+            id="async_json_coroutine_skipped_falls_back_to_reason",
+        ),
+    ],
+)
+def test_trace_context_record_response_logs_http_errors_when_tracing_disabled(
+    monkeypatch,
+    mock_service_logger,
+    record_method,
+    trace_args,
+    trace_kwargs,
+    response_factory,
+    expected_method,
+    expected_url,
+    expected_status,
+    expected_message,
+):
+    """Proves _TraceContext logs >= 400 HTTP attempts even without an active span."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+
+    with _observability.trace_http_request(*trace_args, **trace_kwargs) as ctx:
+        getattr(ctx, record_method)(response_factory())
+
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args.kwargs["extra"]
+    assert extra["rpc.system.name"] == "http"
+    assert extra["url.full"] == expected_url
+    assert extra["httpRequest"] == {
+        "requestMethod": expected_method,
+        "requestUrl": expected_url,
+        "status": expected_status,
+    }
+    assert extra["rpc.response.status_code"] == str(expected_status)
+    assert extra["status.message"] == expected_message
+
+
+@pytest.mark.parametrize(
+    "response_factory",
+    [
+        pytest.param(lambda: _make_requests_response(200), id="status_200_ok"),
+        pytest.param(
+            lambda: _make_requests_response(399), id="status_399_below_boundary"
+        ),
+        pytest.param(
+            lambda: urllib3.HTTPResponse(status=399),
+            id="urllib3_status_399_below_boundary",
+        ),
+        pytest.param(lambda: requests.Response(), id="uninitialized_status_none"),
+    ],
+)
+def test_trace_context_record_response_skips_non_error_statuses(
+    monkeypatch, mock_service_logger, response_factory
+):
+    """Proves _TraceContext skips < 400 or uninitialized HTTP status codes."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+
+    with _observability.trace_http_request(method="GET", url=_ECHO_URL) as ctx:
+        ctx.record_response(response_factory())
+
+    mock_service_logger.debug.assert_not_called()
+
+
+def test_trace_context_record_response_skips_body_parsing_when_telemetry_disabled(
+    monkeypatch,
+):
+    """Proves >= 400 responses do not parse error bodies when tracing and logging are disabled."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "false")
+    response = mock.create_autospec(_make_requests_response(503), spec_set=True)
+    response.status_code = 503
+
+    with _observability.trace_http_request(method="POST", url=_ECHO_URL) as ctx:
+        ctx.record_response(response)
+
+    response.json.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "exc_factory,expected_rpc_status,expected_http_status,expected_exc_type",
+    [
+        pytest.param(
+            lambda: requests.ConnectionError("reset"),
+            "ConnectionError",
+            None,
+            "ConnectionError",
+            id="requests_connection_error_without_status",
+        ),
+        pytest.param(
+            lambda: exceptions.NotFound("not found"),
+            "404",
+            404,
+            "NotFound",
+            id="google_api_call_error_with_code_404",
+        ),
+        pytest.param(
+            lambda: requests.HTTPError(
+                "bad gateway", response=_make_requests_response(502)
+            ),
+            "502",
+            502,
+            "HTTPError",
+            id="requests_http_error_with_response_status_502",
+        ),
+        pytest.param(
+            lambda: _FakeSyncRpcError("callable code"),
+            "INTERNAL",
+            None,
+            "_FakeSyncRpcError",
+            id="exception_with_callable_code_method",
+        ),
+        pytest.param(
+            lambda: _BadCodeSyncRpcError("bad code method"),
+            "_BadCodeSyncRpcError",
+            None,
+            "_BadCodeSyncRpcError",
+            id="exception_with_raising_code_method",
+        ),
+        pytest.param(
+            lambda: asyncio.CancelledError("async rest cancelled"),
+            "CancelledError",
+            None,
+            "CancelledError",
+            id="asyncio_cancelled_error_logged_and_reraised",
+        ),
+    ],
+)
+def test_trace_context_exit_logs_dispatch_exceptions_when_tracing_disabled(
+    monkeypatch,
+    mock_service_logger,
+    exc_factory,
+    expected_rpc_status,
+    expected_http_status,
+    expected_exc_type,
+):
+    """Proves _TraceContext.__exit__ logs dispatch exceptions and re-raises cleanly."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    target_exc = exc_factory()
+
+    with pytest.raises(type(target_exc), match=re.escape(str(target_exc))):
+        with _observability.trace_http_request(method="get", url=_ECHO_URL):
+            raise target_exc
+
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args.kwargs["extra"]
+    assert extra["rpc.system.name"] == "http"
+    assert extra["rpc.response.status_code"] == expected_rpc_status
+    assert extra["httpRequest"] == {
+        "requestMethod": "GET",
+        "requestUrl": _ECHO_URL,
+        "status": expected_http_status,
+    }
+    assert extra["exception.type"] == expected_exc_type
+
+
+@pytest.mark.parametrize(
+    "interrupt_exc",
+    [
+        pytest.param(KeyboardInterrupt("ctrl-c"), id="keyboard_interrupt"),
+        pytest.param(SystemExit(2), id="system_exit_with_code"),
+        pytest.param(GeneratorExit("gen-close"), id="generator_exit"),
+    ],
+)
+def test_trace_context_bypasses_process_interrupts_without_logging(
+    monkeypatch, mock_service_logger, interrupt_exc
+):
+    """Proves process/generator interrupts propagate without emitting HTTP attempt logs."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+
+    with pytest.raises(type(interrupt_exc)):
+        with _observability.trace_http_request(method="GET", url=_ECHO_URL):
+            raise interrupt_exc
+
+    mock_service_logger.debug.assert_not_called()
+
+
+def test_trace_context_record_error_none_is_noop(mock_service_logger):
+    """Proves _TraceContext.record_error(None) returns early without logging."""
+    ctx = _observability._TraceContext(method="GET", url=_ECHO_URL)
+
+    ctx.record_error(None)
+
+    mock_service_logger.debug.assert_not_called()
+
+
+def test_trace_context_deduplicates_attempt_log_within_single_context(
+    monkeypatch, mock_service_logger
+):
+    """Proves _TraceContext emits at most one attempt log if record_response and __exit__ both fire."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    resp = _make_requests_response(503, reason="Service Unavailable")
+
+    with pytest.raises(requests.HTTPError, match="503 Server Error"):
+        with _observability.trace_http_request(method="POST", url=_ECHO_URL) as ctx:
+            ctx.record_response(resp)
+            resp.raise_for_status()
+
+    mock_service_logger.debug.assert_called_once()
+
+
+def test_trace_context_record_response_correlates_active_otel_span(
+    monkeypatch, mock_otel, mock_service_logger
+):
+    """Proves record_response enriches the active span and correlates trace_id/span_id in logs."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    mock_otel.span.get_span_context.return_value = SpanContext(
+        trace_id=_TEST_TRACE_ID,
+        span_id=_TEST_SPAN_ID,
+        is_remote=False,
+        trace_flags=TraceFlags(TraceFlags.SAMPLED),
+    )
+
+    with _observability.trace_http_request(method="POST", url=_ECHO_URL) as ctx:
+        ctx.record_response(_make_requests_response(503, reason="Service Unavailable"))
+
+    mock_otel.span.set_attribute.assert_any_call("error.type", "503")
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args.kwargs["extra"]
+    assert extra["trace_id"] == _TEST_TRACE_ID_HEX
+    assert extra["span_id"] == _TEST_SPAN_ID_HEX
+
+
+@pytest.mark.parametrize(
+    "cm_enter_returns_span,expected_span_id",
+    [
+        pytest.param(True, _TEST_SPAN_ID_HEX, id="cm_present_with_active_span"),
+        pytest.param(False, _AMBIENT_SPAN_ID_HEX, id="cm_present_with_none_span"),
+    ],
+)
+def test_trace_context_exit_logs_exception_when_cm_present(
+    monkeypatch,
+    mock_otel,
+    mock_service_logger,
+    cm_enter_returns_span,
+    expected_span_id,
+):
+    """Proves __exit__ logs exceptions and tears down self._cm when tracing is enabled."""
+    monkeypatch.setattr(_observability, "has_opentelemetry", lambda: True)
+    ambient_span = NonRecordingSpan(
+        SpanContext(
+            trace_id=_TEST_TRACE_ID,
+            span_id=_AMBIENT_SPAN_ID,
+            is_remote=False,
+            trace_flags=TraceFlags(TraceFlags.SAMPLED),
+        )
+    )
+    mock_otel.trace.get_current_span.return_value = ambient_span
+    if cm_enter_returns_span:
+        mock_otel.span.get_span_context.return_value = SpanContext(
+            trace_id=_TEST_TRACE_ID,
+            span_id=_TEST_SPAN_ID,
+            is_remote=False,
+            trace_flags=TraceFlags(TraceFlags.SAMPLED),
+        )
+    else:
+        mock_otel.tracer.start_as_current_span.return_value.__enter__.return_value = (
+            None
+        )
+
+    with pytest.raises(requests.ConnectionError, match=r"^wire reset$"):
+        with _observability.trace_http_request(method="GET", url=_ECHO_URL):
+            raise requests.ConnectionError("wire reset")
+
+    mock_otel.tracer.start_as_current_span.return_value.__exit__.assert_called_once()
+    mock_service_logger.debug.assert_called_once()
+    extra = mock_service_logger.debug.call_args.kwargs["extra"]
+    assert extra["trace_id"] == _TEST_TRACE_ID_HEX
+    assert extra["span_id"] == expected_span_id
+
+
+def test_trace_context_http_logging_fails_open_on_internal_errors(monkeypatch):
+    """Proves _TraceContext fails open on broken response properties and logger crashes."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    options = ClientOptions(api_endpoint="https://custom.googleapis.com")
+
+    with _observability.trace_http_request(
+        method="GET", url=_ECHO_URL, client_options=options
+    ) as ctx_broken_resp:
+        ctx_broken_resp.record_response(_BrokenStatusResponse())
+
+    with pytest.raises(_BrokenCodePropertyError, match=r"^transport failed$"):
+        with _observability.trace_http_request(
+            method="GET", url=_ECHO_URL, client_options=options
+        ):
+            raise _BrokenCodePropertyError("transport failed")
+
+    with mock.patch.object(
+        _observability,
+        "log_transport_attempt",
+        autospec=True,
+        spec_set=True,
+        side_effect=RuntimeError("log crash"),
+    ) as mock_log:
+        with _observability.trace_http_request(
+            method="GET", url=_ECHO_URL, client_options=options
+        ) as ctx_err:
+            ctx_err.record_response(_make_requests_response(500))
+        with _observability.trace_http_request(
+            method="GET", url=_ECHO_URL, client_options=options
+        ) as ctx_exc:
+            ctx_exc.record_error(requests.ConnectionError("fail-open"))
+
+    assert mock_log.call_count == 2
+    assert mock_log.call_args.kwargs["client_options"] is options
