@@ -27,7 +27,11 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Ordering,
     Rank,
 )
-from google.cloud.firestore_v1.pipeline_types import WindowSpec
+from google.cloud.firestore_v1.pipeline_types import (
+    DocumentWindowFrame,
+    WindowBound,
+    WindowSpec,
+)
 from google.cloud.firestore_v1.types.document import Value
 from google.cloud.firestore_v1.vector import Vector
 
@@ -1069,6 +1073,23 @@ class TestUpdate:
 
 
 class TestWindowTypes:
+    def test_document_window_frame_to_pb(self):
+        frame = DocumentWindowFrame(1, WindowBound.CURRENT)
+        pb = frame._to_pb()
+        assert pb.map_value.fields == {
+            "preceding": Value(integer_value=1),
+            "following": Value(string_value="current"),
+        }
+        assert frame._to_dict() == {"documents": pb}
+        assert frame == DocumentWindowFrame(1, "current")
+        assert frame != DocumentWindowFrame(2, WindowBound.CURRENT)
+
+        expr_pb = DocumentWindowFrame(Field.of("offset"), "unbounded")._to_pb()
+        assert expr_pb.map_value.fields == {
+            "preceding": Value(field_reference_value="offset"),
+            "following": Value(string_value="unbounded"),
+        }
+
     def test_window_spec_coercions(self):
         order = Field.of("rating").descending()
         assert WindowSpec().partition == []
@@ -1088,16 +1109,24 @@ class TestWindowTypes:
         spec = WindowSpec(
             partition="genre",
             sort=Field.of("rating").descending(),
+            frame=DocumentWindowFrame(-1, WindowBound.CURRENT),
         )
         assert repr(spec) == (
             "WindowSpec("
             "partition=[Field.of('genre')], "
-            "sort=[Field.of('rating').descending()]"
+            "sort=[Field.of('rating').descending()], "
+            "frame=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
             ")"
         )
         assert spec == WindowSpec(
             partition=[Field.of("genre")],
             sort=[Field.of("rating").descending()],
+            frame=DocumentWindowFrame(-1, "current"),
+        )
+        assert spec != WindowSpec(
+            partition="genre",
+            sort=Field.of("rating").descending(),
+            frame=DocumentWindowFrame(0, WindowBound.CURRENT),
         )
         assert spec != empty
         assert spec != object()
@@ -1105,12 +1134,14 @@ class TestWindowTypes:
     def test_window_spec_to_pb(self):
         assert WindowSpec()._to_pb().map_value.fields == {}
         order = Field.of("rating").descending()
-        spec = WindowSpec(partition="genre", sort=order)
+        doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
+        spec = WindowSpec(partition="genre", sort=order, frame=doc_frame)
         assert spec._to_pb().map_value.fields == {
             "partition": Value(
                 array_value={"values": [Value(field_reference_value="genre")]}
             ),
             "sort": Value(array_value={"values": [order._to_pb()]}),
+            "documents": doc_frame._to_pb(),
         }
 
 

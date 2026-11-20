@@ -92,6 +92,7 @@ replacements:
       )
       from google.cloud.firestore_v1.pipeline_source import PipelineSource
       from google.cloud.firestore_v1.pipeline_types import (
+          DocumentWindowFrame,
           FindNearestOptions,
           Ordering,
           PipelineDataType,
@@ -101,6 +102,7 @@ replacements:
           TimePart,
           TimeUnit,
           UnnestOptions,
+          WindowBound,
           WindowSpec,
       )
       from google.cloud.firestore_v1.query import CollectionGroup, Query
@@ -199,6 +201,7 @@ replacements:
           "DocumentReference",
           "DocumentSnapshot",
           "DocumentTransform",
+          "DocumentWindowFrame",
           "ExistsOption",
           "ExplainOptions",
           "FieldFilter",
@@ -231,6 +234,7 @@ replacements:
           "types",
           "UnnestOptions",
           "Watch",
+          "WindowBound",
           "WindowSpec",
           "WriteBatch",
           "WriteOption",
@@ -280,6 +284,7 @@ replacements:
           DocumentReference,
           DocumentSnapshot,
           DocumentTransform,
+          DocumentWindowFrame,
           ExistsOption,
           ExplainOptions,
           FieldFilter,
@@ -309,6 +314,7 @@ replacements:
           Transaction,
           UnnestOptions,
           Watch,
+          WindowBound,
           WindowSpec,
           WriteBatch,
           WriteOption,
@@ -348,6 +354,7 @@ replacements:
           "DocumentReference",
           "DocumentSnapshot",
           "DocumentTransform",
+          "DocumentWindowFrame",
           "ExistsOption",
           "ExplainOptions",
           "FieldFilter",
@@ -380,6 +387,7 @@ replacements:
           "types",
           "UnnestOptions",
           "Watch",
+          "WindowBound",
           "WindowSpec",
           "WriteBatch",
           "WriteOption",
