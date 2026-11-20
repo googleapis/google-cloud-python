@@ -386,13 +386,47 @@ class DocumentWindowFrame(_WindowFrame):
         return {"documents": self._to_pb()}
 
 
+@dataclass
+class RangeWindowFrame(_WindowFrame):
+    """Defines a value-based or time-range window frame relative to the current document's sort value.
+
+    Example:
+        >>> from google.cloud.firestore_v1.pipeline_expressions import Field
+        >>> from google.cloud.firestore_v1.pipeline_types import (
+        ...     RangeWindowFrame,
+        ...     TimeUnit,
+        ...     WindowBound,
+        ...     WindowSpec,
+        ... )
+        >>> window = WindowSpec(
+        ...     sort=Field.of("time").ascending(),
+        ...     frame=RangeWindowFrame(12, WindowBound.CURRENT, unit=TimeUnit.HOUR),
+        ... )
+
+    Args:
+        preceding: The lower bound of the frame (a numeric offset, `WindowBound`, or `Expression`).
+        following: The upper bound of the frame (a numeric offset, `WindowBound`, or `Expression`).
+        unit: Optional duration unit for time-range frames (e.g., `TimeUnit.DAY`, `TimeGranularity.MONTH`,
+            `"day"`, or an `Expression`).
+    """
+
+    preceding: WindowBound | str | int | float | pipeline_expressions.Expression
+    following: WindowBound | str | int | float | pipeline_expressions.Expression
+    unit: Optional[
+        TimeUnit | TimeGranularity | str | pipeline_expressions.Expression
+    ] = None
+
+    def _to_dict(self) -> dict[str, Value]:
+        return {"range": self._to_pb()}
+
+
 class WindowSpec:
     """Configuration for a window in an `AddWindowFields` pipeline stage.
 
     Args:
         partition: Field paths or expressions used to partition documents into independent windows.
         sort: Orderings specifying how documents are sorted within each partition.
-        frame: A `DocumentWindowFrame` defining a document-count window frame.
+        frame: A `DocumentWindowFrame` or `RangeWindowFrame` defining a sliding window frame.
     """
 
     def __init__(
@@ -404,7 +438,7 @@ class WindowSpec:
             | str
         ] = None,
         sort: Optional[Sequence[Ordering] | Ordering] = None,
-        frame: Optional[DocumentWindowFrame] = None,
+        frame: Optional[DocumentWindowFrame | RangeWindowFrame] = None,
     ):
         if partition is None:
             partition_list = []
@@ -422,7 +456,7 @@ class WindowSpec:
         else:
             self.sort = [sort] if isinstance(sort, Ordering) else list(sort)
 
-        self.frame: Optional[DocumentWindowFrame] = frame
+        self.frame: Optional[DocumentWindowFrame | RangeWindowFrame] = frame
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, WindowSpec):

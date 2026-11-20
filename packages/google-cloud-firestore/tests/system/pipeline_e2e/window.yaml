@@ -225,3 +225,80 @@ tests:
                 title:
                   fieldReferenceValue: title
           name: select
+  - description: "testAddWindowFields - range frame with time unit"
+    pipeline:
+      - Collection: timestamps
+      - AddWindowFields:
+          window:
+            WindowSpec:
+              sort:
+                - Ordering:
+                    - Field: time
+                    - ASCENDING
+              frame:
+                RangeWindowFrame:
+                  preceding: 12
+                  following: current
+                  unit: hour
+          fields:
+            - AliasedExpression:
+                - Count
+                - "window_count"
+      - Select:
+          - window_count
+    assert_results:
+      - window_count: 1
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /timestamps
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                range:
+                  mapValue:
+                    fields:
+                      following:
+                        stringValue: current
+                      preceding:
+                        integerValue: '12'
+                      unit:
+                        stringValue: hour
+                sort:
+                  arrayValue:
+                    values:
+                    - mapValue:
+                        fields:
+                          direction:
+                            stringValue: ascending
+                          expression:
+                            fieldReferenceValue: time
+          - mapValue:
+              fields:
+                window_count:
+                  functionValue:
+                    name: count
+          name: add_window_fields
+        - args:
+          - mapValue:
+              fields:
+                window_count:
+                  fieldReferenceValue: window_count
+          name: select
+  - description: "testAddWindowFields - error on range frame without sort"
+    pipeline:
+      - Collection: books
+      - AddWindowFields:
+          window:
+            WindowSpec:
+              frame:
+                RangeWindowFrame:
+                  preceding: unbounded
+                  following: current
+          fields:
+            - AliasedExpression:
+                - Count
+                - "window_count"
+    assert_error: ".*range.*"

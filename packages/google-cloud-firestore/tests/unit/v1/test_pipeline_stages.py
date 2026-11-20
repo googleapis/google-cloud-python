@@ -29,6 +29,9 @@ from google.cloud.firestore_v1.pipeline_expressions import (
 )
 from google.cloud.firestore_v1.pipeline_types import (
     DocumentWindowFrame,
+    RangeWindowFrame,
+    TimeGranularity,
+    TimeUnit,
     WindowBound,
     WindowSpec,
 )
@@ -1083,12 +1086,37 @@ class TestWindowTypes:
         assert frame._to_dict() == {"documents": pb}
         assert frame == DocumentWindowFrame(1, "current")
         assert frame != DocumentWindowFrame(2, WindowBound.CURRENT)
+        assert frame != RangeWindowFrame(1, WindowBound.CURRENT)
 
         expr_pb = DocumentWindowFrame(Field.of("offset"), "unbounded")._to_pb()
         assert expr_pb.map_value.fields == {
             "preceding": Value(field_reference_value="offset"),
             "following": Value(string_value="unbounded"),
         }
+
+    @pytest.mark.parametrize(
+        "unit,expected_unit",
+        [
+            (TimeUnit.DAY, "day"),
+            (TimeGranularity.MONTH, "month"),
+            ("hour", "hour"),
+            (Constant.of("minute"), "minute"),
+        ],
+    )
+    def test_range_window_frame_to_pb(self, unit, expected_unit):
+        no_unit_pb = RangeWindowFrame(10, 20)._to_pb()
+        assert no_unit_pb.map_value.fields == {
+            "preceding": Value(integer_value=10),
+            "following": Value(integer_value=20),
+        }
+        frame = RangeWindowFrame(10.5, WindowBound.UNBOUNDED, unit)
+        pb = frame._to_pb()
+        assert pb.map_value.fields == {
+            "preceding": Value(double_value=10.5),
+            "following": Value(string_value="unbounded"),
+            "unit": Value(string_value=expected_unit),
+        }
+        assert frame._to_dict() == {"range": pb}
 
     def test_window_spec_coercions(self):
         order = Field.of("rating").descending()
@@ -1128,6 +1156,17 @@ class TestWindowTypes:
             sort=Field.of("rating").descending(),
             frame=DocumentWindowFrame(0, WindowBound.CURRENT),
         )
+        range_spec = WindowSpec(
+            sort=Field.of("published").ascending(),
+            frame=RangeWindowFrame(-5, 5, "day"),
+        )
+        assert repr(range_spec) == (
+            "WindowSpec("
+            "sort=[Field.of('published').ascending()], "
+            "frame=RangeWindowFrame(preceding=-5, following=5, unit='day')"
+            ")"
+        )
+        assert spec != range_spec
         assert spec != empty
         assert spec != object()
 
@@ -1142,6 +1181,12 @@ class TestWindowTypes:
             ),
             "sort": Value(array_value={"values": [order._to_pb()]}),
             "documents": doc_frame._to_pb(),
+        }
+        range_frame = RangeWindowFrame(-5, 5, "day")
+        range_spec = WindowSpec(sort=order, frame=range_frame)
+        assert range_spec._to_pb().map_value.fields == {
+            "sort": Value(array_value={"values": [order._to_pb()]}),
+            "range": range_frame._to_pb(),
         }
 
 
