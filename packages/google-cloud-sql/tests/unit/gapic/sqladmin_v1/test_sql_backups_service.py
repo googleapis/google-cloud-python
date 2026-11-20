@@ -3880,10 +3880,126 @@ def test_parse_backup_path():
     assert expected == actual
 
 
-def test_service_connection_policy_path():
+def test_crypto_key_path():
     project = "oyster"
-    region = "nudibranch"
-    service_connection_policy = "cuttlefish"
+    location = "nudibranch"
+    key_ring = "cuttlefish"
+    crypto_key = "mussel"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = SqlBackupsServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "key_ring": "scallop",
+        "crypto_key": "abalone",
+    }
+    path = SqlBackupsServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_version_path():
+    project = "squid"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    crypto_key_version = "oyster"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = SqlBackupsServiceClient.crypto_key_version_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_version_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "key_ring": "mussel",
+        "crypto_key": "winkle",
+        "crypto_key_version": "nautilus",
+    }
+    path = SqlBackupsServiceClient.crypto_key_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_crypto_key_version_path(path)
+    assert expected == actual
+
+
+def test_instance_path():
+    project = "scallop"
+    instance = "abalone"
+    expected = "projects/{project}/instances/{instance}".format(
+        project=project,
+        instance=instance,
+    )
+    actual = SqlBackupsServiceClient.instance_path(project, instance)
+    assert expected == actual
+
+
+def test_parse_instance_path():
+    expected = {
+        "project": "squid",
+        "instance": "clam",
+    }
+    path = SqlBackupsServiceClient.instance_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_instance_path(path)
+    assert expected == actual
+
+
+def test_network_attachment_path():
+    project = "whelk"
+    region = "octopus"
+    network_attachment = "oyster"
+    expected = "projects/{project}/regions/{region}/networkAttachments/{network_attachment}".format(
+        project=project,
+        region=region,
+        network_attachment=network_attachment,
+    )
+    actual = SqlBackupsServiceClient.network_attachment_path(
+        project, region, network_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_network_attachment_path():
+    expected = {
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "network_attachment": "mussel",
+    }
+    path = SqlBackupsServiceClient.network_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_network_attachment_path(path)
+    assert expected == actual
+
+
+def test_service_connection_policy_path():
+    project = "winkle"
+    region = "nautilus"
+    service_connection_policy = "scallop"
     expected = "projects/{project}/regions/{region}/serviceConnectionPolicies/{service_connection_policy}".format(
         project=project,
         region=region,
@@ -3897,9 +4013,9 @@ def test_service_connection_policy_path():
 
 def test_parse_service_connection_policy_path():
     expected = {
-        "project": "mussel",
-        "region": "winkle",
-        "service_connection_policy": "nautilus",
+        "project": "abalone",
+        "region": "squid",
+        "service_connection_policy": "clam",
     }
     path = SqlBackupsServiceClient.service_connection_policy_path(**expected)
 
@@ -3909,7 +4025,7 @@ def test_parse_service_connection_policy_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3919,7 +4035,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "octopus",
     }
     path = SqlBackupsServiceClient.common_billing_account_path(**expected)
 
@@ -3929,7 +4045,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3939,7 +4055,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nudibranch",
     }
     path = SqlBackupsServiceClient.common_folder_path(**expected)
 
@@ -3949,7 +4065,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3959,7 +4075,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "mussel",
     }
     path = SqlBackupsServiceClient.common_organization_path(**expected)
 
@@ -3969,7 +4085,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3979,7 +4095,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "nautilus",
     }
     path = SqlBackupsServiceClient.common_project_path(**expected)
 
@@ -3989,8 +4105,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4001,8 +4117,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "squid",
+        "location": "clam",
     }
     path = SqlBackupsServiceClient.common_location_path(**expected)
 

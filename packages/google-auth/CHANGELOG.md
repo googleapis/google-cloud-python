@@ -4,6 +4,48 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.62.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.1...google-auth-v2.62.2) (2026-11-10)
+
+
+### Bug Fixes
+
+* **auth:** prevent race conditions during mTLS cert rotation on 401 responses ([#18168](https://github.com/googleapis/google-cloud-python/issues/18168)) ([b86536f](https://github.com/googleapis/google-cloud-python/commit/b86536f91caa7ff2ea5a37b943444111959422c1))
+* **oauth2:** validate Firebase issuer/subject and warn on omitted audience in verify_firebase_token ([#18777](https://github.com/googleapis/google-cloud-python/issues/18777)) ([1851b9c](https://github.com/googleapis/google-cloud-python/commit/1851b9c3a57d7a5bc7c3da6a7ae89ddc0da0c72a))
+
+
+### Documentation
+
+* **google-auth:** update requests intersphinx URL ([#18978](https://github.com/googleapis/google-cloud-python/issues/18978)) ([2b4575f](https://github.com/googleapis/google-cloud-python/commit/2b4575f36f1441792e51efb9394b636940ed539d))
+
+## [2.62.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.0...google-auth-v2.62.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* **auth:** strip -fips suffix from AWS service name in SigV4 signing ([#18920](https://github.com/googleapis/google-cloud-python/issues/18920)) ([2e1899e](https://github.com/googleapis/google-cloud-python/commit/2e1899ed52a8c5adeb05422f48581124b4ab3fbe))
+* **auth:** use an unencrypted key for mTLS certificate rotation ([#18709](https://github.com/googleapis/google-cloud-python/issues/18709)) ([8166325](https://github.com/googleapis/google-cloud-python/commit/81663259c3743c6ab76005a5decb2b3628cfcc79))
+
+## [2.62.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.61.0...google-auth-v2.62.0) (2026-10-12)
+
+
+### Features
+
+* **auth:** enable bound ID tokens by default on Cloud Run ([#18635](https://github.com/googleapis/google-cloud-python/issues/18635)) ([8b625c4](https://github.com/googleapis/google-cloud-python/commit/8b625c4927371992f4569962292299eced040047))
+
+## [2.61.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.60.0...google-auth-v2.61.0) (2026-10-07)
+
+
+### Features
+
+* **auth:** support bound access and ID tokens for GKE ([#18594](https://github.com/googleapis/google-cloud-python/issues/18594)) ([9f5fd7b](https://github.com/googleapis/google-cloud-python/commit/9f5fd7bdf0707a17c363482b094ccd70a4358389))
+
+## [2.60.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.1...google-auth-v2.60.0) (2026-10-02)
+
+
+### Features
+
+* **auth:** Support sync credentials in AsyncAuthorizedSession ([#18542](https://github.com/googleapis/google-cloud-python/issues/18542)) ([3799568](https://github.com/googleapis/google-cloud-python/commit/379956865248ebc40e5b851ede520056e65abcac))
+
 ## [2.59.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.0...google-auth-v2.59.1) (2026-09-30)
 
 

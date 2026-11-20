@@ -42,6 +42,8 @@ from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.testing.mock_database_admin import DatabaseAdminServicer
 from google.cloud.spanner_v1.testing.mock_spanner import (
+    MockSpanner,
+    PartialResultSetConfig,
     SpannerServicer,
     start_mock_server,
 )
@@ -50,38 +52,41 @@ from tests._helpers import is_multiplexed_enabled
 current_service = ContextVar("current_service", default=None)
 
 
-# Creates an aborted status with the smallest possible retry delay.
-def aborted_status() -> _Status:
-    error = status_pb2.Status(
-        code=code_pb2.ABORTED,
-        message="Transaction was aborted.",
-    )
-    retry_info = RetryInfo(retry_delay=Duration(seconds=0, nanos=1))
-    status = _Status(
+def _make_status(code: int, message: str, with_retry_info: bool = False) -> _Status:
+    """Create a gRPC status with optional minimal RetryInfo."""
+    error = status_pb2.Status(code=code, message=message)
+    trailing_metadata = [("grpc-status-details-bin", error.SerializeToString())]
+    if with_retry_info:
+        retry_info = RetryInfo(retry_delay=Duration(seconds=0, nanos=1))
+        trailing_metadata.append(
+            ("google.rpc.retryinfo-bin", retry_info.SerializeToString())
+        )
+    return _Status(
         code=code_to_grpc_status_code(error.code),
         details=error.message,
-        trailing_metadata=(
-            ("grpc-status-details-bin", error.SerializeToString()),
-            (
-                "google.rpc.retryinfo-bin",
-                retry_info.SerializeToString(),
-            ),
-        ),
+        trailing_metadata=tuple(trailing_metadata),
     )
-    return status
+
+
+# Creates an aborted status with the smallest possible retry delay.
+def aborted_status() -> _Status:
+    return _make_status(
+        code_pb2.ABORTED, "Transaction was aborted.", with_retry_info=True
+    )
 
 
 def invalid_argument_status() -> _Status:
-    error = status_pb2.Status(
-        code=code_pb2.INVALID_ARGUMENT,
-        message="Invalid argument.",
-    )
-    status = _Status(
-        code=code_to_grpc_status_code(error.code),
-        details=error.message,
-        trailing_metadata=(("grpc-status-details-bin", error.SerializeToString()),),
-    )
-    return status
+    return _make_status(code_pb2.INVALID_ARGUMENT, "Invalid argument.")
+
+
+def deadline_exceeded_status() -> _Status:
+    return _make_status(code_pb2.DEADLINE_EXCEEDED, "Deadline exceeded.")
+
+
+def internal_server_error_status(
+    message: str = "Internal server error.",
+) -> _Status:
+    return _make_status(code_pb2.INTERNAL, message)
 
 
 def _make_partial_result_sets(
@@ -101,29 +106,19 @@ def _make_partial_result_sets(
         for value in result["values"]:
             partial_result_set.values.append(_make_value_pb(value))
         partial_result_set.last = result.get("last") or False
+        partial_result_set.chunked_value = result.get("chunked_value") or False
+        resume_token = result.get("resume_token")
+        if resume_token is not None:
+            partial_result_set.resume_token = resume_token
         partial_result_sets.append(partial_result_set)
     return partial_result_sets
 
 
 # Creates an UNAVAILABLE status with the smallest possible retry delay.
 def unavailable_status() -> _Status:
-    error = status_pb2.Status(
-        code=code_pb2.UNAVAILABLE,
-        message="Service unavailable.",
+    return _make_status(
+        code_pb2.UNAVAILABLE, "Service unavailable.", with_retry_info=True
     )
-    retry_info = RetryInfo(retry_delay=Duration(seconds=0, nanos=1))
-    status = _Status(
-        code=code_to_grpc_status_code(error.code),
-        details=error.message,
-        trailing_metadata=(
-            ("grpc-status-details-bin", error.SerializeToString()),
-            (
-                "google.rpc.retryinfo-bin",
-                retry_info.SerializeToString(),
-            ),
-        ),
-    )
-    return status
 
 
 def get_spanner_service():
@@ -139,8 +134,18 @@ def add_error(method: str, error: status_pb2.Status):
     get_spanner_service().mock_spanner.add_error(method, error)
 
 
-def add_result(sql: str, result: result_set.ResultSet):
-    get_spanner_service().mock_spanner.add_result(sql, result)
+def add_header(method: str, header: str, value: str):
+    get_spanner_service().mock_spanner.add_header(method, header, value)
+
+
+def add_result(
+    sql: str,
+    result: result_set.ResultSet,
+    chunk_config: PartialResultSetConfig | None = None,
+):
+    get_spanner_service().mock_spanner.add_result(
+        sql, result, chunk_config=chunk_config
+    )
 
 
 def add_update_count(
@@ -166,31 +171,57 @@ def add_execute_streaming_sql_results(
     )
 
 
-def add_single_result(
-    sql: str, column_name: str, type_code: spanner_type.TypeCode, row
-):
+def add_execute_streaming_sql_error(
+    sql: str, partial_index: int, error: _Status
+) -> None:
+    """Queue a mid-stream error for ExecuteStreamingSql on the active mock server."""
+    get_spanner_service().mock_spanner.add_execute_streaming_sql_error(
+        sql, partial_index, error
+    )
+
+
+def add_streaming_read_error(
+    table: str, columns: list[str], partial_index: int, error: _Status
+) -> None:
+    """Queue a mid-stream error for StreamingRead on the active mock server."""
+    sql = MockSpanner.read_request_sql(table, columns)
+    add_execute_streaming_sql_error(sql, partial_index, error)
+
+
+def add_multi_column_result(
+    sql: str,
+    columns: list[tuple[str, spanner_type.TypeCode]],
+    rows: list[tuple],
+    chunk_config: PartialResultSetConfig | None = None,
+) -> None:
+    """Register a multi-column ResultSet with optional PartialResultSet chunking config."""
+    fields = [
+        spanner_type.StructType.Field(
+            dict(name=column_name, type=spanner_type.Type(dict(code=type_code)))
+        )
+        for column_name, type_code in columns
+    ]
     result = result_set.ResultSet(
         dict(
             metadata=result_set.ResultSetMetadata(
-                dict(
-                    row_type=spanner_type.StructType(
-                        dict(
-                            fields=[
-                                spanner_type.StructType.Field(
-                                    dict(
-                                        name=column_name,
-                                        type=spanner_type.Type(dict(code=type_code)),
-                                    )
-                                )
-                            ]
-                        )
-                    )
-                )
-            ),
+                dict(row_type=spanner_type.StructType(dict(fields=fields)))
+            )
         )
     )
-    result.rows.extend(row)
-    get_spanner_service().mock_spanner.add_result(sql, result)
+    result.rows.extend(rows)
+    add_result(sql, result, chunk_config=chunk_config)
+
+
+def add_single_result(
+    sql: str,
+    column_name: str,
+    type_code: spanner_type.TypeCode,
+    row,
+    chunk_config: PartialResultSetConfig | None = None,
+):
+    add_multi_column_result(
+        sql, [(column_name, type_code)], row, chunk_config=chunk_config
+    )
 
 
 class MockServerTestBase(unittest.TestCase):
@@ -409,6 +440,7 @@ class AsyncMockServerTestBase(unittest.IsolatedAsyncioTestCase):
 
     async def asyncTearDown(self):
         AsyncMockServerTestBase.spanner_service.clear_requests()
+        AsyncMockServerTestBase.spanner_service.clear_results()
         AsyncMockServerTestBase.database_admin_service.clear_requests()
 
     @property

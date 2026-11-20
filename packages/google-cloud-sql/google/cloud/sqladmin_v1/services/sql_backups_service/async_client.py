@@ -74,7 +74,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class SqlBackupsServiceAsyncClient:
-    """"""
+    """Service for managing database backups for Cloud SQL
+    instances.
+    """
 
     _client: SqlBackupsServiceClient
 
@@ -87,6 +89,22 @@ class SqlBackupsServiceAsyncClient:
 
     backup_path = staticmethod(SqlBackupsServiceClient.backup_path)
     parse_backup_path = staticmethod(SqlBackupsServiceClient.parse_backup_path)
+    crypto_key_path = staticmethod(SqlBackupsServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(SqlBackupsServiceClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(
+        SqlBackupsServiceClient.crypto_key_version_path
+    )
+    parse_crypto_key_version_path = staticmethod(
+        SqlBackupsServiceClient.parse_crypto_key_version_path
+    )
+    instance_path = staticmethod(SqlBackupsServiceClient.instance_path)
+    parse_instance_path = staticmethod(SqlBackupsServiceClient.parse_instance_path)
+    network_attachment_path = staticmethod(
+        SqlBackupsServiceClient.network_attachment_path
+    )
+    parse_network_attachment_path = staticmethod(
+        SqlBackupsServiceClient.parse_network_attachment_path
+    )
     service_connection_policy_path = staticmethod(
         SqlBackupsServiceClient.service_connection_policy_path
     )

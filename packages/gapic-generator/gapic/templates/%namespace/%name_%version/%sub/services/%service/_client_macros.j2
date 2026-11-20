@@ -28,6 +28,9 @@
             requests: Optional[Iterator[{{ method.input.ident }}]] = None,
             *,
             {% endif %}
+            {% if method.is_resumable_upload %}
+            config: Optional[ResumableUploadConfig] = None,
+            {% endif %}
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             {{ shared_macros.client_method_metadata_argument()|indent(8) }} = {{ shared_macros.client_method_metadata_default_value() }},
@@ -64,6 +67,10 @@
             requests (Iterator[{{ method.input.ident.sphinx }}]):
                 The request object iterator.{{ " " }}
                 {{- method.input.meta.doc|rst(width=72, indent=16, nl=False) }}
+            {% endif %}
+            {% if method.is_resumable_upload %}
+            config (Optional[google.api_core.resumable_transfer.ResumableUploadConfig]):
+                Optional configuration for the resumable upload session.
             {% endif %}
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -161,8 +168,17 @@
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+            {% if method.is_resumable_upload %}
+            config=config,
+            start_retry=retry,
+            {% endif %}
         )
         {% if method.lro %}
+        {% if service.version %}
+        lro_metadata = None
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            lro_metadata = [version_header.to_api_version_header("{{ service.version }}")]
+        {% endif %}
 
         # Wrap the response in an operation future.
         response = {{ method.client_output.ident.module_alias or method.client_output.ident.module }}.from_gapic(
@@ -170,6 +186,9 @@
             self._transport.operations_client,
             {{ method.lro.response_type.ident }},
             metadata_type={{ method.lro.metadata_type.ident }},
+            {% if service.version %}
+            grpc_metadata=lro_metadata,
+            {% endif %}
         )
         {% elif method.paged_result_field %}
 

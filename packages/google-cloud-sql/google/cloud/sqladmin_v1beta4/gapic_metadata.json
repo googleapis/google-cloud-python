@@ -5,6 +5,100 @@
   "protoPackage": "google.cloud.sql.v1beta4",
   "schema": "1.0",
   "services": {
+    "BlueGreenDeploymentsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BlueGreenDeploymentsServiceClient",
+          "rpcs": {
+            "CreateBlueGreenDeployment": {
+              "methods": [
+                "create_blue_green_deployment"
+              ]
+            },
+            "DeleteBlueGreenDeployment": {
+              "methods": [
+                "delete_blue_green_deployment"
+              ]
+            },
+            "GetBlueGreenDeployment": {
+              "methods": [
+                "get_blue_green_deployment"
+              ]
+            },
+            "ListBlueGreenDeployments": {
+              "methods": [
+                "list_blue_green_deployments"
+              ]
+            },
+            "SwitchoverBlueGreenDeployment": {
+              "methods": [
+                "switchover_blue_green_deployment"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BlueGreenDeploymentsServiceAsyncClient",
+          "rpcs": {
+            "CreateBlueGreenDeployment": {
+              "methods": [
+                "create_blue_green_deployment"
+              ]
+            },
+            "DeleteBlueGreenDeployment": {
+              "methods": [
+                "delete_blue_green_deployment"
+              ]
+            },
+            "GetBlueGreenDeployment": {
+              "methods": [
+                "get_blue_green_deployment"
+              ]
+            },
+            "ListBlueGreenDeployments": {
+              "methods": [
+                "list_blue_green_deployments"
+              ]
+            },
+            "SwitchoverBlueGreenDeployment": {
+              "methods": [
+                "switchover_blue_green_deployment"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BlueGreenDeploymentsServiceClient",
+          "rpcs": {
+            "CreateBlueGreenDeployment": {
+              "methods": [
+                "create_blue_green_deployment"
+              ]
+            },
+            "DeleteBlueGreenDeployment": {
+              "methods": [
+                "delete_blue_green_deployment"
+              ]
+            },
+            "GetBlueGreenDeployment": {
+              "methods": [
+                "get_blue_green_deployment"
+              ]
+            },
+            "ListBlueGreenDeployments": {
+              "methods": [
+                "list_blue_green_deployments"
+              ]
+            },
+            "SwitchoverBlueGreenDeployment": {
+              "methods": [
+                "switchover_blue_green_deployment"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SqlBackupRunsService": {
       "clients": {
         "grpc": {
@@ -487,6 +581,11 @@
                 "execute_sql"
               ]
             },
+            "ExecuteSqlReadOnly": {
+              "methods": [
+                "execute_sql_read_only"
+              ]
+            },
             "Export": {
               "methods": [
                 "export"
@@ -567,6 +666,11 @@
                 "promote_replica"
               ]
             },
+            "ReconcileNetworking": {
+              "methods": [
+                "reconcile_networking"
+              ]
+            },
             "Reencrypt": {
               "methods": [
                 "reencrypt"
@@ -617,6 +721,11 @@
                 "rotate_server_certificate"
               ]
             },
+            "Start": {
+              "methods": [
+                "start"
+              ]
+            },
             "StartExternalSync": {
               "methods": [
                 "start_external_sync"
@@ -625,6 +734,11 @@
             "StartReplica": {
               "methods": [
                 "start_replica"
+              ]
+            },
+            "Stop": {
+              "methods": [
+                "stop"
               ]
             },
             "StopReplica": {
@@ -707,6 +821,11 @@
                 "execute_sql"
               ]
             },
+            "ExecuteSqlReadOnly": {
+              "methods": [
+                "execute_sql_read_only"
+              ]
+            },
             "Export": {
               "methods": [
                 "export"
@@ -787,6 +906,11 @@
                 "promote_replica"
               ]
             },
+            "ReconcileNetworking": {
+              "methods": [
+                "reconcile_networking"
+              ]
+            },
             "Reencrypt": {
               "methods": [
                 "reencrypt"
@@ -837,6 +961,11 @@
                 "rotate_server_certificate"
               ]
             },
+            "Start": {
+              "methods": [
+                "start"
+              ]
+            },
             "StartExternalSync": {
               "methods": [
                 "start_external_sync"
@@ -845,6 +974,11 @@
             "StartReplica": {
               "methods": [
                 "start_replica"
+              ]
+            },
+            "Stop": {
+              "methods": [
+                "stop"
               ]
             },
             "StopReplica": {
@@ -927,6 +1061,11 @@
                 "execute_sql"
               ]
             },
+            "ExecuteSqlReadOnly": {
+              "methods": [
+                "execute_sql_read_only"
+              ]
+            },
             "Export": {
               "methods": [
                 "export"
@@ -1007,6 +1146,11 @@
                 "promote_replica"
               ]
             },
+            "ReconcileNetworking": {
+              "methods": [
+                "reconcile_networking"
+              ]
+            },
             "Reencrypt": {
               "methods": [
                 "reencrypt"
@@ -1057,6 +1201,11 @@
                 "rotate_server_certificate"
               ]
             },
+            "Start": {
+              "methods": [
+                "start"
+              ]
+            },
             "StartExternalSync": {
               "methods": [
                 "start_external_sync"
@@ -1065,6 +1214,11 @@
             "StartReplica": {
               "methods": [
                 "start_replica"
+              ]
+            },
+            "Stop": {
+              "methods": [
+                "stop"
               ]
             },
             "StopReplica": {
@@ -1170,6 +1324,11 @@
                 "delete"
               ]
             },
+            "DeleteCustomerManagedCertificate": {
+              "methods": [
+                "delete_customer_managed_certificate"
+              ]
+            },
             "Get": {
               "methods": [
                 "get"
@@ -1183,6 +1342,16 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "ListCustomerManagedCertificates": {
+              "methods": [
+                "list_customer_managed_certificates"
+              ]
+            },
+            "UpdateCustomerManagedCertificate": {
+              "methods": [
+                "update_customer_managed_certificate"
               ]
             }
           }
@@ -1195,6 +1364,11 @@
                 "delete"
               ]
             },
+            "DeleteCustomerManagedCertificate": {
+              "methods": [
+                "delete_customer_managed_certificate"
+              ]
+            },
             "Get": {
               "methods": [
                 "get"
@@ -1208,6 +1382,16 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "ListCustomerManagedCertificates": {
+              "methods": [
+                "list_customer_managed_certificates"
+              ]
+            },
+            "UpdateCustomerManagedCertificate": {
+              "methods": [
+                "update_customer_managed_certificate"
               ]
             }
           }
@@ -1220,6 +1404,11 @@
                 "delete"
               ]
             },
+            "DeleteCustomerManagedCertificate": {
+              "methods": [
+                "delete_customer_managed_certificate"
+              ]
+            },
             "Get": {
               "methods": [
                 "get"
@@ -1233,6 +1422,16 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "ListCustomerManagedCertificates": {
+              "methods": [
+                "list_customer_managed_certificates"
+              ]
+            },
+            "UpdateCustomerManagedCertificate": {
+              "methods": [
+                "update_customer_managed_certificate"
               ]
             }
           }
@@ -1361,6 +1560,100 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SqlWorkloadCapturesService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SqlWorkloadCapturesServiceClient",
+          "rpcs": {
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Start": {
+              "methods": [
+                "start"
+              ]
+            },
+            "StartReplay": {
+              "methods": [
+                "start_replay"
+              ]
+            },
+            "Stop": {
+              "methods": [
+                "stop"
+              ]
+            },
+            "StopReplay": {
+              "methods": [
+                "stop_replay"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SqlWorkloadCapturesServiceAsyncClient",
+          "rpcs": {
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Start": {
+              "methods": [
+                "start"
+              ]
+            },
+            "StartReplay": {
+              "methods": [
+                "start_replay"
+              ]
+            },
+            "Stop": {
+              "methods": [
+                "stop"
+              ]
+            },
+            "StopReplay": {
+              "methods": [
+                "stop_replay"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SqlWorkloadCapturesServiceClient",
+          "rpcs": {
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Start": {
+              "methods": [
+                "start"
+              ]
+            },
+            "StartReplay": {
+              "methods": [
+                "start_replay"
+              ]
+            },
+            "Stop": {
+              "methods": [
+                "stop"
+              ]
+            },
+            "StopReplay": {
+              "methods": [
+                "stop_replay"
               ]
             }
           }

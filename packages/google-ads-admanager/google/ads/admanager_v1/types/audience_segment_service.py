@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import audience_segment_messages
@@ -30,6 +31,9 @@ __protobuf__ = proto.module(
         "CreateAudienceSegmentRequest",
         "BatchCreateAudienceSegmentsRequest",
         "BatchCreateAudienceSegmentsResponse",
+        "UpdateAudienceSegmentRequest",
+        "BatchUpdateAudienceSegmentsRequest",
+        "BatchUpdateAudienceSegmentsResponse",
         "BatchActivateAudienceSegmentsRequest",
         "BatchActivateAudienceSegmentsResponse",
         "BatchDeactivateAudienceSegmentsRequest",
@@ -85,6 +89,27 @@ class ListAudienceSegmentsRequest(proto.Message):
             details at
             https://developers.google.com/ad-manager/api/beta/filters
 
+            Notes specific to AudienceSegmentService:
+
+            - ``OR`` operator: Not supported. Multiple conditions can
+              only be combined using ``AND``. Use ``IN`` for multi-value
+              matching on a single field.
+            - ``NOT`` operator: Cannot wrap compound expressions. For
+              example, ``NOT (A AND B)``.
+            - Text-based searches (for example, from using wildcards)
+              are case-insensitive. Other string comparisons are
+              case-sensitive.
+
+            Syntax summary: double-quoted ``"..."`` (never ``'...'``)
+            strings and RFC 3339 timestamps, full resource names on
+            reference fields (for example,
+            ``order = "networks/123/orders/456"``, not ``*Id`` or bare
+            IDs), prefix or suffix ``*`` wildcards with ``=``
+            (``displayName = "foo*"``), ``:`` for substring or
+            repeated-field matching, unquoted enums and booleans,
+            uppercase ``AND``/``OR``/``NOT``, and standalone
+            ``IN(field, SET(v1, v2))`` (not ``field IN (...)``).
+
             **Filterable fields:**
 
             - ``adIdSize``
@@ -101,6 +126,7 @@ class ListAudienceSegmentsRequest(proto.Message):
             - ``thirdPartyAudienceSegment.approvalStatus``
             - ``thirdPartyAudienceSegment.cost``
             - ``thirdPartyAudienceSegment.endTime``
+            - ``thirdPartyAudienceSegment.licenseType``
             - ``thirdPartyAudienceSegment.startTime``
         order_by (str):
             Optional. Expression to specify sorting
@@ -238,6 +264,71 @@ class BatchCreateAudienceSegmentsResponse(proto.Message):
     Attributes:
         audience_segments (MutableSequence[google.ads.admanager_v1.types.AudienceSegment]):
             The ``AudienceSegment`` objects created.
+    """
+
+    audience_segments: MutableSequence[audience_segment_messages.AudienceSegment] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=audience_segment_messages.AudienceSegment,
+        )
+    )
+
+
+class UpdateAudienceSegmentRequest(proto.Message):
+    r"""Request object for ``UpdateAudienceSegment`` method.
+
+    Attributes:
+        audience_segment (google.ads.admanager_v1.types.AudienceSegment):
+            Required. The ``AudienceSegment`` to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update.
+    """
+
+    audience_segment: audience_segment_messages.AudienceSegment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=audience_segment_messages.AudienceSegment,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class BatchUpdateAudienceSegmentsRequest(proto.Message):
+    r"""Request object for ``BatchUpdateAudienceSegments`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``AudienceSegments``
+            will be updated. Format: ``networks/{network_code}`` The
+            parent field in the
+            UpdateAudienceSegmentRequest.audienceSegment must match this
+            field.
+        requests (MutableSequence[google.ads.admanager_v1.types.UpdateAudienceSegmentRequest]):
+            Required. The ``AudienceSegment`` objects to update. A
+            maximum of 100 objects can be updated in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateAudienceSegmentRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateAudienceSegmentRequest",
+    )
+
+
+class BatchUpdateAudienceSegmentsResponse(proto.Message):
+    r"""Response object for ``BatchUpdateAudienceSegments`` method.
+
+    Attributes:
+        audience_segments (MutableSequence[google.ads.admanager_v1.types.AudienceSegment]):
+            The ``AudienceSegment`` objects updated.
     """
 
     audience_segments: MutableSequence[audience_segment_messages.AudienceSegment] = (

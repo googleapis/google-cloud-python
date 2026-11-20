@@ -63,6 +63,7 @@ from google.showcase_v1beta1.services.echo import EchoAsyncClient
 from google.showcase_v1beta1.services.echo import EchoClient
 from google.showcase_v1beta1.services.echo import pagers
 from google.showcase_v1beta1.services.echo import transports
+from google.showcase_v1beta1.services.echo.client import _observability
 from google.showcase_v1beta1.types import echo as gs_echo
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
@@ -406,7 +407,7 @@ def test_wait_api_version_header(transport_name):
                 '__call__'
             ) as call:
                 call.return_value = operations_pb2.Operation()
-                client.wait()
+                response = client.wait()
 
         # Establish that the api version header was sent.
         _, _, kw = call.mock_calls[0]
@@ -414,6 +415,14 @@ def test_wait_api_version_header(transport_name):
             version_header.API_VERSION_METADATA_KEY,
             "v1_20240408",
         ) in kw['metadata']
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in response._refresh.keywords["metadata"]
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in response._cancel.keywords["metadata"]
     else:
         pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
 @pytest.mark.parametrize("transport_name", [
@@ -1055,6 +1064,204 @@ def test_echo_client_client_options_from_dict():
             always_use_jwt_access=True,
             api_audience=None,
         )
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+@pytest.mark.parametrize("capabilities_enabled, expected_options_injected", [
+    pytest.param(True, True, id="otel_injection_enabled"),
+    pytest.param(False, False, id="otel_injection_disabled"),
+])
+def test_echo_client_otel_channel_injection(capabilities_enabled, expected_options_injected):
+    with (
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
+            return_value=capabilities_enabled,
+            autospec=True,
+        ) as mock_is_otel_enabled,
+        mock.patch.object(
+            transports.EchoGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = EchoClient(transport="grpc")
+
+        mock_is_otel_enabled.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        if expected_options_injected:
+            assert called_kwargs.get("client_options") == client._client_options
+        else:
+            assert not called_kwargs.get("client_options")
+
+
+def test_echo_grpc_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.EchoGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        transport = transports.EchoGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
+def test_echo_grpc_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            _observability,
+            "get_otel_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_interceptor,
+        mock.patch.object(
+            transports.EchoGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.EchoGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        expected_kwargs = (
+            {"default_host": transport._default_host}
+            if transports.grpc._SUPPORTS_DEFAULT_HOST
+            else {}
+        )
+        mock_get_interceptor.assert_called_once_with(
+            transport._client_options, **expected_kwargs
+        )
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_otel_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_echo_grpc_transport_custom_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
+        return_value=mock_custom_channel,
+        create=True,
+    ) as mock_apply_interceptors:
+        transport = transports.EchoGrpcTransport(
+            channel=mock_custom_channel,
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_custom_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_custom_channel
+
+
+def test_echo_grpc_asyncio_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with mock.patch.object(
+        transports.EchoGrpcAsyncIOTransport,
+        "create_channel",
+        return_value=mock_channel,
+    ) as mock_create_channel:
+        transport = transports.EchoGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        assert mock_create_channel.call_count == 1
+        assert mock_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+@pytest.mark.skipif(
+    _observability is None or not hasattr(_observability, "apply_otel_async_channel_interceptors"),
+    reason="Requires google-api-core with OpenTelemetry async channel interceptors support (>= v2.43.0)",
+)
+def test_echo_grpc_asyncio_transport_otel_channel_interceptor():
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with (
+        mock.patch.object(
+            _observability,
+            "apply_otel_async_channel_interceptors",
+            return_value=mock_channel,
+        ) as mock_apply_async_interceptors,
+        mock.patch.object(
+            transports.EchoGrpcAsyncIOTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ) as mock_create_channel,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.EchoGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        expected_kwargs = (
+            {"default_host": transport._default_host}
+            if transports.grpc_asyncio._SUPPORTS_DEFAULT_HOST
+            else {}
+        )
+        mock_apply_async_interceptors.assert_called_once_with(
+            mock_channel, transport._client_options, **expected_kwargs
+        )
+        assert mock_create_channel.call_count == 1
+        assert transport.grpc_channel == mock_channel
+
+
+def test_echo_grpc_asyncio_transport_custom_channel():
+    mock_custom_channel = mock.Mock(spec=aio.Channel)
+
+    with mock.patch.object(
+        transports.EchoGrpcAsyncIOTransport,
+        "create_channel",
+    ) as mock_create_channel:
+        transport = transports.EchoGrpcAsyncIOTransport(
+            channel=mock_custom_channel,
+        )
+
+        assert mock_create_channel.call_count == 0
+        assert transport.grpc_channel == mock_custom_channel
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
@@ -7691,6 +7898,8 @@ def test_echo_grpc_transport_channel():
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
+    assert transport._user_provided_channel is True
+    assert transport._default_host is None
 
 
 def test_echo_grpc_asyncio_transport_channel():
@@ -7704,6 +7913,8 @@ def test_echo_grpc_asyncio_transport_channel():
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
+    assert transport._user_provided_channel is True
+    assert transport._default_host is None
 
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
@@ -8003,6 +8214,11 @@ def test_delete_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
@@ -8029,6 +8245,11 @@ async def test_delete_operation_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_delete_operation_from_dict():
@@ -8170,6 +8391,11 @@ def test_cancel_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
@@ -8196,6 +8422,11 @@ async def test_cancel_operation_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_cancel_operation_from_dict():
@@ -8337,6 +8568,11 @@ def test_get_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
@@ -8363,6 +8599,11 @@ async def test_get_operation_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_get_operation_from_dict():
@@ -8504,6 +8745,11 @@ def test_list_operations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
@@ -8530,6 +8776,11 @@ async def test_list_operations_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_list_operations_from_dict():
@@ -8671,6 +8922,11 @@ def test_list_locations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
@@ -8697,6 +8953,11 @@ async def test_list_locations_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_list_locations_from_dict():
@@ -8837,6 +9098,11 @@ def test_get_location_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
@@ -8863,6 +9129,11 @@ async def test_get_location_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_get_location_from_dict():
@@ -9016,6 +9287,11 @@ def test_set_iam_policy_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
@@ -9042,6 +9318,11 @@ async def test_set_iam_policy_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict():
@@ -9208,6 +9489,11 @@ def test_get_iam_policy_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9237,6 +9523,11 @@ async def test_get_iam_policy_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict():
@@ -9404,6 +9695,11 @@ def test_test_iam_permissions_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9435,6 +9731,11 @@ async def test_test_iam_permissions_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "v1_20240408",
+        ) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict():
@@ -9593,3 +9894,328 @@ def test_api_key_credentials(client_class, transport_class):
                 always_use_jwt_access=True,
                 api_audience=None,
             )
+
+
+@pytest.mark.parametrize(
+    "supports_default_host,is_concrete,expected_kind,expected_has_default_host",
+    [
+        pytest.param(
+            True,
+            True,
+            "grpc",
+            True,
+            id="concrete_transport_supports_default_host",
+        ),
+        pytest.param(
+            False,
+            False,
+            None,
+            False,
+            id="base_transport_no_default_host",
+        ),
+    ],
+)
+def test_echo_base_transport_wrap_method_modern_api_core(
+    monkeypatch,
+    supports_default_host,
+    is_concrete,
+    expected_kind,
+    expected_has_default_host,
+):
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_TRACING", True)
+    monkeypatch.setattr(transports.base, "_SUPPORTS_DEFAULT_HOST", supports_default_host)
+    transport_cls = (
+        transports.EchoGrpcTransport
+        if is_concrete
+        else transports.EchoTransport
+    )
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        transport = transport_cls(credentials=ga_credentials.AnonymousCredentials())
+        func = mock.MagicMock()
+        transport._wrap_method(func)
+        if expected_kind:
+            assert mock_wrap.call_args.kwargs["kind"] == expected_kind
+        else:
+            assert "kind" not in mock_wrap.call_args.kwargs
+        assert "client_options" in mock_wrap.call_args.kwargs
+        if expected_has_default_host:
+            assert mock_wrap.call_args.kwargs["default_host"] == transport._default_host
+        else:
+            assert "default_host" not in mock_wrap.call_args.kwargs
+
+
+def test_echo_base_transport_client_options_none():
+    transport = transports.EchoTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=None,
+    )
+    assert transport._client_options is None
+    assert transport._default_host == "default.example.com:443"
+
+
+@pytest.mark.parametrize(
+    "initial_endpoint",
+    [
+        pytest.param(None, id="unset_api_endpoint"),
+        pytest.param("custom.example.com:443", id="explicit_api_endpoint"),
+    ],
+)
+def test_echo_base_transport_client_options_object(
+    initial_endpoint,
+):
+    options = client_options.ClientOptions(api_endpoint=initial_endpoint)
+    transport = transports.EchoTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=options,
+    )
+    assert transport._client_options is options
+    assert transport._client_options.api_endpoint == initial_endpoint
+    assert transport._user_provided_channel is False
+    assert transport._default_host == "default.example.com:443"
+
+
+@pytest.mark.parametrize(
+    "initial_options,expected_endpoint",
+    [
+        pytest.param(
+            {},
+            None,
+            id="unset_api_endpoint",
+        ),
+        pytest.param(
+            {"api_endpoint": "custom.example.com:443"},
+            "custom.example.com:443",
+            id="explicit_api_endpoint",
+        ),
+    ],
+)
+def test_echo_base_transport_client_options_dict(
+    initial_options, expected_endpoint
+):
+    options = dict(initial_options)
+    transport = transports.EchoTransport(
+        host="default.example.com:443",
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=options,
+    )
+    assert transport._client_options is options
+    assert transport._client_options.get("api_endpoint") == expected_endpoint
+    assert transport._user_provided_channel is False
+    assert transport._default_host == "default.example.com:443"
+    assert options == initial_options
+
+
+def test_echo_base_transport_default_host_ignored_when_custom_grpc_channel():
+    class _CustomChannelTransport(transports.EchoTransport):
+        def __init__(self, **kwargs):
+            self._ignore_credentials = True
+            self._user_provided_channel = True
+            super().__init__(**kwargs)
+
+    options = client_options.ClientOptions()
+    transport = _CustomChannelTransport(
+        host="default.example.com:443",
+        client_options=options,
+    )
+    assert transport._client_options is options
+    assert transport._client_options.api_endpoint is None
+    assert transport._user_provided_channel is True
+    assert transport._default_host is None
+
+
+def test_echo_base_transport_wrap_method_older_api_core_fallbacks(monkeypatch):
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_TRACING", False)
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method"):
+        transport = transports.EchoGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # Era 1: Ancient google-api-core (< 2.29.0: can be removed once google-api-core < 2.29.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_KIND", False)
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        base_transport = transports.EchoTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    # Era 2: Intermediate google-api-core (>= 2.29.0, < 2.36.0: can be removed once google-api-core < 2.36.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_WRAP_METHOD_SUPPORTS_KIND", True)
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert kwargs.get("kind") == "grpc"
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    with mock.patch.object(transports.base.gapic_v1.method, "wrap_method") as mock_wrap:
+        base_transport = transports.EchoTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+
+@pytest.mark.parametrize(
+    "supports_default_host,is_concrete,expected_kind,expected_has_default_host",
+    [
+        pytest.param(
+            True,
+            True,
+            "grpc_asyncio",
+            True,
+            id="concrete_transport_supports_default_host",
+        ),
+        pytest.param(
+            False,
+            False,
+            None,
+            False,
+            id="base_transport_no_default_host",
+        ),
+    ],
+)
+def test_echo_base_transport_wrap_async_method_modern_api_core(
+    monkeypatch,
+    supports_default_host,
+    is_concrete,
+    expected_kind,
+    expected_has_default_host,
+):
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_TRACING", True)
+    monkeypatch.setattr(transports.base, "_SUPPORTS_DEFAULT_HOST", supports_default_host)
+    transport_cls = (
+        transports.EchoGrpcAsyncIOTransport
+        if is_concrete
+        else transports.EchoTransport
+    )
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        transport = transport_cls(credentials=ga_credentials.AnonymousCredentials())
+        func = mock.MagicMock()
+        transport._wrap_async_method(func)
+        if expected_kind:
+            assert mock_wrap.call_args.kwargs["kind"] == expected_kind
+        else:
+            assert "kind" not in mock_wrap.call_args.kwargs
+        assert "client_options" in mock_wrap.call_args.kwargs
+        if expected_has_default_host:
+            assert mock_wrap.call_args.kwargs["default_host"] == transport._default_host
+        else:
+            assert "default_host" not in mock_wrap.call_args.kwargs
+
+
+def test_echo_base_transport_wrap_async_method_older_api_core_fallbacks(monkeypatch):
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_TRACING", False)
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method"):
+        transport = transports.EchoGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # Era 1: Ancient google-api-core (< 2.29.0: can be removed once google-api-core < 2.29.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_KIND", False)
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        base_transport = transports.EchoTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    # Era 2: Intermediate google-api-core (>= 2.29.0, < 2.36.0: can be removed once google-api-core < 2.36.0 is no longer supported)
+    monkeypatch.setattr(transports.base, "_ASYNC_WRAP_METHOD_SUPPORTS_KIND", True)
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        func = mock.MagicMock()
+        transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert kwargs.get("kind") == "grpc_asyncio"
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs
+
+    with mock.patch.object(transports.base.gapic_v1.method_async, "wrap_method") as mock_wrap:
+        base_transport = transports.EchoTransport(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+        func = mock.MagicMock()
+        base_transport._wrap_async_method(
+            func,
+            client_options="fake_options",
+            method_name="fake_method",
+            is_streaming=False,
+        )
+        kwargs = mock_wrap.call_args.kwargs
+        assert "kind" not in kwargs
+        assert "client_options" not in kwargs
+        assert "method_name" not in kwargs
+        assert "is_streaming" not in kwargs

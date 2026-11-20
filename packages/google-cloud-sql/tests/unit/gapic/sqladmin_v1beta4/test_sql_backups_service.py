@@ -4586,6 +4586,8 @@ def test_create_backup_rest_call_success(request_type):
                     "query_plans_per_minute": {},
                     "enhanced_query_insights_enabled": {},
                 },
+                "msdtc_enabled": True,
+                "msdtc_rpc_auth_mode": 1,
                 "password_validation_policy": {
                     "min_length": {},
                     "complexity": 1,
@@ -4656,6 +4658,15 @@ def test_create_backup_rest_call_success(request_type):
                         "transaction_kill_excluded_user_hosts_value2",
                     ],
                     "transaction_kill_type": 1,
+                },
+                "initial_users_config": {
+                    "initial_users": [
+                        {
+                            "name": "name_value",
+                            "type_": 1,
+                            "roles": ["roles_value1", "roles_value2"],
+                        }
+                    ]
                 },
             },
             "etag": "etag_value",
@@ -4729,6 +4740,8 @@ def test_create_backup_rest_call_success(request_type):
             "disk_encryption_configuration": {
                 "kms_key_name": "kms_key_name_value",
                 "kind": "kind_value",
+                "confidential_mode": True,
+                "cmek_source_log_encryption_enforced": True,
             },
             "disk_encryption_status": {
                 "kms_key_version_name": "kms_key_version_name_value",
@@ -4781,6 +4794,7 @@ def test_create_backup_rest_call_success(request_type):
             "satisfies_pzi": {},
             "switch_transaction_logs_to_cloud_storage_enabled": {},
             "include_replicas_for_major_version_upgrade": {},
+            "skip_precheck": {},
             "tags": {},
             "node_count": 1070,
             "nodes": [
@@ -4803,8 +4817,33 @@ def test_create_backup_rest_call_success(request_type):
                 }
             ],
             "dns_names": {},
+            "deployment_info": {
+                "deployment_id": "deployment_id_value",
+                "source": {"target_id": {}},
+                "target": {"source_id": {}},
+                "state": 1,
+            },
             "database_center_integration_enabled": {},
             "database_center_integration": 1,
+            "workload_replay_config": {
+                "workload_id": "workload_id_value",
+                "source_instance": "source_instance_value",
+                "replay_mode": 1,
+                "state": 1,
+                "start_time": {},
+                "end_time": {},
+            },
+            "workload_capture_config": {
+                "workload_id": "workload_id_value",
+                "capture_mode": 1,
+                "state": 1,
+                "start_time": {},
+                "end_time": {},
+                "replay_instance": "replay_instance_value",
+                "retention_days": 1512,
+                "backup_id": "backup_id_value",
+                "max_capture_duration": {},
+            },
         },
         "backup_run": "backup_run_value",
         "satisfies_pzs": {},
@@ -5458,6 +5497,8 @@ def test_update_backup_rest_call_success(request_type):
                     "query_plans_per_minute": {},
                     "enhanced_query_insights_enabled": {},
                 },
+                "msdtc_enabled": True,
+                "msdtc_rpc_auth_mode": 1,
                 "password_validation_policy": {
                     "min_length": {},
                     "complexity": 1,
@@ -5528,6 +5569,15 @@ def test_update_backup_rest_call_success(request_type):
                         "transaction_kill_excluded_user_hosts_value2",
                     ],
                     "transaction_kill_type": 1,
+                },
+                "initial_users_config": {
+                    "initial_users": [
+                        {
+                            "name": "name_value",
+                            "type_": 1,
+                            "roles": ["roles_value1", "roles_value2"],
+                        }
+                    ]
                 },
             },
             "etag": "etag_value",
@@ -5601,6 +5651,8 @@ def test_update_backup_rest_call_success(request_type):
             "disk_encryption_configuration": {
                 "kms_key_name": "kms_key_name_value",
                 "kind": "kind_value",
+                "confidential_mode": True,
+                "cmek_source_log_encryption_enforced": True,
             },
             "disk_encryption_status": {
                 "kms_key_version_name": "kms_key_version_name_value",
@@ -5653,6 +5705,7 @@ def test_update_backup_rest_call_success(request_type):
             "satisfies_pzi": {},
             "switch_transaction_logs_to_cloud_storage_enabled": {},
             "include_replicas_for_major_version_upgrade": {},
+            "skip_precheck": {},
             "tags": {},
             "node_count": 1070,
             "nodes": [
@@ -5675,8 +5728,33 @@ def test_update_backup_rest_call_success(request_type):
                 }
             ],
             "dns_names": {},
+            "deployment_info": {
+                "deployment_id": "deployment_id_value",
+                "source": {"target_id": {}},
+                "target": {"source_id": {}},
+                "state": 1,
+            },
             "database_center_integration_enabled": {},
             "database_center_integration": 1,
+            "workload_replay_config": {
+                "workload_id": "workload_id_value",
+                "source_instance": "source_instance_value",
+                "replay_mode": 1,
+                "state": 1,
+                "start_time": {},
+                "end_time": {},
+            },
+            "workload_capture_config": {
+                "workload_id": "workload_id_value",
+                "capture_mode": 1,
+                "state": 1,
+                "start_time": {},
+                "end_time": {},
+                "replay_instance": "replay_instance_value",
+                "retention_days": 1512,
+                "backup_id": "backup_id_value",
+                "max_capture_duration": {},
+            },
         },
         "backup_run": "backup_run_value",
         "satisfies_pzs": {},
@@ -6591,10 +6669,126 @@ def test_parse_backup_path():
     assert expected == actual
 
 
-def test_service_connection_policy_path():
+def test_crypto_key_path():
     project = "oyster"
-    region = "nudibranch"
-    service_connection_policy = "cuttlefish"
+    location = "nudibranch"
+    key_ring = "cuttlefish"
+    crypto_key = "mussel"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = SqlBackupsServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "key_ring": "scallop",
+        "crypto_key": "abalone",
+    }
+    path = SqlBackupsServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_version_path():
+    project = "squid"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    crypto_key_version = "oyster"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = SqlBackupsServiceClient.crypto_key_version_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_version_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "key_ring": "mussel",
+        "crypto_key": "winkle",
+        "crypto_key_version": "nautilus",
+    }
+    path = SqlBackupsServiceClient.crypto_key_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_crypto_key_version_path(path)
+    assert expected == actual
+
+
+def test_instance_path():
+    project = "scallop"
+    instance = "abalone"
+    expected = "projects/{project}/instances/{instance}".format(
+        project=project,
+        instance=instance,
+    )
+    actual = SqlBackupsServiceClient.instance_path(project, instance)
+    assert expected == actual
+
+
+def test_parse_instance_path():
+    expected = {
+        "project": "squid",
+        "instance": "clam",
+    }
+    path = SqlBackupsServiceClient.instance_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_instance_path(path)
+    assert expected == actual
+
+
+def test_network_attachment_path():
+    project = "whelk"
+    region = "octopus"
+    network_attachment = "oyster"
+    expected = "projects/{project}/regions/{region}/networkAttachments/{network_attachment}".format(
+        project=project,
+        region=region,
+        network_attachment=network_attachment,
+    )
+    actual = SqlBackupsServiceClient.network_attachment_path(
+        project, region, network_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_network_attachment_path():
+    expected = {
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "network_attachment": "mussel",
+    }
+    path = SqlBackupsServiceClient.network_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SqlBackupsServiceClient.parse_network_attachment_path(path)
+    assert expected == actual
+
+
+def test_service_connection_policy_path():
+    project = "winkle"
+    region = "nautilus"
+    service_connection_policy = "scallop"
     expected = "projects/{project}/regions/{region}/serviceConnectionPolicies/{service_connection_policy}".format(
         project=project,
         region=region,
@@ -6608,9 +6802,9 @@ def test_service_connection_policy_path():
 
 def test_parse_service_connection_policy_path():
     expected = {
-        "project": "mussel",
-        "region": "winkle",
-        "service_connection_policy": "nautilus",
+        "project": "abalone",
+        "region": "squid",
+        "service_connection_policy": "clam",
     }
     path = SqlBackupsServiceClient.service_connection_policy_path(**expected)
 
@@ -6620,7 +6814,7 @@ def test_parse_service_connection_policy_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6630,7 +6824,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "octopus",
     }
     path = SqlBackupsServiceClient.common_billing_account_path(**expected)
 
@@ -6640,7 +6834,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6650,7 +6844,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nudibranch",
     }
     path = SqlBackupsServiceClient.common_folder_path(**expected)
 
@@ -6660,7 +6854,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6670,7 +6864,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "mussel",
     }
     path = SqlBackupsServiceClient.common_organization_path(**expected)
 
@@ -6680,7 +6874,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6690,7 +6884,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "nautilus",
     }
     path = SqlBackupsServiceClient.common_project_path(**expected)
 
@@ -6700,8 +6894,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6712,8 +6906,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "squid",
+        "location": "clam",
     }
     path = SqlBackupsServiceClient.common_location_path(**expected)
 

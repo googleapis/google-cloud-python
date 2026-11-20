@@ -17,7 +17,7 @@
 import enum
 import logging
 import ssl
-from os import getenv
+from os import getenv, path
 from typing import Optional
 
 from google.auth import environment_vars, exceptions
@@ -42,10 +42,27 @@ def has_default_client_cert_source(include_context_aware=True):
     Returns:
         bool: indicating if the default client cert source exists.
     """
-    cert_path = _mtls_helper._get_cert_config_path(
-        include_context_aware=include_context_aware
-    )
-    if cert_path is not None:
+    spiffe_config_path = _mtls_helper._get_spiffe_polling_config_path()
+    # Before the SPIFFE config is mounted, assume it will provide a cert and let
+    # the loader poll for it. Once it exists, inspect it like any other config.
+    if spiffe_config_path is not None and not path.exists(spiffe_config_path):
+        return True
+
+    try:
+        (
+            cert_path,
+            key_path,
+            config_file_path,
+        ) = _mtls_helper._get_non_spiffe_workload_cert_and_key_paths(
+            None, include_context_aware=include_context_aware
+        )
+    except (exceptions.ClientCertError, OSError):
+        # Config exists, but is malformed or unreadable. Let caller surface error.
+        return True
+
+    if cert_path is not None and key_path is not None:
+        return True
+    if _mtls_helper._should_use_gke_credential_bundle(config_file_path):
         return True
     if (
         include_context_aware
@@ -75,10 +92,19 @@ def default_client_cert_source():
 
     def callback():
         try:
-            _, cert_bytes, key_bytes = _mtls_helper.get_client_cert_and_key()
-        except (OSError, RuntimeError, ValueError) as caught_exc:
+            has_cert, cert_bytes, key_bytes = _mtls_helper.get_client_cert_and_key()
+        except (
+            exceptions.ClientCertError,
+            OSError,
+            RuntimeError,
+            ValueError,
+        ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
+        if not has_cert:
+            raise exceptions.MutualTLSChannelError(
+                "Default client cert source did not provide a certificate"
+            )
 
         return cert_bytes, key_bytes
 
@@ -112,11 +138,15 @@ def default_client_encrypted_cert_source(cert_path, key_path):
     def callback():
         try:
             (
-                _,
+                has_cert,
                 cert_bytes,
                 key_bytes,
                 passphrase_bytes,
             ) = _mtls_helper.get_client_ssl_credentials(generate_encrypted_key=True)
+            if not has_cert:
+                raise exceptions.MutualTLSChannelError(
+                    "Default client cert source did not provide a certificate"
+                )
             with open(cert_path, "wb") as cert_file:
                 cert_file.write(cert_bytes)
             with open(key_path, "wb") as key_file:

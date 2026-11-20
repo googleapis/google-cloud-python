@@ -16,7 +16,6 @@
 
 from __future__ import absolute_import
 
-import base64
 import copy
 import datetime
 import functools
@@ -59,6 +58,7 @@ import google.api_core.exceptions
 import google.cloud._helpers  # type: ignore
 from google.api_core.page_iterator import HTTPIterator
 from google.cloud.bigquery import (
+    _arrow_query,
     _helpers,
     _pandas_helpers,
     _string_references,
@@ -107,21 +107,9 @@ _NO_SUPPORTED_DTYPE = (
     "because the necessary `__from_arrow__` attribute is missing."
 )
 
-_RANGE_PYARROW_WARNING = (
-    "Unable to represent RANGE schema as struct using pandas ArrowDtype. Using "
-    "`object` instead. To use ArrowDtype, use pandas >= 1.5 and "
-    "pyarrow >= 10.0.1."
-)
-
 _TO_DATAFRAME_DEPRECATED = (
     "Retrieving DataFrames via google-cloud-bigquery is deprecated. "
     "For direct, optimized access, please call 'pandas_gbq.read_gbq()' directly."
-)
-
-_TO_ARROW_DEPRECATED = (
-    "Retrieving PyArrow Tables via google-cloud-bigquery is deprecated. "
-    "For direct, optimized access, please call 'pandas_gbq.arrow.read_bigquery_table()' "
-    "or 'pandas_gbq.arrow.read_bigquery_query()' directly."
 )
 
 _CANNOT_ITERATE_ARROW_ERROR = (
@@ -828,7 +816,7 @@ class Table(_TableBase):
             api_repr = value.to_api_repr()
         elif value is not None:
             raise ValueError(
-                "value must be google.cloud.bigquery.table.TimePartitioning " "or None"
+                "value must be google.cloud.bigquery.table.TimePartitioning or None"
             )
         self._properties[self._PROPERTY_TO_API_FIELD["time_partitioning"]] = api_repr
 
@@ -1916,6 +1904,9 @@ class RowIterator(HTTPIterator):
             If representing query results, the start time of the associated query.
         ended (Optional[datetime.datetime]):
             If representing query results, the end time of the associated query.
+        arrow_serialization_options (Optional[Dict[str, str]]):
+            The ``arrowSerializationOptions`` sent on ``jobs.query`` for
+            ``ARROW`` results. ``ReadRows`` requests the same options.
     """
 
     def __init__(
@@ -1944,6 +1935,8 @@ class RowIterator(HTTPIterator):
         started: Optional[datetime.datetime] = None,
         ended: Optional[datetime.datetime] = None,
         query_results_format: Optional[str] = None,
+        *,
+        arrow_serialization_options: Optional[Dict[str, str]] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1978,6 +1971,10 @@ class RowIterator(HTTPIterator):
         self._job_started = started
         self._job_ended = ended
         self._query_results_format = query_results_format
+        self._arrow_serialization_options = arrow_serialization_options
+        # Set by query_and_wait() if the query wrote to a destination table
+        # set in its job config.
+        self._explicit_destination = False
 
     @property
     @_disallow_when_arrow
@@ -2158,15 +2155,16 @@ class RowIterator(HTTPIterator):
 
         params = self._get_query_params()
 
-        # If the user has provided page_size and start_index, we need to pass
-        # start_index for the first page, but for all subsequent pages, we
-        # should not pass start_index. We make a shallow copy of params and do
-        # not alter the original, so if the user iterates the results again,
-        # start_index is preserved.
+        # If the user has provided start_index, we need to pass it for the
+        # first page, but once the server hands back a page token we should
+        # not pass start_index, because the server only allows one of them.
+        # This applies whether the pages come from page_size or from the
+        # server splitting a large result. We make a shallow copy of params
+        # and do not alter the original, so if the user iterates the results
+        # again, start_index is preserved.
         params_copy = copy.copy(params)
-        if self._page_size is not None:
-            if self.page_number and "startIndex" in params:
-                del params_copy["startIndex"]
+        if self.next_page_token is not None and "startIndex" in params:
+            del params_copy["startIndex"]
 
         return self.api_request(
             method=self._HTTP_METHOD, path=self.path, query_params=params_copy
@@ -2317,91 +2315,17 @@ class RowIterator(HTTPIterator):
 
         Args:
             bqstorage_client (Optional[bigquery_storage.BigQueryReadClient]):
-                Client for BigQuery Storage Read API. If None, one will be created.
+                Client for BigQuery Storage Read API. If None, the BigQuery
+                Storage client that the BigQuery client shares is used.
             timeout (Optional[float]):
                 Timeout in seconds for read operations.
 
         Yields:
             pyarrow.RecordBatch: Record batches generated from the query result.
         """
-        if pyarrow is None:
-            raise ValueError(_NO_PYARROW_ERROR)
-
-        # Step 1: Ensure BigQuery Read API client is available upfront.
-        if bqstorage_client is None:
-            if self.client is None:
-                raise ValueError("RowIterator client is None.")
-            bqstorage_client = self.client._ensure_bqstorage_client()
-            if bqstorage_client is None:
-                raise ValueError(
-                    "The google-cloud-bigquery-storage library is required to read Arrow results."
-                )
-
-        offset = 0
-        pa_schema = None
-        total_rows = self.total_rows
-        job_complete = False
-
-        # Step 2: Process initial inline Arrow response from jobs.query if available.
-        if self._first_page_response:
-            first_page = self._first_page_response
-            self._first_page_response = None
-
-            job_complete = bool(first_page.get("jobComplete", False))
-            if job_complete:
-                total_rows = int(first_page.get("totalRows", 0))
-
-            arrow_schema_json = first_page.get("arrowSchema")
-            if isinstance(arrow_schema_json, dict):
-                schema_bytes = arrow_schema_json.get("serializedSchema")
-                if schema_bytes:
-                    if isinstance(schema_bytes, str):
-                        schema_bytes = base64.b64decode(schema_bytes)
-                    pa_schema = pyarrow.ipc.read_schema(pyarrow.py_buffer(schema_bytes))
-
-            arrow_batch_json = first_page.get("arrowRecordBatch")
-            if isinstance(arrow_batch_json, dict) and pa_schema is not None:
-                batch_bytes = arrow_batch_json.get("serializedRecordBatch")
-                if batch_bytes:
-                    if isinstance(batch_bytes, str):
-                        batch_bytes = base64.b64decode(batch_bytes)
-                    batch = pyarrow.ipc.read_record_batch(
-                        pyarrow.py_buffer(batch_bytes),
-                        pa_schema,
-                    )
-                    offset += batch.num_rows
-                    yield batch
-
-        # Step 3: Return early if all results were delivered in the first page response.
-        if job_complete and offset >= total_rows:
-            return
-
-        # Step 4: Stream remaining Arrow record batches from the job default stream.
-        project = self._project or (self.client.project if self.client else None)
-        location = self._location or (self.client.location if self.client else None)
-        stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
-        reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
-        for response in reader:
-            if (
-                response.arrow_schema
-                and response.arrow_schema.serialized_schema
-                and pa_schema is None
-            ):
-                pa_schema = pyarrow.ipc.read_schema(
-                    pyarrow.py_buffer(response.arrow_schema.serialized_schema)
-                )
-            if (
-                response.arrow_record_batch
-                and response.arrow_record_batch.serialized_record_batch
-                and pa_schema is not None
-            ):
-                batch = pyarrow.ipc.read_record_batch(
-                    pyarrow.py_buffer(
-                        response.arrow_record_batch.serialized_record_batch
-                    ),
-                    pa_schema,
-                )
-                yield batch
+        return _arrow_query.download_arrow_from_job(
+            self, bqstorage_client=bqstorage_client, timeout=timeout
+        )
 
     # If changing the signature of this method, make sure to apply the same
     # changes to job.QueryJob.to_arrow()
@@ -2468,20 +2392,20 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 1.17.0
         """
-        warnings.warn(
-            _TO_ARROW_DEPRECATED,
-            PendingDeprecationWarning,
-            stacklevel=2,
-        )
-
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
-        self._maybe_warn_max_results(bqstorage_client)
-
-        if not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client):
+        if self._query_results_format == QueryResultsFormat.ARROW.value:
+            # ARROW results apply max_results themselves and read with the
+            # bqstorage_client they're given, so keep it.
             create_bqstorage_client = False
-            bqstorage_client = None
+        else:
+            self._maybe_warn_max_results(bqstorage_client)
+            if not self._should_use_bqstorage(
+                bqstorage_client, create_bqstorage_client
+            ):
+                create_bqstorage_client = False
+                bqstorage_client = None
 
         owns_bqstorage_client = False
         if not bqstorage_client and create_bqstorage_client:
@@ -2909,43 +2833,29 @@ class RowIterator(HTTPIterator):
             time_dtype = db_dtypes.TimeDtype()
 
         if range_date_dtype is DefaultPandasDTypes.RANGE_DATE_DTYPE:
-            if _versions_helpers.SUPPORTS_RANGE_PYARROW:
-                range_date_dtype = pandas.ArrowDtype(
-                    pyarrow.struct(
-                        [("start", pyarrow.date32()), ("end", pyarrow.date32())]
-                    )
-                )
-            else:
-                warnings.warn(_RANGE_PYARROW_WARNING)
-                range_date_dtype = None
+            range_date_dtype = pandas.ArrowDtype(
+                pyarrow.struct([("start", pyarrow.date32()), ("end", pyarrow.date32())])
+            )
 
         if range_datetime_dtype is DefaultPandasDTypes.RANGE_DATETIME_DTYPE:
-            if _versions_helpers.SUPPORTS_RANGE_PYARROW:
-                range_datetime_dtype = pandas.ArrowDtype(
-                    pyarrow.struct(
-                        [
-                            ("start", pyarrow.timestamp("us")),
-                            ("end", pyarrow.timestamp("us")),
-                        ]
-                    )
+            range_datetime_dtype = pandas.ArrowDtype(
+                pyarrow.struct(
+                    [
+                        ("start", pyarrow.timestamp("us")),
+                        ("end", pyarrow.timestamp("us")),
+                    ]
                 )
-            else:
-                warnings.warn(_RANGE_PYARROW_WARNING)
-                range_datetime_dtype = None
+            )
 
         if range_timestamp_dtype is DefaultPandasDTypes.RANGE_TIMESTAMP_DTYPE:
-            if _versions_helpers.SUPPORTS_RANGE_PYARROW:
-                range_timestamp_dtype = pandas.ArrowDtype(
-                    pyarrow.struct(
-                        [
-                            ("start", pyarrow.timestamp("us", tz="UTC")),
-                            ("end", pyarrow.timestamp("us", tz="UTC")),
-                        ]
-                    )
+            range_timestamp_dtype = pandas.ArrowDtype(
+                pyarrow.struct(
+                    [
+                        ("start", pyarrow.timestamp("us", tz="UTC")),
+                        ("end", pyarrow.timestamp("us", tz="UTC")),
+                    ]
                 )
-            else:
-                warnings.warn(_RANGE_PYARROW_WARNING)
-                range_timestamp_dtype = None
+            )
 
         if bool_dtype is not None and not hasattr(bool_dtype, "__from_arrow__"):
             raise ValueError("bool_dtype", _NO_SUPPORTED_DTYPE)
@@ -2980,7 +2890,9 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
-        self._maybe_warn_max_results(bqstorage_client)
+        # ARROW results apply max_results with the BigQuery Storage API too.
+        if self._query_results_format != QueryResultsFormat.ARROW.value:
+            self._maybe_warn_max_results(bqstorage_client)
 
         if (
             self._query_results_format != QueryResultsFormat.ARROW.value
@@ -2991,18 +2903,12 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client = False
             bqstorage_client = None
 
-        with warnings.catch_warnings():
-            warnings.filterwarnings(
-                "ignore",
-                category=PendingDeprecationWarning,
-                message="Retrieving PyArrow Tables.*",
-            )
-            record_batch = self.to_arrow(
-                progress_bar_type=progress_bar_type,
-                bqstorage_client=bqstorage_client,
-                create_bqstorage_client=create_bqstorage_client,
-                timeout=timeout,
-            )
+        record_batch = self.to_arrow(
+            progress_bar_type=progress_bar_type,
+            bqstorage_client=bqstorage_client,
+            create_bqstorage_client=create_bqstorage_client,
+            timeout=timeout,
+        )
 
         # Default date dtype is `db_dtypes.DateDtype()` that could cause out of bounds error,
         # when pyarrow converts date values to nanosecond precision. To avoid the error, we
@@ -3186,8 +3092,7 @@ class RowIterator(HTTPIterator):
         )
         if not geography_columns:
             raise TypeError(
-                "There must be at least one GEOGRAPHY column"
-                " to create a GeoDataFrame"
+                "There must be at least one GEOGRAPHY column to create a GeoDataFrame"
             )
 
         if geography_column:
@@ -3278,11 +3183,6 @@ class _EmptyRowIterator(RowIterator):
         """
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
-        warnings.warn(
-            _TO_ARROW_DEPRECATED,
-            PendingDeprecationWarning,
-            stacklevel=2,
-        )
         return pyarrow.Table.from_arrays(())
 
     def to_dataframe(

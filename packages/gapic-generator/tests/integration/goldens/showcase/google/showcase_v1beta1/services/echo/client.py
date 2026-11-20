@@ -28,6 +28,7 @@ from google.showcase_v1beta1 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.showcase_v1beta1._compat import _observability
 from google.showcase_v1beta1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 from google.showcase_v1beta1._compat import setup_request_id
 from google.api_core import retry as retries
@@ -479,18 +480,32 @@ class EchoClient(metaclass=EchoClientMeta):
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EchoTransport], transport)
             )
+            # When OpenTelemetry tracing is enabled, pass client_options to the transport
+            # so it can wire tracing interceptors and method spans.
+            client_options = None
+            if (
+                _observability is not None
+                and _observability.is_otel_capabilities_enabled(self._client_options)
+            ):
+                # NOTE: Coverage tool ignores this line in environments running
+                # legacy google-api-core (< 2.36.0) where OpenTelemetry is unavailable.
+                # Lifecycle: Can be lifted once lowest constraints require google-api-core >= 2.36.0.
+                client_options = self._client_options  # pragma: NO COVER
+
             # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
+            transport_kwargs = {
+                "credentials": credentials,
+                "credentials_file": self._client_options.credentials_file,
+                "host": self._api_endpoint,
+                "scopes": self._client_options.scopes,
+                "client_cert_source_for_mtls": self._client_cert_source,
+                "quota_project_id": self._client_options.quota_project_id,
+                "client_info": client_info,
+                "always_use_jwt_access": True,
+                "api_audience": self._client_options.api_audience,
+                **({"client_options": client_options} if client_options is not None else {}),
+            }
+            self._transport = transport_init(**transport_kwargs)
 
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
@@ -1507,6 +1522,9 @@ class EchoClient(metaclass=EchoClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+        lro_metadata = None
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            lro_metadata = [version_header.to_api_version_header("v1_20240408")]
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1514,6 +1532,7 @@ class EchoClient(metaclass=EchoClientMeta):
             self._transport.operations_client,
             gs_echo.WaitResponse,
             metadata_type=gs_echo.WaitMetadata,
+            grpc_metadata=lro_metadata,
         )
 
         # Done; return the response.
@@ -1658,6 +1677,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request_pb.name),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1718,6 +1741,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request_pb.name),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1782,6 +1809,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request_pb.name),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1837,6 +1868,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request_pb.name),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1955,6 +1990,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("resource", request_pb.resource),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2082,6 +2121,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("resource", request_pb.resource),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2147,6 +2190,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("resource", request_pb.resource),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2207,6 +2254,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request_pb.name),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2267,6 +2318,10 @@ class EchoClient(metaclass=EchoClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request_pb.name),)),
         )
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("v1_20240408"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()

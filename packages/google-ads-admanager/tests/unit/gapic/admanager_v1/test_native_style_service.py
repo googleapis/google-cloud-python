@@ -40,6 +40,10 @@ except ImportError:  # pragma: NO COVER
 
 import google.auth
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -60,6 +64,7 @@ from google.ads.admanager_v1.services.native_style_service import (
     transports,
 )
 from google.ads.admanager_v1.types import (
+    dayparting_time_zone_enum,
     native_style_enums,
     native_style_messages,
     native_style_service,
@@ -1350,6 +1355,180 @@ def test_list_native_styles_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_create_native_style_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NativeStyleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_native_style in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_native_style] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.create_native_style(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_native_style(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_native_style_rest_required_fields(
+    request_type=native_style_service.CreateNativeStyleRequest,
+):
+    transport_class = transports.NativeStyleServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseCreateNativeStyle,
+        "_BaseCreateNativeStyle__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = native_style_messages.NativeStyle()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = native_style_messages.NativeStyle.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_native_style(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_create_native_style_rest_flattened():
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = native_style_messages.NativeStyle()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            native_style=native_style_messages.NativeStyle(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = native_style_messages.NativeStyle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_native_style(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/nativeStyles" % client.transport._host, args[1]
+        )
+
+
+def test_create_native_style_rest_flattened_error(transport: str = "rest"):
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_native_style(
+            native_style_service.CreateNativeStyleRequest(),
+            parent="parent_value",
+            native_style=native_style_messages.NativeStyle(name="name_value"),
+        )
+
+
 def test_batch_create_native_styles_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1532,6 +1711,182 @@ def test_batch_create_native_styles_rest_flattened_error(transport: str = "rest"
             requests=[
                 native_style_service.CreateNativeStyleRequest(parent="parent_value")
             ],
+        )
+
+
+def test_update_native_style_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NativeStyleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_native_style in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_native_style] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.update_native_style(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_native_style(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_native_style_rest_required_fields(
+    request_type=native_style_service.UpdateNativeStyleRequest,
+):
+    transport_class = transports.NativeStyleServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseUpdateNativeStyle,
+        "_BaseUpdateNativeStyle__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("updateMask",))
+
+    # verify required fields with non-default values are left alone
+
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = native_style_messages.NativeStyle()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = native_style_messages.NativeStyle.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_native_style(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_native_style_rest_flattened():
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = native_style_messages.NativeStyle()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "native_style": {"name": "networks/sample1/nativeStyles/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            native_style=native_style_messages.NativeStyle(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = native_style_messages.NativeStyle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_native_style(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{native_style.name=networks/*/nativeStyles/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_native_style_rest_flattened_error(transport: str = "rest"):
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_native_style(
+            native_style_service.UpdateNativeStyleRequest(),
+            native_style=native_style_messages.NativeStyle(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -2645,6 +3000,512 @@ def test_list_native_styles_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_create_native_style_rest_bad_request(
+    request_type=native_style_service.CreateNativeStyleRequest,
+):
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_native_style(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        native_style_service.CreateNativeStyleRequest,
+        dict,
+    ],
+)
+def test_create_native_style_rest_call_success(request_type):
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request_init["native_style"] = {
+        "name": "name_value",
+        "creative_template": "creative_template_value",
+        "display_name": "display_name_value",
+        "html_snippet": "html_snippet_value",
+        "css_snippet": "css_snippet_value",
+        "targeting": {
+            "inventory_url_targeting": {
+                "targeted_inventory_urls": [
+                    "targeted_inventory_urls_value1",
+                    "targeted_inventory_urls_value2",
+                ],
+                "excluded_inventory_urls": [
+                    "excluded_inventory_urls_value1",
+                    "excluded_inventory_urls_value2",
+                ],
+            },
+            "geo_targeting": {
+                "targeted_geos": ["targeted_geos_value1", "targeted_geos_value2"],
+                "excluded_geos": ["excluded_geos_value1", "excluded_geos_value2"],
+            },
+            "technology_targeting": {
+                "bandwidth_targeting": {
+                    "targeted_bandwidth_groups": [
+                        "targeted_bandwidth_groups_value1",
+                        "targeted_bandwidth_groups_value2",
+                    ],
+                    "excluded_bandwidth_groups": [
+                        "excluded_bandwidth_groups_value1",
+                        "excluded_bandwidth_groups_value2",
+                    ],
+                },
+                "browser_targeting": {
+                    "targeted_browsers": [
+                        "targeted_browsers_value1",
+                        "targeted_browsers_value2",
+                    ],
+                    "excluded_browsers": [
+                        "excluded_browsers_value1",
+                        "excluded_browsers_value2",
+                    ],
+                },
+                "browser_language_targeting": {
+                    "targeted_browser_languages": [
+                        "targeted_browser_languages_value1",
+                        "targeted_browser_languages_value2",
+                    ],
+                    "excluded_browser_languages": [
+                        "excluded_browser_languages_value1",
+                        "excluded_browser_languages_value2",
+                    ],
+                },
+                "device_capability_targeting": {
+                    "targeted_capabilities": [
+                        "targeted_capabilities_value1",
+                        "targeted_capabilities_value2",
+                    ],
+                    "excluded_capabilities": [
+                        "excluded_capabilities_value1",
+                        "excluded_capabilities_value2",
+                    ],
+                },
+                "device_category_targeting": {
+                    "targeted_categories": [
+                        "targeted_categories_value1",
+                        "targeted_categories_value2",
+                    ],
+                    "excluded_categories": [
+                        "excluded_categories_value1",
+                        "excluded_categories_value2",
+                    ],
+                },
+                "device_manufacturer_targeting": {
+                    "targeted_device_manufacturers": [
+                        "targeted_device_manufacturers_value1",
+                        "targeted_device_manufacturers_value2",
+                    ],
+                    "excluded_device_manufacturers": [
+                        "excluded_device_manufacturers_value1",
+                        "excluded_device_manufacturers_value2",
+                    ],
+                    "targeted_mobile_devices": [
+                        "targeted_mobile_devices_value1",
+                        "targeted_mobile_devices_value2",
+                    ],
+                    "excluded_mobile_devices": [
+                        "excluded_mobile_devices_value1",
+                        "excluded_mobile_devices_value2",
+                    ],
+                    "targeted_mobile_device_submodels": [
+                        "targeted_mobile_device_submodels_value1",
+                        "targeted_mobile_device_submodels_value2",
+                    ],
+                    "excluded_mobile_device_submodels": [
+                        "excluded_mobile_device_submodels_value1",
+                        "excluded_mobile_device_submodels_value2",
+                    ],
+                },
+                "mobile_carrier_targeting": {
+                    "targeted_mobile_carriers": [
+                        "targeted_mobile_carriers_value1",
+                        "targeted_mobile_carriers_value2",
+                    ],
+                    "excluded_mobile_carriers": [
+                        "excluded_mobile_carriers_value1",
+                        "excluded_mobile_carriers_value2",
+                    ],
+                },
+                "operating_system_targeting": {
+                    "targeted_operating_systems": [
+                        "targeted_operating_systems_value1",
+                        "targeted_operating_systems_value2",
+                    ],
+                    "excluded_operating_systems": [
+                        "excluded_operating_systems_value1",
+                        "excluded_operating_systems_value2",
+                    ],
+                    "targeted_operating_system_versions": [
+                        "targeted_operating_system_versions_value1",
+                        "targeted_operating_system_versions_value2",
+                    ],
+                    "excluded_operating_system_versions": [
+                        "excluded_operating_system_versions_value1",
+                        "excluded_operating_system_versions_value2",
+                    ],
+                },
+            },
+            "inventory_size_targeting": {
+                "targeted_inventory_sizes": [
+                    {"width": 544, "height": 633, "size_type": 1}
+                ],
+                "excluded_inventory_sizes": {},
+            },
+            "inventory_targeting": {
+                "targeted_ad_units": [
+                    {"include_descendants": True, "ad_unit": "ad_unit_value"}
+                ],
+                "excluded_ad_units": {},
+                "targeted_placements": [
+                    "targeted_placements_value1",
+                    "targeted_placements_value2",
+                ],
+            },
+            "request_platform_targeting": {"request_platforms": [1]},
+            "custom_targeting": {
+                "custom_targeting_clauses": [
+                    {
+                        "custom_targeting_literals": [
+                            {
+                                "negative": True,
+                                "custom_targeting_key": "custom_targeting_key_value",
+                                "custom_targeting_values": [
+                                    "custom_targeting_values_value1",
+                                    "custom_targeting_values_value2",
+                                ],
+                            }
+                        ],
+                        "audience_segment_targetings": [
+                            {
+                                "negative": True,
+                                "audience_segments": [
+                                    "audience_segments_value1",
+                                    "audience_segments_value2",
+                                ],
+                            }
+                        ],
+                        "cms_metadata_targetings": [
+                            {
+                                "negative": True,
+                                "cms_metadata_values": [
+                                    "cms_metadata_values_value1",
+                                    "cms_metadata_values_value2",
+                                ],
+                            }
+                        ],
+                    }
+                ]
+            },
+            "date_time_range_targeting": {
+                "targeted_range": [
+                    {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
+                ]
+            },
+            "publisher_provided_signals_targeting": {
+                "targeted_taxonomy_categories": [
+                    "targeted_taxonomy_categories_value1",
+                    "targeted_taxonomy_categories_value2",
+                ],
+                "excluded_taxonomy_categories": [
+                    "excluded_taxonomy_categories_value1",
+                    "excluded_taxonomy_categories_value2",
+                ],
+            },
+            "user_domain_targeting": {
+                "targeted_user_domains": [
+                    "targeted_user_domains_value1",
+                    "targeted_user_domains_value2",
+                ],
+                "excluded_user_domains": [
+                    "excluded_user_domains_value1",
+                    "excluded_user_domains_value2",
+                ],
+            },
+            "contextual_targeting": {
+                "targeted_verticals": [
+                    "targeted_verticals_value1",
+                    "targeted_verticals_value2",
+                ],
+                "excluded_verticals": [
+                    "excluded_verticals_value1",
+                    "excluded_verticals_value2",
+                ],
+                "excluded_content_labels": [
+                    "excluded_content_labels_value1",
+                    "excluded_content_labels_value2",
+                ],
+            },
+            "video_position_targeting": {
+                "video_positions": [
+                    {
+                        "midroll_index": 1386,
+                        "reverse_midroll_index": 2245,
+                        "pod_position": 1303,
+                        "ad_spot": "ad_spot_value",
+                        "position_type": 1,
+                        "bumper_type": 1,
+                    }
+                ]
+            },
+            "data_segment_targeting": {"has_data_segment_targeting": True},
+            "request_format_targeting": {
+                "app_open_enabled": True,
+                "rewarded_enabled": True,
+                "rewarded_interstitial_enabled": True,
+                "interstitial_enabled": True,
+                "anchor_enabled": True,
+                "banner_enabled": True,
+                "instream_video_enabled": True,
+                "instream_audio_enabled": True,
+                "native_advanced_enabled": True,
+            },
+            "content_targeting": {
+                "targeted_content": [
+                    "targeted_content_value1",
+                    "targeted_content_value2",
+                ],
+                "excluded_content": [
+                    "excluded_content_value1",
+                    "excluded_content_value2",
+                ],
+                "targeted_content_bundles": [
+                    "targeted_content_bundles_value1",
+                    "targeted_content_bundles_value2",
+                ],
+                "excluded_content_bundles": [
+                    "excluded_content_bundles_value1",
+                    "excluded_content_bundles_value2",
+                ],
+            },
+            "mobile_application_targeting": {
+                "first_party_targeting": {
+                    "targeted_applications": [
+                        "targeted_applications_value1",
+                        "targeted_applications_value2",
+                    ],
+                    "excluded_applications": [
+                        "excluded_applications_value1",
+                        "excluded_applications_value2",
+                    ],
+                }
+            },
+            "day_part_targeting": {
+                "targeted_day_parts": [
+                    {
+                        "day_of_week": 1,
+                        "start_time": {
+                            "hours": 561,
+                            "minutes": 773,
+                            "seconds": 751,
+                            "nanos": 543,
+                        },
+                        "end_time": {},
+                    }
+                ],
+                "dayparting_time_zone": 1,
+            },
+            "buyer_user_list_targeting": {"has_buyer_user_list_targeting": True},
+        },
+        "status": 1,
+        "size": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = native_style_service.CreateNativeStyleRequest.meta.fields[
+        "native_style"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["native_style"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["native_style"][field])):
+                    del request_init["native_style"][field][i][subfield]
+            else:
+                del request_init["native_style"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = native_style_messages.NativeStyle(
+            name="name_value",
+            creative_template="creative_template_value",
+            display_name="display_name_value",
+            html_snippet="html_snippet_value",
+            css_snippet="css_snippet_value",
+            status=native_style_enums.NativeStyleStatusEnum.NativeStyleStatus.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = native_style_messages.NativeStyle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_native_style(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, native_style_messages.NativeStyle)
+    assert response.name == "name_value"
+    assert response.creative_template == "creative_template_value"
+    assert response.display_name == "display_name_value"
+    assert response.html_snippet == "html_snippet_value"
+    assert response.css_snippet == "css_snippet_value"
+    assert (
+        response.status
+        == native_style_enums.NativeStyleStatusEnum.NativeStyleStatus.ACTIVE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_native_style_rest_interceptors(null_interceptor):
+    transport = transports.NativeStyleServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NativeStyleServiceRestInterceptor(),
+    )
+    client = NativeStyleServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NativeStyleServiceRestInterceptor, "post_create_native_style"
+        ) as post,
+        mock.patch.object(
+            transports.NativeStyleServiceRestInterceptor,
+            "post_create_native_style_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NativeStyleServiceRestInterceptor, "pre_create_native_style"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = native_style_service.CreateNativeStyleRequest.pb(
+            native_style_service.CreateNativeStyleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = native_style_messages.NativeStyle.to_json(
+            native_style_messages.NativeStyle()
+        )
+        req.return_value.content = return_value
+
+        request = native_style_service.CreateNativeStyleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = native_style_messages.NativeStyle()
+        post_with_metadata.return_value = native_style_messages.NativeStyle(), metadata
+
+        client.create_native_style(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_batch_create_native_styles_rest_bad_request(
     request_type=native_style_service.BatchCreateNativeStylesRequest,
 ):
@@ -2770,6 +3631,512 @@ def test_batch_create_native_styles_rest_interceptors(null_interceptor):
         )
 
         client.batch_create_native_styles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_native_style_rest_bad_request(
+    request_type=native_style_service.UpdateNativeStyleRequest,
+):
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"native_style": {"name": "networks/sample1/nativeStyles/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_native_style(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        native_style_service.UpdateNativeStyleRequest,
+        dict,
+    ],
+)
+def test_update_native_style_rest_call_success(request_type):
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"native_style": {"name": "networks/sample1/nativeStyles/sample2"}}
+    request_init["native_style"] = {
+        "name": "networks/sample1/nativeStyles/sample2",
+        "creative_template": "creative_template_value",
+        "display_name": "display_name_value",
+        "html_snippet": "html_snippet_value",
+        "css_snippet": "css_snippet_value",
+        "targeting": {
+            "inventory_url_targeting": {
+                "targeted_inventory_urls": [
+                    "targeted_inventory_urls_value1",
+                    "targeted_inventory_urls_value2",
+                ],
+                "excluded_inventory_urls": [
+                    "excluded_inventory_urls_value1",
+                    "excluded_inventory_urls_value2",
+                ],
+            },
+            "geo_targeting": {
+                "targeted_geos": ["targeted_geos_value1", "targeted_geos_value2"],
+                "excluded_geos": ["excluded_geos_value1", "excluded_geos_value2"],
+            },
+            "technology_targeting": {
+                "bandwidth_targeting": {
+                    "targeted_bandwidth_groups": [
+                        "targeted_bandwidth_groups_value1",
+                        "targeted_bandwidth_groups_value2",
+                    ],
+                    "excluded_bandwidth_groups": [
+                        "excluded_bandwidth_groups_value1",
+                        "excluded_bandwidth_groups_value2",
+                    ],
+                },
+                "browser_targeting": {
+                    "targeted_browsers": [
+                        "targeted_browsers_value1",
+                        "targeted_browsers_value2",
+                    ],
+                    "excluded_browsers": [
+                        "excluded_browsers_value1",
+                        "excluded_browsers_value2",
+                    ],
+                },
+                "browser_language_targeting": {
+                    "targeted_browser_languages": [
+                        "targeted_browser_languages_value1",
+                        "targeted_browser_languages_value2",
+                    ],
+                    "excluded_browser_languages": [
+                        "excluded_browser_languages_value1",
+                        "excluded_browser_languages_value2",
+                    ],
+                },
+                "device_capability_targeting": {
+                    "targeted_capabilities": [
+                        "targeted_capabilities_value1",
+                        "targeted_capabilities_value2",
+                    ],
+                    "excluded_capabilities": [
+                        "excluded_capabilities_value1",
+                        "excluded_capabilities_value2",
+                    ],
+                },
+                "device_category_targeting": {
+                    "targeted_categories": [
+                        "targeted_categories_value1",
+                        "targeted_categories_value2",
+                    ],
+                    "excluded_categories": [
+                        "excluded_categories_value1",
+                        "excluded_categories_value2",
+                    ],
+                },
+                "device_manufacturer_targeting": {
+                    "targeted_device_manufacturers": [
+                        "targeted_device_manufacturers_value1",
+                        "targeted_device_manufacturers_value2",
+                    ],
+                    "excluded_device_manufacturers": [
+                        "excluded_device_manufacturers_value1",
+                        "excluded_device_manufacturers_value2",
+                    ],
+                    "targeted_mobile_devices": [
+                        "targeted_mobile_devices_value1",
+                        "targeted_mobile_devices_value2",
+                    ],
+                    "excluded_mobile_devices": [
+                        "excluded_mobile_devices_value1",
+                        "excluded_mobile_devices_value2",
+                    ],
+                    "targeted_mobile_device_submodels": [
+                        "targeted_mobile_device_submodels_value1",
+                        "targeted_mobile_device_submodels_value2",
+                    ],
+                    "excluded_mobile_device_submodels": [
+                        "excluded_mobile_device_submodels_value1",
+                        "excluded_mobile_device_submodels_value2",
+                    ],
+                },
+                "mobile_carrier_targeting": {
+                    "targeted_mobile_carriers": [
+                        "targeted_mobile_carriers_value1",
+                        "targeted_mobile_carriers_value2",
+                    ],
+                    "excluded_mobile_carriers": [
+                        "excluded_mobile_carriers_value1",
+                        "excluded_mobile_carriers_value2",
+                    ],
+                },
+                "operating_system_targeting": {
+                    "targeted_operating_systems": [
+                        "targeted_operating_systems_value1",
+                        "targeted_operating_systems_value2",
+                    ],
+                    "excluded_operating_systems": [
+                        "excluded_operating_systems_value1",
+                        "excluded_operating_systems_value2",
+                    ],
+                    "targeted_operating_system_versions": [
+                        "targeted_operating_system_versions_value1",
+                        "targeted_operating_system_versions_value2",
+                    ],
+                    "excluded_operating_system_versions": [
+                        "excluded_operating_system_versions_value1",
+                        "excluded_operating_system_versions_value2",
+                    ],
+                },
+            },
+            "inventory_size_targeting": {
+                "targeted_inventory_sizes": [
+                    {"width": 544, "height": 633, "size_type": 1}
+                ],
+                "excluded_inventory_sizes": {},
+            },
+            "inventory_targeting": {
+                "targeted_ad_units": [
+                    {"include_descendants": True, "ad_unit": "ad_unit_value"}
+                ],
+                "excluded_ad_units": {},
+                "targeted_placements": [
+                    "targeted_placements_value1",
+                    "targeted_placements_value2",
+                ],
+            },
+            "request_platform_targeting": {"request_platforms": [1]},
+            "custom_targeting": {
+                "custom_targeting_clauses": [
+                    {
+                        "custom_targeting_literals": [
+                            {
+                                "negative": True,
+                                "custom_targeting_key": "custom_targeting_key_value",
+                                "custom_targeting_values": [
+                                    "custom_targeting_values_value1",
+                                    "custom_targeting_values_value2",
+                                ],
+                            }
+                        ],
+                        "audience_segment_targetings": [
+                            {
+                                "negative": True,
+                                "audience_segments": [
+                                    "audience_segments_value1",
+                                    "audience_segments_value2",
+                                ],
+                            }
+                        ],
+                        "cms_metadata_targetings": [
+                            {
+                                "negative": True,
+                                "cms_metadata_values": [
+                                    "cms_metadata_values_value1",
+                                    "cms_metadata_values_value2",
+                                ],
+                            }
+                        ],
+                    }
+                ]
+            },
+            "date_time_range_targeting": {
+                "targeted_range": [
+                    {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
+                ]
+            },
+            "publisher_provided_signals_targeting": {
+                "targeted_taxonomy_categories": [
+                    "targeted_taxonomy_categories_value1",
+                    "targeted_taxonomy_categories_value2",
+                ],
+                "excluded_taxonomy_categories": [
+                    "excluded_taxonomy_categories_value1",
+                    "excluded_taxonomy_categories_value2",
+                ],
+            },
+            "user_domain_targeting": {
+                "targeted_user_domains": [
+                    "targeted_user_domains_value1",
+                    "targeted_user_domains_value2",
+                ],
+                "excluded_user_domains": [
+                    "excluded_user_domains_value1",
+                    "excluded_user_domains_value2",
+                ],
+            },
+            "contextual_targeting": {
+                "targeted_verticals": [
+                    "targeted_verticals_value1",
+                    "targeted_verticals_value2",
+                ],
+                "excluded_verticals": [
+                    "excluded_verticals_value1",
+                    "excluded_verticals_value2",
+                ],
+                "excluded_content_labels": [
+                    "excluded_content_labels_value1",
+                    "excluded_content_labels_value2",
+                ],
+            },
+            "video_position_targeting": {
+                "video_positions": [
+                    {
+                        "midroll_index": 1386,
+                        "reverse_midroll_index": 2245,
+                        "pod_position": 1303,
+                        "ad_spot": "ad_spot_value",
+                        "position_type": 1,
+                        "bumper_type": 1,
+                    }
+                ]
+            },
+            "data_segment_targeting": {"has_data_segment_targeting": True},
+            "request_format_targeting": {
+                "app_open_enabled": True,
+                "rewarded_enabled": True,
+                "rewarded_interstitial_enabled": True,
+                "interstitial_enabled": True,
+                "anchor_enabled": True,
+                "banner_enabled": True,
+                "instream_video_enabled": True,
+                "instream_audio_enabled": True,
+                "native_advanced_enabled": True,
+            },
+            "content_targeting": {
+                "targeted_content": [
+                    "targeted_content_value1",
+                    "targeted_content_value2",
+                ],
+                "excluded_content": [
+                    "excluded_content_value1",
+                    "excluded_content_value2",
+                ],
+                "targeted_content_bundles": [
+                    "targeted_content_bundles_value1",
+                    "targeted_content_bundles_value2",
+                ],
+                "excluded_content_bundles": [
+                    "excluded_content_bundles_value1",
+                    "excluded_content_bundles_value2",
+                ],
+            },
+            "mobile_application_targeting": {
+                "first_party_targeting": {
+                    "targeted_applications": [
+                        "targeted_applications_value1",
+                        "targeted_applications_value2",
+                    ],
+                    "excluded_applications": [
+                        "excluded_applications_value1",
+                        "excluded_applications_value2",
+                    ],
+                }
+            },
+            "day_part_targeting": {
+                "targeted_day_parts": [
+                    {
+                        "day_of_week": 1,
+                        "start_time": {
+                            "hours": 561,
+                            "minutes": 773,
+                            "seconds": 751,
+                            "nanos": 543,
+                        },
+                        "end_time": {},
+                    }
+                ],
+                "dayparting_time_zone": 1,
+            },
+            "buyer_user_list_targeting": {"has_buyer_user_list_targeting": True},
+        },
+        "status": 1,
+        "size": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = native_style_service.UpdateNativeStyleRequest.meta.fields[
+        "native_style"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["native_style"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["native_style"][field])):
+                    del request_init["native_style"][field][i][subfield]
+            else:
+                del request_init["native_style"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = native_style_messages.NativeStyle(
+            name="name_value",
+            creative_template="creative_template_value",
+            display_name="display_name_value",
+            html_snippet="html_snippet_value",
+            css_snippet="css_snippet_value",
+            status=native_style_enums.NativeStyleStatusEnum.NativeStyleStatus.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = native_style_messages.NativeStyle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_native_style(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, native_style_messages.NativeStyle)
+    assert response.name == "name_value"
+    assert response.creative_template == "creative_template_value"
+    assert response.display_name == "display_name_value"
+    assert response.html_snippet == "html_snippet_value"
+    assert response.css_snippet == "css_snippet_value"
+    assert (
+        response.status
+        == native_style_enums.NativeStyleStatusEnum.NativeStyleStatus.ACTIVE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_native_style_rest_interceptors(null_interceptor):
+    transport = transports.NativeStyleServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NativeStyleServiceRestInterceptor(),
+    )
+    client = NativeStyleServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NativeStyleServiceRestInterceptor, "post_update_native_style"
+        ) as post,
+        mock.patch.object(
+            transports.NativeStyleServiceRestInterceptor,
+            "post_update_native_style_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NativeStyleServiceRestInterceptor, "pre_update_native_style"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = native_style_service.UpdateNativeStyleRequest.pb(
+            native_style_service.UpdateNativeStyleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = native_style_messages.NativeStyle.to_json(
+            native_style_messages.NativeStyle()
+        )
+        req.return_value.content = return_value
+
+        request = native_style_service.UpdateNativeStyleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = native_style_messages.NativeStyle()
+        post_with_metadata.return_value = native_style_messages.NativeStyle(), metadata
+
+        client.update_native_style(
             request,
             metadata=[
                 ("key", "val"),
@@ -3507,6 +4874,27 @@ def test_list_native_styles_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_create_native_style_empty_call_rest():
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_native_style), "__call__"
+    ) as call:
+        client.create_native_style(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = native_style_service.CreateNativeStyleRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_batch_create_native_styles_empty_call_rest():
     client = NativeStyleServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3523,6 +4911,27 @@ def test_batch_create_native_styles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = native_style_service.BatchCreateNativeStylesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_native_style_empty_call_rest():
+    client = NativeStyleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_native_style), "__call__"
+    ) as call:
+        client.update_native_style(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = native_style_service.UpdateNativeStyleRequest()
         assert args[0] == request_msg
 
 
@@ -3634,7 +5043,9 @@ def test_native_style_service_base_transport():
     methods = (
         "get_native_style",
         "list_native_styles",
+        "create_native_style",
         "batch_create_native_styles",
+        "update_native_style",
         "batch_update_native_styles",
         "batch_activate_native_styles",
         "batch_deactivate_native_styles",
@@ -3790,8 +5201,14 @@ def test_native_style_service_client_transport_session_collision(transport_name)
     session1 = client1.transport.list_native_styles._session
     session2 = client2.transport.list_native_styles._session
     assert session1 != session2
+    session1 = client1.transport.create_native_style._session
+    session2 = client2.transport.create_native_style._session
+    assert session1 != session2
     session1 = client1.transport.batch_create_native_styles._session
     session2 = client2.transport.batch_create_native_styles._session
+    assert session1 != session2
+    session1 = client1.transport.update_native_style._session
+    session2 = client2.transport.update_native_style._session
     assert session1 != session2
     session1 = client1.transport.batch_update_native_styles._session
     session2 = client2.transport.batch_update_native_styles._session
@@ -3807,9 +5224,55 @@ def test_native_style_service_client_transport_session_collision(transport_name)
     assert session1 != session2
 
 
-def test_ad_unit_path():
+def test_ad_category_path():
     network_code = "squid"
-    ad_unit = "clam"
+    ad_category = "clam"
+    expected = "networks/{network_code}/adCategories/{ad_category}".format(
+        network_code=network_code,
+        ad_category=ad_category,
+    )
+    actual = NativeStyleServiceClient.ad_category_path(network_code, ad_category)
+    assert expected == actual
+
+
+def test_parse_ad_category_path():
+    expected = {
+        "network_code": "whelk",
+        "ad_category": "octopus",
+    }
+    path = NativeStyleServiceClient.ad_category_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NativeStyleServiceClient.parse_ad_category_path(path)
+    assert expected == actual
+
+
+def test_ad_spot_path():
+    network_code = "oyster"
+    ad_spot = "nudibranch"
+    expected = "networks/{network_code}/adSpots/{ad_spot}".format(
+        network_code=network_code,
+        ad_spot=ad_spot,
+    )
+    actual = NativeStyleServiceClient.ad_spot_path(network_code, ad_spot)
+    assert expected == actual
+
+
+def test_parse_ad_spot_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "ad_spot": "mussel",
+    }
+    path = NativeStyleServiceClient.ad_spot_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NativeStyleServiceClient.parse_ad_spot_path(path)
+    assert expected == actual
+
+
+def test_ad_unit_path():
+    network_code = "winkle"
+    ad_unit = "nautilus"
     expected = "networks/{network_code}/adUnits/{ad_unit}".format(
         network_code=network_code,
         ad_unit=ad_unit,
@@ -3820,8 +5283,8 @@ def test_ad_unit_path():
 
 def test_parse_ad_unit_path():
     expected = {
-        "network_code": "whelk",
-        "ad_unit": "octopus",
+        "network_code": "scallop",
+        "ad_unit": "abalone",
     }
     path = NativeStyleServiceClient.ad_unit_path(**expected)
 
@@ -3831,8 +5294,8 @@ def test_parse_ad_unit_path():
 
 
 def test_application_path():
-    network_code = "oyster"
-    application = "nudibranch"
+    network_code = "squid"
+    application = "clam"
     expected = "networks/{network_code}/applications/{application}".format(
         network_code=network_code,
         application=application,
@@ -3843,8 +5306,8 @@ def test_application_path():
 
 def test_parse_application_path():
     expected = {
-        "network_code": "cuttlefish",
-        "application": "mussel",
+        "network_code": "whelk",
+        "application": "octopus",
     }
     path = NativeStyleServiceClient.application_path(**expected)
 
@@ -3854,8 +5317,8 @@ def test_parse_application_path():
 
 
 def test_audience_segment_path():
-    network_code = "winkle"
-    audience_segment = "nautilus"
+    network_code = "oyster"
+    audience_segment = "nudibranch"
     expected = "networks/{network_code}/audienceSegments/{audience_segment}".format(
         network_code=network_code,
         audience_segment=audience_segment,
@@ -3868,8 +5331,8 @@ def test_audience_segment_path():
 
 def test_parse_audience_segment_path():
     expected = {
-        "network_code": "scallop",
-        "audience_segment": "abalone",
+        "network_code": "cuttlefish",
+        "audience_segment": "mussel",
     }
     path = NativeStyleServiceClient.audience_segment_path(**expected)
 
@@ -3879,8 +5342,8 @@ def test_parse_audience_segment_path():
 
 
 def test_bandwidth_group_path():
-    network_code = "squid"
-    bandwidth_group = "clam"
+    network_code = "winkle"
+    bandwidth_group = "nautilus"
     expected = "networks/{network_code}/bandwidthGroups/{bandwidth_group}".format(
         network_code=network_code,
         bandwidth_group=bandwidth_group,
@@ -3893,8 +5356,8 @@ def test_bandwidth_group_path():
 
 def test_parse_bandwidth_group_path():
     expected = {
-        "network_code": "whelk",
-        "bandwidth_group": "octopus",
+        "network_code": "scallop",
+        "bandwidth_group": "abalone",
     }
     path = NativeStyleServiceClient.bandwidth_group_path(**expected)
 
@@ -3904,8 +5367,8 @@ def test_parse_bandwidth_group_path():
 
 
 def test_browser_path():
-    network_code = "oyster"
-    browser = "nudibranch"
+    network_code = "squid"
+    browser = "clam"
     expected = "networks/{network_code}/browsers/{browser}".format(
         network_code=network_code,
         browser=browser,
@@ -3916,8 +5379,8 @@ def test_browser_path():
 
 def test_parse_browser_path():
     expected = {
-        "network_code": "cuttlefish",
-        "browser": "mussel",
+        "network_code": "whelk",
+        "browser": "octopus",
     }
     path = NativeStyleServiceClient.browser_path(**expected)
 
@@ -3927,8 +5390,8 @@ def test_parse_browser_path():
 
 
 def test_browser_language_path():
-    network_code = "winkle"
-    browser_language = "nautilus"
+    network_code = "oyster"
+    browser_language = "nudibranch"
     expected = "networks/{network_code}/browserLanguages/{browser_language}".format(
         network_code=network_code,
         browser_language=browser_language,
@@ -3941,8 +5404,8 @@ def test_browser_language_path():
 
 def test_parse_browser_language_path():
     expected = {
-        "network_code": "scallop",
-        "browser_language": "abalone",
+        "network_code": "cuttlefish",
+        "browser_language": "mussel",
     }
     path = NativeStyleServiceClient.browser_language_path(**expected)
 
@@ -3952,8 +5415,8 @@ def test_parse_browser_language_path():
 
 
 def test_cms_metadata_value_path():
-    network_code = "squid"
-    cms_metadata_value = "clam"
+    network_code = "winkle"
+    cms_metadata_value = "nautilus"
     expected = "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
         network_code=network_code,
         cms_metadata_value=cms_metadata_value,
@@ -3966,8 +5429,8 @@ def test_cms_metadata_value_path():
 
 def test_parse_cms_metadata_value_path():
     expected = {
-        "network_code": "whelk",
-        "cms_metadata_value": "octopus",
+        "network_code": "scallop",
+        "cms_metadata_value": "abalone",
     }
     path = NativeStyleServiceClient.cms_metadata_value_path(**expected)
 
@@ -3977,8 +5440,8 @@ def test_parse_cms_metadata_value_path():
 
 
 def test_content_path():
-    network_code = "oyster"
-    content = "nudibranch"
+    network_code = "squid"
+    content = "clam"
     expected = "networks/{network_code}/content/{content}".format(
         network_code=network_code,
         content=content,
@@ -3989,8 +5452,8 @@ def test_content_path():
 
 def test_parse_content_path():
     expected = {
-        "network_code": "cuttlefish",
-        "content": "mussel",
+        "network_code": "whelk",
+        "content": "octopus",
     }
     path = NativeStyleServiceClient.content_path(**expected)
 
@@ -4000,8 +5463,8 @@ def test_parse_content_path():
 
 
 def test_content_bundle_path():
-    network_code = "winkle"
-    content_bundle = "nautilus"
+    network_code = "oyster"
+    content_bundle = "nudibranch"
     expected = "networks/{network_code}/contentBundles/{content_bundle}".format(
         network_code=network_code,
         content_bundle=content_bundle,
@@ -4012,13 +5475,36 @@ def test_content_bundle_path():
 
 def test_parse_content_bundle_path():
     expected = {
-        "network_code": "scallop",
-        "content_bundle": "abalone",
+        "network_code": "cuttlefish",
+        "content_bundle": "mussel",
     }
     path = NativeStyleServiceClient.content_bundle_path(**expected)
 
     # Check that the path construction is reversible.
     actual = NativeStyleServiceClient.parse_content_bundle_path(path)
+    assert expected == actual
+
+
+def test_content_label_path():
+    network_code = "winkle"
+    content_label = "nautilus"
+    expected = "networks/{network_code}/contentLabels/{content_label}".format(
+        network_code=network_code,
+        content_label=content_label,
+    )
+    actual = NativeStyleServiceClient.content_label_path(network_code, content_label)
+    assert expected == actual
+
+
+def test_parse_content_label_path():
+    expected = {
+        "network_code": "scallop",
+        "content_label": "abalone",
+    }
+    path = NativeStyleServiceClient.content_label_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NativeStyleServiceClient.parse_content_label_path(path)
     assert expected == actual
 
 
@@ -4201,9 +5687,32 @@ def test_parse_geo_target_path():
     assert expected == actual
 
 
-def test_mobile_carrier_path():
+def test_inventory_url_path():
     network_code = "oyster"
-    mobile_carrier = "nudibranch"
+    inventory_url = "nudibranch"
+    expected = "networks/{network_code}/inventoryUrls/{inventory_url}".format(
+        network_code=network_code,
+        inventory_url=inventory_url,
+    )
+    actual = NativeStyleServiceClient.inventory_url_path(network_code, inventory_url)
+    assert expected == actual
+
+
+def test_parse_inventory_url_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "inventory_url": "mussel",
+    }
+    path = NativeStyleServiceClient.inventory_url_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NativeStyleServiceClient.parse_inventory_url_path(path)
+    assert expected == actual
+
+
+def test_mobile_carrier_path():
+    network_code = "winkle"
+    mobile_carrier = "nautilus"
     expected = "networks/{network_code}/mobileCarriers/{mobile_carrier}".format(
         network_code=network_code,
         mobile_carrier=mobile_carrier,
@@ -4214,8 +5723,8 @@ def test_mobile_carrier_path():
 
 def test_parse_mobile_carrier_path():
     expected = {
-        "network_code": "cuttlefish",
-        "mobile_carrier": "mussel",
+        "network_code": "scallop",
+        "mobile_carrier": "abalone",
     }
     path = NativeStyleServiceClient.mobile_carrier_path(**expected)
 
@@ -4225,8 +5734,8 @@ def test_parse_mobile_carrier_path():
 
 
 def test_mobile_device_path():
-    network_code = "winkle"
-    mobile_device = "nautilus"
+    network_code = "squid"
+    mobile_device = "clam"
     expected = "networks/{network_code}/mobileDevices/{mobile_device}".format(
         network_code=network_code,
         mobile_device=mobile_device,
@@ -4237,8 +5746,8 @@ def test_mobile_device_path():
 
 def test_parse_mobile_device_path():
     expected = {
-        "network_code": "scallop",
-        "mobile_device": "abalone",
+        "network_code": "whelk",
+        "mobile_device": "octopus",
     }
     path = NativeStyleServiceClient.mobile_device_path(**expected)
 
@@ -4248,8 +5757,8 @@ def test_parse_mobile_device_path():
 
 
 def test_mobile_device_submodel_path():
-    network_code = "squid"
-    mobile_device_submodel = "clam"
+    network_code = "oyster"
+    mobile_device_submodel = "nudibranch"
     expected = (
         "networks/{network_code}/mobileDeviceSubmodels/{mobile_device_submodel}".format(
             network_code=network_code,
@@ -4264,8 +5773,8 @@ def test_mobile_device_submodel_path():
 
 def test_parse_mobile_device_submodel_path():
     expected = {
-        "network_code": "whelk",
-        "mobile_device_submodel": "octopus",
+        "network_code": "cuttlefish",
+        "mobile_device_submodel": "mussel",
     }
     path = NativeStyleServiceClient.mobile_device_submodel_path(**expected)
 
@@ -4275,8 +5784,8 @@ def test_parse_mobile_device_submodel_path():
 
 
 def test_native_style_path():
-    network_code = "oyster"
-    native_style = "nudibranch"
+    network_code = "winkle"
+    native_style = "nautilus"
     expected = "networks/{network_code}/nativeStyles/{native_style}".format(
         network_code=network_code,
         native_style=native_style,
@@ -4287,8 +5796,8 @@ def test_native_style_path():
 
 def test_parse_native_style_path():
     expected = {
-        "network_code": "cuttlefish",
-        "native_style": "mussel",
+        "network_code": "scallop",
+        "native_style": "abalone",
     }
     path = NativeStyleServiceClient.native_style_path(**expected)
 
@@ -4298,7 +5807,7 @@ def test_parse_native_style_path():
 
 
 def test_network_path():
-    network_code = "winkle"
+    network_code = "squid"
     expected = "networks/{network_code}".format(
         network_code=network_code,
     )
@@ -4308,7 +5817,7 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "network_code": "nautilus",
+        "network_code": "clam",
     }
     path = NativeStyleServiceClient.network_path(**expected)
 
@@ -4318,8 +5827,8 @@ def test_parse_network_path():
 
 
 def test_operating_system_path():
-    network_code = "scallop"
-    operating_system = "abalone"
+    network_code = "whelk"
+    operating_system = "octopus"
     expected = "networks/{network_code}/operatingSystems/{operating_system}".format(
         network_code=network_code,
         operating_system=operating_system,
@@ -4332,8 +5841,8 @@ def test_operating_system_path():
 
 def test_parse_operating_system_path():
     expected = {
-        "network_code": "squid",
-        "operating_system": "clam",
+        "network_code": "oyster",
+        "operating_system": "nudibranch",
     }
     path = NativeStyleServiceClient.operating_system_path(**expected)
 
@@ -4343,8 +5852,8 @@ def test_parse_operating_system_path():
 
 
 def test_operating_system_version_path():
-    network_code = "whelk"
-    operating_system_version = "octopus"
+    network_code = "cuttlefish"
+    operating_system_version = "mussel"
     expected = "networks/{network_code}/operatingSystemVersions/{operating_system_version}".format(
         network_code=network_code,
         operating_system_version=operating_system_version,
@@ -4357,8 +5866,8 @@ def test_operating_system_version_path():
 
 def test_parse_operating_system_version_path():
     expected = {
-        "network_code": "oyster",
-        "operating_system_version": "nudibranch",
+        "network_code": "winkle",
+        "operating_system_version": "nautilus",
     }
     path = NativeStyleServiceClient.operating_system_version_path(**expected)
 
@@ -4368,8 +5877,8 @@ def test_parse_operating_system_version_path():
 
 
 def test_placement_path():
-    network_code = "cuttlefish"
-    placement = "mussel"
+    network_code = "scallop"
+    placement = "abalone"
     expected = "networks/{network_code}/placements/{placement}".format(
         network_code=network_code,
         placement=placement,
@@ -4380,8 +5889,8 @@ def test_placement_path():
 
 def test_parse_placement_path():
     expected = {
-        "network_code": "winkle",
-        "placement": "nautilus",
+        "network_code": "squid",
+        "placement": "clam",
     }
     path = NativeStyleServiceClient.placement_path(**expected)
 
@@ -4390,8 +5899,33 @@ def test_parse_placement_path():
     assert expected == actual
 
 
+def test_taxonomy_category_path():
+    network_code = "whelk"
+    taxonomy_category = "octopus"
+    expected = "networks/{network_code}/taxonomyCategories/{taxonomy_category}".format(
+        network_code=network_code,
+        taxonomy_category=taxonomy_category,
+    )
+    actual = NativeStyleServiceClient.taxonomy_category_path(
+        network_code, taxonomy_category
+    )
+    assert expected == actual
+
+
+def test_parse_taxonomy_category_path():
+    expected = {
+        "network_code": "oyster",
+        "taxonomy_category": "nudibranch",
+    }
+    path = NativeStyleServiceClient.taxonomy_category_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NativeStyleServiceClient.parse_taxonomy_category_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4401,7 +5935,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "mussel",
     }
     path = NativeStyleServiceClient.common_billing_account_path(**expected)
 
@@ -4411,7 +5945,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4421,7 +5955,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nautilus",
     }
     path = NativeStyleServiceClient.common_folder_path(**expected)
 
@@ -4431,7 +5965,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -4441,7 +5975,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "abalone",
     }
     path = NativeStyleServiceClient.common_organization_path(**expected)
 
@@ -4451,7 +5985,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -4461,7 +5995,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "clam",
     }
     path = NativeStyleServiceClient.common_project_path(**expected)
 
@@ -4471,8 +6005,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4483,8 +6017,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = NativeStyleServiceClient.common_location_path(**expected)
 

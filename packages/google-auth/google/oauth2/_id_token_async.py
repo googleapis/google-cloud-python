@@ -61,6 +61,7 @@ library like `CacheControl`_ to create a cache-aware
 import http.client as http_client
 import json
 import os
+import warnings
 
 from google.auth import environment_vars, exceptions, jwt
 from google.auth.transport import requests
@@ -176,16 +177,31 @@ async def verify_firebase_token(
         id_token (Union[str, bytes]): The encoded token.
         request (google.auth.transport.Request): The object used to make
             HTTP requests. This must be an aiohttp request.
-        audience (str): The audience that this token is intended for. This is
-            typically your Firebase application ID. If None then the audience
-            is not verified.
+        audience (Optional[Union[str, Iterable[str]]]): The audience that this
+            token is intended for. This is your Firebase project ID. If
+            ``None`` or empty, the audience will be left unverified, and a
+            ``UserWarning`` is issued. Passing a non-empty ``audience`` will be
+            required in a future release.
         clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
             validation.
 
     Returns:
         Mapping[str, Any]: The decoded token.
+
+    Raises:
+        exceptions.InvalidValue: If the issuer, audience, or subject is invalid.
+        ValueError: If token verification fails.
     """
-    return await verify_token(
+    if not audience:
+        warnings.warn(
+            "Calling verify_firebase_token without an 'audience' leaves the "
+            "token's audience claim unverified. Pass your Firebase project ID "
+            "as 'audience', which will be required in a future release.",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    idinfo = await verify_token(
         id_token,
         request,
         audience=audience,
@@ -193,8 +209,24 @@ async def verify_firebase_token(
         clock_skew_in_seconds=clock_skew_in_seconds,
     )
 
+    token_aud = idinfo.get("aud")
+    if not isinstance(token_aud, str) or not token_aud:
+        raise exceptions.InvalidValue("Token does not contain a valid 'aud' claim.")
 
-async def fetch_id_token(request, audience):
+    expected_issuer = "{}{}".format(sync_id_token._FIREBASE_ISSUER_PREFIX, token_aud)
+    if idinfo.get("iss") != expected_issuer:
+        raise exceptions.InvalidValue(
+            "Wrong issuer. 'iss' should be '{}'.".format(expected_issuer)
+        )
+
+    token_sub = idinfo.get("sub")
+    if not isinstance(token_sub, str) or not token_sub:
+        raise exceptions.InvalidValue("Token does not contain a valid 'sub' claim.")
+
+    return idinfo
+
+
+async def fetch_id_token(request, audience, bind_id_token=None):
     """Fetch the ID Token from the current environment.
 
     This function acquires ID token from the environment in the following order.
@@ -223,6 +255,19 @@ async def fetch_id_token(request, audience):
         request (google.auth.transport.aiohttp_requests.Request): A callable used to make
             HTTP requests.
         audience (str): The audience that this ID token is intended for.
+        bind_id_token (Optional[bool]): Controls whether to request a
+            certificate-bound ID token from the metadata server identity
+            endpoint. If ``True``, requests a bound token whenever a valid
+            Agent Identity certificate is available and token binding is not
+            disabled via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back
+            to an unbound token otherwise (or raising
+            :class:`~google.auth.exceptions.RefreshError` if a configured
+            certificate is not found after retries). If ``False``, always
+            requests an unbound token. If ``None`` (default), token binding is
+            determined automatically by the library. Set ``True`` or ``False``
+            explicitly if your application requires a specific behavior. Has no
+            effect when credentials are loaded from
+            ``GOOGLE_APPLICATION_CREDENTIALS``.
 
     Returns:
         str: The ID token.
@@ -231,6 +276,9 @@ async def fetch_id_token(request, audience):
         ~google.auth.exceptions.DefaultCredentialsError:
             If metadata server doesn't exist and no valid service account
             credentials are found.
+        ~google.auth.exceptions.RefreshError:
+            If an error occurred while fetching the ID token or if a required
+            certificate file is not found after retries.
     """
     # 1. Try to get credentials from the GOOGLE_APPLICATION_CREDENTIALS environment
     # variable.
@@ -273,7 +321,10 @@ async def fetch_id_token(request, audience):
         request_new = requests.Request()
         if _metadata.ping(request_new):
             credentials = compute_engine.IDTokenCredentials(
-                request_new, audience, use_metadata_identity_endpoint=True
+                request_new,
+                audience,
+                use_metadata_identity_endpoint=True,
+                bind_id_token=bind_id_token,
             )
             credentials.refresh(request_new)
             return credentials.token

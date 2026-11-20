@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
         "SqlFileType",
         "BakType",
         "SqlMaintenanceType",
+        "CertificateType",
+        "Intent",
         "SqlBackendType",
         "SqlIpAddressType",
         "SqlDatabaseVersion",
@@ -81,11 +83,19 @@ __protobuf__ = proto.module(
         "AdvancedMachineFeatures",
         "SslCert",
         "SslCertDetail",
+        "DNSEntry",
+        "CustomerManagedCertificate",
+        "CustomerManagedCertificateConfig",
         "SqlActiveDirectoryConfig",
         "SqlServerAuditConfig",
         "SqlServerEntraIdConfig",
+        "InitialUsersConfig",
         "AcquireSsrsLeaseContext",
         "DnsNameMapping",
+        "StartWorkloadCaptureContext",
+        "StopWorkloadCaptureContext",
+        "StartWorkloadReplayContext",
+        "StopWorkloadReplayContext",
     },
 )
 
@@ -167,6 +177,53 @@ class SqlMaintenanceType(proto.Enum):
     REPLICA_INCLUDED_MAINTENANCE = 2
     INSTANCE_SELF_SERVICE_MAINTENANCE = 3
     REPLICA_INCLUDED_SELF_SERVICE_MAINTENANCE = 4
+
+
+class CertificateType(proto.Enum):
+    r"""Certificate type for customer managed certificates.
+
+    Values:
+        CERTIFICATE_TYPE_UNSPECIFIED (0):
+            Unspecified certificate type.
+        CERTIFICATE_TYPE_PEER_SERVER_CA (1):
+            The x509 PEM-encoded certificate of the CA
+            that signed the source database server's
+            certificate.
+        CERTIFICATE_TYPE_PEER_CLIENT_KEY (2):
+            The unencrypted PKCS#1 or PKCS#8 PEM-encoded
+            private key associated with the Client
+            Certificate.
+        CERTIFICATE_TYPE_PEER_CLIENT_CERTIFICATE (3):
+            The x509 PEM-encoded certificate used by the
+            client to authenticate against the source
+            database server.
+    """
+
+    CERTIFICATE_TYPE_UNSPECIFIED = 0
+    CERTIFICATE_TYPE_PEER_SERVER_CA = 1
+    CERTIFICATE_TYPE_PEER_CLIENT_KEY = 2
+    CERTIFICATE_TYPE_PEER_CLIENT_CERTIFICATE = 3
+
+
+class Intent(proto.Enum):
+    r"""Intent for the customer managed certificate configuration.
+
+    Values:
+        INTENT_UNSPECIFIED (0):
+            Unspecified intent.
+        PG_LOGICAL (1):
+            Configures customer-managed certificates for pg_logical
+            extension to achieve mTLS authentication.
+        NATIVE_REPLICATION (2):
+            Configures customer-managed certificates for
+            built-in PostgreSQL native replication to
+            achieve mTLS authentication. Supported for Cloud
+            SQL for PostgreSQL 10 and later.
+    """
+
+    INTENT_UNSPECIFIED = 0
+    PG_LOGICAL = 1
+    NATIVE_REPLICATION = 2
 
 
 class SqlBackendType(proto.Enum):
@@ -937,6 +994,8 @@ class PreCheckResponse(proto.Message):
 class PreCheckMajorVersionUpgradeContext(proto.Message):
     r"""Pre-check major version upgrade context.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_database_version (google.cloud.sqladmin_v1.types.SqlDatabaseVersion):
             Required. The target database version to
@@ -947,6 +1006,11 @@ class PreCheckMajorVersionUpgradeContext(proto.Message):
         kind (str):
             Optional. This is always
             ``sql#preCheckMajorVersionUpgradeContext``.
+        max_runtime (google.protobuf.duration_pb2.Duration):
+            Optional. The maximum allowed runtime for the
+            precheck operation.
+
+            This field is a member of `oneof`_ ``_max_runtime``.
     """
 
     target_database_version: "SqlDatabaseVersion" = proto.Field(
@@ -962,6 +1026,12 @@ class PreCheckMajorVersionUpgradeContext(proto.Message):
     kind: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    max_runtime: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=duration_pb2.Duration,
     )
 
 
@@ -2235,8 +2305,7 @@ class PscConfig(proto.Message):
             Optional. The network attachment of the
             consumer network that the Private Service
             Connect enabled Cloud SQL instance is authorized
-            to connect via PSC interface.
-            format:
+            to connect using the PSC interface. format:
             projects/PROJECT/regions/REGION/networkAttachments/ID
         psc_auto_dns_enabled (bool):
             Optional. Indicates whether Private Service
@@ -2694,11 +2763,28 @@ class MySqlReplicaConfiguration(proto.Message):
 class DiskEncryptionConfiguration(proto.Message):
     r"""Disk encryption configuration for an instance.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         kms_key_name (str):
-            Resource name of KMS key for disk encryption
+            Resource name of KMS key for disk encryption.
         kind (str):
             This is always ``sql#diskEncryptionConfiguration``.
+        confidential_mode (bool):
+            Optional. If true, enables Confidential Mode
+            for the instance's Hyperdisk Balanced volumes.
+            Only supported for zonal C4A instances
+            currently.
+
+            This field is a member of `oneof`_ ``_confidential_mode``.
+        cmek_source_log_encryption_enforced (bool):
+            Optional. Whether to enforce CMEK log
+            encryption at source. When enforced, transaction
+            logs are encrypted prior to being uploaded to
+            Cloud Storage. If not enforced, then CMEK logs
+            are encrypted by the Cloud Storage service.
+
+            This field is a member of `oneof`_ ``_cmek_source_log_encryption_enforced``.
     """
 
     kms_key_name: str = proto.Field(
@@ -2708,6 +2794,16 @@ class DiskEncryptionConfiguration(proto.Message):
     kind: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    confidential_mode: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    cmek_source_log_encryption_enforced: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        optional=True,
     )
 
 
@@ -2852,6 +2948,25 @@ class Operation(proto.Message):
             the details for that pre-check, such as the target database
             version for the upgrade and the results of the check
             (including any warnings or errors found).
+        start_workload_capture_context (google.cloud.sqladmin_v1.types.StartWorkloadCaptureContext):
+            The context for the ``StartWorkloadCapture`` operation,
+            which contains details to start recording the workload (SQL
+            queries) on a Cloud SQL instance.
+        stop_workload_capture_context (google.cloud.sqladmin_v1.types.StopWorkloadCaptureContext):
+            The context for the ``StopWorkloadCapture`` operation, which
+            contains details to stop recording the workload (SQL
+            queries) on a Cloud SQL instance.
+        start_workload_replay_context (google.cloud.sqladmin_v1.types.StartWorkloadReplayContext):
+            The context for the ``StartWorkloadReplay`` operation, which
+            contains details about starting the execution of a captured
+            workload (recorded read and write SQL queries) on a replay
+            instance (the Cloud SQL instance where the recorded SQL
+            queries are executed).
+        stop_workload_replay_context (google.cloud.sqladmin_v1.types.StopWorkloadReplayContext):
+            The context for the ``StopWorkloadReplay`` operation, which
+            contains details about stopping the execution of a captured
+            workload (recorded read and write SQL queries) on a replay
+            instance.
         name (str):
             An identifier that uniquely identifies the
             operation. You can use this identifier to
@@ -3031,6 +3146,15 @@ class Operation(proto.Message):
                 including configuration, replication,
                 switchover/back, and data reseeding, as defined
                 by operation's intent.
+            CREATE_BLUE_GREEN_DEPLOYMENT (56):
+                Creates a new Blue-Green deployment.
+            SWITCHOVER_BLUE_GREEN_DEPLOYMENT (57):
+                Switches over a Blue-Green deployment.
+            DELETE_BLUE_GREEN_DEPLOYMENT (58):
+                Deletes a Blue-Green deployment.
+            RECONCILE_NETWORKING (64):
+                Reconciles network infrastructure (e.g.
+                Private Service Connect, Automated DNS Records).
         """
 
         SQL_OPERATION_TYPE_UNSPECIFIED = 0
@@ -3087,6 +3211,10 @@ class Operation(proto.Message):
         CREATE_READ_POOL = 53
         PRE_CHECK_MAJOR_VERSION_UPGRADE = 54
         SETUP_MIGRATION = 55
+        CREATE_BLUE_GREEN_DEPLOYMENT = 56
+        SWITCHOVER_BLUE_GREEN_DEPLOYMENT = 57
+        DELETE_BLUE_GREEN_DEPLOYMENT = 58
+        RECONCILE_NETWORKING = 64
 
     class SqlOperationStatus(proto.Enum):
         r"""The status of an operation.
@@ -3176,6 +3304,26 @@ class Operation(proto.Message):
             number=50,
             message="PreCheckMajorVersionUpgradeContext",
         )
+    )
+    start_workload_capture_context: "StartWorkloadCaptureContext" = proto.Field(
+        proto.MESSAGE,
+        number=59,
+        message="StartWorkloadCaptureContext",
+    )
+    stop_workload_capture_context: "StopWorkloadCaptureContext" = proto.Field(
+        proto.MESSAGE,
+        number=60,
+        message="StopWorkloadCaptureContext",
+    )
+    start_workload_replay_context: "StartWorkloadReplayContext" = proto.Field(
+        proto.MESSAGE,
+        number=61,
+        message="StartWorkloadReplayContext",
+    )
+    stop_workload_replay_context: "StopWorkloadReplayContext" = proto.Field(
+        proto.MESSAGE,
+        number=62,
+        message="StopWorkloadReplayContext",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -3498,9 +3646,20 @@ class Settings(proto.Message):
         insights_config (google.cloud.sqladmin_v1.types.InsightsConfig):
             Insights configuration, for now relevant only
             for Postgres.
+        msdtc_enabled (bool):
+            Optional. Enables Microsoft Distributed
+            Transaction Coordinator (MSDTC) for SQL Server.
+
+            This field is a member of `oneof`_ ``_msdtc_enabled``.
+        msdtc_rpc_auth_mode (google.cloud.sqladmin_v1.types.Settings.MsdtcRpcAuthMode):
+            Optional. RPC authentication mode for
+            Microsoft Distributed Transaction Coordinator
+            (MSDTC).
+
+            This field is a member of `oneof`_ ``_msdtc_rpc_auth_mode``.
         password_validation_policy (google.cloud.sqladmin_v1.types.PasswordValidationPolicy):
             The local user password validation policy of
-            the instance.
+            the instance for PostgreSQL and MySQL.
         sql_server_audit_config (google.cloud.sqladmin_v1.types.SqlServerAuditConfig):
             SQL Server specific audit configuration.
         edition (google.cloud.sqladmin_v1.types.Settings.Edition):
@@ -3606,6 +3765,9 @@ class Settings(proto.Message):
             Optional. Configuration for Performance
             Capture, provides diagnostic metrics during high
             load situations.
+        initial_users_config (google.cloud.sqladmin_v1.types.InitialUsersConfig):
+            Optional. Input only. Users to be created on
+            the instance during instance creation.
     """
 
     class SqlActivationPolicy(proto.Enum):
@@ -3626,6 +3788,38 @@ class Settings(proto.Message):
         ALWAYS = 1
         NEVER = 2
         ON_DEMAND = 3
+
+    class MsdtcRpcAuthMode(proto.Enum):
+        r"""RPC authentication modes for Microsoft Distributed
+        Transaction Coordinator (MSDTC).
+
+        Values:
+            MSDTC_RPC_AUTH_MODE_UNSPECIFIED (0):
+                Unspecified RPC authentication mode.
+            ALLOW_ONLY_SECURE_RPC_CALLS (1):
+                Allow only secure RPC calls. Both servers
+                (caller and receiver) must successfully verify
+                each other's identities, typically using Active
+                Directory machine accounts and Kerberos Service
+                Principal Names (SPNs). This is equivalent to
+                Mutual Authentication in Microsoft SQL Server on
+                Windows.
+            FALLBACK_TO_UNSECURE_RPC_IF_NECESSARY (2):
+                Similar to Incoming authentication mode in
+                Microsoft SQL Server on Windows, the caller
+                authenticates to the receiver. The receiver
+                verifies the caller's identity, but the Receiver
+                does not authenticate itself back to the caller.
+            TURN_OFF_RPC_SECURITY (3):
+                No authentication. Highly insecure and thus
+                should only be used on already secure networks
+                and never over public IP.
+        """
+
+        MSDTC_RPC_AUTH_MODE_UNSPECIFIED = 0
+        ALLOW_ONLY_SECURE_RPC_CALLS = 1
+        FALLBACK_TO_UNSECURE_RPC_IF_NECESSARY = 2
+        TURN_OFF_RPC_SECURITY = 3
 
     class Edition(proto.Enum):
         r"""The list of Cloud SQL editions available to users.
@@ -3807,6 +4001,17 @@ class Settings(proto.Message):
         number=25,
         message="InsightsConfig",
     )
+    msdtc_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=58,
+        optional=True,
+    )
+    msdtc_rpc_auth_mode: MsdtcRpcAuthMode = proto.Field(
+        proto.ENUM,
+        number=60,
+        optional=True,
+        enum=MsdtcRpcAuthMode,
+    )
     password_validation_policy: "PasswordValidationPolicy" = proto.Field(
         proto.MESSAGE,
         number=27,
@@ -3919,6 +4124,11 @@ class Settings(proto.Message):
         proto.MESSAGE,
         number=54,
         message="PerformanceCaptureConfig",
+    )
+    initial_users_config: "InitialUsersConfig" = proto.Field(
+        proto.MESSAGE,
+        number=55,
+        message="InitialUsersConfig",
     )
 
 
@@ -4390,6 +4600,109 @@ class SslCertDetail(proto.Message):
     )
 
 
+class DNSEntry(proto.Message):
+    r"""DNS Entry for the primary instance in a replication topology.
+
+    Attributes:
+        dns (str):
+            Required. The DNS name.
+        ipv4_address (str):
+            Required. The IP address.
+    """
+
+    dns: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ipv4_address: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CustomerManagedCertificate(proto.Message):
+    r"""A single certificate or key in a customer managed certificate
+    bundle.
+
+    Attributes:
+        certificate_type (google.cloud.sqladmin_v1.types.CertificateType):
+            Required. The certificate type.
+        content (bytes):
+            Required. Input only. The PEM-encoded
+            certificate or key content in base64 format.
+        file_path (str):
+            Output only. File path of the PEM-encoded certificate or key
+            content on the database virtual machine. This path can be
+            used by database extensions or plugins (for example, to
+            configure ``pglogical`` in PostgreSQL) that need to
+            reference the certificate or key file directly on the VM's
+            filesystem, ex: certs/c1/server-ca.pem
+    """
+
+    certificate_type: "CertificateType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="CertificateType",
+    )
+    content: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    file_path: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class CustomerManagedCertificateConfig(proto.Message):
+    r"""Customer managed certificate SSL configuration.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        bundle (str):
+            Output only. The name of the customer managed
+            certificate configuration. This name will be
+            used to identify a certificate bundle.
+        intent (google.cloud.sqladmin_v1.types.Intent):
+            Required. The intent for this customer
+            managed certificate configuration.
+        primary_dns_record (google.cloud.sqladmin_v1.types.DNSEntry):
+            DNS name associated with the primary instance
+            in a replication topology. This is needed to
+            insert a DNS entry in a replica VM.
+
+            This field is a member of `oneof`_ ``_primary_dns_record``.
+        customer_managed_certificates (MutableSequence[google.cloud.sqladmin_v1.types.CustomerManagedCertificate]):
+            Required. The server CA certificate, client
+            key and client certificate. You can specify up
+            to 3 certificates in a bundle.
+    """
+
+    bundle: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    intent: "Intent" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="Intent",
+    )
+    primary_dns_record: "DNSEntry" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message="DNSEntry",
+    )
+    customer_managed_certificates: MutableSequence["CustomerManagedCertificate"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="CustomerManagedCertificate",
+        )
+    )
+
+
 class SqlActiveDirectoryConfig(proto.Message):
     r"""Active Directory configuration, relevant only for Cloud SQL
     for SQL Server.
@@ -4524,6 +4837,98 @@ class SqlServerEntraIdConfig(proto.Message):
     application_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class InitialUsersConfig(proto.Message):
+    r"""Configuration for users created during instance creation.
+
+    Attributes:
+        initial_users (MutableSequence[google.cloud.sqladmin_v1.types.InitialUsersConfig.InitialUser]):
+            Optional. List of IAM users to be created
+            during instance creation. A maximum of 5 users
+            are allowed.
+    """
+
+    class InitialUser(proto.Message):
+        r"""Configuration for an IAM user created during instance
+        creation.
+
+        Attributes:
+            name (str):
+                Required. The name of the user in the Cloud
+                SQL instance.
+            type_ (google.cloud.sqladmin_v1.types.InitialUsersConfig.InitialUser.SqlUserType):
+                Required. The user type. Cannot be BUILT_IN.
+            roles (MutableSequence[str]):
+                Optional. The database roles to be assigned to the user. If
+                empty, will grant role ``cloudsqlsuperuser``.
+        """
+
+        class SqlUserType(proto.Enum):
+            r"""The user type.
+
+            Values:
+                BUILT_IN (0):
+                    The database's built-in user type. Not
+                    supported for initial user creation.
+                CLOUD_IAM_USER (1):
+                    Cloud IAM user.
+                    MySQL will truncate the @ and domain when it
+                    stores the user.
+                CLOUD_IAM_SERVICE_ACCOUNT (2):
+                    Cloud IAM service account.
+                    For PostgreSQL, omit the .gserviceaccount.com
+                    suffix. MySQL will truncate the @ and domain
+                    when it stores the user.
+                CLOUD_IAM_GROUP (3):
+                    Cloud IAM group.
+                CLOUD_IAM_GROUP_USER (4):
+                    Login for a user that belongs to the Cloud
+                    IAM group. Not supported for initial user
+                    creation.
+                CLOUD_IAM_GROUP_SERVICE_ACCOUNT (5):
+                    Login for a service account that belongs to
+                    the Cloud IAM group. Not supported for initial
+                    user creation.
+                CLOUD_IAM_WORKFORCE_IDENTITY (6):
+                    Cloud IAM workforce identity.
+                ENTRAID_USER (7):
+                    Microsoft Entra ID user. Not supported for
+                    initial user creation.
+                ACTIVE_DIRECTORY_USER (8):
+                    Active Directory user. Not supported for
+                    initial user creation.
+            """
+
+            BUILT_IN = 0
+            CLOUD_IAM_USER = 1
+            CLOUD_IAM_SERVICE_ACCOUNT = 2
+            CLOUD_IAM_GROUP = 3
+            CLOUD_IAM_GROUP_USER = 4
+            CLOUD_IAM_GROUP_SERVICE_ACCOUNT = 5
+            CLOUD_IAM_WORKFORCE_IDENTITY = 6
+            ENTRAID_USER = 7
+            ACTIVE_DIRECTORY_USER = 8
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: "InitialUsersConfig.InitialUser.SqlUserType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="InitialUsersConfig.InitialUser.SqlUserType",
+        )
+        roles: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+
+    initial_users: MutableSequence[InitialUser] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=InitialUser,
     )
 
 
@@ -4673,6 +5078,120 @@ class DnsNameMapping(proto.Message):
         number=4,
         enum=RecordManager,
     )
+
+
+class StartWorkloadCaptureContext(proto.Message):
+    r"""The context for the ``StartWorkloadCapture`` operation, which
+    contains details to start recording the workload (SQL queries) on a
+    Cloud SQL instance.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enable_live_replay (bool):
+            Optional. If true, the captured workload is simultaneously
+            executed on a separate, ephemeral Cloud SQL instance. This
+            "live replay" instance is automatically provisioned and is
+            cloned from the source instance. If false (the default), the
+            workload is only stored and no live replay occurs. It can be
+            replayed later using a separate
+            ``StartWorkloadReplayRequest``. Note: The workload capture
+            runs continuously until an explicit
+            ``StopWorkloadCaptureRequest`` is issued.
+        replay_instance (str):
+            Optional. Required if ``enable_live_replay`` is true. The
+            name of the Cloud SQL instance where the captured workload
+            (SQL queries) is being executed, excluding the project ID
+            (for example, ``my-replay-instance``). The instance name
+            must start with a lowercase letter and contain only
+            lowercase letters, numbers, and hyphens. The combined length
+            of ``project-ID:instance-name`` must be 98 characters or
+            less.
+
+            This field is a member of `oneof`_ ``_replay_instance``.
+    """
+
+    enable_live_replay: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    replay_instance: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+
+
+class StopWorkloadCaptureContext(proto.Message):
+    r"""The context for the ``StopWorkloadCapture`` operation, which
+    contains details to stop recording the workload (SQL queries) on a
+    Cloud SQL instance.
+
+    Attributes:
+        abort_live_replay (bool):
+            Optional. If true, immediately aborts the
+            concurrent live replay and discards any
+            un-replayed traffic alongside stopping the
+            capture. If false (the default), the capture
+            stops recording new traffic, but the live replay
+            will continue executing until the entire backlog
+            of captured traffic has been replayed.
+    """
+
+    abort_live_replay: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class StartWorkloadReplayContext(proto.Message):
+    r"""The context for the ``StartWorkloadReplay`` operation, which
+    contains details about starting the execution of a captured workload
+    (recorded read and write SQL queries) on a replay instance (the
+    Cloud SQL instance where the recorded SQL queries are executed).
+
+    Attributes:
+        replay_instance (str):
+            Required. The name of the Cloud SQL instance where the
+            captured workload (SQL queries) is being executed, excluding
+            the project ID (for example, ``my-replay-instance``). The
+            instance name must start with a lowercase letter and contain
+            only lowercase letters, numbers, and hyphens. The combined
+            length of ``project-ID:instance-name`` must be 98 characters
+            or less.
+        workload_id (str):
+            Output only. The ID of the workload to start executing on
+            the replay instance. Each workload capture generates a
+            unique ID in the format ``workload-<epoch_timestamp>`` (for
+            example, ``workload-1786046400``). Use this ID to start
+            executing the recorded SQL queries.
+        source_instance (str):
+            Output only. The name of the source Cloud SQL instance where
+            the workload was captured, excluding the project ID (for
+            example, ``my-source-instance``).
+    """
+
+    replay_instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    workload_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_instance: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class StopWorkloadReplayContext(proto.Message):
+    r"""The context for the ``StopWorkloadReplay`` operation, which
+    represents an operation that stops an active workload replay on a
+    target Cloud SQL replay instance.
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

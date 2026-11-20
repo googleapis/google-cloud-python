@@ -13,12 +13,13 @@
 # limitations under the License.
 
 import contextlib
+import json
 import ssl
 from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import exceptions
+from google.auth import _agent_identity_utils, environment_vars, exceptions
 from google.auth.transport import _mtls_helper, mtls
 
 
@@ -46,7 +47,7 @@ def test_has_default_client_cert_source_with_context_aware_metadata(
 
     # Assert
     assert result is True
-    mock_get_cert.assert_called_once_with(include_context_aware=True)
+    mock_get_cert.assert_called_once_with(None, True)
     mock_check.assert_any_call(_mtls_helper.CONTEXT_AWARE_METADATA_PATH)
 
 
@@ -63,13 +64,21 @@ def test_has_default_client_cert_source_without_context_aware(
     result = mtls.has_default_client_cert_source(include_context_aware=False)
 
     assert result is False
-    mock_get_cert.assert_called_once_with(include_context_aware=False)
+    mock_get_cert.assert_called_once_with(None, False)
     mock_check.assert_not_called()
 
 
+@mock.patch(
+    "google.auth.transport._mtls_helper._load_json_file",
+    return_value={
+        "cert_configs": {"workload": {"cert_path": "cert.pem", "key_path": "key.pem"}}
+    },
+)
 @mock.patch("google.auth.transport._mtls_helper._check_config_path")
 @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
-def test_has_default_client_cert_source_falls_back(mock_get_cert, mock_check):
+def test_has_default_client_cert_source_falls_back(
+    mock_get_cert, mock_check, mock_load_json
+):
     """
     Tests that it checks X.509 WIF first, and if found, returns True without checking context aware metadata.
     """
@@ -83,21 +92,28 @@ def test_has_default_client_cert_source_falls_back(mock_get_cert, mock_check):
     # Assert
     assert result is True
     # Verify the sequence of calls
-    mock_get_cert.assert_called_once_with(include_context_aware=True)
+    mock_get_cert.assert_called_once_with(None, True)
     mock_check.assert_not_called()
 
 
+@mock.patch(
+    "google.auth.transport._mtls_helper._load_json_file",
+    return_value={
+        "cert_configs": {"workload": {"cert_path": "cert.pem", "key_path": "key.pem"}}
+    },
+    autospec=True,
+)
 @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path", autospec=True)
 @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
 def test_has_default_client_cert_source_env_var_success(
-    check_config_path, get_cert_config_path
+    check_config_path, get_cert_config_path, mock_load_json
 ):
     check_config_path.return_value = None
     get_cert_config_path.return_value = "/absolute/path/to/cert.json"
 
     assert mtls.has_default_client_cert_source(True)
 
-    get_cert_config_path.assert_called_with(include_context_aware=True)
+    get_cert_config_path.assert_called_with(None, True)
 
 
 @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path", autospec=True)
@@ -138,7 +154,17 @@ def test_default_client_cert_source(
     # Test bad callback which throws ClientCertError.
     get_client_cert_and_key.side_effect = exceptions.ClientCertError()
     callback = mtls.default_client_cert_source()
-    with pytest.raises(exceptions.ClientCertError):
+    with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
+        callback()
+    assert isinstance(exc_info.value.__cause__, exceptions.ClientCertError)
+
+    # Test callback when no cert is found.
+    get_client_cert_and_key.side_effect = None
+    get_client_cert_and_key.return_value = (False, None, None)
+    callback = mtls.default_client_cert_source()
+    with pytest.raises(
+        exceptions.MutualTLSChannelError, match="did not provide a certificate"
+    ):
         callback()
 
 
@@ -170,6 +196,17 @@ def test_default_client_encrypted_cert_source(
     callback = mtls.default_client_encrypted_cert_source("cert_path", "key_path")
     with pytest.raises(exceptions.MutualTLSChannelError):
         callback()
+
+    # Test callback when no cert is found.
+    get_client_ssl_credentials.side_effect = None
+    get_client_ssl_credentials.return_value = (False, None, None, None)
+    callback = mtls.default_client_encrypted_cert_source("cert_path", "key_path")
+    with mock.patch("google.auth.transport.mtls.open", mock.mock_open()) as mock_file:
+        with pytest.raises(
+            exceptions.MutualTLSChannelError, match="did not provide a certificate"
+        ):
+            callback()
+        mock_file.assert_not_called()
 
 
 @mock.patch("google.auth.transport._mtls_helper.check_use_client_cert", autospec=True)
@@ -476,3 +513,233 @@ def test_get_default_ssl_context_no_default_source(mock_has_default, mock_should
 
     result = mtls.get_default_ssl_context()
     assert result is None
+
+
+@mock.patch(
+    "google.auth.transport._mtls_helper._get_cert_config_path",
+    return_value=None,
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._agent_identity_utils._is_certificate_file_ready",
+    return_value=True,
+    autospec=True,
+)
+def test_has_default_client_cert_source_gke_bundle(mock_is_ready, mock_get_cert):
+    assert mtls.has_default_client_cert_source(include_context_aware=False) is True
+    mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+
+
+@mock.patch(
+    "google.auth.transport._mtls_helper._load_json_file",
+    return_value={"cert_configs": {}},
+    autospec=True,
+)
+@mock.patch(
+    "google.auth.transport._mtls_helper._get_cert_config_path",
+    return_value="/home/user/.config/gcloud/certificate_config.json",
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._agent_identity_utils._is_certificate_file_ready",
+    return_value=True,
+    autospec=True,
+)
+def test_has_default_client_cert_source_config_without_workload_no_gke_fallback(
+    mock_is_ready, mock_get_cert, mock_load_json
+):
+    assert mtls.has_default_client_cert_source(include_context_aware=False) is False
+    mock_is_ready.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        exceptions.ClientCertError("Invalid JSON"),
+        OSError("Permission denied"),
+    ],
+)
+@mock.patch(
+    "google.auth.transport._mtls_helper._load_json_file",
+    autospec=True,
+)
+@mock.patch(
+    "google.auth.transport._mtls_helper._get_cert_config_path",
+    return_value="/home/user/.config/gcloud/certificate_config.json",
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._agent_identity_utils._is_certificate_file_ready",
+    return_value=True,
+    autospec=True,
+)
+def test_has_default_client_cert_source_malformed_config_no_gke_fallback(
+    mock_is_ready, mock_get_cert, mock_load_json, side_effect
+):
+    mock_load_json.side_effect = side_effect
+
+    assert mtls.has_default_client_cert_source(include_context_aware=False) is True
+    mock_is_ready.assert_not_called()
+
+
+@mock.patch("google.auth.transport.mtls.path.exists", return_value=False)
+@mock.patch(
+    "google.auth.transport._mtls_helper._get_non_spiffe_workload_cert_and_key_paths",
+    autospec=True,
+)
+@mock.patch(
+    "google.auth.transport._mtls_helper._get_spiffe_polling_config_path",
+    return_value="/var/run/secrets/workload-spiffe-credentials/credentials.json",
+    autospec=True,
+)
+def test_has_default_client_cert_source_spiffe_returns_true_without_polling(
+    mock_spiffe_path, mock_non_spiffe_paths, mock_exists
+):
+    assert mtls.has_default_client_cert_source() is True
+    mock_spiffe_path.assert_called_once_with()
+    mock_exists.assert_called_once_with(
+        "/var/run/secrets/workload-spiffe-credentials/credentials.json"
+    )
+    mock_non_spiffe_paths.assert_not_called()
+
+
+@pytest.fixture
+def spiffe_config_file(tmp_path, monkeypatch):
+    well_known_dir = tmp_path / "workload-spiffe-credentials"
+    well_known_dir.mkdir()
+    home_dir = tmp_path / "gcloud_home"
+    home_dir.mkdir()
+    config_file = well_known_dir / "credentials.json"
+    monkeypatch.setattr(
+        _agent_identity_utils,
+        "_WELL_KNOWN_CERT_PATH",
+        str(well_known_dir / "certificates.pem"),
+    )
+    monkeypatch.setattr(
+        _mtls_helper._cloud_sdk, "get_config_path", lambda: str(home_dir)
+    )
+    monkeypatch.setattr(
+        _mtls_helper,
+        "CONTEXT_AWARE_METADATA_PATH",
+        str(tmp_path / "context_aware_metadata.json"),
+    )
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, raising=False
+    )
+    monkeypatch.setenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_file))
+    return config_file
+
+
+@mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+def test_has_default_client_cert_source_spiffe_pems_not_mounted(
+    mock_sleep, spiffe_config_file
+):
+    well_known_dir = spiffe_config_file.parent
+    spiffe_config_file.write_text(
+        json.dumps(
+            {
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": str(well_known_dir / "certificates.pem"),
+                        "key_path": str(well_known_dir / "private_key.pem"),
+                    }
+                }
+            }
+        )
+    )
+
+    assert mtls.has_default_client_cert_source() is True
+    mock_sleep.assert_not_called()
+
+
+@mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+def test_has_default_client_cert_source_spiffe_config_without_workload(
+    mock_sleep, spiffe_config_file
+):
+    spiffe_config_file.write_text('{"cert_configs": {}}')
+
+    assert mtls.has_default_client_cert_source() is False
+    mock_sleep.assert_not_called()
+
+
+@mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+def test_default_client_cert_source_spiffe_mounts_during_poll(
+    mock_sleep, spiffe_config_file
+):
+    well_known_dir = spiffe_config_file.parent
+    cert_file = well_known_dir / "certificates.pem"
+    key_file = well_known_dir / "private_key.pem"
+
+    callback = mtls.default_client_cert_source()
+    mock_sleep.assert_not_called()
+
+    def write_spiffe_files(*args, **kwargs):
+        cert_file.write_bytes(pytest.public_cert_bytes)
+        key_file.write_bytes(pytest.private_key_bytes)
+        spiffe_config_file.write_text(
+            json.dumps(
+                {
+                    "cert_configs": {
+                        "workload": {
+                            "cert_path": str(cert_file),
+                            "key_path": str(key_file),
+                        }
+                    }
+                }
+            )
+        )
+
+    mock_sleep.side_effect = write_spiffe_files
+
+    assert callback() == (pytest.public_cert_bytes, pytest.private_key_bytes)
+    assert mock_sleep.call_count == 1
+
+
+@mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+def test_default_client_cert_source_spiffe_poll_timeout_raises_mtls_channel_error(
+    mock_sleep, spiffe_config_file
+):
+    callback = mtls.default_client_cert_source()
+
+    with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
+        callback()
+
+    assert isinstance(exc_info.value.__cause__, exceptions.ClientCertError)
+    assert "not ready after 30s" in str(exc_info.value.__cause__)
+    assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
+
+
+@pytest.mark.parametrize(
+    "make_callback",
+    [
+        lambda tmp_path: mtls.default_client_cert_source(),
+        lambda tmp_path: mtls.default_client_encrypted_cert_source(
+            str(tmp_path / "out_cert.pem"), str(tmp_path / "out_key.pem")
+        ),
+    ],
+    ids=["default_client_cert_source", "default_client_encrypted_cert_source"],
+)
+@mock.patch(
+    "google.auth.transport._mtls_helper._check_config_path",
+    return_value=None,
+    autospec=True,
+)
+@mock.patch("google.auth.transport._mtls_helper.time.sleep", autospec=True)
+def test_default_client_cert_source_spiffe_config_without_workload_mounts_during_poll(
+    mock_sleep, mock_check_config_path, make_callback, spiffe_config_file, tmp_path
+):
+    callback = make_callback(tmp_path)
+
+    def write_config_without_workload(*args, **kwargs):
+        spiffe_config_file.write_text('{"cert_configs": {}}')
+
+    mock_sleep.side_effect = write_config_without_workload
+
+    with pytest.raises(
+        exceptions.MutualTLSChannelError, match="did not provide a certificate"
+    ):
+        callback()
+
+    assert mock_sleep.call_count == 1
+    assert not (tmp_path / "out_cert.pem").exists()
+    assert not (tmp_path / "out_key.pem").exists()

@@ -1127,6 +1127,7 @@ __protobuf__ = proto.module(
         "InterconnectRemoteLocationPermittedConnections",
         "InterconnectsGetDiagnosticsResponse",
         "InterconnectsGetMacsecConfigResponse",
+        "InterconnectsSetNameRequest",
         "Interval",
         "InvalidateCacheRegionUrlMapRequest",
         "InvalidateCacheUrlMapRequest",
@@ -1921,6 +1922,7 @@ __protobuf__ = proto.module(
         "SetMetadataInstanceRequest",
         "SetMinCpuPlatformInstanceRequest",
         "SetNameInstanceRequest",
+        "SetNameInterconnectRequest",
         "SetNamedPortsInstanceGroupRequest",
         "SetNamedPortsRegionInstanceGroupRequest",
         "SetNodeTemplateNodeGroupRequest",
@@ -23336,6 +23338,9 @@ class BackendServiceHAPolicy(proto.Message):
                Advertisement(RA) packet (IPv6).  Google Cloud immediately but
                temporarily associates the forwarding rule IP address with that VM, and
                both new and in-flight packets are quickly delivered to that VM.
+               - HA_CONTROLLER: The Backend Service is managed by a High Availability
+               Controller. Failover and leader election are exclusively managed by the
+               HA Controller service.
 
             Note the important properties of the Fast IP Move
             functionality:
@@ -23437,6 +23442,9 @@ class BackendServiceHAPolicy(proto.Message):
            Advertisement(RA) packet (IPv6).  Google Cloud immediately but
            temporarily associates the forwarding rule IP address with that VM, and
            both new and in-flight packets are quickly delivered to that VM.
+           - HA_CONTROLLER: The Backend Service is managed by a High Availability
+           Controller. Failover and leader election are exclusively managed by the
+           HA Controller service.
 
         Note the important properties of the Fast IP Move functionality:
 
@@ -25582,8 +25590,14 @@ class BulkInsertInstanceResource(proto.Message):
 
             This field is a member of `oneof`_ ``_count``.
         instance_flexibility_policy (google.cloud.compute_v1beta.types.InstanceFlexibilityPolicy):
-            A flexible specification of machine type of
-            instances to create.
+            A specification of alternative machine types
+            to use when creating instances. A single
+            bulkInsert request can create instances with
+            multiple different machine types based on
+            capacity and quota availability. This field is
+            supported only for regional bulkInsert requests.
+            For more information, see About
+            instance flexibility for VMs created in bulk.
 
             This field is a member of `oneof`_ ``_instance_flexibility_policy``.
         instance_properties (google.cloud.compute_v1beta.types.InstanceProperties):
@@ -26113,9 +26127,11 @@ class CacheInvalidationRule(proto.Message):
 
             This field is a member of `oneof`_ ``_content_type``.
         host (str):
-            If set, this invalidation rule will only
-            apply to requests with a Host header matching
-            host.
+            If set, this invalidation rule will only apply to requests
+            with a Host header matching host. This field also accepts
+            wildcards (\*) to replace the leftmost (or first) label of a
+            hostname. For example, \*.example.com will match
+            www.example.com, but not sub1.dev.example.com.
 
             This field is a member of `oneof`_ ``_host``.
         http_status (int):
@@ -28569,13 +28585,13 @@ class Commitment(proto.Message):
             GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED,
             MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4,
             STORAGE_OPTIMIZED_Z3,STORAGE_OPTIMIZED_Z4DS,
-            STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T. For example,
-            type MEMORY_OPTIMIZED specifies a commitment that applies
-            only to eligible resources of memory optimized M1 and M2
-            machine series. Type GENERAL_PURPOSE specifies a commitment
-            that applies only to eligible resources of general purpose
-            N1 machine series. Check the Type enum for the list of
-            possible values.
+            STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T,STORAGE_OPTIMIZED_Z4M.
+            For example, type MEMORY_OPTIMIZED specifies a commitment
+            that applies only to eligible resources of memory optimized
+            M1 and M2 machine series. Type GENERAL_PURPOSE specifies a
+            commitment that applies only to eligible resources of
+            general purpose N1 machine series. Check the Type enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -28684,11 +28700,12 @@ class Commitment(proto.Message):
         GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED,
         MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4,
         STORAGE_OPTIMIZED_Z3,STORAGE_OPTIMIZED_Z4DS,
-        STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T. For example, type
-        MEMORY_OPTIMIZED specifies a commitment that applies only to
-        eligible resources of memory optimized M1 and M2 machine series.
-        Type GENERAL_PURPOSE specifies a commitment that applies only to
-        eligible resources of general purpose N1 machine series.
+        STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T,STORAGE_OPTIMIZED_Z4M.
+        For example, type MEMORY_OPTIMIZED specifies a commitment that
+        applies only to eligible resources of memory optimized M1 and M2
+        machine series. Type GENERAL_PURPOSE specifies a commitment that
+        applies only to eligible resources of general purpose N1 machine
+        series.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -28716,6 +28733,8 @@ class Commitment(proto.Message):
                 No description available.
             COMPUTE_OPTIMIZED_H4D (383251320):
                 No description available.
+            COMPUTE_OPTIMIZED_H4D_3TB (443379866):
+                CUD bucket for COMPUTE_OPTIMIZED_H4D_3TB machines.
             GENERAL_PURPOSE (299793543):
                 No description available.
             GENERAL_PURPOSE_C4 (301911817):
@@ -28792,6 +28811,8 @@ class Commitment(proto.Message):
                 CUD bucket for Z4DH machines.
             STORAGE_OPTIMIZED_Z4DS (35233733):
                 CUD bucket for Z4DS machines.
+            STORAGE_OPTIMIZED_Z4M (157002327):
+                CUD bucket for Z4M (bare metal) machines.
             TYPE_UNSPECIFIED (437714322):
                 Note for internal users: When adding a new enum Type for v1,
                 make sure to also add it in the comment for the
@@ -28811,6 +28832,7 @@ class Commitment(proto.Message):
         COMPUTE_OPTIMIZED_C3D = 383246484
         COMPUTE_OPTIMIZED_H3 = 428004939
         COMPUTE_OPTIMIZED_H4D = 383251320
+        COMPUTE_OPTIMIZED_H4D_3TB = 443379866
         GENERAL_PURPOSE = 299793543
         GENERAL_PURPOSE_C4 = 301911817
         GENERAL_PURPOSE_C4A = 232460888
@@ -28846,6 +28868,7 @@ class Commitment(proto.Message):
         STORAGE_OPTIMIZED_Z4D4T = 18503022
         STORAGE_OPTIMIZED_Z4DH = 35233722
         STORAGE_OPTIMIZED_Z4DS = 35233733
+        STORAGE_OPTIMIZED_Z4M = 157002327
         TYPE_UNSPECIFIED = 437714322
 
     auto_renew: bool = proto.Field(
@@ -29676,7 +29699,9 @@ class ConfidentialInstanceConfig(proto.Message):
             This field is a member of `oneof`_ ``_confidential_instance_type``.
         enable_confidential_compute (bool):
             Defines whether the instance should have
-            confidential compute enabled.
+            confidential compute enabled. When enabled, the
+            technology used defaults to AMD SEV unless
+            confidentialInstanceType is specified.
 
             This field is a member of `oneof`_ ``_enable_confidential_compute``.
     """
@@ -42474,9 +42499,13 @@ class FirewallPolicy(proto.Message):
                 A value indicating that the enum field is not
                 set.
             SYSTEM (313484847):
-                No description available.
+                A system-level policy managed by an internal
+                service like GKE. This value is reserved for
+                internal services and cannot be set by users
+                during policy creation. Policies with a SYSTEM
+                source cannot be modified or deleted by users.
             USER_DEFINED (491485557):
-                No description available.
+                A regular firewall policy.
         """
 
         UNDEFINED_POLICY_SOURCE = 0
@@ -67415,6 +67444,9 @@ class Instance(proto.Message):
             UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE (0):
                 A value indicating that the enum field is not
                 set.
+            CMEK_ENCRYPTION (35518610):
+                The given VM will use customer-managed
+                encryption keys for encryption of Local SSDs.
             EPHEMERAL_KEY_ENCRYPTION (413047941):
                 The given VM will opt-in for using ephemeral
                 key for encryption of Local SSDs.
@@ -67431,6 +67463,7 @@ class Instance(proto.Message):
         """
 
         UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE = 0
+        CMEK_ENCRYPTION = 35518610
         EPHEMERAL_KEY_ENCRYPTION = 413047941
         LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED = 454655720
         STANDARD_ENCRYPTION = 269392453
@@ -67999,17 +68032,8 @@ class InstanceFlexibilityPolicy(proto.Message):
 
     Attributes:
         instance_selections (MutableMapping[str, google.cloud.compute_v1beta.types.InstanceFlexibilityPolicyInstanceSelection]):
-            Specification of alternative, flexible
-            instance subsets. One of them will be selected
-            to create the instances based on various
-            criteria, like:
-
-            - ranks,
-            - location policy,
-            - current capacity,
-            - available reservations (you can specify
-              affinity in InstanceProperties),
-            - SWAN/GOOSE limitations.
+            Specifies named instance selections that
+            define properties for instances created in bulk.
             Key is an arbitrary, unique RFC1035 string that
             identifies the instance selection.
     """
@@ -73111,6 +73135,9 @@ class InstanceProperties(proto.Message):
             UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE (0):
                 A value indicating that the enum field is not
                 set.
+            CMEK_ENCRYPTION (35518610):
+                The given VM will use customer-managed
+                encryption keys for encryption of Local SSDs.
             EPHEMERAL_KEY_ENCRYPTION (413047941):
                 The given VM will opt-in for using ephemeral
                 key for encryption of Local SSDs.
@@ -73127,6 +73154,7 @@ class InstanceProperties(proto.Message):
         """
 
         UNDEFINED_LOCAL_SSD_ENCRYPTION_MODE = 0
+        CMEK_ENCRYPTION = 35518610
         EPHEMERAL_KEY_ENCRYPTION = 413047941
         LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED = 454655720
         STANDARD_ENCRYPTION = 269392453
@@ -82042,6 +82070,38 @@ class InterconnectsGetMacsecConfigResponse(proto.Message):
         number=139315229,
         optional=True,
         message="InterconnectMacsecConfig",
+    )
+
+
+class InterconnectsSetNameRequest(proto.Message):
+    r"""Request to rename an interconnect.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        current_name (str):
+            The current name of the interconnect.
+            The name must be 1-63 characters long, and
+            comply with RFC1035.
+
+            This field is a member of `oneof`_ ``_current_name``.
+        name (str):
+            The new name of the interconnect.
+            The name must be 1-63 characters long, and
+            comply with RFC1035.
+
+            This field is a member of `oneof`_ ``_name``.
+    """
+
+    current_name: str = proto.Field(
+        proto.STRING,
+        number=394983825,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
     )
 
 
@@ -109361,11 +109421,13 @@ class MachineImageParams(proto.Message):
 
     Attributes:
         excluded_disks (MutableSequence[str]):
-            Input only. [Input Only] Specifies the list of disk device
-            names that must be excluded from the new machine image.
+            Input only. Specifies the list of disk device
+            names that must be excluded from the new machine
+            image.
         included_disks (MutableSequence[str]):
-            Input only. [Input Only] Specifies the list of disk device
-            names that must be included with the new machine image.
+            Input only. Specifies the list of disk device
+            names that must be included with the new machine
+            image.
         resource_manager_tags (MutableMapping[str, str]):
             Input only. Resource manager tags to be bound to the machine
             image. Tag keys and values have the same definition as
@@ -132095,7 +132157,8 @@ class RecoverableSnapshotOriginalSnapshot(proto.Message):
 
             This field is a member of `oneof`_ ``_snapshot_group_name``.
         snapshot_type (str):
-            Indicates the type of the snapshot.
+            Indicates the type of the snapshot. Valid
+            values are ARCHIVE or STANDARD.
             Check the SnapshotType enum for the list of
             possible values.
 
@@ -132196,16 +132259,19 @@ class RecoverableSnapshotOriginalSnapshot(proto.Message):
         X86_64 = 425300551
 
     class SnapshotType(proto.Enum):
-        r"""Indicates the type of the snapshot.
+        r"""Indicates the type of the snapshot. Valid values are ARCHIVE
+        or STANDARD.
 
         Values:
             UNDEFINED_SNAPSHOT_TYPE (0):
                 A value indicating that the enum field is not
                 set.
             ARCHIVE (506752162):
-                No description available.
+                Indicates that the original snapshot is an
+                archive snapshot.
             STANDARD (484642493):
-                No description available.
+                Indicates that the original snapshot is a
+                standard snapshot.
         """
 
         UNDEFINED_SNAPSHOT_TYPE = 0
@@ -144023,6 +144089,15 @@ class RouterBgpPeer(proto.Message):
             Cloud Platform.
 
             This field is a member of `oneof`_ ``_ipv6_nexthop_address``.
+        linked_custom_hardware (str):
+            The linked custom hardware resource.
+            The URI of the custom hardware link attachment
+            is where you will establish the BGP session from
+            the Cloud Router. This link attachment must
+            reside in the same subnetwork as the associated
+            router interface.
+
+            This field is a member of `oneof`_ ``_linked_custom_hardware``.
         management_type (str):
             Output only. [Output Only] The resource that configures and
             manages this BGP peer.
@@ -144264,6 +144339,11 @@ class RouterBgpPeer(proto.Message):
     ipv6_nexthop_address: str = proto.Field(
         proto.STRING,
         number=27968211,
+        optional=True,
+    )
+    linked_custom_hardware: str = proto.Field(
+        proto.STRING,
+        number=139494608,
         optional=True,
     )
     management_type: str = proto.Field(
@@ -145366,10 +145446,15 @@ class RouterNatRule(proto.Message):
 
             ``destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'``
 
-            The following example is a valid match expression for
+            The following examples are valid match expressions for
             private NAT:
 
+            (NAT 44)
             ``nexthop.hub == '//networkconnectivity.googleapis.com/projects/my-project/locations/global/hubs/hub-1'``
+
+            ``nexthop.is_hybrid``
+
+            (NAT 64) ``isIPv6(source.ip)``
 
             This field is a member of `oneof`_ ``_match``.
         rule_number (int):
@@ -145687,6 +145772,14 @@ class RouterStatusBgpPeerStatus(proto.Message):
             interface.
 
             This field is a member of `oneof`_ ``_ipv6_nexthop_address``.
+        linked_custom_hardware (str):
+            Output only. The URI of the linked custom
+            hardware resource, CustomHardwareLinkAttachment.
+            This CustomHardwareLinkAttachment resource is
+            the one that will establish the BGP session from
+            the Cloud Router.
+
+            This field is a member of `oneof`_ ``_linked_custom_hardware``.
         linked_vpn_tunnel (str):
             Output only. URL of the VPN tunnel that this
             BGP peer controls.
@@ -145851,6 +145944,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
     ipv6_nexthop_address: str = proto.Field(
         proto.STRING,
         number=27968211,
+        optional=True,
+    )
+    linked_custom_hardware: str = proto.Field(
+        proto.STRING,
+        number=139494608,
         optional=True,
     )
     linked_vpn_tunnel: str = proto.Field(
@@ -147197,10 +147295,15 @@ class Scheduling(proto.Message):
 
             This field is a member of `oneof`_ ``_provisioning_model``.
         skip_guest_os_shutdown (bool):
-            Default is false and there will be 120
+            Defines whether GCE ACPI G2 Soft
+            Off signal should be skipped during shutdown
+            operation of VM.
+
+            Default is false, meaning there will be 120
             seconds between GCE ACPI G2 Soft Off and ACPI G3
-            Mechanical Off for Standard VMs and 30 seconds
-            for Spot VMs.
+            Mechanical
+            Off for Standard VMs and 30 seconds for Spot
+            VMs.
 
             This field is a member of `oneof`_ ``_skip_guest_os_shutdown``.
         termination_time (str):
@@ -155000,6 +155103,66 @@ class SetNameInstanceRequest(proto.Message):
     )
 
 
+class SetNameInterconnectRequest(proto.Message):
+    r"""A request message for Interconnects.SetName. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        interconnect (str):
+            Name of the interconnect to update.
+        interconnects_set_name_request_resource (google.cloud.compute_v1beta.types.InterconnectsSetNameRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be
+            a valid UUID with the exception that zero UUID
+            is not supported
+            (00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    interconnect: str = proto.Field(
+        proto.STRING,
+        number=224601230,
+    )
+    interconnects_set_name_request_resource: "InterconnectsSetNameRequest" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=316267707,
+            message="InterconnectsSetNameRequest",
+        )
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class SetNamedPortsInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.SetNamedPorts. See the
     method description for details.
@@ -157724,9 +157887,10 @@ class Snapshot(proto.Message):
 
             This field is a member of `oneof`_ ``_snapshot_group_name``.
         snapshot_type (str):
-            Indicates the type of the snapshot.
-            Check the SnapshotType enum for the list of
-            possible values.
+            Indicates the type of the snapshot. Valid
+            values are ARCHIVE or STANDARD. The default is
+            STANDARD. Check the SnapshotType enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_snapshot_type``.
         source_disk (str):
@@ -157845,16 +158009,20 @@ class Snapshot(proto.Message):
         X86_64 = 425300551
 
     class SnapshotType(proto.Enum):
-        r"""Indicates the type of the snapshot.
+        r"""Indicates the type of the snapshot. Valid values are ARCHIVE
+        or STANDARD. The default is STANDARD.
 
         Values:
             UNDEFINED_SNAPSHOT_TYPE (0):
                 A value indicating that the enum field is not
                 set.
             ARCHIVE (506752162):
-                No description available.
+                Indicates an archive snapshot, which is
+                recommended for long-term retention and
+                compliance.
             STANDARD (484642493):
-                No description available.
+                Indicates a standard snapshot, which is
+                recommended for frequent restores.
         """
 
         UNDEFINED_SNAPSHOT_TYPE = 0
@@ -165601,7 +165769,7 @@ class TargetHttpsProxy(proto.Message):
             ::
 
                - //certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificates/{resourceName}.
-               - https://certificatemanager.googleapis.com/v1alpha1/projects/{project}/locations/{location}/certificates/{resourceName}.
+               - https://certificatemanager.{universeDomain}/v1alpha1/projects/{project}/locations/{location}/certificates/{resourceName}.
         ssl_policy (str):
             URL of SslPolicy resource that will be
             associated with the TargetHttpsProxy resource.
@@ -171980,7 +172148,7 @@ class UpdateInstanceRequest(proto.Message):
         Engine acts based on the minimum action that the updated properties
         require. Additional supported values which may be not listed in the
         enum directly due to technical reasons: INVALID NO_EFFECT REFRESH
-        RESTART
+        RESTART RESTART_IN_PLACE
 
         Values:
             UNDEFINED_MINIMAL_ACTION (0):
@@ -171997,7 +172165,7 @@ class UpdateInstanceRequest(proto.Message):
         the instance update. Valid options from lowest to highest are
         NO_EFFECT, REFRESH, and RESTART. Additional supported values which
         may be not listed in the enum directly due to technical reasons:
-        INVALID NO_EFFECT REFRESH RESTART
+        INVALID NO_EFFECT REFRESH RESTART RESTART_IN_PLACE
 
         Values:
             UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION (0):
@@ -177518,9 +177686,11 @@ class VpnTunnelCipherSuite(proto.Message):
 
     Attributes:
         phase1 (google.cloud.compute_v1beta.types.VpnTunnelPhase1Algorithms):
+            Cipher algorithms for IKE phase 1.
 
             This field is a member of `oneof`_ ``_phase1``.
         phase2 (google.cloud.compute_v1beta.types.VpnTunnelPhase2Algorithms):
+            Cipher algorithms for IKE phase 2.
 
             This field is a member of `oneof`_ ``_phase2``.
     """
@@ -177650,13 +177820,14 @@ class VpnTunnelPhase1Algorithms(proto.Message):
 
     Attributes:
         dh (MutableSequence[str]):
-
+            Diffie-Hellman groups for IKE phase 1.
         encryption (MutableSequence[str]):
-
+            Encryption algorithms for IKE phase 1.
         integrity (MutableSequence[str]):
-
+            Integrity algorithms for IKE phase 1.
         prf (MutableSequence[str]):
-
+            Pseudo-random functions (PRF) for IKE phase
+            1.
     """
 
     dh: MutableSequence[str] = proto.RepeatedField(
@@ -177682,11 +177853,12 @@ class VpnTunnelPhase2Algorithms(proto.Message):
 
     Attributes:
         encryption (MutableSequence[str]):
-
+            Encryption algorithms for IKE phase 2.
         integrity (MutableSequence[str]):
-
+            Integrity algorithms for IKE phase 2.
         pfs (MutableSequence[str]):
-
+            Perfect Forward Secrecy (PFS) groups for IKE
+            phase 2.
     """
 
     encryption: MutableSequence[str] = proto.RepeatedField(
@@ -179116,7 +179288,32 @@ class WorkloadIdentityConfig(proto.Message):
         identity_certificate_enabled (bool):
 
             This field is a member of `oneof`_ ``_identity_certificate_enabled``.
+        identity_type (str):
+            Check the IdentityType enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_identity_type``.
     """
+
+    class IdentityType(proto.Enum):
+        r"""
+
+        Values:
+            UNDEFINED_IDENTITY_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            AGENT_IDENTITY (71547096):
+                No description available.
+            IDENTITY_TYPE_UNSPECIFIED (157537011):
+                No description available.
+            SERVICE_ACCOUNT (178301539):
+                No description available.
+        """
+
+        UNDEFINED_IDENTITY_TYPE = 0
+        AGENT_IDENTITY = 71547096
+        IDENTITY_TYPE_UNSPECIFIED = 157537011
+        SERVICE_ACCOUNT = 178301539
 
     identity: str = proto.Field(
         proto.STRING,
@@ -179126,6 +179323,11 @@ class WorkloadIdentityConfig(proto.Message):
     identity_certificate_enabled: bool = proto.Field(
         proto.BOOL,
         number=342892440,
+        optional=True,
+    )
+    identity_type: str = proto.Field(
+        proto.STRING,
+        number=25665051,
         optional=True,
     )
 

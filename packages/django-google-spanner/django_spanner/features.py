@@ -10,8 +10,6 @@ import django
 from django.db.backends.base.features import BaseDatabaseFeatures
 from django.db.utils import InterfaceError
 
-from django_spanner import USE_EMULATOR
-
 
 class DatabaseFeatures(BaseDatabaseFeatures):
     can_introspect_big_integer_field = False
@@ -56,17 +54,12 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     supports_sequence_reset = False
     supports_timezones = False
     supports_transactions = True
-    if USE_EMULATOR:
-        # Emulator does not support json.
-        supports_json_field = False
-        # Emulator does not support check constraints.
-        supports_column_check_constraints = False
-        supports_table_check_constraints = False
-    else:
-        supports_column_check_constraints = True
-        supports_table_check_constraints = True
-        supports_json_field = True
-    supports_primitives_in_json_field = False
+    supports_column_check_constraints = True
+    supports_table_check_constraints = True
+    has_native_json_field = True
+    supports_json_field = True
+    supports_primitives_in_json_field = True
+    supports_json_field_contains = False
     supports_composite_primary_keys = True
     # Spanner does not support order by null modifiers.
     supports_order_by_nulls_modifier = False
@@ -82,6 +75,11 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # example: CREATE INDEX index_name ON table (LOWER(column_name))
     supports_expression_indexes = False
     supports_stored_generated_columns = True
+    # Spanner GoogleSQL requires a FROM clause when WHERE/GROUP BY/HAVING/ORDER BY
+    # is present (such as in Q.check() / CheckConstraint.validate()). Include a
+    # leading space (like Oracle's " FROM DUAL") because some Django callers
+    # concatenate bare_select_suffix directly without adding whitespace.
+    bare_select_suffix = " FROM UNNEST([1])"
 
     # Django tests that aren't supported by Spanner.
     skip_tests = (
@@ -103,15 +101,20 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "backends.tests.LastExecutedQueryTest.test_last_executed_query_with_duplicate_params",
         # Constraints tests
         "constraints.tests.CheckConstraintTests.test_database_default",
-        "constraints.tests.CheckConstraintTests.test_validate",
-        "constraints.tests.CheckConstraintTests.test_validate_boolean_expressions",
-        "constraints.tests.CheckConstraintTests.test_validate_custom_error",
-        "constraints.tests.CheckConstraintTests.test_validate_generated_field_stored",
-        "constraints.tests.CheckConstraintTests.test_validate_pk_field",
+        "constraints.tests.CheckConstraintTests.test_validate_jsonfield_exact",
         "constraints.tests.UniqueConstraintTests.test_validate_case_when",
         "constraints.tests.UniqueConstraintTests.test_validate_expression_condition",
         "constraints.tests.UniqueConstraintTests.test_validate_expression_generated_field_stored",
         "constraints.tests.UniqueConstraintTests.test_validate_fields_generated_field_stored_nulls_distinct",
+        "constraints.tests.UniqueConstraintTests.test_validate_nullable_textfield_with_isnull_true",
+        # Schema tests
+        "schema.tests.SchemaTests.test_check_constraint_exact_jsonfield",
+        "schema.tests.SchemaTests.test_rename_field_with_check_to_truncated_name",
+        # Model Fields tests
+        "model_fields.test_generatedfield.StoredGeneratedFieldTests.test_full_clean_with_check_constraint",
+        # Validation tests
+        "validation.test_constraints.PerformConstraintChecksTest.test_full_clean_with_check_constraints",
+        "validation.test_constraints.PerformConstraintChecksTest.test_full_clean_with_check_constraints_on_child_model",
         # Custom PK tests
         "custom_pk.tests.CustomPKTests.test_auto_field_subclass_create",
         # Datetimes tests
@@ -132,6 +135,17 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_lookup_name_sql_injection",
         "db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_time_comparison",
         "db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_timezone_applied_before_truncation",
+        "db_functions.json.test_json_array.JSONArrayObjectTests.test_nested_json_array_object",
+        "db_functions.json.test_json_array.JSONArrayObjectTests.test_nested_json_object_array",
+        "db_functions.json.test_json_array.JSONArrayObjectTests.test_order_by_nested_key",
+        "db_functions.json.test_json_array.JSONArrayTests.test_basic",
+        "db_functions.json.test_json_array.JSONArrayTests.test_empty",
+        "db_functions.json.test_json_array.JSONArrayTests.test_expressions",
+        "db_functions.json.test_json_array.JSONArrayTests.test_nested_empty_json_array",
+        "db_functions.json.test_json_array.JSONArrayTests.test_nested_json_array",
+        "db_functions.json.test_json_array.JSONArrayTests.test_order_by_key",
+        "db_functions.json.test_json_array.JSONArrayTests.test_order_by_nested_key",
+        "db_functions.json.test_json_array.JSONArrayTests.test_textfield",
         "db_functions.json.test_json_object.JSONObjectTests.test_basic",
         "db_functions.json.test_json_object.JSONObjectTests.test_empty",
         "db_functions.json.test_json_object.JSONObjectTests.test_expressions",
@@ -1512,8 +1526,19 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             "model_fields.test_jsonfield.TestSerialization.test_xml_serialization",
             "model_fields.test_jsonfield.TestSerialization.test_xml_serialization",
             "model_fields.test_jsonfield.TestSerialization.test_xml_serialization",
+            "model_fields.test_jsonfield.TestQuerying.test_deep_values",
+            "model_fields.test_jsonfield.TestQuerying.test_expression_wrapper_key_transform",
+            "model_fields.test_jsonfield.TestQuerying.test_has_key_literal_lookup",
+            "model_fields.test_jsonfield.TestQuerying.test_has_key_number",
+            "model_fields.test_jsonfield.TestQuerying.test_icontains",
+            "model_fields.test_jsonfield.TestQuerying.test_key_sql_injection_escape",
+            "model_fields.test_jsonfield.TestQuerying.test_key_transform_raw_expression",
+            "model_fields.test_jsonfield.TestQuerying.test_lookups_special_chars",
+            "model_fields.test_jsonfield.TestQuerying.test_lookups_special_chars_double_quotes",
+            "model_fields.test_jsonfield.TestQuerying.test_nested_key_transform_raw_expression",
             "model_fields.test_uuid.TestSerialization.test_dumping",
             "queries.test_bulk_update.BulkUpdateNoteTests.test_unsaved_models",
+            "queries.test_bulk_update.BulkUpdateTests.test_json_field_sql_null",
             "queries.test_bulk_update.BulkUpdateTests.test_large_batch",
             "queries.test_bulk_update.BulkUpdateTests.test_unsaved_parent",
             "queries.test_qs_combinators.QuerySetSetOperationTests.test_difference_with_values",
@@ -2283,6 +2308,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
 
     django_6_0_skip_tests = (
         # Spanner uses random int64 IDs; test assumes monotonic ordering matching insertion order.
+        "prefetch_related.tests.PrefetchRelatedMTICacheTests.test_grandparent_m2m_available_in_child",
         "prefetch_related.tests.PrefetchRelatedMTICacheTests.test_parent_m2m_available_in_child",
         # Client-side AutoField ID generation sets pk before save; _is_pk_set() triggers refresh_from_db instead of AttributeError.
         "defer_regress.tests.DeferCopyInstanceTests.test_bulk_create",
@@ -2303,6 +2329,15 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "bulk_create.tests.BulkCreateTransactionTests.test_objs_with_and_without_pk",
         # Tie-breaker ordering on pk assumes sequential integer IDs; Spanner uses random IDs.
         "ordering.tests.OrderingTests.test_order_by_case_when_constant_value",
+        # Spanner GoogleSQL JSONPath does not support negative array indices (e.g. $[-1]).
+        "model_fields.test_jsonfield.TestQuerying.test_deep_negative_lookup_array",
+        "model_fields.test_jsonfield.TestQuerying.test_deep_negative_lookup_mixed",
+        "model_fields.test_jsonfield.TestQuerying.test_shallow_list_negative_lookup",
+        # CheckConstraint.validate() uses Q.check() (SELECT 1 WHERE ... without FROM),
+        # which Spanner rejects and poisons the atomic block.
+        "foreign_object.tests.ForeignObjectModelValidationTests.test_validate_constraints_with_foreign_object",
+        "model_forms.tests.ConstraintValidationTests.test_check_constraint_refs_excluded_field",
+        "model_forms.tests.ConstraintValidationTests.test_unique_constraint_refs_excluded_field",
     )
 
     if django.VERSION >= (6, 0):

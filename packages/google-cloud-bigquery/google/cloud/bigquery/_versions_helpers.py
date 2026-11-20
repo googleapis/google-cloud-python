@@ -22,9 +22,6 @@ _MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
 _MIN_BQ_STORAGE_VERSION = packaging.version.Version("2.0.0")
 _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION = packaging.version.Version("2.6.0")
 _MIN_PANDAS_VERSION = packaging.version.Version("1.1.0")
-
-_MIN_PANDAS_VERSION_RANGE = packaging.version.Version("1.5.0")
-_MIN_PYARROW_VERSION_RANGE = packaging.version.Version("10.0.1")
 _MIN_PANDAS_GBQ_DELEGATION_VERSION = packaging.version.Version("1.0.0")
 
 
@@ -127,6 +124,21 @@ class BQStorageVersions:
         See: https://github.com/googleapis/python-bigquery-storage/pull/228
         """
         return self.installed_version >= _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION
+
+    @property
+    def supports_arrow_serialization_options(self) -> bool:
+        """True if ``BigQueryReadClient.read_rows()`` accepts
+        ``arrow_serialization_options``, which ``ARROW`` query results need.
+
+        That option was added in the same release as
+        ``ReadRowsStream.cancel()``, which ``ARROW`` query results also use, so
+        this checks for ``cancel()`` instead of comparing version numbers. That
+        also gives the right answer for a build of
+        google-cloud-bigquery-storage that hasn't been released yet.
+        """
+        from google.cloud.bigquery_storage_v1 import reader
+
+        return hasattr(reader.ReadRowsStream, "cancel")
 
     def try_import(self, raise_if_error: bool = False) -> Any:
         """Tries to import the bigquery_storage module, and returns results
@@ -235,17 +247,6 @@ class PandasVersions:
 
 
 PANDAS_VERSIONS = PandasVersions()
-
-# Since RANGE support in pandas requires specific versions
-# of both pyarrow and pandas, we make this a separate
-# constant instead of as a property of PANDAS_VERSIONS
-# or PYARROW_VERSIONS.
-SUPPORTS_RANGE_PYARROW = (
-    PANDAS_VERSIONS.try_import() is not None
-    and PANDAS_VERSIONS.installed_version >= _MIN_PANDAS_VERSION_RANGE
-    and PYARROW_VERSIONS.try_import() is not None
-    and PYARROW_VERSIONS.installed_version >= _MIN_PYARROW_VERSION_RANGE
-)
 
 
 class PandasGBQVersions:

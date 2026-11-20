@@ -404,6 +404,36 @@ class TestBigtableDataClientAsync:
             assert client._channel_refresh_task is None
             ping_and_warm.assert_not_called()
 
+    @CrossSync.pytest
+    async def test__start_background_channel_refresh_task_creation_failure(
+        self, caplog
+    ):
+        import logging
+
+        client = self._make_client(
+            project="project-id",
+            _disable_background_refresh=True,
+        )
+        client._disable_background_refresh = False
+        client._emulator_host = None
+        with mock.patch.object(
+            CrossSync,
+            "create_daemon_task",
+            side_effect=RuntimeError("can't start new thread"),
+        ) as mock_create_task:
+            target_logger = logging.getLogger(client.__class__.__module__)
+            target_logger.addHandler(caplog.handler)
+            with caplog.at_level(logging.WARNING, logger="google.cloud.bigtable.data"):
+                client._start_background_channel_refresh()
+                assert client._channel_refresh_task is None
+                assert "Failed to start background channel refresh task" in caplog.text
+                assert "can't start new thread" in caplog.text
+                mock_create_task.assert_called_once_with(
+                    client._manage_channel,
+                    task_name=f"{client.__class__.__name__} channel refresh",
+                )
+        await client.close()
+
     @CrossSync.drop
     @CrossSync.pytest
     async def test__start_background_channel_refresh_task_names(self):
@@ -1506,6 +1536,31 @@ class TestTableAsync:
         with pytest.raises(RuntimeError) as e:
             TableAsync(client, "instance-id", "table-id")
         assert e.match("TableAsync must be created within an async event loop context.")
+
+    @CrossSync.pytest
+    async def test_table_ctor_task_creation_failure_warns_and_continues(self, caplog):
+        import logging
+
+        client = self._make_client()
+        with mock.patch.object(
+            CrossSync, "create_task", side_effect=RuntimeError("can't start new thread")
+        ) as mock_create_task:
+            with caplog.at_level(logging.WARNING):
+                table = self._make_one(client)
+                assert table._register_instance_future is None
+                assert "Failed to start background instance registration" in caplog.text
+                assert "can't start new thread" in caplog.text
+                mock_create_task.assert_called_once_with(
+                    client._register_instance,
+                    table.instance_id,
+                    table.app_profile_id,
+                    id(table),
+                    sync_executor=client._executor,
+                )
+        async with table:
+            pass
+        await table.close()
+        await client.close()
 
     @CrossSync.pytest
     # iterate over all retryable rpcs
@@ -3227,6 +3282,36 @@ class TestMutateRowAsync:
                 with pytest.raises(ValueError) as e:
                     await table.mutate_row("key", mutations=mutations)
                     assert e.value.args[0] == "No mutations provided"
+
+    @CrossSync.pytest
+    async def test_mutate_row_attempt_timeout_per_retry(self):
+        """Each retry attempt should draw a fresh timeout from _attempt_timeout_generator"""
+        subpath = "_async" if CrossSync.is_async else "_sync_autogen"
+        timeout_gen = iter([5.0, 1.5])
+        async with self._make_client(project="project") as client:
+            async with client.get_table("instance", "table") as table:
+                with (
+                    mock.patch(
+                        f"google.cloud.bigtable.data.{subpath}.client._attempt_timeout_generator",
+                        return_value=timeout_gen,
+                    ) as mock_timeout_gen,
+                    mock.patch.object(client._gapic_client, "mutate_row") as mock_gapic,
+                ):
+                    mock_gapic.side_effect = [
+                        core_exceptions.ServiceUnavailable("transient"),
+                        None,
+                    ]
+                    mutation = mutations.DeleteAllFromRow()
+                    await table.mutate_row(
+                        "row_key",
+                        mutation,
+                        operation_timeout=10.0,
+                        attempt_timeout=5.0,
+                    )
+                    mock_timeout_gen.assert_called_once_with(5.0, 10.0)
+                    assert mock_gapic.call_count == 2
+                    assert mock_gapic.call_args_list[0].kwargs["timeout"] == 5.0
+                    assert mock_gapic.call_args_list[1].kwargs["timeout"] == 1.5
 
 
 @CrossSync.convert_class("TestBulkMutateRows")
