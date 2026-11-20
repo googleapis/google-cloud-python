@@ -22,11 +22,14 @@ import google.cloud.firestore_v1.pipeline_expressions as expr
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1._helpers import GeoPoint
 from google.cloud.firestore_v1.pipeline_expressions import (
+    AggregateFunction,
     BooleanExpression,
     Constant,
     Expression,
     Field,
     Ordering,
+    Rank,
+    WindowFunction,
 )
 from google.cloud.firestore_v1.types import document as document_pb
 from google.cloud.firestore_v1.types import query as query_pb
@@ -2262,3 +2265,15 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.array_index_of_all(Constant.of('comedy'))"
         infix_instance = arg1.array_index_of_all(value)
         assert infix_instance == instance
+
+
+class TestWindowExpressions:
+    def test_window_function_hierarchy(self):
+        assert issubclass(AggregateFunction, WindowFunction)
+        assert not issubclass(Expression, WindowFunction)
+
+    def test_rank(self):
+        rank = Rank()
+        assert isinstance(rank, WindowFunction)
+        assert repr(rank) == "Rank()"
+        assert rank._to_pb() == Value(function_value={"name": "rank", "args": []})

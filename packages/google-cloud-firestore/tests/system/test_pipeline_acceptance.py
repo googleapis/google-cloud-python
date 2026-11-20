@@ -40,6 +40,14 @@ pytestmark = pytest.mark.skipif(
     reason="Pipeline tests are currently not supported by emulator",
 )
 
+
+@pytest.fixture(autouse=True)
+def _skip_window_execution_tests(request):
+    # TODO(#19115): Remove once add_window_fields is available in production.
+    if "window.yaml" in request.node.name and "parse_proto" not in request.node.name:
+        pytest.skip("Temporarily skipped. Not yet in production.")
+
+
 test_dir_name = os.path.dirname(__file__)
 
 id_format = lambda x: f"{x.get('file_name', '')}: {x.get('description', '')}"  # noqa: E731
