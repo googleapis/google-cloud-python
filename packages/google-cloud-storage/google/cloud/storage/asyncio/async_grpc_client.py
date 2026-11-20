@@ -14,6 +14,7 @@
 
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
+import google.auth
 import grpc
 from google.auth import credentials as auth_credentials
 
@@ -26,9 +27,9 @@ from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 from google.cloud.storage._helpers import create_trace_span_helper
 from google.cloud.storage.asyncio import _utils
 from google.cloud.storage.grpc_client import (
-    _DEFAULT_HOST,
-    _resolve_direct_path_interconnect,
-    _rewrite_host_for_interconnect,
+    _resolve_grpc_config,
+    _resolve_universe_domain,
+    _validate_universe_domain,
 )
 
 
@@ -118,6 +119,7 @@ class AsyncGrpcClient:
                 raise ValueError(
                     "Either client_options or `client_option.api_endpoint` is None. Please provide api_endpoint when `AnonymousCredentials` is used "
                 )
+            self._universe_domain = _resolve_universe_domain(client_options)
             self._grpc_client = self._create_anonymous_client(
                 client_options, credentials
             )
@@ -132,17 +134,18 @@ class AsyncGrpcClient:
         if agent_version not in client_info.user_agent:
             client_info.user_agent += f" {agent_version} "
 
-        use_dp_interconnect = _resolve_direct_path_interconnect(
-            attempt_direct_path_xds_over_interconnect
-        )
-
         self._grpc_client = self._create_async_grpc_client(
             credentials=credentials,
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
-            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
+            attempt_direct_path_xds_over_interconnect=attempt_direct_path_xds_over_interconnect,
         )
+
+    @property
+    def universe_domain(self) -> str:
+        """The universe domain used by the client instance."""
+        return self._universe_domain
 
     @property
     def metrics_enabled(self) -> bool:
@@ -177,40 +180,39 @@ class AsyncGrpcClient:
         attempt_direct_path=True,
         attempt_direct_path_xds_over_interconnect=False,
     ):
+        (
+            self._universe_domain,
+            host,
+            quota_project_id,
+            attempt_direct_path,
+            use_dp_interconnect,
+        ) = _resolve_grpc_config(
+            client_options,
+            attempt_direct_path,
+            attempt_direct_path_xds_over_interconnect,
+        )
         transport_cls = storage_v2.StorageAsyncClient.get_transport_class(
             "grpc_asyncio"
         )
+        if credentials is None:
+            credentials, _ = google.auth.default(
+                default_scopes=transport_cls.AUTH_SCOPES
+            )
+        _validate_universe_domain(self._universe_domain, credentials)
 
         primary_user_agent = client_info.to_user_agent()
+        channel_kwargs = {
+            "host": host,
+            "quota_project_id": quota_project_id,
+            "attempt_direct_path": attempt_direct_path,
+            "credentials": credentials,
+            "options": (("grpc.primary_user_agent", primary_user_agent),),
+        }
+        if use_dp_interconnect:
+            channel_kwargs["attempt_direct_path_xds_over_interconnect"] = True
 
-        host = _DEFAULT_HOST
-        quota_project_id = None
-        if isinstance(client_options, dict):
-            host = client_options.get("api_endpoint") or _DEFAULT_HOST
-            quota_project_id = client_options.get("quota_project_id")
-        elif client_options:
-            host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
-            quota_project_id = getattr(client_options, "quota_project_id", None)
-
-        if attempt_direct_path_xds_over_interconnect:
-            host = _rewrite_host_for_interconnect(host)
-            channel = transport_cls.create_channel(
-                host=host,
-                quota_project_id=quota_project_id,
-                attempt_direct_path=True,
-                attempt_direct_path_xds_over_interconnect=True,
-                credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
-            )
-        else:
-            channel = transport_cls.create_channel(
-                host=host,
-                quota_project_id=quota_project_id,
-                attempt_direct_path=attempt_direct_path,
-                credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
-            )
-        transport = transport_cls(channel=channel)
+        channel = transport_cls.create_channel(**channel_kwargs)
+        transport = transport_cls(host=host, channel=channel)
 
         return storage_v2.StorageAsyncClient(
             transport=transport,
