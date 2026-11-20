@@ -411,7 +411,6 @@ class AsyncMultiRangeDownloader:
                             f"routing_token={self._routing_token}",
                         )
                     )
-                    self._routing_token = None
 
                 await self.read_obj_str.open(
                     metadata=current_metadata if current_metadata else None
@@ -430,7 +429,12 @@ class AsyncMultiRangeDownloader:
 
             self._open_retry_policy = retry_policy
             self._metadata = list(metadata) if metadata else []
-            await retry_policy(_do_open)()
+            try:
+                await retry_policy(_do_open)()
+            finally:
+                # The routing token is kept across the attempts of this open
+                # and never carried into a later one.
+                self._routing_token = None
             self._multiplexer = _StreamMultiplexer(self.read_obj_str)
             self._primary_stream = _PooledStream(self.read_obj_str, self._multiplexer)
 

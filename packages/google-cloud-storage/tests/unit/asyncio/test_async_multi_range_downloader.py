@@ -1299,7 +1299,8 @@ class TestAsyncMultiRangeDownloader:
         opened_with_handle = self._make_mock_stream(
             generation=None, persisted_size=None, is_finalized=False
         )
-        opened_without_handle = self._make_mock_stream(read_handle=b"server-handle")
+        server_handle = _storage_v2.BidiReadHandle(handle=b"server-handle")
+        opened_without_handle = self._make_mock_stream(read_handle=server_handle)
         read_handles = []
 
         def make_stream(**kwargs):
@@ -1331,7 +1332,7 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.full_obj_server_crc32c == 12345
         assert mrd.generation == _TEST_GENERATION_NUMBER
         # The handle returned by the server is kept for later streams.
-        assert mrd.read_handle == b"server-handle"
+        assert mrd.read_handle == server_handle
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
@@ -1341,7 +1342,7 @@ class TestAsyncMultiRangeDownloader:
         "caller_read_handle, routing_token",
         [
             # A caller that supplies a handle already opens without metadata.
-            (b"caller-handle", "token-abc"),
+            (_storage_v2.BidiReadHandle(handle=b"caller-handle"), "token-abc"),
             # Without a routing token the handle is all that changes the retry.
             (None, None),
         ],
@@ -1350,12 +1351,18 @@ class TestAsyncMultiRangeDownloader:
         self, mock_cls_async_read_object_stream, caller_read_handle, routing_token
     ):
         # Arrange
+        redirect_handle = _storage_v2.BidiReadHandle(handle=b"redirect-handle")
         redirected = self._make_mock_stream(
             open_side_effect=self._make_redirect_error(
                 routing_token, b"redirect-handle"
             )
         )
-        reopened = self._make_mock_stream()
+        reopened = self._make_mock_stream(
+            generation=None,
+            persisted_size=None,
+            read_handle=redirect_handle,
+            is_finalized=False,
+        )
         mock_cls_async_read_object_stream.side_effect = [redirected, reopened]
 
         # Act
@@ -1371,14 +1378,102 @@ class TestAsyncMultiRangeDownloader:
         assert mrd._open_retries == 1
         first_call, retry_call = mock_cls_async_read_object_stream.call_args_list
         assert first_call.kwargs["read_handle"] == caller_read_handle
-        assert retry_call.kwargs["read_handle"] == _storage_v2.BidiReadHandle(
-            handle=b"redirect-handle"
-        )
+        assert retry_call.kwargs["read_handle"] == redirect_handle
         assert reopened.open.call_args.kwargs["metadata"] == (
             [("x-goog-request-params", f"routing_token={routing_token}")]
             if routing_token
             else None
         )
+        assert mrd.persisted_size is None
+        assert mrd.read_handle == redirect_handle
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_open_keeps_routing_token_until_open_completes(
+        self, mock_cls_async_read_object_stream
+    ):
+        # Arrange
+        attempts = [
+            self._make_mock_stream(
+                open_side_effect=self._make_redirect_error("token-abc")
+            ),
+            self._make_mock_stream(
+                open_side_effect=exceptions.ServiceUnavailable("unavailable")
+            ),
+            self._make_mock_stream(
+                open_side_effect=self._make_redirect_error("token-xyz")
+            ),
+            self._make_mock_stream(),
+        ]
+        mock_cls_async_read_object_stream.side_effect = attempts
+
+        # Act
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(),
+            _TEST_BUCKET_NAME,
+            _TEST_OBJECT_NAME,
+            retry_policy=AsyncRetry(initial=0.01),
+        )
+
+        # Assert
+        assert mrd._open_retries == 3
+        assert [s.open.call_args.kwargs["metadata"] for s in attempts] == [
+            None,
+            [("x-goog-request-params", "routing_token=token-abc")],
+            # A retryable error that is not a redirect keeps the token.
+            [("x-goog-request-params", "routing_token=token-abc")],
+            # A new redirect replaces it.
+            [("x-goog-request-params", "routing_token=token-xyz")],
+        ]
+        assert mrd._routing_token is None
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "error_after_redirect",
+        [
+            # The redirected attempt opens and the downloader is closed.
+            None,
+            # The redirected attempt fails with a non-retryable error.
+            exceptions.NotFound("not found"),
+        ],
+    )
+    async def test_open_does_not_reuse_routing_token_from_earlier_open(
+        self, mock_cls_async_read_object_stream, error_after_redirect
+    ):
+        # Arrange
+        redirected = self._make_mock_stream(
+            open_side_effect=self._make_redirect_error("token-abc")
+        )
+        after_redirect = self._make_mock_stream(open_side_effect=error_after_redirect)
+        later_open = self._make_mock_stream()
+        mock_cls_async_read_object_stream.side_effect = [
+            redirected,
+            after_redirect,
+            later_open,
+        ]
+        mrd = AsyncMultiRangeDownloader(
+            self._make_mock_client(), _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+
+        # Act
+        if error_after_redirect:
+            with pytest.raises(exceptions.NotFound):
+                await mrd.open(retry_policy=AsyncRetry(initial=0.01))
+        else:
+            await mrd.open(retry_policy=AsyncRetry(initial=0.01))
+            await mrd.close()
+        await mrd.open()
+
+        # Assert
+        assert after_redirect.open.call_args.kwargs["metadata"] == [
+            ("x-goog-request-params", "routing_token=token-abc")
+        ]
+        assert later_open.open.call_args.kwargs["metadata"] is None
 
     @mock.patch("google.cloud.storage.asyncio.async_multi_range_downloader.logger")
     @mock.patch(
@@ -2025,33 +2120,16 @@ class TestAsyncMultiRangeDownloader:
             MultiStreamConfig,
         )
 
-        def make_redirect_error(token: str, handle: bytes):
-            redirect = _storage_v2.BidiReadObjectRedirectedError(
-                routing_token=token,
-                read_handle=_storage_v2.BidiReadHandle(handle=handle),
-            )
-            status = status_pb2.Status()
-            detail = status.details.add()
-            detail.type_url = (
-                "type.googleapis.com/google.storage.v2.BidiReadObjectRedirectedError"
-            )
-            detail.value = _storage_v2.BidiReadObjectRedirectedError.serialize(redirect)
-            grpc_error = mock.MagicMock()
-            grpc_error.trailing_metadata.return_value = [
-                ("grpc-status-details-bin", status.SerializeToString())
-            ]
-            return exceptions.Aborted("redirect", errors=[grpc_error])
-
         mock_client = self._make_mock_client()
 
         # 1. Primary stream fails on first open with redirect ("token-abc"), succeeds on retry
         s1_failed = self._make_mock_stream(
-            open_side_effect=make_redirect_error("token-abc", b"h1")
+            open_side_effect=self._make_redirect_error("token-abc", b"h1")
         )
         s1_ok = self._make_mock_stream(read_handle=b"h1")
         # 2. Second stream opened via min_streams=2 receives "token-abc", fails once with redirect ("token-xyz"), succeeds on retry
         s2_failed = self._make_mock_stream(
-            open_side_effect=make_redirect_error("token-xyz", b"h2")
+            open_side_effect=self._make_redirect_error("token-xyz", b"h2")
         )
         s2_ok = self._make_mock_stream(read_handle=b"h2")
 
