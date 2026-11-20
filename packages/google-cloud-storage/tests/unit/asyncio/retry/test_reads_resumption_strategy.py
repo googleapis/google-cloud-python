@@ -481,16 +481,17 @@ class TestReadResumptionStrategy(unittest.TestCase):
                 self.assertNotIn("pending_checksums", self.state)
 
     def test_update_state_offload_flag_overrides_default_for_view_chunks(self):
-        """A set GCS_PYTHON_CLIENT_CRC32C_OFFLOAD wins over the default: any
-        value other than 1/true/yes/on keeps view chunks inline, and an empty
-        value counts as unset."""
+        """GCS_PYTHON_CLIENT_CRC32C_OFFLOAD=0/false/no/off keeps view chunks
+        inline, and an empty, blank or unrecognized value keeps the default."""
         self._accept_memoryview_in_crc32c()
         content = self._large_chunk()
         cases = (
             ("0", False),
             ("false", False),
+            ("no", False),
             ("off", False),
-            ("enabled", False),
+            ("enabled", True),
+            ("   ", True),
             ("", True),
             ("1", True),
         )
@@ -513,6 +514,25 @@ class TestReadResumptionStrategy(unittest.TestCase):
                 asyncio.run(self.strategy.verify_pending_checksums(self.state))
                 self.assertEqual(read_state.user_buffer.getvalue(), content)
                 self.assertTrue(read_state.is_complete)
+
+    def test_update_state_warns_once_about_unrecognized_offload_flag(self):
+        """The flag is read for every large chunk, but an unrecognized value is
+        logged only once."""
+        reads_resumption_strategy._parse_crc32c_offload_env.cache_clear()
+        content = self._large_chunk()
+        with (
+            mock.patch.dict(os.environ, {_OFFLOAD_ENV_VAR: "auto"}),
+            self.assertLogs(LOGGER_NAME, level="WARNING") as cm,
+        ):
+            for read_id in range(2):
+                self._add_download(read_id, length=len(content))
+                response = self._create_response(
+                    content, read_id, offset=0, range_end=True
+                )
+                self.strategy.update_state_from_response(response, self.state)
+
+        self.assertEqual(len(cm.records), 1)
+        self.assertIn(_OFFLOAD_ENV_VAR, cm.output[0])
 
     def test_update_state_hashes_chunk_below_1_mib_inline_when_enabled(self):
         """google_crc32c holds the GIL below 1 MiB, so smaller chunks stay inline."""

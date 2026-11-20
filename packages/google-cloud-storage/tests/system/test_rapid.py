@@ -1594,8 +1594,7 @@ def test_mrd_zero_copy_bidi_read(
 ):
     """Tests zero-copy BidiReadObject reads across write() and buffer destinations."""
     monkeypatch.setenv("GCS_PYTHON_CLIENT_ZERO_COPY_BIDI_READ", "1")
-    # Partial ranges below have 2 MiB chunks, so this also covers off-loop CRC32C.
-    monkeypatch.setenv("GCS_PYTHON_CLIENT_CRC32C_OFFLOAD", "1")
+    monkeypatch.delenv("GCS_PYTHON_CLIENT_CRC32C_OFFLOAD", raising=False)
     object_size = 5 * 1024 * 1024
     object_name = f"test_mrd_zero_copy-{uuid.uuid4()}"
 
@@ -1636,40 +1635,54 @@ def test_mrd_zero_copy_bidi_read(
             assert all(isinstance(chunk, bytes) for chunk in default_sink.chunks)
             assert b"".join(default_sink.chunks) == object_data
 
-            # accepts_memoryview=True receives memoryview when crc32c supports it.
-            sink = _RecordingSink()
-            await mrd.download_ranges([(1024 * 1024, 0, sink)], accepts_memoryview=True)
-            non_empty_chunks = [chunk for chunk in sink.chunks if chunk]
-            assert len(non_empty_chunks) >= 2
-            expected_type = memoryview if _zero_copy_bidi_read.is_supported() else bytes
-            assert all(isinstance(chunk, expected_type) for chunk in non_empty_chunks)
-            assert b"".join(sink.chunks) == object_data[1024 * 1024 :]
+            # Partial ranges below have 2 MiB chunks: check them with off-loop
+            # CRC32C at its default first, then with every such chunk offloaded.
+            for offload_all in (False, True):
+                if offload_all:
+                    monkeypatch.setenv("GCS_PYTHON_CLIENT_CRC32C_OFFLOAD", "1")
 
-            # Multi-chunk (> 2 MiB) writable buffer destinations.
-            range_len = 2 * 1024 * 1024 + 512 * 1024
-            raw_buf = bytearray(range_len)
-            sentinel = b"Z" * 16
-            backing = bytearray(sentinel + bytes(range_len) + sentinel)
-            slice_view = memoryview(backing)[16 : 16 + range_len]
-            try:
+                # accepts_memoryview=True receives memoryview when crc32c supports it.
+                sink = _RecordingSink()
                 await mrd.download_ranges(
-                    [
-                        (256 * 1024, range_len, raw_buf),
-                        (2 * 1024 * 1024, range_len, slice_view),
-                    ]
+                    [(1024 * 1024, 0, sink)], accepts_memoryview=True
                 )
-            finally:
-                slice_view.release()
+                non_empty_chunks = [chunk for chunk in sink.chunks if chunk]
+                assert len(non_empty_chunks) >= 2
+                expected_type = (
+                    memoryview if _zero_copy_bidi_read.is_supported() else bytes
+                )
+                assert all(
+                    isinstance(chunk, expected_type) for chunk in non_empty_chunks
+                )
+                assert b"".join(sink.chunks) == object_data[1024 * 1024 :]
 
-            assert bytes(raw_buf) == object_data[256 * 1024 : 256 * 1024 + range_len]
-            assert bytes(backing[:16]) == sentinel
-            assert (
-                bytes(backing[16 : 16 + range_len])
-                == object_data[2 * 1024 * 1024 : 2 * 1024 * 1024 + range_len]
-            )
-            assert bytes(backing[16 + range_len :]) == sentinel
-            raw_buf.clear()
-            backing.clear()
+                # Multi-chunk (> 2 MiB) writable buffer destinations.
+                range_len = 2 * 1024 * 1024 + 512 * 1024
+                raw_buf = bytearray(range_len)
+                sentinel = b"Z" * 16
+                backing = bytearray(sentinel + bytes(range_len) + sentinel)
+                slice_view = memoryview(backing)[16 : 16 + range_len]
+                try:
+                    await mrd.download_ranges(
+                        [
+                            (256 * 1024, range_len, raw_buf),
+                            (2 * 1024 * 1024, range_len, slice_view),
+                        ]
+                    )
+                finally:
+                    slice_view.release()
+
+                assert (
+                    bytes(raw_buf) == object_data[256 * 1024 : 256 * 1024 + range_len]
+                )
+                assert bytes(backing[:16]) == sentinel
+                assert (
+                    bytes(backing[16 : 16 + range_len])
+                    == object_data[2 * 1024 * 1024 : 2 * 1024 * 1024 + range_len]
+                )
+                assert bytes(backing[16 + range_len :]) == sentinel
+                raw_buf.clear()
+                backing.clear()
 
             # Short read past EOF into a buffer raises BufferError without closing mrd.
             short_buf = bytearray(4096)

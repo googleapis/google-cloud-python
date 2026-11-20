@@ -15,6 +15,7 @@
 import asyncio
 import collections
 import concurrent.futures
+import functools
 import logging
 import os
 from typing import IO, Any, Dict, List, NamedTuple, Optional
@@ -42,23 +43,45 @@ logger = logging.getLogger(__name__)
 # default only chunks that reach their destination as a ``memoryview`` are
 # offloaded (see _DownloadState.receives_views).
 # GCS_PYTHON_CLIENT_CRC32C_OFFLOAD overrides that: ``1`` (or ``true``, ``yes``,
-# ``on``) offloads every such chunk, and any other non-empty value none. The
-# threshold matches google_crc32c's GIL-release threshold: smaller chunks would
-# hold the GIL on the worker, so they are always hashed inline.
+# ``on``) offloads every such chunk, and ``0`` (or ``false``, ``no``, ``off``)
+# none. The threshold matches google_crc32c's GIL-release threshold: smaller
+# chunks would hold the GIL on the worker, so they are always hashed inline.
 _CRC32C_OFFLOAD_ENV_VAR = "GCS_PYTHON_CLIENT_CRC32C_OFFLOAD"
 _CRC32C_OFFLOAD_ENABLED_VALUES = ("1", "true", "yes", "on")
+_CRC32C_OFFLOAD_DISABLED_VALUES = ("0", "false", "no", "off")
 _CRC32C_OFFLOAD_MIN_BYTES = getattr(google_crc32c, "GIL_RELEASE_THRESHOLD", 1024 * 1024)
-# Upper bound on chunks held for verification per download_ranges() call.
+# Upper bound on chunks held for verification per stream (a download_ranges()
+# call with a MultiStreamConfig pool can hold this many on each of its streams).
 # Chunks are written only once their checksum matches, so this keeps a slow
 # worker from pinning an unbounded number of received messages.
 _CRC32C_MAX_PENDING = 32
 
 
+@functools.lru_cache
+def _parse_crc32c_offload_env(value: str) -> Optional[bool]:
+    """Parses GCS_PYTHON_CLIENT_CRC32C_OFFLOAD; None keeps the default.
+
+    Cached by raw value, so an unrecognized one is logged only once.
+    """
+    normalized = value.strip().lower()
+    if normalized in _CRC32C_OFFLOAD_ENABLED_VALUES:
+        return True
+    if normalized in _CRC32C_OFFLOAD_DISABLED_VALUES:
+        return False
+    if normalized:
+        logger.warning(
+            "Unrecognized boolean value %r for environment variable %s; using the default.",
+            value,
+            _CRC32C_OFFLOAD_ENV_VAR,
+        )
+    return None
+
+
 def _should_offload_crc32c(read_state: "_DownloadState", data: Any) -> bool:
     """Whether to verify a large chunk on the worker pool instead of inline."""
-    value = os.environ.get(_CRC32C_OFFLOAD_ENV_VAR, "").strip().lower()
-    if value:
-        return value in _CRC32C_OFFLOAD_ENABLED_VALUES
+    offload = _parse_crc32c_offload_env(os.environ.get(_CRC32C_OFFLOAD_ENV_VAR, ""))
+    if offload is not None:
+        return offload
     return read_state.receives_views and isinstance(data, memoryview)
 
 

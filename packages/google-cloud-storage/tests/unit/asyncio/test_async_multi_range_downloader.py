@@ -276,6 +276,7 @@ class TestAsyncMultiRangeDownloader:
             (False, True, True),
             (False, False, False),
             (True, True, False),
+            (True, False, False),
         ],
     )
     async def test_download_ranges_offloads_by_default_only_for_view_destinations(
@@ -289,8 +290,7 @@ class TestAsyncMultiRangeDownloader:
     ):
         _accept_memoryview_in_crc32c(monkeypatch)
         monkeypatch.delenv(_OFFLOAD_ENV_VAR, raising=False)
-        # Count submissions but hash inline, so nothing waits on the pool.
-        submit = mock.Mock(return_value=None)
+        submit = mock.Mock(wraps=reads_resumption_strategy._submit_crc32c)
         monkeypatch.setattr(reads_resumption_strategy, "_submit_crc32c", submit)
         data = b"x" * reads_resumption_strategy._CRC32C_OFFLOAD_MIN_BYTES
 
@@ -302,14 +302,26 @@ class TestAsyncMultiRangeDownloader:
         mock_mrd.read_obj_str.recv = AsyncMock(
             side_effect=[_zero_copy_response(data, 0, 456, True), None]
         )
-        dest = bytearray(len(data)) if buffer_destination else BytesIO()
+        seen_types = []
+        received = BytesIO()
+
+        class RecordingSink:
+            def write(self, chunk):
+                seen_types.append(type(chunk))
+                return received.write(chunk)
+
+        dest = bytearray(len(data)) if buffer_destination else RecordingSink()
 
         await mock_mrd.download_ranges(
             [(0, len(data), dest)], accepts_memoryview=accepts_memoryview
         )
 
         assert submit.called is offloaded
-        assert bytes(dest if buffer_destination else dest.getvalue()) == data
+        if buffer_destination:
+            assert bytes(dest) == data
+        else:
+            assert seen_types == [memoryview if accepts_memoryview else bytes]
+            assert received.getvalue() == data
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
