@@ -56,7 +56,7 @@ def clean_cert_config_env(monkeypatch, tmp_path):
         raising=False,
     )
     monkeypatch.delenv(
-        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
         raising=False,
     )
     monkeypatch.setattr(

@@ -72,23 +72,41 @@ class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
         return new_credentials
 
 
+@pytest.fixture(autouse=True)
+def enable_rab_lookup(monkeypatch):
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
+    )
+
+
 class TestCredentialsWithRegionalAccessBoundary(object):
+    def test_is_regional_access_boundary_lookup_enabled_unset(self, monkeypatch):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            raising=False,
+        )
+        assert (
+            _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled()
+            is False
+        )
+
     @pytest.mark.parametrize(
         "env_value,expected",
         [
-            ("", True),
+            ("", False),
             ("true", True),
-            ("unexpected", True),
+            ("1", True),
+            ("  True \n", True),
             ("false", False),
-            ("  FALSE \n", False),
-            (" 0 ", False),
+            ("ture", False),
         ],
     )
     def test_is_regional_access_boundary_lookup_enabled_values(
         self, monkeypatch, env_value, expected
     ):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
             env_value,
         )
         assert (
@@ -98,7 +116,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
 
     def test_maybe_start_refresh_is_skipped_when_disabled_by_env_var(self, monkeypatch):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
             "false",
         )
         creds = CredentialsImpl()
@@ -635,7 +653,7 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         self, monkeypatch
     ):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
             "false",
         )
         creds = AsyncCredentialsImpl()
@@ -947,7 +965,7 @@ def test_set_initial_regional_access_boundary_with_value():
 def test_set_initial_regional_access_boundary_skipped_when_disabled(monkeypatch):
     creds = CredentialsImpl()
     monkeypatch.setenv(
-        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
         "false",
     )
     creds._set_regional_access_boundary(
@@ -957,8 +975,9 @@ def test_set_initial_regional_access_boundary_skipped_when_disabled(monkeypatch)
         }
     )
 
-    monkeypatch.delenv(
-        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
     )
     assert creds.regional_access_boundary is None
     assert creds.regional_access_boundary_expiry is None
@@ -979,7 +998,7 @@ def test_apply_headers_strips_header_when_disabled(monkeypatch):
     assert headers["x-allowed-locations"] == "0xABC"
 
     monkeypatch.setenv(
-        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
         "false",
     )
     assert creds.regional_access_boundary is None

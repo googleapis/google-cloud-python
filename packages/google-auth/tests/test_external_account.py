@@ -1035,7 +1035,11 @@ class TestCredentials(object):
             is credentials._impersonated_credentials._rab_manager
         )
 
-    def test_cached_token_initializes_impersonated_credentials(self):
+    def test_cached_token_initializes_impersonated_credentials(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         # Initialize credentials with impersonation.
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
@@ -1068,7 +1072,7 @@ class TestCredentials(object):
 
     def test_cached_token_skips_impersonated_init_when_rab_disabled(self, monkeypatch):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
             "false",
         )
         credentials = self.make_credentials(
@@ -2327,8 +2331,12 @@ class TestCredentials(object):
         credentials._impersonated_credentials.refresh.assert_called_once_with(request)
 
     def test_regional_access_boundary_refresh_delegates_to_impersonated_credentials(
-        self,
+        self, monkeypatch
     ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
         )

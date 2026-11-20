@@ -17,7 +17,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, crypt, jwt, transport
+from google.auth import _helpers, crypt, environment_vars, jwt, transport
 from google.oauth2 import _service_account_async as service_account
 from tests.oauth2 import test_service_account
 
@@ -232,7 +232,11 @@ class TestCredentials(object):
         assert credentials.valid
 
     @pytest.mark.asyncio
-    async def test_before_request_triggers_rab_refresh(self):
+    async def test_before_request_triggers_rab_refresh(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         credentials = self.make_credentials()
         credentials.token = "tok"
 
@@ -306,7 +310,11 @@ class TestCredentials(object):
             assert "x-allowed-locations" not in headers
 
     @pytest.mark.asyncio
-    async def test_before_request_triggers_blocking_rab_refresh(self):
+    async def test_before_request_triggers_blocking_rab_refresh(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         credentials = self.make_credentials()
         credentials.token = "tok"
         credentials._set_blocking_regional_access_boundary_lookup()

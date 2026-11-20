@@ -32,22 +32,27 @@ if TYPE_CHECKING:  # pragma: NO COVER
 
 _LOGGER = logging.getLogger(__name__)
 
+# Environment variable values that enable an opt-in feature.
+_TRUTHY_VALUES = ("y", "yes", "t", "true", "on", "1")
+
 
 def is_regional_access_boundary_lookup_enabled() -> bool:
     """Checks if Regional Access Boundary lookup is enabled via environment variable.
 
-    Defaults to enabled unless
-    ``GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP`` is set to a
-    case-insensitive ``"false"`` or ``"0"`` (ignoring surrounding whitespace).
+    Defaults to disabled unless
+    ``GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED``
+    is set to a truthy value (``"y"``, ``"yes"``, ``"t"``, ``"true"``, ``"on"``,
+    or ``"1"``, case-insensitive, ignoring surrounding whitespace). Any other
+    value, including unrecognized ones, leaves lookup disabled.
 
     Returns:
         bool: True if Regional Access Boundary lookup is enabled, False otherwise.
     """
     value = os.environ.get(
-        environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
         "",
-    ).strip()
-    return value.lower() not in ("false", "0")
+    )
+    return value.strip().lower() in _TRUTHY_VALUES
 
 
 # The default lifetime for a cached Regional Access Boundary.

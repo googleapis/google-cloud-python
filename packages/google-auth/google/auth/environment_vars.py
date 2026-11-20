@@ -112,14 +112,14 @@ GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED = "GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED"
     This environment variable is deprecated and no longer has any effect.
 """
 
-GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP = (
-    "GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP"
+GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED = (
+    "GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED"
 )
 """Experimental environment variable controlling whether to enable Regional
 Access Boundary lookup.
 
-Defaults to enabled; setting a case-insensitive ``"false"`` or ``"0"`` disables
-it.
+Defaults to disabled; setting a case-insensitive truthy value (such as
+``"true"`` or ``"1"``) enables it.
 """
 
 GOOGLE_API_CERTIFICATE_CONFIG = "GOOGLE_API_CERTIFICATE_CONFIG"

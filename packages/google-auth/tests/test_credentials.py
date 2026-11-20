@@ -17,7 +17,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, credentials
+from google.auth import _helpers, credentials, environment_vars
 
 
 class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
@@ -123,7 +123,11 @@ def test_before_request():
     assert "x-allowed-locations" not in headers
 
 
-def test_before_request_with_regional_access_boundary():
+def test_before_request_with_regional_access_boundary(monkeypatch):
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
+    )
     DUMMY_BOUNDARY = "0xA30"
     creds = CredentialsImpl()
     creds._rab_manager._data = credentials._regional_access_boundary_utils._RegionalAccessBoundaryData(
@@ -405,7 +409,11 @@ def test_credentials_with_trust_boundary_bridge():
         assert creds._build_regional_access_boundary_lookup_url() == "http://legacy.url"
 
 
-def test_before_request_triggers_rab_refresh():
+def test_before_request_triggers_rab_refresh(monkeypatch):
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
+    )
     with mock.patch("google.oauth2._client._lookup_regional_access_boundary") as lookup:
         lookup.return_value = {"encodedLocations": "0xA30"}
 

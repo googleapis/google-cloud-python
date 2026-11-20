@@ -425,7 +425,11 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
         assert url is None
 
-    def test_is_regional_access_boundary_lookup_required(self):
+    def test_is_regional_access_boundary_lookup_required(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         creds = self.credentials
         creds._universe_domain_cached = True
 
@@ -457,8 +461,12 @@ class TestCredentials(object):
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     def test_regional_access_boundary_disabled_state_transitions(
-        self, mock_get_service_account_info
+        self, mock_get_service_account_info, monkeypatch
     ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         mock_get_service_account_info.return_value = {
             "email": "spiffe://trust-domain/ns/ns/sa/sa",
             "scopes": ["one", "two"],
@@ -595,7 +603,7 @@ class TestCredentials(object):
     ):
         monkeypatch.setenv(environment_vars.CLOUD_SDK_CONFIG_DIR, str(tmp_path))
         monkeypatch.setenv(
-            environment_vars.GOOGLE_CLOUD_EXPERIMENTAL_REGIONAL_ACCESS_BOUNDARY_LOOKUP,
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
             "false",
         )
         responses.add(
