@@ -1,9 +1,9 @@
 import json
 import logging
-from unittest import mock
 
 import pytest
 
+from google.api_core import client_logging
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_logging import (
     StructuredLogFormatter,
@@ -12,6 +12,9 @@ from google.api_core.client_logging import (
     setup_logging,
 )
 
+TEST_BASE_LOGGER_NAME = "foogle"
+TEST_MODULE_LOGGER_NAME = f"{TEST_BASE_LOGGER_NAME}.bar"
+TEST_CHILD_LOGGER_NAME = f"{TEST_BASE_LOGGER_NAME}.cloud.service"
 DEFAULT_CONSUMER_PROJECT = "projects/123"
 SAMPLE_TRACE_ID = "0123456789abcdef0123456789abcdef"
 SAMPLE_SPAN_ID = "0123456789abcdef"
@@ -19,108 +22,225 @@ SAMPLE_SPAN_ID = "0123456789abcdef"
 
 def reset_logger(scope):
     logger = logging.getLogger(scope)
-    logger.handlers = []
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+        handler.close()
     logger.setLevel(logging.NOTSET)
     logger.propagate = True
 
 
-def test_setup_logging_w_no_scopes():
-    with mock.patch("google.api_core.client_logging._BASE_LOGGER_NAME", "foogle"):
-        setup_logging()
-        base_logger = logging.getLogger("foogle")
-        assert base_logger.handlers == []
-        assert not base_logger.propagate
-        assert base_logger.level == logging.NOTSET
-
-    reset_logger("foogle")
-
-
-def test_setup_logging_w_base_scope():
-    with mock.patch("google.api_core.client_logging._BASE_LOGGER_NAME", "foogle"):
-        setup_logging("foogle")
-        base_logger = logging.getLogger("foogle")
-        assert isinstance(base_logger.handlers[0], logging.StreamHandler)
-        assert not base_logger.propagate
-        assert base_logger.level == logging.DEBUG
-
-    reset_logger("foogle")
-
-
-def test_setup_logging_w_configured_scope():
-    with mock.patch("google.api_core.client_logging._BASE_LOGGER_NAME", "foogle"):
-        base_logger = logging.getLogger("foogle")
-        base_logger.propagate = False
-        setup_logging("foogle")
-        assert base_logger.handlers == []
-        assert not base_logger.propagate
-        assert base_logger.level == logging.NOTSET
-
-    reset_logger("foogle")
+@pytest.fixture
+def isolated_base_logger(monkeypatch):
+    """Isolates base logger state and resets mutated test loggers on teardown."""
+    monkeypatch.setattr(client_logging, "_BASE_LOGGER_NAME", TEST_BASE_LOGGER_NAME)
+    monkeypatch.setattr(client_logging, "_LOGGING_INITIALIZED", False)
+    extra_scopes = []
+    yield extra_scopes
+    scopes_to_reset = {
+        name
+        for name, entry in logging.Logger.manager.loggerDict.items()
+        if isinstance(entry, logging.Logger)
+        and (
+            name == TEST_BASE_LOGGER_NAME
+            or name.startswith(f"{TEST_BASE_LOGGER_NAME}.")
+        )
+    }
+    scopes_to_reset.update(extra_scopes)
+    for scope in scopes_to_reset:
+        reset_logger(scope)
 
 
-def test_setup_logging_w_module_scope():
-    with mock.patch("google.api_core.client_logging._BASE_LOGGER_NAME", "foogle"):
-        setup_logging("foogle.bar")
-
-        base_logger = logging.getLogger("foogle")
-        assert base_logger.handlers == []
-        assert not base_logger.propagate
-        assert base_logger.level == logging.NOTSET
-
-        module_logger = logging.getLogger("foogle.bar")
-        assert isinstance(module_logger.handlers[0], logging.StreamHandler)
-        assert not module_logger.propagate
-        assert module_logger.level == logging.DEBUG
-
-    reset_logger("foogle")
-    reset_logger("foogle.bar")
+def test_setup_logging_w_no_scopes(isolated_base_logger):
+    setup_logging()
+    base_logger = logging.getLogger(TEST_BASE_LOGGER_NAME)
+    assert base_logger.handlers == []
+    assert base_logger.propagate
+    assert base_logger.level == logging.WARNING
 
 
-def test_setup_logging_w_incorrect_scope():
-    with mock.patch("google.api_core.client_logging._BASE_LOGGER_NAME", "foogle"):
-        setup_logging("abc")
+def test_setup_logging_w_base_scope(isolated_base_logger):
+    setup_logging(TEST_BASE_LOGGER_NAME)
+    base_logger = logging.getLogger(TEST_BASE_LOGGER_NAME)
+    assert isinstance(base_logger.handlers[0], logging.StreamHandler)
+    assert not base_logger.propagate
+    assert base_logger.level == logging.DEBUG
 
-        base_logger = logging.getLogger("foogle")
-        assert base_logger.handlers == []
-        assert not base_logger.propagate
-        assert base_logger.level == logging.NOTSET
 
+@pytest.mark.parametrize(
+    ("scopes", "initial_level", "initial_propagate", "has_custom_handler"),
+    [
+        pytest.param(
+            TEST_BASE_LOGGER_NAME,
+            logging.NOTSET,
+            False,
+            False,
+            id="propagate_false_with_base_scope",
+        ),
+        pytest.param(
+            "",
+            logging.DEBUG,
+            True,
+            False,
+            id="custom_debug_level_with_no_scopes",
+        ),
+        pytest.param(
+            TEST_MODULE_LOGGER_NAME,
+            logging.INFO,
+            True,
+            False,
+            id="custom_info_level_with_module_scope",
+        ),
+        pytest.param(
+            "",
+            logging.NOTSET,
+            True,
+            True,
+            id="custom_handler_with_no_scopes",
+        ),
+    ],
+)
+def test_setup_logging_w_configured_scope(
+    isolated_base_logger, scopes, initial_level, initial_propagate, has_custom_handler
+):
+    base_logger = logging.getLogger(TEST_BASE_LOGGER_NAME)
+    base_logger.setLevel(initial_level)
+    base_logger.propagate = initial_propagate
+    expected_handlers = [logging.NullHandler()] if has_custom_handler else []
+    for handler in expected_handlers:
+        base_logger.addHandler(handler)
+
+    setup_logging(scopes)
+
+    assert base_logger.handlers == expected_handlers
+    assert base_logger.propagate is initial_propagate
+    assert base_logger.level == initial_level
+
+
+@pytest.mark.parametrize(
+    "scope",
+    [
+        pytest.param(TEST_MODULE_LOGGER_NAME, id="child_module_scope"),
         # TODO(https://github.com/googleapis/python-api-core/issues/759): update test once we add logic to ignore an incorrect scope.
-        logger = logging.getLogger("abc")
-        assert isinstance(logger.handlers[0], logging.StreamHandler)
-        assert not logger.propagate
-        assert logger.level == logging.DEBUG
+        pytest.param("abc", id="non_google_scope"),
+    ],
+)
+def test_setup_logging_w_non_base_scope(isolated_base_logger, scope):
+    isolated_base_logger.append(scope)
 
-    reset_logger("foogle")
-    reset_logger("abc")
+    setup_logging(scope)
+
+    base_logger = logging.getLogger(TEST_BASE_LOGGER_NAME)
+    assert base_logger.handlers == []
+    assert base_logger.propagate
+    assert base_logger.level == logging.WARNING
+
+    scoped_logger = logging.getLogger(scope)
+    assert isinstance(scoped_logger.handlers[0], logging.StreamHandler)
+    assert not scoped_logger.propagate
+    assert scoped_logger.level == logging.DEBUG
 
 
-def test_initialize_logging():
-    with mock.patch("os.getenv", return_value="foogle.bar"):
-        with mock.patch("google.api_core.client_logging._BASE_LOGGER_NAME", "foogle"):
-            initialize_logging()
+def test_initialize_logging_default_unscoped_env(isolated_base_logger, monkeypatch):
+    monkeypatch.delenv("GOOGLE_SDK_PYTHON_LOGGING_SCOPE", raising=False)
 
-            base_logger = logging.getLogger("foogle")
-            assert base_logger.handlers == []
-            assert not base_logger.propagate
-            assert base_logger.level == logging.NOTSET
+    initialize_logging()
 
-            module_logger = logging.getLogger("foogle.bar")
-            assert isinstance(module_logger.handlers[0], logging.StreamHandler)
-            assert not module_logger.propagate
-            assert module_logger.level == logging.DEBUG
+    base_logger = logging.getLogger(TEST_BASE_LOGGER_NAME)
+    assert base_logger.handlers == []
+    assert base_logger.propagate
+    assert base_logger.level == logging.WARNING
 
-            # Check that `initialize_logging()` is a no-op after the first time by verifying that user-set configs are not modified:
-            base_logger.propagate = True
-            module_logger.propagate = True
 
-            initialize_logging()
+def test_initialize_logging_configures_scoped_and_base_loggers(
+    isolated_base_logger, monkeypatch
+):
+    monkeypatch.setenv("GOOGLE_SDK_PYTHON_LOGGING_SCOPE", TEST_MODULE_LOGGER_NAME)
 
-            assert base_logger.propagate
-            assert module_logger.propagate
+    initialize_logging()
 
-    reset_logger("foogle")
-    reset_logger("foogle.bar")
+    base_logger = logging.getLogger(TEST_BASE_LOGGER_NAME)
+    assert base_logger.handlers == []
+    assert base_logger.propagate
+    assert base_logger.level == logging.WARNING
+
+    module_logger = logging.getLogger(TEST_MODULE_LOGGER_NAME)
+    assert isinstance(module_logger.handlers[0], logging.StreamHandler)
+    assert not module_logger.propagate
+    assert module_logger.level == logging.DEBUG
+
+
+def test_initialize_logging_is_idempotent_after_first_call(
+    isolated_base_logger, monkeypatch
+):
+    monkeypatch.setenv("GOOGLE_SDK_PYTHON_LOGGING_SCOPE", TEST_MODULE_LOGGER_NAME)
+    initialize_logging()
+
+    # Reset loggers to unconfigured defaults and change env scope so a second
+    # execution of setup_logging() would mutate all three loggers:
+    reset_logger(TEST_BASE_LOGGER_NAME)
+    reset_logger(TEST_MODULE_LOGGER_NAME)
+    monkeypatch.setenv(
+        "GOOGLE_SDK_PYTHON_LOGGING_SCOPE", f"{TEST_BASE_LOGGER_NAME}.baz"
+    )
+
+    initialize_logging()
+
+    assert logging.getLogger(TEST_BASE_LOGGER_NAME).level == logging.NOTSET
+    assert logging.getLogger(TEST_MODULE_LOGGER_NAME).handlers == []
+    assert logging.getLogger(f"{TEST_BASE_LOGGER_NAME}.baz").handlers == []
+
+
+@pytest.mark.parametrize(
+    ("level", "expected_enabled"),
+    [
+        pytest.param(logging.DEBUG, False, id="debug_disabled"),
+        pytest.param(logging.INFO, False, id="info_disabled"),
+        pytest.param(logging.WARNING - 1, False, id="below_warning_boundary_disabled"),
+        pytest.param(logging.WARNING, True, id="warning_enabled"),
+        pytest.param(logging.ERROR, True, id="error_enabled"),
+    ],
+)
+def test_setup_logging_prevents_root_debug_from_enabling_child_debug(
+    isolated_base_logger, caplog, level, expected_enabled
+):
+    """Verify root DEBUG does not enable DEBUG on unconfigured child loggers."""
+    # Regression test for https://github.com/googleapis/google-cloud-python/issues/15149
+    with caplog.at_level(logging.DEBUG):
+        child_logger = logging.getLogger(TEST_CHILD_LOGGER_NAME)
+
+        setup_logging()
+
+        assert child_logger.isEnabledFor(level) is expected_enabled
+
+
+def test_setup_logging_propagates_warning_and_error_to_root(
+    isolated_base_logger, caplog
+):
+    """Verify child WARNING and ERROR logs propagate to root handlers."""
+    # Regression test for https://github.com/googleapis/google-cloud-python/issues/15693
+    child_logger = logging.getLogger(TEST_CHILD_LOGGER_NAME)
+    setup_logging()
+
+    with caplog.at_level(logging.DEBUG):
+        child_logger.debug("debug message")
+        child_logger.info("info message")
+        child_logger.warning("warning message")
+        child_logger.error("error message")
+
+    assert caplog.record_tuples == [
+        (TEST_CHILD_LOGGER_NAME, logging.WARNING, "warning message"),
+        (TEST_CHILD_LOGGER_NAME, logging.ERROR, "error message"),
+    ]
+
+    # Post-initialization override allows DEBUG logs to propagate to root:
+    caplog.clear()
+    logging.getLogger(TEST_BASE_LOGGER_NAME).setLevel(logging.DEBUG)
+    with caplog.at_level(logging.DEBUG):
+        child_logger.debug("post-override debug")
+
+    assert caplog.record_tuples == [
+        (TEST_CHILD_LOGGER_NAME, logging.DEBUG, "post-override debug"),
+    ]
 
 
 def test_structured_log_formatter():

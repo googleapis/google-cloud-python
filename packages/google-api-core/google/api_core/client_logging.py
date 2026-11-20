@@ -109,9 +109,12 @@ def initialize_logging():
     Initializes the "google" logger and any loggers (at the "google"
     level or lower) specified by the environment variable
     GOOGLE_SDK_PYTHON_LOGGING_SCOPE, as long as none of these loggers
-    were previously configured. If any such loggers (including the
-    "google" logger) are initialized, they are set to NOT propagate
-    log events up to their parent loggers.
+    were previously configured. If any such scoped loggers are
+    initialized, they are set to NOT propagate log events up to their
+    parent loggers. If the "google" logger is neither specified in
+    GOOGLE_SDK_PYTHON_LOGGING_SCOPE nor previously configured, its
+    level is set to WARNING while continuing to propagate log events
+    to the root logger.
 
     This initialization is executed only once, and hence the
     environment variable is only processed the first time this
@@ -162,10 +165,10 @@ def setup_logging(scopes: str = ""):
     If the loggers specified in `scopes` have not been previously
     configured, this will configure them to emit structured log
     entries to stdout, and to not propagate their log events to their
-    parent loggers. Additionally, if the "google" logger (whether it
-    was specified in `scopes` or not) was not previously configured,
-    it will also configure it to not propagate log events to the root
-    logger.
+    parent loggers. Additionally, if the "google" logger was neither
+    specified in `scopes` nor previously configured, its level will be
+    set to WARNING while continuing to propagate log events to the
+    root logger.
 
     Args:
       scopes: The name of a single logger. (In the future, this will be a comma-separated list of multiple loggers.)
@@ -183,10 +186,16 @@ def setup_logging(scopes: str = ""):
         # Configure default settings.
         configure_defaults(logger)
 
-    # disable log propagation at base logger level to the root logger only if a base logger is not already configured via code changes.
     base_logger = logging.getLogger(_BASE_LOGGER_NAME)
     if not logger_configured(base_logger):
-        base_logger.propagate = False
+        # Default "google" logger level to WARNING (while keeping propagate=True)
+        # when not explicitly configured prior to client initialization. This
+        # prevents a root logger at DEBUG from unintentionally triggering GAPIC
+        # payload serialization when GOOGLE_SDK_PYTHON_LOGGING_SCOPE is unset,
+        # while allowing WARNING and ERROR logs to propagate normally to the
+        # application's root logger. Customers may still override
+        # logging.getLogger("google").setLevel(...) at any time.
+        base_logger.setLevel(logging.WARNING)
 
 
 # TODO(https://github.com/googleapis/python-api-core/issues/763): Expand documentation.
