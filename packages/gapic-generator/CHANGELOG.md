@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.44.3](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.44.2...gapic-generator-v1.44.3) (2026-11-21)
+
+
+### Bug Fixes
+
+* include version headers in long running operations ([#19059](https://github.com/googleapis/google-cloud-python/issues/19059)) ([b91fab9](https://github.com/googleapis/google-cloud-python/commit/b91fab9bb7b407933f873f03a3efe29f148571a0))
+
 ## [1.44.2](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.44.1...gapic-generator-v1.44.2) (2026-11-05)
 
 
