@@ -2682,6 +2682,15 @@ class FunctionExpression(Expression):
         )
 
 
+class WindowFunction(FunctionExpression):
+    """A base class for window functions that operate over a window of documents.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+    """
+
+
 class AggregateFunction(FunctionExpression):
     """A base class for aggregation functions that operate across multiple inputs."""
 
@@ -3194,6 +3203,35 @@ class CurrentDocument(FunctionExpression):
     def __init__(self):
         super().__init__(
             "current_document",
+            [],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
+
+
+class Rank(WindowFunction):
+    """Creates a window function that computes the rank of each document within a window.
+
+    Documents with equal sort values receive the same rank, with gaps in the subsequent
+    ranking numbers. The window must specify exactly one sort ordering.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+
+    Example:
+        >>> # Rank documents by price descending within each category
+        >>> db.pipeline().collection("products").add_window_fields(
+        ...     Rank().as_("price_rank"),
+        ...     window=WindowSpec(
+        ...         partition=["category"],
+        ...         sort=[Field.of("price").descending()],
+        ...     ),
+        ... )
+    """
+
+    def __init__(self):
+        super().__init__(
+            "rank",
             [],
             repr_function=FunctionExpression._build_standalone_repr(),
         )

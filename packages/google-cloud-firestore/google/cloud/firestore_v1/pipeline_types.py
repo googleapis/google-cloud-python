@@ -327,3 +327,83 @@ class UnnestOptions:
 
     def __repr__(self):
         return f"{self.__class__.__name__}(index_field={self.index_field.path!r})"
+
+
+class WindowSpec:
+    """Configuration for a window in an `AddWindowFields` pipeline stage.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+
+    Args:
+        partition: Optional field paths or expressions used to partition documents into
+            independent windows. If `None`, all input documents are treated as a single
+            global partition.
+        sort: Optional orderings specifying how documents are sorted within each
+            partition. If `None`, documents are unordered and aggregates evaluate across
+            all documents in the partition. When specified without an explicit frame,
+            aggregates default to a running window from the start of the partition
+            through the current sort value.
+    """
+
+    def __init__(
+        self,
+        *,
+        partition: Optional[
+            Sequence[pipeline_expressions.Expression | str]
+            | pipeline_expressions.Expression
+            | str
+        ] = None,
+        sort: Optional[Sequence[Ordering] | Ordering] = None,
+    ):
+        if partition is None:
+            partition_list = []
+        elif isinstance(partition, (str, pipeline_expressions.Expression)):
+            partition_list = [partition]
+        else:
+            partition_list = list(partition)
+        self.partition: list[pipeline_expressions.Expression] = [
+            pipeline_expressions.Field.of(p) if isinstance(p, str) else p
+            for p in partition_list
+        ]
+
+        if sort is None:
+            self.sort: list[Ordering] = []
+        elif isinstance(sort, Ordering):
+            self.sort = [sort]
+        elif (
+            isinstance(sort, (str, bytes))
+            or not isinstance(sort, Sequence)
+            or not all(isinstance(o, Ordering) for o in sort)
+        ):
+            raise TypeError(
+                "sort must be an Ordering or a sequence of Ordering objects"
+            )
+        else:
+            self.sort = list(sort)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, WindowSpec):
+            return NotImplemented
+        return self._to_pb() == other._to_pb()
+
+    def __repr__(self):
+        args = []
+        if self.partition:
+            args.append(f"partition={self.partition!r}")
+        if self.sort:
+            args.append(f"sort={self.sort!r}")
+        return f"{self.__class__.__name__}({', '.join(args)})"
+
+    def _to_pb(self) -> Value:
+        fields: dict[str, Value] = {}
+        if self.partition:
+            fields["partition"] = Value(
+                array_value={"values": [p._to_pb() for p in self.partition]}
+            )
+        if self.sort:
+            fields["sort"] = Value(
+                array_value={"values": [s._to_pb() for s in self.sort]}
+            )
+        return Value(map_value={"fields": fields})

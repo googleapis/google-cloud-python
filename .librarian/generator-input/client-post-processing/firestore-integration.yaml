@@ -101,6 +101,7 @@ replacements:
           TimePart,
           TimeUnit,
           UnnestOptions,
+          WindowSpec,
       )
       from google.cloud.firestore_v1.query import CollectionGroup, Query
       from google.cloud.firestore_v1.query_profile import (
@@ -230,6 +231,7 @@ replacements:
           "types",
           "UnnestOptions",
           "Watch",
+          "WindowSpec",
           "WriteBatch",
           "WriteOption",
       ]
@@ -307,6 +309,7 @@ replacements:
           Transaction,
           UnnestOptions,
           Watch,
+          WindowSpec,
           WriteBatch,
           WriteOption,
           async_transactional,
@@ -377,6 +380,7 @@ replacements:
           "types",
           "UnnestOptions",
           "Watch",
+          "WindowSpec",
           "WriteBatch",
           "WriteOption",
       ]

@@ -27,6 +27,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Field,
     FunctionExpression,
     Selectable,
+    WindowFunction,
     _PipelineValueExpression,
 )
 from google.cloud.firestore_v1.types.pipeline import (
@@ -175,6 +176,60 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list
         """
         return self._append(stages.AddFields(*fields))
+
+    def add_window_fields(
+        self,
+        *fields: AliasedExpression[AggregateFunction]
+        | AliasedExpression[WindowFunction],
+        window: types.WindowSpec | None = None,
+    ) -> "_BasePipeline":
+        """
+        Evaluates window and aggregate functions over a window of related documents
+        and adds the results as new fields on each input document.
+
+        Unlike :meth:`aggregate`, which collapses documents into summary rows,
+        ``add_window_fields`` preserves every input document and attaches computed
+        values (such as partition totals, running aggregates, or rankings) to each row.
+
+        When ``window`` specifies ``sort`` without an explicit frame, aggregates evaluate
+        as a running window from the start of the partition through the current sort
+        value. When ``sort`` is omitted, aggregates evaluate across all documents in the
+        partition.
+
+        .. note::
+            This feature is in preview until the backend feature launches and is
+            subject to change.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Field, Rank
+            >>> from google.cloud.firestore_v1.pipeline_types import WindowSpec
+            >>> pipeline = client.pipeline().collection("books")
+            >>> # Partition-wide average rating (unsorted window covers the whole partition)
+            >>> pipeline = pipeline.add_window_fields(
+            ...     Field.of("rating").average().as_("genre_avg_rating"),
+            ...     window=WindowSpec(partition=["genre"]),
+            ... )
+            >>> # Rank and running total within each genre (sorted default frame)
+            >>> pipeline = pipeline.add_window_fields(
+            ...     Rank().as_("genre_rank"),
+            ...     Field.of("price").sum().as_("running_price_total"),
+            ...     window=WindowSpec(
+            ...         partition=["genre"],
+            ...         sort=[Field.of("rating").descending()],
+            ...     ),
+            ... )
+
+        Args:
+            *fields: Aliased `AggregateFunction` or `WindowFunction` expressions defining
+                the window calculations and their output field aliases.
+            window: Optional `WindowSpec` specifying how documents are partitioned and
+                ordered. If `None`, evaluates over a single unsorted global partition
+                covering all input documents (equivalent to ``WindowSpec()``).
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list.
+        """
+        return self._append(stages.AddWindowFields(*fields, window=window))
 
     def remove_fields(self, *fields: Field | str) -> "_BasePipeline":
         """
