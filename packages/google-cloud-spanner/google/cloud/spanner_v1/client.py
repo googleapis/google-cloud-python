@@ -135,7 +135,7 @@ def _initialize_metrics(project, credentials, emulator_host=None, client_options
                             client_options
                         )
                     has_custom_endpoint = bool(
-                        client_options and client_options.api_endpoint
+                        getattr(client_options, "api_endpoint", None)
                     )
                     if (
                         not _get_spanner_emulator_host()
@@ -143,11 +143,14 @@ def _initialize_metrics(project, credentials, emulator_host=None, client_options
                         and (not isinstance(credentials, AnonymousCredentials))
                         and (not has_custom_endpoint)
                     ):
+                        universe_domain = getattr(
+                            client_options, "universe_domain", None
+                        )
                         monitoring_options = (
                             google.api_core.client_options.ClientOptions(
-                                universe_domain=client_options.universe_domain
+                                universe_domain=universe_domain
                             )
-                            if client_options and client_options.universe_domain
+                            if universe_domain
                             else None
                         )
                         meter_provider = MeterProvider(

@@ -157,7 +157,7 @@ def _initialize_metrics(project, credentials, emulator_host=None, client_options
                         )
                     # Skip metrics export when a custom Spanner api_endpoint is set.
                     has_custom_endpoint = bool(
-                        client_options and client_options.api_endpoint
+                        getattr(client_options, "api_endpoint", None)
                     )
                     if (
                         not _get_spanner_emulator_host()
@@ -166,11 +166,14 @@ def _initialize_metrics(project, credentials, emulator_host=None, client_options
                         and not has_custom_endpoint
                     ):
                         # Only forward universe_domain to Cloud Monitoring.
+                        universe_domain = getattr(
+                            client_options, "universe_domain", None
+                        )
                         monitoring_options = (
                             google.api_core.client_options.ClientOptions(
-                                universe_domain=client_options.universe_domain
+                                universe_domain=universe_domain
                             )
-                            if client_options and client_options.universe_domain
+                            if universe_domain
                             else None
                         )
                         meter_provider = MeterProvider(
