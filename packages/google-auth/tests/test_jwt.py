@@ -851,6 +851,15 @@ class TestCredentials(object):
             == 600
         )
 
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_with_universe_domain_falsy(self, empty_universe):
+        self.credentials._rab_manager._data = mock.sentinel.rab_data
+
+        cred = self.credentials.with_universe_domain(empty_universe)
+        assert cred.universe_domain == empty_universe
+        assert cred._rab_manager._data.encoded_locations is None
+        assert cred._rab_manager._data.expiry is None
+
     def test_before_request_with_universe_domain_clears_cached_rab(self, monkeypatch):
         monkeypatch.setenv(
             environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
@@ -1197,6 +1206,11 @@ class TestOnDemandCredentials(object):
             )._token_lifetime
             == 600
         )
+
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_with_universe_domain_falsy(self, empty_universe):
+        cred = self.credentials.with_universe_domain(empty_universe)
+        assert cred.universe_domain == empty_universe
 
     def test_with_claims(self):
         new_claims = {"meep": "moop"}
