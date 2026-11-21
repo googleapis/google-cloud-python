@@ -27,6 +27,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Constant,
     Expression,
     Field,
+    FunctionExpression,
     Ordering,
     Rank,
     WindowFunction,
@@ -2269,7 +2270,8 @@ class TestExpressionessionMethods:
 
 class TestWindowExpressions:
     def test_window_function_hierarchy(self):
-        assert issubclass(AggregateFunction, WindowFunction)
+        assert issubclass(WindowFunction, FunctionExpression)
+        assert not issubclass(AggregateFunction, WindowFunction)
         assert not issubclass(Expression, WindowFunction)
 
     def test_rank(self):

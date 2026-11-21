@@ -2683,10 +2683,15 @@ class FunctionExpression(Expression):
 
 
 class WindowFunction(FunctionExpression):
-    """A base class for window functions that operate over a window of documents."""
+    """A base class for window functions that operate over a window of documents.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+    """
 
 
-class AggregateFunction(WindowFunction):
+class AggregateFunction(FunctionExpression):
     """A base class for aggregation functions that operate across multiple inputs."""
 
 
@@ -3207,7 +3212,11 @@ class Rank(WindowFunction):
     """Creates a window function that computes the rank of each document within a window.
 
     Documents with equal sort values receive the same rank, with gaps in the subsequent
-    ranking numbers.
+    ranking numbers. The window must specify exactly one sort ordering.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
 
     Example:
         >>> # Rank documents by price descending within each category
