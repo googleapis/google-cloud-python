@@ -331,7 +331,11 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
         claim_audience = payload.get("aud")
         if isinstance(audience, str):
             audience = [audience]
-        if claim_audience not in audience:
+        # The "aud" claim may be a single string or a list of strings.
+        claim_audiences = (
+            claim_audience if isinstance(claim_audience, list) else [claim_audience]
+        )
+        if not any(aud in audience for aud in claim_audiences):
             raise exceptions.InvalidValue(
                 "Token has wrong audience {}, expected one of {}".format(
                     claim_audience, audience
