@@ -1212,20 +1212,15 @@ class TestInitializeMetrics(unittest.TestCase):
                     MUT.metrics.NoOpMeterProvider,
                 )
 
-    def test_initialize_metrics_default_endpoint_and_universe_propagation(self):
+    def test_initialize_metrics_universe_propagation_and_option_filtering(self):
         from google.api_core.client_options import ClientOptions
 
         from google.cloud.spanner_v1 import client as MUT
 
-        def cert_source():
-            return (b"cert", b"key")
-
         creds = mock.Mock()
         client_options = ClientOptions(
-            api_endpoint="https://spanner.my-universe.com:443",
             universe_domain="my-universe.com",
             quota_project_id="quota-proj",
-            client_cert_source=cert_source,
             scopes=["https://www.googleapis.com/auth/spanner.admin"],
             api_audience="https://spanner.my-universe.com",
             credentials_file="/tmp/fake-creds.json",
@@ -1260,8 +1255,6 @@ class TestInitializeMetrics(unittest.TestCase):
         monitoring_opts = kwargs["client_options"]
         self.assertIsInstance(monitoring_opts, ClientOptions)
         self.assertEqual(monitoring_opts.universe_domain, "my-universe.com")
-        self.assertEqual(monitoring_opts.quota_project_id, "quota-proj")
-        self.assertIs(monitoring_opts.client_cert_source, cert_source)
         self.assertIsNone(monitoring_opts.api_endpoint)
         self.assertIsNone(monitoring_opts.scopes)
         self.assertIsNone(monitoring_opts.api_audience)

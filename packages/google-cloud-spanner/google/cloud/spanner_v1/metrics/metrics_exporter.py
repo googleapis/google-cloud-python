@@ -96,9 +96,8 @@ _OPTIONS = [
     ("grpc.primary_user_agent", _USER_AGENT),
 ]
 
-# Scope required to write time series via CreateServiceTimeSeries.
+# Scopes that authorize writing time series to Cloud Monitoring.
 _MONITORING_WRITE_SCOPE = "https://www.googleapis.com/auth/monitoring.write"
-# Any of these scopes authorizes writing metrics to Cloud Monitoring.
 _MONITORING_SCOPES = frozenset(
     {
         "https://www.googleapis.com/auth/cloud-platform",
@@ -106,34 +105,6 @@ _MONITORING_SCOPES = frozenset(
         _MONITORING_WRITE_SCOPE,
     }
 )
-
-
-def _get_monitoring_credentials(
-    credentials: Optional[ga_credentials.Credentials],
-) -> Optional[ga_credentials.Credentials]:
-    """Return credentials able to authenticate against Cloud Monitoring.
-
-    If ``credentials`` are already pinned to fixed scopes that do not include
-    Cloud Monitoring (for example, credentials scoped by ``ClientWithProject``
-    to ``spanner.admin``), returns a copy scoped to ``monitoring.write`` so
-    that Cloud Monitoring RPCs succeed without mutating the Spanner client's
-    credentials.
-
-    Args:
-        credentials: Credentials from the Spanner client, or ``None``.
-
-    Returns:
-        Credentials suitable for ``MetricServiceClient``.
-    """
-    if credentials is None:
-        return None
-    if (
-        isinstance(credentials, ga_credentials.Scoped)
-        and not credentials.requires_scopes
-        and not _MONITORING_SCOPES.intersection(credentials.scopes or ())
-    ):
-        return credentials.with_scopes([_MONITORING_WRITE_SCOPE])
-    return credentials
 
 
 # pylint is unable to resolve members of protobuf objects
@@ -170,52 +141,41 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         # Default preferred_temporality is all CUMULATIVE so need to customize
         super().__init__()
 
-        # Create a new gRPC Client for Google Cloud Monitoring if not provided.
-        # Pass a transport callable (not a pre-built channel) so MetricServiceClient
-        # resolves universe_domain / client_options and retains credentials for
-        # universe domain validation, while still applying custom gRPC options.
         if client is not None:
             self.client = client
         else:
-            monitoring_credentials = _get_monitoring_credentials(credentials)
-
-            def _create_channel(*args, **kwargs):
-                kwargs["options"] = _OPTIONS
-                return MetricServiceGrpcTransport.create_channel(*args, **kwargs)
-
-            def _create_transport(**kwargs):
-                return MetricServiceGrpcTransport(
-                    **kwargs,
-                    channel=_create_channel,
+            # Re-scope credentials pinned to Spanner-only scopes for Cloud Monitoring.
+            monitoring_credentials = credentials
+            if (
+                isinstance(credentials, ga_credentials.Scoped)
+                and not credentials.requires_scopes
+                and not _MONITORING_SCOPES.intersection(credentials.scopes or ())
+            ):
+                monitoring_credentials = credentials.with_scopes(
+                    [_MONITORING_WRITE_SCOPE]
                 )
 
+            # Pass transport/channel callables so MetricServiceClient resolves
+            # universe_domain and validates credentials while keeping _OPTIONS.
             self.client = MetricServiceClient(
                 credentials=monitoring_credentials,
-                transport=_create_transport,
                 client_options=client_options,
+                transport=lambda **kwargs: MetricServiceGrpcTransport(
+                    **kwargs,
+                    channel=lambda *a, **kw: MetricServiceGrpcTransport.create_channel(
+                        *a, **{**kw, "options": _OPTIONS}
+                    ),
+                ),
             )
 
-        # Set project information without falling back to ambient ADC when
-        # explicit credentials were supplied.
-        self.project_id: str
-        if project_id:
-            self.project_id = project_id
-        elif credentials is not None:
-            creds_project_id = getattr(credentials, "project_id", None)
-            if not creds_project_id:
-                raise ValueError(
-                    "project_id must be provided when explicit credentials do not "
-                    "specify a project_id."
-                )
-            self.project_id = str(creds_project_id)
-        else:
-            _, default_project_id = google.auth.default()
-            if not default_project_id:
-                raise ValueError(
-                    "project_id was not provided and could not be determined from "
-                    "Application Default Credentials."
-                )
-            self.project_id = str(default_project_id)
+        # Avoid ambient ADC project fallback when explicit credentials are provided.
+        if not project_id:
+            project_id = getattr(credentials, "project_id", None)
+        if not project_id and credentials is None:
+            _, project_id = google.auth.default()
+        if not project_id:
+            raise ValueError("project_id could not be determined.")
+        self.project_id = str(project_id)
         self.project_name = self.client.common_project_path(self.project_id)
 
     def _batch_write(self, series: List["TimeSeries"], timeout_millis: float) -> None:
