@@ -3027,6 +3027,38 @@ class TestSnapshot(OpenTelemetryBase):
         self.assertEqual(snapshot._transaction_read_timestamp, timestamp)
         self.assertTrue(snapshot._transaction_begin_event.is_set())
 
+    def test__update_for_result_set_pb_w_read_timestamp(self):
+        from datetime import timezone
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        timestamp = datetime.now(timezone.utc)
+        snapshot = self._make_one(_Session(), multi_use=False)
+        result_set_pb = PartialResultSet(
+            metadata={"transaction": {"read_timestamp": timestamp}}
+        )
+        snapshot._update_for_result_set_pb(result_set_pb)
+        self.assertIsNone(snapshot._transaction_id)
+        self.assertEqual(snapshot._transaction_read_timestamp, timestamp)
+
+    def test__update_for_result_set_pb_w_read_timestamp_out_of_range(self):
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        for multi_use in (False, True):
+            with self.subTest(multi_use=multi_use):
+                snapshot = self._make_one(_Session(), multi_use=multi_use)
+                result_set_pb = PartialResultSet()
+                transaction_pb = result_set_pb._pb.metadata.transaction
+                if multi_use:
+                    transaction_pb.id = TXN_ID
+                # 10000-01-01T00:00:00Z does not fit in a datetime.
+                transaction_pb.read_timestamp.seconds = 253402300800
+                snapshot._update_for_result_set_pb(result_set_pb)
+                self.assertEqual(
+                    snapshot._transaction_id, TXN_ID if multi_use else None
+                )
+                self.assertIsNone(snapshot._transaction_read_timestamp)
+
     def test_execute_sql_twice_single_use_fails(self):
         from google.cloud.spanner_v1 import PartialResultSet
 

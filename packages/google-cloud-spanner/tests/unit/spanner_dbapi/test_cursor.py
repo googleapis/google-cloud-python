@@ -988,6 +988,24 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(cursor._row_count, None)
 
     @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_handle_dql_w_read_timestamp_out_of_range(self, MockedPeekIterator):
+        from google.cloud.spanner_v1 import Transaction
+
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        mock_snapshot = mock.MagicMock(_transaction_read_timestamp=None)
+        cursor = self._make_one(connection)
+
+        transaction_pb = Transaction(id=b"txn-id")
+        # 10000-01-01T00:00:00Z does not fit in a datetime.
+        transaction_pb._pb.read_timestamp.seconds = 253402300800
+        _result_set = mock.Mock()
+        _result_set.metadata.transaction = transaction_pb
+        mock_snapshot.execute_sql.return_value = _result_set
+        cursor._handle_DQL_with_snapshot(mock_snapshot, "sql", params=None)
+        self.assertEqual(cursor._result_set, _result_set)
+        self.assertIsNone(mock_snapshot._transaction_read_timestamp)
+
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
     def test_handle_dql_priority(self, MockedPeekIterator):
         from google.cloud.spanner_v1 import RequestOptions
 

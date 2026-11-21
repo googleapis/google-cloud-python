@@ -33,6 +33,7 @@ from google.cloud.spanner_v1._async.streamed import StreamedResultSet
 from google.cloud.spanner_v1._helpers import (
     _augment_error_with_request_id,
     _check_rst_stream_error,
+    _get_read_timestamp,
     _make_execute_sql_request,
     _make_value_pb,
     _merge_client_context,
@@ -1047,8 +1048,12 @@ class _SnapshotBase(_SessionWrapper):
         self, result_set_pb: Union[ResultSet, PartialResultSet]
     ) -> None:
         """Updates the snapshot for the given result set."""
-        if result_set_pb.metadata and result_set_pb.metadata.transaction:
-            self._update_for_transaction_pb(result_set_pb.metadata.transaction)
+        # Check for presence instead of truthiness: the truth value of a
+        # proto-plus message converts every field, including the read
+        # timestamp (see ``_get_read_timestamp``).
+        metadata = result_set_pb.metadata
+        if metadata is not None and metadata._pb.HasField("transaction"):
+            self._update_for_transaction_pb(metadata.transaction)
 
     def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
         """Updates the snapshot for the given transaction."""
@@ -1148,5 +1153,6 @@ class Snapshot(_SnapshotBase):
     def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
         """Updates the snapshot for the given transaction."""
         super(Snapshot, self)._update_for_transaction_pb(transaction_pb)
-        if transaction_pb.read_timestamp is not None:
-            self._transaction_read_timestamp = transaction_pb.read_timestamp
+        read_timestamp = _get_read_timestamp(transaction_pb)
+        if read_timestamp is not None:
+            self._transaction_read_timestamp = read_timestamp
