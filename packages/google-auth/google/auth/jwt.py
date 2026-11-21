@@ -75,6 +75,17 @@ if es is not None:  # pragma: NO COVER
     _ALGORITHM_TO_VERIFIER_CLASS["ES384"] = es.EsVerifier  # type: ignore
 
 
+def _validate_universe_domain(universe_domain):
+    """Raises if the universe domain passed to ``with_universe_domain`` is empty.
+
+    Raises:
+        google.auth.exceptions.InvalidValue: If the universe domain is None,
+            empty, or whitespace-only.
+    """
+    if not universe_domain or not universe_domain.strip():
+        raise exceptions.InvalidValue("Universe domain cannot be empty.")
+
+
 def encode(signer, payload, header=None, key_id=None):
     """Make a signed JWT.
 
@@ -594,6 +605,7 @@ class Credentials(
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
+        _validate_universe_domain(universe_domain)
         cred = self.__class__(
             self._signer,
             issuer=self._issuer,
@@ -602,8 +614,8 @@ class Credentials(
             additional_claims=self._additional_claims,
             token_lifetime=self._token_lifetime,
             quota_project_id=self._quota_project_id,
+            universe_domain=universe_domain,
         )
-        cred._universe_domain = universe_domain
         # RAB state is only valid for the default universe domain, so don't
         # carry cached RAB data over when switching to another universe.
         if cred.universe_domain == google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN:
@@ -887,7 +899,8 @@ class OnDemandCredentials(
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        cred = self.__class__(
+        _validate_universe_domain(universe_domain)
+        return self.__class__(
             self._signer,
             issuer=self._issuer,
             subject=self._subject,
@@ -895,9 +908,8 @@ class OnDemandCredentials(
             token_lifetime=self._token_lifetime,
             max_cache_size=self._cache.maxsize,
             quota_project_id=self._quota_project_id,
+            universe_domain=universe_domain,
         )
-        cred._universe_domain = universe_domain
-        return cred
 
     @property
     def valid(self):

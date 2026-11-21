@@ -856,14 +856,10 @@ class TestCredentials(object):
         assert cloned._quota_project_id == "project-foo"
         assert cloned.universe_domain == FAKE_UNIVERSE_DOMAIN
 
-    @pytest.mark.parametrize("empty_universe", [None, ""])
-    def test_with_universe_domain_falsy(self, empty_universe):
-        self.credentials._rab_manager._data = mock.sentinel.rab_data
-
-        cred = self.credentials.with_universe_domain(empty_universe)
-        assert cred.universe_domain == empty_universe
-        assert cred._rab_manager._data.encoded_locations is None
-        assert cred._rab_manager._data.expiry is None
+    @pytest.mark.parametrize("empty_universe", [None, "", "   "])
+    def test_with_universe_domain_empty_raises(self, empty_universe):
+        with pytest.raises(exceptions.InvalidValue):
+            self.credentials.with_universe_domain(empty_universe)
 
     def test_before_request_with_universe_domain_clears_cached_rab(self, monkeypatch):
         monkeypatch.setenv(
@@ -1219,10 +1215,10 @@ class TestOnDemandCredentials(object):
         assert cloned._quota_project_id == "project-foo"
         assert cloned.universe_domain == FAKE_UNIVERSE_DOMAIN
 
-    @pytest.mark.parametrize("empty_universe", [None, ""])
-    def test_with_universe_domain_falsy(self, empty_universe):
-        cred = self.credentials.with_universe_domain(empty_universe)
-        assert cred.universe_domain == empty_universe
+    @pytest.mark.parametrize("empty_universe", [None, "", "   "])
+    def test_with_universe_domain_empty_raises(self, empty_universe):
+        with pytest.raises(exceptions.InvalidValue):
+            self.credentials.with_universe_domain(empty_universe)
 
     def test_with_claims(self):
         new_claims = {"meep": "moop"}
