@@ -2397,7 +2397,6 @@ class TestAsyncMultiRangeDownloader:
         async def side_effect_dl(pooled_stream, batch, *args, **kwargs):
             if pooled_stream.stream is s1:
                 await s2_overflow_started.wait()
-                await mrd.close()
                 raise DataCorruption(None, "checksum mismatch")
             else:
                 s2_overflow_started.set()
@@ -2418,6 +2417,64 @@ class TestAsyncMultiRangeDownloader:
         assert overflow_batch_cancelled.is_set()
         assert mrd.is_stream_open is False
         assert mrd._pool is None
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_reports_data_corruption_on_one_of_many_streams(
+        self, mock_cls_stream
+    ):
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            MultiStreamConfig,
+        )
+
+        def make_stream(corrupt):
+            s = self._make_mock_stream()
+            requests = asyncio.Queue()
+
+            async def recv():
+                request = await requests.get()
+                if not corrupt:
+                    await asyncio.Event().wait()
+                read_range = request.read_ranges[0]
+                content = b"x" * read_range.read_length
+                return _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=content,
+                                crc32c=google_crc32c.value(content) ^ 1,
+                            ),
+                            range_end=True,
+                            read_range=read_range,
+                        )
+                    ]
+                )
+
+            async def close():
+                await asyncio.sleep(0)  # A real close waits for the server.
+
+            s.send = AsyncMock(side_effect=requests.put)
+            s.recv = AsyncMock(side_effect=recv)
+            s.close = AsyncMock(side_effect=close)
+            return s
+
+        streams = [make_stream(corrupt=False), make_stream(corrupt=True)]
+        mock_cls_stream.side_effect = streams
+        config = MultiStreamConfig(
+            min_streams=2, max_streams=2, target_io_depth=1, target_bytes=10
+        )
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(), "b", "o", multi_stream_config=config
+        )
+
+        with pytest.raises(DataCorruption, match="Checksum mismatch"):
+            await mrd.download_ranges([(0, 10, BytesIO()), (10, 10, BytesIO())])
+
+        assert mrd.is_stream_open is False
+        for s in streams:
+            s.close.assert_awaited()
 
     @pytest.mark.asyncio
     async def test_stream_pool_contiguous_distribution_when_saturated(self):
