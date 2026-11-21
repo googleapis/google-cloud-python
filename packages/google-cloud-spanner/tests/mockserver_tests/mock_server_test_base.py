@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import inspect
 import logging
 import os
 import unittest
@@ -224,6 +225,8 @@ def add_single_result(
     )
 
 
+# TODO: Construct test Database/transport directly instead of relying on
+# enable_interceptors_in_tests=True.
 class MockServerTestBase(unittest.TestCase):
     _interceptors = []
     server: grpc.Server = None
@@ -306,58 +309,13 @@ class MockServerTestBase(unittest.TestCase):
         transaction_type,
         allow_multiple_batch_create=True,
     ):
-        """Assert that the requests sequence matches the expected types, accounting for multiplexed sessions and retries.
-
-        Args:
-            requests: List of requests from spanner_service.requests
-            expected_types: List of expected request types (excluding session creation requests)
-            transaction_type: TransactionType enum value to check multiplexed session status
-            allow_multiple_batch_create: If True, skip all leading BatchCreateSessionsRequest and one optional CreateSessionRequest
-        """
-        mux_enabled = is_multiplexed_enabled(transaction_type)
-        idx = 0
-        # Skip all leading BatchCreateSessionsRequest (for retries)
-        if allow_multiple_batch_create:
-            while (
-                idx < len(requests)
-                and type(requests[idx]).__name__ == "BatchCreateSessionsRequest"
-            ):
-                idx += 1
-            # For multiplexed, optionally skip a CreateSessionRequest
-            if (
-                mux_enabled
-                and idx < len(requests)
-                and type(requests[idx]).__name__ == "CreateSessionRequest"
-            ):
-                idx += 1
-        else:
-            if mux_enabled:
-                self.assertTrue(
-                    type(requests[idx]).__name__ == "BatchCreateSessionsRequest",
-                    f"Expected BatchCreateSessionsRequest at index {idx}, got {type(requests[idx])}",
-                )
-                idx += 1
-                self.assertTrue(
-                    type(requests[idx]).__name__ == "CreateSessionRequest",
-                    f"Expected CreateSessionRequest at index {idx}, got {type(requests[idx])}",
-                )
-                idx += 1
-            else:
-                self.assertTrue(
-                    type(requests[idx]).__name__ == "BatchCreateSessionsRequest",
-                    f"Expected BatchCreateSessionsRequest at index {idx}, got {type(requests[idx])}",
-                )
-                idx += 1
-        # Check the rest of the expected request types
-        for expected_type in expected_types:
-            self.assertTrue(
-                isinstance(requests[idx], expected_type)
-                or type(requests[idx]).__name__ == expected_type.__name__,
-                f"Expected {expected_type} at index {idx}, got {type(requests[idx])}",
-            )
-            idx += 1
-        self.assertEqual(
-            idx, len(requests), f"Expected {idx} requests, got {len(requests)}"
+        """Assert that the requests sequence matches expected types."""
+        _assert_requests_sequence(
+            self,
+            requests,
+            expected_types,
+            transaction_type,
+            allow_multiple_batch_create=allow_multiple_batch_create,
         )
 
     def adjust_request_id_sequence(self, expected_segments, requests, transaction_type):
@@ -399,6 +357,67 @@ class MockServerTestBase(unittest.TestCase):
         return adjusted_segments
 
 
+def _assert_requests_sequence(
+    test_case,
+    requests,
+    expected_types,
+    transaction_type,
+    allow_multiple_batch_create=True,
+):
+    """Assert that requests match expected types, accounting for multiplexed sessions and retries."""
+    mux_enabled = is_multiplexed_enabled(transaction_type)
+    request_index = 0
+    # Skip all leading BatchCreateSessionsRequest (for retries)
+    if allow_multiple_batch_create:
+        while (
+            request_index < len(requests)
+            and type(requests[request_index]).__name__ == "BatchCreateSessionsRequest"
+        ):
+            request_index += 1
+        # For multiplexed, optionally skip a CreateSessionRequest
+        if (
+            mux_enabled
+            and request_index < len(requests)
+            and type(requests[request_index]).__name__ == "CreateSessionRequest"
+        ):
+            request_index += 1
+    else:
+        expected_leading = ["BatchCreateSessionsRequest"]
+        if mux_enabled:
+            expected_leading.append("CreateSessionRequest")
+        for expected_name in expected_leading:
+            test_case.assertLess(
+                request_index,
+                len(requests),
+                f"Expected {expected_name} at index {request_index}, got {requests}",
+            )
+            test_case.assertTrue(
+                type(requests[request_index]).__name__ == expected_name,
+                f"Expected {expected_name} at index {request_index}, got {type(requests[request_index])}",
+            )
+            request_index += 1
+    # Check the rest of the expected request types
+    for expected_type in expected_types:
+        test_case.assertLess(
+            request_index,
+            len(requests),
+            f"Expected {expected_type} at index {request_index}, got only {len(requests)} requests",
+        )
+        test_case.assertTrue(
+            isinstance(requests[request_index], expected_type)
+            or type(requests[request_index]).__name__ == expected_type.__name__,
+            f"Expected {expected_type} at index {request_index}, got {type(requests[request_index])}",
+        )
+        request_index += 1
+    test_case.assertEqual(
+        request_index,
+        len(requests),
+        f"Expected {request_index} requests, got {len(requests)}",
+    )
+
+
+# TODO: Construct test Database/transport directly instead of relying on
+# enable_interceptors_in_tests=True.
 class AsyncMockServerTestBase(unittest.IsolatedAsyncioTestCase):
     server: grpc.Server = None
     spanner_service: SpannerServicer = None
@@ -411,6 +430,7 @@ class AsyncMockServerTestBase(unittest.IsolatedAsyncioTestCase):
         self._client = None
         self._instance = None
         self._database = None
+        self._databases_to_close = []
         self.logger = logging.getLogger("AsyncMockServerTestBase")
         self.logger.setLevel(logging.WARN)
 
@@ -427,35 +447,75 @@ class AsyncMockServerTestBase(unittest.IsolatedAsyncioTestCase):
     def tearDownClass(cls):
         if AsyncMockServerTestBase.server is not None:
             AsyncMockServerTestBase.server.stop(grace=None)
-            from google.cloud.spanner_v1.client import Client as SyncClient
+            from google.cloud.spanner_v1._async.client import Client as AsyncClient
 
-            SyncClient.NTH_CLIENT.reset()
+            AsyncClient.NTH_CLIENT.reset()
             AsyncMockServerTestBase.server = None
 
     async def asyncSetUp(self):
         self._client = None
         self._instance = None
         self._database = None
+        self._databases_to_close = []
         current_service.set(AsyncMockServerTestBase.spanner_service)
 
+    async def _close_database_and_transport(self, database):
+        """Close a database's background session tasks and its gRPC AsyncIO transport."""
+        try:
+            await database.close()
+        finally:
+            spanner_api = getattr(database, "_spanner_api", None)
+            transport = getattr(spanner_api, "transport", None) if spanner_api else None
+            if transport is not None and hasattr(transport, "close"):
+                close_result = transport.close()
+                if inspect.isawaitable(close_result):
+                    await close_result
+
     async def asyncTearDown(self):
-        AsyncMockServerTestBase.spanner_service.clear_requests()
-        AsyncMockServerTestBase.spanner_service.clear_results()
-        AsyncMockServerTestBase.database_admin_service.clear_requests()
+        first_error = None
+        try:
+            for database in reversed(self._databases_to_close):
+                try:
+                    await self._close_database_and_transport(database)
+                except Exception as error:
+                    if first_error is None:
+                        first_error = error
+            self._databases_to_close.clear()
+        finally:
+            AsyncMockServerTestBase.spanner_service.clear_requests()
+            AsyncMockServerTestBase.spanner_service.clear_results()
+            AsyncMockServerTestBase.database_admin_service.clear_requests()
+        if first_error is not None:
+            raise first_error
+
+    def create_client(
+        self,
+        *,
+        disable_builtin_metrics: bool = True,
+        observability_options: dict | None = None,
+        client_options: ClientOptions | None = None,
+        **kwargs,
+    ):
+        """Create an AsyncClient configured against the active mock server."""
+        from google.cloud.spanner_v1._async.client import Client as AsyncClient
+
+        if client_options is None:
+            client_options = ClientOptions(
+                api_endpoint=f"localhost:{AsyncMockServerTestBase.port}",
+            )
+        return AsyncClient(
+            project="p",
+            credentials=AnonymousCredentials(),
+            client_options=client_options,
+            disable_builtin_metrics=disable_builtin_metrics,
+            observability_options=observability_options,
+            **kwargs,
+        )
 
     @property
     def client(self):
-        from google.cloud.spanner_v1._async.client import Client as AsyncClient
-
         if self._client is None:
-            self._client = AsyncClient(
-                project="p",
-                credentials=AnonymousCredentials(),
-                client_options=ClientOptions(
-                    api_endpoint="localhost:" + str(AsyncMockServerTestBase.port),
-                ),
-                disable_builtin_metrics=True,
-            )
+            self._client = self.create_client()
         return self._client
 
     @property
@@ -464,17 +524,63 @@ class AsyncMockServerTestBase(unittest.IsolatedAsyncioTestCase):
             self._instance = self.client.instance("test-instance")
         return self._instance
 
-    @property
-    def database(self):
+    async def create_database(
+        self,
+        database_id: str = "test-database",
+        *,
+        client=None,
+        instance=None,
+        pool=None,
+        enable_interceptors_in_tests: bool = False,
+        interceptors=None,
+        logger: logging.Logger | None = None,
+        **kwargs,
+    ):
+        """Create, bind, and track an async Database for automatic teardown."""
         from google.cloud.spanner_v1._async.pool import FixedSizePool
 
-        if self._database is None:
-            self._database = self.instance.database(
-                "test-database",
-                pool=FixedSizePool(size=10),
-                enable_interceptors_in_tests=False,
-                logger=self.logger,
+        if interceptors is not None and not enable_interceptors_in_tests:
+            raise ValueError(
+                "enable_interceptors_in_tests must be True when interceptors are provided."
             )
+
+        target_instance = instance or (
+            client.instance("test-instance") if client is not None else self.instance
+        )
+        if pool is None:
+            pool = FixedSizePool(size=10)
+
+        if interceptors is not None:
+            from google.cloud.spanner_v1._async.testing.database_test import (
+                TestDatabase,
+            )
+
+            database = TestDatabase(
+                database_id,
+                target_instance,
+                pool=pool,
+                logger=logger or self.logger,
+                **kwargs,
+            )
+            database._interceptors.extend(interceptors)
+            bind_result = database._pool.bind(database)
+            if bind_result is not None:
+                await bind_result
+        else:
+            database = await target_instance.database(
+                database_id,
+                pool=pool,
+                enable_interceptors_in_tests=enable_interceptors_in_tests,
+                logger=logger or self.logger,
+                **kwargs,
+            )
+        self._databases_to_close.append(database)
+        return database
+
+    async def get_database(self):
+        """Return a lazily-created default async Database bound to the mock server."""
+        if self._database is None:
+            self._database = await self.create_database()
         return self._database
 
     def assert_requests_sequence(
@@ -484,56 +590,11 @@ class AsyncMockServerTestBase(unittest.IsolatedAsyncioTestCase):
         transaction_type,
         allow_multiple_batch_create=True,
     ):
-        """Assert that the requests sequence matches the expected types, accounting for multiplexed sessions and retries.
-
-        Args:
-            requests: List of requests from spanner_service.requests
-            expected_types: List of expected request types (excluding session creation requests)
-            transaction_type: TransactionType enum value to check multiplexed session status
-            allow_multiple_batch_create: If True, skip all leading BatchCreateSessionsRequest and one optional CreateSessionRequest
-        """
-        mux_enabled = is_multiplexed_enabled(transaction_type)
-        idx = 0
-        # Skip all leading BatchCreateSessionsRequest (for retries)
-        if allow_multiple_batch_create:
-            while (
-                idx < len(requests)
-                and type(requests[idx]).__name__ == "BatchCreateSessionsRequest"
-            ):
-                idx += 1
-            # For multiplexed, optionally skip a CreateSessionRequest
-            if (
-                mux_enabled
-                and idx < len(requests)
-                and type(requests[idx]).__name__ == "CreateSessionRequest"
-            ):
-                idx += 1
-        else:
-            if mux_enabled:
-                self.assertTrue(
-                    type(requests[idx]).__name__ == "BatchCreateSessionsRequest",
-                    f"Expected BatchCreateSessionsRequest at index {idx}, got {type(requests[idx])}",
-                )
-                idx += 1
-                self.assertTrue(
-                    type(requests[idx]).__name__ == "CreateSessionRequest",
-                    f"Expected CreateSessionRequest at index {idx}, got {type(requests[idx])}",
-                )
-                idx += 1
-            else:
-                self.assertTrue(
-                    type(requests[idx]).__name__ == "BatchCreateSessionsRequest",
-                    f"Expected BatchCreateSessionsRequest at index {idx}, got {type(requests[idx])}",
-                )
-                idx += 1
-        # Check the rest of the expected request types
-        for expected_type in expected_types:
-            self.assertTrue(
-                isinstance(requests[idx], expected_type)
-                or type(requests[idx]).__name__ == expected_type.__name__,
-                f"Expected {expected_type} at index {idx}, got {type(requests[idx])}",
-            )
-            idx += 1
-        self.assertEqual(
-            idx, len(requests), f"Expected {idx} requests, got {len(requests)}"
+        """Assert that the requests sequence matches expected types."""
+        _assert_requests_sequence(
+            self,
+            requests,
+            expected_types,
+            transaction_type,
+            allow_multiple_batch_create=allow_multiple_batch_create,
         )
