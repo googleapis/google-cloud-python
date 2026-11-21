@@ -275,3 +275,81 @@ class TestClientExtra(unittest.IsolatedAsyncioTestCase):
                     AnonymousCredentials(),
                 )
                 set_mock.assert_called_once()
+
+    def test_initialize_metrics_custom_api_endpoint_skips_exporter(self):
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_v1._async import client as MUT
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1._async.client._metrics_monitor_initialized",
+                False,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.CloudMonitoringMetricsExporter"
+            ) as mock_exporter,
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.metrics.set_meter_provider"
+            ) as mock_set_provider,
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.SpannerMetricsTracerFactory"
+            ),
+        ):
+            MUT._initialize_metrics(
+                "project",
+                self.credentials,
+                client_options=ClientOptions(api_endpoint="private-psc.internal:443"),
+            )
+            mock_exporter.assert_not_called()
+            mock_set_provider.assert_called_once()
+            self.assertIsInstance(
+                mock_set_provider.call_args[0][0],
+                MUT.metrics.NoOpMeterProvider,
+            )
+
+    def test_client_passes_resolved_project_credentials_and_universe_domain(self):
+        import os
+
+        from google.cloud.spanner_v1._async import client as MUT
+
+        creds = build_scoped_credentials()
+        creds.project_id = "resolved-async-project"
+        with (
+            mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "false"}),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client._metrics_monitor_initialized",
+                False,
+            ),
+            mock.patch("google.cloud.spanner_v1._async.client.metrics"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.CloudMonitoringMetricsExporter"
+            ) as mock_exporter,
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.PeriodicExportingMetricReader"
+            ),
+            mock.patch("google.cloud.spanner_v1._async.client.MeterProvider"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.SpannerMetricsTracerFactory"
+            ),
+        ):
+            os.environ.pop("GOOGLE_CLOUD_PROJECT", None)
+            os.environ.pop("GCLOUD_PROJECT", None)
+            client = MUT.Client(
+                project=None,
+                credentials=creds,
+                client_options={
+                    "universe_domain": "async.universe",
+                    "api_audience": "https://spanner.async.universe",
+                },
+            )
+            mock_exporter.assert_called_once()
+            _, kwargs = mock_exporter.call_args
+            self.assertEqual(kwargs["project_id"], "resolved-async-project")
+            self.assertIs(kwargs["credentials"], client._credentials)
+            self.assertEqual(kwargs["client_options"].universe_domain, "async.universe")
+            self.assertIsNone(kwargs["client_options"].api_audience)

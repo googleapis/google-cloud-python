@@ -34,6 +34,7 @@ import warnings
 from typing import Optional
 
 import google.api_core.client_options
+import google.api_core.universe
 import grpc
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
@@ -119,7 +120,61 @@ def _get_spanner_log_client_options_env():
     return os.getenv(LOG_CLIENT_OPTIONS_ENV_VAR, "false").lower() == "true"
 
 
-def _initialize_metrics(project, credentials, emulator_host=None):
+def _is_custom_api_endpoint(client_options, universe_domain: str) -> bool:
+    """Return True if ``client_options`` configures a non-default Spanner endpoint.
+
+    When a custom Spanner API endpoint (such as a Private Service Connect,
+    regional, or proxy endpoint) is configured, built-in metrics export to
+    Cloud Monitoring must be skipped to preserve endpoint confinement.
+
+    Args:
+        client_options: Normalized ``ClientOptions`` instance or ``None``.
+        universe_domain: Resolved universe domain (for example,
+            ``"googleapis.com"``).
+
+    Returns:
+        bool: ``True`` if ``api_endpoint`` is set to a non-default Spanner host."""
+    if not client_options or not client_options.api_endpoint:
+        return False
+    endpoint = client_options.api_endpoint.strip().lower()
+    default_host = f"spanner.{universe_domain.lower()}"
+    return endpoint not in (
+        default_host,
+        f"{default_host}:443",
+        f"https://{default_host}",
+        f"https://{default_host}:443",
+    )
+
+
+def _build_monitoring_client_options(client_options):
+    """Build ``ClientOptions`` for Cloud Monitoring from Spanner client options.
+
+    Only propagates options applicable to Cloud Monitoring (``universe_domain``,
+    ``quota_project_id``, and ``client_cert_source``). Spanner-specific or
+    credential-conflicting options (``api_endpoint``, ``api_audience``,
+    ``scopes``, ``credentials_file``, ``api_key``) are intentionally omitted.
+
+    Args:
+        client_options: Normalized ``ClientOptions`` instance or ``None``.
+
+    Returns:
+        Optional[google.api_core.client_options.ClientOptions]: Filtered
+            options for ``CloudMonitoringMetricsExporter``, or ``None``."""
+    if client_options is None:
+        return None
+    monitoring_options = {}
+    if getattr(client_options, "universe_domain", None):
+        monitoring_options["universe_domain"] = client_options.universe_domain
+    if getattr(client_options, "quota_project_id", None):
+        monitoring_options["quota_project_id"] = client_options.quota_project_id
+    if getattr(client_options, "client_cert_source", None):
+        monitoring_options["client_cert_source"] = client_options.client_cert_source
+    if not monitoring_options:
+        return None
+    return google.api_core.client_options.ClientOptions(**monitoring_options)
+
+
+def _initialize_metrics(project, credentials, emulator_host=None, client_options=None):
     """Initializes the Spanner built-in metrics.
 
     This function sets up the OpenTelemetry MeterProvider and the SpannerMetricsTracerFactory.
@@ -130,16 +185,35 @@ def _initialize_metrics(project, credentials, emulator_host=None):
             if not _metrics_monitor_initialized:
                 meter_provider = metrics.NoOpMeterProvider()
                 try:
+                    normalized_options = (
+                        google.api_core.client_options.from_dict(client_options)
+                        if isinstance(client_options, dict)
+                        else client_options
+                    )
+                    universe_domain = google.api_core.universe.determine_domain(
+                        getattr(normalized_options, "universe_domain", None),
+                        os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+                    )
                     if (
                         not _get_spanner_emulator_host()
                         and (not emulator_host)
                         and (not isinstance(credentials, AnonymousCredentials))
+                        and (
+                            not _is_custom_api_endpoint(
+                                normalized_options, universe_domain
+                            )
+                        )
                     ):
+                        monitoring_client_options = _build_monitoring_client_options(
+                            normalized_options
+                        )
                         meter_provider = MeterProvider(
                             metric_readers=[
                                 PeriodicExportingMetricReader(
                                     CloudMonitoringMetricsExporter(
-                                        project_id=project, credentials=credentials
+                                        project_id=project,
+                                        credentials=credentials,
+                                        client_options=monitoring_client_options,
                                     ),
                                     export_interval_millis=METRIC_EXPORT_INTERVAL_MS,
                                 )
@@ -367,7 +441,12 @@ class Client(ClientWithProject):
             and (not disable_builtin_metrics)
             and HAS_GOOGLE_CLOUD_MONITORING_INSTALLED
         ):
-            _initialize_metrics(project, credentials, self._emulator_host)
+            _initialize_metrics(
+                self.project,
+                self._credentials,
+                self._emulator_host,
+                client_options=self._client_options,
+            )
         else:
             SpannerMetricsTracerFactory(enabled=False)
         self._route_to_leader_enabled = route_to_leader_enabled
