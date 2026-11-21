@@ -1415,6 +1415,59 @@ class TestAsyncMultiRangeDownloader:
         assert initial_state["full_obj_server_crc32c"] == 999
 
     @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("length", [0, 18])
+    async def test_download_ranges_full_object_read_without_object_crc32c_hashes_once(
+        self, mock_cls_async_read_object_stream, mock_random_int, length
+    ):
+        # Unfinalized objects, and MRDs opened with a read handle, have no
+        # object CRC32C to check a rolling checksum against.
+        data = b"these_are_18_chars"
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_mrd.persisted_size = len(data)
+        mock_mrd.full_obj_server_crc32c = None
+        mock_random_int.side_effect = [456]
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(
+            side_effect=[
+                _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data, crc32c=google_crc32c.value(data)
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=0, read_length=len(data), read_id=456
+                            ),
+                        )
+                    ]
+                ),
+                None,
+            ]
+        )
+        buffer = BytesIO()
+
+        with (
+            mock.patch.object(
+                google_crc32c, "value", wraps=google_crc32c.value
+            ) as value,
+            mock.patch.object(
+                google_crc32c.Checksum, "update", autospec=True
+            ) as update,
+        ):
+            await mock_mrd.download_ranges([(0, length, buffer)])
+
+        assert buffer.getvalue() == data
+        value.assert_called_once_with(data)
+        update.assert_not_called()
+
+    @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader._ReadResumptionStrategy"
     )
     @mock.patch(

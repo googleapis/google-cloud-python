@@ -606,13 +606,17 @@ class AsyncMultiRangeDownloader:
                 # Unpack tuple into self-documenting variable names to improve readability.
                 offset, length, user_buffer = read_range
 
-                # Heuristic to detect full object reads:
+                # Heuristic to detect full object reads, which are checked
+                # against the object's CRC32C (sent for finalized objects only):
                 # - Implicit full object read: start offset is 0 and length is 0 (read all).
                 # - Explicit full object read: start offset is 0 and length matches the exact persisted size.
-                is_full_object_read = (offset == 0 and length == 0) or (
-                    self.persisted_size is not None
-                    and offset == 0
-                    and length == self.persisted_size
+                is_full_object_read = self.full_obj_server_crc32c is not None and (
+                    (offset == 0 and length == 0)
+                    or (
+                        self.persisted_size is not None
+                        and offset == 0
+                        and length == self.persisted_size
+                    )
                 )
                 download_states[read_id] = _DownloadState(
                     initial_offset=offset,
