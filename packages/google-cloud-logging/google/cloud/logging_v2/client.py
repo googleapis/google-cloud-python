@@ -19,6 +19,7 @@ import os
 import sys
 
 import google.api_core.client_options
+import google.api_core.universe
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 
@@ -118,6 +119,14 @@ class Client(ClientWithProject):
                 Client options used to set user options
                 on the client. API Endpoint should be set through client_options.
         """
+        if isinstance(client_options, dict):
+            client_options = google.api_core.client_options.from_dict(client_options)
+
+        self._universe_domain = google.api_core.universe.determine_domain(
+            getattr(client_options, "universe_domain", None),
+            os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        )
+
         super(Client, self).__init__(
             project=project,
             credentials=credentials,
@@ -126,14 +135,8 @@ class Client(ClientWithProject):
         )
 
         kw_args = {"client_info": client_info}
-        if client_options:
-            if isinstance(client_options, dict):
-                client_options = google.api_core.client_options.from_dict(
-                    client_options
-                )
-            if client_options.api_endpoint:
-                api_endpoint = client_options.api_endpoint
-                kw_args["api_endpoint"] = api_endpoint
+        if client_options and client_options.api_endpoint:
+            kw_args["api_endpoint"] = client_options.api_endpoint
 
         self._connection = Connection(self, **kw_args)
         if client_info is None:
@@ -149,6 +152,15 @@ class Client(ClientWithProject):
             self._use_grpc = _use_grpc
 
         self._handlers = set()
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used by the client instance.
+        """
+        return self._universe_domain
 
     @property
     def logging_api(self):
