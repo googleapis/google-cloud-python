@@ -7,7 +7,16 @@
 import os
 
 from asgiref.sync import sync_to_async
+from django.db import IntegrityError, OperationalError, ProgrammingError
 from django.db.backends.base.base import BaseDatabaseWrapper
+from google.api_core.exceptions import (
+    AlreadyExists,
+    FailedPrecondition,
+    GoogleAPICallError,
+    InternalServerError,
+    InvalidArgument,
+    OutOfRange,
+)
 from google.cloud import spanner, spanner_dbapi
 
 from .client import DatabaseClient
@@ -182,6 +191,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         conn_params.pop("instance", None)
         conn_params.pop("instance_id", None)
         conn_params.pop("client", None)
+        conn_params.pop("batch_ddl", None)
         # Ensure client is initialized
         instance = self.instance
         return self.Database.connect(
@@ -209,12 +219,33 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         """
         return self.connection.cursor()
 
+    def flush_ddl_batch(self):
+        """Flush any DDL statements buffered on the underlying DB-API connection."""
+        if self.connection is not None and not self.connection.autocommit:
+            try:
+                self.connection.run_prior_DDL_statements()
+            except (AlreadyExists, FailedPrecondition, OutOfRange) as exc:
+                raise IntegrityError(getattr(exc, "details", exc)) from exc
+            except InvalidArgument as exc:
+                raise ProgrammingError(getattr(exc, "details", exc)) from exc
+            except (InternalServerError, GoogleAPICallError) as exc:
+                raise OperationalError(getattr(exc, "details", exc)) from exc
+            finally:
+                if self.autocommit:
+                    self.connection.autocommit = True
+
     def _set_autocommit(self, autocommit):
         """Set the Spanner transaction autocommit flag.
 
         :type autocommit: bool
         :param autocommit: The new value of the autocommit flag.
         """
+        if not autocommit and self.autocommit and not self.connection.autocommit:
+            # If DatabaseSchemaEditor set DB-API autocommit=False to buffer
+            # DDL statements while Django's autocommit remained True, flush
+            # the buffered DDLs via run_prior_DDL_statements() before disabling
+            # autocommit via transaction.set_autocommit(False).
+            self.flush_ddl_batch()
         with self.wrap_database_errors:
             self.connection.autocommit = autocommit
 
@@ -244,6 +275,10 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         """
         Start a transaction explicitly in autocommit mode.
         """
+        if self.autocommit and not self.connection.autocommit:
+            # Flush any DDLs buffered by DatabaseSchemaEditor before starting
+            # an explicit transaction block (e.g., transaction.atomic()).
+            self.flush_ddl_batch()
         if self.allow_transactions_in_auto_commit:
             self.connection.cursor().execute("BEGIN")
         else:
