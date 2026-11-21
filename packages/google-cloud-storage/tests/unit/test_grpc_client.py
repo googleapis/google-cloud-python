@@ -33,9 +33,7 @@ def _hermetic_env(monkeypatch):
 
 def _make_credentials(spec=None):
     if spec is None:
-        return mock.Mock(
-            spec=auth_credentials.Credentials, universe_domain="googleapis.com"
-        )
+        return mock.Mock(spec=auth_credentials.Credentials)
     return mock.Mock(spec=spec)
 
 
@@ -406,43 +404,19 @@ class TestGrpcClient(unittest.TestCase):
                 channel=mock_transport_cls.create_channel.return_value,
             )
 
-    @mock.patch("google.auth.default")
     @mock.patch("google.cloud._storage_v2.StorageClient")
-    def test_universe_domain_validation_errors(
-        self, mock_storage_client, mock_auth_default
-    ):
+    def test_empty_universe_domain_error(self, mock_storage_client):
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
-        other_creds = _make_credentials()
-        other_creds.universe_domain = "example.com"
-        mock_auth_default.return_value = (other_creds, "test-project")
 
-        with self.assertRaisesRegex(ValueError, "example.com"):
-            grpc_client.GrpcClient(project="test-project", credentials=other_creds)
-        with self.assertRaisesRegex(ValueError, "example.com"):
-            grpc_client.GrpcClient(project="test-project")
         with self.assertRaisesRegex(
             ValueError, "Universe Domain cannot be an empty string"
         ):
             grpc_client.GrpcClient(
                 project="test-project",
-                credentials=other_creds,
+                credentials=_make_credentials(),
                 client_options={"universe_domain": ""},
             )
-
-        # Credentials that expose no usable universe domain must not be accepted
-        # in a non-default universe.
-        missing_universe_creds = _make_credentials()
-        del missing_universe_creds.universe_domain
-        none_universe_creds = _make_credentials()
-        none_universe_creds.universe_domain = None
-        for creds in (missing_universe_creds, none_universe_creds):
-            with self.assertRaisesRegex(ValueError, "does not match"):
-                grpc_client.GrpcClient(
-                    project="test-project",
-                    credentials=creds,
-                    client_options={"universe_domain": "example.com"},
-                )
         mock_transport_cls.create_channel.assert_not_called()
 
     @mock.patch("google.api_core.grpc_helpers.create_channel")

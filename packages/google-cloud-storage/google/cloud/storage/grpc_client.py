@@ -17,7 +17,6 @@
 import os
 
 from google.api_core import universe
-from google.auth import credentials as auth_credentials
 from google.cloud.client import ClientWithProject
 
 from google.cloud import _storage_v2 as storage_v2
@@ -112,18 +111,6 @@ def _resolve_grpc_config(
     )
 
 
-def _validate_universe_domain(universe_domain: str, credentials) -> None:
-    """Raises UniverseMismatchError unless the credentials belong to ``universe_domain``.
-
-    Credentials that do not expose a universe domain are treated as
-    ``googleapis.com``, so they are rejected in any other universe.
-    """
-    if credentials is not None and not isinstance(
-        credentials, auth_credentials.AnonymousCredentials
-    ):
-        universe.compare_domains(universe_domain, credentials)
-
-
 class GrpcClient(ClientWithProject):
     """A client for interacting with Google Cloud Storage using the gRPC API.
 
@@ -215,13 +202,9 @@ class GrpcClient(ClientWithProject):
         elif api_key:
             client_options.api_key = api_key
 
-        effective_credentials = (
-            credentials
-            if credentials is not None
-            else getattr(self, "_credentials", None)
-        )
+        self._universe_domain = _resolve_universe_domain(client_options)
         self._grpc_client = self._create_gapic_client(
-            credentials=effective_credentials,
+            credentials=credentials,
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
@@ -263,7 +246,6 @@ class GrpcClient(ClientWithProject):
             attempt_direct_path,
             attempt_direct_path_xds_over_interconnect,
         )
-        _validate_universe_domain(self._universe_domain, credentials)
 
         transport_cls = storage_v2.StorageClient.get_transport_class("grpc")
         channel_kwargs = {

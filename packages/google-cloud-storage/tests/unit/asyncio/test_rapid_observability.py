@@ -89,7 +89,7 @@ def mock_client():
     """Create an AsyncGrpcClient with a mocked underlying GAPIC client."""
     with mock.patch("google.cloud._storage_v2.StorageAsyncClient"):
         client = async_grpc_client.AsyncGrpcClient(
-            credentials=mock.Mock(universe_domain="googleapis.com"),
+            credentials=mock.Mock(),
         )
         client._grpc_client = mock.AsyncMock()
         # Pre-populate ACO bucket metadata cache for Rapid Storage bucket verification
@@ -961,7 +961,7 @@ async def test_async_grpc_client_tracing_coexists_with_metrics_and_interconnect_
         ),
     ):
         client = async_grpc_client.AsyncGrpcClient(
-            credentials=mock.Mock(universe_domain="googleapis.com"),
+            credentials=mock.Mock(),
             attempt_direct_path_xds_over_interconnect=True,
             enable_metrics=True,
             enable_debug_metrics=True,

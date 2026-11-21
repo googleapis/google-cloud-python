@@ -35,9 +35,7 @@ def _hermetic_env(monkeypatch):
 
 def _make_credentials(spec=None):
     if spec is None:
-        return mock.Mock(
-            spec=auth_credentials.Credentials, universe_domain="googleapis.com"
-        )
+        return mock.Mock(spec=auth_credentials.Credentials)
     return mock.Mock(spec=spec)
 
 
@@ -721,44 +719,18 @@ class TestAsyncGrpcClient:
             channel=mock_transport_cls.create_channel.return_value,
         )
 
-    @mock.patch("google.auth.default")
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
-    def test_universe_domain_validation_errors(
-        self, mock_async_storage_client, mock_auth_default
-    ):
+    def test_empty_universe_domain_error(self, mock_async_storage_client):
         mock_transport_cls = mock.MagicMock()
         mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
-        other_creds = _make_credentials()
-        other_creds.universe_domain = "example.com"
-        mock_auth_default.return_value = (other_creds, "test-project")
 
-        with pytest.raises(ValueError, match="example.com"):
-            async_grpc_client.AsyncGrpcClient(credentials=other_creds)
-        with pytest.raises(ValueError, match="example.com"):
-            async_grpc_client.AsyncGrpcClient()
         with pytest.raises(
             ValueError, match="Universe Domain cannot be an empty string"
         ):
             async_grpc_client.AsyncGrpcClient(
-                credentials=other_creds,
+                credentials=_make_credentials(),
                 client_options=client_options.ClientOptions(universe_domain=""),
             )
-        mock_auth_default.assert_called_once_with(
-            default_scopes=mock_transport_cls.AUTH_SCOPES
-        )
-
-        # Credentials that expose no usable universe domain must not be accepted
-        # in a non-default universe.
-        missing_universe_creds = _make_credentials()
-        del missing_universe_creds.universe_domain
-        none_universe_creds = _make_credentials()
-        none_universe_creds.universe_domain = None
-        for creds in (missing_universe_creds, none_universe_creds):
-            with pytest.raises(ValueError, match="does not match"):
-                async_grpc_client.AsyncGrpcClient(
-                    credentials=creds,
-                    client_options={"universe_domain": "example.com"},
-                )
         mock_transport_cls.create_channel.assert_not_called()
 
     @pytest.mark.parametrize(
