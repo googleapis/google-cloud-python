@@ -5639,6 +5639,7 @@ class Test_Blob(unittest.TestCase):
         expected_i_s_g_n_m = kw.get("if_source_generation_not_match")
         expected_i_s_m_m = kw.get("if_source_metageneration_match")
         expected_i_s_m_n_m = kw.get("if_source_metageneration_not_match")
+        expected_client = kw.get("client")
         expected_timeout = kw.get("timeout", self._get_default_timeout())
         expected_retry = kw.get("retry", DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
@@ -5648,6 +5649,7 @@ class Test_Blob(unittest.TestCase):
 
         call1 = mock.call(
             blob,
+            client=expected_client,
             if_generation_match=expected_i_g_m,
             if_generation_not_match=expected_i_g_n_m,
             if_metageneration_match=expected_i_m_m,
@@ -5662,6 +5664,7 @@ class Test_Blob(unittest.TestCase):
         call2 = mock.call(
             blob,
             token=rewrite_token,
+            client=expected_client,
             if_generation_match=expected_i_g_m,
             if_generation_not_match=expected_i_g_n_m,
             if_metageneration_match=expected_i_m_m,
@@ -5674,6 +5677,10 @@ class Test_Blob(unittest.TestCase):
             retry=expected_retry,
         )
         blob.rewrite.assert_has_calls([call1, call2])
+
+    def test_update_storage_class_multi_pass_w_client(self):
+        client = mock.Mock(spec=[])
+        self._update_storage_class_multi_pass_helper(client=client)
 
     def test_update_storage_class_multi_pass_w_defaults(self):
         self._update_storage_class_multi_pass_helper()
@@ -5748,6 +5755,7 @@ class Test_Blob(unittest.TestCase):
         expected_i_s_g_n_m = kw.get("if_source_generation_not_match")
         expected_i_s_m_m = kw.get("if_source_metageneration_match")
         expected_i_s_m_n_m = kw.get("if_source_metageneration_not_match")
+        expected_client = kw.get("client")
         expected_timeout = kw.get("timeout", self._get_default_timeout())
         expected_retry = kw.get("retry", DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
@@ -5757,6 +5765,7 @@ class Test_Blob(unittest.TestCase):
 
         blob.rewrite.assert_called_once_with(
             blob,
+            client=expected_client,
             if_generation_match=expected_i_g_m,
             if_generation_not_match=expected_i_g_n_m,
             if_metageneration_match=expected_i_m_m,
@@ -5768,6 +5777,10 @@ class Test_Blob(unittest.TestCase):
             timeout=expected_timeout,
             retry=expected_retry,
         )
+
+    def test_update_storage_class_single_pass_w_client(self):
+        client = mock.Mock(spec=[])
+        self._update_storage_class_single_pass_helper(client=client)
 
     def test_update_storage_class_single_pass_w_defaults(self):
         self._update_storage_class_single_pass_helper()
@@ -5846,6 +5859,7 @@ class Test_Blob(unittest.TestCase):
 
         blob.rewrite.assert_called_once_with(
             blob,
+            client=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
