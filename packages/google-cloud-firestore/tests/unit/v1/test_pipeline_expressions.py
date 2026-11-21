@@ -22,11 +22,19 @@ import google.cloud.firestore_v1.pipeline_expressions as expr
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1._helpers import GeoPoint
 from google.cloud.firestore_v1.pipeline_expressions import (
+    AggregateFunction,
     BooleanExpression,
     Constant,
     Expression,
     Field,
     Ordering,
+    Rank,
+    WindowFunction,
+)
+from google.cloud.firestore_v1.pipeline_types import (
+    DocumentWindowFrame,
+    RangeWindowFrame,
+    WindowBound,
 )
 from google.cloud.firestore_v1.types import document as document_pb
 from google.cloud.firestore_v1.types import query as query_pb
@@ -2262,3 +2270,58 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.array_index_of_all(Constant.of('comedy'))"
         infix_instance = arg1.array_index_of_all(value)
         assert infix_instance == instance
+
+
+class TestWindowExpressions:
+    def test_window_function_hierarchy(self):
+        assert issubclass(AggregateFunction, WindowFunction)
+        assert not issubclass(Expression, WindowFunction)
+        assert not hasattr(Field.of("rating"), "over")
+
+    def test_over_repr_and_equality(self):
+        agg = Field.of("rating").sum()
+        frame = DocumentWindowFrame(1, WindowBound.CURRENT)
+        win_fn = agg.over(frame)
+        assert isinstance(win_fn, WindowFunction)
+        assert not isinstance(win_fn, AggregateFunction)
+        assert (
+            repr(win_fn)
+            == "Field.of('rating').sum().over(DocumentWindowFrame(preceding=1, following=<WindowBound.CURRENT: 'current'>))"
+        )
+        assert win_fn == agg.over(DocumentWindowFrame(1, WindowBound.CURRENT))
+        assert win_fn != agg.over(RangeWindowFrame(1, WindowBound.CURRENT))
+        assert win_fn != agg
+
+    def test_over_chained_raises(self):
+        agg = Field.of("rating").sum()
+        frame = DocumentWindowFrame(1, WindowBound.CURRENT)
+        win_fn = agg.over(frame)
+        with pytest.raises(
+            TypeError,
+            match="Cannot call over\\(\\) on a WindowFunction that already has a window frame",
+        ):
+            win_fn.over(frame)
+
+    def test_over_to_pb(self):
+        agg = Field.of("rating").sum()
+        doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
+        doc_pb = agg.over(doc_frame)._to_pb()
+        assert doc_pb.function_value.name == "over"
+        assert list(doc_pb.function_value.args) == [
+            agg._to_pb(),
+            Value(map_value={"fields": {"documents": doc_frame._to_pb()}}),
+        ]
+
+        range_frame = RangeWindowFrame(-5, 5, "day")
+        range_pb = agg.over(range_frame)._to_pb()
+        assert range_pb.function_value.name == "over"
+        assert list(range_pb.function_value.args) == [
+            agg._to_pb(),
+            Value(map_value={"fields": {"range": range_frame._to_pb()}}),
+        ]
+
+    def test_rank(self):
+        rank = Rank()
+        assert isinstance(rank, WindowFunction)
+        assert repr(rank) == "Rank()"
+        assert rank._to_pb() == Value(function_value={"name": "rank", "args": []})
