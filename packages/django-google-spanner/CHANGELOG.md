@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/django-google-spanner/#history
 
+## [5.2.2](https://github.com/googleapis/google-cloud-python/compare/django-google-spanner-v5.2.1...django-google-spanner-v5.2.2) (2026-11-21)
+
+
+### Bug Fixes
+
+* **django-google-spanner:** harden identifier quoting ([#19069](https://github.com/googleapis/google-cloud-python/issues/19069)) ([f896935](https://github.com/googleapis/google-cloud-python/commit/f896935dd61e873bef8dea02c4fd59e200a94f4d))
+* **django-google-spanner:** support CheckConstraint.validate() queries ([#19098](https://github.com/googleapis/google-cloud-python/issues/19098)) ([b6a090d](https://github.com/googleapis/google-cloud-python/commit/b6a090df22da37248f4a0cf3647a64ebce9123a7))
+* **django-google-spanner:** support JSONField read and write operations ([#19007](https://github.com/googleapis/google-cloud-python/issues/19007)) ([e92588b](https://github.com/googleapis/google-cloud-python/commit/e92588b50511c06fdb082652e70ec520822364cf))
+* **django-google-spanner:** use unquoted table names for OpenTelemetry model_name attributes ([#19096](https://github.com/googleapis/google-cloud-python/issues/19096)) ([58ae904](https://github.com/googleapis/google-cloud-python/commit/58ae904f323a91876b32cc1171aeb008b92cb972))
+
 ## [5.2.1](https://github.com/googleapis/google-cloud-python/compare/django-google-spanner-v5.2.0...django-google-spanner-v5.2.1) (2026-11-12)
 
 
