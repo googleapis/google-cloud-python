@@ -20,10 +20,7 @@ from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1._async.database import Database
 from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE
-from google.cloud.spanner_v1.services.spanner.transports import (
-    SpannerGrpcTransport,
-    SpannerTransport,
-)
+from google.cloud.spanner_v1.services.spanner.transports import SpannerTransport
 
 if CrossSync.is_async:
     from google.cloud.spanner_v1._async.testing.interceptors import (
@@ -38,8 +35,14 @@ if CrossSync.is_async:
     from google.cloud.spanner_v1.services.spanner.async_client import (
         SpannerAsyncClient as SpannerClient,
     )
+    from google.cloud.spanner_v1.services.spanner.transports.grpc_asyncio import (
+        SpannerGrpcAsyncIOTransport as SpannerGrpcTransport,
+    )
 else:
     from google.cloud.spanner_v1.services.spanner.client import SpannerClient
+    from google.cloud.spanner_v1.services.spanner.transports.grpc import (
+        SpannerGrpcTransport,
+    )
     from google.cloud.spanner_v1.testing.interceptors import (
         MethodAbortInterceptor,
         MethodCountInterceptor,
@@ -49,6 +52,28 @@ else:
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.testing.database_test"
 
 
+if CrossSync.is_async:
+
+    def _attach_async_interceptors(channel, interceptors):
+        """Attach multi-interface async interceptors to all matching gRPC channel lists.
+
+        grpc.aio.Channel.__init__ uses an if/elif chain on interceptor base classes,
+        so an interceptor implementing both UnaryUnaryClientInterceptor and
+        UnaryStreamClientInterceptor would otherwise only be attached to unary-unary.
+        """
+        for interceptor in interceptors:
+            if isinstance(interceptor, grpc.aio.UnaryUnaryClientInterceptor):
+                channel._unary_unary_interceptors.append(interceptor)
+            if isinstance(interceptor, grpc.aio.UnaryStreamClientInterceptor):
+                channel._unary_stream_interceptors.append(interceptor)
+            if isinstance(interceptor, grpc.aio.StreamUnaryClientInterceptor):
+                channel._stream_unary_interceptors.append(interceptor)
+            if isinstance(interceptor, grpc.aio.StreamStreamClientInterceptor):
+                channel._stream_stream_interceptors.append(interceptor)
+
+
+# TODO: Remove TestDatabase and enable_interceptors_in_tests after migrating
+# mockserver, system, and unit tests to direct test transports.
 class TestDatabase(Database):
     """Representation of a Cloud Spanner Database. This class is only used for
     system testing as there is no support for interceptors in grpc client
@@ -68,6 +93,7 @@ class TestDatabase(Database):
         database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
         database_role=None,
         enable_drop_protection=False,
+        proto_descriptors=None,
     ):
         super().__init__(
             database_id,
@@ -79,6 +105,7 @@ class TestDatabase(Database):
             database_dialect,
             database_role,
             enable_drop_protection,
+            proto_descriptors,
         )
 
         self._method_count_interceptor = MethodCountInterceptor()
@@ -95,21 +122,19 @@ class TestDatabase(Database):
             client = self._instance._client
             client_info = client._client_info
             client_options = client._client_options
+            if (
+                not hasattr(self, "_x_goog_request_id_interceptor")
+                or self._x_goog_request_id_interceptor is None
+            ):
+                self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
+            if self._x_goog_request_id_interceptor not in self._interceptors:
+                self._interceptors.append(self._x_goog_request_id_interceptor)
             if self._instance.emulator_host is not None:
                 if CrossSync.is_async:
-                    self._x_goog_request_id_interceptor = (
-                        XGoogRequestIDHeaderInterceptor()
-                    )
-                    self._interceptors.append(self._x_goog_request_id_interceptor)
-                    channel = grpc.aio.insecure_channel(
-                        self._instance.emulator_host, interceptors=self._interceptors
-                    )
+                    channel = grpc.aio.insecure_channel(self._instance.emulator_host)
+                    _attach_async_interceptors(channel, self._interceptors)
                 else:
                     channel = grpc.insecure_channel(self._instance.emulator_host)
-                    self._x_goog_request_id_interceptor = (
-                        XGoogRequestIDHeaderInterceptor()
-                    )
-                    self._interceptors.append(self._x_goog_request_id_interceptor)
                     channel = grpc.intercept_channel(channel, *self._interceptors)
 
                 transport = SpannerGrpcTransport(channel=channel)
@@ -119,9 +144,6 @@ class TestDatabase(Database):
                 )
                 return self._spanner_api
             if getattr(client, "instance_type", None) == "omni":
-                self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
-                self._interceptors.append(self._x_goog_request_id_interceptor)
-
                 from google.cloud.spanner_v1._async._helpers import (
                     _create_spanner_omni_transport as _create_spanner_omni_transport_async,
                 )
@@ -137,8 +159,11 @@ class TestDatabase(Database):
                         client._ca_certificate,
                         client._client_certificate,
                         client._client_key,
-                        self._interceptors,
+                        None,
                         credentials=client.credentials,
+                    )
+                    _attach_async_interceptors(
+                        transport.grpc_channel, self._interceptors
                     )
                 else:
                     transport = _create_spanner_omni_transport_sync(
@@ -181,8 +206,8 @@ class TestDatabase(Database):
                 default_scopes=SpannerTransport.AUTH_SCOPES,
                 scopes=client_options.scopes,
                 default_host=SpannerTransport.DEFAULT_HOST,
-                interceptors=self._interceptors,
             )
+            _attach_async_interceptors(channel, self._interceptors)
         else:
             channel = grpc_helpers.create_channel(
                 api_endpoint,
