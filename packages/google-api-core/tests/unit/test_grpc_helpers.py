@@ -373,8 +373,13 @@ def test_wrap_errors_streaming(wrap_stream_errors):
     [
         (None, "example.com:443", "example.com:443"),
         (False, "example.com:443", "example.com:443"),
-        (True, "example.com:443", "google-c2p:///example.com"),
-        (True, "dns:///example.com", "google-c2p:///example.com"),
+        (True, "example.com:443", "example.com:443"),
+        (True, "example.googleapis.com:443", "google-c2p:///example.googleapis.com"),
+        (
+            True,
+            "dns:///example.googleapis.com",
+            "google-c2p:///example.googleapis.com",
+        ),
         (True, "another-c2p:///example.com", "another-c2p:///example.com"),
     ],
 )
@@ -415,8 +420,13 @@ def test_create_channel_implicit(
     [
         (None, "example.com:443", "example.com:443"),
         (False, "example.com:443", "example.com:443"),
-        (True, "example.com:443", "google-c2p:///example.com"),
-        (True, "dns:///example.com", "google-c2p:///example.com"),
+        (True, "example.com:443", "example.com:443"),
+        (True, "example.googleapis.com:443", "google-c2p:///example.googleapis.com"),
+        (
+            True,
+            "dns:///example.googleapis.com",
+            "google-c2p:///example.googleapis.com",
+        ),
         (True, "another-c2p:///example.com", "another-c2p:///example.com"),
     ],
 )
@@ -503,8 +513,15 @@ def test_create_channel_implicit_with_ssl_creds(
     )
 
 
-def test_create_channel_implicit_with_ssl_creds_attempt_direct_path_true():
-    target = "example.com:443"
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+def test_create_channel_implicit_with_ssl_creds_attempt_direct_path_true(
+    google_auth_default,
+):
+    target = "example.googleapis.com:443"
     ssl_creds = grpc.ssl_channel_credentials()
     with pytest.raises(
         ValueError, match="Using ssl_credentials with Direct Path is not supported"
@@ -512,6 +529,7 @@ def test_create_channel_implicit_with_ssl_creds_attempt_direct_path_true():
         grpc_helpers.create_channel(
             target, ssl_credentials=ssl_creds, attempt_direct_path=True
         )
+    google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
 
 
 @mock.patch("grpc.compute_engine_channel_credentials")
@@ -1442,5 +1460,437 @@ def test_create_channel_interconnect_gated_by_attempt_direct_path(
     grpc_secure_channel.assert_called_with(
         "google-c2p:///storage-direct.googleapis.com",
         compute_creds,
+        compression=None,
+    )
+
+
+@pytest.mark.parametrize(
+    "target,expected",
+    [
+        ("storage.googleapis.com:443", True),
+        ("storage.googleapis.com", True),
+        ("googleapis.com:443", True),
+        ("googleapis.com", True),
+        ("storage-direct.googleapis.com:443", True),
+        ("us-east1-pubsub.googleapis.com:443", True),
+        ("storage.mtls.googleapis.com:443", True),
+        ("storage.mtls.sandbox.googleapis.com:443", True),
+        ("a.googleapis.com:443", True),
+        ("STORAGE.GOOGLEAPIS.COM:443", True),
+        ("dns:///storage.googleapis.com:443", True),
+        ("https://storage.googleapis.com:443/v1", True),
+        ("http://storage.googleapis.com:443", True),
+        ("google-c2p:///storage-direct.googleapis.com?force-xds", True),
+        ("storage.universe.domain:443", False),
+        ("dns:///storage.universe.domain:443", False),
+        ("https://storage.universe.domain:443", False),
+        ("google-c2p:///storage.universe.domain", False),
+        ("evilgoogleapis.com:443", False),
+        ("storage.googleapis.com.universe.domain:443", False),
+        (".googleapis.com:443", False),
+        ("-direct.googleapis.com:443", False),
+        ("storage-.googleapis.com:443", False),
+        ("a..b.googleapis.com:443", False),
+        ("https://?.googleapis.com", False),
+        ("[invalid.googleapis.com", False),
+        ("user@storage.googleapis.com:443", False),
+        ("storage.universe.domain:443@storage.googleapis.com", False),
+        ("storage.googleapis.com#universe.domain", False),
+        ("another-c2p:///storage.googleapis.com", False),
+        ("[::1]:8080", False),
+        ("", False),
+    ],
+)
+def test__is_googleapis_host(target, expected):
+    assert grpc_helpers._is_googleapis_host(target) is expected
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("grpc.metadata_call_credentials")
+@mock.patch("google.auth.transport.grpc.AuthMetadataPlugin")
+@mock.patch(
+    "google.auth.transport.requests.Request",
+    autospec=True,
+    return_value=mock.sentinel.Request,
+)
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+def test__create_composite_credentials_and_legacy_auth_metadata_plugin(
+    google_auth_default,
+    request_cls,
+    auth_metadata_plugin,
+    metadata_call_creds,
+    compute_engine_creds,
+):
+    plugin_instance = mock.sentinel.plugin
+    auth_metadata_plugin.side_effect = [
+        TypeError("unexpected keyword argument 'suppress_metrics_header'"),
+        plugin_instance,
+    ]
+
+    result = grpc_helpers._create_composite_credentials(
+        default_host="pubsub.googleapis.com"
+    )
+
+    assert result is compute_engine_creds.return_value
+    google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
+    assert auth_metadata_plugin.call_count == 2
+    auth_metadata_plugin.assert_has_calls(
+        [
+            mock.call(
+                mock.sentinel.credentials,
+                mock.sentinel.Request,
+                default_host="pubsub.googleapis.com",
+                suppress_metrics_header=True,
+            ),
+            mock.call(
+                mock.sentinel.credentials,
+                mock.sentinel.Request,
+                default_host="pubsub.googleapis.com",
+            ),
+        ]
+    )
+    metadata_call_creds.assert_called_once_with(plugin_instance)
+
+
+@pytest.mark.parametrize(
+    "target",
+    [
+        "storage.universe.domain:443",
+        "dns:///storage.universe.domain:443",
+        "evilgoogleapis.com:443",
+        "storage.googleapis.com.universe.domain:443",
+    ],
+)
+@pytest.mark.parametrize(
+    "attempt_direct_path,attempt_interconnect,env_val",
+    [
+        (True, None, None),
+        (True, True, None),
+        (False, True, None),
+        (True, None, "true"),
+    ],
+)
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("grpc.secure_channel")
+def test_create_channel_disables_direct_path_for_non_googleapis_target(
+    grpc_secure_channel,
+    compute_engine_creds_call,
+    ssl_creds_call,
+    monkeypatch,
+    target,
+    attempt_direct_path,
+    attempt_interconnect,
+    env_val,
+):
+    if env_val is None:
+        monkeypatch.delenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, raising=False)
+    else:
+        monkeypatch.setenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, env_val)
+
+    creds = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+    creds.universe_domain = "googleapis.com"
+
+    grpc_helpers.create_channel(
+        target,
+        credentials=creds,
+        default_host="storage.googleapis.com",
+        attempt_direct_path=attempt_direct_path,
+        attempt_direct_path_xds_over_interconnect=attempt_interconnect,
+    )
+
+    ssl_creds_call.assert_not_called()
+    grpc_secure_channel.assert_called_once_with(
+        target,
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.secure_channel")
+def test_create_channel_allows_ssl_creds_when_direct_path_gated_off_by_target(
+    grpc_secure_channel,
+    composite_creds_call,
+):
+    creds = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+    creds.universe_domain = "googleapis.com"
+    ssl_creds = mock.sentinel.ssl_creds
+
+    grpc_helpers.create_channel(
+        "storage.universe.domain:443",
+        credentials=creds,
+        ssl_credentials=ssl_creds,
+        attempt_direct_path=True,
+    )
+
+    composite_creds_call.assert_called_once_with(ssl_creds, mock.ANY)
+    grpc_secure_channel.assert_called_once_with(
+        "storage.universe.domain:443",
+        composite_creds_call.return_value,
+        compression=None,
+    )
+
+
+@pytest.mark.parametrize("universe_domain", ["universe.domain", None, ""])
+@pytest.mark.parametrize(
+    "target,expected_target",
+    [
+        ("storage.googleapis.com:443", "storage.googleapis.com:443"),
+        ("storage-direct.googleapis.com:443", "storage.googleapis.com:443"),
+    ],
+)
+@pytest.mark.parametrize(
+    "attempt_direct_path,attempt_interconnect,env_val",
+    [
+        (True, None, None),
+        (True, True, None),
+        (False, True, None),
+        (True, None, "true"),
+    ],
+)
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("grpc.secure_channel")
+def test_create_channel_disables_direct_path_for_non_gdu_explicit_credentials(
+    grpc_secure_channel,
+    compute_engine_creds_call,
+    ssl_creds_call,
+    monkeypatch,
+    universe_domain,
+    target,
+    expected_target,
+    attempt_direct_path,
+    attempt_interconnect,
+    env_val,
+):
+    if env_val is None:
+        monkeypatch.delenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, raising=False)
+    else:
+        monkeypatch.setenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, env_val)
+
+    creds = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+    creds.universe_domain = universe_domain
+
+    grpc_helpers.create_channel(
+        target,
+        credentials=creds,
+        attempt_direct_path=attempt_direct_path,
+        attempt_direct_path_xds_over_interconnect=attempt_interconnect,
+    )
+
+    ssl_creds_call.assert_not_called()
+    grpc_secure_channel.assert_called_once_with(
+        expected_target,
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("google.auth.default", autospec=True)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_disables_direct_path_for_non_gdu_adc_credentials(
+    grpc_secure_channel,
+    google_auth_default,
+    compute_engine_creds_call,
+    composite_creds_call,
+    ssl_creds_call,
+    monkeypatch,
+):
+    monkeypatch.setenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, "true")
+    creds = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+    creds.universe_domain = "universe.domain"
+    google_auth_default.return_value = (creds, "test-project")
+
+    # 1. Without ssl_credentials: Interconnect and DirectPath are disabled,
+    # -direct.googleapis.com falls back to .googleapis.com, default called once
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path=True,
+    )
+
+    google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
+    ssl_creds_call.assert_not_called()
+    grpc_secure_channel.assert_called_once_with(
+        "storage.googleapis.com:443",
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+    # 2. With ssl_credentials and attempt_direct_path=True (Interconnect env unset):
+    # Does NOT raise ValueError because DirectPath is gated off for non-GDU ADC
+    monkeypatch.delenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, raising=False)
+    custom_ssl = mock.sentinel.custom_ssl
+    grpc_helpers.create_channel(
+        "storage.googleapis.com:443",
+        ssl_credentials=custom_ssl,
+        attempt_direct_path=True,
+    )
+    composite_creds_call.assert_called_once_with(custom_ssl, mock.ANY)
+    grpc_secure_channel.assert_called_with(
+        "storage.googleapis.com:443",
+        composite_creds_call.return_value,
+        compression=None,
+    )
+
+
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("google.auth.load_credentials_from_file", autospec=True)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_disables_direct_path_for_non_gdu_credentials_file(
+    grpc_secure_channel,
+    load_credentials_from_file,
+    compute_engine_creds_call,
+    ssl_creds_call,
+):
+    creds = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+    creds.universe_domain = "universe.domain"
+    load_credentials_from_file.return_value = (creds, "test-project")
+
+    with warn_deprecated_credentials_file():
+        grpc_helpers.create_channel(
+            "storage-direct.googleapis.com:443",
+            credentials_file="/path/to/creds.json",
+            attempt_direct_path=True,
+            attempt_direct_path_xds_over_interconnect=True,
+        )
+
+    load_credentials_from_file.assert_called_once_with(
+        "/path/to/creds.json", scopes=None, default_scopes=None
+    )
+    ssl_creds_call.assert_not_called()
+    grpc_secure_channel.assert_called_once_with(
+        "storage.googleapis.com:443",
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("grpc.secure_channel")
+def test_create_channel_enables_direct_path_for_gdu_explicit_and_legacy_credentials(
+    grpc_secure_channel,
+    compute_engine_creds_call,
+):
+    # Explicit credentials with universe_domain == "googleapis.com"
+    gdu_creds = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+    gdu_creds.universe_domain = "googleapis.com"
+
+    grpc_helpers.create_channel(
+        "storage.googleapis.com:443",
+        credentials=gdu_creds,
+        attempt_direct_path=True,
+    )
+    grpc_secure_channel.assert_called_once_with(
+        "google-c2p:///storage.googleapis.com",
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+    # Legacy custom credentials without a universe_domain attribute default to GDU
+    class LegacyCreds:
+        requires_scopes = False
+
+    grpc_helpers.create_channel(
+        "storage.googleapis.com:443",
+        credentials=LegacyCreds(),
+        attempt_direct_path=True,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage.googleapis.com",
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("grpc.secure_channel")
+def test_create_channel_does_not_access_universe_domain_when_unneeded(
+    grpc_secure_channel,
+    compute_engine_creds_call,
+):
+    class FailingUniverseCreds:
+        requires_scopes = False
+
+        @property
+        def universe_domain(self):  # pragma: NO COVER
+            raise AssertionError("universe_domain should not be accessed")
+
+    creds = FailingUniverseCreds()
+
+    # 1. DirectPath not requested -> universe_domain is never read
+    grpc_helpers.create_channel(
+        "storage.googleapis.com:443",
+        credentials=creds,
+        attempt_direct_path=False,
+    )
+    grpc_secure_channel.assert_called_once_with(
+        "storage.googleapis.com:443",
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+    # 2. DirectPath requested on non-googleapis target -> short-circuits on host check
+    grpc_helpers.create_channel(
+        "storage.universe.domain:443",
+        credentials=creds,
+        attempt_direct_path=True,
+    )
+    grpc_secure_channel.assert_called_with(
+        "storage.universe.domain:443",
+        compute_engine_creds_call.return_value,
+        compression=None,
+    )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("grpc.secure_channel")
+def test_create_channel_checks_universe_domain_after_scopes_and_quota_project(
+    grpc_secure_channel,
+    compute_engine_creds_call,
+):
+    class ScopedQuotaCreds(
+        google.auth.credentials.Scoped,
+        google.auth.credentials.CredentialsWithQuotaProject,
+    ):
+        pass
+
+    initial_creds = mock.create_autospec(ScopedQuotaCreds, instance=True)
+    initial_creds.requires_scopes = True
+    initial_creds.universe_domain = "googleapis.com"
+
+    scoped_creds = mock.create_autospec(ScopedQuotaCreds, instance=True)
+    scoped_creds.universe_domain = "googleapis.com"
+    initial_creds.with_scopes.return_value = scoped_creds
+
+    quota_creds = mock.create_autospec(ScopedQuotaCreds, instance=True)
+    quota_creds.universe_domain = "universe.domain"
+    scoped_creds.with_quota_project.return_value = quota_creds
+
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        credentials=initial_creds,
+        scopes=["https://www.googleapis.com/auth/devstorage.full_control"],
+        quota_project_id="my-quota-project",
+        attempt_direct_path=True,
+        attempt_direct_path_xds_over_interconnect=True,
+    )
+
+    initial_creds.with_scopes.assert_called_once_with(
+        ["https://www.googleapis.com/auth/devstorage.full_control"],
+        default_scopes=None,
+    )
+    scoped_creds.with_quota_project.assert_called_once_with("my-quota-project")
+    grpc_secure_channel.assert_called_once_with(
+        "storage.googleapis.com:443",
+        compute_engine_creds_call.return_value,
         compression=None,
     )

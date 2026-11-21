@@ -271,12 +271,17 @@ def create_channel(
               `False` as the Service may not support Direct Path.
             - Using `ssl_credentials` with `attempt_direct_path` set to `True` will
               result in `ValueError` as this combination  is not yet supported.
+            - Ignored if ``target`` is not a ``googleapis.com`` host or the
+              resolved credentials' ``universe_domain`` is not
+              ``googleapis.com``.
         attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
             DirectPath over Cloud Interconnect will be attempted using standard
             TLS credentials and ``?force-xds`` C2P target resolution. If None
             (default), the setting is resolved from the
             ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT``
-            environment variable.
+            environment variable. Ignored if ``target`` is not a
+            ``googleapis.com`` host or the resolved credentials'
+            ``universe_domain`` is not ``googleapis.com``.
 
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
