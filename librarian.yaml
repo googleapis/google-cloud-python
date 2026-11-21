@@ -238,7 +238,7 @@ libraries:
       metadata_name_override: type
       default_version: apiVersion
   - name: google-auth
-    version: 2.63.0
+    version: 2.63.1
     python:
       library_type: AUTH
   - name: google-auth-httplib2
