@@ -742,10 +742,6 @@ class AsyncMultiRangeDownloader:
                     await strategy.verify_pending_checksums(initial_state)
                     raise
                 await strategy.verify_pending_checksums(initial_state)
-            except DataCorruption:
-                if self.is_stream_open:
-                    await self.close()
-                raise
             finally:
                 # Drop chunks still held, e.g. after cancellation.
                 strategy.discard_pending_checksums(initial_state)
@@ -855,7 +851,9 @@ class AsyncMultiRangeDownloader:
             ``bytes_to_read <= 0``.
         :raises BufferError: if fewer than ``bytes_to_read`` bytes are returned
             for a buffer destination.
-        :raises DataCorruption: if a checksum mismatch is detected while reading data.
+        :raises DataCorruption: if a checksum or byte-count mismatch is detected
+            while reading data. The downloader stays open; the caller may retry
+            the range or close it.
 
         """
 

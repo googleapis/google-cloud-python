@@ -531,7 +531,7 @@ async def test_async_multi_range_downloader_data_corruption_marks_span_error(
         with pytest.raises(DataCorruption):
             await mrd.download_ranges([(0, 100, BytesIO())], enable_checksum=False)
 
-    assert not mrd.is_stream_open
+    assert mrd.is_stream_open
     spans = exporter.get_finished_spans()
     assert [s.name for s in spans] == [
         "Storage.AsyncMultiRangeDownloader.open",
