@@ -31,6 +31,22 @@ from google.cloud.storage.grpc_client import (
     _rewrite_host_for_interconnect,
 )
 
+# Detect a dead connection while an RPC or bidi stream is open. Without HTTP/2
+# keepalive, a pending recv() on a bidi stream can block indefinitely when the
+# path to the server silently drops traffic or the peer stops responding while
+# its kernel still ACKs TCP keepalives. Ping every 30 s while an RPC is open and
+# drop the connection if a ping is not ACKed within 20 s, so the stream fails
+# with a retryable error instead of hanging. grpc.http2.ping_timeout_ms is set
+# alongside keepalive_timeout_ms because grpc-python otherwise waits its 60 s
+# default for the ping ACK. keepalive_permit_without_calls is intentionally left
+# unset so idle channels send no pings (more frequent or idle pings can trigger
+# GOAWAY too_many_pings from GCS frontends).
+_KEEPALIVE_CHANNEL_OPTIONS: tuple[tuple[str, int], ...] = (
+    ("grpc.keepalive_time_ms", 30000),
+    ("grpc.keepalive_timeout_ms", 20000),
+    ("grpc.http2.ping_timeout_ms", 20000),
+)
+
 
 def _validate_metadata(metadata):
     """Validates that metadata is a sequence of (key, value) pairs."""
@@ -192,6 +208,10 @@ class AsyncGrpcClient:
             host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
             quota_project_id = getattr(client_options, "quota_project_id", None)
 
+        channel_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _KEEPALIVE_CHANNEL_OPTIONS
+
         if attempt_direct_path_xds_over_interconnect:
             host = _rewrite_host_for_interconnect(host)
             channel = transport_cls.create_channel(
@@ -200,7 +220,7 @@ class AsyncGrpcClient:
                 attempt_direct_path=True,
                 attempt_direct_path_xds_over_interconnect=True,
                 credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
+                options=channel_options,
             )
         else:
             channel = transport_cls.create_channel(
@@ -208,7 +228,7 @@ class AsyncGrpcClient:
                 quota_project_id=quota_project_id,
                 attempt_direct_path=attempt_direct_path,
                 credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
+                options=channel_options,
             )
         transport = transport_cls(channel=channel)
 
