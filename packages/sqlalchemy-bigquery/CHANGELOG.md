@@ -8,6 +8,14 @@ Older versions of this project were distributed as [pybigquery][0].
 
 [1]: https://pypi.org/project/sqlalchemy-bigquery/#history
 
+## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.18.0...sqlalchemy-bigquery-v1.18.1) (2026-11-21)
+
+
+### Bug Fixes
+
+* **sqlalchemy-bigquery:** drop support for end-of-life Python 3.10 ([#19057](https://github.com/googleapis/google-cloud-python/issues/19057)) ([69b90e7](https://github.com/googleapis/google-cloud-python/commit/69b90e7acb86b11e5e462350d70d43903b22478d))
+* **sqlalchemy-bigquery:** escape JSON subfields ([#19049](https://github.com/googleapis/google-cloud-python/issues/19049)) ([0a7171d](https://github.com/googleapis/google-cloud-python/commit/0a7171d4c6a09db27814ed0f2f580692c2dba8d6))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.17.3...sqlalchemy-bigquery-v1.18.0) (2026-11-12)
 
 
