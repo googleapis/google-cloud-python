@@ -18,7 +18,8 @@ from unittest import mock
 import pytest
 
 from google.cloud import _storage_v2
-from google.cloud.storage import _grpc_conversions
+from google.cloud.storage import Blob, Bucket, _grpc_conversions
+from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
 
 
 def test_blob_to_proto_simple_fields():
@@ -173,8 +174,6 @@ def test_blob_to_proto_contexts():
     blob.name = "blob-name"
     blob.bucket.name = "bucket-name"
 
-    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
-
     payload = ObjectCustomContextPayload(value="val")
     blob.contexts = ObjectContexts(blob, custom={"key": payload})
 
@@ -188,3 +187,84 @@ def test_blob_to_proto_contexts():
 
     assert "key" in proto.contexts.custom
     assert proto.contexts.custom["key"].value == "val"
+
+
+def test_blob_to_proto_real_blob_omits_unset_retention_and_contexts():
+    bucket = Bucket(mock.Mock(), "bucket-name")
+    blob = Blob("blob-name", bucket)
+
+    proto = _grpc_conversions.blob_to_proto(blob)
+
+    assert proto.name == "blob-name"
+    assert proto.bucket == "projects/_/buckets/bucket-name"
+    assert "retention" not in proto
+    assert "contexts" not in proto
+
+
+def test_blob_to_proto_real_blob_with_retention_and_contexts():
+    bucket = Bucket(mock.Mock(), "bucket-name")
+    blob = Blob("blob-name", bucket)
+
+    retain_until_time = datetime.datetime(2026, 1, 1, tzinfo=datetime.timezone.utc)
+    blob.retention.mode = "Locked"
+    blob.retention.retain_until_time = retain_until_time
+    blob.contexts = ObjectContexts(
+        blob,
+        custom={"env": ObjectCustomContextPayload(value="prod")},
+    )
+
+    proto = _grpc_conversions.blob_to_proto(blob)
+
+    assert "retention" in proto
+    assert proto.retention.mode == _storage_v2.Object.Retention.Mode.LOCKED
+    assert int(proto.retention.retain_until_time.timestamp()) == int(
+        retain_until_time.timestamp()
+    )
+    assert "contexts" in proto
+    assert proto.contexts.custom["env"].value == "prod"
+
+
+def test_blob_to_proto_real_blob_partial_retention():
+    bucket = Bucket(mock.Mock(), "bucket-name")
+
+    blob_mode_only = Blob("mode-only", bucket)
+    blob_mode_only.retention.mode = "Unlocked"
+    proto_mode_only = _grpc_conversions.blob_to_proto(blob_mode_only)
+    assert "retention" in proto_mode_only
+    assert proto_mode_only.retention.mode == _storage_v2.Object.Retention.Mode.UNLOCKED
+    assert "retain_until_time" not in proto_mode_only.retention
+
+    retain_until_time = datetime.datetime(2026, 6, 1, tzinfo=datetime.timezone.utc)
+    blob_time_only = Blob("time-only", bucket)
+    blob_time_only.retention.retain_until_time = retain_until_time
+    proto_time_only = _grpc_conversions.blob_to_proto(blob_time_only)
+    assert "retention" in proto_time_only
+    assert (
+        proto_time_only.retention.mode
+        == _storage_v2.Object.Retention.Mode.MODE_UNSPECIFIED
+    )
+    assert int(proto_time_only.retention.retain_until_time.timestamp()) == int(
+        retain_until_time.timestamp()
+    )
+
+
+def test_blob_to_proto_no_bucket_and_empty_loaded_acl():
+    blob = mock.Mock(spec=["name", "bucket", "acl", "custom_time", "retention"])
+    blob.name = "blob-name"
+    blob.bucket = None
+
+    acl_mock = mock.MagicMock()
+    acl_mock.loaded = True
+    acl_mock.__iter__.return_value = iter([])
+    blob.acl = acl_mock
+
+    blob.custom_time = None
+    blob.retention = None
+    for attr in _grpc_conversions._BLOB_ATTR_TO_PROTO_FIELD:
+        setattr(blob, attr, None)
+
+    proto = _grpc_conversions.blob_to_proto(blob)
+
+    assert proto.name == "blob-name"
+    assert proto.bucket == ""
+    assert list(proto.acl) == []
