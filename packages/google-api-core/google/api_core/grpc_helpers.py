@@ -17,6 +17,7 @@
 import collections
 import functools
 import os
+import re
 import urllib.parse
 import warnings
 from typing import (
@@ -38,10 +39,14 @@ import google.auth.transport.requests
 import google.protobuf
 import grpc
 
-from google.api_core import exceptions, general_helpers
+from google.api_core import exceptions, general_helpers, universe
 from google.api_core._feature_gating_helpers import _strtobool
 
 _DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT"
+_GOOGLEAPIS_HOST_PATTERN = re.compile(
+    rf"^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*{re.escape(universe.DEFAULT_UNIVERSE)}$",
+    re.IGNORECASE,
+)
 
 
 def _resolve_direct_path_interconnect(
@@ -89,6 +94,15 @@ def _extract_target_host(target: str) -> str:
         return urllib.parse.urlsplit(f"//{stripped_target}").hostname or target
     except ValueError:
         return target
+
+
+def _is_googleapis_host(target: str) -> bool:
+    """Returns True if ``target`` resolves to a ``googleapis.com`` host."""
+    return (
+        "@" not in target
+        and "#" not in target
+        and bool(_GOOGLEAPIS_HOST_PATTERN.fullmatch(_extract_target_host(target)))
+    )
 
 
 def _extract_direct_path_authority(target: str) -> Optional[str]:
@@ -310,6 +324,28 @@ def _create_composite_credentials(
     Raises:
         google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
     """
+    credentials = _resolve_credentials(
+        credentials=credentials,
+        credentials_file=credentials_file,
+        default_scopes=default_scopes,
+        scopes=scopes,
+        quota_project_id=quota_project_id,
+    )
+    return _compose_channel_credentials(
+        credentials=credentials,
+        ssl_credentials=ssl_credentials,
+        default_host=default_host,
+    )
+
+
+def _resolve_credentials(
+    credentials=None,
+    credentials_file=None,
+    default_scopes=None,
+    scopes=None,
+    quota_project_id=None,
+):
+    """Resolve auth credentials from explicit credentials, a file, or ADC."""
     if credentials_file is not None:
         warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
 
@@ -336,6 +372,15 @@ def _create_composite_credentials(
     ):
         credentials = credentials.with_quota_project(quota_project_id)
 
+    return credentials
+
+
+def _compose_channel_credentials(
+    credentials,
+    ssl_credentials=None,
+    default_host=None,
+):
+    """Compose gRPC channel credentials from resolved auth credentials."""
     request = google.auth.transport.requests.Request()
 
     # Create the metadata plugin for inserting the authorization header.
@@ -409,12 +454,16 @@ def _setup_direct_path_and_credentials(
             library. Use 'scopes' for user-defined scopes.
         default_host (str): The default endpoint. e.g., "pubsub.googleapis.com".
         attempt_direct_path (Optional[bool]): If set, Direct Path will be attempted.
+            Ignored if ``target`` is not a ``googleapis.com`` host or the
+            resolved credentials' ``universe_domain`` is not ``googleapis.com``.
         attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
             DirectPath over Cloud Interconnect will be attempted using standard
             TLS credentials and ``?force-xds`` C2P target resolution. If None
             (default), the setting is resolved from the
             ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT``
-            environment variable.
+            environment variable. Ignored if ``target`` is not a
+            ``googleapis.com`` host or the resolved credentials'
+            ``universe_domain`` is not ``googleapis.com``.
         kwargs: Additional key-word args passed to the channel creation function.
 
     Returns:
@@ -425,14 +474,35 @@ def _setup_direct_path_and_credentials(
         google.api_core.DuplicateCredentialArgs: If both a credentials object
             and credentials_file are passed.
         ValueError: If `ssl_credentials` is set and `attempt_direct_path` is
-            set to `True` without `attempt_direct_path_xds_over_interconnect`.
+            set to `True` without `attempt_direct_path_xds_over_interconnect`
+            in the ``googleapis.com`` universe.
     """
+    credentials = _resolve_credentials(
+        credentials=credentials,
+        credentials_file=credentials_file,
+        default_scopes=default_scopes,
+        scopes=scopes,
+        quota_project_id=quota_project_id,
+    )
+
     if attempt_direct_path or attempt_direct_path_xds_over_interconnect is not None:
         use_dp_interconnect = _resolve_direct_path_interconnect(
             attempt_direct_path_xds_over_interconnect
         )
     else:
         use_dp_interconnect = False
+
+    # DirectPath and DirectPath over Interconnect are only supported in the
+    # Google Default Universe (googleapis.com). Disable both if either the
+    # target host or the resolved credential universe_domain is non-GDU.
+    if attempt_direct_path or use_dp_interconnect:
+        if not (
+            _is_googleapis_host(target)
+            and getattr(credentials, "universe_domain", universe.DEFAULT_UNIVERSE)
+            == universe.DEFAULT_UNIVERSE
+        ):
+            attempt_direct_path = False
+            use_dp_interconnect = False
 
     # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
     # raise ValueError as this is not yet supported for GCE ALTS DirectPath.
@@ -443,13 +513,9 @@ def _setup_direct_path_and_credentials(
     if use_dp_interconnect and ssl_credentials is None:
         ssl_credentials = grpc.ssl_channel_credentials()
 
-    composite_credentials = _create_composite_credentials(
+    composite_credentials = _compose_channel_credentials(
         credentials=credentials,
-        credentials_file=credentials_file,
-        default_scopes=default_scopes,
-        scopes=scopes,
         ssl_credentials=ssl_credentials,
-        quota_project_id=quota_project_id,
         default_host=default_host,
     )
 
@@ -546,12 +612,17 @@ def create_channel(
               `False` as the Service may not support Direct Path.
             - Using `ssl_credentials` with `attempt_direct_path` set to `True` will
               result in `ValueError` as this combination  is not yet supported.
+            - Ignored if ``target`` is not a ``googleapis.com`` host or the
+              resolved credentials' ``universe_domain`` is not
+              ``googleapis.com``.
         attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
             DirectPath over Cloud Interconnect will be attempted using standard
             TLS credentials and ``?force-xds`` C2P target resolution. If None
             (default), the setting is resolved from the
             ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT``
-            environment variable.
+            environment variable. Ignored if ``target`` is not a
+            ``googleapis.com`` host or the resolved credentials'
+            ``universe_domain`` is not ``googleapis.com``.
 
         kwargs: Additional key-word args passed to
             :func:`grpc.secure_channel`.
