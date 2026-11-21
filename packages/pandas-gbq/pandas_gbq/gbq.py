@@ -652,6 +652,7 @@ def to_gbq(
             dataset_id,
             location=location,
             credentials=connector.credentials,
+            bigquery_client=bigquery_client,
         )
         table_connector.create(
             table_id,
@@ -741,6 +742,7 @@ class _Table(GbqConnector):
         location=None,
         credentials=None,
         private_key=None,
+        bigquery_client=None,
     ):
         self.dataset_id = dataset_id
         super(_Table, self).__init__(
@@ -749,6 +751,7 @@ class _Table(GbqConnector):
             location=location,
             credentials=credentials,
             private_key=private_key,
+            bigquery_client=bigquery_client,
         )
 
     def _table_ref(self, table_id):
@@ -828,13 +831,16 @@ class _Table(GbqConnector):
         if self.exists(table_id):
             raise TableCreationError("Table {0} already exists".format(table_id))
 
-        if not _Dataset(self.project_id, credentials=self.credentials).exists(
-            self.dataset_id
-        ):
+        if not _Dataset(
+            self.project_id,
+            credentials=self.credentials,
+            bigquery_client=self._bigquery_client,
+        ).exists(self.dataset_id):
             _Dataset(
                 self.project_id,
                 credentials=self.credentials,
                 location=self.location,
+                bigquery_client=self._bigquery_client,
             ).create(self.dataset_id)
 
         table_ref = TableReference(
@@ -896,6 +902,7 @@ class _Dataset(GbqConnector):
         location=None,
         credentials=None,
         private_key=None,
+        bigquery_client=None,
     ):
         super(_Dataset, self).__init__(
             project_id,
@@ -903,6 +910,7 @@ class _Dataset(GbqConnector):
             credentials=credentials,
             location=location,
             private_key=private_key,
+            bigquery_client=bigquery_client,
         )
 
     def _dataset_ref(self, dataset_id):
