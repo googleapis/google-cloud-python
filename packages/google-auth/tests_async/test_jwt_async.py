@@ -159,7 +159,37 @@ class TestCredentials(object):
         assert isinstance(from_signing, jwt_async.Credentials)
         assert from_signing.universe_domain == test_jwt.FAKE_UNIVERSE_DOMAIN
 
+        gdu_sa_creds = service_account.Credentials.from_service_account_info(
+            test_jwt.SERVICE_ACCOUNT_INFO
+        )
+        gdu_sa_creds._rab_manager._data = mock.sentinel.rab_data
+        from_gdu_signing = jwt_async.Credentials.from_signing_credentials(
+            gdu_sa_creds, audience=self.AUDIENCE
+        )
+        assert isinstance(from_gdu_signing, jwt_async.Credentials)
+        assert (
+            from_gdu_signing.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert from_gdu_signing._rab_manager._data == mock.sentinel.rab_data
+        assert from_gdu_signing._rab_manager is not gdu_sa_creds._rab_manager
+        assert isinstance(
+            from_gdu_signing._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+
         self.credentials._rab_manager._data = mock.sentinel.rab_data
+        gdu_copy = self.credentials.with_universe_domain(
+            auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert isinstance(gdu_copy, jwt_async.Credentials)
+        assert gdu_copy.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        assert gdu_copy._rab_manager._data == mock.sentinel.rab_data
+        assert gdu_copy._rab_manager is not self.credentials._rab_manager
+        assert isinstance(
+            gdu_copy._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+
         non_default = self.credentials.with_universe_domain(
             test_jwt.FAKE_UNIVERSE_DOMAIN
         )

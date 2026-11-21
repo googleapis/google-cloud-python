@@ -837,19 +837,24 @@ class TestCredentials(object):
         )
         assert reset_default.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
 
-        custom_lifetime_creds = jwt.Credentials(
+        custom_creds = jwt.Credentials(
             signer,
             self.SERVICE_ACCOUNT_EMAIL,
-            self.SERVICE_ACCOUNT_EMAIL,
+            self.SUBJECT,
             self.AUDIENCE,
+            additional_claims=self.ADDITIONAL_CLAIMS,
             token_lifetime=600,
+            quota_project_id="project-foo",
         )
-        assert (
-            custom_lifetime_creds.with_universe_domain(
-                FAKE_UNIVERSE_DOMAIN
-            )._token_lifetime
-            == 600
-        )
+        cloned = custom_creds.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert cloned._signer == custom_creds._signer
+        assert cloned._issuer == custom_creds._issuer
+        assert cloned._subject == self.SUBJECT
+        assert cloned._audience == self.AUDIENCE
+        assert cloned._additional_claims == self.ADDITIONAL_CLAIMS
+        assert cloned._token_lifetime == 600
+        assert cloned._quota_project_id == "project-foo"
+        assert cloned.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     @pytest.mark.parametrize("empty_universe", [None, ""])
     def test_with_universe_domain_falsy(self, empty_universe):
@@ -1194,18 +1199,25 @@ class TestOnDemandCredentials(object):
         )
         assert reset_default.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
 
-        custom_lifetime_creds = jwt.OnDemandCredentials(
+        custom_creds = jwt.OnDemandCredentials(
             signer,
             self.SERVICE_ACCOUNT_EMAIL,
-            self.SERVICE_ACCOUNT_EMAIL,
+            self.SUBJECT,
+            additional_claims=self.ADDITIONAL_CLAIMS,
             token_lifetime=600,
+            max_cache_size=2,
+            quota_project_id="project-foo",
         )
-        assert (
-            custom_lifetime_creds.with_universe_domain(
-                FAKE_UNIVERSE_DOMAIN
-            )._token_lifetime
-            == 600
-        )
+        cloned = custom_creds.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert cloned._signer == custom_creds._signer
+        assert cloned._issuer == custom_creds._issuer
+        assert cloned._subject == self.SUBJECT
+        assert cloned._additional_claims == self.ADDITIONAL_CLAIMS
+        assert cloned._token_lifetime == 600
+        assert cloned._cache.maxsize == 2
+        assert cloned._cache is not custom_creds._cache
+        assert cloned._quota_project_id == "project-foo"
+        assert cloned.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     @pytest.mark.parametrize("empty_universe", [None, ""])
     def test_with_universe_domain_falsy(self, empty_universe):
