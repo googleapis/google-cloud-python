@@ -392,7 +392,7 @@ class TestAsyncMultiRangeDownloader:
             await mock_mrd.download_ranges([(0, 10, buffer)])
 
         assert bytes(buffer) == initial
-        assert not mock_mrd.is_stream_open
+        assert mock_mrd.is_stream_open
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
@@ -500,7 +500,7 @@ class TestAsyncMultiRangeDownloader:
         with pytest.raises(DataCorruption) as exc_info:
             await mock_mrd.download_ranges([(0, 18, buffer)])
         assert bytes(buffer) == bytes(18)
-        assert not mock_mrd.is_stream_open
+        assert mock_mrd.is_stream_open
         # exc_info.tb still references download_ranges' frame here.
         assert exc_info.tb is not None
         buffer.clear()
@@ -1424,7 +1424,7 @@ class TestAsyncMultiRangeDownloader:
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
-    async def test_download_ranges_closes_on_datacorruption(
+    async def test_download_ranges_stays_open_on_datacorruption(
         self,
         mock_cls_async_read_object_stream,
         mock_retry_manager_cls,
@@ -1448,7 +1448,8 @@ class TestAsyncMultiRangeDownloader:
         with pytest.raises(DataCorruption):
             await mrd.download_ranges([(0, 0, BytesIO())])
 
-        mrd.close.assert_called_once()
+        mrd.close.assert_not_called()
+        assert mrd.is_stream_open
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
@@ -2631,3 +2632,52 @@ class TestAsyncMultiRangeDownloader:
             assert ps.pending_bytes == 0
 
         await mrd.close()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_after_datacorruption_reuses_mrd(
+        self, mock_cls_stream, mock_random_int, monkeypatch
+    ):
+        _accept_memoryview_in_crc32c(monkeypatch)
+        data = b"abcd"
+        corrupt_read_id = 101
+        mock_random_int.side_effect = [corrupt_read_id, 201, 202]
+
+        stream = self._make_mock_stream()
+        responses: asyncio.Queue = asyncio.Queue()
+
+        async def _send(req):
+            for rr in req.read_ranges:
+                crc32c = 0 if rr.read_id == corrupt_read_id else None
+                await responses.put(
+                    _zero_copy_response(data, 0, rr.read_id, True, crc32c=crc32c)
+                )
+
+        stream.send = AsyncMock(side_effect=_send)
+        stream.recv = AsyncMock(side_effect=responses.get)
+        mock_cls_stream.side_effect = [stream]
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(), _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+
+        with pytest.raises(DataCorruption):
+            await mrd.download_ranges([(0, 4, bytearray(4))])
+        assert mrd.is_stream_open
+
+        buf_b, buf_c = bytearray(4), bytearray(4)
+        await asyncio.gather(
+            mrd.download_ranges([(0, 4, buf_b)]),
+            mrd.download_ranges([(0, 4, buf_c)]),
+        )
+        assert bytes(buf_b) == data
+        assert bytes(buf_c) == data
+        assert mock_cls_stream.call_count == 1
+
+        await mrd.close()
+        assert not mrd.is_stream_open
