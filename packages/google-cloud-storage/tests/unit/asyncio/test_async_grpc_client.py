@@ -24,9 +24,20 @@ from google.cloud.storage import __version__
 from google.cloud.storage.asyncio import async_grpc_client
 
 
+@pytest.fixture(autouse=True)
+def _hermetic_env(monkeypatch):
+    """Keeps the runner's environment from changing host or DirectPath resolution."""
+    monkeypatch.delenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", raising=False)
+    monkeypatch.delenv(
+        "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT", raising=False
+    )
+
+
 def _make_credentials(spec=None):
     if spec is None:
-        return mock.Mock(spec=auth_credentials.Credentials)
+        return mock.Mock(
+            spec=auth_credentials.Credentials, universe_domain="googleapis.com"
+        )
     return mock.Mock(spec=spec)
 
 
@@ -60,7 +71,9 @@ class TestAsyncGrpcClient:
             options=expected_options,
         )
         mock_channel = mock_transport_cls.create_channel.return_value
-        mock_transport_cls.assert_called_once_with(channel=mock_channel)
+        mock_transport_cls.assert_called_once_with(
+            host="storage.googleapis.com", channel=mock_channel
+        )
         mock_transport = mock_transport_cls.return_value
         assert kwargs["transport"] is mock_transport
         assert kwargs["client_options"] is None
@@ -147,7 +160,9 @@ class TestAsyncGrpcClient:
             options=expected_options,
         )
         mock_channel = mock_transport_cls.create_channel.return_value
-        mock_transport_cls.assert_called_once_with(channel=mock_channel)
+        mock_transport_cls.assert_called_once_with(
+            host="storage.googleapis.com", channel=mock_channel
+        )
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_metrics_properties(self, mock_async_storage_client):
@@ -291,7 +306,9 @@ class TestAsyncGrpcClient:
             credentials=mock_creds,
             options=expected_options,
         )
-        mock_transport_cls.assert_called_once_with(channel=channel_sentinel)
+        mock_transport_cls.assert_called_once_with(
+            host="storage.googleapis.com", channel=channel_sentinel
+        )
         mock_grpc_gapic_client.assert_called_once_with(
             transport=mock_transport_instance,
             client_info=client_info,
@@ -648,3 +665,161 @@ class TestAsyncGrpcClient:
         ):
             with pytest.raises(ValueError):
                 async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
+
+    @pytest.mark.parametrize(
+        "env,opts,expected_host",
+        [
+            (
+                {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": "true"},
+                {"universe_domain": "example.com"},
+                "storage.example.com",
+            ),
+            (
+                {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com"},
+                None,
+                "storage.example.com",
+            ),
+            (
+                {},
+                client_options.ClientOptions(
+                    universe_domain="example.com", api_endpoint="custom.example.com:443"
+                ),
+                "custom.example.com:443",
+            ),
+        ],
+    )
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_universe_domain_routing_and_direct_path_disabled(
+        self, mock_async_storage_client, env, opts, expected_host
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+        mock_creds.universe_domain = "example.com"
+
+        with mock.patch.dict("os.environ", env):
+            client = async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                client_options=opts,
+                attempt_direct_path=True,
+                attempt_direct_path_xds_over_interconnect=True,
+            )
+
+        assert client.universe_domain == "example.com"
+        primary_ua = mock_async_storage_client.call_args.kwargs[
+            "client_info"
+        ].to_user_agent()
+        mock_transport_cls.create_channel.assert_called_once_with(
+            host=expected_host,
+            quota_project_id=None,
+            attempt_direct_path=False,
+            credentials=mock_creds,
+            options=(("grpc.primary_user_agent", primary_ua),),
+        )
+        mock_transport_cls.assert_called_once_with(
+            host=expected_host,
+            channel=mock_transport_cls.create_channel.return_value,
+        )
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_empty_universe_domain_error(self, mock_async_storage_client):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+
+        with pytest.raises(
+            ValueError, match="Universe Domain cannot be an empty string"
+        ):
+            async_grpc_client.AsyncGrpcClient(
+                credentials=_make_credentials(),
+                client_options=client_options.ClientOptions(universe_domain=""),
+            )
+        mock_transport_cls.create_channel.assert_not_called()
+
+    @mock.patch("google.auth.default")
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_universe_domain_validation_errors(
+        self, mock_async_storage_client, mock_auth_default
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        other_creds = _make_credentials()
+        other_creds.universe_domain = "example.com"
+        mock_auth_default.return_value = (other_creds, "test-project")
+
+        with pytest.raises(ValueError, match="example.com"):
+            async_grpc_client.AsyncGrpcClient(credentials=other_creds)
+        with pytest.raises(ValueError, match="example.com"):
+            async_grpc_client.AsyncGrpcClient()
+        mock_transport_cls.create_channel.assert_not_called()
+
+    @pytest.mark.parametrize("creds_universe", ["__missing__", None])
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_universe_domain_validation_unusable_creds(
+        self, mock_async_storage_client, creds_universe
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        creds = _make_credentials()
+        if creds_universe == "__missing__":
+            del creds.universe_domain
+        else:
+            creds.universe_domain = creds_universe
+
+        with pytest.raises(ValueError, match="does not match"):
+            async_grpc_client.AsyncGrpcClient(
+                credentials=creds,
+                client_options={"universe_domain": "example.com"},
+            )
+        mock_transport_cls.create_channel.assert_not_called()
+
+    @pytest.mark.parametrize(
+        "env,universe_opt,expected",
+        [
+            ({}, "example.com", "example.com"),
+            ({"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com"}, None, "example.com"),
+            ({}, None, "googleapis.com"),
+        ],
+    )
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_grpc_client.grpc.aio.insecure_channel"
+    )
+    def test_anonymous_credentials_universe_domain(
+        self,
+        mock_insecure_channel,
+        mock_async_storage_client,
+        env,
+        universe_opt,
+        expected,
+    ):
+        with mock.patch.dict("os.environ", env):
+            client = async_grpc_client.AsyncGrpcClient(
+                client_options=client_options.ClientOptions(
+                    api_endpoint="localhost:8888", universe_domain=universe_opt
+                ),
+                credentials=AnonymousCredentials(),
+            )
+
+        assert client.universe_domain == expected
+        mock_insecure_channel.assert_called_once_with("localhost:8888")
+
+    @mock.patch("google.api_core.grpc_helpers_async.create_channel")
+    def test_real_gapic_client_integration_non_default_universe(
+        self, mock_create_channel
+    ):
+        import grpc.aio
+
+        mock_channel = mock.MagicMock(spec=grpc.aio.Channel)
+        mock_channel._unary_unary_interceptors = []
+        mock_create_channel.return_value = mock_channel
+        mock_creds = _make_credentials()
+        mock_creds.universe_domain = "example.com"
+        client = async_grpc_client.AsyncGrpcClient(
+            credentials=mock_creds,
+            client_options=client_options.ClientOptions(universe_domain="example.com"),
+        )
+        assert client.universe_domain == "example.com"
+        assert client.grpc_client.universe_domain == "example.com"
+        assert client.grpc_client.api_endpoint == "storage.example.com:443"
+        assert mock_create_channel.call_args.args[0] == "storage.example.com"
+        assert mock_create_channel.call_args.kwargs["attempt_direct_path"] is False

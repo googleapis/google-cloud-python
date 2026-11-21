@@ -16,12 +16,16 @@
 
 import os
 
+from google.api_core import universe
+from google.auth import credentials as auth_credentials
 from google.cloud.client import ClientWithProject
 
 from google.cloud import _storage_v2 as storage_v2
+from google.cloud._storage_v2._compat import get_universe_domain
 from google.cloud.storage import _opentelemetry_metrics
 
 _marker = object()
+_DEFAULT_UNIVERSE_DOMAIN = universe.DEFAULT_UNIVERSE
 _DEFAULT_HOST = "storage.googleapis.com"
 _DEFAULT_HOST_DIRECT_PATH = "storage-direct.googleapis.com"
 _DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT"
@@ -58,6 +62,66 @@ def _rewrite_host_for_interconnect(
             if not rest or rest[0] in (":", "/", "?", "#"):
                 return f"{prefix}{new_host}{rest}"
     return host
+
+
+def _get_option(client_options, name):
+    """Reads an option from a dict, a ``ClientOptions`` instance, or ``None``."""
+    if isinstance(client_options, dict):
+        return client_options.get(name)
+    return getattr(client_options, name, None)
+
+
+def _resolve_universe_domain(client_options) -> str:
+    """Resolves the universe domain with the helper the generated client uses."""
+    return get_universe_domain(
+        _get_option(client_options, "universe_domain"),
+        os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        default_universe=_DEFAULT_UNIVERSE_DOMAIN,
+    )
+
+
+def _resolve_grpc_config(
+    client_options,
+    attempt_direct_path,
+    attempt_direct_path_xds_over_interconnect: bool,
+):
+    """Resolves universe domain, target host, quota project, and DirectPath flags.
+
+    DirectPath (including DirectPath over Interconnect) is only attempted in the
+    default universe.
+    """
+    universe_domain = _resolve_universe_domain(client_options)
+    use_dp_interconnect = _resolve_direct_path_interconnect(
+        attempt_direct_path_xds_over_interconnect
+    )
+    if universe_domain.lower() != _DEFAULT_UNIVERSE_DOMAIN.lower():
+        attempt_direct_path = False
+        use_dp_interconnect = False
+
+    host = _get_option(client_options, "api_endpoint") or f"storage.{universe_domain}"
+    if use_dp_interconnect:
+        host = _rewrite_host_for_interconnect(host)
+        attempt_direct_path = True
+
+    return (
+        universe_domain,
+        host,
+        _get_option(client_options, "quota_project_id"),
+        attempt_direct_path,
+        use_dp_interconnect,
+    )
+
+
+def _validate_universe_domain(universe_domain: str, credentials) -> None:
+    """Raises UniverseMismatchError unless the credentials belong to ``universe_domain``.
+
+    Credentials that do not expose a universe domain are treated as
+    ``googleapis.com``, so they are rejected in any other universe.
+    """
+    if credentials is not None and not isinstance(
+        credentials, auth_credentials.AnonymousCredentials
+    ):
+        universe.compare_domains(universe_domain, credentials)
 
 
 class GrpcClient(ClientWithProject):
@@ -151,17 +215,24 @@ class GrpcClient(ClientWithProject):
         elif api_key:
             client_options.api_key = api_key
 
-        use_dp_interconnect = _resolve_direct_path_interconnect(
-            attempt_direct_path_xds_over_interconnect
+        effective_credentials = (
+            credentials
+            if credentials is not None
+            else getattr(self, "_credentials", None)
         )
-
+        self._universe_domain = _resolve_universe_domain(client_options)
         self._grpc_client = self._create_gapic_client(
-            credentials=credentials,
+            credentials=effective_credentials,
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
-            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
+            attempt_direct_path_xds_over_interconnect=attempt_direct_path_xds_over_interconnect,
         )
+
+    @property
+    def universe_domain(self) -> str:
+        """The universe domain used by the client instance."""
+        return self._universe_domain
 
     @property
     def metrics_enabled(self) -> bool:
@@ -182,36 +253,34 @@ class GrpcClient(ClientWithProject):
         attempt_direct_path_xds_over_interconnect=False,
     ):
         """Creates and configures the low-level GAPIC `storage_v2` client."""
+        (
+            self._universe_domain,
+            host,
+            quota_project_id,
+            attempt_direct_path,
+            use_dp_interconnect,
+        ) = _resolve_grpc_config(
+            client_options,
+            attempt_direct_path,
+            attempt_direct_path_xds_over_interconnect,
+        )
+        _validate_universe_domain(self._universe_domain, credentials)
+
         transport_cls = storage_v2.StorageClient.get_transport_class("grpc")
+        channel_kwargs = {
+            "host": host,
+            "credentials": credentials,
+            "attempt_direct_path": attempt_direct_path,
+        }
+        if use_dp_interconnect:
+            channel_kwargs["attempt_direct_path_xds_over_interconnect"] = True
+        if quota_project_id is not None:
+            channel_kwargs["quota_project_id"] = quota_project_id
 
-        if attempt_direct_path_xds_over_interconnect:
-            host = _DEFAULT_HOST
-            quota_project_id = None
-            if isinstance(client_options, dict):
-                host = client_options.get("api_endpoint") or _DEFAULT_HOST
-                quota_project_id = client_options.get("quota_project_id")
-            elif client_options is not None:
-                host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
-                quota_project_id = getattr(client_options, "quota_project_id", None)
-            host = _rewrite_host_for_interconnect(host)
-            channel_kwargs = {
-                "host": host,
-                "credentials": credentials,
-                "attempt_direct_path": True,
-                "attempt_direct_path_xds_over_interconnect": True,
-            }
-            if quota_project_id is not None:
-                channel_kwargs["quota_project_id"] = quota_project_id
-            channel = transport_cls.create_channel(**channel_kwargs)
-        else:
-            channel = transport_cls.create_channel(
-                attempt_direct_path=attempt_direct_path
-            )
-
-        transport = transport_cls(credentials=credentials, channel=channel)
+        channel = transport_cls.create_channel(**channel_kwargs)
+        transport = transport_cls(host=host, channel=channel)
 
         return storage_v2.StorageClient(
-            credentials=credentials,
             transport=transport,
             client_info=client_info,
             client_options=client_options,
