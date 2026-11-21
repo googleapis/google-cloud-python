@@ -100,7 +100,11 @@ class TransactionRetryHelper:
                     last_statement_result_details.result_details.consume_result(row)
                 last_statement_result_details.size += len(result_rows)
         else:
+            result_type = ResultType.CHECKSUM
             result_details = _get_statement_result_checksum(result_rows)
+            if exception is not None:
+                result_type = ResultType.EXCEPTION
+                result_details = exception
             if is_fetch_all:
                 statement_type = CursorStatementType.FETCH_ALL
                 size = None
@@ -111,7 +115,7 @@ class TransactionRetryHelper:
             last_statement_result_details = FetchStatement(
                 cursor=cursor,
                 statement_type=statement_type,
-                result_type=ResultType.CHECKSUM,
+                result_type=result_type,
                 result_details=result_details,
                 size=size,
             )

@@ -554,6 +554,31 @@ class TestTransactionHelper(unittest.TestCase):
             [expected_statement],
         )
 
+    def test_add_fetch_statement_for_retry_last_statement_not_exists_with_exception(
+        self,
+    ):
+        row = ("field3", "field4")
+        exception = Exception("Test")
+
+        self._under_test.add_fetch_statement_for_retry(
+            self._mock_cursor, [row], exception, True
+        )
+
+        expected_statement = FetchStatement(
+            statement_type=CursorStatementType.FETCH_ALL,
+            cursor=self._mock_cursor,
+            result_type=ResultType.EXCEPTION,
+            result_details=exception,
+        )
+        self.assertEqual(
+            self._under_test._last_statement_details_per_cursor,
+            {self._mock_cursor: expected_statement},
+        )
+        self.assertEqual(
+            self._under_test._statement_result_details_list,
+            [expected_statement],
+        )
+
     def test_add_fetch_statement_for_retry_fetch_all_statement(self):
         """
         Test add_fetch_statement_for_retry method for fetchall statement
