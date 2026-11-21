@@ -76,6 +76,12 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
 _TRANSACTION_BEGIN_TIMEOUT_SECONDS = 30.0
 
 
+# Maximum number of PartialResultSet chunks to buffer while waiting for a
+# resume_token before flushing downstream and disabling retries until a newer
+# resume_token arrives.
+_MAX_BUFFERED_CHUNKS = 512
+
+
 @CrossSync.convert
 async def _restart_on_unavailable(
     method,
@@ -89,6 +95,7 @@ async def _restart_on_unavailable(
     observability_options=None,
     request_id_manager=None,
     resource_info=None,
+    max_buffer_size: Optional[int] = None,
 ):
     """Restart iteration after :exc:`.ServiceUnavailable`.
 
@@ -104,10 +111,22 @@ async def _restart_on_unavailable(
     :type transaction_selector: :class:`transaction_pb2.TransactionSelector`
     :param transaction_selector: Transaction selector object to be used in request if transaction is not passed,
     if both transaction_selector and transaction are passed, then transaction is given priority.
+
+    :type max_buffer_size: int
+    :param max_buffer_size:
+        (Optional) Maximum number of ``PartialResultSet`` items to buffer
+        while waiting for a ``resume_token``. Defaults to
+        ``_MAX_BUFFERED_CHUNKS``.
     """
+
+    if max_buffer_size is None:
+        max_buffer_size = _MAX_BUFFERED_CHUNKS
+    elif max_buffer_size < 0:
+        raise ValueError("max_buffer_size must be non-negative")
 
     resume_token: bytes = b""
     item_buffer: List[PartialResultSet] = []
+    safe_to_retry: bool = True
 
     if transaction is not None:
         transaction_selector = transaction._build_transaction_selector_pb()
@@ -199,35 +218,32 @@ async def _restart_on_unavailable(
                         iterator = None
                         break
 
-                    if item.resume_token:
+                    if item.resume_token and item.resume_token != resume_token:
                         resume_token = item.resume_token
+                        safe_to_retry = True
+                        break
+
+                    if not safe_to_retry or len(item_buffer) > max_buffer_size:
+                        # Flush without a resume_token; retries remain unsafe
+                        # until a newer resume_token supersedes the flushed items.
+                        safe_to_retry = False
                         break
                 else:
                     stream_finished = True
 
-            except ServiceUnavailable:
-                del item_buffer[:]
-                request.resume_token = resume_token
-                if transaction is not None:
-                    transaction_selector = transaction._build_transaction_selector_pb()
-                request.transaction = transaction_selector
-                attempt += 1
-                iterator = None
-                continue
-
-            except InternalServerError as exc:
-                resumable_error = any(
+            except (ServiceUnavailable, InternalServerError) as exc:
+                is_retryable = isinstance(exc, ServiceUnavailable) or any(
                     resumable_message in exc.message
                     for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
                 )
-                if not resumable_error:
+                if not safe_to_retry or not is_retryable:
                     raise _augment_error_with_request_id(exc, current_request_id)
                 del item_buffer[:]
                 request.resume_token = resume_token
                 if transaction is not None:
                     transaction_selector = transaction._build_transaction_selector_pb()
-                attempt += 1
                 request.transaction = transaction_selector
+                attempt += 1
                 iterator = None
                 continue
 

@@ -676,6 +676,97 @@ class TestBasics(MockServerTestBase):
             [b"", b"mid_tok"], [request.resume_token for request in execute_requests]
         )
 
+    def test_partial_result_set_buffer_limit_safe_to_retry(self):
+        from google.cloud.spanner_v1.snapshot import _MAX_BUFFERED_CHUNKS
+
+        # 1. Exactly 512 tokenless chunks stay within the threshold and retry cleanly.
+        sql_within = "select id from buffer_limit_within"
+        within_rows = [(str(index),) for index in range(_MAX_BUFFERED_CHUNKS)]
+        add_multi_column_result(
+            sql_within,
+            [("id", TypeCode.INT64)],
+            within_rows,
+            chunk_config=PartialResultSetConfig(
+                max_values_per_chunk=1, emit_resume_tokens=False
+            ),
+        )
+        add_execute_streaming_sql_error(
+            sql_within, _MAX_BUFFERED_CHUNKS, unavailable_status()
+        )
+        with self.database.snapshot() as snapshot:
+            rows = list(snapshot.execute_sql(sql_within))
+            self.assertEqual([[index] for index in range(_MAX_BUFFERED_CHUNKS)], rows)
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(
+            [b"", b""], [request.resume_token for request in execute_requests]
+        )
+
+        # 2. 513 tokenless chunks exceed the threshold, flush downstream, and fail
+        #    without retrying on subsequent UNAVAILABLE.
+        sql_exceeded = "select id from buffer_limit_exceeded"
+        exceeded_rows = [(str(index),) for index in range(_MAX_BUFFERED_CHUNKS + 1)]
+        add_multi_column_result(
+            sql_exceeded,
+            [("id", TypeCode.INT64)],
+            exceeded_rows,
+            chunk_config=PartialResultSetConfig(
+                max_values_per_chunk=1, emit_resume_tokens=False
+            ),
+        )
+        self.spanner_service.clear_requests()
+        add_execute_streaming_sql_error(
+            sql_exceeded, _MAX_BUFFERED_CHUNKS + 1, unavailable_status()
+        )
+        collected_rows = []
+        with self.database.snapshot() as snapshot:
+            with self.assertRaisesRegex(
+                exceptions.ServiceUnavailable, "Service unavailable."
+            ):
+                for row in snapshot.execute_sql(sql_exceeded):
+                    collected_rows.append(row)
+        self.assertEqual(
+            [[index] for index in range(_MAX_BUFFERED_CHUNKS + 1)], collected_rows
+        )
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual([b""], [request.resume_token for request in execute_requests])
+
+        # 3. Exceeding the threshold followed by a newer resume_token re-enables retry.
+        sql_recovered = "select id from buffer_limit_recovered"
+        partial_specs = [
+            {"values": [str(index)]} for index in range(_MAX_BUFFERED_CHUNKS + 1)
+        ]
+        partial_specs.append(
+            {
+                "values": [str(_MAX_BUFFERED_CHUNKS + 1)],
+                "resume_token": b"tok_recover",
+            }
+        )
+        partial_specs.append({"values": [str(_MAX_BUFFERED_CHUNKS + 2)]})
+        partial_specs.append(
+            {
+                "values": [str(_MAX_BUFFERED_CHUNKS + 3)],
+                "last": True,
+            }
+        )
+        add_execute_streaming_sql_results(
+            sql_recovered,
+            _make_partial_result_sets([("id", TypeCode.INT64)], partial_specs),
+        )
+        self.spanner_service.clear_requests()
+        add_execute_streaming_sql_error(
+            sql_recovered, _MAX_BUFFERED_CHUNKS + 3, unavailable_status()
+        )
+        with self.database.snapshot() as snapshot:
+            rows = list(snapshot.execute_sql(sql_recovered))
+            self.assertEqual(
+                [[index] for index in range(_MAX_BUFFERED_CHUNKS + 4)], rows
+            )
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(
+            [b"", b"tok_recover"],
+            [request.resume_token for request in execute_requests],
+        )
+
     def test_partial_result_set_config_validation(self):
         # Verify PartialResultSetConfig rejects non-positive chunking thresholds.
         with self.assertRaisesRegex(
@@ -1198,6 +1289,105 @@ class TestBasicsAsync(AsyncMockServerTestBase):
                 results = await snapshot.execute_sql(sql)
                 rows = [row async for row in results]
                 self.assertEqual([[10], [20]], rows)
+
+    async def test_async_partial_result_set_buffer_limit_safe_to_retry(self):
+        from google.cloud.spanner_v1._async.snapshot import _MAX_BUFFERED_CHUNKS
+
+        # 1. Exactly 512 tokenless chunks stay within the threshold and retry cleanly.
+        sql_within = "select id from async_buffer_limit_within"
+        within_rows = [(str(index),) for index in range(_MAX_BUFFERED_CHUNKS)]
+        add_multi_column_result(
+            sql_within,
+            [("id", TypeCode.INT64)],
+            within_rows,
+            chunk_config=PartialResultSetConfig(
+                max_values_per_chunk=1, emit_resume_tokens=False
+            ),
+        )
+        add_execute_streaming_sql_error(
+            sql_within, _MAX_BUFFERED_CHUNKS, unavailable_status()
+        )
+        async with self._async_database() as database:
+            async with database.snapshot() as snapshot:
+                results = await snapshot.execute_sql(sql_within)
+                rows = [row async for row in results]
+                self.assertEqual(
+                    [[index] for index in range(_MAX_BUFFERED_CHUNKS)], rows
+                )
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(
+            [b"", b""], [request.resume_token for request in execute_requests]
+        )
+
+        # 2. 513 tokenless chunks exceed the threshold, flush downstream, and fail
+        #    without retrying on subsequent UNAVAILABLE.
+        sql_exceeded = "select id from async_buffer_limit_exceeded"
+        exceeded_rows = [(str(index),) for index in range(_MAX_BUFFERED_CHUNKS + 1)]
+        add_multi_column_result(
+            sql_exceeded,
+            [("id", TypeCode.INT64)],
+            exceeded_rows,
+            chunk_config=PartialResultSetConfig(
+                max_values_per_chunk=1, emit_resume_tokens=False
+            ),
+        )
+        self.spanner_service.clear_requests()
+        add_execute_streaming_sql_error(
+            sql_exceeded, _MAX_BUFFERED_CHUNKS + 1, unavailable_status()
+        )
+        collected_rows = []
+        async with self._async_database() as database:
+            async with database.snapshot() as snapshot:
+                results = await snapshot.execute_sql(sql_exceeded)
+                with self.assertRaisesRegex(
+                    exceptions.ServiceUnavailable, "Service unavailable."
+                ):
+                    async for row in results:
+                        collected_rows.append(row)
+        self.assertEqual(
+            [[index] for index in range(_MAX_BUFFERED_CHUNKS + 1)], collected_rows
+        )
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual([b""], [request.resume_token for request in execute_requests])
+
+        # 3. Exceeding the threshold followed by a newer resume_token re-enables retry.
+        sql_recovered = "select id from async_buffer_limit_recovered"
+        partial_specs = [
+            {"values": [str(index)]} for index in range(_MAX_BUFFERED_CHUNKS + 1)
+        ]
+        partial_specs.append(
+            {
+                "values": [str(_MAX_BUFFERED_CHUNKS + 1)],
+                "resume_token": b"tok_recover",
+            }
+        )
+        partial_specs.append({"values": [str(_MAX_BUFFERED_CHUNKS + 2)]})
+        partial_specs.append(
+            {
+                "values": [str(_MAX_BUFFERED_CHUNKS + 3)],
+                "last": True,
+            }
+        )
+        add_execute_streaming_sql_results(
+            sql_recovered,
+            _make_partial_result_sets([("id", TypeCode.INT64)], partial_specs),
+        )
+        self.spanner_service.clear_requests()
+        add_execute_streaming_sql_error(
+            sql_recovered, _MAX_BUFFERED_CHUNKS + 3, unavailable_status()
+        )
+        async with self._async_database() as database:
+            async with database.snapshot() as snapshot:
+                results = await snapshot.execute_sql(sql_recovered)
+                rows = [row async for row in results]
+                self.assertEqual(
+                    [[index] for index in range(_MAX_BUFFERED_CHUNKS + 4)], rows
+                )
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(
+            [b"", b"tok_recover"],
+            [request.resume_token for request in execute_requests],
+        )
 
 
 def _execute_query(transaction: Transaction, sql: str):
