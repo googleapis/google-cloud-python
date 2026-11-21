@@ -597,13 +597,18 @@ class Cursor(object):
                             return
                     break
                 except Aborted:
-                    if not self.connection.read_only:
-                        if self._in_retry_mode:
-                            raise
-                        else:
-                            self.transaction_helper.retry_transaction()
+                    if self.connection.read_only or self._in_retry_mode:
+                        raise
+                    self.transaction_helper.retry_transaction()
+                    replayed_cursor = self.transaction_helper._cursor_map.get(self)
+                    if replayed_cursor is None:
+                        raise
+                    # Replay has already consumed the rows returned by earlier fetches.
+                    self._result_set = replayed_cursor._result_set
+                    self._itr = replayed_cursor._itr
         except Exception as e:
             exception = e
+            raise
 
         finally:
             if not self._in_retry_mode:
