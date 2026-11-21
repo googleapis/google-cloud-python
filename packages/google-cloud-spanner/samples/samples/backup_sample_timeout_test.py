@@ -68,7 +68,7 @@ def test_backup_lro_polling_timeout(capsys, sample_fn, api_method, args):
     mock_admin_api = mock.MagicMock()
     mock_admin_api.instance_path.return_value = "projects/p/instances/inst"
     mock_admin_api.database_path.return_value = "projects/p/instances/inst/databases/db"
-    setattr(getattr(mock_admin_api, api_method), "return_value", mock_operation)
+    getattr(mock_admin_api, api_method).return_value = mock_operation
 
     mock_client = mock.MagicMock()
     mock_client.project = "p"
