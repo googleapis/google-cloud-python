@@ -48,6 +48,18 @@ class TestConnection(unittest.TestCase):
         self.assertIs(conn._client, client)
         self.assertEqual(conn.API_BASE_URL, conn.DEFAULT_API_ENDPOINT)
 
+    def test_none_universe_domain_falls_back_to_default(self):
+        client = mock.Mock(universe_domain=None, spec=["universe_domain"])
+        conn = self._make_one(client)
+        self.assertEqual(conn.API_BASE_URL, conn.DEFAULT_API_ENDPOINT)
+
+    def test_empty_universe_domain_raises(self):
+        from google.api_core.universe import EmptyUniverseError
+
+        client = mock.Mock(universe_domain="", spec=["universe_domain"])
+        with self.assertRaises(EmptyUniverseError):
+            self._make_one(client)
+
     def test_universe_domain_url(self):
         client = mock.Mock(universe_domain="example.com", spec=["universe_domain"])
         conn = self._make_one(client)

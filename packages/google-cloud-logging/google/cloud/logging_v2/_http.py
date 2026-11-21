@@ -17,7 +17,7 @@
 import functools
 
 from google.api_core import page_iterator
-from google.api_core.universe import DEFAULT_UNIVERSE
+from google.api_core.universe import determine_domain
 
 from google.cloud import _http
 from google.cloud.logging_v2 import __version__
@@ -45,7 +45,9 @@ class Connection(_http.JSONConnection):
         """
         super(Connection, self).__init__(client, client_info)
         if api_endpoint is None:
-            universe_domain = getattr(client, "universe_domain", DEFAULT_UNIVERSE)
+            universe_domain = determine_domain(
+                getattr(client, "universe_domain", None), None
+            )
             api_endpoint = self.DEFAULT_API_ENDPOINT_TEMPLATE.format(
                 universe_domain=universe_domain
             )
