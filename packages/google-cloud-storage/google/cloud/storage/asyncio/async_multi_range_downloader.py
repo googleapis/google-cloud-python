@@ -999,29 +999,30 @@ class AsyncMultiRangeDownloader:
             raise ValueError("Underlying bidi-gRPC stream is not open")
 
         async with self._trace_span("Storage.AsyncMultiRangeDownloader.close"):
-            if self._pool:
-                await self._pool.close()
+            try:
+                if self._pool:
+                    await self._pool.close()
+
+                if self._multiplexer:
+                    await self._multiplexer.close()
+
+                if self.read_obj_str:
+                    try:
+                        if getattr(self.read_obj_str, "is_stream_open", True):
+                            res = self.read_obj_str.close()
+                            if inspect.isawaitable(res):
+                                await res
+                    except (
+                        ValueError,
+                        exceptions.GoogleAPICallError,
+                    ):
+                        pass
+            finally:
                 self._pool = None
-
-            if self._multiplexer:
-                await self._multiplexer.close()
                 self._multiplexer = None
-
-            if self.read_obj_str:
-                try:
-                    if getattr(self.read_obj_str, "is_stream_open", True):
-                        res = self.read_obj_str.close()
-                        if inspect.isawaitable(res):
-                            await res
-                except (
-                    ValueError,
-                    asyncio.CancelledError,
-                    exceptions.GoogleAPICallError,
-                ):
-                    pass
-            self.read_obj_str = None
-            self._primary_stream = None
-            self._is_stream_open = False
+                self.read_obj_str = None
+                self._primary_stream = None
+                self._is_stream_open = False
 
     @property
     def is_stream_open(self) -> bool:

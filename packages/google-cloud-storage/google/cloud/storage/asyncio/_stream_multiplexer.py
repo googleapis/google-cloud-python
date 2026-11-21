@@ -19,6 +19,7 @@ import logging
 from typing import Awaitable, Callable, Dict, Optional, Set
 
 import grpc
+from google.api_core import exceptions
 
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio.async_read_object_stream import (
@@ -181,6 +182,13 @@ class _StreamMultiplexer:
                 self._put_error_nowait(queue, error)
 
     async def send(self, request: _storage_v2.BidiReadObjectRequest) -> int:
+        if not self._stream.is_stream_open:
+            # A reopen cancelled after closing the old stream leaves that
+            # closed stream on the multiplexer at the same generation; raise a
+            # retryable error so the caller's retry reopens it.
+            raise exceptions.ServiceUnavailable(
+                "Bidi read stream is not open; it will be reopened"
+            )
         self._ensure_recv_loop()
         await self._stream.send(request)
         return self._stream_generation

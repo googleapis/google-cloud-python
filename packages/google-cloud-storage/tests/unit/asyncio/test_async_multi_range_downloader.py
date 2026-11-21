@@ -839,6 +839,30 @@ class TestAsyncMultiRangeDownloader:
         assert not mrd.is_stream_open
         assert mrd.object_metadata is None
 
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_close_propagates_caller_cancellation(
+        self, mock_cls_async_read_object_stream
+    ):
+        mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        close_entered = asyncio.Event()
+
+        async def _hanging_close():
+            close_entered.set()
+            await asyncio.Event().wait()
+
+        mrd.read_obj_str.close = AsyncMock(side_effect=_hanging_close)
+
+        task = asyncio.create_task(mrd.close())
+        await close_entered.wait()
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        assert not mrd.is_stream_open
+        assert mrd.object_metadata is None
+
     @pytest.mark.asyncio
     async def test_close_mrd_not_opened_should_throw_error(self):
         # Arrange
@@ -2631,3 +2655,97 @@ class TestAsyncMultiRangeDownloader:
             assert ps.pending_bytes == 0
 
         await mrd.close()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_recovers_after_cancel_during_reopen(
+        self, mock_cls_stream, mock_random_int
+    ):
+        from google.api_core.retry_async import AsyncRetry
+
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            _is_read_retryable,
+        )
+
+        data = b"abcd"
+        mock_random_int.side_effect = [101, 201, 202]
+        fast_retry = AsyncRetry(
+            predicate=_is_read_retryable, initial=0.01, maximum=0.01
+        )
+
+        def _stateful_stream():
+            s = self._make_mock_stream()
+            s.is_stream_open = False
+
+            async def _open(*args, **kwargs):
+                s.is_stream_open = True
+
+            async def _close():
+                if not s.is_stream_open:
+                    raise ValueError("Stream is not open")
+                s.is_stream_open = False
+
+            async def _send(req):
+                assert s.is_stream_open
+
+            s.open = AsyncMock(side_effect=_open)
+            s.close = AsyncMock(side_effect=_close)
+            s.send = AsyncMock(side_effect=_send)
+            return s
+
+        stream_1 = _stateful_stream()
+        stream_1.recv = AsyncMock(side_effect=exceptions.ServiceUnavailable("drop"))
+
+        reopen_entered = asyncio.Event()
+        stream_2 = _stateful_stream()
+
+        async def _hanging_open(*args, **kwargs):
+            reopen_entered.set()
+            await asyncio.Event().wait()
+
+        stream_2.open = AsyncMock(side_effect=_hanging_open)
+
+        stream_3 = _stateful_stream()
+        resp_q: asyncio.Queue = asyncio.Queue()
+
+        async def _echo_send(req):
+            assert stream_3.is_stream_open
+            for rr in req.read_ranges:
+                await resp_q.put(_zero_copy_response(data, 0, rr.read_id, True))
+
+        stream_3.send = AsyncMock(side_effect=_echo_send)
+        stream_3.recv = AsyncMock(side_effect=resp_q.get)
+
+        mock_cls_stream.side_effect = [stream_1, stream_2, stream_3]
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(), _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+
+        buf_a = bytearray(4)
+        task_a = asyncio.create_task(
+            mrd.download_ranges([(0, 4, buf_a)], retry_policy=fast_retry)
+        )
+        await reopen_entered.wait()
+        task_a.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task_a
+
+        buf_b, buf_c = bytearray(4), bytearray(4)
+        await asyncio.gather(
+            mrd.download_ranges([(0, 4, buf_b)], retry_policy=fast_retry),
+            mrd.download_ranges([(0, 4, buf_c)], retry_policy=fast_retry),
+        )
+        assert bytes(buf_b) == data
+        assert bytes(buf_c) == data
+        assert mock_cls_stream.call_count == 3
+        assert mrd.is_stream_open
+
+        await mrd.close()
+        with pytest.raises(ValueError, match="Underlying bidi-gRPC stream is not open"):
+            await mrd.download_ranges([(0, 4, bytearray(4))], retry_policy=fast_retry)
