@@ -75,6 +75,17 @@ if es is not None:  # pragma: NO COVER
     _ALGORITHM_TO_VERIFIER_CLASS["ES384"] = es.EsVerifier  # type: ignore
 
 
+def _validate_universe_domain(universe_domain):
+    """Raises if the universe domain passed to ``with_universe_domain`` is empty.
+
+    Raises:
+        google.auth.exceptions.InvalidValue: If the universe domain is None,
+            empty, or whitespace-only.
+    """
+    if not universe_domain or not universe_domain.strip():
+        raise exceptions.InvalidValue("Universe domain cannot be empty.")
+
+
 def encode(signer, payload, header=None, key_id=None):
     """Make a signed JWT.
 
@@ -333,6 +344,7 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
 class Credentials(
     google.auth.credentials.Signing,
     google.auth.credentials.CredentialsWithQuotaProject,
+    google.auth.credentials.CredentialsWithUniverseDomain,
     google.auth.credentials.CredentialsWithRegionalAccessBoundary,
 ):
     """Credentials that use a JWT as the bearer token.
@@ -393,6 +405,7 @@ class Credentials(
         additional_claims=None,
         token_lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
         quota_project_id=None,
+        universe_domain=google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
     ):
         """
         Args:
@@ -407,6 +420,8 @@ class Credentials(
                 which the token is valid. Defaults to 1 hour.
             quota_project_id (Optional[str]): The project ID used for quota
                 and billing.
+            universe_domain (Optional[str]): The universe domain. The default
+                universe domain is googleapis.com.
         """
         super(Credentials, self).__init__()
         self._signer = signer
@@ -415,6 +430,9 @@ class Credentials(
         self._audience = audience
         self._token_lifetime = token_lifetime
         self._quota_project_id = quota_project_id
+        self._universe_domain = (
+            universe_domain or google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
 
         if additional_claims is None:
             additional_claims = {}
@@ -439,6 +457,10 @@ class Credentials(
         """
         kwargs.setdefault("subject", info["client_email"])
         kwargs.setdefault("issuer", info["client_email"])
+        if not kwargs.get("universe_domain"):
+            kwargs["universe_domain"] = info.get(
+                "universe_domain", google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
+            )
         return cls(signer, **kwargs)
 
     @classmethod
@@ -506,11 +528,26 @@ class Credentials(
         """
         kwargs.setdefault("issuer", credentials.signer_email)
         kwargs.setdefault("subject", credentials.signer_email)
+        if not kwargs.get("universe_domain"):
+            kwargs["universe_domain"] = getattr(
+                credentials,
+                "universe_domain",
+                google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
+            )
         jwt_creds = cls(credentials.signer, audience=audience, **kwargs)
 
-        if isinstance(
-            credentials,
-            google.auth.credentials.CredentialsWithRegionalAccessBoundary,
+        # Regional Access Boundary (RAB) only applies to the default universe
+        # domain. Reuse the source credentials' cached RAB state only when the
+        # new credentials stay in the default universe; otherwise start with
+        # empty RAB state so a googleapis.com boundary is never sent to another
+        # universe.
+        if (
+            isinstance(
+                credentials,
+                google.auth.credentials.CredentialsWithRegionalAccessBoundary,
+            )
+            and jwt_creds.universe_domain
+            == google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
         ):
             credentials._copy_regional_access_boundary_manager(jwt_creds)
 
@@ -544,7 +581,9 @@ class Credentials(
             subject=subject if subject is not None else self._subject,
             audience=audience if audience is not None else self._audience,
             additional_claims=new_additional_claims,
+            token_lifetime=self._token_lifetime,
             quota_project_id=self._quota_project_id,
+            universe_domain=self._universe_domain,
         )
         self._copy_regional_access_boundary_manager(cred)
         return cred
@@ -557,9 +596,30 @@ class Credentials(
             subject=self._subject,
             audience=self._audience,
             additional_claims=self._additional_claims,
+            token_lifetime=self._token_lifetime,
             quota_project_id=quota_project_id,
+            universe_domain=self._universe_domain,
         )
         self._copy_regional_access_boundary_manager(cred)
+        return cred
+
+    @_helpers.copy_docstring(google.auth.credentials.CredentialsWithUniverseDomain)
+    def with_universe_domain(self, universe_domain):
+        _validate_universe_domain(universe_domain)
+        cred = self.__class__(
+            self._signer,
+            issuer=self._issuer,
+            subject=self._subject,
+            audience=self._audience,
+            additional_claims=self._additional_claims,
+            token_lifetime=self._token_lifetime,
+            quota_project_id=self._quota_project_id,
+            universe_domain=universe_domain,
+        )
+        # RAB state is only valid for the default universe domain, so don't
+        # carry cached RAB data over when switching to another universe.
+        if cred.universe_domain == google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN:
+            self._copy_regional_access_boundary_manager(cred)
         return cred
 
     def _make_jwt(self):
@@ -637,7 +697,9 @@ class Credentials(
 
 
 class OnDemandCredentials(
-    google.auth.credentials.Signing, google.auth.credentials.CredentialsWithQuotaProject
+    google.auth.credentials.Signing,
+    google.auth.credentials.CredentialsWithQuotaProject,
+    google.auth.credentials.CredentialsWithUniverseDomain,
 ):
     """On-demand JWT credentials.
 
@@ -665,6 +727,7 @@ class OnDemandCredentials(
         token_lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
         max_cache_size=_DEFAULT_MAX_CACHE_SIZE,
         quota_project_id=None,
+        universe_domain=google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
     ):
         """
         Args:
@@ -679,6 +742,8 @@ class OnDemandCredentials(
                 cache. Tokens are cached using :class:`google.auth._cache.LRUCache`.
             quota_project_id (Optional[str]): The project ID used for quota
                 and billing.
+            universe_domain (Optional[str]): The universe domain. The default
+                universe domain is googleapis.com.
 
         """
         super(OnDemandCredentials, self).__init__()
@@ -687,6 +752,9 @@ class OnDemandCredentials(
         self._subject = subject
         self._token_lifetime = token_lifetime
         self._quota_project_id = quota_project_id
+        self._universe_domain = (
+            universe_domain or google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
 
         if additional_claims is None:
             additional_claims = {}
@@ -712,6 +780,10 @@ class OnDemandCredentials(
         """
         kwargs.setdefault("subject", info["client_email"])
         kwargs.setdefault("issuer", info["client_email"])
+        if not kwargs.get("universe_domain"):
+            kwargs["universe_domain"] = info.get(
+                "universe_domain", google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
+            )
         return cls(signer, **kwargs)
 
     @classmethod
@@ -775,6 +847,12 @@ class OnDemandCredentials(
         """
         kwargs.setdefault("issuer", credentials.signer_email)
         kwargs.setdefault("subject", credentials.signer_email)
+        if not kwargs.get("universe_domain"):
+            kwargs["universe_domain"] = getattr(
+                credentials,
+                "universe_domain",
+                google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
+            )
         return cls(credentials.signer, **kwargs)
 
     def with_claims(self, issuer=None, subject=None, additional_claims=None):
@@ -800,8 +878,10 @@ class OnDemandCredentials(
             issuer=issuer if issuer is not None else self._issuer,
             subject=subject if subject is not None else self._subject,
             additional_claims=new_additional_claims,
+            token_lifetime=self._token_lifetime,
             max_cache_size=self._cache.maxsize,
             quota_project_id=self._quota_project_id,
+            universe_domain=self._universe_domain,
         )
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithQuotaProject)
@@ -811,8 +891,24 @@ class OnDemandCredentials(
             issuer=self._issuer,
             subject=self._subject,
             additional_claims=self._additional_claims,
+            token_lifetime=self._token_lifetime,
             max_cache_size=self._cache.maxsize,
             quota_project_id=quota_project_id,
+            universe_domain=self._universe_domain,
+        )
+
+    @_helpers.copy_docstring(google.auth.credentials.CredentialsWithUniverseDomain)
+    def with_universe_domain(self, universe_domain):
+        _validate_universe_domain(universe_domain)
+        return self.__class__(
+            self._signer,
+            issuer=self._issuer,
+            subject=self._subject,
+            additional_claims=self._additional_claims,
+            token_lifetime=self._token_lifetime,
+            max_cache_size=self._cache.maxsize,
+            quota_project_id=self._quota_project_id,
+            universe_domain=universe_domain,
         )
 
     @property
