@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.63.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.2...google-auth-v2.63.0) (2026-11-20)
+
+
+### Features
+
+* **auth:** gate regional access boundary lookups with experimental env var ([#19132](https://github.com/googleapis/google-cloud-python/issues/19132)) ([441d5d1](https://github.com/googleapis/google-cloud-python/commit/441d5d132380a67312189dcf24b3833aa671ab0b))
+
+
+### Bug Fixes
+
+* **auth:** add startup polling for Cloud Run SPIFFE mTLS certificates ([#18924](https://github.com/googleapis/google-cloud-python/issues/18924)) ([900ba57](https://github.com/googleapis/google-cloud-python/commit/900ba57cf4142a045d75634c837727052e9839eb))
+
+## [2.62.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.1...google-auth-v2.62.2) (2026-11-10)
+
+
+### Bug Fixes
+
+* **auth:** prevent race conditions during mTLS cert rotation on 401 responses ([#18168](https://github.com/googleapis/google-cloud-python/issues/18168)) ([b86536f](https://github.com/googleapis/google-cloud-python/commit/b86536f91caa7ff2ea5a37b943444111959422c1))
+* **oauth2:** validate Firebase issuer/subject and warn on omitted audience in verify_firebase_token ([#18777](https://github.com/googleapis/google-cloud-python/issues/18777)) ([1851b9c](https://github.com/googleapis/google-cloud-python/commit/1851b9c3a57d7a5bc7c3da6a7ae89ddc0da0c72a))
+
+
+### Documentation
+
+* **google-auth:** update requests intersphinx URL ([#18978](https://github.com/googleapis/google-cloud-python/issues/18978)) ([2b4575f](https://github.com/googleapis/google-cloud-python/commit/2b4575f36f1441792e51efb9394b636940ed539d))
+
 ## [2.62.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.0...google-auth-v2.62.1) (2026-11-02)
 
 

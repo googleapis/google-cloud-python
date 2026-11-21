@@ -7,13 +7,15 @@
 
 from unittest import mock
 
-from django.db import NotSupportedError, connection, connections
-from django.db.models import Index
-from django.db.models.fields import AutoField, IntegerField
+from django.db import NotSupportedError, connection, connections, models
+from django.db.models import CheckConstraint, Index, Q
+from django.db.models.fields import AutoField, IntegerField, PositiveIntegerField
+from django.test.utils import isolate_apps
+from google.api_core.exceptions import InvalidArgument
 
 from django_spanner import gen_rand_int64
 from django_spanner.schema import DatabaseSchemaEditor
-from tests._helpers import HAS_OPENTELEMETRY_INSTALLED
+from tests._helpers import HAS_OPENTELEMETRY_INSTALLED, StatusCode
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 from tests.unit.django_spanner.test__opentelemetry_tracing import (
     DATABASE_ID,
@@ -152,6 +154,20 @@ class TestUtils(SpannerSimpleTestClass):
 
             schema_editor.execute.assert_called_once_with(
                 "ALTER TABLE tests_author ADD COLUMN age INT64", []
+            )
+
+    def test_add_field_with_default(self):
+        """Tests adding fields with default values executes UPDATE with WHERE 1=1."""
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            new_field = IntegerField(default=42, null=True)
+            new_field.set_attributes_from_name("age")
+            new_field.model = Author
+            schema_editor.add_field(Author, new_field)
+
+            schema_editor.execute.assert_any_call(
+                "UPDATE tests_author SET age=%s WHERE 1=1",
+                (42,),
             )
 
     def test_remove_field(self):
@@ -503,3 +519,601 @@ class TestUtils(SpannerSimpleTestClass):
 
         normal_field = mock.MagicMock(generated=False, db_default=None)
         self.assertTrue(schema_editor.skip_default(normal_field))
+
+    def test_check_sql(self):
+        """Tests _check_sql generates CHECK constraint SQL."""
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        self.assertEqual(
+            schema_editor._check_sql("check_age", "age >= 0"),
+            "CONSTRAINT check_age CHECK (age >= 0)",
+        )
+
+    # Keep the inline CheckedModel out of Django's global app registry.
+    @isolate_apps("tests")
+    def test_create_model_with_check_constraint(self):
+        """Tests create_model includes table-level CHECK constraints."""
+
+        class CheckedModel(models.Model):
+            num = models.IntegerField()
+
+            class Meta:
+                app_label = "tests"
+                db_table = "tests_checked_model"
+                constraints = [
+                    CheckConstraint(
+                        condition=Q(num__gte=0),
+                        name="num_gte_0",
+                    ),
+                ]
+
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            schema_editor.create_model(CheckedModel)
+
+            schema_editor.execute.assert_called_once_with(
+                "CREATE TABLE tests_checked_model (id INT64 NOT NULL, "
+                "num INT64 NOT NULL, CONSTRAINT num_gte_0 CHECK (num >= 0)) "
+                "PRIMARY KEY(id)",
+                None,
+            )
+
+    def test_alter_field_add_check_constraint(self):
+        """Tests altering IntegerField to PositiveIntegerField emits ADD CONSTRAINT CHECK."""
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            old_field = IntegerField()
+            old_field.set_attributes_from_name("num")
+            old_field.model = Author
+            new_field = PositiveIntegerField()
+            new_field.set_attributes_from_name("num")
+            new_field.model = Author
+
+            schema_editor.alter_field(Author, old_field, new_field)
+
+            schema_editor.execute.assert_called_once()
+            positional_args, keyword_args = schema_editor.execute.call_args
+            self.assertEqual(len(positional_args), 1)
+            self.assertEqual(keyword_args, {})
+            statement = positional_args[0]
+            self.assertIsNotNone(statement)
+            self.assertEqual(
+                str(statement),
+                "ALTER TABLE tests_author ADD CONSTRAINT "
+                "tests_author_num_f8282a0e_check CHECK (num >= 0)",
+            )
+
+    def _assert_recorded_spans(
+        self,
+        expected_spans: list[tuple[str, StatusCode, dict[str, str]]],
+    ) -> None:
+        """Assert finished OpenTelemetry spans and always clear the exporter."""
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+        try:
+            span_list = self.ot_exporter.get_finished_spans()
+            self.assertEqual(len(span_list), len(expected_spans))
+            for span, (name, status, extra_attributes) in zip(
+                span_list, expected_spans
+            ):
+                self.assertSpanAttributes(
+                    name,
+                    status=status,
+                    attributes=dict(BASE_ATTRIBUTES, **extra_attributes),
+                    span=span,
+                )
+        finally:
+            self.ot_exporter.clear()
+
+    def _assert_unquoted_model_name_across_operations(
+        self, raw_table_name: str, expected_sql_table: str
+    ) -> None:
+        """Verify all 9 schema spans record raw_table_name while SQL uses expected_sql_table."""
+        with mock.patch.object(Author._meta, "db_table", raw_table_name):
+            with DatabaseSchemaEditor(self.connection) as schema_editor:
+                schema_editor.execute = mock.MagicMock()
+                schema_editor.create_model(Author)
+                self.assertIn(
+                    f"CREATE TABLE {expected_sql_table} ",
+                    schema_editor.execute.call_args_list[0].args[0],
+                )
+            self._assert_recorded_spans(
+                [
+                    (
+                        "CloudSpannerDjango.create_model",
+                        StatusCode.OK,
+                        {"model_name": raw_table_name},
+                    )
+                ]
+            )
+
+            with DatabaseSchemaEditor(self.connection) as schema_editor:
+                schema_editor.execute = mock.MagicMock()
+                schema_editor._constraint_names = mock.MagicMock(
+                    return_value=["num_unique"]
+                )
+                schema_editor.delete_model(Author)
+                self.assertIn(
+                    f"DROP TABLE {expected_sql_table}",
+                    str(schema_editor.execute.call_args_list[1].args[0]),
+                )
+            self._assert_recorded_spans(
+                [
+                    (
+                        "CloudSpannerDjango.delete_model.delete_index",
+                        StatusCode.OK,
+                        {"model_name": raw_table_name, "index_name": "num_unique"},
+                    ),
+                    (
+                        "CloudSpannerDjango.delete_model",
+                        StatusCode.OK,
+                        {"model_name": raw_table_name},
+                    ),
+                ]
+            )
+
+            with DatabaseSchemaEditor(self.connection) as schema_editor:
+                schema_editor.execute = mock.MagicMock()
+                schema_editor._constraint_names = mock.MagicMock(
+                    return_value=["num_unique"]
+                )
+                remove_field = IntegerField(unique=True)
+                remove_field.set_attributes_from_name("num")
+                remove_field.model = Author
+                schema_editor.remove_field(Author, remove_field)
+                self.assertIn(
+                    f"ALTER TABLE {expected_sql_table} DROP COLUMN num",
+                    str(schema_editor.execute.call_args_list[1].args[0]),
+                )
+            self._assert_recorded_spans(
+                [
+                    (
+                        "CloudSpannerDjango.remove_field.delete_index",
+                        StatusCode.OK,
+                        {
+                            "model_name": raw_table_name,
+                            "field": "num",
+                            "index_name": "num_unique",
+                        },
+                    ),
+                    (
+                        "CloudSpannerDjango.remove_field",
+                        StatusCode.OK,
+                        {"model_name": raw_table_name, "field": "num"},
+                    ),
+                ]
+            )
+
+            with DatabaseSchemaEditor(self.connection) as schema_editor:
+                schema_editor.execute = mock.MagicMock()
+                index = Index(name="test_order_index_num", fields=["num"])
+                schema_editor.add_index(Author, index)
+                self.assertEqual(
+                    str(schema_editor.execute.call_args_list[0].args[0]),
+                    f"CREATE INDEX test_order_index_num ON {expected_sql_table} (num)",
+                )
+            self._assert_recorded_spans(
+                [
+                    (
+                        "CloudSpannerDjango.add_index",
+                        StatusCode.OK,
+                        {"model_name": raw_table_name, "index": "num"},
+                    )
+                ]
+            )
+
+            with DatabaseSchemaEditor(self.connection) as schema_editor:
+                schema_editor.execute = mock.MagicMock()
+                schema_editor._constraint_names = mock.MagicMock(
+                    return_value=["num_unique"]
+                )
+                old_field = IntegerField(null=True, db_index=True)
+                old_field.set_attributes_from_name("num")
+                old_field.model = Author
+                new_field = IntegerField(db_index=True)
+                new_field.set_attributes_from_name("author_num")
+                new_field.model = Author
+                schema_editor.alter_field(Author, old_field, new_field)
+                self.assertIn(
+                    f"ALTER TABLE {expected_sql_table} RENAME COLUMN num TO author_num",
+                    str(schema_editor.execute.call_args_list[1].args[0]),
+                )
+                self.assertIn(
+                    f"ON {expected_sql_table} (author_num)",
+                    str(schema_editor.execute.call_args_list[3].args[0]),
+                )
+            self._assert_recorded_spans(
+                [
+                    (
+                        "CloudSpannerDjango.alter_field.delete_index",
+                        StatusCode.OK,
+                        {
+                            "model_name": raw_table_name,
+                            "index_name": "num_unique",
+                            "alter_field": "num",
+                        },
+                    ),
+                    (
+                        "CloudSpannerDjango.alter_field",
+                        StatusCode.OK,
+                        {"model_name": raw_table_name, "alter_field": "num"},
+                    ),
+                    (
+                        "CloudSpannerDjango.alter_field.recreate_index",
+                        StatusCode.OK,
+                        {"model_name": raw_table_name, "alter_field": "author_num"},
+                    ),
+                ]
+            )
+
+    def test_trace_model_name_unquoted(self) -> None:
+        """OpenTelemetry model_name attributes stay unquoted across quoting modes."""
+        cases = [
+            ("order", "`order`"),
+            ("my.table`name", r"`my.table\x60name`"),
+        ]
+        for raw_table_name, expected_sql_table in cases:
+            with self.subTest(raw_table_name=raw_table_name):
+                self._assert_unquoted_model_name_across_operations(
+                    raw_table_name, expected_sql_table
+                )
+
+        with mock.patch.dict(
+            "django_spanner.operations.os.environ",
+            {"RUNNING_SPANNER_BACKEND_TESTS": "1"},
+        ):
+            self._assert_unquoted_model_name_across_operations(
+                "my-table name", "my_table_name"
+            )
+
+    def test_trace_model_name_unquoted_empty_and_multiple_indexes(self) -> None:
+        """Unquoted model_name holds for zero-index and multi-index delete/remove."""
+        reserved_table_name = "order"
+        with mock.patch.object(Author._meta, "db_table", reserved_table_name):
+            for index_names in ([], ["idx_first", "idx_second"]):
+                with self.subTest(operation="delete_model", index_names=index_names):
+                    with DatabaseSchemaEditor(self.connection) as schema_editor:
+                        schema_editor.execute = mock.MagicMock()
+                        schema_editor._constraint_names = mock.MagicMock(
+                            return_value=index_names
+                        )
+                        schema_editor.delete_model(Author)
+                    self._assert_recorded_spans(
+                        [
+                            (
+                                "CloudSpannerDjango.delete_model.delete_index",
+                                StatusCode.OK,
+                                {
+                                    "model_name": reserved_table_name,
+                                    "index_name": index_name,
+                                },
+                            )
+                            for index_name in index_names
+                        ]
+                        + [
+                            (
+                                "CloudSpannerDjango.delete_model",
+                                StatusCode.OK,
+                                {"model_name": reserved_table_name},
+                            )
+                        ]
+                    )
+
+                with self.subTest(operation="remove_field", index_names=index_names):
+                    with DatabaseSchemaEditor(self.connection) as schema_editor:
+                        schema_editor.execute = mock.MagicMock()
+                        schema_editor._constraint_names = mock.MagicMock(
+                            return_value=index_names
+                        )
+                        remove_field = IntegerField(unique=True)
+                        remove_field.set_attributes_from_name("num")
+                        remove_field.model = Author
+                        schema_editor.remove_field(Author, remove_field)
+                    self._assert_recorded_spans(
+                        [
+                            (
+                                "CloudSpannerDjango.remove_field.delete_index",
+                                StatusCode.OK,
+                                {
+                                    "model_name": reserved_table_name,
+                                    "field": "num",
+                                    "index_name": index_name,
+                                },
+                            )
+                            for index_name in index_names
+                        ]
+                        + [
+                            (
+                                "CloudSpannerDjango.remove_field",
+                                StatusCode.OK,
+                                {"model_name": reserved_table_name, "field": "num"},
+                            )
+                        ]
+                    )
+
+    @isolate_apps("tests")
+    def test_trace_model_name_unquoted_m2m_through_table(self) -> None:
+        """Auto-created M2M through table spans also record unquoted db_table."""
+
+        class Tag(models.Model):
+            name = models.CharField(max_length=20)
+
+            class Meta:
+                app_label = "tests"
+                db_table = "select"
+
+        class Order(models.Model):
+            tags = models.ManyToManyField(Tag)
+
+            class Meta:
+                app_label = "tests"
+                db_table = "order"
+
+        through_model = Order._meta.local_many_to_many[0].remote_field.through
+        through_model._meta.db_table = "order.tags"
+
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            schema_editor.create_model(Order)
+            self.assertIn(
+                "CREATE TABLE `order` ",
+                schema_editor.execute.call_args_list[0].args[0],
+            )
+            self.assertIn(
+                "CREATE TABLE `order.tags` ",
+                schema_editor.execute.call_args_list[1].args[0],
+            )
+        self._assert_recorded_spans(
+            [
+                (
+                    "CloudSpannerDjango.create_model",
+                    StatusCode.OK,
+                    {"model_name": "order"},
+                ),
+                (
+                    "CloudSpannerDjango.create_model",
+                    StatusCode.OK,
+                    {"model_name": "order.tags"},
+                ),
+            ]
+        )
+
+    def test_trace_model_name_unquoted_errors(self) -> None:
+        """Error spans across all 9 trace sites and early exits keep unquoted model_name."""
+        reserved_table_name = "order"
+
+        def run_create(schema_editor: DatabaseSchemaEditor) -> None:
+            schema_editor.create_model(Author)
+
+        def run_delete(schema_editor: DatabaseSchemaEditor) -> None:
+            schema_editor._constraint_names = mock.MagicMock(
+                return_value=["num_unique"]
+            )
+            schema_editor.delete_model(Author)
+
+        def run_remove(schema_editor: DatabaseSchemaEditor) -> None:
+            schema_editor._constraint_names = mock.MagicMock(
+                return_value=["num_unique"]
+            )
+            remove_field = IntegerField(unique=True)
+            remove_field.set_attributes_from_name("num")
+            remove_field.model = Author
+            schema_editor.remove_field(Author, remove_field)
+
+        def run_add_index(schema_editor: DatabaseSchemaEditor) -> None:
+            index = Index(name="test_order_index_num", fields=["num"])
+            schema_editor.add_index(Author, index)
+
+        def run_alter(schema_editor: DatabaseSchemaEditor) -> None:
+            schema_editor._constraint_names = mock.MagicMock(
+                return_value=["num_unique"]
+            )
+            old_field = IntegerField(null=True, db_index=True)
+            old_field.set_attributes_from_name("num")
+            old_field.model = Author
+            new_field = IntegerField(db_index=True)
+            new_field.set_attributes_from_name("author_num")
+            new_field.model = Author
+            schema_editor.alter_field(Author, old_field, new_field)
+
+        error_cases = [
+            (
+                "create_model",
+                run_create,
+                InvalidArgument("bad create"),
+                "bad create",
+                [
+                    (
+                        "CloudSpannerDjango.create_model",
+                        StatusCode.ERROR,
+                        {"model_name": reserved_table_name},
+                    )
+                ],
+            ),
+            (
+                "delete_model.delete_index",
+                run_delete,
+                InvalidArgument("bad index drop"),
+                "bad index drop",
+                [
+                    (
+                        "CloudSpannerDjango.delete_model.delete_index",
+                        StatusCode.ERROR,
+                        {"model_name": reserved_table_name, "index_name": "num_unique"},
+                    )
+                ],
+            ),
+            (
+                "delete_model",
+                run_delete,
+                [None, InvalidArgument("bad table drop")],
+                "bad table drop",
+                [
+                    (
+                        "CloudSpannerDjango.delete_model.delete_index",
+                        StatusCode.OK,
+                        {"model_name": reserved_table_name, "index_name": "num_unique"},
+                    ),
+                    (
+                        "CloudSpannerDjango.delete_model",
+                        StatusCode.ERROR,
+                        {"model_name": reserved_table_name},
+                    ),
+                ],
+            ),
+            (
+                "remove_field.delete_index",
+                run_remove,
+                InvalidArgument("bad field index drop"),
+                "bad field index drop",
+                [
+                    (
+                        "CloudSpannerDjango.remove_field.delete_index",
+                        StatusCode.ERROR,
+                        {
+                            "model_name": reserved_table_name,
+                            "field": "num",
+                            "index_name": "num_unique",
+                        },
+                    )
+                ],
+            ),
+            (
+                "remove_field",
+                run_remove,
+                [None, InvalidArgument("bad column drop")],
+                "bad column drop",
+                [
+                    (
+                        "CloudSpannerDjango.remove_field.delete_index",
+                        StatusCode.OK,
+                        {
+                            "model_name": reserved_table_name,
+                            "field": "num",
+                            "index_name": "num_unique",
+                        },
+                    ),
+                    (
+                        "CloudSpannerDjango.remove_field",
+                        StatusCode.ERROR,
+                        {"model_name": reserved_table_name, "field": "num"},
+                    ),
+                ],
+            ),
+            (
+                "add_index",
+                run_add_index,
+                InvalidArgument("bad index create"),
+                "bad index create",
+                [
+                    (
+                        "CloudSpannerDjango.add_index",
+                        StatusCode.ERROR,
+                        {"model_name": reserved_table_name, "index": "num"},
+                    )
+                ],
+            ),
+            (
+                "alter_field.delete_index",
+                run_alter,
+                InvalidArgument("bad alter index drop"),
+                "bad alter index drop",
+                [
+                    (
+                        "CloudSpannerDjango.alter_field.delete_index",
+                        StatusCode.ERROR,
+                        {
+                            "model_name": reserved_table_name,
+                            "index_name": "num_unique",
+                            "alter_field": "num",
+                        },
+                    )
+                ],
+            ),
+            (
+                "alter_field",
+                run_alter,
+                [None, InvalidArgument("bad alter")],
+                "bad alter",
+                [
+                    (
+                        "CloudSpannerDjango.alter_field.delete_index",
+                        StatusCode.OK,
+                        {
+                            "model_name": reserved_table_name,
+                            "index_name": "num_unique",
+                            "alter_field": "num",
+                        },
+                    ),
+                    (
+                        "CloudSpannerDjango.alter_field",
+                        StatusCode.ERROR,
+                        {"model_name": reserved_table_name, "alter_field": "num"},
+                    ),
+                ],
+            ),
+            (
+                "alter_field.recreate_index",
+                run_alter,
+                [None, None, None, InvalidArgument("bad recreate index")],
+                "bad recreate index",
+                [
+                    (
+                        "CloudSpannerDjango.alter_field.delete_index",
+                        StatusCode.OK,
+                        {
+                            "model_name": reserved_table_name,
+                            "index_name": "num_unique",
+                            "alter_field": "num",
+                        },
+                    ),
+                    (
+                        "CloudSpannerDjango.alter_field",
+                        StatusCode.OK,
+                        {"model_name": reserved_table_name, "alter_field": "num"},
+                    ),
+                    (
+                        "CloudSpannerDjango.alter_field.recreate_index",
+                        StatusCode.ERROR,
+                        {
+                            "model_name": reserved_table_name,
+                            "alter_field": "author_num",
+                        },
+                    ),
+                ],
+            ),
+        ]
+
+        with mock.patch.object(Author._meta, "db_table", reserved_table_name):
+            for (
+                case_name,
+                runner,
+                side_effect,
+                error_regex,
+                expected_spans,
+            ) in error_cases:
+                with self.subTest(case=case_name):
+                    with self.assertRaisesRegex(InvalidArgument, error_regex):
+                        with DatabaseSchemaEditor(self.connection) as schema_editor:
+                            schema_editor.execute = mock.MagicMock(
+                                side_effect=side_effect
+                            )
+                            runner(schema_editor)
+                    self._assert_recorded_spans(expected_spans)
+
+            with self.assertRaisesRegex(
+                NotSupportedError,
+                "other than Field\\(db_index=True\\)",
+            ):
+                with DatabaseSchemaEditor(self.connection) as schema_editor:
+                    schema_editor.execute = mock.MagicMock()
+                    schema_editor._constraint_names = mock.MagicMock(
+                        return_value=["num_unique"]
+                    )
+                    old_field = IntegerField(null=True, db_index=False)
+                    old_field.set_attributes_from_name("num")
+                    old_field.model = Author
+                    new_field = IntegerField(db_index=False)
+                    new_field.set_attributes_from_name("author_num")
+                    new_field.model = Author
+                    schema_editor.alter_field(Author, old_field, new_field)
+            self._assert_recorded_spans([])

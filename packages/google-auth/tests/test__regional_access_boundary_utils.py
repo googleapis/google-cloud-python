@@ -23,6 +23,7 @@ from google.auth import (
     _helpers,
     _regional_access_boundary_utils,
     credentials,
+    environment_vars,
 )
 from google.oauth2 import credentials as oauth2_credentials
 
@@ -71,7 +72,64 @@ class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
         return new_credentials
 
 
+@pytest.fixture(autouse=True)
+def enable_rab_lookup(monkeypatch):
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
+    )
+
+
 class TestCredentialsWithRegionalAccessBoundary(object):
+    def test_is_regional_access_boundary_lookup_enabled_unset(self, monkeypatch):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            raising=False,
+        )
+        assert (
+            _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled()
+            is False
+        )
+
+    @pytest.mark.parametrize(
+        "env_value,expected",
+        [
+            ("", False),
+            ("true", True),
+            ("1", True),
+            ("  True \n", True),
+            ("false", False),
+            ("ture", False),
+        ],
+    )
+    def test_is_regional_access_boundary_lookup_enabled_values(
+        self, monkeypatch, env_value, expected
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            env_value,
+        )
+        assert (
+            _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled()
+            is expected
+        )
+
+    def test_maybe_start_refresh_is_skipped_when_disabled_by_env_var(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "false",
+        )
+        creds = CredentialsImpl()
+        creds.token = "access-token"
+        request = mock.Mock()
+        headers = {}
+
+        creds.before_request(request, "GET", "http://example.com", headers)
+
+        request.assert_not_called()
+        assert creds._rab_manager.refresh_manager._worker is None
+        assert headers == {"authorization": "Bearer access-token"}
+
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
     )
@@ -591,6 +649,25 @@ class AsyncCredentialsImpl(_credentials_async.CredentialsWithRegionalAccessBound
 
 class TestAsyncCredentialsWithRegionalAccessBoundary(object):
     @pytest.mark.asyncio
+    async def test_maybe_start_refresh_async_skipped_when_disabled_by_env_var(
+        self, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "false",
+        )
+        creds = AsyncCredentialsImpl()
+        creds.token = "access-token"
+        request = mock.AsyncMock()
+        headers = {}
+
+        await creds.before_request(request, "GET", "http://example.com", headers)
+
+        request.assert_not_called()
+        assert creds._rab_manager.refresh_manager._worker_task is None
+        assert headers == {"authorization": "Bearer access-token"}
+
+    @pytest.mark.asyncio
     async def test_maybe_start_refresh_async_blocking(self):
         creds = AsyncCredentialsImpl()
         creds._rab_manager._use_blocking_regional_access_boundary_lookup = True
@@ -883,6 +960,52 @@ def test_set_initial_regional_access_boundary_with_value():
     )
     assert manager._data.encoded_locations == "us-east1"
     assert manager._data.expiry == expiry
+
+
+def test_set_initial_regional_access_boundary_skipped_when_disabled(monkeypatch):
+    creds = CredentialsImpl()
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "false",
+    )
+    creds._set_regional_access_boundary(
+        {
+            "encodedLocations": "0xNEW",
+            "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+        }
+    )
+
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
+    )
+    assert creds.regional_access_boundary is None
+    assert creds.regional_access_boundary_expiry is None
+
+
+def test_apply_headers_strips_header_when_disabled(monkeypatch):
+    creds = CredentialsImpl()
+    creds.token = "access-token"
+    creds._set_regional_access_boundary(
+        {
+            "encodedLocations": "0xABC",
+            "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+        }
+    )
+
+    headers = {}
+    creds.apply(headers)
+    assert headers["x-allowed-locations"] == "0xABC"
+
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "false",
+    )
+    assert creds.regional_access_boundary is None
+    assert creds.regional_access_boundary_expiry is None
+    creds.apply(headers)
+    assert "x-allowed-locations" not in headers
+    assert headers["authorization"] == "Bearer access-token"
 
 
 def test_sync_refresh_manager_start_refresh_executes():

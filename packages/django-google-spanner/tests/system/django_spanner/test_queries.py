@@ -51,3 +51,60 @@ class TestQueries(TransactionTestCase):
         self.assertEqual(qs1[0]["last_name"], "Kent")
         # Delete data from Author table.
         Author.objects.all().delete()
+
+    def test_typed_value_expressions_in_queries(self):
+        """Verify typed Value(None, ...) and float Value() work in ORM queries."""
+        from django.db import models
+        from django.db.models.functions import Coalesce
+
+        Author.objects.create(
+            first_name="Arthur",
+            last_name="Kent",
+            rating=Decimal("4.1"),
+        )
+        try:
+            union_rows = list(
+                Author.objects.values_list("first_name", "last_name").union(
+                    Author.objects.values_list(
+                        "first_name",
+                        models.Value(
+                            None, output_field=models.CharField(max_length=20)
+                        ),
+                    )
+                )
+            )
+            self.assertEqual(set(union_rows), {("Arthur", "Kent"), ("Arthur", None)})
+
+            annotated = list(
+                Author.objects.annotate(
+                    null_text=models.Value(
+                        None, output_field=models.CharField(max_length=20)
+                    ),
+                    coalesced=Coalesce(
+                        models.Value(
+                            None, output_field=models.CharField(max_length=20)
+                        ),
+                        models.Value("fallback"),
+                    ),
+                    cased=models.Case(
+                        models.When(first_name="Arthur", then=models.Value("ok")),
+                        default=models.Value(
+                            None, output_field=models.CharField(max_length=20)
+                        ),
+                    ),
+                    float_val=models.Value(1.5, output_field=models.FloatField()),
+                ).values("null_text", "coalesced", "cased", "float_val")
+            )
+            self.assertEqual(
+                annotated,
+                [
+                    {
+                        "null_text": None,
+                        "coalesced": "fallback",
+                        "cased": "ok",
+                        "float_val": 1.5,
+                    }
+                ],
+            )
+        finally:
+            Author.objects.all().delete()
