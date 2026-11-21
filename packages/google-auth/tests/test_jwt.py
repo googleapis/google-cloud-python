@@ -602,6 +602,17 @@ class TestCredentials(object):
             .universe_domain
             == FAKE_UNIVERSE_DOMAIN
         )
+        custom_lifetime_creds = jwt.Credentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.AUDIENCE,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_claims(audience=new_audience)._token_lifetime
+            == 600
+        )
 
     def test__make_jwt_without_audience(self):
         cred = jwt.Credentials.from_service_account_info(
@@ -631,6 +642,17 @@ class TestCredentials(object):
             .with_quota_project(quota_project_id)
             .universe_domain
             == FAKE_UNIVERSE_DOMAIN
+        )
+        custom_lifetime_creds = jwt.Credentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.AUDIENCE,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_quota_project(quota_project_id)._token_lifetime
+            == 600
         )
 
     def test_sign_bytes(self):
@@ -1190,6 +1212,18 @@ class TestOnDemandCredentials(object):
             .universe_domain
             == FAKE_UNIVERSE_DOMAIN
         )
+        custom_lifetime_creds = jwt.OnDemandCredentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_claims(
+                additional_claims=new_claims
+            )._token_lifetime
+            == 600
+        )
 
     def test_with_quota_project(self):
         quota_project_id = "project-foo"
@@ -1205,6 +1239,16 @@ class TestOnDemandCredentials(object):
             .with_quota_project(quota_project_id)
             .universe_domain
             == FAKE_UNIVERSE_DOMAIN
+        )
+        custom_lifetime_creds = jwt.OnDemandCredentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_quota_project(quota_project_id)._token_lifetime
+            == 600
         )
 
     def test_sign_bytes(self):

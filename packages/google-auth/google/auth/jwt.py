@@ -565,6 +565,7 @@ class Credentials(
             subject=subject if subject is not None else self._subject,
             audience=audience if audience is not None else self._audience,
             additional_claims=new_additional_claims,
+            token_lifetime=self._token_lifetime,
             quota_project_id=self._quota_project_id,
             universe_domain=self._universe_domain,
         )
@@ -579,6 +580,7 @@ class Credentials(
             subject=self._subject,
             audience=self._audience,
             additional_claims=self._additional_claims,
+            token_lifetime=self._token_lifetime,
             quota_project_id=quota_project_id,
             universe_domain=self._universe_domain,
         )
@@ -857,6 +859,7 @@ class OnDemandCredentials(
             issuer=issuer if issuer is not None else self._issuer,
             subject=subject if subject is not None else self._subject,
             additional_claims=new_additional_claims,
+            token_lifetime=self._token_lifetime,
             max_cache_size=self._cache.maxsize,
             quota_project_id=self._quota_project_id,
             universe_domain=self._universe_domain,
@@ -869,6 +872,7 @@ class OnDemandCredentials(
             issuer=self._issuer,
             subject=self._subject,
             additional_claims=self._additional_claims,
+            token_lifetime=self._token_lifetime,
             max_cache_size=self._cache.maxsize,
             quota_project_id=quota_project_id,
             universe_domain=self._universe_domain,
