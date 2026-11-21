@@ -33,7 +33,9 @@ def _hermetic_env(monkeypatch):
 
 def _make_credentials(spec=None):
     if spec is None:
-        return mock.Mock(spec=auth_credentials.Credentials)
+        return mock.Mock(
+            spec=auth_credentials.Credentials, universe_domain="googleapis.com"
+        )
     return mock.Mock(spec=spec)
 
 
@@ -419,6 +421,23 @@ class TestGrpcClient(unittest.TestCase):
             )
         mock_transport_cls.create_channel.assert_not_called()
 
+    @mock.patch("google.auth.default")
+    @mock.patch("google.cloud._storage_v2.StorageClient")
+    def test_universe_domain_validation_errors(
+        self, mock_storage_client, mock_auth_default
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_storage_client.get_transport_class.return_value = mock_transport_cls
+        other_creds = _make_credentials()
+        other_creds.universe_domain = "example.com"
+        mock_auth_default.return_value = (other_creds, "test-project")
+
+        with self.assertRaisesRegex(ValueError, "example.com"):
+            grpc_client.GrpcClient(project="test-project", credentials=other_creds)
+        with self.assertRaisesRegex(ValueError, "example.com"):
+            grpc_client.GrpcClient(project="test-project")
+        mock_transport_cls.create_channel.assert_not_called()
+
     @mock.patch("google.api_core.grpc_helpers.create_channel")
     def test_real_gapic_client_integration_non_default_universe(
         self, mock_create_channel
@@ -576,3 +595,25 @@ class TestGrpcClient(unittest.TestCase):
                 )
                 self.assertTrue(client.metrics_enabled)
                 self.assertTrue(client.debug_metrics_enabled)
+
+
+@pytest.mark.parametrize("creds_universe", ["__missing__", None])
+@mock.patch("google.cloud._storage_v2.StorageClient")
+def test_grpc_client_universe_domain_validation_unusable_creds(
+    mock_storage_client, creds_universe
+):
+    mock_transport_cls = mock.MagicMock()
+    mock_storage_client.get_transport_class.return_value = mock_transport_cls
+    creds = _make_credentials()
+    if creds_universe == "__missing__":
+        del creds.universe_domain
+    else:
+        creds.universe_domain = creds_universe
+
+    with pytest.raises(ValueError, match="does not match"):
+        grpc_client.GrpcClient(
+            project="test-project",
+            credentials=creds,
+            client_options={"universe_domain": "example.com"},
+        )
+    mock_transport_cls.create_channel.assert_not_called()
