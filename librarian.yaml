@@ -1182,7 +1182,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.34.1
+    version: 2.34.2
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
