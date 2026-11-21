@@ -25,6 +25,7 @@ import pytest  # type: ignore
 from google.auth import (
     _helpers,
     crypt,
+    environment_vars,
     exceptions,
     iam,
     impersonated_credentials,
@@ -570,7 +571,6 @@ class TestCredentials(object):
         assert (
             self.credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
         )
-        assert self.credentials._is_regional_access_boundary_lookup_required() is True
         assert isinstance(
             self.credentials, auth_credentials.CredentialsWithUniverseDomain
         )
@@ -829,7 +829,11 @@ class TestCredentials(object):
             == 600
         )
 
-    def test_before_request_with_universe_domain_clears_cached_rab(self):
+    def test_before_request_with_universe_domain_clears_cached_rab(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         self.credentials._set_regional_access_boundary(
             {
                 "encodedLocations": "0xA30",
@@ -852,7 +856,13 @@ class TestCredentials(object):
         assert "x-allowed-locations" not in headers
         request.assert_not_called()
 
-    def test_before_request_from_signing_credentials_override_clears_cached_rab(self):
+    def test_before_request_from_signing_credentials_override_clears_cached_rab(
+        self, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         gdu_sa_creds = service_account.Credentials.from_service_account_info(
             SERVICE_ACCOUNT_INFO
         )
@@ -882,7 +892,13 @@ class TestCredentials(object):
         assert "x-allowed-locations" not in headers
         request.assert_not_called()
 
-    def test_before_request_non_default_universe_skips_rab_lookup(self, signer):
+    def test_before_request_non_default_universe_skips_rab_lookup(
+        self, signer, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         credentials = jwt.Credentials(
             signer,
             self.SERVICE_ACCOUNT_EMAIL,
@@ -907,6 +923,10 @@ class TestCredentials(object):
         request.assert_not_called()
 
     def test_before_request_default_universe_performs_rab_lookup(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
         self.credentials._set_blocking_regional_access_boundary_lookup()
 
@@ -946,7 +966,6 @@ class TestCredentials(object):
             audience=f"https://iamcredentials.{FAKE_UNIVERSE_DOMAIN}/",
             universe_domain=FAKE_UNIVERSE_DOMAIN,
         )
-        source_credentials._set_blocking_regional_access_boundary_lookup()
 
         impersonated = impersonated_credentials.Credentials(
             source_credentials=source_credentials,

@@ -23,6 +23,7 @@ from google.auth import (
     _helpers,
     _regional_access_boundary_utils,
     crypt,
+    environment_vars,
     exceptions,
 )
 from google.auth import (
@@ -300,6 +301,10 @@ class TestCredentials(object):
     async def test_before_request_default_universe_performs_rab_lookup(
         self, monkeypatch
     ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
         self.credentials._set_blocking_regional_access_boundary_lookup()
 
@@ -325,7 +330,13 @@ class TestCredentials(object):
         request.assert_awaited_once()
 
     @pytest.mark.asyncio
-    async def test_before_request_with_universe_domain_clears_cached_rab(self):
+    async def test_before_request_with_universe_domain_clears_cached_rab(
+        self, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         self.credentials._set_regional_access_boundary(
             {
                 "encodedLocations": "0xA30",
