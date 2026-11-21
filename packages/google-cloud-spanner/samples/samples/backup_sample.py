@@ -54,7 +54,7 @@ def create_backup(instance_id, database_id, backup_id, version_time):
     operation = database_admin_api.create_backup(request)
 
     # Wait for backup operation to complete.
-    backup = operation.result(2100)
+    backup = operation.result(3600)
 
     # Verify that the backup is ready.
     assert backup.state == backup_pb.Backup.State.READY
@@ -101,7 +101,7 @@ def create_backup_with_encryption_key(
     operation = database_admin_api.create_backup(request)
 
     # Wait for backup operation to complete.
-    backup = operation.result(2100)
+    backup = operation.result(3600)
 
     # Verify that the backup is ready.
     assert backup.state == backup_pb.Backup.State.READY
@@ -149,7 +149,7 @@ def create_backup_with_multiple_kms_keys(
     operation = database_admin_api.create_backup(request)
 
     # Wait for backup operation to complete.
-    backup = operation.result(2100)
+    backup = operation.result(3600)
 
     # Verify that the backup is ready.
     assert backup.state == backup_pb.Backup.State.READY
@@ -681,7 +681,7 @@ def copy_backup(instance_id, backup_id, source_backup_path):
     operation = database_admin_api.copy_backup(request)
 
     # Wait for backup operation to complete.
-    copy_backup = operation.result(2100)
+    copy_backup = operation.result(3600)
 
     # Verify that the copy backup is ready.
     assert copy_backup.state == backup_pb.Backup.State.READY
@@ -729,7 +729,7 @@ def copy_backup_with_multiple_kms_keys(
     operation = database_admin_api.copy_backup(request)
 
     # Wait for backup operation to complete.
-    copy_backup = operation.result(2100)
+    copy_backup = operation.result(3600)
 
     # Verify that the copy backup is ready.
     assert copy_backup.state == backup_pb.Backup.State.READY
