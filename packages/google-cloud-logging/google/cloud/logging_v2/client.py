@@ -119,19 +119,19 @@ class Client(ClientWithProject):
                 Client options used to set user options
                 on the client. API Endpoint should be set through client_options.
         """
+        super(Client, self).__init__(
+            project=project,
+            credentials=credentials,
+            _http=_http,
+            client_options=client_options,
+        )
+
         if isinstance(client_options, dict):
             client_options = google.api_core.client_options.from_dict(client_options)
 
         self._universe_domain = google.api_core.universe.determine_domain(
             getattr(client_options, "universe_domain", None),
             os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
-        )
-
-        super(Client, self).__init__(
-            project=project,
-            credentials=credentials,
-            _http=_http,
-            client_options=client_options,
         )
 
         kw_args = {"client_info": client_info}
