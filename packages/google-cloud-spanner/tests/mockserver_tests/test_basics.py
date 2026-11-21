@@ -1071,6 +1071,29 @@ class TestBasics(MockServerTestBase):
         finally:
             connection.close()
 
+    def test_streamed_result_set_invalid_termination_raises_internal_error(self):
+        for sql, fields, chunks, expected_message in _invalid_termination_scenarios():
+            add_execute_streaming_sql_results(
+                sql, _make_partial_result_sets(fields, chunks)
+            )
+            with self.database.snapshot(multi_use=True) as snapshot:
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    list(snapshot.execute_sql(sql))
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    snapshot.execute_sql(sql).one_or_none()
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    snapshot.execute_sql(sql).one()
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    snapshot.execute_sql(sql).to_dict_list()
+
 
 class TestBasicsAsync(AsyncMockServerTestBase):
     @asynccontextmanager
@@ -1198,6 +1221,89 @@ class TestBasicsAsync(AsyncMockServerTestBase):
                 results = await snapshot.execute_sql(sql)
                 rows = [row async for row in results]
                 self.assertEqual([[10], [20]], rows)
+
+    async def test_async_streamed_result_set_invalid_termination_raises_internal_error(
+        self,
+    ):
+        async with self._async_database() as database:
+            for sql, fields, chunks, expected_message in _invalid_termination_scenarios(
+                "async_"
+            ):
+                add_execute_streaming_sql_results(
+                    sql, _make_partial_result_sets(fields, chunks)
+                )
+                async with database.snapshot(multi_use=True) as snapshot:
+                    results = await snapshot.execute_sql(sql)
+                    with self.assertRaisesRegex(
+                        exceptions.InternalServerError, expected_message
+                    ):
+                        _ = [row async for row in results]
+                    one_or_none_results = await snapshot.execute_sql(sql)
+                    with self.assertRaisesRegex(
+                        exceptions.InternalServerError, expected_message
+                    ):
+                        await one_or_none_results.one_or_none()
+                    one_results = await snapshot.execute_sql(sql)
+                    with self.assertRaisesRegex(
+                        exceptions.InternalServerError, expected_message
+                    ):
+                        await one_results.one()
+                    dict_results = await snapshot.execute_sql(sql)
+                    with self.assertRaisesRegex(
+                        exceptions.InternalServerError, expected_message
+                    ):
+                        await dict_results.to_dict_list()
+
+
+def _invalid_termination_scenarios(prefix: str = ""):
+    fields = [("id", TypeCode.INT64), ("payload", TypeCode.STRING)]
+    return [
+        (
+            f"select id, payload from {prefix}invalid_chunk_eof",
+            fields,
+            [{"values": ["1", "partial "], "chunked_value": True, "last": False}],
+            "Stream ended while waiting for continuation of chunked value.",
+        ),
+        (
+            f"select id, payload from {prefix}invalid_chunk_last",
+            fields,
+            [{"values": ["1", "partial "], "chunked_value": True, "last": True}],
+            "Stream ended while waiting for continuation of chunked value.",
+        ),
+        (
+            f"select id, payload from {prefix}invalid_chunk_empty_last",
+            fields,
+            [
+                {"values": ["1", "partial "], "chunked_value": True, "last": False},
+                {"values": [], "chunked_value": False, "last": True},
+            ],
+            "Stream ended while waiting for continuation of chunked value.",
+        ),
+        (
+            f"select id, payload from {prefix}invalid_empty_values_chunked",
+            fields,
+            [{"values": [], "chunked_value": True, "last": False}],
+            "Received chunked_value=True with empty values.",
+        ),
+        (
+            f"select id, payload from {prefix}invalid_row_eof",
+            fields,
+            [{"values": ["1", "ok", "2"], "chunked_value": False, "last": False}],
+            "Stream ended with an incomplete row.",
+        ),
+        (
+            f"select id, payload from {prefix}invalid_row_last",
+            fields,
+            [{"values": ["1", "ok", "2"], "chunked_value": False, "last": True}],
+            "Stream ended with an incomplete row.",
+        ),
+        (
+            f"select id, payload from {prefix}invalid_missing_row_type",
+            [],
+            [{"values": ["1"], "chunked_value": False, "last": True}],
+            "Missing row_type in PartialResultSet metadata.",
+        ),
+    ]
 
 
 def _execute_query(transaction: Transaction, sql: str):
