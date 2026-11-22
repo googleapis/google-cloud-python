@@ -84,6 +84,7 @@ except ImportError:
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
 SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR = "SPANNER_DISABLE_BUILTIN_METRICS"
+SPANNER_MONITORING_HOST_ENV_VAR = "SPANNER_MONITORING_HOST"
 LOG_CLIENT_OPTIONS_ENV_VAR = "GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS"
 _EMULATOR_HOST_HTTP_SCHEME = (
     "%s contains a http scheme. When used with a scheme it may cause gRPC's DNS resolver to endlessly attempt to resolve. %s is intended to be used without a scheme: ex %s=localhost:8080."
@@ -115,11 +116,15 @@ def _get_spanner_enable_builtin_metrics_env():
     return os.getenv(SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR) != "true"
 
 
+def _get_spanner_monitoring_host_env():
+    return os.getenv(SPANNER_MONITORING_HOST_ENV_VAR)
+
+
 def _get_spanner_log_client_options_env():
     return os.getenv(LOG_CLIENT_OPTIONS_ENV_VAR, "false").lower() == "true"
 
 
-def _initialize_metrics(project, credentials, emulator_host=None):
+def _initialize_metrics(project, credentials, emulator_host=None, client_options=None):
     """Initializes the Spanner built-in metrics.
 
     This function sets up the OpenTelemetry MeterProvider and the SpannerMetricsTracerFactory.
@@ -130,16 +135,38 @@ def _initialize_metrics(project, credentials, emulator_host=None):
             if not _metrics_monitor_initialized:
                 meter_provider = metrics.NoOpMeterProvider()
                 try:
+                    if isinstance(client_options, dict):
+                        client_options = google.api_core.client_options.from_dict(
+                            client_options
+                        )
+                    monitoring_host = _get_spanner_monitoring_host_env()
+                    has_custom_endpoint = bool(
+                        getattr(client_options, "api_endpoint", None)
+                    )
                     if (
                         not _get_spanner_emulator_host()
                         and (not emulator_host)
                         and (not isinstance(credentials, AnonymousCredentials))
+                        and (not has_custom_endpoint or monitoring_host)
                     ):
+                        universe_domain = getattr(
+                            client_options, "universe_domain", None
+                        )
+                        monitoring_options = (
+                            google.api_core.client_options.ClientOptions(
+                                api_endpoint=monitoring_host or None,
+                                universe_domain=universe_domain,
+                            )
+                            if monitoring_host or universe_domain
+                            else None
+                        )
                         meter_provider = MeterProvider(
                             metric_readers=[
                                 PeriodicExportingMetricReader(
                                     CloudMonitoringMetricsExporter(
-                                        project_id=project, credentials=credentials
+                                        project_id=project,
+                                        credentials=credentials,
+                                        client_options=monitoring_options,
                                     ),
                                     export_interval_millis=METRIC_EXPORT_INTERVAL_MS,
                                 )
@@ -367,7 +394,12 @@ class Client(ClientWithProject):
             and (not disable_builtin_metrics)
             and HAS_GOOGLE_CLOUD_MONITORING_INSTALLED
         ):
-            _initialize_metrics(project, credentials, self._emulator_host)
+            _initialize_metrics(
+                self.project,
+                self._credentials,
+                self._emulator_host,
+                client_options=self._client_options,
+            )
         else:
             SpannerMetricsTracerFactory(enabled=False)
         self._route_to_leader_enabled = route_to_leader_enabled
