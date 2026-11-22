@@ -641,6 +641,59 @@ if HAS_OPENTELEMETRY_INSTALLED:
             _, kwargs = mock_create_channel.call_args
             self.assertIs(kwargs["credentials"], monitoring_creds)
 
+        def test_init_preserves_unscoped_and_monitoring_scoped_credentials(self):
+            """Verify unscoped and monitoring-scoped credentials are not re-scoped."""
+
+            class _FakeScopedCredentials(Credentials, Scoped):
+                def __init__(self, scopes, requires_scopes=False):
+                    super().__init__()
+                    self._scopes = scopes
+                    self._requires_scopes = requires_scopes
+
+                @property
+                def requires_scopes(self):
+                    return self._requires_scopes
+
+                @property
+                def scopes(self):
+                    return self._scopes
+
+                def with_scopes(self, scopes, default_scopes=None):
+                    return _FakeScopedCredentials(
+                        tuple(scopes or default_scopes or ()), requires_scopes=False
+                    )
+
+                def refresh(self, request):
+                    pass
+
+            unscoped_creds = _FakeScopedCredentials(scopes=None, requires_scopes=True)
+            monitoring_write_creds = _FakeScopedCredentials(
+                scopes=("https://www.googleapis.com/auth/monitoring.write",),
+                requires_scopes=False,
+            )
+            monitoring_rw_creds = _FakeScopedCredentials(
+                scopes=("https://www.googleapis.com/auth/monitoring",),
+                requires_scopes=False,
+            )
+
+            for creds in (
+                unscoped_creds,
+                monitoring_write_creds,
+                monitoring_rw_creds,
+            ):
+                with patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter."
+                    "MetricServiceGrpcTransport.create_channel",
+                    return_value=MagicMock(),
+                ) as mock_create_channel:
+                    CloudMonitoringMetricsExporter(
+                        project_id=PROJECT_ID,
+                        credentials=creds,
+                    )
+
+                _, kwargs = mock_create_channel.call_args
+                self.assertIs(kwargs["credentials"], creds)
+
         def test_init_uses_credentials_project_id_without_adc(self):
             """Verify explicit credentials project_id is used without falling back to ADC."""
             creds = AnonymousCredentials()
@@ -675,7 +728,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
                     return_value=MagicMock(),
                 ),
             ):
-                with self.assertRaises(ValueError):
+                with self.assertRaisesRegex(
+                    ValueError, "project_id could not be determined."
+                ):
                     CloudMonitoringMetricsExporter(
                         project_id=None,
                         credentials=creds,
@@ -703,7 +758,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
                 "google.cloud.spanner_v1.metrics.metrics_exporter.google.auth.default",
                 return_value=(AnonymousCredentials(), None),
             ):
-                with self.assertRaises(ValueError):
+                with self.assertRaisesRegex(
+                    ValueError, "project_id could not be determined."
+                ):
                     CloudMonitoringMetricsExporter(
                         project_id=None,
                         client=mock_client,
