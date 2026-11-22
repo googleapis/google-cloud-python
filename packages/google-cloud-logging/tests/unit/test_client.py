@@ -113,6 +113,132 @@ class TestClient(unittest.TestCase):
             client._connection.API_BASE_URL, "https://foo-logging.googleapis.com"
         )
 
+    def test_ctor_default_universe_domain(self):
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _use_grpc=False
+        )
+        self.assertEqual(client.universe_domain, "googleapis.com")
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://logging.googleapis.com"
+        )
+
+    def test_ctor_w_universe_domain_dict_http(self):
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_options={"universe_domain": "example.com"},
+            _use_grpc=False,
+        )
+        self.assertEqual(client.universe_domain, "example.com")
+        self.assertEqual(client._connection.API_BASE_URL, "https://logging.example.com")
+
+    def test_ctor_w_universe_domain_client_options_object_http(self):
+        from google.api_core.client_options import ClientOptions
+
+        creds = _make_credentials()
+        client_options = ClientOptions(universe_domain="example.com")
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_options=client_options,
+            _use_grpc=False,
+        )
+        self.assertEqual(client.universe_domain, "example.com")
+        self.assertEqual(client._connection.API_BASE_URL, "https://logging.example.com")
+
+    def test_ctor_w_universe_domain_env_var_http(self):
+        import os
+
+        creds = _make_credentials()
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com"}
+        ):
+            client = self._make_one(
+                project=self.PROJECT, credentials=creds, _use_grpc=False
+            )
+        self.assertEqual(client.universe_domain, "example.com")
+        self.assertEqual(client._connection.API_BASE_URL, "https://logging.example.com")
+
+    def test_ctor_universe_domain_precedence(self):
+        import os
+
+        from google.api_core.client_options import ClientOptions
+
+        creds = _make_credentials()
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "env-universe.example.com"}
+        ):
+            # client_options.universe_domain overrides GOOGLE_CLOUD_UNIVERSE_DOMAIN
+            client = self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                client_options=ClientOptions(universe_domain="example.com"),
+                _use_grpc=False,
+            )
+            self.assertEqual(client.universe_domain, "example.com")
+            self.assertEqual(
+                client._connection.API_BASE_URL, "https://logging.example.com"
+            )
+
+            # client_options.api_endpoint overrides universe_domain and env var
+            client_custom_ep = self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                client_options={
+                    "api_endpoint": "https://custom-logging.example.com",
+                    "universe_domain": "example.com",
+                },
+                _use_grpc=False,
+            )
+            self.assertEqual(client_custom_ep.universe_domain, "example.com")
+            self.assertEqual(
+                client_custom_ep._connection.API_BASE_URL,
+                "https://custom-logging.example.com",
+            )
+
+        # client_options.api_endpoint also overrides GOOGLE_CLOUD_UNIVERSE_DOMAIN alone
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com"}
+        ):
+            client_ep_over_env = self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                client_options={"api_endpoint": "https://custom-logging.example.com"},
+                _use_grpc=False,
+            )
+            self.assertEqual(client_ep_over_env.universe_domain, "example.com")
+            self.assertEqual(
+                client_ep_over_env._connection.API_BASE_URL,
+                "https://custom-logging.example.com",
+            )
+
+    def test_ctor_empty_universe_domain_raises(self):
+        import os
+
+        from google.api_core.client_options import ClientOptions
+        from google.api_core.universe import EmptyUniverseError
+
+        creds = _make_credentials()
+        with self.assertRaises(EmptyUniverseError):
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                client_options={"universe_domain": ""},
+            )
+
+        with self.assertRaises(EmptyUniverseError):
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                client_options=ClientOptions(universe_domain=""),
+            )
+
+        with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": ""}):
+            with self.assertRaises(EmptyUniverseError):
+                self._make_one(project=self.PROJECT, credentials=creds)
+
     def test_logging_api_wo_gapic(self):
         from google.cloud.logging_v2._http import _LoggingAPI
 
