@@ -1536,6 +1536,140 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(method.call_count, 2)
         transaction._build_transaction_selector_pb.assert_called()
 
+    async def test_restart_on_unavailable_all_retryable_internal_errors(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types import TransactionSelector
+
+        retryable_messages = (
+            "RST_STREAM",
+            "stream terminated by RST_STREAM",
+            "Received RST_STREAM with error code 2",
+            "Received unexpected EOS on DATA frame from server",
+            "HTTP/2 error code: INTERNAL_ERROR",
+            "Connection closed with unknown cause",
+            "Authentication backend internal server error. Please retry",
+            "Authentication backend internal server error. Please retry.",
+        )
+
+        for error_message in retryable_messages:
+            with self.subTest(error_message=error_message):
+                request = mock.Mock(
+                    resume_token=b"", spec=["resume_token", "transaction"]
+                )
+                first_item = PartialResultSet(resume_token=b"resume-1")
+                second_item = PartialResultSet()
+                fail_iterator = _MockIterator(
+                    first_item,
+                    fail_after=True,
+                    error=InternalServerError(error_message),
+                )
+                success_iterator = _MockIterator(second_item)
+                method = mock.AsyncMock(side_effect=[fail_iterator, success_iterator])
+
+                database = _Database()
+                session = _Session(database)
+                transaction = mock.Mock()
+                selector_pb = TransactionSelector(id=TXN_ID)
+                transaction._build_transaction_selector_pb.return_value = selector_pb
+
+                results = _restart_on_unavailable(
+                    method,
+                    request,
+                    metadata=[],
+                    trace_name="test",
+                    session=session,
+                    attributes={},
+                    transaction=transaction,
+                    transaction_selector=selector_pb,
+                    observability_options=None,
+                    request_id_manager=database,
+                    resource_info=None,
+                )
+
+                received = [item async for item in results]
+
+                self.assertEqual(received, [first_item, second_item])
+                self.assertEqual(method.call_count, 2)
+                self.assertEqual(request.resume_token, b"resume-1")
+                transaction._build_transaction_selector_pb.assert_called()
+
+    async def test_restart_on_unavailable_initial_retryable_internal_error(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types import TransactionSelector
+
+        request = mock.Mock(resume_token=b"", spec=["resume_token", "transaction"])
+        item = PartialResultSet()
+        method = mock.AsyncMock(
+            side_effect=[
+                InternalServerError(
+                    "Authentication backend internal server error. Please retry."
+                ),
+                _MockIterator(item),
+            ]
+        )
+
+        database = _Database()
+        session = _Session(database)
+        transaction = mock.Mock()
+        selector_pb = TransactionSelector(id=TXN_ID)
+        transaction._build_transaction_selector_pb.return_value = selector_pb
+
+        results = _restart_on_unavailable(
+            method,
+            request,
+            metadata=[],
+            trace_name="test",
+            session=session,
+            attributes={},
+            transaction=transaction,
+            transaction_selector=selector_pb,
+            observability_options=None,
+            request_id_manager=database,
+            resource_info=None,
+        )
+
+        received = [received_item async for received_item in results]
+
+        self.assertEqual(received, [item])
+        self.assertEqual(method.call_count, 2)
+        self.assertEqual(request.resume_token, b"")
+
+    async def test_restart_on_unavailable_non_retryable_internal_error(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types import TransactionSelector
+
+        request = mock.Mock(resume_token=b"", spec=["resume_token", "transaction"])
+        method = mock.AsyncMock(
+            side_effect=InternalServerError("Internal server error.")
+        )
+
+        database = _Database()
+        session = _Session(database)
+        selector_pb = TransactionSelector(id=TXN_ID)
+
+        results = _restart_on_unavailable(
+            method,
+            request,
+            metadata=[],
+            trace_name="test",
+            session=session,
+            attributes={},
+            transaction=None,
+            transaction_selector=selector_pb,
+            observability_options=None,
+            request_id_manager=database,
+            resource_info=None,
+        )
+
+        with self.assertRaisesRegex(
+            InternalServerError, "Internal server error."
+        ) as context:
+            async for _ in results:
+                pass
+
+        self.assertTrue(hasattr(context.exception, "request_id"))
+        self.assertEqual(method.call_count, 1)
+
     async def test_restart_on_unavailable_generic_exception(self):
         from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
 

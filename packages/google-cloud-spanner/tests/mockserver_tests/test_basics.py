@@ -74,6 +74,17 @@ def _requests_of_type(spanner_service: SpannerServicer, request_type: type) -> l
     ]
 
 
+_RETRYABLE_INTERNAL_ERROR_MESSAGES = (
+    "Received RST_STREAM with error code 2",
+    "stream terminated by RST_STREAM",
+    "Received unexpected EOS on DATA frame from server",
+    "HTTP/2 error code: INTERNAL_ERROR",
+    "Connection closed with unknown cause",
+    "Authentication backend internal server error. Please retry",
+    "Authentication backend internal server error. Please retry.",
+)
+
+
 class TestBasics(MockServerTestBase):
     def test_select1(self):
         add_select1_result()
@@ -941,6 +952,62 @@ class TestBasics(MockServerTestBase):
             [request.resume_token for request in execute_requests],
         )
 
+    def test_execute_streaming_sql_retries_all_retryable_internal_errors(self):
+        for index, error_message in enumerate(_RETRYABLE_INTERNAL_ERROR_MESSAGES):
+            with self.subTest(error_message=error_message):
+                self.spanner_service.requests.clear()
+                sql = f"select id from retry_internal_{index}"
+                add_single_result(sql, "id", TypeCode.INT64, [("1",), ("2",)])
+                add_execute_streaming_sql_error(
+                    sql, 1, internal_server_error_status(error_message)
+                )
+                with self.database.snapshot() as snapshot:
+                    self.assertEqual([[1], [2]], list(snapshot.execute_sql(sql)))
+                execute_requests = _requests_of_type(
+                    self.spanner_service, ExecuteSqlRequest
+                )
+                self.assertEqual(
+                    [b"", b"1"],
+                    [request.resume_token for request in execute_requests],
+                )
+
+    def test_execute_streaming_sql_initial_and_non_retryable_internal_errors(self):
+        # Initial-stream failure (partial_index=0) retries with empty resume_token.
+        retryable_sql = "select id from initial_retry_internal"
+        add_single_result(retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
+        add_execute_streaming_sql_error(
+            retryable_sql,
+            0,
+            internal_server_error_status(
+                "Authentication backend internal server error. Please retry."
+            ),
+        )
+        self.spanner_service.requests.clear()
+        with self.database.snapshot() as snapshot:
+            self.assertEqual([[1], [2]], list(snapshot.execute_sql(retryable_sql)))
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(
+            [b"", b""],
+            [request.resume_token for request in execute_requests],
+        )
+
+        # Non-retryable INTERNAL error fails immediately without retrying.
+        non_retryable_sql = "select id from non_retry_internal"
+        add_single_result(non_retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
+        add_execute_streaming_sql_error(
+            non_retryable_sql,
+            0,
+            internal_server_error_status("Internal server error."),
+        )
+        self.spanner_service.requests.clear()
+        with self.database.snapshot() as snapshot:
+            with self.assertRaisesRegex(
+                exceptions.InternalServerError, "Internal server error."
+            ):
+                list(snapshot.execute_sql(non_retryable_sql))
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(1, len(execute_requests))
+
     def test_inline_begin_transaction_mid_stream_unavailable_switches_to_id(self):
         # Verify resuming an inline-begin read-write stream switches from
         # transaction.begin to transaction.id when sending resume_token.
@@ -1198,6 +1265,76 @@ class TestBasicsAsync(AsyncMockServerTestBase):
                 results = await snapshot.execute_sql(sql)
                 rows = [row async for row in results]
                 self.assertEqual([[10], [20]], rows)
+
+    async def test_async_execute_streaming_sql_retries_all_retryable_internal_errors(
+        self,
+    ):
+        async with self._async_database() as database:
+            for index, error_message in enumerate(_RETRYABLE_INTERNAL_ERROR_MESSAGES):
+                with self.subTest(error_message=error_message):
+                    self.spanner_service.requests.clear()
+                    sql = f"select id from async_retry_internal_{index}"
+                    add_single_result(sql, "id", TypeCode.INT64, [("1",), ("2",)])
+                    add_execute_streaming_sql_error(
+                        sql, 1, internal_server_error_status(error_message)
+                    )
+                    async with database.snapshot() as snapshot:
+                        results = await snapshot.execute_sql(sql)
+                        rows = [row async for row in results]
+                        self.assertEqual([[1], [2]], rows)
+                    execute_requests = _requests_of_type(
+                        self.spanner_service, ExecuteSqlRequest
+                    )
+                    self.assertEqual(
+                        [b"", b"1"],
+                        [request.resume_token for request in execute_requests],
+                    )
+
+    async def test_async_execute_streaming_sql_initial_and_non_retryable_internal_errors(
+        self,
+    ):
+        async with self._async_database() as database:
+            retryable_sql = "select id from async_initial_retry_internal"
+            add_single_result(retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
+            add_execute_streaming_sql_error(
+                retryable_sql,
+                0,
+                internal_server_error_status(
+                    "Authentication backend internal server error. Please retry."
+                ),
+            )
+            self.spanner_service.requests.clear()
+            async with database.snapshot() as snapshot:
+                results = await snapshot.execute_sql(retryable_sql)
+                rows = [row async for row in results]
+                self.assertEqual([[1], [2]], rows)
+            execute_requests = _requests_of_type(
+                self.spanner_service, ExecuteSqlRequest
+            )
+            self.assertEqual(
+                [b"", b""],
+                [request.resume_token for request in execute_requests],
+            )
+
+            non_retryable_sql = "select id from async_non_retry_internal"
+            add_single_result(non_retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
+            add_execute_streaming_sql_error(
+                non_retryable_sql,
+                0,
+                internal_server_error_status("Internal server error."),
+            )
+            self.spanner_service.requests.clear()
+            async with database.snapshot() as snapshot:
+                results = await snapshot.execute_sql(non_retryable_sql)
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, "Internal server error."
+                ):
+                    async for _ in results:
+                        pass
+            execute_requests = _requests_of_type(
+                self.spanner_service, ExecuteSqlRequest
+            )
+            self.assertEqual(1, len(execute_requests))
 
 
 def _execute_query(transaction: Transaction, sql: str):
