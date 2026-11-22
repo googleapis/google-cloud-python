@@ -1116,6 +1116,72 @@ class TestBigtableDataClient:
         err_msg = f"The configured universe domain ({universe_domain}) does not match the universe domain found in the credentials ({creds.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         assert exc.value.args[0] == err_msg
 
+    def test_metrics_exporter_disabled_outside_gdu(self):
+        """BigtableMetricsExporter should be disabled when universe_domain != googleapis.com."""
+        import os
+
+        universe_domain = "custom-universe.test"
+        creds = AnonymousCredentials()
+        creds._universe_domain = universe_domain
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.BigtableMetricsExporter"
+            ) as exporter_mock_async,
+            mock.patch(
+                "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+            ) as exporter_mock_sync,
+        ):
+            with self._make_client(
+                project="project_id",
+                credentials=creds,
+                client_options=options,
+                use_emulator=False,
+                use_mtls="never",
+            ) as client:
+                assert client.universe_domain == universe_domain
+                assert client.api_endpoint == f"bigtable.{universe_domain}"
+                assert len(client._metrics.handlers) == 0
+                exporter_mock_async.assert_not_called()
+                exporter_mock_sync.assert_not_called()
+            with mock.patch.dict(
+                os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain}
+            ):
+                with self._make_client(
+                    project="project_id",
+                    credentials=creds,
+                    use_emulator=False,
+                    use_mtls="never",
+                ) as client:
+                    assert client.universe_domain == universe_domain
+                    assert client.api_endpoint == f"bigtable.{universe_domain}"
+                    assert len(client._metrics.handlers) == 0
+                    exporter_mock_async.assert_not_called()
+                    exporter_mock_sync.assert_not_called()
+
+    def test_metrics_exporter_disabled_with_custom_api_endpoint(self):
+        """BigtableMetricsExporter should be disabled when a custom api_endpoint is set."""
+        options = client_options.ClientOptions(api_endpoint="bigtable.custom.local:443")
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.BigtableMetricsExporter"
+            ) as exporter_mock_async,
+            mock.patch(
+                "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+            ) as exporter_mock_sync,
+        ):
+            with self._make_client(
+                project="project_id",
+                credentials=AnonymousCredentials(),
+                client_options=options,
+                use_emulator=False,
+                use_mtls="never",
+            ) as client:
+                assert client.api_endpoint == "bigtable.custom.local:443"
+                assert len(client._metrics.handlers) == 0
+                exporter_mock_async.assert_not_called()
+                exporter_mock_sync.assert_not_called()
+
     def test_configured_universe_domain_matches_credentials(self):
         """Test that configured universe domain succeeds with matching universe
         domain credentials."""

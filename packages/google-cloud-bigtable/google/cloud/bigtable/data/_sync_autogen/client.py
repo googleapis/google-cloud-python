@@ -32,6 +32,7 @@ import google.auth._default
 import google.auth.credentials
 from google.api_core import client_options as client_options_lib
 from google.api_core import retry as retries
+from google.api_core import universe
 from google.api_core.exceptions import (
     Aborted,
     Cancelled,
@@ -208,7 +209,12 @@ class BigtableDataClient(ClientWithProject):
             kwargs.get("_disable_background_refresh", False)
         )
         handlers: list[MetricsHandler] = []
-        if self._emulator_host is None:
+        has_custom_endpoint = bool(client_options and client_options.api_endpoint)
+        if (
+            self._emulator_host is None
+            and self.universe_domain == universe.DEFAULT_UNIVERSE
+            and (not has_custom_endpoint)
+        ):
             try:
                 exporter = BigtableMetricsExporter(
                     credentials=self._credentials, client_options=client_options
