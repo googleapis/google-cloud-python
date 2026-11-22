@@ -101,6 +101,7 @@ _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
 SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR = "SPANNER_DISABLE_BUILTIN_METRICS"
+SPANNER_MONITORING_HOST_ENV_VAR = "SPANNER_MONITORING_HOST"
 LOG_CLIENT_OPTIONS_ENV_VAR = "GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS"
 _EMULATOR_HOST_HTTP_SCHEME = (
     "%s contains a http scheme. When used with a scheme it may cause gRPC's "
@@ -134,6 +135,10 @@ def _get_spanner_enable_builtin_metrics_env():
     return os.getenv(SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR) != "true"
 
 
+def _get_spanner_monitoring_host_env():
+    return os.getenv(SPANNER_MONITORING_HOST_ENV_VAR)
+
+
 def _get_spanner_log_client_options_env():
     return os.getenv(LOG_CLIENT_OPTIONS_ENV_VAR, "false").lower() == "true"
 
@@ -155,7 +160,9 @@ def _initialize_metrics(project, credentials, emulator_host=None, client_options
                         client_options = google.api_core.client_options.from_dict(
                             client_options
                         )
-                    # Skip metrics export when a custom Spanner api_endpoint is set.
+                    monitoring_host = _get_spanner_monitoring_host_env()
+                    # Skip metrics export when a custom Spanner api_endpoint is
+                    # set unless SPANNER_MONITORING_HOST is explicitly provided.
                     has_custom_endpoint = bool(
                         getattr(client_options, "api_endpoint", None)
                     )
@@ -163,17 +170,18 @@ def _initialize_metrics(project, credentials, emulator_host=None, client_options
                         not _get_spanner_emulator_host()
                         and not emulator_host
                         and not isinstance(credentials, AnonymousCredentials)
-                        and not has_custom_endpoint
+                        and (not has_custom_endpoint or monitoring_host)
                     ):
-                        # Only forward universe_domain to Cloud Monitoring.
+                        # Only forward universe_domain (and explicit monitoring host).
                         universe_domain = getattr(
                             client_options, "universe_domain", None
                         )
                         monitoring_options = (
                             google.api_core.client_options.ClientOptions(
-                                universe_domain=universe_domain
+                                api_endpoint=monitoring_host or None,
+                                universe_domain=universe_domain,
                             )
-                            if universe_domain
+                            if monitoring_host or universe_domain
                             else None
                         )
                         meter_provider = MeterProvider(

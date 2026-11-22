@@ -1322,3 +1322,49 @@ class TestInitializeMetrics(unittest.TestCase):
             mock_exporter.assert_not_called()
         finally:
             MUT._metrics_monitor_initialized = False
+
+    @mock.patch("google.cloud.spanner_v1.client.metrics")
+    @mock.patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter")
+    @mock.patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader")
+    @mock.patch("google.cloud.spanner_v1.client.MeterProvider")
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    @mock.patch.dict(
+        os.environ,
+        {
+            "SPANNER_DISABLE_BUILTIN_METRICS": "false",
+            "SPANNER_MONITORING_HOST": "monitoring-psc.internal:443",
+        },
+    )
+    def test_client_custom_api_endpoint_with_monitoring_host_env(
+        self,
+        mock_spanner_metrics_factory,
+        mock_meter_provider,
+        mock_periodic_reader,
+        mock_exporter,
+        mock_metrics,
+    ):
+        from google.cloud.spanner_v1 import client as MUT
+
+        creds = build_scoped_credentials()
+        MUT._metrics_monitor_initialized = False
+        try:
+            MUT.Client(
+                project="my-project",
+                credentials=creds,
+                client_options={
+                    "api_endpoint": "spanner.us-central1.rep.googleapis.com",
+                    "universe_domain": "custom.universe",
+                },
+            )
+            mock_exporter.assert_called_once()
+            _, kwargs = mock_exporter.call_args
+            self.assertEqual(
+                kwargs["client_options"].api_endpoint,
+                "monitoring-psc.internal:443",
+            )
+            self.assertEqual(
+                kwargs["client_options"].universe_domain,
+                "custom.universe",
+            )
+        finally:
+            MUT._metrics_monitor_initialized = False

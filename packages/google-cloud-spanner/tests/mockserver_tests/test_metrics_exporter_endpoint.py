@@ -335,3 +335,41 @@ class TestMetricsExporterEndpointIntegration(MockServerTestBase):
         exporter = mock_reader.call_args[0][0]
         self.assertEqual(exporter.project_id, "creds-project")
         self.assertEqual(exporter.project_name, "projects/creds-project")
+
+    def test_client_custom_api_endpoint_with_spanner_monitoring_host(self):
+        """SPANNER_MONITORING_HOST opts in to metrics export with a custom api_endpoint."""
+        creds = _FakeUniverseCredentials(project_id="test-project")
+        captured = {}
+
+        def _capture_channel(host, **kwargs):
+            captured["host"] = host
+            return mock.MagicMock()
+
+        env_override = {
+            "SPANNER_DISABLE_BUILTIN_METRICS": "false",
+            "SPANNER_MONITORING_HOST": "monitoring-psc.internal:443",
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "GOOGLE_API_USE_MTLS_ENDPOINT": "never",
+        }
+        with (
+            mock.patch.dict(os.environ, env_override),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader"),
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_exporter."
+                "MetricServiceGrpcTransport.create_channel",
+                side_effect=_capture_channel,
+            ),
+        ):
+            Client(
+                project="test-project",
+                credentials=creds,
+                client_options=ClientOptions(
+                    api_endpoint="spanner.us-central1.rep.googleapis.com",
+                ),
+            )
+
+        self.assertEqual(captured["host"], "monitoring-psc.internal:443")

@@ -405,6 +405,55 @@ class TestClientExtra(unittest.IsolatedAsyncioTestCase):
             )
             mock_exporter.assert_not_called()
 
+    def test_client_custom_api_endpoint_with_monitoring_host_env(self):
+        import os
+
+        from google.cloud.spanner_v1._async import client as MUT
+
+        creds = build_scoped_credentials()
+        with (
+            mock.patch.dict(
+                os.environ,
+                {
+                    "SPANNER_DISABLE_BUILTIN_METRICS": "false",
+                    "SPANNER_MONITORING_HOST": "monitoring-psc.internal:443",
+                },
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client._metrics_monitor_initialized",
+                False,
+            ),
+            mock.patch("google.cloud.spanner_v1._async.client.metrics"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.CloudMonitoringMetricsExporter"
+            ) as mock_exporter,
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.PeriodicExportingMetricReader"
+            ),
+            mock.patch("google.cloud.spanner_v1._async.client.MeterProvider"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.client.SpannerMetricsTracerFactory"
+            ),
+        ):
+            MUT.Client(
+                project="my-project",
+                credentials=creds,
+                client_options={
+                    "api_endpoint": "spanner.us-central1.rep.googleapis.com",
+                    "universe_domain": "async.universe",
+                },
+            )
+            mock_exporter.assert_called_once()
+            _, kwargs = mock_exporter.call_args
+            self.assertEqual(
+                kwargs["client_options"].api_endpoint,
+                "monitoring-psc.internal:443",
+            )
+            self.assertEqual(
+                kwargs["client_options"].universe_domain,
+                "async.universe",
+            )
+
     def test_client_passes_resolved_project_credentials_and_universe_domain(self):
         import os
 
