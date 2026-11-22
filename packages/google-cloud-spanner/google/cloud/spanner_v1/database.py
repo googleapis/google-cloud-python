@@ -599,18 +599,17 @@ class Database(object):
         :raises NotFound: if the instance owning the database does not exist"""
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        database_id = str(self.database_id)
-        if self._database_dialect == DatabaseDialect.POSTGRESQL:
-            escaped = database_id.replace('"', '""')
-            quoted_database_id = f'"{escaped}"'
-        else:
-            escaped = database_id.replace("\\", "\\\\").replace("`", "\\`")
-            quoted_database_id = f"`{escaped}`"
+        db_name = self.database_id
+        if "-" in db_name:
+            if self._database_dialect == DatabaseDialect.POSTGRESQL:
+                db_name = f'"{db_name}"'
+            else:
+                db_name = f"`{db_name}`"
         if type(self._encryption_config) is dict:
             self._encryption_config = EncryptionConfig(**self._encryption_config)
         request = CreateDatabaseRequest(
             parent=self._instance.name,
-            create_statement=f"CREATE DATABASE {quoted_database_id}",
+            create_statement="CREATE DATABASE %s" % (db_name,),
             extra_statements=list(self._ddl_statements),
             encryption_config=self._encryption_config,
             database_dialect=self._database_dialect,
