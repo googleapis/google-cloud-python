@@ -1428,7 +1428,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-logging
-    version: 3.17.0
+    version: 3.17.1
     apis:
       - path: google/logging/v2
     python:
