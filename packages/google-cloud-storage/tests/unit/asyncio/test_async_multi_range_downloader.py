@@ -2476,6 +2476,45 @@ class TestAsyncMultiRangeDownloader:
         for s in streams:
             s.close.assert_awaited()
 
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_raises_when_closed_while_ranges_wait_for_a_stream(
+        self, mock_cls_stream
+    ):
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            MultiStreamConfig,
+        )
+
+        s1 = self._make_mock_stream(read_handle=b"h1")
+        s2 = self._make_mock_stream(read_handle=b"h2")
+        s2_opening = asyncio.Event()
+
+        async def slow_s2_open(*args, **kwargs):
+            s2_opening.set()
+            await asyncio.Event().wait()
+
+        s2.open = AsyncMock(side_effect=slow_s2_open)
+        mock_cls_stream.side_effect = [s1, s2]
+        config = MultiStreamConfig(
+            min_streams=1, max_streams=2, target_io_depth=1, target_bytes=50
+        )
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(), "b", "o", multi_stream_config=config
+        )
+
+        with mock.patch.object(mrd, "_download_ranges_on_stream", AsyncMock()):
+            # The first range fills s1. The second waits for s2 to open.
+            task = asyncio.create_task(
+                mrd.download_ranges([(0, 50, BytesIO()), (50, 50, BytesIO())])
+            )
+            await s2_opening.wait()
+            await mrd.close()
+
+            with pytest.raises(ValueError, match="Pool is closed"):
+                await task
+
     @pytest.mark.asyncio
     async def test_stream_pool_contiguous_distribution_when_saturated(self):
         from google.cloud.storage.asyncio._stream_pool import (

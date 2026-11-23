@@ -729,18 +729,18 @@ class AsyncMultiRangeDownloader:
             )
 
             try:
-                try:
-                    await retry_manager.execute(initial_state, retry_policy)
-                except DataCorruption:
-                    raise
-                except Exception:
-                    # Chunks received before the stream error still have
-                    # in-flight checksum futures in initial_state. Verify them
-                    # before raising the stream error so an earlier corrupt
-                    # chunk raises DataCorruption (matching inline verification)
-                    # and valid chunks already received are written.
-                    await strategy.verify_pending_checksums(initial_state)
-                    raise
+                await retry_manager.execute(initial_state, retry_policy)
+            except DataCorruption:
+                raise
+            except Exception:
+                # Chunks received before the stream error still have
+                # in-flight checksum futures in initial_state. Verify them
+                # before raising the stream error so an earlier corrupt
+                # chunk raises DataCorruption (matching inline verification)
+                # and valid chunks already received are written.
+                await strategy.verify_pending_checksums(initial_state)
+                raise
+            else:
                 await strategy.verify_pending_checksums(initial_state)
             finally:
                 # Drop chunks still held, e.g. after cancellation.
@@ -851,7 +851,9 @@ class AsyncMultiRangeDownloader:
             ``bytes_to_read <= 0``.
         :raises BufferError: if fewer than ``bytes_to_read`` bytes are returned
             for a buffer destination.
-        :raises DataCorruption: if a checksum mismatch is detected while reading data.
+        :raises DataCorruption: if a checksum mismatch is detected while reading
+            data. The downloader is closed before this is raised, so calling
+            :meth:`close` afterwards raises :exc:`ValueError`.
 
         """
 
@@ -947,7 +949,9 @@ class AsyncMultiRangeDownloader:
                                             asyncio.create_task(_download_batch(s, b))
                                         )
 
-                            if remaining_overflow and not pool._closed:
+                            if remaining_overflow:
+                                # Raises if the pool was closed while these
+                                # ranges were waiting for a stream.
                                 extra_assignments, _, _ = await pool.distribute_ranges(
                                     remaining_overflow,
                                     allow_scale_up=False,
