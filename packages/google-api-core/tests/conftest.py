@@ -34,6 +34,19 @@ def mock_mtls_env():
         yield
 
 
+@pytest.fixture(autouse=True)
+def isolate_ai_agent_env(monkeypatch):
+    """Autouse fixture to isolate unit tests from workstation AI agent env vars."""
+    from google.api_core import agents
+    from google.api_core.gapic_v1 import client_info as gapic_client_info
+
+    for env_var, _, _ in agents.AI_AGENTS:
+        monkeypatch.delenv(env_var, raising=False)
+    for env_var in agents._METRICS_OPT_OUT_ENV_VARS:
+        monkeypatch.delenv(env_var, raising=False)
+    monkeypatch.setattr(gapic_client_info.DEFAULT_CLIENT_INFO, "agent", None)
+
+
 @pytest.fixture
 def mock_otel(monkeypatch):
     """Provides a mocked OpenTelemetry environment with tracing enabled."""

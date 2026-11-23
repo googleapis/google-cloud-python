@@ -19,8 +19,9 @@ such as the library and Python version, to API services.
 """
 
 import platform
-from typing import Union
+from typing import Optional, Union
 
+from google.api_core import agents
 from google.api_core import version as api_core_version
 
 _PY_VERSION = platform.python_version()
@@ -60,6 +61,10 @@ class ClientInfo(object):
         rest_version (Optional[str]): A string with labeled versions of the
             dependencies used for REST transport.
         protobuf_runtime_version (Optional[str]): The protobuf runtime version.
+        agent (Optional[str]): The AI agent identifier, if running inside an
+            agentic environment. When ``None``, automatically detects ambient
+            AI agent environment variables via
+            :func:`google.api_core.agents.detect_ai_agent`.
     """
 
     def __init__(
@@ -72,6 +77,7 @@ class ClientInfo(object):
         user_agent=None,
         rest_version=None,
         protobuf_runtime_version=None,
+        agent: Optional[str] = None,
     ):
         self.python_version = python_version
         self.grpc_version = grpc_version
@@ -81,6 +87,11 @@ class ClientInfo(object):
         self.user_agent = user_agent
         self.rest_version = rest_version
         self.protobuf_runtime_version = protobuf_runtime_version
+        self.agent = (
+            agents.sanitize_agent_name(agent)
+            if agent is not None
+            else agents.detect_ai_agent()
+        )
 
     def to_user_agent(self):
         """Returns the user-agent string for this client info."""
@@ -110,5 +121,8 @@ class ClientInfo(object):
 
         if self.protobuf_runtime_version is not None:
             ua += "pb/{protobuf_runtime_version} "
+
+        if self.agent:
+            ua += "agent/{agent} "
 
         return ua.format(**self.__dict__).strip()

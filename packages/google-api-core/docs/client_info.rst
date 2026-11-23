@@ -9,3 +9,7 @@ Client Information Helpers
   :members:
   :show-inheritance:
 
+.. automodule:: google.api_core.agents
+  :members:
+  :show-inheritance:
+

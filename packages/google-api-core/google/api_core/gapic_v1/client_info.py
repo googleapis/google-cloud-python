@@ -47,6 +47,10 @@ class ClientInfo(client_info.ClientInfo):
         rest_version (Optional[str]): A string with labeled versions of the
             dependencies used for REST transport.
         protobuf_runtime_version (Optional[str]): The protobuf runtime version.
+        agent (Optional[str]): The AI agent identifier, if running inside an
+            agentic environment. When ``None``, automatically detects ambient
+            AI agent environment variables via
+            :func:`google.api_core.agents.detect_ai_agent`.
     """
 
     def to_grpc_metadata(self):

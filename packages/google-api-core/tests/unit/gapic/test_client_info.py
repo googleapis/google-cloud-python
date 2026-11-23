@@ -29,3 +29,20 @@ def test_to_grpc_metadata():
     metadata = info.to_grpc_metadata()
 
     assert metadata == (client_info.METRICS_METADATA_KEY, info.to_user_agent())
+
+
+def test_to_grpc_metadata_with_detected_agent(monkeypatch):
+    monkeypatch.setenv("GEMINI_CLI", "1")
+    info = client_info.ClientInfo(
+        python_version="3.11.0",
+        grpc_version="1.60.0",
+        api_core_version="2.19.0",
+        gapic_version="2.14.0",
+    )
+
+    key, value = info.to_grpc_metadata()
+
+    assert key == "x-goog-api-client"
+    assert (
+        value == "gl-python/3.11.0 grpc/1.60.0 gax/2.19.0 gapic/2.14.0 agent/gemini_cli"
+    )
