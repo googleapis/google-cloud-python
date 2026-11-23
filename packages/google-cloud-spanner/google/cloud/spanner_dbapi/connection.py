@@ -857,6 +857,7 @@ def connect(
     username=None,
     password=None,
     timeout=None,
+    client_options=None,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -954,6 +955,13 @@ def connect(
     :param username: (Optional) Username for Spanner Omni authentication.
     :type password: str
     :param password: (Optional) Password for Spanner Omni authentication.
+
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+                          or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+                           on the client, such as ``api_endpoint`` or
+                           ``universe_domain``. Cannot be specified when a
+                           custom ``client`` is provided.
     """
     if client is None:
         client_info = ClientInfo(
@@ -967,12 +975,9 @@ def connect(
                 project=project,
                 client_info=client_info,
                 route_to_leader_enabled=route_to_leader_enabled,
+                client_options=client_options,
             )
         else:
-            client_options = None
-            if isinstance(credentials, AnonymousCredentials):
-                client_options = kwargs.get("client_options")
-
             if experimental_host is not None:
                 warnings.warn(
                     "experimental_host is deprecated. Please use client_options with api_endpoint instead, along with instance_type='omni'.",
@@ -988,12 +993,11 @@ def connect(
 
             if instance_type == "omni":
                 host_endpoint = experimental_host
-                if not host_endpoint and "client_options" in kwargs:
-                    opts = kwargs["client_options"]
-                    if hasattr(opts, "api_endpoint"):
-                        host_endpoint = opts.api_endpoint
-                    elif isinstance(opts, dict):
-                        host_endpoint = opts.get("api_endpoint")
+                if not host_endpoint and client_options is not None:
+                    if hasattr(client_options, "api_endpoint"):
+                        host_endpoint = client_options.api_endpoint
+                    elif isinstance(client_options, dict):
+                        host_endpoint = client_options.get("api_endpoint")
 
                 if not host_endpoint:
                     raise ValueError(
@@ -1024,7 +1028,8 @@ def connect(
                 else:
                     credentials = AnonymousCredentials()
 
-                client_options = kwargs.get("client_options")
+                # Shallow-copy caller options before setting api_endpoint so
+                # reusing the same options object across calls leaves no residue.
                 if client_options is None:
                     client_options = ClientOptions(api_endpoint=host_endpoint)
                 elif isinstance(client_options, dict):
@@ -1050,6 +1055,12 @@ def connect(
     else:
         if project is not None and client.project != project:
             raise ValueError("project in url does not match client object project")
+        if client_options is not None:
+            # Fail closed so custom client_options (e.g. universe_domain or
+            # api_endpoint) are never silently ignored when reusing a client.
+            raise ValueError(
+                "client_options cannot be specified when a custom client is provided"
+            )
 
     instance = client.instance(instance_id)
     database = None
