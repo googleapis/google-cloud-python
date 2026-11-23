@@ -922,7 +922,9 @@ class Database(object):
         )
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
+        else:
+            # Always clone non-None input so clearing transaction_tag never
+            # mutates a caller-provided RequestOptions or dict subclass.
             request_options = RequestOptions(request_options)
         request_options.transaction_tag = None
 

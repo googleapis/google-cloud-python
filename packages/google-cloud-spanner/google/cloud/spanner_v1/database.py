@@ -812,7 +812,7 @@ class Database(object):
         )
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
+        else:
             request_options = RequestOptions(request_options)
         request_options.transaction_tag = None
         if params is not None:

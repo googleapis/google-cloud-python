@@ -411,7 +411,12 @@ def _validate_client_context(client_context):
 
 
 def _merge_request_options(request_options, client_context):
-    """Merge RequestOptions and ClientContext.
+    """Merge RequestOptions and ClientContext without mutating caller input.
+
+    Always returns a fresh :class:`~google.cloud.spanner_v1.types.RequestOptions`
+    copy whenever ``request_options`` is provided so callers may safely merge
+    ``client_context`` or update ``transaction_tag``/``request_tag`` without
+    polluting a caller-shared options instance across requests or threads.
 
     :type request_options: :class:`~google.cloud.spanner_v1.types.RequestOptions`
         or :class:`dict` or None
@@ -425,14 +430,17 @@ def _merge_request_options(request_options, client_context):
     :rtype: :class:`~google.cloud.spanner_v1.types.RequestOptions`
         or None
     :returns:
-        RequestOptions object formed by merging the given ClientContext.
+        A new RequestOptions instance formed by cloning ``request_options`` and
+        merging ``client_context``, or ``None`` when both inputs are ``None``.
     """
     if request_options is None and client_context is None:
         return None
 
     if request_options is None:
         request_options = RequestOptions()
-    elif isinstance(request_options, dict):
+    else:
+        # Always clone non-None input (RequestOptions, raw protobuf, or dict)
+        # so merging client_context or adjusting tags never mutates caller state.
         request_options = RequestOptions(request_options)
 
     if client_context:
