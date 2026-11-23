@@ -729,23 +729,19 @@ class AsyncMultiRangeDownloader:
             )
 
             try:
-                try:
-                    await retry_manager.execute(initial_state, retry_policy)
-                except DataCorruption:
-                    raise
-                except Exception:
-                    # Chunks received before the stream error still have
-                    # in-flight checksum futures in initial_state. Verify them
-                    # before raising the stream error so an earlier corrupt
-                    # chunk raises DataCorruption (matching inline verification)
-                    # and valid chunks already received are written.
-                    await strategy.verify_pending_checksums(initial_state)
-                    raise
-                await strategy.verify_pending_checksums(initial_state)
+                await retry_manager.execute(initial_state, retry_policy)
             except DataCorruption:
-                if self.is_stream_open:
-                    await self.close()
                 raise
+            except Exception:
+                # Chunks received before the stream error still have
+                # in-flight checksum futures in initial_state. Verify them
+                # before raising the stream error so an earlier corrupt
+                # chunk raises DataCorruption (matching inline verification)
+                # and valid chunks already received are written.
+                await strategy.verify_pending_checksums(initial_state)
+                raise
+            else:
+                await strategy.verify_pending_checksums(initial_state)
             finally:
                 # Drop chunks still held, e.g. after cancellation.
                 strategy.discard_pending_checksums(initial_state)
@@ -855,7 +851,9 @@ class AsyncMultiRangeDownloader:
             ``bytes_to_read <= 0``.
         :raises BufferError: if fewer than ``bytes_to_read`` bytes are returned
             for a buffer destination.
-        :raises DataCorruption: if a checksum mismatch is detected while reading data.
+        :raises DataCorruption: if a checksum mismatch is detected while reading
+            data. The downloader is closed before this is raised, so calling
+            :meth:`close` afterwards raises :exc:`ValueError`.
 
         """
 
@@ -887,62 +885,76 @@ class AsyncMultiRangeDownloader:
                     self.read_obj_str, self._multiplexer
                 )
 
-            if self._pool is not None:
-                pool = self._pool
-                persisted_size = self.persisted_size
+            try:
+                if self._pool is not None:
+                    pool = self._pool
+                    persisted_size = self.persisted_size
 
-                async def _run_concurrently(awaitables) -> None:
-                    running = [asyncio.ensure_future(t) for t in awaitables]
-                    try:
-                        await asyncio.gather(*running)
-                    except BaseException:
-                        for t in running:
-                            t.cancel()
-                        await asyncio.gather(*running, return_exceptions=True)
-                        raise
+                    async def _run_concurrently(awaitables) -> None:
+                        running = [asyncio.ensure_future(t) for t in awaitables]
+                        try:
+                            await asyncio.gather(*running)
+                        except BaseException:
+                            for t in running:
+                                t.cancel()
+                            await asyncio.gather(*running, return_exceptions=True)
+                            raise
 
-                async def _download_batch(
-                    stream: _PooledStream,
-                    batch: List[
-                        Tuple[int, int, Union[IO[bytes], bytearray, memoryview]]
-                    ],
-                ) -> None:
-                    batch_bytes = sum(
-                        pool.effective_range_bytes(offset, length, persisted_size)
-                        for offset, length, _ in batch
-                    )
-                    try:
-                        await self._download_ranges_on_stream(
-                            stream,
-                            batch,
-                            retry_policy,
-                            metadata,
-                            enable_checksum,
-                            accepts_memoryview=accepts_memoryview,
+                    async def _download_batch(
+                        stream: _PooledStream,
+                        batch: List[
+                            Tuple[int, int, Union[IO[bytes], bytearray, memoryview]]
+                        ],
+                    ) -> None:
+                        batch_bytes = sum(
+                            pool.effective_range_bytes(offset, length, persisted_size)
+                            for offset, length, _ in batch
                         )
-                    finally:
-                        pool.release_stream(stream, len(batch), batch_bytes)
-
-                async def _download_overflow() -> None:
-                    remaining_overflow = list(overflow)
-                    pending_scale_tasks = set(scale_tasks)
-                    overflow_tasks: List[asyncio.Task] = []
-                    try:
-                        while remaining_overflow and pending_scale_tasks:
-                            _, pending_scale_tasks = await asyncio.wait(
-                                pending_scale_tasks,
-                                return_when=asyncio.FIRST_COMPLETED,
+                        try:
+                            await self._download_ranges_on_stream(
+                                stream,
+                                batch,
+                                retry_policy,
+                                metadata,
+                                enable_checksum,
+                                accepts_memoryview=accepts_memoryview,
                             )
-                            if pool._closed:
-                                break
-                            if pending_scale_tasks:
-                                (
-                                    extra_assignments,
+                        finally:
+                            pool.release_stream(stream, len(batch), batch_bytes)
+
+                    async def _download_overflow() -> None:
+                        remaining_overflow = list(overflow)
+                        pending_scale_tasks = set(scale_tasks)
+                        overflow_tasks: List[asyncio.Task] = []
+                        try:
+                            while remaining_overflow and pending_scale_tasks:
+                                _, pending_scale_tasks = await asyncio.wait(
+                                    pending_scale_tasks,
+                                    return_when=asyncio.FIRST_COMPLETED,
+                                )
+                                if pool._closed:
+                                    break
+                                if pending_scale_tasks:
+                                    (
+                                        extra_assignments,
+                                        remaining_overflow,
+                                        _,
+                                    ) = await pool.distribute_ranges(
+                                        remaining_overflow,
+                                        allow_scale_up=True,
+                                        persisted_size=persisted_size,
+                                    )
+                                    for s, b in extra_assignments.items():
+                                        overflow_tasks.append(
+                                            asyncio.create_task(_download_batch(s, b))
+                                        )
+
+                            if remaining_overflow:
+                                # Raises if the pool was closed while these
+                                # ranges were waiting for a stream.
+                                extra_assignments, _, _ = await pool.distribute_ranges(
                                     remaining_overflow,
-                                    _,
-                                ) = await pool.distribute_ranges(
-                                    remaining_overflow,
-                                    allow_scale_up=True,
+                                    allow_scale_up=False,
                                     persisted_size=persisted_size,
                                 )
                                 for s, b in extra_assignments.items():
@@ -950,46 +962,44 @@ class AsyncMultiRangeDownloader:
                                         asyncio.create_task(_download_batch(s, b))
                                     )
 
-                        if remaining_overflow and not pool._closed:
-                            extra_assignments, _, _ = await pool.distribute_ranges(
-                                remaining_overflow,
-                                allow_scale_up=False,
-                                persisted_size=persisted_size,
+                            await asyncio.gather(*overflow_tasks)
+                        except BaseException:
+                            for t in overflow_tasks:
+                                t.cancel()
+                            await asyncio.gather(
+                                *overflow_tasks, return_exceptions=True
                             )
-                            for s, b in extra_assignments.items():
-                                overflow_tasks.append(
-                                    asyncio.create_task(_download_batch(s, b))
-                                )
+                            raise
 
-                        await asyncio.gather(*overflow_tasks)
-                    except BaseException:
-                        for t in overflow_tasks:
-                            t.cancel()
-                        await asyncio.gather(*overflow_tasks, return_exceptions=True)
-                        raise
+                    assignments, overflow, scale_tasks = await pool.distribute_ranges(
+                        read_ranges, persisted_size=persisted_size
+                    )
+                    tasks = [_download_batch(s, b) for s, b in assignments.items()]
+                    if overflow:
+                        tasks.append(_download_overflow())
 
-                assignments, overflow, scale_tasks = await pool.distribute_ranges(
-                    read_ranges, persisted_size=persisted_size
-                )
-                tasks = [_download_batch(s, b) for s, b in assignments.items()]
-                if overflow:
-                    tasks.append(_download_overflow())
-
-                # Fast path: await directly to avoid asyncio.gather() Task wrapper overhead
-                # when all ranges fit onto a single stream without overflow.
-                if len(tasks) == 1:
-                    await tasks[0]
-                elif tasks:
-                    await _run_concurrently(tasks)
-            else:
-                await self._download_ranges_on_stream(
-                    self._primary_stream,
-                    read_ranges,
-                    retry_policy,
-                    metadata,
-                    enable_checksum,
-                    accepts_memoryview=accepts_memoryview,
-                )
+                    # Fast path: await directly to avoid asyncio.gather() Task wrapper overhead
+                    # when all ranges fit onto a single stream without overflow.
+                    if len(tasks) == 1:
+                        await tasks[0]
+                    elif tasks:
+                        await _run_concurrently(tasks)
+                else:
+                    await self._download_ranges_on_stream(
+                        self._primary_stream,
+                        read_ranges,
+                        retry_policy,
+                        metadata,
+                        enable_checksum,
+                        accepts_memoryview=accepts_memoryview,
+                    )
+            except DataCorruption:
+                # Close only after every stream has stopped, so streams still
+                # reading are cancelled instead of failing on the closed pool
+                # and masking the DataCorruption.
+                if self.is_stream_open:
+                    await self.close()
+                raise
 
     async def close(self):
         """
