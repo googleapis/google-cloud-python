@@ -863,6 +863,83 @@ class TestAsyncMultiRangeDownloader:
         assert not mrd.is_stream_open
         assert mrd.object_metadata is None
 
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_close_propagates_caller_cancellation_after_download(
+        self, mock_cls_async_read_object_stream
+    ):
+        """After a download the recv loop is running, and close() suspends
+        while stopping it; cancelling there must still propagate."""
+        mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        teardown_started = asyncio.Event()
+
+        async def _recv():
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                teardown_started.set()
+                await asyncio.Event().wait()
+
+        mrd.read_obj_str.recv = AsyncMock(side_effect=_recv)
+        mrd.read_obj_str.close = AsyncMock()
+        mrd._multiplexer._ensure_recv_loop()
+        await asyncio.sleep(0)
+
+        task = asyncio.create_task(mrd.close())
+        await teardown_started.wait()
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        assert not mrd.is_stream_open
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_close_cancellation_reaches_every_pooled_stream(
+        self, mock_cls_stream
+    ):
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            MultiStreamConfig,
+        )
+
+        streams = [self._make_mock_stream() for _ in range(3)]
+        mock_cls_stream.side_effect = streams
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(),
+            "b",
+            "o",
+            multi_stream_config=MultiStreamConfig(min_streams=3, max_streams=4),
+        )
+        entered, cancelled = [], []
+
+        def _hanging_close(stream):
+            async def _close():
+                entered.append(stream)
+                try:
+                    await asyncio.Event().wait()
+                except asyncio.CancelledError:
+                    cancelled.append(stream)
+                    raise
+
+            return _close
+
+        for s in streams:
+            s.close = AsyncMock(side_effect=_hanging_close(s))
+
+        task = asyncio.create_task(mrd.close())
+        for _ in range(5):
+            await asyncio.sleep(0)
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+
+        assert len(entered) == 3
+        assert len(cancelled) == 3
+        assert not mrd.is_stream_open
+
     @pytest.mark.asyncio
     async def test_close_mrd_not_opened_should_throw_error(self):
         # Arrange

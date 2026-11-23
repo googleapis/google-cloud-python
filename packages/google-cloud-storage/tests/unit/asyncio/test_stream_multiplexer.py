@@ -394,6 +394,38 @@ class TestSend:
         with pytest.raises(RuntimeError, match="send failed"):
             await mux.send(_storage_v2.BidiReadObjectRequest())
 
+    @pytest.mark.asyncio
+    async def test_send_after_close_raises_non_retryable_error(self):
+        mock_stream = _blocking_stream()
+        mux = _StreamMultiplexer(mock_stream)
+        await mux.close()
+
+        with pytest.raises(ValueError, match="closed"):
+            await mux.send(_storage_v2.BidiReadObjectRequest())
+        mock_stream.send.assert_not_awaited()
+        assert mux._recv_task is None
+
+
+def _blocking_stream():
+    stream = AsyncMock()
+    stream.recv = AsyncMock(side_effect=asyncio.Event().wait)
+    return stream
+
+
+def _recv_with_slow_teardown(teardown_started: asyncio.Event):
+    """Returns a recv() that blocks, and keeps blocking after its first
+    cancellation, so a caller awaiting the recv task's teardown can be
+    cancelled there."""
+
+    async def recv():
+        try:
+            await asyncio.Event().wait()
+        except asyncio.CancelledError:
+            teardown_started.set()
+            await asyncio.Event().wait()
+
+    return recv
+
 
 class TestReopenStream:
     @pytest.mark.asyncio
@@ -599,8 +631,73 @@ class TestReopenStream:
         assert mux.stream_generation == 1
         assert await mux.send(_storage_v2.BidiReadObjectRequest()) == 1
 
+    @pytest.mark.asyncio
+    async def test_reopen_cancelled_while_stopping_recv_loop(self):
+        """Cancelling reopen while it waits for the recv loop to stop must
+        propagate, must not open a new stream, and must leave the generation
+        rejected by send() so the next caller's retry reopens it."""
+        old_stream = AsyncMock()
+        teardown_started = asyncio.Event()
+        old_stream.recv = AsyncMock(
+            side_effect=_recv_with_slow_teardown(teardown_started)
+        )
+        mux = _StreamMultiplexer(old_stream)
+        mux.register({1})
+        mux._ensure_recv_loop()
+        await asyncio.sleep(0)
+
+        factory = AsyncMock(return_value=_blocking_stream())
+        reopen_task = asyncio.create_task(mux.reopen_stream(0, factory))
+        await teardown_started.wait()
+        reopen_task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await reopen_task
+
+        factory.assert_not_awaited()
+        assert mux.stream_generation == 0
+        with pytest.raises(exceptions.ServiceUnavailable):
+            await mux.send(_storage_v2.BidiReadObjectRequest())
+        old_stream.send.assert_not_awaited()
+
+        await mux.reopen_stream(0, AsyncMock(return_value=_blocking_stream()))
+        assert mux.stream_generation == 1
+        assert await mux.send(_storage_v2.BidiReadObjectRequest()) == 1
+
+    @pytest.mark.asyncio
+    async def test_reopen_after_close_raises_non_retryable_error(self):
+        mux = _StreamMultiplexer(_blocking_stream())
+        await mux.close()
+        factory = AsyncMock(return_value=_blocking_stream())
+
+        with pytest.raises(ValueError, match="closed"):
+            await mux.reopen_stream(0, factory)
+        factory.assert_not_awaited()
+        assert mux.stream_generation == 0
+
 
 class TestClose:
+    @pytest.mark.asyncio
+    async def test_close_propagates_caller_cancellation(self):
+        mock_stream = AsyncMock()
+        teardown_started = asyncio.Event()
+        mock_stream.recv = AsyncMock(
+            side_effect=_recv_with_slow_teardown(teardown_started)
+        )
+        mux = _StreamMultiplexer(mock_stream)
+        queue = mux.register({1})
+        mux._ensure_recv_loop()
+        await asyncio.sleep(0)
+
+        close_task = asyncio.create_task(mux.close())
+        await teardown_started.wait()
+        close_task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await close_task
+
+        # Readers are still woken with a terminal error.
+        assert isinstance(queue.get_nowait(), _StreamError)
+        assert mux._recv_task.done()
+
     @pytest.mark.asyncio
     async def test_close_cancels_recv_loop(self):
         # Given a multiplexer with an active receive loop

@@ -371,7 +371,9 @@ class _StreamPool:
             bg_tasks = list(self._background_tasks)
             for task in bg_tasks:
                 task.cancel()
-        if bg_tasks:
-            await asyncio.gather(*bg_tasks, return_exceptions=True)
-        for s in streams:
-            await s.close()
+        # Close concurrently so that cancelling close() cancels every stream's
+        # close (each of which then cancels its gRPC call) instead of leaking
+        # the streams not yet reached.
+        await asyncio.gather(
+            *bg_tasks, *(s.close() for s in streams), return_exceptions=True
+        )

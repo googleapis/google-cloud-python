@@ -64,6 +64,10 @@ class _StreamMultiplexer:
     ):
         self._stream = stream
         self._stream_generation: int = 0
+        # Generation whose reopen has started; send() rejects it until the
+        # replacement stream bumps the generation.
+        self._broken_generation: Optional[int] = None
+        self._closed = False
         self._queues: Dict[int, asyncio.Queue] = {}
         self._reopen_lock = asyncio.Lock()
         self._recv_task: Optional[asyncio.Task] = None
@@ -136,9 +140,14 @@ class _StreamMultiplexer:
         if self._recv_task is None or self._recv_task.done():
             self._recv_task = asyncio.create_task(self._recv_loop())
 
-    def _stop_recv_loop(self) -> None:
-        if self._recv_task and not self._recv_task.done():
-            self._recv_task.cancel()
+    async def _stop_recv_loop(self) -> None:
+        task = self._recv_task
+        if task is not None and not task.done():
+            task.cancel()
+            # Unlike ``await task`` under ``except CancelledError``, this
+            # absorbs only the task's own cancellation: it still raises
+            # CancelledError if the caller is cancelled while waiting.
+            await asyncio.gather(task, return_exceptions=True)
 
     def _put_error_nowait(self, queue: asyncio.Queue, error: _StreamError) -> None:
         while True:
@@ -182,10 +191,12 @@ class _StreamMultiplexer:
                 self._put_error_nowait(queue, error)
 
     async def send(self, request: _storage_v2.BidiReadObjectRequest) -> int:
-        if not self._stream.is_stream_open:
-            # A reopen cancelled after closing the old stream leaves that
-            # closed stream on the multiplexer at the same generation; raise a
-            # retryable error so the caller's retry reopens it.
+        if self._closed:
+            raise ValueError("Stream multiplexer is closed")
+        if self._broken_generation == self._stream_generation:
+            # This generation is being reopened, or its reopen was cancelled
+            # before a replacement stream was installed; raise a retryable
+            # error so the caller's retry reopens it or waits for the reopen.
             raise exceptions.ServiceUnavailable(
                 "Bidi read stream is not open; it will be reopened"
             )
@@ -199,14 +210,12 @@ class _StreamMultiplexer:
         stream_factory: Callable[[], Awaitable[_AsyncReadObjectStream]],
     ) -> None:
         async with self._reopen_lock:
+            if self._closed:
+                raise ValueError("Stream multiplexer is closed")
             if self._stream_generation != broken_generation:
                 return
-            self._stop_recv_loop()
-            if self._recv_task:
-                try:
-                    await self._recv_task
-                except (asyncio.CancelledError, Exception):
-                    pass
+            self._broken_generation = broken_generation
+            await self._stop_recv_loop()
             error = _StreamError(Exception("Stream reopening"), self._stream_generation)
             for queue in self._get_unique_queues():
                 self._put_error_nowait(queue, error)
@@ -219,12 +228,12 @@ class _StreamMultiplexer:
             self._ensure_recv_loop()
 
     async def close(self) -> None:
-        self._stop_recv_loop()
-        if self._recv_task:
-            try:
-                await self._recv_task
-            except (asyncio.CancelledError, Exception):
-                pass
-        error = _StreamError(Exception("Multiplexer closed"), self._stream_generation)
-        for queue in self._get_unique_queues():
-            self._put_error_nowait(queue, error)
+        self._closed = True
+        try:
+            await self._stop_recv_loop()
+        finally:
+            error = _StreamError(
+                Exception("Multiplexer closed"), self._stream_generation
+            )
+            for queue in self._get_unique_queues():
+                self._put_error_nowait(queue, error)
