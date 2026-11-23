@@ -19,6 +19,7 @@ import multiprocessing
 import os
 import random
 import time
+import traceback
 from typing import List, NamedTuple, Optional
 
 import pytest
@@ -249,12 +250,18 @@ async def _download_time_based_async(client, filename, params):
 
 
 def _download_files_worker(process_idx, filename, params, bucket_type):
-    if bucket_type == "rapid":
-        return worker_loop.run_until_complete(
-            _download_time_based_async(worker_client, filename, params)
-        )
-    else:  # regional
-        return _download_time_based_json(worker_json_client, filename, params)
+    try:
+        if bucket_type == "rapid":
+            return worker_loop.run_until_complete(
+                _download_time_based_async(worker_client, filename, params)
+            )
+        else:  # regional
+            return _download_time_based_json(worker_json_client, filename, params)
+    except Exception:
+        # The pool pickles a worker's exception to send it to the parent. A
+        # DataCorruption holding a zero-copy response cannot be pickled, so
+        # send the formatted traceback instead.
+        raise RuntimeError(traceback.format_exc()) from None
 
 
 def download_files_mp_mc_wrapper(pool, files_names, params, bucket_type):

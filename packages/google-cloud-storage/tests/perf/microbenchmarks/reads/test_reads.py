@@ -28,6 +28,7 @@ import multiprocessing
 import os
 import random
 import time
+import traceback
 from concurrent.futures import ThreadPoolExecutor
 from io import BytesIO
 
@@ -331,17 +332,23 @@ def _worker_init(bucket_type, zero_copy=False):
 
 
 def _download_files_worker(files_to_download, other_params, chunks, bucket_type):
-    if bucket_type == "rapid":
-        # The loop and client are already initialized in _worker_init.
-        # download_files_using_mrd_multi_coro returns max latency of coros
-        return download_files_using_mrd_multi_coro(
-            worker_loop, worker_client, files_to_download, other_params, chunks
-        )
-    else:  # regional
-        # download_files_using_json_multi_threaded returns max latency of threads
-        return download_files_using_json_multi_threaded(
-            None, worker_json_client, files_to_download, other_params, chunks
-        )
+    try:
+        if bucket_type == "rapid":
+            # The loop and client are already initialized in _worker_init.
+            # download_files_using_mrd_multi_coro returns max latency of coros
+            return download_files_using_mrd_multi_coro(
+                worker_loop, worker_client, files_to_download, other_params, chunks
+            )
+        else:  # regional
+            # download_files_using_json_multi_threaded returns max latency of threads
+            return download_files_using_json_multi_threaded(
+                None, worker_json_client, files_to_download, other_params, chunks
+            )
+    except Exception:
+        # The pool pickles a worker's exception to send it to the parent. A
+        # DataCorruption holding a zero-copy response cannot be pickled, so
+        # send the formatted traceback instead.
+        raise RuntimeError(traceback.format_exc()) from None
 
 
 def download_files_mp_mc_wrapper(pool, files_names, params, chunks, bucket_type):
