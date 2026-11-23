@@ -14,6 +14,7 @@
 
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
+import google.auth
 import grpc
 from google.auth import credentials as auth_credentials
 
@@ -22,8 +23,11 @@ from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
 from google.cloud.storage import __version__
-
-_DEFAULT_HOST = "storage.googleapis.com"
+from google.cloud.storage.grpc_client import (
+    _resolve_grpc_config,
+    _resolve_universe_domain,
+    _validate_universe_domain,
+)
 
 
 def _validate_metadata(metadata):
@@ -78,6 +82,7 @@ class AsyncGrpcClient:
                 raise ValueError(
                     "Either client_options or `client_option.api_endpoint` is None. Please provide api_endpoint when `AnonymousCredentials` is used "
                 )
+            self._universe_domain = _resolve_universe_domain(client_options)
             self._grpc_client = self._create_anonymous_client(
                 client_options, credentials
             )
@@ -92,12 +97,18 @@ class AsyncGrpcClient:
         if agent_version not in client_info.user_agent:
             client_info.user_agent += f" {agent_version} "
 
+        self._universe_domain = _resolve_universe_domain(client_options)
         self._grpc_client = self._create_async_grpc_client(
             credentials=credentials,
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
         )
+
+    @property
+    def universe_domain(self) -> str:
+        """The universe domain used by the client instance."""
+        return self._universe_domain
 
     def _create_anonymous_client(self, client_options, credentials):
         channel = grpc.aio.insecure_channel(client_options.api_endpoint)
@@ -121,17 +132,22 @@ class AsyncGrpcClient:
         client_options=None,
         attempt_direct_path=True,
     ):
+        (
+            universe_domain,
+            host,
+            quota_project_id,
+            attempt_direct_path,
+        ) = _resolve_grpc_config(client_options, attempt_direct_path)
         transport_cls = storage_v2.StorageAsyncClient.get_transport_class(
             "grpc_asyncio"
         )
+        if credentials is None:
+            credentials, _ = google.auth.default(
+                default_scopes=transport_cls.AUTH_SCOPES
+            )
+        _validate_universe_domain(universe_domain, credentials)
 
         primary_user_agent = client_info.to_user_agent()
-
-        host = _DEFAULT_HOST
-        quota_project_id = None
-        if client_options:
-            host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
-            quota_project_id = getattr(client_options, "quota_project_id", None)
 
         channel = transport_cls.create_channel(
             host=host,
@@ -140,7 +156,7 @@ class AsyncGrpcClient:
             credentials=credentials,
             options=(("grpc.primary_user_agent", primary_user_agent),),
         )
-        transport = transport_cls(channel=channel)
+        transport = transport_cls(host=host, channel=channel)
 
         return storage_v2.StorageAsyncClient(
             transport=transport,
