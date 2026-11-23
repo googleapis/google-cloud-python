@@ -481,3 +481,101 @@ class Test_connect(unittest.TestCase):
         self.assertIsInstance(connection, Connection)
         custom_client.instance.assert_called_once_with(INSTANCE)
         self.assertNotIn("client_options", connection._connection_variables)
+
+    def test_connect_omni_dict_api_endpoint_and_override(self, mock_client):
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_dbapi import connect
+
+        # dict with api_endpoint and no experimental_host
+        caller_dict = {
+            "api_endpoint": "omni-host:15000",
+            "quota_project_id": "test-project",
+        }
+        conn = connect(
+            INSTANCE,
+            DATABASE,
+            instance_type="omni",
+            client_options=caller_dict,
+        )
+        passed = mock_client.call_args.kwargs["client_options"]
+        self.assertEqual(
+            passed,
+            {
+                "api_endpoint": "omni-host:15000",
+                "quota_project_id": "test-project",
+            },
+        )
+        self.assertIsNot(passed, caller_dict)
+        self.assertNotIn("client_options", conn._connection_variables)
+
+        # experimental_host overrides client_options.api_endpoint without mutating caller
+        caller_opts = ClientOptions(api_endpoint="original-host:15000")
+        connect(
+            INSTANCE,
+            DATABASE,
+            experimental_host="override-host:15000",
+            client_options=caller_opts,
+        )
+        self.assertEqual(
+            mock_client.call_args.kwargs["client_options"].api_endpoint,
+            "override-host:15000",
+        )
+        self.assertEqual(caller_opts.api_endpoint, "original-host:15000")
+
+    def test_connect_omni_invalid_client_options_type_raises_type_error(
+        self, mock_client
+    ):
+        from google.cloud.spanner_dbapi import connect
+
+        for invalid_opts in ("omni-host:15000", 123, object()):
+            with self.assertRaisesRegex(
+                TypeError, "client_options must be a ClientOptions instance or dict"
+            ):
+                connect(
+                    INSTANCE,
+                    DATABASE,
+                    experimental_host="omni-host:15000",
+                    client_options=invalid_opts,
+                )
+
+            with self.assertRaisesRegex(
+                TypeError, "client_options must be a ClientOptions instance or dict"
+            ):
+                connect(
+                    INSTANCE,
+                    DATABASE,
+                    instance_type="omni",
+                    client_options=invalid_opts,
+                )
+
+        mock_client.assert_not_called()
+
+    def test_connect_invalid_client_options_type_raises_type_error_all_paths(
+        self, mock_client
+    ):
+        from google.cloud.spanner_dbapi import connect
+
+        credentials = build_scoped_credentials()
+        custom_client = mock.MagicMock()
+        custom_client.project = PROJECT
+
+        for extra_kwargs in (
+            {},
+            {"credentials": credentials},
+            {"credentials": "dummy/file/path.json"},
+            {"client": custom_client, "project": PROJECT},
+        ):
+            with self.assertRaisesRegex(
+                TypeError, "client_options must be a ClientOptions instance or dict"
+            ):
+                connect(
+                    INSTANCE,
+                    DATABASE,
+                    client_options="spanner.example:443",
+                    **extra_kwargs,
+                )
+
+        mock_client.assert_not_called()
+        mock_client.from_service_account_json.assert_not_called()
+        custom_client.instance.assert_not_called()
