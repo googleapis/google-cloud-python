@@ -381,8 +381,63 @@ class TestWriteResumptionStrategy:
         buffer = io.BytesIO(b"test")
         ws = _WriteState(chunk_size=10, user_buffer=buffer, flush_interval=100)
 
+        assert ws.initial_offset == 0
         assert ws.persisted_size == 0
         assert ws.bytes_sent == 0
         assert ws.bytes_since_last_flush == 0
         assert ws.flush_interval == 100
         assert not ws.is_finalized
+
+    @pytest.mark.parametrize(
+        "initial_offset, persisted_size, expected_tell, expected_bytes_sent, expected_chunks",
+        [
+            # Partial persistence inside current buffer: seek to persisted_size - initial_offset.
+            (20, 24, 4, 24, [(24, b"efgh"), (28, b"ij")]),
+            # Cached persisted_size below initial_offset before stream reopen: clamp to 0.
+            (20, 0, 0, 20, [(20, b"abcd"), (24, b"efgh"), (28, b"ij")]),
+            # persisted_size exactly at initial_offset: resend the whole buffer.
+            (20, 20, 0, 20, [(20, b"abcd"), (24, b"efgh"), (28, b"ij")]),
+            # Whole buffer persisted before the error: nothing left to send.
+            (20, 30, 10, 30, []),
+            # Stale cached persisted_size from an unaligned prior append: clamp to 0.
+            (20, 12, 0, 20, [(20, b"abcd"), (24, b"efgh"), (28, b"ij")]),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_recover_state_on_failure_with_initial_offset(
+        self,
+        strategy,
+        initial_offset,
+        persisted_size,
+        expected_tell,
+        expected_bytes_sent,
+        expected_chunks,
+    ):
+        """Verify recovery rewinds user_buffer relative to initial_offset."""
+        user_buffer = io.BytesIO(b"abcdefghij")
+        write_state = _WriteState(
+            chunk_size=4,
+            user_buffer=user_buffer,
+            flush_interval=100,
+            initial_offset=initial_offset,
+        )
+        assert write_state.bytes_sent == initial_offset
+
+        write_state.bytes_sent = initial_offset + 8
+        write_state.persisted_size = persisted_size
+        write_state.bytes_since_last_flush = 8
+        user_buffer.seek(8)
+
+        state = {"write_state": write_state}
+        await strategy.recover_state_on_failure(
+            exceptions.ServiceUnavailable("busy"), state
+        )
+
+        assert user_buffer.tell() == expected_tell
+        assert write_state.bytes_sent == expected_bytes_sent
+        assert write_state.bytes_since_last_flush == 0
+
+        requests = strategy.generate_requests(state)
+        assert [
+            (req.write_offset, req.checksummed_data.content) for req in requests
+        ] == expected_chunks
