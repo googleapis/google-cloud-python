@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import copy
+import gc
 import inspect
 import threading
 import time
+import weakref
 from concurrent import futures
 from unittest import mock
 
@@ -1459,8 +1461,24 @@ _GRPC_SUPPORTS_REGISTERED_METHOD = (
 class _FakeCertManager:
     """In-memory duck-typed certificate manager for _RotatingGrpcChannel tests."""
 
-    def __init__(self, generation_id=1):
+    def __init__(self, generation_id=1, advance_on_refresh=False):
         self.generation_id = generation_id
+        self.advance_on_refresh = advance_on_refresh
+        self.refresh_calls = []
+        self._lock = threading.Lock()
+
+    def refresh(self, expected_generation):
+        with self._lock:
+            self.refresh_calls.append(expected_generation)
+            # Like the real manager, skip the reload if another caller already
+            # moved past the caller's generation.
+            if self.generation_id > expected_generation:
+                return True
+            if self.advance_on_refresh:
+                self.generation_id += 1
+                self.advance_on_refresh = False
+                return True
+            return False
 
 
 class _UnaryUnaryPassthroughInterceptor(grpc.UnaryUnaryClientInterceptor):
@@ -1721,6 +1739,415 @@ class Test_RotatingGrpcChannel:
         assert rotating.channel is built[1]
         built[0].unary_unary.assert_not_called()
 
+    @pytest.mark.parametrize(
+        "timeout,expected_retry_timeout",
+        [(5.0, 3.75), (None, None)],
+    )
+    def test_unary_unary_reactive_retry_and_arg_passthrough(
+        self, timeout, expected_retry_timeout
+    ):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+        intercepted = grpc.intercept_channel(
+            rotating, _UnaryUnaryPassthroughInterceptor()
+        )
+        stub = intercepted.unary_unary("/svc/UU")
+
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+        ch1.unary_unary.return_value.with_call.side_effect = unauth_err
+        ch2.unary_unary.return_value.with_call.return_value = (
+            "retried_ok",
+            mock.sentinel.call2,
+        )
+
+        metadata = [("x-test", "1")]
+        credentials = mock.sentinel.call_creds
+        compression = grpc.Compression.Gzip
+
+        with mock.patch(
+            "google.api_core.grpc_helpers.time.monotonic",
+            side_effect=[100.0, 101.25],
+        ):
+            resp, _ = stub.with_call(
+                "req",
+                timeout=timeout,
+                metadata=metadata,
+                credentials=credentials,
+                wait_for_ready=True,
+                compression=compression,
+            )
+
+        assert resp == "retried_ok"
+        assert cert_manager.refresh_calls == [1]
+        assert rotating.channel is ch2
+        ch1.unary_unary.return_value.with_call.assert_called_once_with(
+            "req",
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=True,
+            compression=compression,
+        )
+        ch2.unary_unary.return_value.with_call.assert_called_once_with(
+            "req",
+            timeout=expected_retry_timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=True,
+            compression=compression,
+        )
+
+    @pytest.mark.parametrize(
+        "cert_manager,status_code",
+        [
+            (
+                _FakeCertManager(generation_id=1, advance_on_refresh=False),
+                grpc.StatusCode.UNAUTHENTICATED,
+            ),
+            (None, grpc.StatusCode.UNAUTHENTICATED),
+            (
+                _FakeCertManager(generation_id=1, advance_on_refresh=True),
+                grpc.StatusCode.PERMISSION_DENIED,
+            ),
+        ],
+    )
+    def test_unary_unary_no_retry_when_not_rotated_or_non_unauthenticated(
+        self, cert_manager, status_code
+    ):
+        ch1 = _make_mock_channel("ch1")
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: ch1, cert_manager=cert_manager
+        )
+        stub = rotating.unary_unary("/svc/UU")
+
+        rpc_err = RpcErrorImpl(status_code)
+        ch1.unary_unary.return_value.with_call.side_effect = rpc_err
+
+        with pytest.raises(grpc.RpcError) as exc_info:
+            stub("req")
+
+        assert exc_info.value is rpc_err
+        assert rotating.channel is ch1
+        assert ch1.unary_unary.return_value.with_call.call_count == 1
+
+    def test_concurrent_unauthenticated_failures_build_one_channel(self):
+        num_threads = 8
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        factory = mock.Mock(side_effect=[ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(factory, cert_manager=cert_manager)
+        stub = rotating.unary_unary("/svc/UU")
+        barrier = threading.Barrier(num_threads)
+
+        def fail_together(*args, **kwargs):
+            barrier.wait()
+            raise RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+
+        ch1.unary_unary.return_value.with_call.side_effect = fail_together
+        ch2.unary_unary.return_value.with_call.return_value = ("ok", None)
+
+        with futures.ThreadPoolExecutor(num_threads) as executor:
+            results = [executor.submit(stub, "req") for _ in range(num_threads)]
+            assert [f.result() for f in results] == ["ok"] * num_threads
+
+        assert factory.call_count == 2
+        assert cert_manager.generation_id == 2
+        assert rotating.channel is ch2
+
+    def test_rotate_on_unauthenticated_coalesces_when_generation_already_advanced(
+        self,
+    ):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        factory = mock.Mock(side_effect=[ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(factory, cert_manager=cert_manager)
+        unauthenticated = grpc.StatusCode.UNAUTHENTICATED
+
+        # Generation already advanced in AuthMetadataPlugin during in-flight call
+        cert_manager.generation_id = 2
+
+        # First call from attempt_gen=1 swaps to ch2 without calling cert_manager.refresh
+        assert rotating._rotate_on_unauthenticated(unauthenticated, 1) is True
+        assert cert_manager.refresh_calls == []
+        assert rotating.channel is ch2
+        assert factory.call_count == 2
+
+        # Second concurrent call from attempt_gen=1 sees channel already at gen 2;
+        # returns True so caller retries on ch2 without rebuilding a third channel
+        assert rotating._rotate_on_unauthenticated(unauthenticated, 1) is True
+        assert cert_manager.refresh_calls == []
+        assert rotating.channel is ch2
+        assert factory.call_count == 2
+
+    def test_rotating_call_forwards_call_and_future_methods(self):
+        ch1 = _make_mock_channel("ch1")
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: ch1, cert_manager=cert_manager
+        )
+
+        raw_future = mock.MagicMock()
+        raw_future.result.return_value = "future_ok"
+        raw_future.exception.return_value = None
+        raw_future.code.return_value = grpc.StatusCode.OK
+        ch1.unary_unary.return_value.future.return_value = raw_future
+
+        fut = rotating.unary_unary("/svc/UU").future("req", timeout=2.0)
+        assert iter(fut) is fut
+        assert fut.result(timeout=1.0) == "future_ok"
+        assert fut.exception(timeout=1.0) is None
+        assert fut.cancel() is raw_future.cancel.return_value
+        assert fut.cancelled() is raw_future.cancelled.return_value
+        assert fut.running() is raw_future.running.return_value
+        assert fut.done() is raw_future.done.return_value
+        assert fut.traceback(timeout=1.0) is raw_future.traceback.return_value
+        assert (
+            fut.add_callback(mock.sentinel.cb) is raw_future.add_callback.return_value
+        )
+        assert fut.is_active() is raw_future.is_active.return_value
+        assert fut.time_remaining() is raw_future.time_remaining.return_value
+        assert fut.code() == grpc.StatusCode.OK
+        assert fut.details() is raw_future.details.return_value
+        assert fut.debug_error_string() is raw_future.debug_error_string.return_value
+        assert fut.initial_metadata() is raw_future.initial_metadata.return_value
+        assert fut.trailing_metadata() is raw_future.trailing_metadata.return_value
+
+        done_seen = []
+        raw_future.add_done_callback.side_effect = lambda cb: cb(raw_future)
+        fut.add_done_callback(lambda f: done_seen.append(f))
+        assert done_seen == [raw_future]
+        assert rotating.channel is ch1
+
+    @pytest.mark.parametrize(
+        "trigger", ["result", "exception", "code", "add_done_callback"]
+    )
+    def test_rotating_call_swaps_channel_on_unauthenticated(self, trigger):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+
+        raw_future = mock.MagicMock()
+        raw_future.result.side_effect = unauth_err
+        raw_future.exception.return_value = unauth_err
+        raw_future.code.return_value = grpc.StatusCode.UNAUTHENTICATED
+        raw_future.add_done_callback.side_effect = lambda cb: cb(raw_future)
+        ch1.unary_unary.return_value.future.return_value = raw_future
+
+        fut = rotating.unary_unary("/svc/UU").future("req")
+        if trigger == "result":
+            with pytest.raises(grpc.RpcError) as exc_info:
+                fut.result()
+            assert exc_info.value is unauth_err
+        elif trigger == "exception":
+            assert fut.exception() is unauth_err
+        elif trigger == "code":
+            assert fut.code() == grpc.StatusCode.UNAUTHENTICATED
+        else:
+            seen = []
+            fut.add_done_callback(lambda f: seen.append((f, rotating.channel)))
+            assert seen == [(raw_future, ch2)]
+
+        assert rotating.channel is ch2
+
+    def test_failed_call_runs_rotation_check_once(self):
+        ch1 = _make_mock_channel("ch1")
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: ch1, cert_manager=cert_manager
+        )
+
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+        raw_future = mock.MagicMock()
+        raw_future.code.return_value = grpc.StatusCode.UNAUTHENTICATED
+        raw_future.exception.return_value = unauth_err
+        raw_future.result.side_effect = unauth_err
+        raw_future.add_done_callback.side_effect = lambda cb: cb(raw_future)
+        raw_future.add_callback.side_effect = lambda cb: cb()
+        ch1.unary_unary.return_value.future.return_value = raw_future
+
+        fut = rotating.unary_unary("/svc/UU").future("req")
+        assert fut.exception() is unauth_err
+        for _ in range(3):
+            assert fut.code() == grpc.StatusCode.UNAUTHENTICATED
+        with pytest.raises(grpc.RpcError):
+            fut.result()
+        fut.add_done_callback(lambda f: None)
+        fut.add_callback(lambda: None)
+
+        # The certificate did not change, so it was reloaded only once.
+        assert cert_manager.refresh_calls == [1]
+        assert rotating.channel is ch1
+
+    def test_add_callback_runs_rotation_check(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+
+        raw_call = mock.MagicMock()
+        raw_call.code.return_value = grpc.StatusCode.UNAUTHENTICATED
+        raw_call.add_callback.side_effect = lambda cb: cb()
+        ch1.stream_stream.return_value.return_value = raw_call
+        callback = mock.Mock()
+
+        call = rotating.stream_stream("/svc/BidiStream")(iter(["r1"]))
+        call.add_callback(callback)
+
+        # grpcio logs a raising callback through its .func attribute.
+        registered = raw_call.add_callback.call_args[0][0]
+        assert hasattr(registered, "func")
+        callback.assert_called_once_with()
+        assert rotating.channel is ch2
+
+    def test_unary_unary_skips_retry_when_timeout_exhausted(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+        stub = rotating.unary_unary("/svc/UU")
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+        ch1.unary_unary.return_value.with_call.side_effect = unauth_err
+
+        with mock.patch(
+            "google.api_core.grpc_helpers.time.monotonic",
+            side_effect=[100.0, 106.0],
+        ):
+            with pytest.raises(grpc.RpcError) as exc_info:
+                stub("req", timeout=5.0)
+
+        assert exc_info.value is unauth_err
+        assert rotating.channel is ch2
+        ch2.unary_unary.assert_not_called()
+
+    def test_bare_rpc_error_without_code_propagates(self):
+        ch1 = _make_mock_channel("ch1")
+        rotating = grpc_helpers._RotatingGrpcChannel(lambda: ch1)
+        bare_err = grpc.RpcError()
+
+        ch1.unary_unary.return_value.with_call.side_effect = bare_err
+        with pytest.raises(grpc.RpcError) as exc_info:
+            rotating.unary_unary("/svc/UU")("req")
+        assert exc_info.value is bare_err
+
+    def test_rotation_failure_does_not_mask_rpc_error(self):
+        def _make_failing_rotating():
+            ch1 = _make_mock_channel("ch1")
+            factory = mock.Mock(side_effect=[ch1, RuntimeError("factory failed")])
+            cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+            rotating = grpc_helpers._RotatingGrpcChannel(
+                factory, cert_manager=cert_manager
+            )
+            return ch1, rotating
+
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+
+        ch1, rotating = _make_failing_rotating()
+        ch1.unary_unary.return_value.with_call.side_effect = unauth_err
+        with pytest.raises(grpc.RpcError) as exc_info:
+            rotating.unary_unary("/svc/UU")("req")
+        assert exc_info.value is unauth_err
+        assert rotating.channel is ch1
+
+        ch1, rotating = _make_failing_rotating()
+        raw_future = mock.MagicMock()
+        raw_future.exception.return_value = unauth_err
+        raw_future.code.return_value = grpc.StatusCode.UNAUTHENTICATED
+        ch1.unary_unary.return_value.future.return_value = raw_future
+        fut = rotating.unary_unary("/svc/UU").future("req")
+        assert fut.exception() is unauth_err
+        assert fut.code() == grpc.StatusCode.UNAUTHENTICATED
+        assert rotating.channel is ch1
+
+    def test_unary_stream_swaps_without_replay(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+        intercepted = grpc.intercept_channel(
+            rotating, _UnaryUnaryPassthroughInterceptor()
+        )
+        stub = grpc_helpers.wrap_errors(intercepted.unary_stream("/svc/ServerStream"))
+        ch1.unary_stream.return_value.return_value = RpcResponseIteratorImpl(
+            [RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)]
+        )
+
+        with pytest.raises(exceptions.Unauthenticated):
+            stub("req")
+        assert rotating.channel is ch2
+        ch2.unary_stream.assert_not_called()
+
+    def test_stream_unary_swaps_without_replay(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        ch3 = _make_mock_channel("ch3")
+        channels = iter([ch1, ch2, ch3])
+        cert_manager = _FakeCertManager(generation_id=1)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+        stub = rotating.stream_unary("/svc/ClientStream")
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+
+        ch1.stream_unary.return_value.with_call.side_effect = unauth_err
+        cert_manager.advance_on_refresh = True
+        with pytest.raises(grpc.RpcError) as exc_info:
+            stub.with_call(iter(["r1"]))
+        assert exc_info.value is unauth_err
+        assert rotating.channel is ch2
+        ch2.stream_unary.assert_not_called()
+
+        raw_future = mock.MagicMock()
+        raw_future.result.side_effect = unauth_err
+        ch2.stream_unary.return_value.future.return_value = raw_future
+        cert_manager.advance_on_refresh = True
+        fut = stub.future(iter(["r1"]))
+        with pytest.raises(grpc.RpcError) as exc_info:
+            fut.result()
+        assert exc_info.value is unauth_err
+        assert rotating.channel is ch3
+
+    def test_stream_stream_swaps_without_replay(self):
+        ch1 = _make_mock_channel("ch1")
+        ch2 = _make_mock_channel("ch2")
+        channels = iter([ch1, ch2])
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(
+            lambda: next(channels), cert_manager=cert_manager
+        )
+        stub = grpc_helpers.wrap_errors(rotating.stream_stream("/svc/BidiStream"))
+
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+        ch1.stream_stream.return_value.return_value = RpcResponseIteratorImpl(
+            [unauth_err]
+        )
+
+        with pytest.raises(exceptions.Unauthenticated):
+            stub(iter(["r1"]))
+
+        assert rotating.channel is ch2
+        ch2.stream_stream.assert_not_called()
+
     def test_swap_in_channel_created_before_rotation(self):
         ch1 = _make_mock_channel("ch1")
         prewarmed = _make_mock_channel("prewarmed")
@@ -1803,6 +2230,24 @@ class Test_RotatingGrpcChannel:
         ch2.close.assert_called_once_with()
         ch1.close.assert_not_called()
 
+    def test_call_keeps_its_channel_alive_after_swap(self):
+        rotating = grpc_helpers._RotatingGrpcChannel(_make_real_channel)
+        old_channel = rotating.channel
+        # Replace the multicallable factory so no RPC is sent.
+        old_channel.unary_stream = mock.Mock()
+        call = rotating.unary_stream("/svc/ServerStream")("req")
+        old_channel_ref = weakref.ref(old_channel)
+        del old_channel
+
+        rotating.swap_channel()
+        gc.collect()
+        assert old_channel_ref() is not None
+
+        del call
+        gc.collect()
+        assert old_channel_ref() is None
+        rotating.close()
+
     def test_close_stops_building_channels(self):
         factory = mock.Mock(side_effect=_make_real_channel)
         cert_manager = _FakeCertManager(generation_id=1)
@@ -1845,6 +2290,26 @@ class Test_RotatingGrpcChannel:
 
         ch1.close.assert_called_once_with()
         ch2.close.assert_called_once_with()
+
+    def test_unauthenticated_after_close_does_not_rebuild(self):
+        ch1 = _make_mock_channel("ch1")
+        factory = mock.Mock(return_value=ch1)
+        cert_manager = _FakeCertManager(generation_id=1, advance_on_refresh=True)
+        rotating = grpc_helpers._RotatingGrpcChannel(factory, cert_manager=cert_manager)
+        unauth_err = RpcErrorImpl(grpc.StatusCode.UNAUTHENTICATED)
+        raw_future = mock.MagicMock()
+        raw_future.result.side_effect = unauth_err
+        ch1.unary_unary.return_value.future.return_value = raw_future
+
+        fut = rotating.unary_unary("/svc/UU").future("req")
+        rotating.close()
+
+        with pytest.raises(grpc.RpcError) as exc_info:
+            fut.result()
+        assert exc_info.value is unauth_err
+        assert cert_manager.refresh_calls == []
+        assert factory.call_count == 1
+        ch1.close.assert_called_once_with()
 
     def test_getattr_without_init_raises_attribute_error(self):
         rotating = grpc_helpers._RotatingGrpcChannel(_make_mock_channel)
