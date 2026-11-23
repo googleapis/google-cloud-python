@@ -32,13 +32,15 @@ from google.cloud.storage.grpc_client import (
 # Detect a dead connection while an RPC or bidi stream is open. Without HTTP/2
 # keepalive, a pending recv() on a bidi stream can block indefinitely when the
 # path to the server silently drops traffic or the peer stops responding while
-# its kernel still ACKs TCP keepalives. Ping every 30 s while an RPC is open and
-# drop the connection if a ping is not ACKed within 20 s, so the stream fails
-# with a retryable error instead of hanging. grpc.http2.ping_timeout_ms is set
-# alongside keepalive_timeout_ms because grpc-python otherwise waits its 60 s
-# default for the ping ACK. keepalive_permit_without_calls is intentionally left
-# unset so idle channels send no pings (more frequent or idle pings can trigger
-# GOAWAY too_many_pings from GCS frontends).
+# its kernel still ACKs TCP keepalives. While an RPC is open, send a ping after
+# 30 s without activity and drop the connection if it is not ACKed within 20 s,
+# so the stream fails with a retryable error instead of hanging. On a stream
+# with no outgoing data, gRPC limits these pings to one per minute.
+# grpc.http2.ping_timeout_ms is set alongside keepalive_timeout_ms because
+# grpc-python otherwise waits its 60 s default for the ping ACK.
+# keepalive_permit_without_calls is intentionally left unset so channels with no
+# open RPC send no pings (more frequent or idle pings can trigger GOAWAY
+# too_many_pings from GCS frontends).
 _KEEPALIVE_CHANNEL_OPTIONS: tuple[tuple[str, int], ...] = (
     ("grpc.keepalive_time_ms", 30000),
     ("grpc.keepalive_timeout_ms", 20000),
