@@ -1024,9 +1024,7 @@ class TestConnection(unittest.TestCase):
             )
             self.assertNotIn("client_options", conn_endpoint._connection_variables)
 
-            with self.assertRaisesRegex(
-                ValueError, r"does not accept.*unknown_option"
-            ):
+            with self.assertRaisesRegex(ValueError, r"does not accept.*unknown_option"):
                 connect(
                     "test-instance",
                     project="test-project",
