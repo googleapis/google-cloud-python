@@ -126,82 +126,303 @@ class Test_RequestQueueGenerator(object):
         assert items == []
 
 
+_THROTTLE_START = datetime.datetime(2026, 1, 1, 12, 0, 0)
+
+
+class _ControlledClock(object):
+    """Deterministic fake clock for testing sliding-window throttling.
+
+    Replaces wall-clock ``datetime.now()`` and ``time.sleep()`` so time only
+    advances when a test moves it explicitly or when ``_Throttle`` calls
+    ``time.sleep()``.
+    """
+
+    def __init__(self, start=_THROTTLE_START):
+        self._start = start
+        self.current = start
+
+    @property
+    def elapsed(self):
+        """Returns elapsed seconds since ``_start``."""
+        return (self.current - self._start).total_seconds()
+
+    def now(self, tz=None):
+        """Returns the current simulated timestamp, honoring optional ``tz``."""
+        if tz is not None:
+            aware = (
+                self.current
+                if self.current.tzinfo
+                else self.current.replace(tzinfo=datetime.timezone.utc)
+            )
+            return aware.astimezone(tz)
+        return self.current
+
+    def set_offset(self, seconds):
+        """Sets the simulated clock to ``_start + seconds``."""
+        self.current = self._start + datetime.timedelta(seconds=seconds)
+
+    def advance(self, seconds):
+        """Advances the simulated clock by ``seconds``, rejecting negative sleeps."""
+        # Match real time.sleep() by failing loudly if production code ever
+        # computes a negative wait instead of silently rewinding the clock.
+        if seconds < 0:  # pragma: NO COVER
+            raise ValueError("sleep length must be non-negative")
+        self.current += datetime.timedelta(seconds=seconds)
+
+
+@pytest.fixture
+def bidi_clock():
+    """Patches ``bidi.datetime`` and ``bidi.time`` with a deterministic clock.
+
+    Yields a ``(clock, mock_sleep)`` tuple where ``bidi.datetime.datetime.now``
+    reads ``clock.now`` and ``bidi.time.sleep`` advances ``clock`` instantly.
+    """
+    clock = _ControlledClock()
+    with (
+        mock.patch.object(bidi, "datetime", autospec=True, spec_set=True) as mock_dt,
+        mock.patch.object(bidi, "time", autospec=True, spec_set=True) as mock_time,
+    ):
+        # Preserve real datetime types on the patched module so type/isinstance
+        # checks and timedelta arithmetic work identically to stdlib datetime.
+        mock_dt.timedelta = datetime.timedelta
+        mock_dt.timezone = datetime.timezone
+        mock_dt.datetime.now.side_effect = clock.now
+        mock_time.sleep.side_effect = clock.advance
+        yield clock, mock_time.sleep
+
+
 class Test_Throttle(object):
     def test_repr(self):
+        """Verifies ``repr(_Throttle)`` includes ``access_limit`` and ``time_window``.
+
+        Passes when ``repr(instance)`` matches the expected constructor-style string.
+        """
         delta = datetime.timedelta(seconds=4.5)
         instance = bidi._Throttle(access_limit=42, time_window=delta)
         assert repr(instance) == "_Throttle(access_limit=42, time_window={})".format(
             repr(delta)
         )
 
-    def test_raises_error_on_invalid_init_arguments(self):
-        with pytest.raises(ValueError) as exc_info:
-            bidi._Throttle(access_limit=10, time_window=datetime.timedelta(seconds=0.0))
-        assert "time_window" in str(exc_info.value)
-        assert "must be a positive timedelta" in str(exc_info.value)
+    @pytest.mark.parametrize(
+        "access_limit,time_window,expected_match",
+        [
+            pytest.param(
+                10,
+                datetime.timedelta(seconds=0.0),
+                r"time_window.*must be a positive timedelta",
+                id="zero_time_window",
+            ),
+            pytest.param(
+                10,
+                -datetime.timedelta.resolution,
+                r"time_window.*must be a positive timedelta",
+                id="negative_time_window",
+            ),
+            pytest.param(
+                0,
+                datetime.timedelta(seconds=10),
+                r"access_limit.*must be positive",
+                id="zero_access_limit",
+            ),
+            pytest.param(
+                -1,
+                datetime.timedelta(seconds=10),
+                r"access_limit.*must be positive",
+                id="negative_access_limit",
+            ),
+        ],
+    )
+    def test_raises_error_on_invalid_init_arguments(
+        self, access_limit, time_window, expected_match
+    ):
+        """Verifies ``_Throttle`` rejects non-positive limits and time windows.
 
-        with pytest.raises(ValueError) as exc_info:
-            bidi._Throttle(access_limit=0, time_window=datetime.timedelta(seconds=10))
-        assert "access_limit" in str(exc_info.value)
-        assert "must be positive" in str(exc_info.value)
+        Passes when constructing ``_Throttle`` with invalid bounds raises
+        ``ValueError`` matching ``expected_match``.
+        """
+        with pytest.raises(ValueError, match=expected_match):
+            bidi._Throttle(access_limit=access_limit, time_window=time_window)
 
-    def test_does_not_delay_entry_attempts_under_threshold(self):
+    def test_does_not_delay_entry_attempts_under_threshold(self, bidi_clock):
+        """Verifies entries within ``access_limit`` proceed with zero delay.
+
+        Enters a 3-per-second throttle 3 times spaced 0.1s apart. Passes when
+        every entry reports a ``0.0`` wait and ``time.sleep`` is never called.
+        """
+        clock, mock_sleep = bidi_clock
         throttle = bidi._Throttle(
             access_limit=3, time_window=datetime.timedelta(seconds=1)
         )
-        entries = []
+        waits = []
 
         for _ in range(3):
             with throttle as time_waited:
-                entry_info = {
-                    "entered_at": datetime.datetime.now(),
-                    "reported_wait": time_waited,
-                }
-                entries.append(entry_info)
+                waits.append(time_waited)
+            clock.advance(0.1)
 
-        # check the reported wait times ...
-        assert all(entry["reported_wait"] == 0.0 for entry in entries)
+        assert waits == [0.0, 0.0, 0.0]
+        mock_sleep.assert_not_called()
 
-        # .. and the actual wait times
-        delta = entries[1]["entered_at"] - entries[0]["entered_at"]
-        assert delta.total_seconds() < 0.1
-        delta = entries[2]["entered_at"] - entries[1]["entered_at"]
-        assert delta.total_seconds() < 0.1
+    @pytest.mark.parametrize(
+        "time_window,second_advance,third_advance,expected_waits,expected_sleeps",
+        [
+            pytest.param(
+                datetime.timedelta(seconds=1),
+                0.4,
+                1.001,
+                [0.0, 0.6, 0.0],
+                [mock.call(0.6)],
+                id="one_second_window",
+            ),
+            pytest.param(
+                datetime.timedelta.resolution,
+                0.0,
+                2e-6,
+                [0.0, 1e-6, 0.0],
+                [mock.call(1e-6)],
+                id="minimum_resolution_window",
+            ),
+        ],
+    )
+    def test_singleton_access_limit(
+        self,
+        bidi_clock,
+        time_window,
+        second_advance,
+        third_advance,
+        expected_waits,
+        expected_sleeps,
+    ):
+        """Verifies minimum valid boundaries (``access_limit=1`` and 1-microsecond window).
 
-    def test_delays_entry_attempts_above_threshold(self):
+        Enters a single-slot throttle 3 times: the 1st enters immediately, the
+        2nd arrives inside ``time_window`` and sleeps for the remaining window,
+        and the 3rd arrives after the window elapses. Passes when reported waits
+        and ``time.sleep`` calls match ``expected_waits`` and ``expected_sleeps``.
+        """
+        clock, mock_sleep = bidi_clock
+        throttle = bidi._Throttle(access_limit=1, time_window=time_window)
+
+        with throttle as first_wait:
+            pass
+        clock.advance(second_advance)
+        with throttle as second_wait:
+            pass
+        clock.advance(third_advance)
+        with throttle as third_wait:
+            pass
+
+        assert [first_wait, second_wait, third_wait] == expected_waits
+        assert mock_sleep.call_args_list == expected_sleeps
+
+    @pytest.mark.parametrize(
+        "burst_offset,expected_waits",
+        [
+            pytest.param(
+                0.999,
+                [0.001, 0.1, 0.1],
+                id="just_inside_window_delays_first_burst_entry",
+            ),
+            pytest.param(
+                1.0,
+                [0.0, 0.1, 0.1],
+                id="exact_window_boundary_waits_for_remaining_two_entries",
+            ),
+            pytest.param(
+                1.001,
+                [0.0, 0.099, 0.1],
+                id="past_window_boundary_evicts_only_oldest_entry",
+            ),
+            pytest.param(
+                2.5,
+                [0.0, 0.0, 0.0],
+                id="well_past_window_evicts_all_past_entries",
+            ),
+        ],
+    )
+    def test_window_expiration_boundary(self, bidi_clock, burst_offset, expected_waits):
+        """Verifies only expired oldest entries are evicted across the 1s boundary.
+
+        Fills a 3-per-second throttle at ``t=0.0s, 0.1s, 0.2s``, jumps the clock
+        to ``burst_offset``, and runs a 3-entry burst. Passes when the burst's
+        reported waits match ``expected_waits`` exactly, proving expired entries
+        are dropped from the oldest end without clearing still-active slots.
+        """
+        clock, _ = bidi_clock
         throttle = bidi._Throttle(
             access_limit=3, time_window=datetime.timedelta(seconds=1)
         )
-        entries = []
+        for offset in (0.0, 0.1, 0.2):
+            clock.set_offset(offset)
+            with throttle:
+                pass
 
-        for _ in range(6):
+        clock.set_offset(burst_offset)
+        burst_waits = []
+        for _ in range(3):
+            with throttle as waited:
+                burst_waits.append(waited)
+
+        assert burst_waits == expected_waits
+
+    def test_delays_entry_attempts_above_threshold(self, bidi_clock):
+        """Verifies throttling once full, including waiting on post-sleep entries.
+
+        Fills a 3-per-second throttle at ``t=0.0s, 0.1s, 0.2s``, then submits 4
+        back-to-back entries starting at ``t=0.3s``:
+        - Entries 3–5 wait ``0.7s, 0.1s, 0.1s`` for ``0.0s, 0.1s, 0.2s`` to expire
+          (entering at ``t=1.0s, 1.1s, 1.2s``).
+        - Entry 6 waits ``0.8s`` for Entry 3's post-sleep timestamp (``t=1.0s``)
+          to expire (entering at ``t=2.0s``).
+
+        Passes when reported waits, actual entry timestamps (``clock.elapsed``),
+        and ``time.sleep`` arguments all match those exact schedules.
+        """
+        clock, mock_sleep = bidi_clock
+        throttle = bidi._Throttle(
+            access_limit=3, time_window=datetime.timedelta(seconds=1)
+        )
+        for _ in range(3):
+            with throttle:
+                pass
+            clock.advance(0.1)
+
+        reported_waits = []
+        entered_offsets = []
+        for _ in range(4):
             with throttle as time_waited:
-                entry_info = {
-                    "entered_at": datetime.datetime.now(),
-                    "reported_wait": time_waited,
-                }
-                entries.append(entry_info)
+                reported_waits.append(time_waited)
+                entered_offsets.append(clock.elapsed)
 
-        # For each group of 4 consecutive entries the time difference between
-        # the first and the last entry must have been greater than time_window,
-        # because a maximum of 3 are allowed in each time_window.
-        for i, entry in enumerate(entries[3:], start=3):
-            first_entry = entries[i - 3]
-            delta = entry["entered_at"] - first_entry["entered_at"]
-            assert delta.total_seconds() > 1.0
+        assert reported_waits == [0.7, 0.1, 0.1, 0.8]
+        assert entered_offsets == [1.0, 1.1, 1.2, 2.0]
+        assert mock_sleep.call_args_list == [
+            mock.call(0.7),
+            mock.call(0.1),
+            mock.call(0.1),
+            mock.call(0.8),
+        ]
 
-        # check the reported wait times
-        # (NOTE: not using assert all(...), b/c the coverage check would complain)
-        for i, entry in enumerate(entries):
-            if i != 3:
-                assert entry["reported_wait"] == 0.0
+    def test_propagates_exception_from_with_block_and_retains_entry(self, bidi_clock):
+        """Verifies exceptions inside ``with throttle:`` propagate and keep the slot.
 
-        # The delayed entry is expected to have been delayed for a significant
-        # chunk of the full second, and the actual and reported delay times
-        # should reflect that.
-        assert entries[3]["reported_wait"] > 0.7
-        delta = entries[3]["entered_at"] - entries[2]["entered_at"]
-        assert delta.total_seconds() > 0.7
+        Raises ``RuntimeError`` inside a 1-per-second throttle, then advances
+        ``0.25s`` and enters again. Passes when ``RuntimeError`` is not
+        suppressed and the follow-up entry still waits the remaining ``0.75s``.
+        """
+        clock, _ = bidi_clock
+        throttle = bidi._Throttle(
+            access_limit=1, time_window=datetime.timedelta(seconds=1)
+        )
+        with pytest.raises(RuntimeError, match=r"^boom$"):
+            with throttle:
+                raise RuntimeError("boom")
+
+        clock.advance(0.25)
+        with throttle as subsequent_wait:
+            pass
+
+        assert subsequent_wait == 0.75
 
 
 class _CallAndFuture(grpc.Call, grpc.Future):
