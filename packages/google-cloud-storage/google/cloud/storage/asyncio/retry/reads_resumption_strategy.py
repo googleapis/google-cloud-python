@@ -15,6 +15,7 @@
 import asyncio
 import collections
 import concurrent.futures
+import functools
 import logging
 import os
 from typing import IO, Any, Dict, List, NamedTuple, Optional
@@ -36,27 +37,52 @@ _BIDI_READ_REDIRECTED_TYPE_URL = (
 logger = logging.getLogger(__name__)
 
 
-def _int_from_env(name: str, default: int) -> int:
-    """Reads an integer tuning knob from the environment; bad values are ignored."""
-    try:
-        return int(os.environ.get(name, default))
-    except ValueError:
-        return default
-
-
-# Chunks at least this large are checksummed on a worker thread instead of the
-# event-loop thread; smaller chunks are hashed inline, and 0 (or any value
-# below 1) hashes every chunk inline. The 1 MiB default matches google_crc32c's
-# GIL-release threshold, so offloaded hashes over ``bytes``-backed chunks
-# (received chunks are) always run with the GIL released.
-_CRC32C_OFFLOAD_MIN_BYTES = _int_from_env(
-    "GCS_PYTHON_CLIENT_CRC32C_OFFLOAD_MIN_BYTES",
-    getattr(google_crc32c, "GIL_RELEASE_THRESHOLD", 1024 * 1024),
-)
-# Upper bound on chunks held for verification per download_ranges() call.
+# Chunks of at least _CRC32C_OFFLOAD_MIN_BYTES can be checksummed on a worker
+# thread instead of the event-loop thread. That helps when the loop thread is
+# the bottleneck and no ``bytes`` copy of each chunk is left on it, so by
+# default only chunks that reach their destination as a ``memoryview`` are
+# offloaded (see _DownloadState.receives_views).
+# GCS_PYTHON_CLIENT_CRC32C_OFFLOAD overrides that: ``1`` (or ``true``, ``yes``,
+# ``on``) offloads every such chunk, and ``0`` (or ``false``, ``no``, ``off``)
+# none. The threshold matches google_crc32c's GIL-release threshold: smaller
+# chunks would hold the GIL on the worker, so they are always hashed inline.
+_CRC32C_OFFLOAD_ENV_VAR = "GCS_PYTHON_CLIENT_CRC32C_OFFLOAD"
+_CRC32C_OFFLOAD_ENABLED_VALUES = ("1", "true", "yes", "on")
+_CRC32C_OFFLOAD_DISABLED_VALUES = ("0", "false", "no", "off")
+_CRC32C_OFFLOAD_MIN_BYTES = getattr(google_crc32c, "GIL_RELEASE_THRESHOLD", 1024 * 1024)
+# Upper bound on chunks held for verification per stream (a download_ranges()
+# call with a MultiStreamConfig pool can hold this many on each of its streams).
 # Chunks are written only once their checksum matches, so this keeps a slow
 # worker from pinning an unbounded number of received messages.
 _CRC32C_MAX_PENDING = 32
+
+
+@functools.lru_cache
+def _parse_crc32c_offload_env(value: str) -> Optional[bool]:
+    """Parses GCS_PYTHON_CLIENT_CRC32C_OFFLOAD; None keeps the default.
+
+    Cached by raw value, so an unrecognized one is logged only once.
+    """
+    normalized = value.strip().lower()
+    if normalized in _CRC32C_OFFLOAD_ENABLED_VALUES:
+        return True
+    if normalized in _CRC32C_OFFLOAD_DISABLED_VALUES:
+        return False
+    if normalized:
+        logger.warning(
+            "Unrecognized boolean value %r for environment variable %s; using the default.",
+            value,
+            _CRC32C_OFFLOAD_ENV_VAR,
+        )
+    return None
+
+
+def _should_offload_crc32c(read_state: "_DownloadState", data: Any) -> bool:
+    """Whether to verify a large chunk on the worker pool instead of inline."""
+    offload = _parse_crc32c_offload_env(os.environ.get(_CRC32C_OFFLOAD_ENV_VAR, ""))
+    if offload is not None:
+        return offload
+    return read_state.receives_views and isinstance(data, memoryview)
 
 
 def _new_crc32c_executor() -> concurrent.futures.ThreadPoolExecutor:
@@ -111,10 +137,14 @@ class _DownloadState:
         user_buffer: IO[bytes],
         is_full_object_read: bool = False,
         enable_checksum: bool = True,
+        receives_views: bool = False,
     ):
         self.initial_offset = initial_offset
         self.initial_length = initial_length
         self.user_buffer = user_buffer
+        # Whether user_buffer takes chunks as received, so a memoryview chunk
+        # reaches it without a bytes copy on the event-loop thread.
+        self.receives_views = receives_views
         self.bytes_written = 0
         # Offset of the next chunk to accept. Runs ahead of
         # initial_offset + bytes_written while received chunks are held for
@@ -214,9 +244,9 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             if checksum_enabled and checksummed_data.HasField("crc32c"):
                 server_checksum = checksummed_data.crc32c
                 if (
-                    _CRC32C_OFFLOAD_MIN_BYTES > 0
-                    and len(data) >= _CRC32C_OFFLOAD_MIN_BYTES
+                    len(data) >= _CRC32C_OFFLOAD_MIN_BYTES
                     and read_state.rolling_checksum is None
+                    and _should_offload_crc32c(read_state, data)
                 ):
                     # Hash off the loop thread; the chunk is written by
                     # verify_pending_checksums() once the checksum matches.
