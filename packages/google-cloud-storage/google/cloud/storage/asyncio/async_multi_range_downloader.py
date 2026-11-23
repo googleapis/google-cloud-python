@@ -729,18 +729,18 @@ class AsyncMultiRangeDownloader:
             )
 
             try:
-                try:
-                    await retry_manager.execute(initial_state, retry_policy)
-                except DataCorruption:
-                    raise
-                except Exception:
-                    # Chunks received before the stream error still have
-                    # in-flight checksum futures in initial_state. Verify them
-                    # before raising the stream error so an earlier corrupt
-                    # chunk raises DataCorruption (matching inline verification)
-                    # and valid chunks already received are written.
-                    await strategy.verify_pending_checksums(initial_state)
-                    raise
+                await retry_manager.execute(initial_state, retry_policy)
+            except DataCorruption:
+                raise
+            except Exception:
+                # Chunks received before the stream error still have
+                # in-flight checksum futures in initial_state. Verify them
+                # before raising the stream error so an earlier corrupt
+                # chunk raises DataCorruption (matching inline verification)
+                # and valid chunks already received are written.
+                await strategy.verify_pending_checksums(initial_state)
+                raise
+            else:
                 await strategy.verify_pending_checksums(initial_state)
             finally:
                 # Drop chunks still held, e.g. after cancellation.
@@ -851,9 +851,12 @@ class AsyncMultiRangeDownloader:
             ``bytes_to_read <= 0``.
         :raises BufferError: if fewer than ``bytes_to_read`` bytes are returned
             for a buffer destination.
-        :raises DataCorruption: if a checksum or byte-count mismatch is detected
-            while reading data. The downloader stays open; the caller may retry
-            the range or close it.
+        :raises DataCorruption: if a checksum, offset, or byte-count mismatch
+            is detected while reading data. The downloader stays open; the
+            caller may retry the range or close it. Data from the failed call
+            may already have been written to its destinations, so reset or
+            replace ``write()`` destinations (e.g. ``seek(0)`` and
+            ``truncate()``) before retrying.
 
         """
 
@@ -899,7 +902,7 @@ class AsyncMultiRangeDownloader:
                         await asyncio.gather(*running, return_exceptions=True)
                         raise
 
-                async def _download_batch(
+                def _release_batch(
                     stream: _PooledStream,
                     batch: List[
                         Tuple[int, int, Union[IO[bytes], bytearray, memoryview]]
@@ -909,17 +912,36 @@ class AsyncMultiRangeDownloader:
                         pool.effective_range_bytes(offset, length, persisted_size)
                         for offset, length, _ in batch
                     )
-                    try:
-                        await self._download_ranges_on_stream(
-                            stream,
-                            batch,
-                            retry_policy,
-                            metadata,
-                            enable_checksum,
-                            accepts_memoryview=accepts_memoryview,
-                        )
-                    finally:
-                        pool.release_stream(stream, len(batch), batch_bytes)
+                    pool.release_stream(stream, len(batch), batch_bytes)
+
+                async def _download_batch(
+                    stream: _PooledStream,
+                    batch: List[
+                        Tuple[int, int, Union[IO[bytes], bytearray, memoryview]]
+                    ],
+                ) -> None:
+                    await self._download_ranges_on_stream(
+                        stream,
+                        batch,
+                        retry_policy,
+                        metadata,
+                        enable_checksum,
+                        accepts_memoryview=accepts_memoryview,
+                    )
+
+                def _start_batch(
+                    stream: _PooledStream,
+                    batch: List[
+                        Tuple[int, int, Union[IO[bytes], bytearray, memoryview]]
+                    ],
+                ) -> asyncio.Task:
+                    # distribute_ranges() already recorded this batch's load on
+                    # the stream. Release it from a done callback, which also
+                    # runs if the task is cancelled before it starts (e.g. when
+                    # a sibling batch raises DataCorruption).
+                    task = asyncio.ensure_future(_download_batch(stream, batch))
+                    task.add_done_callback(lambda _: _release_batch(stream, batch))
+                    return task
 
                 async def _download_overflow() -> None:
                     remaining_overflow = list(overflow)
@@ -944,9 +966,7 @@ class AsyncMultiRangeDownloader:
                                     persisted_size=persisted_size,
                                 )
                                 for s, b in extra_assignments.items():
-                                    overflow_tasks.append(
-                                        asyncio.create_task(_download_batch(s, b))
-                                    )
+                                    overflow_tasks.append(_start_batch(s, b))
 
                         if remaining_overflow and not pool._closed:
                             extra_assignments, _, _ = await pool.distribute_ranges(
@@ -955,9 +975,7 @@ class AsyncMultiRangeDownloader:
                                 persisted_size=persisted_size,
                             )
                             for s, b in extra_assignments.items():
-                                overflow_tasks.append(
-                                    asyncio.create_task(_download_batch(s, b))
-                                )
+                                overflow_tasks.append(_start_batch(s, b))
 
                         await asyncio.gather(*overflow_tasks)
                     except BaseException:
@@ -969,15 +987,19 @@ class AsyncMultiRangeDownloader:
                 assignments, overflow, scale_tasks = await pool.distribute_ranges(
                     read_ranges, persisted_size=persisted_size
                 )
-                tasks = [_download_batch(s, b) for s, b in assignments.items()]
-                if overflow:
-                    tasks.append(_download_overflow())
 
-                # Fast path: await directly to avoid asyncio.gather() Task wrapper overhead
-                # when all ranges fit onto a single stream without overflow.
-                if len(tasks) == 1:
-                    await tasks[0]
-                elif tasks:
+                if len(assignments) == 1 and not overflow:
+                    # Fast path: await directly to avoid the Task wrapper
+                    # overhead when all ranges fit onto a single stream.
+                    ((stream, batch),) = assignments.items()
+                    try:
+                        await _download_batch(stream, batch)
+                    finally:
+                        _release_batch(stream, batch)
+                elif assignments or overflow:
+                    tasks = [_start_batch(s, b) for s, b in assignments.items()]
+                    if overflow:
+                        tasks.append(_download_overflow())
                     await _run_concurrently(tasks)
             else:
                 await self._download_ranges_on_stream(

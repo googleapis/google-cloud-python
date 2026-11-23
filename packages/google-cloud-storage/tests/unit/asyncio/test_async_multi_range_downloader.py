@@ -393,6 +393,8 @@ class TestAsyncMultiRangeDownloader:
 
         assert bytes(buffer) == initial
         assert mock_mrd.is_stream_open
+        mock_mrd.read_obj_str.close.assert_not_awaited()
+        await mock_mrd.close()
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
@@ -501,9 +503,11 @@ class TestAsyncMultiRangeDownloader:
             await mock_mrd.download_ranges([(0, 18, buffer)])
         assert bytes(buffer) == bytes(18)
         assert mock_mrd.is_stream_open
+        mock_mrd.read_obj_str.close.assert_not_awaited()
         # exc_info.tb still references download_ranges' frame here.
         assert exc_info.tb is not None
         buffer.clear()
+        await mock_mrd.close()
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
@@ -2398,7 +2402,6 @@ class TestAsyncMultiRangeDownloader:
         async def side_effect_dl(pooled_stream, batch, *args, **kwargs):
             if pooled_stream.stream is s1:
                 await s2_overflow_started.wait()
-                await mrd.close()
                 raise DataCorruption(None, "checksum mismatch")
             else:
                 s2_overflow_started.set()
@@ -2409,16 +2412,94 @@ class TestAsyncMultiRangeDownloader:
                     raise
 
         # Act & Assert
-        with mock.patch.object(
-            mrd, "_download_ranges_on_stream", side_effect=side_effect_dl
-        ):
-            ranges = [(i * 50, 50, BytesIO()) for i in range(3)]
-            with pytest.raises(DataCorruption, match="checksum mismatch"):
-                await mrd.download_ranges(ranges)
+        try:
+            with mock.patch.object(
+                mrd, "_download_ranges_on_stream", side_effect=side_effect_dl
+            ):
+                ranges = [(i * 50, 50, BytesIO()) for i in range(3)]
+                with pytest.raises(DataCorruption, match="checksum mismatch"):
+                    await mrd.download_ranges(ranges)
 
-        assert overflow_batch_cancelled.is_set()
-        assert mrd.is_stream_open is False
-        assert mrd._pool is None
+            assert overflow_batch_cancelled.is_set()
+            assert mrd.is_stream_open
+            assert mrd._pool is not None
+            for ps in mrd._pool.streams:
+                assert ps.pending_ranges == 0
+                assert ps.pending_bytes == 0
+        finally:
+            await mrd.close()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_releases_load_of_overflow_batch_cancelled_before_start(
+        self, mock_cls_stream
+    ):
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            MultiStreamConfig,
+        )
+
+        loop = asyncio.get_running_loop()
+        s1 = self._make_mock_stream(read_handle=b"h1")
+        s2 = self._make_mock_stream(read_handle=b"h2")
+        s2_open_entered = asyncio.Event()
+        s2_open_gate = loop.create_future()
+
+        async def s2_open(*args, **kwargs):
+            s2_open_entered.set()
+            await s2_open_gate
+
+        s2.open = AsyncMock(side_effect=s2_open)
+        mock_cls_stream.side_effect = [s1, s2]
+
+        config = MultiStreamConfig(
+            min_streams=1, max_streams=2, target_io_depth=1, target_bytes=50
+        )
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(), "b", "o", multi_stream_config=config
+        )
+
+        s1_entered = asyncio.Event()
+        s1_fail_gate = loop.create_future()
+        downloaded_on = []
+
+        async def side_effect_dl(pooled_stream, batch, *args, **kwargs):
+            downloaded_on.append(pooled_stream.stream)
+            s1_entered.set()
+            await s1_fail_gate
+            raise DataCorruption(None, "checksum mismatch")
+
+        distribute = mock.AsyncMock(wraps=mrd._pool.distribute_ranges)
+        try:
+            with (
+                mock.patch.object(
+                    mrd, "_download_ranges_on_stream", side_effect=side_effect_dl
+                ),
+                mock.patch.object(mrd._pool, "distribute_ranges", distribute),
+            ):
+                # r0 fills s1; r1 overflows and waits for s2 to finish opening.
+                task = asyncio.create_task(
+                    mrd.download_ranges([(0, 50, BytesIO()), (50, 50, BytesIO())])
+                )
+                await s1_entered.wait()
+                await s2_open_entered.wait()
+
+                # s1's batch fails right as s2 opens: the overflow batch is
+                # assigned to a stream, then cancelled before it starts.
+                loop.call_soon(s1_fail_gate.set_result, None)
+                s2_open_gate.set_result(None)
+                with pytest.raises(DataCorruption, match="checksum mismatch"):
+                    await task
+
+            assert distribute.await_count == 2  # the overflow batch was assigned
+            assert downloaded_on == [s1]  # ...but never started
+            assert len(mrd._pool.streams) == 2
+            for ps in mrd._pool.streams:
+                assert ps.pending_ranges == 0
+                assert ps.pending_bytes == 0
+        finally:
+            await mrd.close()
 
     @pytest.mark.asyncio
     async def test_stream_pool_contiguous_distribution_when_saturated(self):
@@ -2644,19 +2725,15 @@ class TestAsyncMultiRangeDownloader:
         self, mock_cls_stream, mock_random_int, monkeypatch
     ):
         _accept_memoryview_in_crc32c(monkeypatch)
-        data = b"abcd"
-        corrupt_read_id = 101
-        mock_random_int.side_effect = [corrupt_read_id, 201, 202]
+        corrupt_id, sibling_id, retry_id = 101, 201, 301
+        mock_random_int.side_effect = [corrupt_id, sibling_id, retry_id]
 
         stream = self._make_mock_stream()
         responses: asyncio.Queue = asyncio.Queue()
+        sent_read_ids = []
 
         async def _send(req):
-            for rr in req.read_ranges:
-                crc32c = 0 if rr.read_id == corrupt_read_id else None
-                await responses.put(
-                    _zero_copy_response(data, 0, rr.read_id, True, crc32c=crc32c)
-                )
+            sent_read_ids.extend(rr.read_id for rr in req.read_ranges)
 
         stream.send = AsyncMock(side_effect=_send)
         stream.recv = AsyncMock(side_effect=responses.get)
@@ -2665,19 +2742,39 @@ class TestAsyncMultiRangeDownloader:
         mrd = await AsyncMultiRangeDownloader.create_mrd(
             self._make_mock_client(), _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
         )
+        try:
+            corrupt_buf, sibling_buf = bytearray(8), bytearray(4)
+            corrupt = asyncio.create_task(mrd.download_ranges([(0, 8, corrupt_buf)]))
+            sibling = asyncio.create_task(mrd.download_ranges([(8, 4, sibling_buf)]))
+            while len(sent_read_ids) < 2:
+                await asyncio.sleep(0)
 
-        with pytest.raises(DataCorruption):
-            await mrd.download_ranges([(0, 4, bytearray(4))])
-        assert mrd.is_stream_open
+            # The first chunk of one read fails its checksum while a sibling
+            # read on the same stream is still in flight.
+            responses.put_nowait(
+                _zero_copy_response(b"abcd", 0, corrupt_id, False, crc32c=0)
+            )
+            with pytest.raises(DataCorruption):
+                await corrupt
+            assert not sibling.done()
 
-        buf_b, buf_c = bytearray(4), bytearray(4)
-        await asyncio.gather(
-            mrd.download_ranges([(0, 4, buf_b)]),
-            mrd.download_ranges([(0, 4, buf_c)]),
-        )
-        assert bytes(buf_b) == data
-        assert bytes(buf_c) == data
-        assert mock_cls_stream.call_count == 1
+            # The failed read's remaining chunk still arrives and is dropped.
+            responses.put_nowait(_zero_copy_response(b"efgh", 4, corrupt_id, True))
+            responses.put_nowait(_zero_copy_response(b"ijkl", 8, sibling_id, True))
+            await sibling
+            assert bytes(sibling_buf) == b"ijkl"
+            assert bytes(corrupt_buf) == bytes(8)
 
-        await mrd.close()
+            # The same stream serves a retry of the failed range.
+            retry_buf = bytearray(8)
+            retry = asyncio.create_task(mrd.download_ranges([(0, 8, retry_buf)]))
+            while len(sent_read_ids) < 3:
+                await asyncio.sleep(0)
+            responses.put_nowait(_zero_copy_response(b"abcdefgh", 0, retry_id, True))
+            await retry
+            assert bytes(retry_buf) == b"abcdefgh"
+            assert sent_read_ids == [corrupt_id, sibling_id, retry_id]
+            assert mock_cls_stream.call_count == 1
+        finally:
+            await mrd.close()
         assert not mrd.is_stream_open
