@@ -418,12 +418,12 @@ def _clone_request_options(request_options):
     """Return an independent RequestOptions copy without mutating caller input.
 
     Uses protobuf ``CopyFrom`` and ``RequestOptions.wrap`` directly for
-    proto-plus and raw protobuf inputs to avoid Python ``copy.deepcopy``
-    overhead in ``RequestOptions(mapping)``, while delegating mappings and
-    invalid types to ``RequestOptions(...)`` for standard validation.
+    proto-plus ``RequestOptions`` inputs to avoid Python ``copy.deepcopy``
+    overhead in ``RequestOptions(mapping)``, while delegating dicts, raw
+    protobufs, and invalid types to ``RequestOptions(...)``.
 
     :type request_options: :class:`~google.cloud.spanner_v1.types.RequestOptions`
-        or :class:`dict` or raw ``RequestOptions`` protobuf
+        or :class:`dict`
     :param request_options: Non-``None`` request options to clone.
 
     :rtype: :class:`~google.cloud.spanner_v1.types.RequestOptions`
@@ -432,10 +432,6 @@ def _clone_request_options(request_options):
     if isinstance(request_options, RequestOptions):
         copied_pb = _REQUEST_OPTIONS_PB()
         copied_pb.CopyFrom(RequestOptions.pb(request_options))
-        return RequestOptions.wrap(copied_pb)
-    if isinstance(request_options, _REQUEST_OPTIONS_PB):
-        copied_pb = _REQUEST_OPTIONS_PB()
-        copied_pb.CopyFrom(request_options)
         return RequestOptions.wrap(copied_pb)
     return RequestOptions(request_options)
 
