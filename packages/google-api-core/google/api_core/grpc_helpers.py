@@ -276,68 +276,6 @@ def wrap_errors(callable_):
         return _wrap_unary_errors(callable_)
 
 
-def _create_composite_credentials(
-    credentials=None,
-    credentials_file=None,
-    default_scopes=None,
-    scopes=None,
-    ssl_credentials=None,
-    quota_project_id=None,
-    default_host=None,
-):
-    """Create the composite credentials for secure channels.
-
-    Args:
-        credentials (google.auth.credentials.Credentials): The credentials. If
-            not specified, then this function will attempt to ascertain the
-            credentials from the environment using :func:`google.auth.default`.
-        credentials_file (str): Deprecated. A file with credentials that can be loaded with
-            :func:`google.auth.load_credentials_from_file`. This argument is
-            mutually exclusive with credentials. This argument will be
-            removed in the next major version of `google-api-core`.
-
-            .. warning::
-                Important: If you accept a credential configuration (credential JSON/File/Stream)
-                from an external source for authentication to Google Cloud Platform, you must
-                validate it before providing it to any Google API or client library. Providing an
-                unvalidated credential configuration to Google APIs or libraries can compromise
-                the security of your systems and data. For more information, refer to
-                `Validate credential configurations from external sources`_.
-
-            .. _Validate credential configurations from external sources:
-
-            https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
-        default_scopes (Sequence[str]): A optional list of scopes needed for this
-            service. These are only used when credentials are not specified and
-            are passed to :func:`google.auth.default`.
-        scopes (Sequence[str]): A optional list of scopes needed for this
-            service. These are only used when credentials are not specified and
-            are passed to :func:`google.auth.default`.
-        ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
-            credentials. This can be used to specify different certificates.
-        quota_project_id (str): An optional project to use for billing and quota.
-        default_host (str): The default endpoint. e.g., "pubsub.googleapis.com".
-
-    Returns:
-        grpc.ChannelCredentials: The composed channel credentials object.
-
-    Raises:
-        google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
-    """
-    credentials = _resolve_credentials(
-        credentials=credentials,
-        credentials_file=credentials_file,
-        default_scopes=default_scopes,
-        scopes=scopes,
-        quota_project_id=quota_project_id,
-    )
-    return _compose_channel_credentials(
-        credentials=credentials,
-        ssl_credentials=ssl_credentials,
-        default_host=default_host,
-    )
-
-
 def _resolve_credentials(
     credentials=None,
     credentials_file=None,

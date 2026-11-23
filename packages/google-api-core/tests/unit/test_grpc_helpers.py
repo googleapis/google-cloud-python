@@ -1513,13 +1513,7 @@ def test__is_googleapis_host(target, expected):
     autospec=True,
     return_value=mock.sentinel.Request,
 )
-@mock.patch(
-    "google.auth.default",
-    autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.project),
-)
-def test__create_composite_credentials_and_legacy_auth_metadata_plugin(
-    google_auth_default,
+def test__compose_channel_credentials_legacy_auth_metadata_plugin(
     request_cls,
     auth_metadata_plugin,
     metadata_call_creds,
@@ -1531,12 +1525,11 @@ def test__create_composite_credentials_and_legacy_auth_metadata_plugin(
         plugin_instance,
     ]
 
-    result = grpc_helpers._create_composite_credentials(
-        default_host="pubsub.googleapis.com"
+    result = grpc_helpers._compose_channel_credentials(
+        mock.sentinel.credentials, default_host="pubsub.googleapis.com"
     )
 
     assert result is compute_engine_creds.return_value
-    google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
     assert auth_metadata_plugin.call_count == 2
     auth_metadata_plugin.assert_has_calls(
         [
