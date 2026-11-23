@@ -169,12 +169,12 @@ class GrpcClient(ClientWithProject):
     ):
         """Creates and configures the low-level GAPIC `storage_v2` client."""
         (
-            self._universe_domain,
+            universe_domain,
             host,
             quota_project_id,
             attempt_direct_path,
         ) = _resolve_grpc_config(client_options, attempt_direct_path)
-        _validate_universe_domain(self._universe_domain, credentials)
+        _validate_universe_domain(universe_domain, credentials)
 
         transport_cls = storage_v2.StorageClient.get_transport_class("grpc")
         channel_kwargs = {

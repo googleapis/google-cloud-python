@@ -133,7 +133,7 @@ class AsyncGrpcClient:
         attempt_direct_path=True,
     ):
         (
-            self._universe_domain,
+            universe_domain,
             host,
             quota_project_id,
             attempt_direct_path,
@@ -145,7 +145,7 @@ class AsyncGrpcClient:
             credentials, _ = google.auth.default(
                 default_scopes=transport_cls.AUTH_SCOPES
             )
-        _validate_universe_domain(self._universe_domain, credentials)
+        _validate_universe_domain(universe_domain, credentials)
 
         primary_user_agent = client_info.to_user_agent()
 
