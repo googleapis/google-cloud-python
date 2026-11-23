@@ -1895,6 +1895,35 @@ class TestDatabase(_BaseTest):
             request_options=RequestOptions(request_tag="req-tag"),
         )
 
+    def test_execute_partitioned_dml_does_not_mutate_request_options(self):
+        request_options = RequestOptions(
+            priority=RequestOptions.Priority.PRIORITY_LOW,
+            request_tag="req-tag",
+            transaction_tag="keep-tag",
+        )
+        self._execute_partitioned_dml_helper(
+            dml=DML_W_PARAM,
+            request_options=request_options,
+        )
+        self.assertEqual(request_options.priority, RequestOptions.Priority.PRIORITY_LOW)
+        self.assertEqual(request_options.request_tag, "req-tag")
+        self.assertEqual(request_options.transaction_tag, "keep-tag")
+
+        class _OptionsDict(dict):
+            pass
+
+        dict_options = _OptionsDict(
+            priority=RequestOptions.Priority.PRIORITY_LOW,
+            request_tag="req-tag",
+            transaction_tag="keep-tag",
+        )
+        self._execute_partitioned_dml_helper(
+            dml=DML_W_PARAM,
+            request_options=dict_options,
+        )
+        self.assertEqual(dict_options["transaction_tag"], "keep-tag")
+        self.assertFalse(hasattr(dict_options, "transaction_tag"))
+
     def test_execute_partitioned_dml_wo_params_retry_aborted(self):
         self._execute_partitioned_dml_helper(dml=DML_WO_PARAM, retried=True)
 
