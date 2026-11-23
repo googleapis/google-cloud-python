@@ -410,6 +410,36 @@ def _validate_client_context(client_context):
     return client_context
 
 
+# The protobuf class underlying the proto-plus ``RequestOptions`` wrapper.
+_REQUEST_OPTIONS_PB = RequestOptions.pb()
+
+
+def _clone_request_options(request_options):
+    """Return an independent RequestOptions copy without mutating caller input.
+
+    Uses protobuf ``CopyFrom`` and ``RequestOptions.wrap`` directly for
+    proto-plus and raw protobuf inputs to avoid Python ``copy.deepcopy``
+    overhead in ``RequestOptions(mapping)``, while delegating mappings and
+    invalid types to ``RequestOptions(...)`` for standard validation.
+
+    :type request_options: :class:`~google.cloud.spanner_v1.types.RequestOptions`
+        or :class:`dict` or raw ``RequestOptions`` protobuf
+    :param request_options: Non-``None`` request options to clone.
+
+    :rtype: :class:`~google.cloud.spanner_v1.types.RequestOptions`
+    :returns: A fresh ``RequestOptions`` backed by an independent protobuf.
+    """
+    if isinstance(request_options, RequestOptions):
+        copied_pb = _REQUEST_OPTIONS_PB()
+        copied_pb.CopyFrom(RequestOptions.pb(request_options))
+        return RequestOptions.wrap(copied_pb)
+    if isinstance(request_options, _REQUEST_OPTIONS_PB):
+        copied_pb = _REQUEST_OPTIONS_PB()
+        copied_pb.CopyFrom(request_options)
+        return RequestOptions.wrap(copied_pb)
+    return RequestOptions(request_options)
+
+
 def _merge_request_options(request_options, client_context):
     """Merge RequestOptions and ClientContext without mutating caller input.
 
@@ -441,7 +471,7 @@ def _merge_request_options(request_options, client_context):
     else:
         # Always clone non-None input (RequestOptions, raw protobuf, or dict)
         # so merging client_context or adjusting tags never mutates caller state.
-        request_options = RequestOptions(request_options)
+        request_options = _clone_request_options(request_options)
 
     if client_context:
         request_options.client_context = _merge_client_context(

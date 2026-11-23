@@ -55,6 +55,7 @@ from google.cloud.spanner_v1._async.snapshot import Snapshot, _restart_on_unavai
 from google.cloud.spanner_v1._async.streamed import StreamedResultSet
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
+    _clone_request_options,
     _merge_query_options,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
@@ -925,7 +926,7 @@ class Database(object):
         else:
             # Always clone non-None input so clearing transaction_tag never
             # mutates a caller-provided RequestOptions or dict subclass.
-            request_options = RequestOptions(request_options)
+            request_options = _clone_request_options(request_options)
         request_options.transaction_tag = None
 
         if params is not None:

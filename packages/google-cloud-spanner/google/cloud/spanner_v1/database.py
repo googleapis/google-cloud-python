@@ -46,6 +46,7 @@ from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
+    _clone_request_options,
     _merge_query_options,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
@@ -813,7 +814,7 @@ class Database(object):
         if request_options is None:
             request_options = RequestOptions()
         else:
-            request_options = RequestOptions(request_options)
+            request_options = _clone_request_options(request_options)
         request_options.transaction_tag = None
         if params is not None:
             from google.cloud.spanner_v1.transaction import Transaction

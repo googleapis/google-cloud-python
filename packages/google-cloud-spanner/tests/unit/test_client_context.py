@@ -19,6 +19,7 @@ from unittest import mock
 from google.protobuf import struct_pb2
 
 from google.cloud.spanner_v1._helpers import (
+    _clone_request_options,
     _merge_client_context,
     _merge_request_options,
 )
@@ -859,6 +860,51 @@ class TestClientContext(unittest.TestCase):
         self.assertEqual(shared_options.request_tag, "shared-tag")
         self.assertEqual(shared_options.transaction_tag, "")
         self.assertNotIn("client_context", shared_options)
+
+    def test__clone_request_options(self):
+        orig = RequestOptions(
+            priority=RequestOptions.Priority.PRIORITY_HIGH,
+            request_tag="req-1",
+            transaction_tag="txn-1",
+            client_context=RequestOptions.ClientContext(
+                secure_context={"tenant": struct_pb2.Value(string_value="A")}
+            ),
+        )
+        cloned = _clone_request_options(orig)
+        self.assertIsNot(cloned, orig)
+        self.assertEqual(cloned, orig)
+        cloned.request_tag = "mutated"
+        cloned.transaction_tag = None
+        cloned.client_context.secure_context["tenant"] = struct_pb2.Value(
+            string_value="B"
+        )
+        self.assertEqual(orig.request_tag, "req-1")
+        self.assertEqual(orig.transaction_tag, "txn-1")
+        self.assertEqual(dict(orig.client_context.secure_context), {"tenant": "A"})
+
+        raw_pb = RequestOptions.pb()(
+            priority=RequestOptions.Priority.PRIORITY_MEDIUM,
+            request_tag="raw-1",
+        )
+        cloned_raw = _clone_request_options(raw_pb)
+        self.assertIsInstance(cloned_raw, RequestOptions)
+        self.assertEqual(cloned_raw.priority, RequestOptions.Priority.PRIORITY_MEDIUM)
+        self.assertEqual(cloned_raw.request_tag, "raw-1")
+        cloned_raw.request_tag = "mutated-raw"
+        self.assertEqual(raw_pb.request_tag, "raw-1")
+
+        dict_input = {
+            "priority": RequestOptions.Priority.PRIORITY_LOW,
+            "request_tag": "d",
+        }
+        cloned_dict = _clone_request_options(dict_input)
+        self.assertEqual(cloned_dict.priority, RequestOptions.Priority.PRIORITY_LOW)
+        self.assertEqual(cloned_dict.request_tag, "d")
+        cloned_dict.request_tag = "mutated-dict"
+        self.assertEqual(dict_input["request_tag"], "d")
+
+        with self.assertRaises(TypeError):
+            _clone_request_options(123)
 
 
 if __name__ == "__main__":
