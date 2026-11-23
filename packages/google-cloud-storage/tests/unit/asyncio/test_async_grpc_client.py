@@ -12,16 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 from unittest import mock
 
+import grpc
 import pytest
 from google.api_core import client_info as client_info_lib
-from google.api_core import client_options
+from google.api_core import client_options, exceptions
 from google.auth import credentials as auth_credentials
 from google.auth.credentials import AnonymousCredentials
 
+from google.cloud import _storage_v2
 from google.cloud.storage import __version__
 from google.cloud.storage.asyncio import async_grpc_client
+from google.cloud.storage.asyncio.async_read_object_stream import (
+    _AsyncReadObjectStream,
+)
 
 _EXPECTED_KEEPALIVE_OPTIONS = (
     ("grpc.keepalive_time_ms", 30000),
@@ -650,7 +656,7 @@ class TestAsyncGrpcClient:
         assert mock_create_channel.call_args.kwargs["attempt_direct_path"] is False
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
-    def test_channel_options_send_keepalive_pings(
+    def test_channel_options_include_keepalive(
         self,
         mock_async_storage_client,
     ):
@@ -660,8 +666,116 @@ class TestAsyncGrpcClient:
 
         async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
 
-        options = dict(mock_transport_cls.create_channel.call_args.kwargs["options"])
+        raw_options = mock_transport_cls.create_channel.call_args.kwargs["options"]
+        # gRPC uses the first occurrence of a duplicated key; dict() keeps the last.
+        assert len({key for key, _ in raw_options}) == len(raw_options)
+        options = dict(raw_options)
         assert options["grpc.keepalive_time_ms"] == 30000
         assert options["grpc.keepalive_timeout_ms"] == 20000
         assert options["grpc.http2.ping_timeout_ms"] == 20000
         assert "grpc.keepalive_permit_without_calls" not in options
+
+    @pytest.mark.asyncio
+    async def test_keepalive_fails_blackholed_bidi_stream(self):
+        """A real gRPC channel fails a silently dropped bidi stream instead of hanging.
+
+        gRPC ignores unknown channel option keys, so this catches misspelled
+        keepalive options that a mocked ``create_channel`` cannot.
+        """
+
+        async def bidi_read(request_iterator, context):
+            await request_iterator.__anext__()
+            yield _storage_v2.BidiReadObjectResponse(
+                metadata=_storage_v2.Object(
+                    bucket="projects/_/buckets/b", name="o", generation=1
+                )
+            )
+            await asyncio.Event().wait()  # Keep the stream open.
+
+        server = grpc.aio.server()
+        server.add_generic_rpc_handlers(
+            [
+                grpc.method_handlers_generic_handler(
+                    "google.storage.v2.Storage",
+                    {
+                        "BidiReadObject": grpc.stream_stream_rpc_method_handler(
+                            bidi_read,
+                            request_deserializer=_storage_v2.BidiReadObjectRequest.deserialize,
+                            response_serializer=_storage_v2.BidiReadObjectResponse.serialize,
+                        )
+                    },
+                )
+            ]
+        )
+        backend_port = server.add_insecure_port("127.0.0.1:0")
+        await server.start()
+
+        # TCP relay that keeps both sockets open but drops all bytes once
+        # `blackhole` is set, like a path that silently stops forwarding.
+        blackhole = asyncio.Event()
+        writers = []
+
+        async def pipe(reader, writer):
+            try:
+                while data := await reader.read(65536):
+                    if not blackhole.is_set():
+                        writer.write(data)
+                        await writer.drain()
+            except OSError:
+                pass
+
+        async def on_connect(client_reader, client_writer):
+            backend_reader, backend_writer = await asyncio.open_connection(
+                "127.0.0.1", backend_port
+            )
+            writers.extend([client_writer, backend_writer])
+            await asyncio.gather(
+                pipe(client_reader, backend_writer),
+                pipe(backend_reader, client_writer),
+            )
+
+        relay = await asyncio.start_server(on_connect, "127.0.0.1", 0)
+        relay_port = relay.sockets[0].getsockname()[1]
+        fast_keepalive = (
+            ("grpc.keepalive_time_ms", 100),
+            ("grpc.keepalive_timeout_ms", 100),
+            ("grpc.http2.ping_timeout_ms", 100),
+        )
+
+        def insecure_channel(target, credentials=None, **kwargs):
+            return grpc.aio.insecure_channel(target, options=kwargs.get("options"))
+
+        try:
+            with (
+                mock.patch.object(
+                    async_grpc_client, "_KEEPALIVE_CHANNEL_OPTIONS", fast_keepalive
+                ),
+                mock.patch(
+                    "google.api_core.grpc_helpers_async.create_channel",
+                    side_effect=insecure_channel,
+                ),
+            ):
+                client = async_grpc_client.AsyncGrpcClient(
+                    credentials=_make_credentials(),
+                    client_options=client_options.ClientOptions(
+                        api_endpoint=f"127.0.0.1:{relay_port}"
+                    ),
+                    attempt_direct_path=False,
+                )
+            try:
+                stream = _AsyncReadObjectStream(
+                    client=client.grpc_client, bucket_name="b", object_name="o"
+                )
+                await stream.open()
+                blackhole.set()
+                # Usually fails in ~0.1 s. If a ping was ACKed just before the
+                # blackhole, gRPC waits 1 s before the next ping, so allow ~5x.
+                with pytest.raises(exceptions.ServiceUnavailable):
+                    await asyncio.wait_for(stream.recv(), timeout=5)
+            finally:
+                await client.grpc_client.transport.close()
+        finally:
+            relay.close()
+            for writer in writers:
+                writer.close()
+            await server.stop(0)
