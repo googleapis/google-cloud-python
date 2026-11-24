@@ -191,47 +191,6 @@ class TestInstanceExtra(unittest.IsolatedAsyncioTestCase):
         inst_copy = self.instance.copy()
         self.assertEqual(inst_copy.instance_id, self.instance.instance_id)
 
-    def test_copy_preserves_client_options(self):
-        import os
-
-        from google.auth import credentials as ga_credentials
-
-        from google.cloud.spanner_v1._async.client import Client
-
-        class _UniverseCredentials(ga_credentials.Credentials):
-            def __init__(self, universe):
-                super().__init__()
-                self._universe_domain = universe
-
-            def refresh(self, request):
-                self.token = "token"
-
-        tpc_creds = _UniverseCredentials("tpc.example")
-        with mock.patch.dict(
-            os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "true"}, clear=False
-        ):
-            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
-            os.environ.pop("SPANNER_EMULATOR_HOST", None)
-            client = Client(
-                project="project-id",
-                credentials=tpc_creds,
-                client_options={
-                    "universe_domain": "tpc.example",
-                    "api_endpoint": "spanner.tpc.example:443",
-                },
-            )
-            instance = Instance("instance-id", client)
-            new_instance = instance.copy()
-
-        self.assertIsNot(new_instance._client, client)
-        self.assertEqual(
-            new_instance._client._client_options.universe_domain, "tpc.example"
-        )
-        self.assertEqual(
-            new_instance._client._client_options.api_endpoint,
-            "spanner.tpc.example:443",
-        )
-
     async def test_init_validation(self):
         # coverage for lines 133-137
         from google.api_core.exceptions import InvalidArgument

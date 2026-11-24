@@ -410,7 +410,7 @@ class TestClientExtra(unittest.IsolatedAsyncioTestCase):
 
         from google.cloud.spanner_v1._async import client as MUT
 
-        creds = build_scoped_credentials(universe_domain="async.universe")
+        creds = build_scoped_credentials()
         with (
             mock.patch.dict(
                 os.environ,
@@ -459,7 +459,7 @@ class TestClientExtra(unittest.IsolatedAsyncioTestCase):
 
         from google.cloud.spanner_v1._async import client as MUT
 
-        creds = build_scoped_credentials(universe_domain="async.universe")
+        creds = build_scoped_credentials()
         creds.project_id = "resolved-async-project"
         with (
             mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "false"}),

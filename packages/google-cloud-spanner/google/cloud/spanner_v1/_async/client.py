@@ -76,7 +76,6 @@ from google.cloud.spanner_v1._helpers import (
     _merge_query_options,
     _metadata_with_prefix,
     _validate_client_context,
-    _validate_universe_domain,
 )
 from google.cloud.spanner_v1.gapic_version import __version__
 from google.cloud.spanner_v1.metrics.constants import METRIC_EXPORT_INTERVAL_MS
@@ -431,10 +430,6 @@ class Client(ClientWithProject):
             client_options=client_options,
             _http=None,
         )
-        # Enforce credential-vs-universe validation before starting background
-        # metrics export because generated GAPIC stubs skip this check.
-        if not self._emulator_host and self._instance_type != "omni":
-            _validate_universe_domain(self._client_options, self._credentials)
         self._client_info = client_info
 
         env_query_options = ExecuteSqlRequest.QueryOptions(

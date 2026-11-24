@@ -93,47 +93,6 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertEqual(instance.labels, self.LABELS)
 
-    def test_copy_preserves_client_options(self):
-        import os
-
-        from google.auth import credentials as ga_credentials
-
-        from google.cloud.spanner_v1.client import Client
-
-        class _UniverseCredentials(ga_credentials.Credentials):
-            def __init__(self, universe):
-                super().__init__()
-                self._universe_domain = universe
-
-            def refresh(self, request):
-                self.token = "token"
-
-        tpc_creds = _UniverseCredentials("tpc.example")
-        with mock.patch.dict(
-            os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "true"}, clear=False
-        ):
-            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
-            os.environ.pop("SPANNER_EMULATOR_HOST", None)
-            client = Client(
-                project=self.PROJECT,
-                credentials=tpc_creds,
-                client_options={
-                    "universe_domain": "tpc.example",
-                    "api_endpoint": "spanner.tpc.example:443",
-                },
-            )
-            instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
-            new_instance = instance.copy()
-
-        self.assertIsNot(new_instance._client, client)
-        self.assertEqual(
-            new_instance._client._client_options.universe_domain, "tpc.example"
-        )
-        self.assertEqual(
-            new_instance._client._client_options.api_endpoint,
-            "spanner.tpc.example:443",
-        )
-
     def test_copy(self):
         DISPLAY_NAME = "display_name"
 

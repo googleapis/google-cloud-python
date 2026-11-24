@@ -28,11 +28,8 @@ import time
 import uuid
 
 import proto
-from google.api_core import client_options as client_options_lib
 from google.api_core import datetime_helpers
-from google.api_core import universe as api_core_universe
 from google.api_core.exceptions import Aborted
-from google.auth.credentials import AnonymousCredentials
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import DecodeError, Message
 from google.protobuf.struct_pb2 import NULL_VALUE, ListValue, Value
@@ -1539,35 +1536,3 @@ def _drain_stream(iterator):
     while consuming trailing gRPC metadata so the stream terminates cleanly with status OK.
     """
     _GLOBAL_STREAM_DRAINER.drain(iterator)
-
-
-def _validate_universe_domain(client_options, credentials) -> None:
-    """Validate that credentials belong to the configured universe domain.
-
-    Normalizes ``dict`` ``client_options`` once at ingress, resolves the client
-    universe domain (``client_options.universe_domain`` ->
-    ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` -> ``"googleapis.com"``), and verifies
-    compatibility via :func:`google.api_core.universe.compare_domains`.
-
-    Skips validation when ``credentials`` is ``None`` or
-    :class:`~google.auth.credentials.AnonymousCredentials`.
-
-    Args:
-        client_options: ``ClientOptions``, ``dict``, or ``None``.
-        credentials: Resolved credential instance or ``None``.
-
-    Raises:
-        google.api_core.universe.EmptyUniverseError: If the configured universe
-            domain is an empty or whitespace-only string.
-        google.api_core.universe.UniverseMismatchError: If the credential's
-            universe domain does not match the configured universe domain.
-    """
-    if credentials is None or isinstance(credentials, AnonymousCredentials):
-        return
-    if isinstance(client_options, dict):
-        client_options = client_options_lib.from_dict(client_options)
-    client_universe = api_core_universe.determine_domain(
-        getattr(client_options, "universe_domain", None),
-        os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
-    )
-    api_core_universe.compare_domains(client_universe, credentials)
