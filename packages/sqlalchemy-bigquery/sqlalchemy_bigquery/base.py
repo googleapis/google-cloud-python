@@ -1411,26 +1411,25 @@ class BigQueryDialect(DefaultDialect):
         self.dataset_id = dataset_id
         self.billing_project_id = self.billing_project_id or self.project_id
 
-        default_query_job_config = self.create_job_config(provided_job_config)
-
         if user_supplied_client:
             # The user is expected to supply a client with
             # create_engine('...', connect_args={'client': bq_client})
             return ([], {})
-        else:
-            client = _helpers.create_bigquery_client(
-                credentials_path=self.credentials_path,
-                credentials_info=self.credentials_info,
-                credentials_base64=self.credentials_base64,
-                project_id=self.billing_project_id,
-                location=self.location,
-                default_query_job_config=default_query_job_config,
-            )
-            # If the user specified `bigquery://` we need to set the project_id
-            # from the client
-            self.project_id = self.project_id or client.project
-            self.billing_project_id = self.billing_project_id or client.project
-            return ([], {"client": client})
+
+        client = _helpers.create_bigquery_client(
+            credentials_path=self.credentials_path,
+            credentials_info=self.credentials_info,
+            credentials_base64=self.credentials_base64,
+            project_id=self.billing_project_id,
+            location=self.location,
+        )
+        # If the user specified `bigquery://` or `bigquery:///dataset` we need
+        # to set the project_id from the client before constructing the job
+        # config, so explicit credentials take precedence over ambient ADC.
+        self.project_id = self.project_id or client.project
+        self.billing_project_id = self.billing_project_id or client.project
+        client.default_query_job_config = self.create_job_config(provided_job_config)
+        return ([], {"client": client})
 
     @classmethod
     def engine_created(cls, engine):
