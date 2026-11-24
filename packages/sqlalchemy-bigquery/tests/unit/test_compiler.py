@@ -21,6 +21,7 @@ import pytest
 import sqlalchemy.exc
 from sqlalchemy.sql.functions import cube, grouping_sets, rollup
 
+import sqlalchemy_bigquery
 from sqlalchemy_bigquery import SafeCast, safe_cast
 
 from .conftest import setup_table, sqlalchemy_2_0_or_higher, sqlalchemy_before_2_0
@@ -832,15 +833,15 @@ def test_json_getitem_direct_operator_edge_cases(faux_conn, json_events_table):
 
 
 def test_identifier_preparer_escape_unescape():
-    import sqlalchemy_bigquery
-
     dialect_pyformat = sqlalchemy_bigquery.BigQueryDialect(paramstyle="pyformat")
     prep_pyformat = dialect_pyformat.identifier_preparer
+
     assert prep_pyformat.quote_identifier("a`b\\c%d") == "`a\\`b\\\\c%%d`"
     assert prep_pyformat._unescape_identifier("a\\`b\\\\c") == "a`b\\c"
 
     dialect_named = sqlalchemy_bigquery.BigQueryDialect(paramstyle="named")
     prep_named = dialect_named.identifier_preparer
+
     assert prep_named.quote_identifier("a`b\\c%d") == "`a\\`b\\\\c%d`"
     assert prep_named.quote_identifier("sales`2026") == "`sales\\`2026`"
     assert prep_named.quote_identifier("folder\\") == "`folder\\\\`"
@@ -856,6 +857,7 @@ def test_identifier_preparer_escape_unescape():
         'a"b',
     ):
         escaped = prep_named._escape_identifier(raw)
+
         assert prep_named._unescape_identifier(escaped) == raw
 
 
@@ -871,9 +873,8 @@ _CONTROL_CHARACTER_IDENTIFIERS = [
 
 @pytest.mark.parametrize("bad_ident", _CONTROL_CHARACTER_IDENTIFIERS)
 def test_quote_identifier_rejects_control_characters(bad_ident):
-    import sqlalchemy_bigquery
-
     prep = sqlalchemy_bigquery.BigQueryDialect().identifier_preparer
+
     with pytest.raises(
         sqlalchemy.exc.CompileError,
         match="Identifier cannot contain control characters",
@@ -883,9 +884,8 @@ def test_quote_identifier_rejects_control_characters(bad_ident):
 
 @pytest.mark.parametrize("bad_ident", _CONTROL_CHARACTER_IDENTIFIERS)
 def test_quote_column_rejects_control_characters(bad_ident):
-    import sqlalchemy_bigquery
-
     prep = sqlalchemy_bigquery.BigQueryDialect().identifier_preparer
+
     with pytest.raises(
         sqlalchemy.exc.CompileError,
         match="Identifier cannot contain control characters",
@@ -895,9 +895,8 @@ def test_quote_column_rejects_control_characters(bad_ident):
 
 @pytest.mark.parametrize("bad_ident", _CONTROL_CHARACTER_IDENTIFIERS)
 def test_select_column_compile_rejects_control_characters(bad_ident):
-    import sqlalchemy_bigquery
-
     dialect = sqlalchemy_bigquery.BigQueryDialect()
+
     with pytest.raises(
         sqlalchemy.exc.CompileError,
         match="Identifier cannot contain control characters",
@@ -917,23 +916,20 @@ def test_select_column_compile_rejects_control_characters(bad_ident):
     ],
 )
 def test_identifier_preparer_format_label(paramstyle, label_name, expected):
-    import sqlalchemy_bigquery
-
     prep = sqlalchemy_bigquery.BigQueryDialect(
         paramstyle=paramstyle
     ).identifier_preparer
-    assert (
-        prep.format_label(sqlalchemy.literal_column("1").label(label_name)) == expected
-    )
+
+    formatted = prep.format_label(sqlalchemy.literal_column("1").label(label_name))
+
+    assert formatted == expected
 
 
 def test_select_label_compile_sanitizes_backtick():
-    import sqlalchemy_bigquery
-
     dialect = sqlalchemy_bigquery.BigQueryDialect(paramstyle="pyformat")
-    assert (
-        sqlalchemy.select(sqlalchemy.literal_column("1").label("foo`bar #baz"))
-        .compile(dialect=dialect)
-        .string
-        == "SELECT 1 AS `foo_bar #baz`"
-    )
+
+    compiled = sqlalchemy.select(
+        sqlalchemy.literal_column("1").label("foo`bar #baz")
+    ).compile(dialect=dialect)
+
+    assert compiled.string == "SELECT 1 AS `foo_bar #baz`"
