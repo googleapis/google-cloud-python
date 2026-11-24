@@ -7,8 +7,10 @@
 import base64
 import json
 import os
+import urllib.parse
 
 import pytest
+import sqlalchemy
 
 
 @pytest.fixture(scope="session")
@@ -104,6 +106,19 @@ def test_create_bigquery_client_with_credentials_base64_respects_project(
         project_id="connection-url-project",
     )
     assert bqclient.project == "connection-url-project"
+
+
+def test_engine_with_credentials_base64_in_url(credentials_base64):
+    engine = sqlalchemy.create_engine(
+        "bigquery:///?credentials_base64="
+        + urllib.parse.quote(credentials_base64, safe="")
+    )
+
+    # Comparing inside the assert would print the real key into the test logs.
+    hides_key = repr(engine) == "Engine(bigquery:///?credentials_base64=%2A%2A%2A)"
+    assert hides_key, "repr(engine) doesn't hide credentials_base64"
+    with engine.connect() as connection:
+        assert connection.execute(sqlalchemy.text("SELECT 1")).scalar() == 1
 
 
 def test_create_bigquery_client_with_user_agent(module_under_test):

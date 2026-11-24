@@ -209,7 +209,7 @@ Note that specifying a default dataset doesn't restrict execution of queries to 
 Connection String Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are many situations where you can't call ``create_engine`` directly, such as when using tools like `Flask SQLAlchemy <http://flask-sqlalchemy.pocoo.org/2.3/>`_. For situations like these, or for situations where you want the ``Client`` to have a `default_query_job_config <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client>`_, you can pass many arguments in the query of the connection string.
+There are many situations where you can't call ``create_engine`` directly, such as when using tools like `Flask SQLAlchemy <https://flask-sqlalchemy.palletsprojects.com/>`_. For situations like these, or for situations where you want the ``Client`` to have a `default_query_job_config <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client>`_, you can pass many arguments in the query of the connection string.
 
 The ``credentials_path``, ``credentials_info``, ``credentials_base64``, ``location``, ``arraysize`` and ``list_tables_page_size`` parameters are used by this library, and the rest are used to create a `QueryJobConfig <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.job.QueryJobConfig.html#google.cloud.bigquery.job.QueryJobConfig>`_
 
@@ -240,6 +240,10 @@ Here are examples of all the supported arguments. Any not present are either for
 
 In cases where you wish to include the full credentials in the connection URI you can base64 the credentials JSON file and supply the encoded string to the ``credentials_base64`` parameter.
 
+.. warning::
+
+    The ``credentials_base64`` parameter puts your service account's private key in the connection string. ``sqlalchemy-bigquery`` hides the key wherever SQLAlchemy hides the password of the engine's URL, such as in ``repr(engine)``. It can't hide the connection string itself, so a configuration file, an environment variable, a log message or any other URL parsed from that string still exposes the key. Where you can, use `Application Default Credentials <https://cloud.google.com/docs/authentication/application-default-credentials>`_ instead, or pass ``credentials_path`` or ``credentials_info`` to ``create_engine()`` as shown under Authentication.
+
 .. code-block:: python
 
     engine = create_engine(
@@ -263,7 +267,7 @@ In cases where you wish to include the full credentials in the connection URI yo
 
 To create the base64 encoded string you can use the command line tool ``base64``, or ``openssl base64``, or ``python -m base64``.
 
-Alternatively, you can use an online generator like `www.base64encode.org <https://www.base64encode.org>_` to paste your credentials JSON file to be encoded.
+Don't use a website to encode the file: the file contains your service account's private key.
 
 
 Supplying Your Own BigQuery Client

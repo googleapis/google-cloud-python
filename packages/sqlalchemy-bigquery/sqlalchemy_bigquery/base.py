@@ -45,6 +45,7 @@ from google.cloud.bigquery.table import (
 from sqlalchemy import util
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
+from sqlalchemy.engine.url import URL
 from sqlalchemy.exc import NoSuchColumnError, NoSuchTableError
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql import elements, selectable
@@ -1255,6 +1256,33 @@ class BQArray(sqlalchemy.sql.sqltypes.ARRAY):
         return process_array_literal
 
 
+class _CredentialsHidingURL(URL):
+    """A URL that also hides ``credentials_base64`` when it hides the password."""
+
+    __slots__ = ()
+
+    def render_as_string(self, hide_password=True):
+        url = self
+        if hide_password and "credentials_base64" in self.query:
+            url = self.update_query_dict({"credentials_base64": "***"})
+        return URL.render_as_string(url, hide_password=hide_password)
+
+    def difference_update_query(self, names):
+        # The base method returns a plain URL, which would show the key again.
+        url = URL.difference_update_query(self, names)
+        return url if url is self else type(self).create(*url)
+
+    def __hash__(self):
+        # This URL equals a plain URL with the same fields, so it must hash the
+        # same, and the masked string from render_as_string() would not.
+        return hash(URL.create(*self))
+
+    def __reduce__(self):
+        # SQLAlchemy 1.4 unpickles every URL as a plain URL, which would show
+        # the key again.
+        return (type(self).create, tuple(self))
+
+
 class BigQueryDialect(DefaultDialect):
     name = "bigquery"
     driver = "bigquery"
@@ -1403,6 +1431,14 @@ class BigQueryDialect(DefaultDialect):
             self.project_id = self.project_id or client.project
             self.billing_project_id = self.billing_project_id or client.project
             return ([], {"client": client})
+
+    @classmethod
+    def engine_created(cls, engine):
+        super(BigQueryDialect, cls).engine_created(engine)
+        # SQLAlchemy hides only the password when it prints a URL, and this
+        # parameter holds a whole service account key.
+        if "credentials_base64" in engine.url.query:
+            engine.url = _CredentialsHidingURL.create(*engine.url)
 
     def _get_table_or_view_names(self, connection, item_types, schema=None):
         current_schema = schema or self.dataset_id
