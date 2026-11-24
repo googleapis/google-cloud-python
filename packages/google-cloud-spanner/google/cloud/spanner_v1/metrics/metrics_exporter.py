@@ -40,6 +40,7 @@ from google.auth import credentials as ga_credentials
 # pylint: disable=no-name-in-module
 from google.protobuf.timestamp_pb2 import Timestamp
 
+from google.cloud.spanner_v1._helpers import _validate_universe_domain
 from google.cloud.spanner_v1.gapic_version import __version__
 
 from .constants import (
@@ -144,8 +145,13 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         if client is not None:
             self.client = client
         else:
-            # Re-scope credentials pinned to Spanner-only scopes for Cloud Monitoring.
+            # Validate explicit credentials before re-scoping or opening a
+            # transport because MetricServiceClient's generated stub is a no-op.
             monitoring_credentials = credentials
+            if monitoring_credentials is not None:
+                _validate_universe_domain(client_options, monitoring_credentials)
+
+            # Re-scope credentials pinned to Spanner-only scopes for Cloud Monitoring.
             if (
                 isinstance(credentials, ga_credentials.Scoped)
                 and not credentials.requires_scopes
@@ -156,7 +162,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
                 )
 
             # Pass transport/channel callables so MetricServiceClient resolves
-            # universe_domain and validates credentials while keeping _OPTIONS.
+            # universe_domain while keeping _OPTIONS.
             self.client = MetricServiceClient(
                 credentials=monitoring_credentials,
                 client_options=client_options,
@@ -167,6 +173,19 @@ class CloudMonitoringMetricsExporter(MetricExporter):
                     ),
                 ),
             )
+
+            # Validate credentials resolved by MetricServiceClient (ADC or
+            # credentials_file) and close the transport on mismatch to avoid
+            # leaking a gRPC channel.
+            if monitoring_credentials is None:
+                resolved_credentials = getattr(
+                    getattr(self.client, "transport", None), "_credentials", None
+                )
+                try:
+                    _validate_universe_domain(client_options, resolved_credentials)
+                except Exception:
+                    self.client.transport.close()
+                    raise
 
         # Avoid ambient ADC project fallback when explicit credentials are provided.
         if not project_id:

@@ -27,6 +27,7 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner_v1.database.Database`
 """
 
+import copy
 import logging
 import os
 import threading
@@ -60,6 +61,7 @@ from google.cloud.spanner_v1._helpers import (
     _merge_query_options,
     _metadata_with_prefix,
     _validate_client_context,
+    _validate_universe_domain,
 )
 from google.cloud.spanner_v1.gapic_version import __version__
 from google.cloud.spanner_v1.instance import Instance
@@ -378,6 +380,8 @@ class Client(ClientWithProject):
             client_options=client_options,
             _http=None,
         )
+        if not self._emulator_host and self._instance_type != "omni":
+            _validate_universe_domain(self._client_options, self._credentials)
         self._client_info = client_info
         env_query_options = ExecuteSqlRequest.QueryOptions(
             optimizer_version=_get_spanner_optimizer_version(),
@@ -593,12 +597,43 @@ class Client(ClientWithProject):
     def copy(self):
         """Make a copy of this client.
 
-        Copies the local data stored as simple types but does not copy the
-        current state of any open connections with the Cloud Bigtable API.
+        Copies local client configuration (including ``client_options``,
+        ``client_info``, ``instance_type``, and TLS settings) without copying
+        open RPC connections. Clears ``credentials_file`` and ``api_key`` on
+        the copied ``client_options`` because resolved credentials are passed
+        directly.
 
         :rtype: :class:`.Client`
         :returns: A copy of the current client."""
-        return self.__class__(project=self.project, credentials=self._credentials)
+        if not self._client_options:
+            client_options = None
+        elif isinstance(self._client_options, dict):
+            client_options = google.api_core.client_options.from_dict(
+                self._client_options
+            )
+        else:
+            client_options = copy.copy(self._client_options)
+        if client_options is not None:
+            client_options.credentials_file = None
+            client_options.api_key = None
+        if self._instance_type == "omni":
+            if client_options is None:
+                client_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=self._host
+                )
+            elif not client_options.api_endpoint:
+                client_options.api_endpoint = self._host
+        return self.__class__(
+            project=self.project,
+            credentials=self._credentials,
+            client_info=self._client_info,
+            client_options=client_options,
+            instance_type=self._instance_type,
+            use_plain_text=self._use_plain_text,
+            ca_certificate=self._ca_certificate,
+            client_certificate=self._client_certificate,
+            client_key=self._client_key,
+        )
 
     def list_instance_configs(self, page_size=None):
         """List available instance configurations for the client's project.

@@ -625,6 +625,291 @@ class TestClient(unittest.TestCase):
         self.assertIs(new_client._credentials, client._credentials)
         self.assertEqual(new_client.project, client.project)
 
+    def _make_universe_credentials(self, universe_domain="googleapis.com"):
+        from google.auth import credentials as ga_credentials
+
+        class _UniverseCredentials(ga_credentials.Credentials):
+            def __init__(self, universe):
+                super().__init__()
+                self._universe_domain = universe
+
+            def refresh(self, request):
+                self.token = "token"
+
+            def with_quota_project(self, quota_project_id):
+                return self
+
+        return _UniverseCredentials(universe_domain)
+
+    def test_constructor_universe_mismatch_raises_before_metrics(self):
+        from google.api_core.universe import UniverseMismatchError
+
+        from google.cloud.spanner_v1 import client as MUT
+
+        tpc_creds = self._make_universe_credentials("tpc.example")
+        for client_options in (None, {}, {"universe_domain": "googleapis.com"}):
+            with (
+                mock.patch.dict(
+                    os.environ,
+                    {"SPANNER_DISABLE_BUILTIN_METRICS": "false"},
+                    clear=False,
+                ),
+                mock.patch.object(MUT, "_initialize_metrics") as mock_init_metrics,
+            ):
+                os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+                os.environ.pop("SPANNER_EMULATOR_HOST", None)
+                with self.assertRaises(UniverseMismatchError):
+                    self._make_one(
+                        project=self.PROJECT,
+                        credentials=tpc_creds,
+                        client_options=client_options,
+                    )
+                mock_init_metrics.assert_not_called()
+
+    def test_constructor_empty_universe_domain_and_precedence(self):
+        from google.api_core.universe import EmptyUniverseError
+
+        gdu_creds = self._make_universe_credentials("googleapis.com")
+        tpc_creds = self._make_universe_credentials("tpc.example")
+
+        for blank in ("", "   "):
+            with mock.patch.dict(os.environ, {}, clear=False):
+                os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+                os.environ.pop("SPANNER_EMULATOR_HOST", None)
+                with self.assertRaises(EmptyUniverseError):
+                    self._make_one(
+                        project=self.PROJECT,
+                        credentials=gdu_creds,
+                        client_options={"universe_domain": blank},
+                    )
+
+            with mock.patch.dict(
+                os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": blank}, clear=False
+            ):
+                os.environ.pop("SPANNER_EMULATOR_HOST", None)
+                with self.assertRaises(EmptyUniverseError):
+                    self._make_one(
+                        project=self.PROJECT,
+                        credentials=gdu_creds,
+                    )
+
+        # client_options.universe_domain takes precedence over env var.
+        with mock.patch.dict(
+            os.environ,
+            {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "other.example"},
+            clear=False,
+        ):
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            client = self._make_one(
+                project=self.PROJECT,
+                credentials=tpc_creds,
+                client_options={"universe_domain": "tpc.example"},
+            )
+            self.assertEqual(client._client_options.universe_domain, "tpc.example")
+
+    def test_constructor_universe_match_adc_and_api_endpoint_only(self):
+        from google.api_core.universe import UniverseMismatchError
+
+        tpc_creds = self._make_universe_credentials("tpc.example")
+
+        # Matching client_options.universe_domain succeeds.
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            client = self._make_one(
+                project=self.PROJECT,
+                credentials=tpc_creds,
+                client_options={"universe_domain": "tpc.example"},
+            )
+            self.assertEqual(client._client_options.universe_domain, "tpc.example")
+
+        # Matching GOOGLE_CLOUD_UNIVERSE_DOMAIN env var succeeds.
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "tpc.example"}, clear=False
+        ):
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            client = self._make_one(project=self.PROJECT, credentials=tpc_creds)
+            self.assertEqual(client.project, self.PROJECT)
+
+        # ADC (credentials=None) mismatch raises UniverseMismatchError.
+        with (
+            mock.patch.dict(os.environ, {}, clear=False),
+            mock.patch("google.auth.default", return_value=(tpc_creds, self.PROJECT)),
+        ):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            with self.assertRaises(UniverseMismatchError):
+                self._make_one(project=self.PROJECT)
+
+        # api_endpoint-only TPC client without universe_domain fails closed.
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            with self.assertRaises(UniverseMismatchError):
+                self._make_one(
+                    project=self.PROJECT,
+                    credentials=tpc_creds,
+                    client_options={"api_endpoint": "spanner.tpc.example"},
+                )
+
+    def test_constructor_skips_universe_validation_for_emulator_omni_anonymous(self):
+        from google.api_core.universe import UniverseMismatchError
+
+        from google.cloud.spanner_v1.client import InstanceType
+
+        gdu_creds = self._make_universe_credentials("googleapis.com")
+        # Contrast: without emulator/Omni/Anonymous, the same mismatched env fails closed.
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "tpc.example"}, clear=False
+        ):
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            with self.assertRaises(UniverseMismatchError):
+                self._make_one(project=self.PROJECT, credentials=gdu_creds)
+        with mock.patch.dict(
+            os.environ,
+            {
+                "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "tpc.example",
+                "SPANNER_EMULATOR_HOST": "localhost:9010",
+            },
+            clear=False,
+        ):
+            emu_client = self._make_one(project=self.PROJECT, credentials=gdu_creds)
+            self.assertEqual(emu_client._emulator_host, "localhost:9010")
+
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "tpc.example"}, clear=False
+        ):
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            omni_client = self._make_one(
+                project=self.PROJECT,
+                client_options={"api_endpoint": "omni.host:15000"},
+                instance_type=InstanceType.OMNI,
+                use_plain_text=True,
+            )
+            self.assertEqual(omni_client._host, "omni.host:15000")
+
+            anon_client = self._make_one(
+                project=self.PROJECT,
+                credentials=AnonymousCredentials(),
+                client_options={"api_endpoint": "localhost:9010"},
+            )
+            self.assertEqual(anon_client._emulator_host, "localhost:9010")
+
+    def test_copy_preserves_client_options_and_tls_without_mutating_original(self):
+        from google.api_core.client_options import ClientOptions
+        from google.api_core.gapic_v1 import client_info as client_info_lib
+
+        tpc_creds = self._make_universe_credentials("tpc.example")
+        custom_info = client_info_lib.ClientInfo(user_agent="custom-agent/1.0")
+        orig_options = ClientOptions(
+            universe_domain="tpc.example",
+            api_endpoint="spanner.tpc.example:443",
+            quota_project_id="quota-proj",
+        )
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            client = self._make_one(
+                project=self.PROJECT,
+                credentials=tpc_creds,
+                client_info=custom_info,
+                client_options=orig_options,
+                use_plain_text=True,
+                ca_certificate="/tmp/ca.pem",
+                client_certificate="/tmp/cert.pem",
+                client_key="/tmp/key.pem",
+            )
+            copied = client.copy()
+
+        self.assertIsNot(copied, client)
+        self.assertIsNot(copied._client_options, orig_options)
+        self.assertEqual(copied._client_options.universe_domain, "tpc.example")
+        self.assertEqual(copied._client_options.api_endpoint, "spanner.tpc.example:443")
+        self.assertEqual(copied._host, "spanner.tpc.example:443")
+        self.assertIs(copied._client_info, custom_info)
+        self.assertTrue(copied._use_plain_text)
+        self.assertEqual(copied._ca_certificate, "/tmp/ca.pem")
+        self.assertEqual(copied._client_certificate, "/tmp/cert.pem")
+        self.assertEqual(copied._client_key, "/tmp/key.pem")
+
+        # Empty dict client_options copies cleanly without error.
+        gdu_creds = self._make_universe_credentials("googleapis.com")
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            empty_opt_client = self._make_one(
+                project=self.PROJECT, credentials=gdu_creds, client_options={}
+            )
+            copied_empty = empty_opt_client.copy()
+            self.assertIsNone(copied_empty._client_options)
+
+    def test_copy_clears_credential_options_and_handles_omni_and_anonymous(self):
+        import warnings
+
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_v1.client import InstanceType
+
+        gdu_creds = self._make_universe_credentials("googleapis.com")
+        with (
+            mock.patch.dict(os.environ, {}, clear=False),
+            mock.patch(
+                "google.auth.load_credentials_from_file",
+                return_value=(gdu_creds, self.PROJECT),
+            ),
+        ):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            file_options = ClientOptions(
+                credentials_file="/tmp/fake-creds.json",
+                api_endpoint="spanner.custom.example",
+            )
+            client_from_file = self._make_one(
+                project=self.PROJECT, client_options=file_options
+            )
+            copied_file = client_from_file.copy()
+            self.assertIsNone(copied_file._client_options.credentials_file)
+            self.assertEqual(file_options.credentials_file, "/tmp/fake-creds.json")
+            self.assertEqual(copied_file._host, "spanner.custom.example")
+
+        # api_key in client_options is cleared on copy to avoid DuplicateCredentialArgs.
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            api_key_options = ClientOptions(
+                api_key="test-api-key",
+                api_endpoint="spanner.custom.example",
+            )
+            client_api_key = self._make_one(
+                project=self.PROJECT, client_options=api_key_options
+            )
+            copied_api_key = client_api_key.copy()
+            self.assertIsNone(copied_api_key._client_options.api_key)
+            self.assertEqual(api_key_options.api_key, "test-api-key")
+
+        # Omni via deprecated experimental_host (with _client_options=None) copies cleanly.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            omni_client = self._make_one(
+                project=self.PROJECT,
+                experimental_host="omni.host:15000",
+                use_plain_text=True,
+            )
+        copied_omni = omni_client.copy()
+        self.assertEqual(copied_omni.instance_type, InstanceType.OMNI)
+        self.assertEqual(copied_omni._host, "omni.host:15000")
+        self.assertTrue(copied_omni._use_plain_text)
+
+        # AnonymousCredentials + api_endpoint copies without AttributeError.
+        anon_client = self._make_one(
+            project=self.PROJECT,
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "localhost:9010"},
+        )
+        copied_anon = anon_client.copy()
+        self.assertEqual(copied_anon._emulator_host, "localhost:9010")
+        self.assertEqual(copied_anon._host, "localhost:9010")
+
     def test_credentials_property(self):
         credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
