@@ -1004,12 +1004,12 @@ class TestIDTokenCredentials(object):
             "googleapis.com", FAKE_UNIVERSE_DOMAIN
         )
 
-        default = credentials.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+        default = non_default.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
         assert default.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert default._use_iam_endpoint is False
         assert default._iam_id_token_endpoint == iam._IAM_IDTOKEN_ENDPOINT
 
-        normalized = credentials.with_universe_domain(None)
+        normalized = non_default.with_universe_domain(None)
         assert normalized.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert normalized._use_iam_endpoint is False
         assert normalized._iam_id_token_endpoint == iam._IAM_IDTOKEN_ENDPOINT

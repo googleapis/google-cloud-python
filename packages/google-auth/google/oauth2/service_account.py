@@ -825,8 +825,9 @@ class IDTokenCredentials(
             "googleapis.com", cred._universe_domain
         )
         # Non-default universe domains require the IAM generateIdToken endpoint.
-        if cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
-            cred._use_iam_endpoint = True
+        cred._use_iam_endpoint = (
+            cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
         return cred
 
     def _make_authorization_grant_assertion(self):
