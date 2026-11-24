@@ -563,66 +563,6 @@
         }
       ]
     },
-    "packages/google-cloud-beyondcorp-appconnections": {
-      "component": "google-cloud-beyondcorp-appconnections",
-      "extra-files": [
-        "google/cloud/beyondcorp_appconnections/gapic_version.py",
-        "google/cloud/beyondcorp_appconnections_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.appconnections.v1.json",
-          "type": "json"
-        }
-      ]
-    },
-    "packages/google-cloud-beyondcorp-appconnectors": {
-      "component": "google-cloud-beyondcorp-appconnectors",
-      "extra-files": [
-        "google/cloud/beyondcorp_appconnectors/gapic_version.py",
-        "google/cloud/beyondcorp_appconnectors_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.appconnectors.v1.json",
-          "type": "json"
-        }
-      ]
-    },
-    "packages/google-cloud-beyondcorp-appgateways": {
-      "component": "google-cloud-beyondcorp-appgateways",
-      "extra-files": [
-        "google/cloud/beyondcorp_appgateways/gapic_version.py",
-        "google/cloud/beyondcorp_appgateways_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.appgateways.v1.json",
-          "type": "json"
-        }
-      ]
-    },
-    "packages/google-cloud-beyondcorp-clientconnectorservices": {
-      "component": "google-cloud-beyondcorp-clientconnectorservices",
-      "extra-files": [
-        "google/cloud/beyondcorp_clientconnectorservices/gapic_version.py",
-        "google/cloud/beyondcorp_clientconnectorservices_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.clientconnectorservices.v1.json",
-          "type": "json"
-        }
-      ]
-    },
-    "packages/google-cloud-beyondcorp-clientgateways": {
-      "component": "google-cloud-beyondcorp-clientgateways",
-      "extra-files": [
-        "google/cloud/beyondcorp_clientgateways/gapic_version.py",
-        "google/cloud/beyondcorp_clientgateways_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.clientgateways.v1.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-cloud-biglake": {
       "component": "google-cloud-biglake",
       "extra-files": [
