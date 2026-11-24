@@ -26,7 +26,7 @@ from google.api_core.exceptions import InternalServerError
 from google.protobuf.struct_pb2 import Struct
 
 from google.cloud.spanner_v1._helpers import (
-    _check_rst_stream_error,
+    _is_retryable_internal_error,
     _make_value_pb,
     _merge_client_context,
     _merge_query_options,
@@ -131,7 +131,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             method = functools.partial(method, request=request, span=span)
             response = _retry(
                 method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                allowed_exceptions={InternalServerError: _is_retryable_internal_error},
             )
         return response
 
@@ -182,7 +182,9 @@ class Transaction(_SnapshotBase, _BatchBase):
 
                 _retry(
                     wrapped_method,
-                    allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                    allowed_exceptions={
+                        InternalServerError: _is_retryable_internal_error
+                    },
                 )
         self.rolled_back = True
 
@@ -301,7 +303,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
             commit_response_pb: CommitResponse = _retry(
                 wrapped_method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                allowed_exceptions={InternalServerError: _is_retryable_internal_error},
                 before_next_retry=before_next_retry,
             )
             if commit_response_pb._pb.HasField("precommit_token"):
