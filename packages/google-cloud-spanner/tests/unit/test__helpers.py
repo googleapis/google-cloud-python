@@ -291,6 +291,36 @@ class Test_as_raw_pb(unittest.TestCase):
         self.assertIsNone(self._callFUT(None, RequestOptions))
 
 
+class Test_get_read_timestamp(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _get_read_timestamp
+
+        return _get_read_timestamp(*args, **kw)
+
+    def test_not_set(self):
+        from google.cloud.spanner_v1 import Transaction
+
+        self.assertIsNone(self._callFUT(Transaction(id=b"txn-id")))
+
+    def test_in_range(self):
+        from google.cloud.spanner_v1 import Transaction
+
+        timestamp = datetime.datetime(2026, 11, 18, 21, 23, 35, tzinfo=timezone.utc)
+        transaction_pb = Transaction(read_timestamp=timestamp)
+        self.assertEqual(self._callFUT(transaction_pb), timestamp)
+
+    def test_out_of_range(self):
+        from google.cloud.spanner_v1 import Transaction
+
+        # 10000-01-01T00:00:00Z and the second before 0001-01-01T00:00:00Z
+        # do not fit in a datetime.
+        for seconds in (253402300800, -62135596801):
+            with self.subTest(seconds=seconds):
+                transaction_pb = Transaction()
+                transaction_pb._pb.read_timestamp.seconds = seconds
+                self.assertIsNone(self._callFUT(transaction_pb))
+
+
 class Test_make_execute_sql_request(unittest.TestCase):
     SESSION_NAME = "projects/p/instances/i/databases/d/sessions/s"
     SQL = "SELECT * FROM Singers WHERE SingerId = @singer_id"

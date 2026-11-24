@@ -320,6 +320,31 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(snapshot._transaction_read_timestamp, TIMESTAMP)
         self.assertTrue(snapshot._transaction_begin_event.is_set())
 
+    def test__update_for_result_set_pb_w_read_timestamp(self):
+        snapshot = self._make_snapshot(_Session(), multi_use=False)
+        result_set_pb = PartialResultSet(
+            metadata={"transaction": {"read_timestamp": TIMESTAMP}}
+        )
+        snapshot._update_for_result_set_pb(result_set_pb)
+        self.assertIsNone(snapshot._transaction_id)
+        self.assertEqual(snapshot._transaction_read_timestamp, TIMESTAMP)
+
+    def test__update_for_result_set_pb_w_read_timestamp_out_of_range(self):
+        for multi_use in (False, True):
+            with self.subTest(multi_use=multi_use):
+                snapshot = self._make_snapshot(_Session(), multi_use=multi_use)
+                result_set_pb = PartialResultSet()
+                transaction_pb = result_set_pb._pb.metadata.transaction
+                if multi_use:
+                    transaction_pb.id = TXN_ID
+                # 10000-01-01T00:00:00Z does not fit in a datetime.
+                transaction_pb.read_timestamp.seconds = 253402300800
+                snapshot._update_for_result_set_pb(result_set_pb)
+                self.assertEqual(
+                    snapshot._transaction_id, TXN_ID if multi_use else None
+                )
+                self.assertIsNone(snapshot._transaction_read_timestamp)
+
     async def test_restart_on_unavailable_precommit(self):
         from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
         from tests._builders import build_precommit_token_pb

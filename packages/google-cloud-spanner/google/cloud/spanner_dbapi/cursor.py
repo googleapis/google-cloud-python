@@ -56,6 +56,7 @@ from google.cloud.spanner_dbapi.utils import (
     StreamedManyResultSets,
 )
 from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1._helpers import _get_read_timestamp
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
@@ -628,10 +629,9 @@ class Cursor(object):
         # Unfortunately, Spanner doesn't seem to send back
         # information about the number of rows available.
         self._row_count = None
-        if self._result_set.metadata.transaction.read_timestamp is not None:
-            snapshot._transaction_read_timestamp = (
-                self._result_set.metadata.transaction.read_timestamp
-            )
+        read_timestamp = _get_read_timestamp(self._result_set.metadata.transaction)
+        if read_timestamp is not None:
+            snapshot._transaction_read_timestamp = read_timestamp
 
     def _handle_DQL(self, sql, params):
         if self.connection.database is None:
