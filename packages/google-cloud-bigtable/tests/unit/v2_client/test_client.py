@@ -322,7 +322,7 @@ def _create_gapic_client_channel_helper(endpoint=None, emulator_host=None):
     client = _make_client(project=PROJECT, credentials=credentials)
 
     if endpoint is not None:
-        client._client_options = mock.Mock(
+        client._admin_client_options = mock.Mock(
             spec=["api_endpoint"],
             api_endpoint=endpoint,
         )
@@ -536,24 +536,69 @@ def test_client_admin_clients_inherit_universe_wo_mutating_options(
     assert client.table_admin_client.universe_domain == "tpc.test"
     assert client.instance_admin_client.universe_domain == "tpc.test"
     # the options object passed in by the caller is left untouched
-    assert client._admin_client_options is admin_client_options
     if isinstance(admin_client_options, dict):
         assert admin_client_options == {"api_endpoint": "admin.custom.test:443"}
     else:
         assert admin_client_options.universe_domain is None
 
 
-def test_client_admin_clients_w_universe_env_set_after_construction():
+@pytest.mark.parametrize(
+    "admin_client_options",
+    [
+        None,
+        {"quota_project_id": "QUOTA-PROJECT"},
+        ClientOptions(quota_project_id="QUOTA-PROJECT"),
+    ],
+)
+def test_client_admin_client_options_unchanged_wo_inherited_settings(
+    admin_client_options,
+):
     import os
 
     with mock.patch.dict(os.environ, {}, clear=False):
         os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
         client = _make_client(
+            project=PROJECT,
+            credentials=_make_credentials(),
+            admin=True,
+            admin_client_options=admin_client_options,
+        )
+
+    # no universe or endpoint is configured anywhere, so the admin clients get
+    # the options as given and apply their own defaults
+    assert client._admin_client_options is admin_client_options
+
+
+@pytest.mark.parametrize(
+    "env_at_construction,env_at_first_use,expected_universe",
+    [
+        # set after the client is constructed: not used
+        (None, "tpc.test", "googleapis.com"),
+        # removed after the client is constructed: still used
+        ("tpc.test", None, "tpc.test"),
+        # changed after the client is constructed: the original value is used
+        ("tpc.test", "other.test", "tpc.test"),
+    ],
+)
+def test_client_admin_clients_universe_env_read_at_construction(
+    env_at_construction, env_at_first_use, expected_universe
+):
+    import os
+
+    def set_env(value):
+        if value is None:
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+        else:
+            os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = value
+
+    with mock.patch.dict(os.environ, {}, clear=False):
+        set_env(env_at_construction)
+        client = _make_client(
             project=PROJECT, credentials=_make_credentials(), admin=True
         )
-        os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = "tpc.test"
+        set_env(env_at_first_use)
 
-        expected_host = "bigtableadmin.tpc.test:443"
+        expected_host = f"bigtableadmin.{expected_universe}:443"
         assert client.table_admin_client.transport.host == expected_host
         assert client.instance_admin_client.transport.host == expected_host
 

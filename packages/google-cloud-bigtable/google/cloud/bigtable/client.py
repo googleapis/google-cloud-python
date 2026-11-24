@@ -90,6 +90,50 @@ def _get_client_option(options, name):
     return getattr(options, name, None)
 
 
+def _inherit_admin_client_options(
+    client_options, admin_client_options, universe_domain_env
+):
+    """Return ``admin_client_options``, with the endpoint settings it does not
+    set filled in. Neither options argument is modified.
+
+    - ``universe_domain`` falls back to ``client_options``, then to
+      ``universe_domain_env`` (the ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` environment
+      variable). If neither sets one, it is left unset.
+    - ``api_endpoint`` falls back to ``client_options`` only when
+      ``admin_client_options`` sets neither ``api_endpoint`` nor
+      ``universe_domain``, so a ``client_options`` endpoint never overrides a
+      universe chosen for admin operations.
+    """
+    inherited = {}
+    # A universe set in admin_client_options stands on its own. Inheriting an
+    # api_endpoint from client_options would override it.
+    if _get_client_option(admin_client_options, "universe_domain") is None:
+        # Universe: client_options, then the environment variable. With
+        # neither, it stays unset and the admin clients apply their default.
+        universe_domain = _get_client_option(client_options, "universe_domain")
+        if universe_domain is None:
+            universe_domain = universe_domain_env
+        if universe_domain is not None:
+            inherited["universe_domain"] = universe_domain
+        # Endpoint: client_options, unless admin_client_options sets its own.
+        client_endpoint = _get_client_option(client_options, "api_endpoint")
+        if client_endpoint and not _get_client_option(
+            admin_client_options, "api_endpoint"
+        ):
+            inherited["api_endpoint"] = client_endpoint
+    if not inherited:
+        # Nothing to add: use the options exactly as they were passed in.
+        return admin_client_options
+    # Add the inherited settings to a copy, so the caller's object is not
+    # modified. A dict stays a dict.
+    if admin_client_options is None or isinstance(admin_client_options, dict):
+        return {**(admin_client_options or {}), **inherited}
+    admin_client_options = copy.copy(admin_client_options)
+    for name, value in inherited.items():
+        setattr(admin_client_options, name, value)
+    return admin_client_options
+
+
 class Client(ClientWithProject):
     """Client for interacting with Google Cloud Bigtable API.
 
@@ -197,7 +241,11 @@ class Client(ClientWithProject):
             )
 
         self._client_options = client_options
-        self._admin_client_options = admin_client_options
+        self._admin_client_options = _inherit_admin_client_options(
+            client_options,
+            admin_client_options,
+            os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        )
         self._channel = channel
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__(
@@ -242,61 +290,28 @@ class Client(ClientWithProject):
     def _resolve_admin_endpoint(self, client_class):
         """Resolve the target host for GAPIC admin channels.
 
-        Precedence order:
-        1. ``admin_client_options.api_endpoint``
-        2. ``admin_client_options.universe_domain``
-        3. ``client_options.api_endpoint``
-        4. ``client_options.universe_domain``
-        5. ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` environment variable
-        6. ``client_class.DEFAULT_ENDPOINT`` (``googleapis.com``)
+        Uses ``admin_client_options`` as resolved when the client was
+        constructed (see ``_inherit_admin_client_options``), so the
+        ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` environment variable is not read
+        again here. If no ``universe_domain`` is set there, the default
+        ``googleapis.com`` is used.
 
-        Within the same options object (or against the environment variable),
-        an explicit ``api_endpoint`` overrides ``universe_domain`` without
+        An explicit ``api_endpoint`` overrides ``universe_domain`` without
         comparing hostnames, matching GAPIC behavior for regional, proxy, or
         PSC endpoints. ``universe_domain`` is still validated first so an empty
         string raises ``EmptyUniverseError`` even when ``api_endpoint`` is set.
         """
-        admin_universe = _get_client_option(
-            self._admin_client_options, "universe_domain"
-        )
-        client_universe = _get_client_option(self._client_options, "universe_domain")
-        configured_universe = (
-            admin_universe if admin_universe is not None else client_universe
-        )
         universe_domain = universe.determine_domain(
-            configured_universe, os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+            _get_client_option(self._admin_client_options, "universe_domain"), None
         )
-
-        admin_endpoint = _get_client_option(self._admin_client_options, "api_endpoint")
-        if admin_endpoint:
-            return admin_endpoint
-
-        if admin_universe is None:
-            client_endpoint = _get_client_option(self._client_options, "api_endpoint")
-            if client_endpoint:
-                return client_endpoint
-
+        api_endpoint = _get_client_option(self._admin_client_options, "api_endpoint")
+        if api_endpoint:
+            return api_endpoint
         if universe_domain == universe.DEFAULT_UNIVERSE:
             return client_class.DEFAULT_ENDPOINT
         return client_class._DEFAULT_ENDPOINT_TEMPLATE.format(
             UNIVERSE_DOMAIN=universe_domain
         )
-
-    def _resolve_admin_client_options(self):
-        """Return ``admin_client_options``, inheriting ``universe_domain`` from
-        ``client_options`` if unset so admin clients report the right universe."""
-        admin_options = self._admin_client_options
-        client_universe = _get_client_option(self._client_options, "universe_domain")
-        if (
-            not client_universe
-            or _get_client_option(admin_options, "universe_domain") is not None
-        ):
-            return admin_options
-        if admin_options is None or isinstance(admin_options, dict):
-            return {**(admin_options or {}), "universe_domain": client_universe}
-        admin_options = copy.copy(admin_options)
-        admin_options.universe_domain = client_universe
-        return admin_options
 
     def _create_gapic_client_channel(self, client_class, grpc_transport):
         if self._emulator_host is not None:
@@ -389,7 +404,7 @@ class Client(ClientWithProject):
             )
             klass = _create_gapic_client(
                 bigtable_admin_v2.BaseBigtableTableAdminClient,
-                client_options=self._resolve_admin_client_options(),
+                client_options=self._admin_client_options,
                 transport=transport,
             )
             self._table_admin_client = klass(self)
@@ -426,7 +441,7 @@ class Client(ClientWithProject):
             )
             klass = _create_gapic_client(
                 bigtable_admin_v2.BigtableInstanceAdminClient,
-                client_options=self._resolve_admin_client_options(),
+                client_options=self._admin_client_options,
                 transport=transport,
             )
             self._instance_admin_client = klass(self)
