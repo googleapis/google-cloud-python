@@ -33,6 +33,7 @@ import os
 import warnings
 
 import grpc  # type: ignore
+from google.api_core import universe
 from google.api_core.gapic_v1 import client_info as client_info_lib
 from google.auth.credentials import AnonymousCredentials  # type: ignore
 from google.cloud.client import ClientWithProject  # type: ignore
@@ -82,6 +83,13 @@ def _create_gapic_client(client_class, client_options=None, transport=None):
     return inner
 
 
+def _get_client_option(options, name):
+    """Read an attribute or dict key from ``options`` if present."""
+    if isinstance(options, dict):
+        return options.get(name)
+    return getattr(options, name, None)
+
+
 class Client(ClientWithProject):
     """Client for interacting with Google Cloud Bigtable API.
 
@@ -121,12 +129,16 @@ class Client(ClientWithProject):
         or :class:`dict`
     :param client_options: (Optional) Client options used to set user options
         on the client. API Endpoint should be set through client_options.
+        ``api_endpoint`` and ``universe_domain`` also apply to admin
+        operations, unless ``admin_client_options`` sets either one.
 
     :type admin_client_options:
         :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
     :param admin_client_options: (Optional) Client options used to set user
         options on the client. API Endpoint for admin operations should be set
-        through admin_client_options.
+        through admin_client_options. If neither ``api_endpoint`` nor
+        ``universe_domain`` is set, admin operations fall back to the values
+        from ``client_options``.
 
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
@@ -225,13 +237,54 @@ class Client(ClientWithProject):
             channel_fn = grpc.insecure_channel
         return channel_fn(self._emulator_host, options=options)
 
+    def _resolve_admin_endpoint(self, client_class):
+        """Resolve the target host for GAPIC admin channels.
+
+        Precedence order:
+        1. ``admin_client_options.api_endpoint``
+        2. ``admin_client_options.universe_domain``
+        3. ``client_options.api_endpoint``
+        4. ``client_options.universe_domain``
+        5. ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` environment variable
+        6. ``client_class.DEFAULT_ENDPOINT`` (``googleapis.com``)
+
+        Within the same options object (or against the environment variable),
+        an explicit ``api_endpoint`` overrides ``universe_domain`` without
+        comparing hostnames, matching GAPIC behavior for regional, proxy, or
+        PSC endpoints. ``universe_domain`` is still validated first so an empty
+        string raises ``EmptyUniverseError`` even when ``api_endpoint`` is set.
+        """
+        admin_universe = _get_client_option(
+            self._admin_client_options, "universe_domain"
+        )
+        client_universe = _get_client_option(self._client_options, "universe_domain")
+        configured_universe = (
+            admin_universe if admin_universe is not None else client_universe
+        )
+        universe_domain = universe.determine_domain(
+            configured_universe, os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        )
+
+        admin_endpoint = _get_client_option(self._admin_client_options, "api_endpoint")
+        if admin_endpoint:
+            return admin_endpoint
+
+        if admin_universe is None:
+            client_endpoint = _get_client_option(self._client_options, "api_endpoint")
+            if client_endpoint:
+                return client_endpoint
+
+        if universe_domain == universe.DEFAULT_UNIVERSE:
+            return client_class.DEFAULT_ENDPOINT
+        return client_class._DEFAULT_ENDPOINT_TEMPLATE.format(
+            UNIVERSE_DOMAIN=universe_domain
+        )
+
     def _create_gapic_client_channel(self, client_class, grpc_transport):
         if self._emulator_host is not None:
             api_endpoint = self._emulator_host
-        elif self._client_options and self._client_options.api_endpoint:
-            api_endpoint = self._client_options.api_endpoint
         else:
-            api_endpoint = client_class.DEFAULT_ENDPOINT
+            api_endpoint = self._resolve_admin_endpoint(client_class)
 
         if self._emulator_host is not None:
             channel = self._emulator_channel(
