@@ -390,6 +390,7 @@ class Client(ClientWithProject):
             "http://" in self._emulator_host or "https://" in self._emulator_host
         ):
             warnings.warn(_EMULATOR_HOST_HTTP_SCHEME)
+        self._disable_builtin_metrics = disable_builtin_metrics
         if (
             _get_spanner_enable_builtin_metrics_env()
             and (not disable_builtin_metrics)
@@ -591,23 +592,22 @@ class Client(ClientWithProject):
         :returns: The directed_read_options for the client."""
         return self._directed_read_options
 
-    def copy(self):
+    def copy(self) -> "Client":
         """Make a copy of this client.
 
         Copies local client configuration (including ``client_options``,
-        ``client_info``, ``instance_type``, and TLS settings) without copying
-        open RPC connections. Clears ``credentials_file`` and ``api_key`` on
-        the copied ``client_options`` because resolved credentials are passed
-        directly.
+        ``client_info``, ``query_options``, ``route_to_leader_enabled``,
+        ``directed_read_options``, ``observability_options``,
+        ``default_transaction_options``, ``disable_builtin_metrics``,
+        ``client_context``, ``instance_type``, and TLS settings) without
+        copying open RPC connections. Clears ``credentials_file`` and
+        ``api_key`` on the copied ``client_options`` because resolved
+        credentials are passed directly.
 
         :rtype: :class:`.Client`
         :returns: A copy of the current client."""
         if not self._client_options:
             client_options = None
-        elif isinstance(self._client_options, dict):
-            client_options = google.api_core.client_options.from_dict(
-                self._client_options
-            )
         else:
             client_options = copy.copy(self._client_options)
         if client_options is not None:
@@ -618,13 +618,20 @@ class Client(ClientWithProject):
                 client_options = google.api_core.client_options.ClientOptions(
                     api_endpoint=self._host
                 )
-            elif not client_options.api_endpoint:
+            else:
                 client_options.api_endpoint = self._host
         return self.__class__(
             project=self.project,
             credentials=self._credentials,
             client_info=self._client_info,
             client_options=client_options,
+            query_options=self._query_options,
+            route_to_leader_enabled=self._route_to_leader_enabled,
+            directed_read_options=copy.copy(self._directed_read_options),
+            observability_options=copy.copy(self._observability_options),
+            default_transaction_options=self._default_transaction_options,
+            disable_builtin_metrics=self._disable_builtin_metrics,
+            client_context=self._client_context,
             instance_type=self._instance_type,
             use_plain_text=self._use_plain_text,
             ca_certificate=self._ca_certificate,
