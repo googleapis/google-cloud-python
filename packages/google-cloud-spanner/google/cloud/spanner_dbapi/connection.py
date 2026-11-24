@@ -1007,20 +1007,30 @@ def connect(
 
         **Option precedence and interactions:**
 
+        - ``credentials`` as a file path (``str``) takes precedence over
+          ``experimental_host``, ``instance_type``, and the Omni auth/TLS
+          options, connecting via :meth:`Client.from_service_account_json`.
         - ``SPANNER_EMULATOR_HOST`` (environment variable) overrides
-          ``credentials``, ``instance_type``, and ``api_endpoint`` to connect
-          to the Spanner emulator using anonymous credentials.
+          ``credentials`` (unless passed as a ``str`` file path, which is
+          still loaded before the override) and ``api_endpoint`` to connect
+          to the Spanner emulator using anonymous credentials. Note that
+          ``instance_type="omni"`` still validates that an endpoint is set
+          and overrides ``project`` to ``"default"`` before
+          ``SPANNER_EMULATOR_HOST`` takes effect.
         - ``experimental_host`` (deprecated) forces ``instance_type="omni"``
-          and overrides ``client_options.api_endpoint``.
-        - ``instance_type="omni"`` overrides ``project`` (to ``"default"``)
-          and ``credentials`` (using ``SpannerOmniCredentials`` when both
-          ``username`` and ``password`` are provided, or
-          ``AnonymousCredentials`` otherwise).
+          (overriding any ``instance_type`` value) and overrides
+          ``client_options.api_endpoint``.
+        - ``instance_type="omni"`` (when ``credentials`` is not a ``str``)
+          overrides ``project`` (to ``"default"``) and ``credentials``
+          (using ``SpannerOmniCredentials`` when both ``username`` and
+          ``password`` are provided, or ``AnonymousCredentials`` otherwise).
         - ``use_plain_text``, ``ca_certificate``, ``client_certificate``,
           ``client_key``, ``username``, and ``password`` apply only when
-          ``instance_type="omni"``.
+          ``instance_type="omni"`` (and ``credentials`` is not a ``str``),
+          and are silently ignored otherwise.
         - Providing both a custom ``client`` and non-``None``
-          ``client_options`` raises :class:`ValueError`.
+          ``client_options`` raises :class:`ValueError` (other client-creation
+          options are ignored when a custom ``client`` is provided).
 
     :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
     :returns: Connection object associated with the given Google Cloud Spanner
