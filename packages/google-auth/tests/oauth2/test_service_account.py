@@ -154,6 +154,16 @@ class TestCredentials(object):
         assert updated.universe_domain == "other.universe.foo"
         assert updated._jwt_credentials is None
 
+    def test_with_subject_clears_jwt_credentials(self):
+        """with_subject clears cached self-signed JWT credentials."""
+        credentials = self.make_credentials()
+        credentials._create_self_signed_jwt("https://compute.googleapis.com/")
+        assert credentials._jwt_credentials is not None
+
+        delegated = credentials.with_subject("user@example.com")
+        assert delegated._subject == "user@example.com"
+        assert delegated._jwt_credentials is None
+
     @pytest.mark.parametrize("universe_domain", [None, ""])
     def test_with_universe_domain_empty_or_none_defaults(self, universe_domain):
         """with_universe_domain normalizes None or empty string to the default domain."""

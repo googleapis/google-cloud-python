@@ -380,6 +380,9 @@ class Credentials(
         """
         cred = self._make_copy()
         cred._subject = subject
+        # Clear cached JWT credentials since subject delegation does not use
+        # self-signed JWTs.
+        cred._jwt_credentials = None
         return cred
 
     def with_claims(self, additional_claims):
