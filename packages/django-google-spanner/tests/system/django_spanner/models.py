@@ -31,7 +31,7 @@ class Event(models.Model):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                check=models.Q(end_date__gt=models.F("start_date")),
+                condition=models.Q(end_date__gt=models.F("start_date")),
                 name="check_start_date",
             ),
         ]

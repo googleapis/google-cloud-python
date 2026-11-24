@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 from unittest.mock import MagicMock, Mock, patch
 
 from google.api.metric_pb2 import MetricDescriptor
-from google.auth.credentials import AnonymousCredentials
+from google.api_core.client_options import ClientOptions
+from google.auth.credentials import AnonymousCredentials, Credentials, Scoped
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import (
     AggregationTemporality,
@@ -496,3 +498,271 @@ if HAS_OPENTELEMETRY_INSTALLED:
             )
             self.assertIsNone(converted_hist_point_no_count.interval.start_time)
             self.assertIsNotNone(converted_hist_point_no_count.interval.end_time)
+
+        def test_init_with_universe_domain_client_options(self):
+            """Verify universe_domain in client_options sets the monitoring host and preserves options."""
+            from google.cloud.spanner_v1.metrics.metrics_exporter import _OPTIONS
+
+            creds = AnonymousCredentials()
+            with (
+                patch.dict(
+                    os.environ,
+                    {
+                        "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+                        "GOOGLE_API_USE_MTLS_ENDPOINT": "never",
+                    },
+                ),
+                patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceGrpcTransport.create_channel",
+                    return_value=MagicMock(),
+                ) as mock_create_channel,
+            ):
+                exporter = CloudMonitoringMetricsExporter(
+                    project_id=PROJECT_ID,
+                    credentials=creds,
+                    client_options=ClientOptions(universe_domain="my-universe.com"),
+                )
+
+            self.assertEqual(exporter.client.universe_domain, "my-universe.com")
+            self.assertEqual(exporter.client.api_endpoint, "monitoring.my-universe.com")
+            self.assertIs(exporter.client.transport._credentials, creds)
+            mock_create_channel.assert_called_once()
+            args, kwargs = mock_create_channel.call_args
+            self.assertEqual(args[0], "monitoring.my-universe.com:443")
+            self.assertEqual(kwargs["options"], _OPTIONS)
+            self.assertIs(kwargs["credentials"], creds)
+
+        def test_init_with_universe_domain_env_var(self):
+            """Verify GOOGLE_CLOUD_UNIVERSE_DOMAIN env var sets the monitoring host."""
+            creds = AnonymousCredentials()
+            with (
+                patch.dict(
+                    os.environ,
+                    {
+                        "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "env-universe.com",
+                        "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+                        "GOOGLE_API_USE_MTLS_ENDPOINT": "never",
+                    },
+                ),
+                patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceGrpcTransport.create_channel",
+                    return_value=MagicMock(),
+                ) as mock_create_channel,
+            ):
+                exporter = CloudMonitoringMetricsExporter(
+                    project_id=PROJECT_ID,
+                    credentials=creds,
+                )
+
+            self.assertEqual(exporter.client.universe_domain, "env-universe.com")
+            self.assertEqual(
+                exporter.client.api_endpoint, "monitoring.env-universe.com"
+            )
+            mock_create_channel.assert_called_once()
+            args, _ = mock_create_channel.call_args
+            self.assertEqual(args[0], "monitoring.env-universe.com:443")
+
+        def test_init_with_explicit_api_endpoint_client_options(self):
+            """Verify explicit api_endpoint in client_options overrides the monitoring host."""
+            creds = AnonymousCredentials()
+            with patch(
+                "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceGrpcTransport.create_channel",
+                return_value=MagicMock(),
+            ) as mock_create_channel:
+                exporter = CloudMonitoringMetricsExporter(
+                    project_id=PROJECT_ID,
+                    credentials=creds,
+                    client_options={"api_endpoint": "custom-monitoring.internal:443"},
+                )
+
+            self.assertEqual(
+                exporter.client.api_endpoint, "custom-monitoring.internal:443"
+            )
+            mock_create_channel.assert_called_once()
+            args, _ = mock_create_channel.call_args
+            self.assertEqual(args[0], "custom-monitoring.internal:443")
+
+        def test_init_rescopes_spanner_scoped_credentials(self):
+            """Verify credentials pinned to non-monitoring scopes are re-scoped to monitoring.write."""
+
+            class _FakeScopedCredentials(Credentials, Scoped):
+                def __init__(self, scopes, requires_scopes=False):
+                    super().__init__()
+                    self._scopes = scopes
+                    self._requires_scopes = requires_scopes
+
+                @property
+                def requires_scopes(self):
+                    return self._requires_scopes
+
+                @property
+                def scopes(self):
+                    return self._scopes
+
+                def with_scopes(self, scopes, default_scopes=None):
+                    return _FakeScopedCredentials(tuple(scopes), requires_scopes=False)
+
+                def refresh(self, request):
+                    pass
+
+            spanner_creds = _FakeScopedCredentials(
+                scopes=("https://www.googleapis.com/auth/spanner.admin",),
+                requires_scopes=False,
+            )
+            with patch(
+                "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceGrpcTransport.create_channel",
+                return_value=MagicMock(),
+            ) as mock_create_channel:
+                CloudMonitoringMetricsExporter(
+                    project_id=PROJECT_ID,
+                    credentials=spanner_creds,
+                )
+
+            _, kwargs = mock_create_channel.call_args
+            self.assertEqual(
+                kwargs["credentials"].scopes,
+                ("https://www.googleapis.com/auth/monitoring.write",),
+            )
+
+            # Credentials that already cover Cloud Monitoring should not be re-scoped.
+            monitoring_creds = _FakeScopedCredentials(
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                requires_scopes=False,
+            )
+            with patch(
+                "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceGrpcTransport.create_channel",
+                return_value=MagicMock(),
+            ) as mock_create_channel:
+                CloudMonitoringMetricsExporter(
+                    project_id=PROJECT_ID,
+                    credentials=monitoring_creds,
+                )
+
+            _, kwargs = mock_create_channel.call_args
+            self.assertIs(kwargs["credentials"], monitoring_creds)
+
+        def test_init_preserves_unscoped_and_monitoring_scoped_credentials(self):
+            """Verify unscoped and monitoring-scoped credentials are not re-scoped."""
+
+            class _FakeScopedCredentials(Credentials, Scoped):
+                def __init__(self, scopes, requires_scopes=False):
+                    super().__init__()
+                    self._scopes = scopes
+                    self._requires_scopes = requires_scopes
+
+                @property
+                def requires_scopes(self):
+                    return self._requires_scopes
+
+                @property
+                def scopes(self):
+                    return self._scopes
+
+                def with_scopes(self, scopes, default_scopes=None):
+                    return _FakeScopedCredentials(
+                        tuple(scopes or default_scopes or ()), requires_scopes=False
+                    )
+
+                def refresh(self, request):
+                    pass
+
+            unscoped_creds = _FakeScopedCredentials(scopes=None, requires_scopes=True)
+            monitoring_write_creds = _FakeScopedCredentials(
+                scopes=("https://www.googleapis.com/auth/monitoring.write",),
+                requires_scopes=False,
+            )
+            monitoring_rw_creds = _FakeScopedCredentials(
+                scopes=("https://www.googleapis.com/auth/monitoring",),
+                requires_scopes=False,
+            )
+
+            for creds in (
+                unscoped_creds,
+                monitoring_write_creds,
+                monitoring_rw_creds,
+            ):
+                with patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter."
+                    "MetricServiceGrpcTransport.create_channel",
+                    return_value=MagicMock(),
+                ) as mock_create_channel:
+                    CloudMonitoringMetricsExporter(
+                        project_id=PROJECT_ID,
+                        credentials=creds,
+                    )
+
+                _, kwargs = mock_create_channel.call_args
+                self.assertIs(kwargs["credentials"], creds)
+
+        def test_init_uses_credentials_project_id_without_adc(self):
+            """Verify explicit credentials project_id is used without falling back to ADC."""
+            creds = AnonymousCredentials()
+            creds.project_id = "creds-project-id"
+            with (
+                patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter.google.auth.default"
+                ) as mock_auth_default,
+                patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceGrpcTransport.create_channel",
+                    return_value=MagicMock(),
+                ),
+            ):
+                exporter = CloudMonitoringMetricsExporter(
+                    project_id=None,
+                    credentials=creds,
+                )
+
+            mock_auth_default.assert_not_called()
+            self.assertEqual(exporter.project_id, "creds-project-id")
+            self.assertEqual(exporter.project_name, "projects/creds-project-id")
+
+        def test_init_raises_when_explicit_credentials_missing_project_id(self):
+            """Verify missing project_id with explicit credentials does not fall back to ambient ADC."""
+            creds = AnonymousCredentials()
+            with (
+                patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter.google.auth.default"
+                ) as mock_auth_default,
+                patch(
+                    "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceGrpcTransport.create_channel",
+                    return_value=MagicMock(),
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    ValueError, "project_id could not be determined."
+                ):
+                    CloudMonitoringMetricsExporter(
+                        project_id=None,
+                        credentials=creds,
+                    )
+
+            mock_auth_default.assert_not_called()
+
+        def test_init_adc_project_fallback_when_no_credentials(self):
+            """Verify ADC fallback works when neither project_id nor credentials are provided."""
+            mock_client = MagicMock()
+            mock_client.common_project_path.side_effect = lambda p: f"projects/{p}"
+            with patch(
+                "google.cloud.spanner_v1.metrics.metrics_exporter.google.auth.default",
+                return_value=(AnonymousCredentials(), "adc-project"),
+            ):
+                exporter = CloudMonitoringMetricsExporter(
+                    project_id=None,
+                    client=mock_client,
+                    credentials=None,
+                )
+            self.assertEqual(exporter.project_id, "adc-project")
+            self.assertEqual(exporter.project_name, "projects/adc-project")
+
+            with patch(
+                "google.cloud.spanner_v1.metrics.metrics_exporter.google.auth.default",
+                return_value=(AnonymousCredentials(), None),
+            ):
+                with self.assertRaisesRegex(
+                    ValueError, "project_id could not be determined."
+                ):
+                    CloudMonitoringMetricsExporter(
+                        project_id=None,
+                        client=mock_client,
+                        credentials=None,
+                    )

@@ -14,15 +14,32 @@
 
 import base64
 import datetime
+import http.client as http_client
 import json
 import os
+import urllib.parse
 from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, crypt, exceptions, jwt
+from google.auth import (
+    _helpers,
+    crypt,
+    environment_vars,
+    exceptions,
+    iam,
+    impersonated_credentials,
+    jwt,
+    transport,
+)
+from google.auth import (
+    credentials as auth_credentials,
+)
+from google.auth.transport import _mtls_helper
+from google.oauth2 import service_account
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+FAKE_UNIVERSE_DOMAIN = "fake_universe_domain"
 
 with open(os.path.join(DATA_DIR, "privatekey.pem"), "rb") as fh:
     PRIVATE_KEY_BYTES = fh.read()
@@ -454,6 +471,29 @@ class TestCredentials(object):
         assert credentials._issuer == info["client_email"]
         assert credentials._subject == info["client_email"]
         assert credentials._audience == self.AUDIENCE
+        assert credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+
+    def test_from_service_account_info_universe_domain(self):
+        info = {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+
+        credentials = jwt.Credentials.from_service_account_info(
+            info, audience=self.AUDIENCE
+        )
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+        override_credentials = jwt.Credentials.from_service_account_info(
+            info, audience=self.AUDIENCE, universe_domain="override.domain"
+        )
+        assert override_credentials.universe_domain == "override.domain"
+
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_from_service_account_info_empty_universe_kwarg(self, empty_universe):
+        info = {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+
+        credentials = jwt.Credentials.from_service_account_info(
+            info, audience=self.AUDIENCE, universe_domain=empty_universe
+        )
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     def test_from_service_account_info_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -482,6 +522,17 @@ class TestCredentials(object):
         assert credentials._issuer == info["client_email"]
         assert credentials._subject == info["client_email"]
         assert credentials._audience == self.AUDIENCE
+        assert credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+
+    def test_from_service_account_file_universe_domain(self, tmp_path):
+        info = {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+        key_file = tmp_path / "service_account_non_default.json"
+        key_file.write_text(json.dumps(info), encoding="utf-8")
+
+        credentials = jwt.Credentials.from_service_account_file(
+            str(key_file), audience=self.AUDIENCE
+        )
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     def test_from_service_account_file_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -517,6 +568,23 @@ class TestCredentials(object):
         assert not self.credentials.valid
         # Expiration hasn't been set yet
         assert not self.credentials.expired
+        assert (
+            self.credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert isinstance(
+            self.credentials, auth_credentials.CredentialsWithUniverseDomain
+        )
+
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_constructor_empty_universe_domain(self, signer, empty_universe):
+        credentials = jwt.Credentials(
+            signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.AUDIENCE,
+            universe_domain=empty_universe,
+        )
+        assert credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
 
     def test_with_claims(self):
         new_audience = "new_audience"
@@ -528,6 +596,23 @@ class TestCredentials(object):
         assert new_credentials._audience == new_audience
         assert new_credentials._additional_claims == self.credentials._additional_claims
         assert new_credentials._quota_project_id == self.credentials._quota_project_id
+        assert (
+            self.credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+            .with_claims(audience=new_audience)
+            .universe_domain
+            == FAKE_UNIVERSE_DOMAIN
+        )
+        custom_lifetime_creds = jwt.Credentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.AUDIENCE,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_claims(audience=new_audience)._token_lifetime
+            == 600
+        )
 
     def test__make_jwt_without_audience(self):
         cred = jwt.Credentials.from_service_account_info(
@@ -552,6 +637,23 @@ class TestCredentials(object):
         assert new_credentials._additional_claims == self.credentials._additional_claims
         assert new_credentials.additional_claims == self.credentials._additional_claims
         assert new_credentials._quota_project_id == quota_project_id
+        assert (
+            self.credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+            .with_quota_project(quota_project_id)
+            .universe_domain
+            == FAKE_UNIVERSE_DOMAIN
+        )
+        custom_lifetime_creds = jwt.Credentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.AUDIENCE,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_quota_project(quota_project_id)._token_lifetime
+            == 600
+        )
 
     def test_sign_bytes(self):
         to_sign = b"123"
@@ -669,8 +771,6 @@ class TestCredentials(object):
         assert cloned_quota._rab_manager is not self.credentials._rab_manager
 
     def test_from_signing_credentials_copies_rab_state(self):
-        from google.oauth2 import service_account
-
         sa_creds = service_account.Credentials.from_service_account_info(
             SERVICE_ACCOUNT_INFO
         )
@@ -680,6 +780,253 @@ class TestCredentials(object):
 
         assert jwt_creds._rab_manager._data == mock.sentinel.rab_data
         assert jwt_creds._rab_manager is not sa_creds._rab_manager
+
+    def test_from_signing_credentials_universe_domain(self):
+        sa_creds = service_account.Credentials.from_service_account_info(
+            {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+        )
+        jwt_creds = jwt.Credentials.from_signing_credentials(
+            sa_creds, audience=self.AUDIENCE
+        )
+        assert jwt_creds.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+        override_creds = jwt.Credentials.from_signing_credentials(
+            sa_creds, audience=self.AUDIENCE, universe_domain="override.domain"
+        )
+        assert override_creds.universe_domain == "override.domain"
+
+        bare_signing = mock.create_autospec(auth_credentials.Signing, instance=True)
+        bare_signing.signer = self.credentials.signer
+        bare_signing.signer_email = self.SERVICE_ACCOUNT_EMAIL
+        fallback_creds = jwt.Credentials.from_signing_credentials(
+            bare_signing, audience=self.AUDIENCE
+        )
+        assert (
+            fallback_creds.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_from_signing_credentials_empty_universe_kwarg(self, empty_universe):
+        sa_creds = service_account.Credentials.from_service_account_info(
+            {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+        )
+        jwt_creds = jwt.Credentials.from_signing_credentials(
+            sa_creds, audience=self.AUDIENCE, universe_domain=empty_universe
+        )
+        assert jwt_creds.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+    def test_with_universe_domain(self, signer):
+        self.credentials._rab_manager._data = mock.sentinel.rab_data
+
+        gdu_copy = self.credentials.with_universe_domain(
+            auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert gdu_copy.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        assert gdu_copy._rab_manager._data == mock.sentinel.rab_data
+        assert gdu_copy._rab_manager is not self.credentials._rab_manager
+
+        non_default = self.credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert isinstance(non_default, jwt.Credentials)
+        assert non_default.universe_domain == FAKE_UNIVERSE_DOMAIN
+        assert non_default._rab_manager._data.encoded_locations is None
+        assert non_default._rab_manager._data.expiry is None
+        assert non_default._rab_manager is not self.credentials._rab_manager
+
+        reset_default = non_default.with_universe_domain(
+            auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert reset_default.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+
+        custom_creds = jwt.Credentials(
+            signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SUBJECT,
+            self.AUDIENCE,
+            additional_claims=self.ADDITIONAL_CLAIMS,
+            token_lifetime=600,
+            quota_project_id="project-foo",
+        )
+        cloned = custom_creds.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert cloned._signer == custom_creds._signer
+        assert cloned._issuer == custom_creds._issuer
+        assert cloned._subject == self.SUBJECT
+        assert cloned._audience == self.AUDIENCE
+        assert cloned._additional_claims == self.ADDITIONAL_CLAIMS
+        assert cloned._token_lifetime == 600
+        assert cloned._quota_project_id == "project-foo"
+        assert cloned.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+    @pytest.mark.parametrize("empty_universe", [None, "", "   "])
+    def test_with_universe_domain_empty_raises(self, empty_universe):
+        with pytest.raises(exceptions.InvalidValue):
+            self.credentials.with_universe_domain(empty_universe)
+
+    def test_before_request_with_universe_domain_clears_cached_rab(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        self.credentials._set_regional_access_boundary(
+            {
+                "encodedLocations": "0xA30",
+                "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+            }
+        )
+        non_default = self.credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        non_default._set_blocking_regional_access_boundary_lookup()
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        headers = {}
+        non_default.before_request(
+            request,
+            "GET",
+            f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/v1/projects/p/topics",
+            headers,
+        )
+
+        assert "authorization" in headers
+        assert "x-allowed-locations" not in headers
+        request.assert_not_called()
+
+    def test_before_request_from_signing_credentials_override_clears_cached_rab(
+        self, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        gdu_sa_creds = service_account.Credentials.from_service_account_info(
+            SERVICE_ACCOUNT_INFO
+        )
+        gdu_sa_creds._set_regional_access_boundary(
+            {
+                "encodedLocations": "0xA30",
+                "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+            }
+        )
+        jwt_creds = jwt.Credentials.from_signing_credentials(
+            gdu_sa_creds, audience=self.AUDIENCE, universe_domain=FAKE_UNIVERSE_DOMAIN
+        )
+        assert jwt_creds._rab_manager._data.encoded_locations is None
+        assert jwt_creds._rab_manager._data.expiry is None
+
+        jwt_creds._set_blocking_regional_access_boundary_lookup()
+        request = mock.create_autospec(transport.Request, instance=True)
+        headers = {}
+        jwt_creds.before_request(
+            request,
+            "GET",
+            f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/v1/projects/p/topics",
+            headers,
+        )
+
+        assert "authorization" in headers
+        assert "x-allowed-locations" not in headers
+        request.assert_not_called()
+
+    def test_before_request_non_default_universe_skips_rab_lookup(
+        self, signer, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        credentials = jwt.Credentials(
+            signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.AUDIENCE,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        credentials._set_blocking_regional_access_boundary_lookup()
+        assert credentials._is_regional_access_boundary_lookup_required() is False
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/v1/projects/p/topics",
+            headers,
+        )
+
+        assert "authorization" in headers
+        assert "x-allowed-locations" not in headers
+        request.assert_not_called()
+
+    def test_before_request_default_universe_performs_rab_lookup(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+        self.credentials._set_blocking_regional_access_boundary_lookup()
+
+        response = mock.create_autospec(transport.Response, instance=True)
+        response.status = http_client.OK
+        response.data = json.dumps(
+            {"locations": ["us-central1"], "encodedLocations": "0xA30"}
+        ).encode("utf-8")
+        request = mock.create_autospec(
+            transport.Request, instance=True, return_value=response
+        )
+
+        headers = {}
+        self.credentials.before_request(
+            request,
+            "GET",
+            "https://pubsub.googleapis.com/v1/projects/p/topics",
+            headers,
+        )
+
+        assert "authorization" in headers
+        assert headers["x-allowed-locations"] == "0xA30"
+        request.assert_called_once()
+
+    def test_impersonated_credentials_with_non_default_jwt_source(
+        self, signer, monkeypatch
+    ):
+        monkeypatch.setattr(
+            iam,
+            "_IAM_ENDPOINT",
+            "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}:generateAccessToken",
+        )
+        source_credentials = jwt.Credentials(
+            signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            audience=f"https://iamcredentials.{FAKE_UNIVERSE_DOMAIN}/",
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+
+        impersonated = impersonated_credentials.Credentials(
+            source_credentials=source_credentials,
+            target_principal="target@project.iam.gserviceaccount.com",
+            target_scopes=["https://www.googleapis.com/auth/cloud-platform"],
+        )
+        assert impersonated.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        response = mock.create_autospec(transport.Response, instance=True)
+        response.status = http_client.OK
+        response.data = json.dumps(
+            {"accessToken": "imp-token", "expireTime": expire_time}
+        ).encode("utf-8")
+        request = mock.create_autospec(
+            transport.Request, instance=True, return_value=response
+        )
+
+        impersonated.refresh(request)
+
+        assert impersonated.token == "imp-token"
+        request.assert_called_once()
+        called_url = request.call_args.kwargs["url"]
+        assert (
+            urllib.parse.urlsplit(called_url).hostname
+            == f"iamcredentials.{FAKE_UNIVERSE_DOMAIN}"
+        )
 
 
 class TestOnDemandCredentials(object):
@@ -706,6 +1053,27 @@ class TestOnDemandCredentials(object):
         assert credentials._signer.key_id == info["private_key_id"]
         assert credentials._issuer == info["client_email"]
         assert credentials._subject == info["client_email"]
+        assert credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+
+    def test_from_service_account_info_universe_domain(self):
+        info = {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+
+        credentials = jwt.OnDemandCredentials.from_service_account_info(info)
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+        override_credentials = jwt.OnDemandCredentials.from_service_account_info(
+            info, universe_domain="override.domain"
+        )
+        assert override_credentials.universe_domain == "override.domain"
+
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_from_service_account_info_empty_universe_kwarg(self, empty_universe):
+        info = {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+
+        credentials = jwt.OnDemandCredentials.from_service_account_info(
+            info, universe_domain=empty_universe
+        )
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     def test_from_service_account_info_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -729,6 +1097,15 @@ class TestOnDemandCredentials(object):
         assert credentials._signer.key_id == info["private_key_id"]
         assert credentials._issuer == info["client_email"]
         assert credentials._subject == info["client_email"]
+        assert credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+
+    def test_from_service_account_file_universe_domain(self, tmp_path):
+        info = {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+        key_file = tmp_path / "service_account_non_default.json"
+        key_file.write_text(json.dumps(info), encoding="utf-8")
+
+        credentials = jwt.OnDemandCredentials.from_service_account_file(str(key_file))
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     def test_from_service_account_file_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -755,11 +1132,93 @@ class TestOnDemandCredentials(object):
         assert jwt_from_signing._issuer == jwt_from_info._issuer
         assert jwt_from_signing._subject == jwt_from_info._subject
 
+    def test_from_signing_credentials_universe_domain(self):
+        sa_creds = service_account.Credentials.from_service_account_info(
+            {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+        )
+        jwt_creds = jwt.OnDemandCredentials.from_signing_credentials(sa_creds)
+        assert isinstance(jwt_creds, jwt.OnDemandCredentials)
+        assert jwt_creds.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+        override_creds = jwt.OnDemandCredentials.from_signing_credentials(
+            sa_creds, universe_domain="override.domain"
+        )
+        assert override_creds.universe_domain == "override.domain"
+
+        bare_signing = mock.create_autospec(auth_credentials.Signing, instance=True)
+        bare_signing.signer = self.credentials.signer
+        bare_signing.signer_email = self.SERVICE_ACCOUNT_EMAIL
+        fallback_creds = jwt.OnDemandCredentials.from_signing_credentials(bare_signing)
+        assert (
+            fallback_creds.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_from_signing_credentials_empty_universe_kwarg(self, empty_universe):
+        sa_creds = service_account.Credentials.from_service_account_info(
+            {**SERVICE_ACCOUNT_INFO, "universe_domain": FAKE_UNIVERSE_DOMAIN}
+        )
+        jwt_creds = jwt.OnDemandCredentials.from_signing_credentials(
+            sa_creds, universe_domain=empty_universe
+        )
+        assert jwt_creds.universe_domain == FAKE_UNIVERSE_DOMAIN
+
     def test_default_state(self):
         # Credentials are *always* valid.
         assert self.credentials.valid
         # Credentials *never* expire.
         assert not self.credentials.expired
+        assert (
+            self.credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert isinstance(
+            self.credentials, auth_credentials.CredentialsWithUniverseDomain
+        )
+
+    @pytest.mark.parametrize("empty_universe", [None, ""])
+    def test_constructor_empty_universe_domain(self, signer, empty_universe):
+        credentials = jwt.OnDemandCredentials(
+            signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            universe_domain=empty_universe,
+        )
+        assert credentials.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+
+    def test_with_universe_domain(self, signer):
+        non_default = self.credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert isinstance(non_default, jwt.OnDemandCredentials)
+        assert non_default.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+        reset_default = non_default.with_universe_domain(
+            auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        assert reset_default.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+
+        custom_creds = jwt.OnDemandCredentials(
+            signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SUBJECT,
+            additional_claims=self.ADDITIONAL_CLAIMS,
+            token_lifetime=600,
+            max_cache_size=2,
+            quota_project_id="project-foo",
+        )
+        cloned = custom_creds.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert cloned._signer == custom_creds._signer
+        assert cloned._issuer == custom_creds._issuer
+        assert cloned._subject == self.SUBJECT
+        assert cloned._additional_claims == self.ADDITIONAL_CLAIMS
+        assert cloned._token_lifetime == 600
+        assert cloned._cache.maxsize == 2
+        assert cloned._cache is not custom_creds._cache
+        assert cloned._quota_project_id == "project-foo"
+        assert cloned.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+    @pytest.mark.parametrize("empty_universe", [None, "", "   "])
+    def test_with_universe_domain_empty_raises(self, empty_universe):
+        with pytest.raises(exceptions.InvalidValue):
+            self.credentials.with_universe_domain(empty_universe)
 
     def test_with_claims(self):
         new_claims = {"meep": "moop"}
@@ -769,6 +1228,24 @@ class TestOnDemandCredentials(object):
         assert new_credentials._issuer == self.credentials._issuer
         assert new_credentials._subject == self.credentials._subject
         assert new_credentials._additional_claims == new_claims
+        assert (
+            self.credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+            .with_claims(additional_claims=new_claims)
+            .universe_domain
+            == FAKE_UNIVERSE_DOMAIN
+        )
+        custom_lifetime_creds = jwt.OnDemandCredentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_claims(
+                additional_claims=new_claims
+            )._token_lifetime
+            == 600
+        )
 
     def test_with_quota_project(self):
         quota_project_id = "project-foo"
@@ -779,6 +1256,22 @@ class TestOnDemandCredentials(object):
         assert new_credentials._subject == self.credentials._subject
         assert new_credentials._additional_claims == self.credentials._additional_claims
         assert new_credentials._quota_project_id == quota_project_id
+        assert (
+            self.credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+            .with_quota_project(quota_project_id)
+            .universe_domain
+            == FAKE_UNIVERSE_DOMAIN
+        )
+        custom_lifetime_creds = jwt.OnDemandCredentials(
+            self.credentials.signer,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.SERVICE_ACCOUNT_EMAIL,
+            token_lifetime=600,
+        )
+        assert (
+            custom_lifetime_creds.with_quota_project(quota_project_id)._token_lifetime
+            == 600
+        )
 
     def test_sign_bytes(self):
         to_sign = b"123"

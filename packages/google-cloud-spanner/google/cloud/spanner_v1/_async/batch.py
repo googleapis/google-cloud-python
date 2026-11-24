@@ -24,7 +24,7 @@ from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._async._helpers import _retry, _retry_on_aborted_exception
 from google.cloud.spanner_v1._helpers import (
-    _check_rst_stream_error,
+    _is_retryable_internal_error,
     _make_list_value_pb,
     _make_list_value_pbs,
     _make_value_pb,
@@ -479,7 +479,7 @@ class MutationGroups(_SessionWrapper):
             response = await _retry(
                 wrapped_method,
                 allowed_exceptions={
-                    InternalServerError: _check_rst_stream_error,
+                    InternalServerError: _is_retryable_internal_error,
                 },
             )
 

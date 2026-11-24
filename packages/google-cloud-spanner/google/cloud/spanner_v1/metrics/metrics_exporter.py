@@ -27,6 +27,7 @@ from google.api.metric_pb2 import MetricDescriptor
 from google.api.monitored_resource_pb2 import (
     MonitoredResource,
 )  # pylint: disable=no-name-in-module
+from google.api_core import client_options as client_options_lib
 from google.api_core.exceptions import (
     DeadlineExceeded,
     InvalidArgument,
@@ -95,6 +96,16 @@ _OPTIONS = [
     ("grpc.primary_user_agent", _USER_AGENT),
 ]
 
+# Scopes that authorize writing time series to Cloud Monitoring.
+_MONITORING_WRITE_SCOPE = "https://www.googleapis.com/auth/monitoring.write"
+_MONITORING_SCOPES = frozenset(
+    {
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/monitoring",
+        _MONITORING_WRITE_SCOPE,
+    }
+)
+
 
 # pylint is unable to resolve members of protobuf objects
 # pylint: disable=no-member
@@ -110,6 +121,11 @@ class CloudMonitoringMetricsExporter(MetricExporter):
     Args:
         project_id: project id of your Google Cloud project.
         client: Client to upload metrics to Google Cloud Monitoring.
+        credentials: Optional credentials for authenticating with Cloud
+            Monitoring.
+        client_options: Optional client options (for example,
+            ``universe_domain`` or ``api_endpoint``) passed to
+            ``MetricServiceClient``.
     """
 
     # Based on the cloud_monitoring exporter found here: https://github.com/GoogleCloudPlatform/opentelemetry-operations-python/blob/main/opentelemetry-exporter-gcp-monitoring/src/opentelemetry/exporter/cloud_monitoring/__init__.py
@@ -119,28 +135,47 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         project_id: Optional[str] = None,
         client: Optional["MetricServiceClient"] = None,
         credentials: Optional[ga_credentials.Credentials] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
     ):
         """Initialize a custom exporter to send metrics for the Spanner Service Metrics."""
         # Default preferred_temporality is all CUMULATIVE so need to customize
         super().__init__()
 
-        # Create a new GRPC Client for Google Cloud Monitoring if not provided
-        self.client = client or MetricServiceClient(
-            transport=MetricServiceGrpcTransport(
-                channel=MetricServiceGrpcTransport.create_channel(
-                    options=_OPTIONS,
-                    credentials=credentials,
-                )
-            )
-        )
-
-        # Set project information
-        self.project_id: str
-        if not project_id:
-            _, default_project_id = google.auth.default()
-            self.project_id = str(default_project_id)
+        if client is not None:
+            self.client = client
         else:
-            self.project_id = project_id
+            # Re-scope credentials pinned to Spanner-only scopes for Cloud Monitoring.
+            monitoring_credentials = credentials
+            if (
+                isinstance(credentials, ga_credentials.Scoped)
+                and not credentials.requires_scopes
+                and not _MONITORING_SCOPES.intersection(credentials.scopes or ())
+            ):
+                monitoring_credentials = credentials.with_scopes(
+                    [_MONITORING_WRITE_SCOPE]
+                )
+
+            # Pass transport/channel callables so MetricServiceClient resolves
+            # universe_domain and validates credentials while keeping _OPTIONS.
+            self.client = MetricServiceClient(
+                credentials=monitoring_credentials,
+                client_options=client_options,
+                transport=lambda **kwargs: MetricServiceGrpcTransport(
+                    **kwargs,
+                    channel=lambda *a, **kw: MetricServiceGrpcTransport.create_channel(
+                        *a, **{**kw, "options": _OPTIONS}
+                    ),
+                ),
+            )
+
+        # Avoid ambient ADC project fallback when explicit credentials are provided.
+        if not project_id:
+            project_id = getattr(credentials, "project_id", None)
+        if not project_id and credentials is None:
+            _, project_id = google.auth.default()
+        if not project_id:
+            raise ValueError("project_id could not be determined.")
+        self.project_id = str(project_id)
         self.project_name = self.client.common_project_path(self.project_id)
 
     def _batch_write(self, series: List["TimeSeries"], timeout_millis: float) -> None:

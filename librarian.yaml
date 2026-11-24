@@ -238,7 +238,7 @@ libraries:
       metadata_name_override: type
       default_version: apiVersion
   - name: google-auth
-    version: 2.62.2
+    version: 2.63.1
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -1428,7 +1428,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-logging
-    version: 3.17.0
+    version: 3.17.1
     apis:
       - path: google/logging/v2
     python:
@@ -1989,7 +1989,7 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.72.0
+    version: 3.72.1
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
@@ -2050,7 +2050,7 @@ libraries:
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
-    version: 3.17.1
+    version: 3.17.2
     apis:
       - path: google/storage/v2
     python:

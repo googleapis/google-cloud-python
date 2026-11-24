@@ -29,7 +29,7 @@ import uuid
 
 import proto
 from google.api_core import datetime_helpers
-from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import Aborted, InternalServerError
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import DecodeError, Message
 from google.protobuf.struct_pb2 import NULL_VALUE, ListValue, Value
@@ -410,8 +410,39 @@ def _validate_client_context(client_context):
     return client_context
 
 
+# The protobuf class underlying the proto-plus ``RequestOptions`` wrapper.
+_REQUEST_OPTIONS_PB = RequestOptions.pb()
+
+
+def _clone_request_options(request_options):
+    """Return an independent RequestOptions copy without mutating caller input.
+
+    Uses protobuf ``CopyFrom`` and ``RequestOptions.wrap`` directly for
+    proto-plus ``RequestOptions`` inputs to avoid Python ``copy.deepcopy``
+    overhead in ``RequestOptions(mapping)``, while delegating dicts, raw
+    protobufs, and invalid types to ``RequestOptions(...)``.
+
+    :type request_options: :class:`~google.cloud.spanner_v1.types.RequestOptions`
+        or :class:`dict`
+    :param request_options: Non-``None`` request options to clone.
+
+    :rtype: :class:`~google.cloud.spanner_v1.types.RequestOptions`
+    :returns: A fresh ``RequestOptions`` backed by an independent protobuf.
+    """
+    if isinstance(request_options, RequestOptions):
+        copied_pb = _REQUEST_OPTIONS_PB()
+        copied_pb.CopyFrom(RequestOptions.pb(request_options))
+        return RequestOptions.wrap(copied_pb)
+    return RequestOptions(request_options)
+
+
 def _merge_request_options(request_options, client_context):
-    """Merge RequestOptions and ClientContext.
+    """Merge RequestOptions and ClientContext without mutating caller input.
+
+    Always returns a fresh :class:`~google.cloud.spanner_v1.types.RequestOptions`
+    copy whenever ``request_options`` is provided so callers may safely merge
+    ``client_context`` or update ``transaction_tag``/``request_tag`` without
+    polluting a caller-shared options instance across requests or threads.
 
     :type request_options: :class:`~google.cloud.spanner_v1.types.RequestOptions`
         or :class:`dict` or None
@@ -425,15 +456,18 @@ def _merge_request_options(request_options, client_context):
     :rtype: :class:`~google.cloud.spanner_v1.types.RequestOptions`
         or None
     :returns:
-        RequestOptions object formed by merging the given ClientContext.
+        A new RequestOptions instance formed by cloning ``request_options`` and
+        merging ``client_context``, or ``None`` when both inputs are ``None``.
     """
     if request_options is None and client_context is None:
         return None
 
     if request_options is None:
         request_options = RequestOptions()
-    elif isinstance(request_options, dict):
-        request_options = RequestOptions(request_options)
+    else:
+        # Always clone non-None input (RequestOptions, raw protobuf, or dict)
+        # so merging client_context or adjusting tags never mutates caller state.
+        request_options = _clone_request_options(request_options)
 
     if client_context:
         request_options.client_context = _merge_client_context(
@@ -985,8 +1019,10 @@ def _retry(
         func: The function to be retried.
         retry_count: The maximum number of times to retry the function.
         delay: The delay in seconds between retries.
-        allowed_exceptions: A tuple of exceptions that are allowed to occur without triggering a retry.
-                            Passing allowed_exceptions as None will lead to retrying for all exceptions.
+        allowed_exceptions: A mapping from exception classes to retry on to
+                            optional predicate callables (or None to retry all
+                            instances). Passing allowed_exceptions as None will
+                            lead to retrying for all exceptions.
 
     Returns:
         The result of the function if it is successful, or raises the last exception if all retries fail.
@@ -1004,11 +1040,10 @@ def _retry(
             )
 
             if is_allowed and retries < retry_count:
-                if (
-                    allowed_exceptions is not None
-                    and allowed_exceptions[exc.__class__] is not None
-                ):
-                    allowed_exceptions[exc.__class__](exc)
+                if allowed_exceptions is not None:
+                    check_exception = allowed_exceptions[exc.__class__]
+                    if callable(check_exception) and not check_exception(exc):
+                        raise exc
                 time.sleep(delay)
                 delay = delay * 2
                 retries = retries + 1
@@ -1016,17 +1051,32 @@ def _retry(
                 raise exc
 
 
-def _check_rst_stream_error(exc):
-    resumable_error = any(
-        resumable_message in exc.message
-        for resumable_message in (
-            "RST_STREAM",
-            "Received unexpected EOS on DATA frame from server",
-        )
+# Keep "RST_STREAM" as a substring to cover all RST_STREAM error messages
+# (e.g., "stream terminated by RST_STREAM" and "Received RST_STREAM with error code ..."),
+# and omit the trailing period on the auth backend error so variants with or without
+# trailing punctuation match.
+_RETRYABLE_INTERNAL_ERROR_MESSAGES = (
+    "RST_STREAM",
+    "Received unexpected EOS on DATA frame from server",
+    "HTTP/2 error code: INTERNAL_ERROR",
+    "Connection closed with unknown cause",
+    "Authentication backend internal server error. Please retry",
+)
+
+
+def _is_retryable_internal_error(exception: Exception) -> bool:
+    """Return whether the exception is a retryable InternalServerError."""
+    if not isinstance(exception, InternalServerError):
+        return False
+
+    message = getattr(exception, "message", None)
+    if not isinstance(message, str):
+        message = str(exception)
+
+    return any(
+        resumable_message in message
+        for resumable_message in _RETRYABLE_INTERNAL_ERROR_MESSAGES
     )
-    if not resumable_error:
-        raise
-    return True
 
 
 def _metadata_with_leader_aware_routing(value, **kw):

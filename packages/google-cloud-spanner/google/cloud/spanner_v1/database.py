@@ -46,6 +46,7 @@ from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
+    _clone_request_options,
     _merge_query_options,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
@@ -599,17 +600,18 @@ class Database(object):
         :raises NotFound: if the instance owning the database does not exist"""
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        db_name = self.database_id
-        if "-" in db_name:
-            if self._database_dialect == DatabaseDialect.POSTGRESQL:
-                db_name = f'"{db_name}"'
-            else:
-                db_name = f"`{db_name}`"
+        database_id = str(self.database_id)
+        if self._database_dialect == DatabaseDialect.POSTGRESQL:
+            escaped = database_id.replace('"', '""')
+            quoted_database_id = f'"{escaped}"'
+        else:
+            escaped = database_id.replace("\\", "\\\\").replace("`", "\\`")
+            quoted_database_id = f"`{escaped}`"
         if type(self._encryption_config) is dict:
             self._encryption_config = EncryptionConfig(**self._encryption_config)
         request = CreateDatabaseRequest(
             parent=self._instance.name,
-            create_statement="CREATE DATABASE %s" % (db_name,),
+            create_statement=f"CREATE DATABASE {quoted_database_id}",
             extra_statements=list(self._ddl_statements),
             encryption_config=self._encryption_config,
             database_dialect=self._database_dialect,
@@ -812,8 +814,8 @@ class Database(object):
         )
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
+        else:
+            request_options = _clone_request_options(request_options)
         request_options.transaction_tag = None
         if params is not None:
             from google.cloud.spanner_v1.transaction import Transaction

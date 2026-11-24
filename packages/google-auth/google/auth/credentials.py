@@ -346,11 +346,15 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     @property
     def regional_access_boundary(self):
         """Optional[str]: The encoded Regional Access Boundary locations."""
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return None
         return self._rab_manager._data.encoded_locations
 
     @property
     def regional_access_boundary_expiry(self):
         """Optional[datetime.datetime]: The expiration time of the Regional Access Boundary."""
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return None
         return self._rab_manager._data.expiry
 
     @abc.abstractmethod
@@ -490,11 +494,15 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     def _is_regional_access_boundary_lookup_required(self):
         """Checks if a Regional Access Boundary lookup is required.
 
-        A lookup is required if the universe domain is supported.
+        A lookup is required if Regional Access Boundary lookup is enabled and
+        the universe domain is supported.
 
         Returns:
             bool: True if a Regional Access Boundary lookup is required, False otherwise.
         """
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return False
+
         # Skip for non-default universe domains.
         if self.universe_domain != DEFAULT_UNIVERSE_DOMAIN:
             return False

@@ -139,6 +139,65 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             await snapshot.execute_sql("SELECT 1")
 
+    async def test_execute_sql_reuses_shared_request_options_across_tenants(self):
+        from google.protobuf import struct_pb2
+
+        from google.cloud.spanner_v1.types import RequestOptions
+
+        shared_options = RequestOptions(
+            priority=RequestOptions.Priority.PRIORITY_LOW,
+            request_tag="req-orig",
+            transaction_tag="keep-tag",
+        )
+        ctx_a = RequestOptions.ClientContext(
+            secure_context={
+                "tenant": struct_pb2.Value(string_value="A"),
+                "only_a": struct_pb2.Value(string_value="secret"),
+            }
+        )
+        ctx_b = RequestOptions.ClientContext(
+            secure_context={"tenant": struct_pb2.Value(string_value="B")}
+        )
+
+        session_a = _Session()
+        session_a._database.spanner_api.execute_streaming_sql.return_value = (
+            _MockIterator(PartialResultSet())
+        )
+        snap_a = self._make_snapshot(session_a, client_context=ctx_a)
+        result_a = await snap_a.execute_sql("SELECT 1", request_options=shared_options)
+        async for _ in result_a:
+            pass
+        req_a = session_a._database.spanner_api.execute_streaming_sql.call_args.kwargs[
+            "request"
+        ]
+
+        session_b = _Session()
+        session_b._database.spanner_api.execute_streaming_sql.return_value = (
+            _MockIterator(PartialResultSet())
+        )
+        snap_b = self._make_snapshot(session_b, client_context=ctx_b)
+        result_b = await snap_b.execute_sql("SELECT 1", request_options=shared_options)
+        async for _ in result_b:
+            pass
+        req_b = session_b._database.spanner_api.execute_streaming_sql.call_args.kwargs[
+            "request"
+        ]
+
+        self.assertEqual(
+            dict(req_a.request_options.client_context.secure_context),
+            {"tenant": "A", "only_a": "secret"},
+        )
+        self.assertEqual(
+            dict(req_b.request_options.client_context.secure_context),
+            {"tenant": "B"},
+        )
+        self.assertEqual(req_a.request_options.transaction_tag, "")
+        self.assertEqual(req_b.request_options.transaction_tag, "")
+        self.assertEqual(shared_options.priority, RequestOptions.Priority.PRIORITY_LOW)
+        self.assertEqual(shared_options.request_tag, "req-orig")
+        self.assertEqual(shared_options.transaction_tag, "keep-tag")
+        self.assertNotIn("client_context", shared_options)
+
     async def test_read_twice_single_use_fails(self):
         from google.cloud.spanner_v1.keyset import KeySet
 
@@ -1536,6 +1595,140 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(method.call_count, 2)
         transaction._build_transaction_selector_pb.assert_called()
 
+    async def test_restart_on_unavailable_all_retryable_internal_errors(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types import TransactionSelector
+
+        retryable_messages = (
+            "RST_STREAM",
+            "stream terminated by RST_STREAM",
+            "Received RST_STREAM with error code 2",
+            "Received unexpected EOS on DATA frame from server",
+            "HTTP/2 error code: INTERNAL_ERROR",
+            "Connection closed with unknown cause",
+            "Authentication backend internal server error. Please retry",
+            "Authentication backend internal server error. Please retry.",
+        )
+
+        for error_message in retryable_messages:
+            with self.subTest(error_message=error_message):
+                request = mock.Mock(
+                    resume_token=b"", spec=["resume_token", "transaction"]
+                )
+                first_item = PartialResultSet(resume_token=b"resume-1")
+                second_item = PartialResultSet()
+                fail_iterator = _MockIterator(
+                    first_item,
+                    fail_after=True,
+                    error=InternalServerError(error_message),
+                )
+                success_iterator = _MockIterator(second_item)
+                method = mock.AsyncMock(side_effect=[fail_iterator, success_iterator])
+
+                database = _Database()
+                session = _Session(database)
+                transaction = mock.Mock()
+                selector_pb = TransactionSelector(id=TXN_ID)
+                transaction._build_transaction_selector_pb.return_value = selector_pb
+
+                results = _restart_on_unavailable(
+                    method,
+                    request,
+                    metadata=[],
+                    trace_name="test",
+                    session=session,
+                    attributes={},
+                    transaction=transaction,
+                    transaction_selector=selector_pb,
+                    observability_options=None,
+                    request_id_manager=database,
+                    resource_info=None,
+                )
+
+                received = [item async for item in results]
+
+                self.assertEqual(received, [first_item, second_item])
+                self.assertEqual(method.call_count, 2)
+                self.assertEqual(request.resume_token, b"resume-1")
+                transaction._build_transaction_selector_pb.assert_called()
+
+    async def test_restart_on_unavailable_initial_retryable_internal_error(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types import TransactionSelector
+
+        request = mock.Mock(resume_token=b"", spec=["resume_token", "transaction"])
+        item = PartialResultSet()
+        method = mock.AsyncMock(
+            side_effect=[
+                InternalServerError(
+                    "Authentication backend internal server error. Please retry."
+                ),
+                _MockIterator(item),
+            ]
+        )
+
+        database = _Database()
+        session = _Session(database)
+        transaction = mock.Mock()
+        selector_pb = TransactionSelector(id=TXN_ID)
+        transaction._build_transaction_selector_pb.return_value = selector_pb
+
+        results = _restart_on_unavailable(
+            method,
+            request,
+            metadata=[],
+            trace_name="test",
+            session=session,
+            attributes={},
+            transaction=transaction,
+            transaction_selector=selector_pb,
+            observability_options=None,
+            request_id_manager=database,
+            resource_info=None,
+        )
+
+        received = [received_item async for received_item in results]
+
+        self.assertEqual(received, [item])
+        self.assertEqual(method.call_count, 2)
+        self.assertEqual(request.resume_token, b"")
+
+    async def test_restart_on_unavailable_non_retryable_internal_error(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types import TransactionSelector
+
+        request = mock.Mock(resume_token=b"", spec=["resume_token", "transaction"])
+        method = mock.AsyncMock(
+            side_effect=InternalServerError("Internal server error.")
+        )
+
+        database = _Database()
+        session = _Session(database)
+        selector_pb = TransactionSelector(id=TXN_ID)
+
+        results = _restart_on_unavailable(
+            method,
+            request,
+            metadata=[],
+            trace_name="test",
+            session=session,
+            attributes={},
+            transaction=None,
+            transaction_selector=selector_pb,
+            observability_options=None,
+            request_id_manager=database,
+            resource_info=None,
+        )
+
+        with self.assertRaisesRegex(
+            InternalServerError, "Internal server error."
+        ) as context:
+            async for _ in results:
+                pass
+
+        self.assertTrue(hasattr(context.exception, "request_id"))
+        self.assertEqual(method.call_count, 1)
+
     async def test_restart_on_unavailable_generic_exception(self):
         from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
 
@@ -2237,6 +2430,71 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             ),
             f"Expected {leader_header} in {metadata}",
         )
+
+    async def test_streamed_result_set_records_metrics_completion_on_close(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+
+        class CancellableStream:
+            def __init__(self, items):
+                self._items = iter(items)
+                self.cancel = mock.Mock()
+
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                try:
+                    return next(self._items)
+                except StopIteration:
+                    raise StopAsyncIteration
+
+        fields = [StructType.Field(name="col", type_=Type(code=TypeCode.INT64))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        first_partial = PartialResultSet(
+            metadata=metadata_pb, resume_token=b"tok-1", last=False
+        )
+        first_partial.values.append(Value(string_value="1"))
+        second_partial = PartialResultSet(last=True)
+        second_partial.values.append(Value(string_value="2"))
+
+        raw_stream = CancellableStream([first_partial, second_partial])
+        database = _Database()
+        database.spanner_api.execute_streaming_sql = mock.Mock(return_value=raw_stream)
+        session = _Session(database)
+        snapshot = self._make_snapshot(session, multi_use=False)
+
+        mock_tracer = mock.Mock()
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            result_set = await snapshot.execute_sql(SQL_QUERY)
+            async_iter = result_set.__aiter__()
+            first_row = await async_iter.__anext__()
+
+            self.assertEqual(first_row, [1])
+            mock_tracer.record_operation_start.assert_called_once()
+            mock_tracer.record_operation_completion.assert_not_called()
+            raw_stream.cancel.assert_not_called()
+
+            await result_set._close()
+            mock_tracer.record_operation_completion.assert_called_once()
+            raw_stream.cancel.assert_called_once()
+            await async_iter.aclose()
+            mock_tracer.record_operation_completion.assert_called_once()
+
+            mock_tracer.reset_mock()
+            database.spanner_api.execute_streaming_sql.reset_mock()
+            unstarted_snapshot = self._make_snapshot(session, multi_use=False)
+            unstarted = await unstarted_snapshot.execute_sql(SQL_QUERY)
+            await unstarted._close()
+            self.assertEqual([row async for row in unstarted], [])
+            database.spanner_api.execute_streaming_sql.assert_not_called()
+            mock_tracer.record_operation_start.assert_not_called()
+            mock_tracer.record_operation_completion.assert_not_called()
 
 
 class _Database(object):
