@@ -532,11 +532,16 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
         binary = binary._clone()
         binary.modifiers = binary.modifiers.copy()
         escape = binary.modifiers.pop("escape", None)
-        if (
-            escape
-            and escape != "\\"
-            and isinstance(getattr(binary.right, "value", None), str)
-        ):
+        if escape and escape != "\\":
+            if not (
+                isinstance(binary.right, elements.BindParameter)
+                and binary.right.unique
+                and isinstance(binary.right.value, str)
+            ):
+                raise sqlalchemy.exc.CompileError(
+                    "BigQuery only supports a custom escape character for literal "
+                    "strings"
+                )
             binary.right = binary.right._clone()
             binary.right.value = escape.join(
                 v.replace("\\", "\\\\").replace(escape, "\\")

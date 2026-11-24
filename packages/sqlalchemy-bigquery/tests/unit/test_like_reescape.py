@@ -23,7 +23,9 @@ We need to correct for the autoescape option in various string
 functions.
 """
 
+import pytest
 import sqlalchemy
+import sqlalchemy.exc
 import sqlalchemy.sql.operators
 import sqlalchemy.sql.schema
 
@@ -66,23 +68,41 @@ def test_like_autoescape_reescape():
     _check(r"ab^%cd", r"ab^\%cd", escape="^")
 
 
-def test_like_reescape_non_string_right():
+def test_like_reescape_non_literal_custom_escape_raises():
+    dialect = sqlalchemy_bigquery.BigQueryDialect()
     col = sqlalchemy.sql.schema.Column("c", sqlalchemy.String)
     other_col = sqlalchemy.sql.schema.Column("other", sqlalchemy.String)
 
-    op_col = col.contains(other_col, escape="/")
-    o2_col = sqlalchemy_bigquery.base.BigQueryCompiler._maybe_reescape(op_col)
-    assert not o2_col.modifiers.get("escape")
-    assert op_col.modifiers.get("escape") == "/"
-    assert o2_col.right is other_col
+    unsupported_exprs = [
+        col.contains(other_col, escape="/"),
+        col.startswith(sqlalchemy.func.replace(other_col, "%", "/%"), escape="/"),
+        col.startswith(sqlalchemy.literal("50/%") + other_col, escape="/"),
+        col.contains(sqlalchemy.bindparam("q"), escape="/"),
+        col.contains(sqlalchemy.bindparam("q", "a/%"), escape="/"),
+        col.contains(sqlalchemy.bindparam("q", unique=True), escape="/"),
+    ]
+    for expr in unsupported_exprs:
+        orig_modifiers = expr.modifiers.copy()
+        with pytest.raises(
+            sqlalchemy.exc.CompileError,
+            match="BigQuery only supports a custom escape character for literal strings",
+        ):
+            expr.compile(dialect=dialect)
+        assert expr.modifiers == orig_modifiers
 
-    param = sqlalchemy.bindparam("p")
-    op_param = col.contains(param, escape="/")
-    o2_param = sqlalchemy_bigquery.base.BigQueryCompiler._maybe_reescape(op_param)
-    assert not o2_param.modifiers.get("escape")
-    assert op_param.modifiers.get("escape") == "/"
-    assert o2_param.right is op_param.right
-    assert o2_param.right.value is None
+    # Literal string expressions (unique BindParameter) and native backslash
+    # escape remain supported.
+    lit_compiled = col.contains(sqlalchemy.literal("50/%"), escape="/").compile(
+        dialect=dialect
+    )
+    assert "ESCAPE" not in lit_compiled.string
+    assert list(lit_compiled.params.values()) == [r"50\%"]
+
+    bs_compiled = col.contains(sqlalchemy.bindparam("q"), escape="\\").compile(
+        dialect=dialect
+    )
+    assert "ESCAPE" not in bs_compiled.string
+    assert bs_compiled.params == {"q": None}
 
 
 def test_like_autoescape_repeated_compile_idempotent():
