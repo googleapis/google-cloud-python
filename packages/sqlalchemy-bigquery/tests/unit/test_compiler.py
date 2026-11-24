@@ -842,3 +842,100 @@ def test_identifier_preparer_escape_unescape():
     dialect_named = sqlalchemy_bigquery.BigQueryDialect(paramstyle="named")
     prep_named = dialect_named.identifier_preparer
     assert prep_named.quote_identifier("a`b\\c%d") == "`a\\`b\\\\c%d`"
+    assert prep_named.quote_identifier("sales`2026") == "`sales\\`2026`"
+    assert prep_named.quote_identifier("folder\\") == "`folder\\\\`"
+    assert prep_named.quote_identifier('a"b') == '`a"b`'
+    assert prep_named.quote_column("rec`ord.fi\\eld") == "`rec\\`ord`.`fi\\\\eld`"
+
+    for raw in (
+        "a`b\\c",
+        r"a\`b",
+        r"a\\`b",
+        "folder\\",
+        r"\`\\`\\",
+        'a"b',
+    ):
+        escaped = prep_named._escape_identifier(raw)
+        assert prep_named._unescape_identifier(escaped) == raw
+
+
+@pytest.mark.parametrize(
+    "bad_ident",
+    [
+        "foo\x00bar",
+        "foo\rbar",
+        "foo\nbar",
+        "foo\tbar",
+        "foo\x1fbar",
+        "foo\x7fbar",
+    ],
+)
+def test_identifier_preparer_rejects_control_characters(bad_ident):
+    import sqlalchemy_bigquery
+
+    dialect = sqlalchemy_bigquery.BigQueryDialect()
+    prep = dialect.identifier_preparer
+
+    with pytest.raises(
+        sqlalchemy.exc.CompileError,
+        match="Identifier cannot contain control characters",
+    ):
+        prep.quote_identifier(bad_ident)
+
+    with pytest.raises(
+        sqlalchemy.exc.CompileError,
+        match="Identifier cannot contain control characters",
+    ):
+        prep.quote_column(f"record.{bad_ident}")
+
+    with pytest.raises(
+        sqlalchemy.exc.CompileError,
+        match="Identifier cannot contain control characters",
+    ):
+        sqlalchemy.select(sqlalchemy.column(bad_ident)).compile(dialect=dialect)
+
+
+def test_identifier_preparer_format_label():
+    import sqlalchemy_bigquery
+
+    dialect_pyformat = sqlalchemy_bigquery.BigQueryDialect(paramstyle="pyformat")
+    prep_pyformat = dialect_pyformat.identifier_preparer
+    dialect_named = sqlalchemy_bigquery.BigQueryDialect(paramstyle="named")
+    prep_named = dialect_named.identifier_preparer
+
+    assert (
+        prep_pyformat.format_label(sqlalchemy.literal_column("1").label("foo`bar #baz"))
+        == "`foo_bar #baz`"
+    )
+    assert (
+        prep_pyformat.format_label(sqlalchemy.literal_column("1").label("foo\\bar"))
+        == "`foo_bar`"
+    )
+    assert (
+        prep_pyformat.format_label(
+            sqlalchemy.literal_column("1").label("foo\r\n\x00\t\x7fbar")
+        )
+        == "`foo_bar`"
+    )
+    assert (
+        prep_pyformat.format_label(sqlalchemy.literal_column("1").label("`leading"))
+        == "`__leading`"
+    )
+    assert (
+        prep_pyformat.format_label(
+            sqlalchemy.literal_column("1").label("a & b's #1 - 50%")
+        )
+        == "`a & b's #1 - 50%%`"
+    )
+    assert (
+        prep_named.format_label(
+            sqlalchemy.literal_column("1").label("a & b's #1 - 50%")
+        )
+        == "`a & b's #1 - 50%`"
+    )
+    assert (
+        sqlalchemy.select(sqlalchemy.literal_column("1").label("foo`bar #baz"))
+        .compile(dialect=dialect_pyformat)
+        .string
+        == "SELECT 1 AS `foo_bar #baz`"
+    )
