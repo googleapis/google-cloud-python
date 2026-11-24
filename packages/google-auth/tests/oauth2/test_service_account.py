@@ -20,7 +20,10 @@ from unittest import mock
 import pytest  # type: ignore
 
 from google.auth import _helpers, crypt, exceptions, iam, jwt, transport
-from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
+from google.auth.credentials import (
+    DEFAULT_UNIVERSE_DOMAIN,
+    CredentialsWithUniverseDomain,
+)
 from google.oauth2 import service_account
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
@@ -90,11 +93,99 @@ class TestCredentials(object):
         cred_copy = credentials._make_copy()
         assert cred_copy._cred_file_path == "/path/to/file"
 
+    def test__make_copy_preserves_jwt_credentials(self):
+        """Copying audience-bound credentials preserves self-signed JWT state."""
+        credentials = self.make_credentials(universe_domain=FAKE_UNIVERSE_DOMAIN)
+        audience = f"https://compute.{FAKE_UNIVERSE_DOMAIN}/"
+        credentials._create_self_signed_jwt(audience)
+
+        assert credentials._jwt_credentials is not None
+        assert credentials._jwt_credentials._audience == audience
+
+        copied = credentials.with_quota_project("quota-project-123")
+
+        assert copied._jwt_credentials is not None
+        assert copied._jwt_credentials is not credentials._jwt_credentials
+        assert copied._jwt_credentials._audience == audience
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        copied.refresh(request)
+
+        request.assert_not_called()
+        payload = jwt.decode(copied.token, PUBLIC_CERT_BYTES)
+        assert payload["aud"] == audience
+
+    def test_with_scopes_clears_jwt_credentials(self):
+        """with_scopes clears cached self-signed JWT credentials so new scopes apply."""
+        credentials = self.make_credentials(universe_domain=FAKE_UNIVERSE_DOMAIN)
+        credentials._create_self_signed_jwt(f"https://compute.{FAKE_UNIVERSE_DOMAIN}/")
+        assert credentials._jwt_credentials is not None
+
+        scoped = credentials.with_scopes(
+            ["https://www.googleapis.com/auth/cloud-platform"]
+        )
+        assert scoped._jwt_credentials is None
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        scoped.refresh(request)
+
+        request.assert_not_called()
+        payload = jwt.decode(scoped.token, PUBLIC_CERT_BYTES)
+        assert payload["scope"] == "https://www.googleapis.com/auth/cloud-platform"
+        assert "aud" not in payload
+
+    def test_with_always_use_jwt_access_false_clears_jwt_credentials(self):
+        """Disabling always_use_jwt_access clears cached self-signed JWT credentials."""
+        credentials = self.make_credentials().with_always_use_jwt_access(True)
+        credentials._create_self_signed_jwt("https://compute.googleapis.com/")
+        assert credentials._jwt_credentials is not None
+
+        updated = credentials.with_always_use_jwt_access(False)
+        assert not updated._always_use_jwt_access
+        assert updated._jwt_credentials is None
+
+    def test_with_universe_domain_clears_jwt_credentials(self):
+        """with_universe_domain clears cached self-signed JWT credentials."""
+        credentials = self.make_credentials(universe_domain=FAKE_UNIVERSE_DOMAIN)
+        credentials._create_self_signed_jwt(f"https://compute.{FAKE_UNIVERSE_DOMAIN}/")
+        assert credentials._jwt_credentials is not None
+
+        updated = credentials.with_universe_domain("other.universe.foo")
+        assert updated.universe_domain == "other.universe.foo"
+        assert updated._jwt_credentials is None
+
+    @pytest.mark.parametrize("universe_domain", [None, ""])
+    def test_with_universe_domain_empty_or_none_defaults(self, universe_domain):
+        """with_universe_domain normalizes None or empty string to the default domain."""
+        credentials = self.make_credentials()
+        updated = credentials.with_universe_domain(universe_domain)
+        assert updated.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert not updated._always_use_jwt_access
+
+    def test_inherits_credentials_with_universe_domain(self):
+        """Credentials implements the CredentialsWithUniverseDomain interface."""
+        credentials = self.make_credentials()
+        assert isinstance(credentials, CredentialsWithUniverseDomain)
+
     def test_constructor_no_universe_domain(self):
         credentials = service_account.Credentials(
             SIGNER, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI, universe_domain=None
         )
         assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+
+    @pytest.mark.parametrize("universe_domain", [None, ""])
+    def test_constructor_empty_or_none_universe_domain_jwt_access(
+        self, universe_domain
+    ):
+        """None or empty universe_domain defaults without forcing JWT access."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            universe_domain=universe_domain,
+        )
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert not credentials._always_use_jwt_access
 
     def test_from_service_account_info(self):
         credentials = service_account.Credentials.from_service_account_info(
@@ -114,6 +205,36 @@ class TestCredentials(object):
 
         assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
         assert credentials._always_use_jwt_access
+
+    @pytest.mark.parametrize("info_universe_domain", [None, ""])
+    def test_from_service_account_info_explicit_universe_domain_preserved(
+        self, info_universe_domain
+    ):
+        """Explicit universe_domain kwarg is not overridden by empty JSON values."""
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info["universe_domain"] = info_universe_domain
+
+        credentials = service_account.Credentials.from_service_account_info(
+            info, universe_domain=FAKE_UNIVERSE_DOMAIN
+        )
+
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
+        assert credentials._always_use_jwt_access
+
+    @pytest.mark.parametrize("explicit_universe_domain", [None, ""])
+    def test_from_service_account_info_explicit_empty_universe_domain_overrides_info(
+        self, explicit_universe_domain
+    ):
+        """Explicit None or empty universe_domain kwarg overrides the JSON value."""
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
+
+        credentials = service_account.Credentials.from_service_account_info(
+            info, universe_domain=explicit_universe_domain
+        )
+
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert not credentials._always_use_jwt_access
 
     def test_from_service_account_info_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -703,6 +824,11 @@ class TestIDTokenCredentials(object):
         )
         assert credentials._universe_domain == DEFAULT_UNIVERSE_DOMAIN
 
+    def test_inherits_credentials_with_universe_domain(self):
+        """IDTokenCredentials implements the CredentialsWithUniverseDomain interface."""
+        credentials = self.make_credentials()
+        assert isinstance(credentials, CredentialsWithUniverseDomain)
+
     def test_from_service_account_info(self):
         credentials = service_account.IDTokenCredentials.from_service_account_info(
             SERVICE_ACCOUNT_INFO, target_audience=self.TARGET_AUDIENCE
@@ -729,6 +855,56 @@ class TestIDTokenCredentials(object):
         assert credentials._token_uri == SERVICE_ACCOUNT_INFO_NON_GDU["token_uri"]
         assert credentials._target_audience == self.TARGET_AUDIENCE
         assert credentials._use_iam_endpoint
+
+    @pytest.mark.parametrize("info_universe_domain", [None, ""])
+    @mock.patch(
+        "google.oauth2._client.call_iam_generate_id_token_endpoint", autospec=True
+    )
+    @mock.patch("google.oauth2._client.id_token_jwt_grant", autospec=True)
+    def test_from_service_account_info_explicit_universe_domain_preserved(
+        self,
+        id_token_jwt_grant,
+        call_iam_generate_id_token_endpoint,
+        info_universe_domain,
+    ):
+        """Explicit universe_domain kwarg wins over null or empty JSON values."""
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info["universe_domain"] = info_universe_domain
+        expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
+        call_iam_generate_id_token_endpoint.return_value = ("id_token", expiry)
+        id_token_jwt_grant.return_value = ("id_token", expiry, {})
+
+        credentials = service_account.IDTokenCredentials.from_service_account_info(
+            info,
+            target_audience=self.TARGET_AUDIENCE,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+
+        assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
+        assert credentials._use_iam_endpoint is True
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        credentials.refresh(request)
+
+        call_iam_generate_id_token_endpoint.assert_called_once()
+        id_token_jwt_grant.assert_not_called()
+
+    @pytest.mark.parametrize("explicit_universe_domain", [None, ""])
+    def test_from_service_account_info_explicit_empty_universe_domain_overrides_info(
+        self, explicit_universe_domain
+    ):
+        """Explicit None or empty universe_domain kwarg overrides the JSON value."""
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
+
+        credentials = service_account.IDTokenCredentials.from_service_account_info(
+            info,
+            target_audience=self.TARGET_AUDIENCE,
+            universe_domain=explicit_universe_domain,
+        )
+
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert not credentials._use_iam_endpoint
 
     def test_from_service_account_file(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -806,6 +982,27 @@ class TestIDTokenCredentials(object):
         assert credentials._token_uri == self.TOKEN_URI
         creds_with_new_token_uri = credentials.with_token_uri(new_token_uri)
         assert creds_with_new_token_uri._token_uri == new_token_uri
+
+    def test_with_universe_domain(self):
+        """with_universe_domain updates domain, IAM endpoint, and IAM flow flag."""
+        credentials = self.make_credentials()
+
+        non_default = credentials.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert non_default.universe_domain == FAKE_UNIVERSE_DOMAIN
+        assert non_default._use_iam_endpoint is True
+        assert non_default._iam_id_token_endpoint == iam._IAM_IDTOKEN_ENDPOINT.replace(
+            "googleapis.com", FAKE_UNIVERSE_DOMAIN
+        )
+
+        default = credentials.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+        assert default.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert default._use_iam_endpoint is False
+        assert default._iam_id_token_endpoint == iam._IAM_IDTOKEN_ENDPOINT
+
+        normalized = credentials.with_universe_domain(None)
+        assert normalized.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert normalized._use_iam_endpoint is False
+        assert normalized._iam_id_token_endpoint == iam._IAM_IDTOKEN_ENDPOINT
 
     def test__make_authorization_grant_assertion(self):
         credentials = self.make_credentials()
