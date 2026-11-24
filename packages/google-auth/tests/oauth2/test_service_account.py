@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import concurrent.futures
 import datetime
 import json
 import os
+import pickle
 from unittest import mock
 
 import pytest  # type: ignore
@@ -676,6 +678,392 @@ class TestCredentials(object):
         with pytest.raises(exceptions.RefreshError) as excinfo:
             credentials.refresh(None)
         assert excinfo.match("domain wide delegation is not supported")
+
+    def test_refresh_unscoped_non_default_universe_domain_requires_self_signed_jwt(
+        self,
+    ):
+        """Unscoped non-default universe refresh raises RefreshError without audience."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            scopes=None,
+            default_scopes=None,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        response = mock.create_autospec(transport.Response, instance=True)
+        response.status = 200
+        response.data = json.dumps(
+            {
+                "access_token": "token",
+                "expires_in": 3600,
+                "token_type": "Bearer",
+            }
+        ).encode("utf-8")
+        request.return_value = response
+
+        assert credentials._always_use_jwt_access
+        assert credentials._jwt_credentials is None
+
+        with pytest.raises(exceptions.RefreshError):
+            credentials.refresh(request)
+
+        request.assert_not_called()
+
+    def test_before_request_unscoped_non_default_universe_domain_derives_audience(self):
+        """Unscoped non-default universe before_request derives audience from URL."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            scopes=None,
+            default_scopes=None,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        response = mock.create_autospec(transport.Response, instance=True)
+        response.status = 200
+        response.data = json.dumps(
+            {
+                "access_token": "token",
+                "expires_in": 3600,
+                "token_type": "Bearer",
+            }
+        ).encode("utf-8")
+        request.return_value = response
+
+        headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/b?alt=json",
+            headers,
+        )
+
+        request.assert_not_called()
+        assert credentials._jwt_credentials is None
+        assert credentials.token is None
+        assert headers["authorization"].startswith("Bearer ")
+        first_token = headers["authorization"].split(" ", 1)[1]
+        payload = jwt.decode(first_token, PUBLIC_CERT_BYTES)
+        assert payload["iss"] == self.SERVICE_ACCOUNT_EMAIL
+        assert payload["aud"] == f"https://storage.{FAKE_UNIVERSE_DOMAIN}/"
+
+        # A subsequent request to the same host reuses the cached token.
+        same_host_headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/o",
+            same_host_headers,
+        )
+        assert same_host_headers["authorization"] == f"Bearer {first_token}"
+
+        # A subsequent request to a different host derives and caches its own
+        # audience without evicting the first host's cached token.
+        other_host_headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/v1/projects/p/topics",
+            other_host_headers,
+        )
+        request.assert_not_called()
+        second_token = other_host_headers["authorization"].split(" ", 1)[1]
+        second_payload = jwt.decode(second_token, PUBLIC_CERT_BYTES)
+        assert second_payload["aud"] == f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/"
+
+        # Alternating back to the first host reuses the cached token (no thrashing).
+        return_host_headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/b",
+            return_host_headers,
+        )
+        assert return_host_headers["authorization"] == f"Bearer {first_token}"
+
+        # Expiring the cached entry causes a fresh token to be minted.
+        cached_jwt_creds = credentials._url_jwt_credentials_cache[
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/"
+        ]
+        cached_jwt_creds.expiry = _helpers.utcnow() - datetime.timedelta(seconds=10)
+        with mock.patch.object(
+            cached_jwt_creds, "refresh", wraps=cached_jwt_creds.refresh
+        ) as refresh_spy:
+            refreshed_headers = {}
+            credentials.before_request(
+                request,
+                "GET",
+                f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/b",
+                refreshed_headers,
+            )
+            refresh_spy.assert_called_once_with(request)
+        refreshed_payload = jwt.decode(
+            refreshed_headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+        )
+        assert refreshed_payload["aud"] == f"https://storage.{FAKE_UNIVERSE_DOMAIN}/"
+
+    def test_before_request_unscoped_non_default_universe_domain_without_hostname(self):
+        """Unscoped non-default universe before_request fails if URL has no host."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            scopes=None,
+            default_scopes=None,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        response = mock.create_autospec(transport.Response, instance=True)
+        response.status = 200
+        response.data = json.dumps(
+            {
+                "access_token": "token",
+                "expires_in": 3600,
+                "token_type": "Bearer",
+            }
+        ).encode("utf-8")
+        request.return_value = response
+
+        with pytest.raises(exceptions.RefreshError):
+            credentials.before_request(request, "GET", "/storage/v1/b", {})
+
+        request.assert_not_called()
+
+    def test_before_request_scoped_non_default_universe_domain_uses_scopes(self):
+        """Scoped non-default universe before_request keeps scope-based self-signed JWT."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            scopes=["https://www.googleapis.com/auth/cloud-platform"],
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/b",
+            headers,
+        )
+
+        request.assert_not_called()
+        token = headers["authorization"].split(" ", 1)[1]
+        payload = jwt.decode(token, PUBLIC_CERT_BYTES)
+        assert payload["scope"] == "https://www.googleapis.com/auth/cloud-platform"
+        assert "aud" not in payload
+        assert not credentials._url_jwt_credentials_cache
+
+    def test_before_request_preserves_explicit_jwt_audience(self):
+        """Explicitly configured JWT audience is not overwritten by request URLs."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        explicit_audience = f"https://compute.{FAKE_UNIVERSE_DOMAIN}/"
+        credentials._create_self_signed_jwt(explicit_audience)
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://us-central1-compute.{FAKE_UNIVERSE_DOMAIN}/v1/projects",
+            headers,
+        )
+
+        request.assert_not_called()
+        token = headers["authorization"].split(" ", 1)[1]
+        payload = jwt.decode(token, PUBLIC_CERT_BYTES)
+        assert payload["aud"] == explicit_audience
+        assert not credentials._url_jwt_credentials_cache
+
+    def test_before_request_default_scopes_non_default_universe_domain_uses_default_scopes(
+        self,
+    ):
+        """Default-scoped non-default universe before_request keeps default scopes."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            scopes=None,
+            default_scopes=["https://www.googleapis.com/auth/cloud-platform"],
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://us-central1-aiplatform.{FAKE_UNIVERSE_DOMAIN}/v1/projects",
+            headers,
+        )
+
+        request.assert_not_called()
+        token = headers["authorization"].split(" ", 1)[1]
+        payload = jwt.decode(token, PUBLIC_CERT_BYTES)
+        assert payload["scope"] == "https://www.googleapis.com/auth/cloud-platform"
+        assert "aud" not in payload
+        assert not credentials._url_jwt_credentials_cache
+
+    @mock.patch("google.oauth2._client.jwt_grant", autospec=True)
+    def test_before_request_preserves_subject_credentials_without_deriving_url_audience(
+        self, jwt_grant
+    ):
+        """Domain-wide delegation credentials do not derive URL audiences or drop tokens."""
+        jwt_grant.return_value = (
+            "oauth-token",
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {},
+        )
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            always_use_jwt_access=True,
+            subject="user@example.com",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        first_headers = {}
+        credentials.before_request(
+            request, "GET", "https://storage.googleapis.com/storage/v1/b", first_headers
+        )
+        second_headers = {}
+        credentials.before_request(
+            request, "GET", "https://pubsub.googleapis.com/v1/topics", second_headers
+        )
+
+        assert jwt_grant.call_count == 1
+        assert credentials._jwt_credentials is None
+        assert not credentials._url_jwt_credentials_cache
+        assert first_headers["authorization"] == "Bearer oauth-token"
+        assert second_headers["authorization"] == "Bearer oauth-token"
+
+    def test_create_self_signed_jwt_none_preserves_url_derivation(self):
+        """No-op _create_self_signed_jwt(None) keeps URL derivation active."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        first_headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/b",
+            first_headers,
+        )
+
+        # Calling _create_self_signed_jwt(None) is a no-op and keeps URL
+        # derivation working for other hosts.
+        credentials._create_self_signed_jwt(None)
+
+        second_headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/v1/projects/p/topics",
+            second_headers,
+        )
+        second_payload = jwt.decode(
+            second_headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+        )
+        assert second_payload["aud"] == f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/"
+
+        # Passing an explicit audience pins it so later URLs do not override it.
+        explicit_audience = f"https://compute.{FAKE_UNIVERSE_DOMAIN}/"
+        credentials._create_self_signed_jwt(explicit_audience)
+
+        third_headers = {}
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/b",
+            third_headers,
+        )
+        third_payload = jwt.decode(
+            third_headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+        )
+        assert third_payload["aud"] == explicit_audience
+
+    def test_before_request_concurrent_multi_host_thread_safe(self):
+        """Concurrent multi-host before_request calls get matching per-host JWTs."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        hosts = [
+            f"storage.{FAKE_UNIVERSE_DOMAIN}",
+            f"pubsub.{FAKE_UNIVERSE_DOMAIN}",
+            f"compute.{FAKE_UNIVERSE_DOMAIN}",
+        ]
+
+        def call_before_request(host):
+            headers = {}
+            credentials.before_request(request, "GET", f"https://{host}/v1/x", headers)
+            payload = jwt.decode(
+                headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+            )
+            return host, payload["aud"]
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
+            futures = [
+                executor.submit(call_before_request, hosts[i % len(hosts)])
+                for i in range(30)
+            ]
+            results = [f.result() for f in futures]
+
+        request.assert_not_called()
+        for host, aud in results:
+            assert aud == f"https://{host}/"
+
+    def test_pickle_roundtrip_with_url_jwt_cache(self):
+        """Credentials with populated URL JWT cache can be pickled and unpickled."""
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        credentials.before_request(
+            request,
+            "GET",
+            f"https://storage.{FAKE_UNIVERSE_DOMAIN}/storage/v1/b",
+            {},
+        )
+        assert f"https://storage.{FAKE_UNIVERSE_DOMAIN}/" in (
+            credentials._url_jwt_credentials_cache
+        )
+
+        restored = pickle.loads(pickle.dumps(credentials))
+        assert not restored._url_jwt_credentials_cache
+
+        headers = {}
+        restored.before_request(
+            request,
+            "GET",
+            f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/v1/projects/p/topics",
+            headers,
+        )
+        payload = jwt.decode(
+            headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+        )
+        assert payload["aud"] == f"https://pubsub.{FAKE_UNIVERSE_DOMAIN}/"
 
 
 class TestIDTokenCredentials(object):

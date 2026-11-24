@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import http.client as http_client
+import json
 import os
 import threading
 from unittest import mock
@@ -23,7 +24,7 @@ import urllib3  # type: ignore
 import google.auth.credentials
 import google.auth.transport._mtls_helper
 import google.auth.transport.urllib3
-from google.auth import environment_vars, exceptions
+from google.auth import crypt, environment_vars, exceptions, jwt
 from google.oauth2 import service_account
 from tests.transport import compliance
 
@@ -190,6 +191,39 @@ class TestAuthorizedHttp(object):
         authed_http.credentials._create_self_signed_jwt.assert_called_once_with(
             "https://{}/".format(default_host)
         )
+
+    def test_authorized_http_non_default_universe_domain_without_default_host(self):
+        """AuthorizedHttp derives JWT audience from URL if default_host is unset."""
+        signer = crypt.RSASigner.from_string(pytest.private_key_bytes, "1")
+        credentials = service_account.Credentials(
+            signer,
+            "service-account@example.com",
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain="universe.foo",
+        )
+        response = ResponseStub()
+        http = HttpStub([response])
+        http.request = mock.Mock(
+            return_value=ResponseStub(
+                data=json.dumps({"access_token": "token", "expires_in": 3600}).encode(
+                    "utf-8"
+                )
+            )
+        )
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+        target_url = "https://storage.universe.foo/storage/v1/b"
+        result = authed_http.urlopen("GET", target_url)
+
+        assert result == response
+        http.request.assert_not_called()
+        assert len(http.requests) == 1
+        auth_header = http.requests[0][3]["authorization"]
+        assert auth_header.startswith("Bearer ")
+        payload = jwt.decode(auth_header.split(" ", 1)[1], pytest.public_cert_bytes)
+        assert payload["aud"] == "https://storage.universe.foo/"
 
     def test_proxies(self):
         http = mock.create_autospec(urllib3.PoolManager)

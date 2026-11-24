@@ -231,6 +231,34 @@ class TestCredentials(object):
         # Credentials should now be valid.
         assert credentials.valid
 
+    @mock.patch("google.oauth2._client_async.jwt_grant", autospec=True)
+    @pytest.mark.asyncio
+    async def test_before_request_unscoped_non_default_universe_domain_derives_audience(
+        self, jwt_grant
+    ):
+        """Async unscoped non-default universe before_request derives URL audience."""
+        credentials = service_account.Credentials(
+            test_service_account.SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            universe_domain="universe.foo",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        headers = {}
+
+        await credentials.before_request(
+            request, "GET", "https://storage.universe.foo/storage/v1/b", headers
+        )
+
+        jwt_grant.assert_not_called()
+        assert headers["authorization"].startswith("Bearer ")
+        payload = jwt.decode(
+            headers["authorization"].split(" ", 1)[1],
+            test_service_account.PUBLIC_CERT_BYTES,
+        )
+        assert payload["iss"] == self.SERVICE_ACCOUNT_EMAIL
+        assert payload["aud"] == "https://storage.universe.foo/"
+
     @pytest.mark.asyncio
     async def test_before_request_triggers_rab_refresh(self, monkeypatch):
         monkeypatch.setenv(

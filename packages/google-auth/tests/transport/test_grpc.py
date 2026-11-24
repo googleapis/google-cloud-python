@@ -14,6 +14,7 @@
 
 import datetime
 import importlib
+import json
 import os
 import time
 import warnings
@@ -21,7 +22,15 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, credentials, environment_vars, exceptions, transport
+from google.auth import (
+    _helpers,
+    credentials,
+    crypt,
+    environment_vars,
+    exceptions,
+    jwt,
+    transport,
+)
 from google.oauth2 import service_account
 
 try:
@@ -130,6 +139,53 @@ class TestAuthMetadataPlugin(object):
         credentials._create_self_signed_jwt.assert_called_once_with(
             "https://{}/".format(default_host)
         )
+
+    def test__get_authorization_headers_non_default_universe_domain_without_default_host(
+        self,
+    ):
+        """AuthMetadataPlugin derives JWT aud from service_url without default_host."""
+        signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, "1")
+        creds = service_account.Credentials(
+            signer,
+            "service-account@example.com",
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain="universe.foo",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        token_response = mock.create_autospec(transport.Response, instance=True)
+        token_response.status = 200
+        token_response.data = json.dumps(
+            {"access_token": "token", "expires_in": 3600}
+        ).encode("utf-8")
+        request.return_value = token_response
+
+        plugin = google.auth.transport.grpc.AuthMetadataPlugin(creds, request)
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = "methodName"
+        context.service_url = "https://pubsub.universe.foo/google.pubsub.v1.Publisher"
+
+        headers = dict(plugin._get_authorization_headers(context))
+
+        request.assert_not_called()
+        assert headers["authorization"].startswith("Bearer ")
+        payload = jwt.decode(
+            headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+        )
+        assert payload["aud"] == "https://pubsub.universe.foo/"
+
+        # A subsequent RPC to a different host updates the derived audience even
+        # though AuthMetadataPlugin calls _create_self_signed_jwt(None) each call.
+        other_context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        other_context.method_name = "otherMethod"
+        other_context.service_url = (
+            "https://storage.universe.foo/google.storage.v2.Storage"
+        )
+        other_headers = dict(plugin._get_authorization_headers(other_context))
+        request.assert_not_called()
+        other_payload = jwt.decode(
+            other_headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+        )
+        assert other_payload["aud"] == "https://storage.universe.foo/"
 
     def test_suppress_metrics_header(self):
         credentials = mock.create_autospec(service_account.Credentials)
@@ -423,6 +479,53 @@ class TestSecureAuthorizedChannel(object):
         composite_channel_credentials.assert_called_once_with(
             ssl_channel_credentials.return_value, metadata_call_credentials.return_value
         )
+
+    def test_secure_authorized_channel_non_default_universe_domain_service_account(
+        self,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        """secure_authorized_channel mints a self-signed JWT for unscoped service account."""
+        signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, "1")
+        creds = service_account.Credentials(
+            signer,
+            "service-account@example.com",
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain="universe.foo",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        token_response = mock.create_autospec(transport.Response, instance=True)
+        token_response.status = 200
+        token_response.data = json.dumps(
+            {"access_token": "token", "expires_in": 3600}
+        ).encode("utf-8")
+        request.return_value = token_response
+
+        google.auth.transport.grpc.secure_authorized_channel(
+            creds,
+            request,
+            "pubsub.universe.foo:443",
+            ssl_credentials=mock.Mock(),
+        )
+
+        auth_plugin = metadata_call_credentials.call_args[0][0]
+        assert isinstance(auth_plugin, google.auth.transport.grpc.AuthMetadataPlugin)
+
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = "methodName"
+        context.service_url = "https://pubsub.universe.foo/google.pubsub.v1.Publisher"
+
+        headers = dict(auth_plugin._get_authorization_headers(context))
+
+        request.assert_not_called()
+        assert headers["authorization"].startswith("Bearer ")
+        payload = jwt.decode(
+            headers["authorization"].split(" ", 1)[1], PUBLIC_CERT_BYTES
+        )
+        assert payload["aud"] == "https://pubsub.universe.foo/"
 
 
 @mock.patch("grpc.ssl_channel_credentials", autospec=True)
