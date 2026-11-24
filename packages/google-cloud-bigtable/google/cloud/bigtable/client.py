@@ -128,17 +128,19 @@ class Client(ClientWithProject):
     :type client_options: :class:`~google.api_core.client_options.ClientOptions`
         or :class:`dict`
     :param client_options: (Optional) Client options used to set user options
-        on the client. API Endpoint should be set through client_options.
-        ``api_endpoint`` and ``universe_domain`` also apply to admin
-        operations, unless ``admin_client_options`` sets either one.
+        on the client. The credential settings, ``api_endpoint`` and
+        ``universe_domain`` set here are used for both data and admin
+        operations, unless ``admin_client_options`` overrides the last two
+        for admin operations.
 
     :type admin_client_options:
         :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
-    :param admin_client_options: (Optional) Client options used to set user
-        options on the client. API Endpoint for admin operations should be set
-        through admin_client_options. If neither ``api_endpoint`` nor
-        ``universe_domain`` is set, admin operations fall back to the values
-        from ``client_options``.
+    :param admin_client_options: (Optional) Overrides the ``api_endpoint``
+        and ``universe_domain`` from ``client_options`` for admin operations
+        only. Data and admin operations are served by separate APIs, so use
+        this when admin operations need a different endpoint than data
+        operations. If neither is set here, the values from
+        ``client_options`` are used.
 
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
