@@ -15,9 +15,12 @@
 """Helpers for :mod:`grpc`."""
 
 import collections
+import contextlib
 import functools
+import logging
 import os
 import threading
+import time
 import urllib.parse
 import warnings
 import weakref
@@ -47,6 +50,7 @@ import grpc
 from google.api_core import exceptions, general_helpers
 from google.api_core._feature_gating_helpers import _strtobool
 
+_LOGGER = logging.getLogger(__name__)
 _DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT"
 
 
@@ -891,6 +895,128 @@ class ChannelStub(grpc.Channel):
         pass
 
 
+def _rpc_error_code(exc: grpc.RpcError) -> Optional[grpc.StatusCode]:
+    code_fn = getattr(exc, "code", None)
+    return code_fn() if callable(code_fn) else None
+
+
+class _RotatingCall(grpc.Call, grpc.Future):
+    """Call and Future proxy that runs the rotation check when the call fails."""
+
+    def __init__(
+        self,
+        rotating_channel: "_RotatingGrpcChannel",
+        channel: grpc.Channel,
+        call: Any,
+        generation: int,
+    ) -> None:
+        self._rotating_channel = rotating_channel
+        # Keep the inner channel alive for the lifetime of this call. With
+        # grpcio's single-threaded unary-stream option, nothing else holds a
+        # reference to it, and a garbage-collected channel cancels its calls.
+        self._channel = channel
+        self._call = call
+        self._generation = generation
+        self._check_lock = threading.Lock()
+        self._rotated: Optional[bool] = None
+
+    def _check_rotation(self, code: Optional[grpc.StatusCode]) -> bool:
+        # Check at most once per call. result(), code() and the callbacks can
+        # all see the same failure, and each check may reload the certificate.
+        if code != grpc.StatusCode.UNAUTHENTICATED:
+            return False
+        with self._check_lock:
+            if self._rotated is None:
+                self._rotated = self._rotating_channel._rotate_on_unauthenticated(
+                    code, self._generation
+                )
+            return self._rotated
+
+    def __iter__(self) -> "_RotatingCall":
+        return self
+
+    def __next__(self) -> Any:
+        try:
+            return next(self._call)
+        except grpc.RpcError as exc:
+            self._check_rotation(_rpc_error_code(exc))
+            raise
+
+    def cancel(self) -> Any:
+        return self._call.cancel()
+
+    def cancelled(self) -> Any:
+        return self._call.cancelled()
+
+    def running(self) -> Any:
+        return self._call.running()
+
+    def done(self) -> Any:
+        return self._call.done()
+
+    def result(self, timeout: Optional[float] = None) -> Any:
+        try:
+            return self._call.result(timeout=timeout)
+        except grpc.RpcError as exc:
+            self._check_rotation(_rpc_error_code(exc))
+            raise
+
+    def exception(self, timeout: Optional[float] = None) -> Any:
+        exc = self._call.exception(timeout=timeout)
+        if isinstance(exc, grpc.RpcError):
+            self._check_rotation(_rpc_error_code(exc))
+        return exc
+
+    def traceback(self, timeout: Optional[float] = None) -> Any:
+        return self._call.traceback(timeout=timeout)
+
+    def _check_rotation_from_callback(self) -> None:
+        # Callbacks run on grpcio's channel thread, where an exception would
+        # skip the caller's callback (and, for add_callback, stop the thread).
+        with contextlib.suppress(Exception):
+            self._check_rotation(self._call.code())
+
+    def add_done_callback(self, fn: Callable[[Any], None]) -> Any:
+        def _done_callback(future: Any) -> None:
+            self._check_rotation_from_callback()
+            # Pass grpcio's future, not self: bidi recovery needs a grpc.RpcError.
+            fn(future)
+
+        return self._call.add_done_callback(_done_callback)
+
+    def add_callback(self, callback: Callable[[], None]) -> Any:
+        def _callback() -> None:
+            self._check_rotation_from_callback()
+            callback()
+
+        # grpcio logs callbacks that raise via their .func attribute, so wrap
+        # in a partial to keep that working.
+        return self._call.add_callback(functools.partial(_callback))
+
+    def is_active(self) -> Any:
+        return self._call.is_active()
+
+    def time_remaining(self) -> Any:
+        return self._call.time_remaining()
+
+    def code(self) -> Any:
+        status_code = self._call.code()
+        self._check_rotation(status_code)
+        return status_code
+
+    def details(self) -> Any:
+        return self._call.details()
+
+    def debug_error_string(self) -> Any:
+        return self._call.debug_error_string()
+
+    def initial_metadata(self) -> Any:
+        return self._call.initial_metadata()
+
+    def trailing_metadata(self) -> Any:
+        return self._call.trailing_metadata()
+
+
 class _BaseRotatingMultiCallable:
     """Base helper for MultiCallable proxies bound to a _RotatingGrpcChannel."""
 
@@ -911,15 +1037,19 @@ class _BaseRotatingMultiCallable:
         self._response_deserializer = response_deserializer
         self._registered_method = _registered_method
 
-    def _resolve_callable(self) -> Any:
+    def _resolve_callable(self) -> Tuple[grpc.Channel, int, Any]:
         rotating = self._rotating_channel
         # grpcio before 1.63 doesn't accept _registered_method, so only pass it
         # when True. GAPIC leaves it False.
         if not self._registered_method:
-            channel, _ = rotating._get_active_channel_and_generation()
+            channel, generation = rotating._get_active_channel_and_generation()
             factory = getattr(channel, self._factory_name)
-            return factory(
-                self._method, self._request_serializer, self._response_deserializer
+            return (
+                channel,
+                generation,
+                factory(
+                    self._method, self._request_serializer, self._response_deserializer
+                ),
             )
         # grpcio crashes if a registered call handle is requested on a closed
         # channel, so check and register under the lock.
@@ -927,12 +1057,18 @@ class _BaseRotatingMultiCallable:
             if rotating._closed:
                 raise ValueError("Cannot invoke RPC on closed channel!")
             rotating._replace_stale_channel_locked()
-            factory = getattr(rotating._channel, self._factory_name)
-            return factory(
-                self._method,
-                self._request_serializer,
-                self._response_deserializer,
-                _registered_method=True,
+            channel = rotating._channel
+            generation = rotating._channel_generation_id
+            factory = getattr(channel, self._factory_name)
+            return (
+                channel,
+                generation,
+                factory(
+                    self._method,
+                    self._request_serializer,
+                    self._response_deserializer,
+                    _registered_method=True,
+                ),
             )
 
 
@@ -971,14 +1107,35 @@ class _RotatingUnaryUnaryMultiCallable(
         wait_for_ready: Optional[bool] = None,
         compression: Optional[grpc.Compression] = None,
     ) -> Tuple[Any, grpc.Call]:
-        return self._resolve_callable().with_call(
-            request,
-            timeout=timeout,
-            metadata=metadata,
-            credentials=credentials,
-            wait_for_ready=wait_for_ready,
-            compression=compression,
-        )
+        start_time = time.monotonic()
+        _, attempt_gen, inner = self._resolve_callable()
+        try:
+            return inner.with_call(
+                request,
+                timeout=timeout,
+                metadata=metadata,
+                credentials=credentials,
+                wait_for_ready=wait_for_ready,
+                compression=compression,
+            )
+        except grpc.RpcError as exc:
+            if not self._rotating_channel._rotate_on_unauthenticated(
+                _rpc_error_code(exc), attempt_gen
+            ):
+                raise
+            if timeout is not None:
+                timeout -= time.monotonic() - start_time
+                if timeout <= 0:
+                    raise
+            _, _, retry_inner = self._resolve_callable()
+            return retry_inner.with_call(
+                request,
+                timeout=timeout,
+                metadata=metadata,
+                credentials=credentials,
+                wait_for_ready=wait_for_ready,
+                compression=compression,
+            )
 
     def future(
         self,
@@ -988,8 +1145,9 @@ class _RotatingUnaryUnaryMultiCallable(
         credentials: Optional[grpc.CallCredentials] = None,
         wait_for_ready: Optional[bool] = None,
         compression: Optional[grpc.Compression] = None,
-    ) -> grpc.Future:
-        return self._resolve_callable().future(
+    ) -> _RotatingCall:
+        channel, attempt_gen, inner = self._resolve_callable()
+        call = inner.future(
             request,
             timeout=timeout,
             metadata=metadata,
@@ -997,6 +1155,7 @@ class _RotatingUnaryUnaryMultiCallable(
             wait_for_ready=wait_for_ready,
             compression=compression,
         )
+        return _RotatingCall(self._rotating_channel, channel, call, attempt_gen)
 
 
 class _RotatingUnaryStreamMultiCallable(
@@ -1014,8 +1173,9 @@ class _RotatingUnaryStreamMultiCallable(
         credentials: Optional[grpc.CallCredentials] = None,
         wait_for_ready: Optional[bool] = None,
         compression: Optional[grpc.Compression] = None,
-    ) -> Any:
-        return self._resolve_callable()(
+    ) -> _RotatingCall:
+        channel, attempt_gen, inner = self._resolve_callable()
+        call = inner(
             request,
             timeout=timeout,
             metadata=metadata,
@@ -1023,6 +1183,7 @@ class _RotatingUnaryStreamMultiCallable(
             wait_for_ready=wait_for_ready,
             compression=compression,
         )
+        return _RotatingCall(self._rotating_channel, channel, call, attempt_gen)
 
 
 class _RotatingStreamUnaryMultiCallable(
@@ -1060,14 +1221,21 @@ class _RotatingStreamUnaryMultiCallable(
         wait_for_ready: Optional[bool] = None,
         compression: Optional[grpc.Compression] = None,
     ) -> Tuple[Any, grpc.Call]:
-        return self._resolve_callable().with_call(
-            request_iterator,
-            timeout=timeout,
-            metadata=metadata,
-            credentials=credentials,
-            wait_for_ready=wait_for_ready,
-            compression=compression,
-        )
+        _, attempt_gen, inner = self._resolve_callable()
+        try:
+            return inner.with_call(
+                request_iterator,
+                timeout=timeout,
+                metadata=metadata,
+                credentials=credentials,
+                wait_for_ready=wait_for_ready,
+                compression=compression,
+            )
+        except grpc.RpcError as exc:
+            self._rotating_channel._rotate_on_unauthenticated(
+                _rpc_error_code(exc), attempt_gen
+            )
+            raise
 
     def future(
         self,
@@ -1077,8 +1245,9 @@ class _RotatingStreamUnaryMultiCallable(
         credentials: Optional[grpc.CallCredentials] = None,
         wait_for_ready: Optional[bool] = None,
         compression: Optional[grpc.Compression] = None,
-    ) -> grpc.Future:
-        return self._resolve_callable().future(
+    ) -> _RotatingCall:
+        channel, attempt_gen, inner = self._resolve_callable()
+        call = inner.future(
             request_iterator,
             timeout=timeout,
             metadata=metadata,
@@ -1086,6 +1255,7 @@ class _RotatingStreamUnaryMultiCallable(
             wait_for_ready=wait_for_ready,
             compression=compression,
         )
+        return _RotatingCall(self._rotating_channel, channel, call, attempt_gen)
 
 
 class _RotatingStreamStreamMultiCallable(
@@ -1103,8 +1273,9 @@ class _RotatingStreamStreamMultiCallable(
         credentials: Optional[grpc.CallCredentials] = None,
         wait_for_ready: Optional[bool] = None,
         compression: Optional[grpc.Compression] = None,
-    ) -> Any:
-        return self._resolve_callable()(
+    ) -> _RotatingCall:
+        channel, attempt_gen, inner = self._resolve_callable()
+        call = inner(
             request_iterator,
             timeout=timeout,
             metadata=metadata,
@@ -1112,6 +1283,7 @@ class _RotatingStreamStreamMultiCallable(
             wait_for_ready=wait_for_ready,
             compression=compression,
         )
+        return _RotatingCall(self._rotating_channel, channel, call, attempt_gen)
 
 
 class _RotatingGrpcChannel(grpc.Channel):
@@ -1231,12 +1403,16 @@ class _RotatingGrpcChannel(grpc.Channel):
             stale_channel.close()
         return old_channel
 
-    def _replace_stale_channel_locked(self) -> None:
-        """Install a channel built with the current certificate if needed."""
+    def _replace_stale_channel_locked(self) -> bool:
+        """Install a channel built with the current certificate if needed.
+
+        Returns ``False`` if the channel was closed.
+        """
         if self._closed:
-            return
+            return False
         if self._current_generation() > self._channel_generation_id:
             self._install_channel_locked(*self._build_channel())
+        return True
 
     def _get_active_channel_and_generation(self) -> Tuple[grpc.Channel, int]:
         gen = self._channel_generation_id
@@ -1246,6 +1422,35 @@ class _RotatingGrpcChannel(grpc.Channel):
         with self._lock:
             self._replace_stale_channel_locked()
             return self._channel, self._channel_generation_id
+
+    def _rotate_on_unauthenticated(
+        self, code: Optional[grpc.StatusCode], attempt_gen: int
+    ) -> bool:
+        """Swap channels if a call failed because the certificate rotated.
+
+        Returns ``True`` if the certificate generation advanced past
+        ``attempt_gen`` and the channel is still open, meaning the call can be
+        retried on the active channel.
+        """
+        if (
+            code != grpc.StatusCode.UNAUTHENTICATED
+            or self._cert_manager is None
+            or self._closed
+        ):
+            return False
+        try:
+            if self._cert_manager.generation_id <= attempt_gen:
+                self._cert_manager.refresh(expected_generation=attempt_gen)
+                if self._cert_manager.generation_id <= attempt_gen:
+                    return False
+            with self._lock:
+                return self._replace_stale_channel_locked()
+        except Exception:
+            _LOGGER.debug(
+                "Reactive channel rotation failed; will retry on next RPC.",
+                exc_info=True,
+            )
+            return False
 
     def unary_unary(
         self,
