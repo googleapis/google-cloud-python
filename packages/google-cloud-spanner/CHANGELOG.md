@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.72.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.72.0...google-cloud-spanner-v3.72.1) (2026-11-22)
+
+
+### Bug Fixes
+
+* **spanner:** respect universe_domain and client_options in metrics exporter ([#19172](https://github.com/googleapis/google-cloud-python/issues/19172)) ([6160b0d](https://github.com/googleapis/google-cloud-python/commit/6160b0d0fd6ca20d2481859e9c2035ffab2c60a6))
+
 ## [3.72.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.71.0...google-cloud-spanner-v3.72.0) (2026-11-12)
 
 

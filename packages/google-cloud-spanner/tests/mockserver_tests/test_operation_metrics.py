@@ -424,3 +424,63 @@ class TestOperationMetricsIntegration(MockServerTestBase):
             self.assertIn("operation_latencies", metrics)
             op_lat_point = metrics["operation_latencies"][0]
             self.assertEqual(op_lat_point.count, 1)
+
+    def test_operation_latency_recorded_on_streamed_result_set_close(self):
+        fields = [("col1", TypeCode.INT64)]
+        partials = _make_partial_result_sets(
+            fields,
+            [
+                {"values": ["1"], "resume_token": b"token-1", "last": False},
+                {"values": ["2"], "last": True},
+            ],
+        )
+        add_execute_streaming_sql_results("select 1", partials)
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.metrics.metrics_tracer_factory.get_meter_provider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.MeterProvider",
+                return_value=meter_provider,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+        ):
+            _, database = self._setup_client_and_database()
+            with database.snapshot() as snapshot:
+                results = snapshot.execute_sql("select 1")
+                rows = iter(results)
+                self.assertEqual(next(rows), [1])
+
+                # Stream is still mid-flight; operation metrics must not be recorded yet.
+                metrics_before = self._extract_metrics(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+                self.assertNotIn("operation_latencies", metrics_before)
+                self.assertNotIn("operation_count", metrics_before)
+
+                # Closing the StreamedResultSet records completion metrics immediately
+                # even while `results` and `rows` remain alive in local scope.
+                results._close()
+                metrics_after = self._extract_metrics(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+                self.assertIn("operation_latencies", metrics_after)
+                self.assertEqual(metrics_after["operation_latencies"][0].count, 1)
+                self.assertIn("operation_count", metrics_after)
+                self.assertEqual(metrics_after["operation_count"][0].value, 1)
+
+                # Idempotent: closing again does not double-record.
+                results._close()
+                rows.close()
+                metrics_final = self._extract_metrics(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+                self.assertEqual(metrics_final["operation_latencies"][0].count, 1)
+                self.assertEqual(metrics_final["operation_count"][0].value, 1)

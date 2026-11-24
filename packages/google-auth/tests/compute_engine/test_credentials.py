@@ -22,6 +22,7 @@ import responses  # type: ignore
 
 from google.auth import (
     _helpers,
+    environment_vars,
     exceptions,
     jwt,
     metrics,
@@ -424,7 +425,11 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
         assert url is None
 
-    def test_is_regional_access_boundary_lookup_required(self):
+    def test_is_regional_access_boundary_lookup_required(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         creds = self.credentials
         creds._universe_domain_cached = True
 
@@ -456,8 +461,12 @@ class TestCredentials(object):
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     def test_regional_access_boundary_disabled_state_transitions(
-        self, mock_get_service_account_info
+        self, mock_get_service_account_info, monkeypatch
     ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         mock_get_service_account_info.return_value = {
             "email": "spiffe://trust-domain/ns/ns/sa/sa",
             "scopes": ["one", "two"],
@@ -587,6 +596,48 @@ class TestCredentials(object):
         new_creds = creds._set_blocking_regional_access_boundary_lookup()
         assert creds._rab_manager._use_blocking_regional_access_boundary_lookup
         assert new_creds is creds
+
+    @responses.activate
+    def test_before_request_skips_rab_when_disabled_by_env_var(
+        self, monkeypatch, tmp_path
+    ):
+        monkeypatch.setenv(environment_vars.CLOUD_SDK_CONFIG_DIR, str(tmp_path))
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "false",
+        )
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": "service-account@project.iam.gserviceaccount.com"},
+        )
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/token",
+            status=200,
+            content_type="application/json",
+            json={"access_token": "mds-token", "expires_in": 500},
+        )
+
+        creds = credentials.Credentials()
+        creds._set_blocking_regional_access_boundary_lookup()
+        headers = {}
+        creds.before_request(
+            requests.Request(), "GET", "https://storage.googleapis.com", headers
+        )
+
+        assert headers["authorization"] == "Bearer mds-token"
+        assert "x-allowed-locations" not in headers
+        assert [call.request.url for call in responses.calls] == [
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/token",
+        ]
 
 
 class TestIDTokenCredentials(object):

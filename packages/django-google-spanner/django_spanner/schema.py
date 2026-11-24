@@ -10,7 +10,6 @@ from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 from django.db.models.fields import NOT_PROVIDED
 
-from django_spanner import USE_EMULATOR
 from django_spanner._opentelemetry_tracing import trace_call
 
 
@@ -568,15 +567,6 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             ),
             [],
         )
-
-    def _check_sql(self, name, check):
-        # Emulator does not support check constraints yet.
-        if USE_EMULATOR:
-            return None
-        return self.sql_constraint % {
-            "name": self.quote_name(name),
-            "constraint": self.sql_check_constraint % {"check": check},
-        }
 
     def _unique_sql(
         self,

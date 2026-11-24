@@ -5,14 +5,12 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import datetime
-import unittest
 
 from django.db import connection
 from django.db.utils import IntegrityError
 from django.test import TransactionTestCase
 from django.utils import timezone
 
-from django_spanner import USE_EMULATOR
 from tests.system.django_spanner.utils import (
     setup_database,
     setup_instance,
@@ -23,7 +21,6 @@ from tests.system.django_spanner.utils import (
 from .models import Event
 
 
-@unittest.skipIf(USE_EMULATOR, "Check Constraint is not implemented in emulator.")
 class TestCheckConstraint(TransactionTestCase):
     @classmethod
     def setUpClass(cls):
@@ -61,8 +58,12 @@ class TestCheckConstraint(TransactionTestCase):
         now = timezone.now()
         now_minus_1_day = now - timezone.timedelta(days=1)
         event_invalid = Event(start_date=now, end_date=now_minus_1_day)
-        with self.assertRaises(IntegrityError):
+        with self.assertRaisesRegex(IntegrityError, "ConstraintError") as context:
             event_invalid.save()
+        cause = context.exception
+        while cause.__cause__ is not None:
+            cause = cause.__cause__
+        self.assertIn("check_start_date", str(cause))
 
 
 class TestCheckConstraintValidation(TransactionTestCase):
