@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.17.0...google-cloud-logging-v3.17.1) (2026-11-22)
+
+
+### Bug Fixes
+
+* **logging:** honor universe_domain in HTTP transport ([#19173](https://github.com/googleapis/google-cloud-python/issues/19173)) ([1663b4b](https://github.com/googleapis/google-cloud-python/commit/1663b4bbf190e614e6db638ff147418542bb97ba))
+
 ## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.16.3...google-cloud-logging-v3.17.0) (2026-10-01)
 
 

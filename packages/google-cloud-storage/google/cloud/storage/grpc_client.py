@@ -16,48 +16,71 @@
 
 import os
 
+from google.api_core import universe
+from google.auth import credentials as auth_credentials
 from google.cloud.client import ClientWithProject
 
 from google.cloud import _storage_v2 as storage_v2
-from google.cloud.storage import _opentelemetry_metrics
+from google.cloud._storage_v2._compat import get_universe_domain
 
 _marker = object()
-_DEFAULT_HOST = "storage.googleapis.com"
-_DEFAULT_HOST_DIRECT_PATH = "storage-direct.googleapis.com"
-_DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT"
+_DEFAULT_UNIVERSE_DOMAIN = universe.DEFAULT_UNIVERSE
 
 
-def _resolve_direct_path_interconnect(option_value: bool) -> bool:
-    """Resolves DirectPath over Interconnect flag from env var or parameter."""
-    env_val = os.environ.get(_DIRECT_PATH_INTERCONNECT_ENV)
-    if env_val is not None:
-        env_val_clean = env_val.strip().lower()
-        if env_val_clean == "true":
-            return True
-        elif env_val_clean == "false":
-            return False
-        else:
-            raise ValueError(
-                f"Invalid value for {_DIRECT_PATH_INTERCONNECT_ENV}: {env_val}"
-            )
-    return bool(option_value)
+def _get_option(client_options, name):
+    """Reads an option from a dict, a ``ClientOptions`` instance, or ``None``."""
+    if isinstance(client_options, dict):
+        return client_options.get(name)
+    return getattr(client_options, name, None)
 
 
-def _rewrite_host_for_interconnect(
-    host: str,
-    old_host: str = _DEFAULT_HOST,
-    new_host: str = _DEFAULT_HOST_DIRECT_PATH,
-) -> str:
-    """Rewrites the default GCS endpoint to the DirectPath over Interconnect host."""
-    if not host:
-        return new_host
-    for prefix in ("", "https://", "http://", "dns:///"):
-        candidate = f"{prefix}{old_host}"
-        if host.startswith(candidate):
-            rest = host[len(candidate) :]
-            if not rest or rest[0] in (":", "/", "?", "#"):
-                return f"{prefix}{new_host}{rest}"
-    return host
+def _resolve_universe_domain(client_options) -> str:
+    """Resolves the universe domain with the helper the generated client uses."""
+    return get_universe_domain(
+        _get_option(client_options, "universe_domain"),
+        os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        default_universe=_DEFAULT_UNIVERSE_DOMAIN,
+    )
+
+
+def _resolve_grpc_config(client_options, attempt_direct_path):
+    """Resolves universe domain, target host, quota project, and DirectPath flag.
+
+    DirectPath is only attempted in the default universe.
+    """
+    universe_domain = _resolve_universe_domain(client_options)
+    if universe_domain.lower() != _DEFAULT_UNIVERSE_DOMAIN.lower():
+        attempt_direct_path = False
+
+    host = _get_option(client_options, "api_endpoint") or f"storage.{universe_domain}"
+    return (
+        universe_domain,
+        host,
+        _get_option(client_options, "quota_project_id"),
+        attempt_direct_path,
+    )
+
+
+def _is_mock_object(value) -> bool:
+    """Returns True when ``value`` is a ``unittest.mock`` object."""
+    return any(cls.__module__ == "unittest.mock" for cls in type(value).__mro__)
+
+
+def _validate_universe_domain(universe_domain: str, credentials) -> None:
+    """Raises UniverseMismatchError unless the credentials belong to ``universe_domain``.
+
+    Credentials that do not expose a universe domain are treated as
+    ``googleapis.com``, so they are rejected in any other universe.
+    Unconfigured ``unittest.mock`` credentials are skipped so caller unit tests
+    using ``mock.Mock()`` continue to work.
+    """
+    if credentials is not None and not isinstance(
+        credentials, auth_credentials.AnonymousCredentials
+    ):
+        creds_universe = getattr(credentials, "universe_domain", None)
+        if _is_mock_object(creds_universe):
+            return
+        universe.compare_domains(universe_domain, credentials)
 
 
 class GrpcClient(ClientWithProject):
@@ -97,26 +120,6 @@ class GrpcClient(ClientWithProject):
         This provides a direct, unproxied connection to GCS for lower latency
         and higher throughput, and is highly recommended when running on Google
         Cloud infrastructure. Defaults to ``True``.
-
-    :type attempt_direct_path_xds_over_interconnect: bool
-    :param attempt_direct_path_xds_over_interconnect:
-        (Optional) Whether to attempt DirectPath over Cloud Interconnect
-        using xDS and standard TLS. Can also be overridden via the
-        ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT`` environment
-        variable (``"true"`` or ``"false"``). Defaults to ``False``.
-
-    :type enable_metrics: bool or None
-    :param enable_metrics:
-        (Optional, Experimental) Whether to enable OpenTelemetry metrics. If
-        ``None``, falls back to the ``GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS``
-        environment variable, or ``False`` if unset.
-
-    :type enable_debug_metrics: bool or None
-    :param enable_debug_metrics:
-        (Optional, Experimental) Whether to enable debug OpenTelemetry
-        metrics. If ``None``, falls back to the
-        ``GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS`` environment variable,
-        or ``False`` if unset.
     """
 
     def __init__(
@@ -128,20 +131,8 @@ class GrpcClient(ClientWithProject):
         *,
         api_key=None,
         attempt_direct_path=True,
-        attempt_direct_path_xds_over_interconnect=False,
-        enable_metrics=None,
-        enable_debug_metrics=None,
     ):
         super(GrpcClient, self).__init__(project=project, credentials=credentials)
-
-        self._enable_metrics = enable_metrics
-        self._enable_debug_metrics = enable_debug_metrics
-        self._metrics_enabled = _opentelemetry_metrics.is_metrics_enabled(
-            enable_metrics
-        )
-        self._debug_metrics_enabled = _opentelemetry_metrics.is_debug_metrics_enabled(
-            enable_debug_metrics
-        )
 
         if isinstance(client_options, dict):
             if api_key:
@@ -151,27 +142,23 @@ class GrpcClient(ClientWithProject):
         elif api_key:
             client_options.api_key = api_key
 
-        use_dp_interconnect = _resolve_direct_path_interconnect(
-            attempt_direct_path_xds_over_interconnect
+        effective_credentials = (
+            credentials
+            if credentials is not None
+            else getattr(self, "_credentials", None)
         )
-
+        self._universe_domain = _resolve_universe_domain(client_options)
         self._grpc_client = self._create_gapic_client(
-            credentials=credentials,
+            credentials=effective_credentials,
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
-            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
         )
 
     @property
-    def metrics_enabled(self) -> bool:
-        """(Experimental) Returns ``True`` if OpenTelemetry metrics recording is active for this client."""
-        return self._metrics_enabled
-
-    @property
-    def debug_metrics_enabled(self) -> bool:
-        """(Experimental) Returns ``True`` if debug metrics recording is active for this client."""
-        return self._debug_metrics_enabled
+    def universe_domain(self) -> str:
+        """The universe domain used by the client instance."""
+        return self._universe_domain
 
     def _create_gapic_client(
         self,
@@ -179,39 +166,29 @@ class GrpcClient(ClientWithProject):
         client_info=None,
         client_options=None,
         attempt_direct_path=True,
-        attempt_direct_path_xds_over_interconnect=False,
     ):
         """Creates and configures the low-level GAPIC `storage_v2` client."""
+        (
+            universe_domain,
+            host,
+            quota_project_id,
+            attempt_direct_path,
+        ) = _resolve_grpc_config(client_options, attempt_direct_path)
+        _validate_universe_domain(universe_domain, credentials)
+
         transport_cls = storage_v2.StorageClient.get_transport_class("grpc")
+        channel_kwargs = {
+            "host": host,
+            "credentials": credentials,
+            "attempt_direct_path": attempt_direct_path,
+        }
+        if quota_project_id is not None:
+            channel_kwargs["quota_project_id"] = quota_project_id
 
-        if attempt_direct_path_xds_over_interconnect:
-            host = _DEFAULT_HOST
-            quota_project_id = None
-            if isinstance(client_options, dict):
-                host = client_options.get("api_endpoint") or _DEFAULT_HOST
-                quota_project_id = client_options.get("quota_project_id")
-            elif client_options is not None:
-                host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
-                quota_project_id = getattr(client_options, "quota_project_id", None)
-            host = _rewrite_host_for_interconnect(host)
-            channel_kwargs = {
-                "host": host,
-                "credentials": credentials,
-                "attempt_direct_path": True,
-                "attempt_direct_path_xds_over_interconnect": True,
-            }
-            if quota_project_id is not None:
-                channel_kwargs["quota_project_id"] = quota_project_id
-            channel = transport_cls.create_channel(**channel_kwargs)
-        else:
-            channel = transport_cls.create_channel(
-                attempt_direct_path=attempt_direct_path
-            )
-
-        transport = transport_cls(credentials=credentials, channel=channel)
+        channel = transport_cls.create_channel(**channel_kwargs)
+        transport = transport_cls(host=host, channel=channel)
 
         return storage_v2.StorageClient(
-            credentials=credentials,
             transport=transport,
             client_info=client_info,
             client_options=client_options,

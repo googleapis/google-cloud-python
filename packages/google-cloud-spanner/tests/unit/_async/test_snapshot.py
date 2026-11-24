@@ -139,6 +139,65 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             await snapshot.execute_sql("SELECT 1")
 
+    async def test_execute_sql_reuses_shared_request_options_across_tenants(self):
+        from google.protobuf import struct_pb2
+
+        from google.cloud.spanner_v1.types import RequestOptions
+
+        shared_options = RequestOptions(
+            priority=RequestOptions.Priority.PRIORITY_LOW,
+            request_tag="req-orig",
+            transaction_tag="keep-tag",
+        )
+        ctx_a = RequestOptions.ClientContext(
+            secure_context={
+                "tenant": struct_pb2.Value(string_value="A"),
+                "only_a": struct_pb2.Value(string_value="secret"),
+            }
+        )
+        ctx_b = RequestOptions.ClientContext(
+            secure_context={"tenant": struct_pb2.Value(string_value="B")}
+        )
+
+        session_a = _Session()
+        session_a._database.spanner_api.execute_streaming_sql.return_value = (
+            _MockIterator(PartialResultSet())
+        )
+        snap_a = self._make_snapshot(session_a, client_context=ctx_a)
+        result_a = await snap_a.execute_sql("SELECT 1", request_options=shared_options)
+        async for _ in result_a:
+            pass
+        req_a = session_a._database.spanner_api.execute_streaming_sql.call_args.kwargs[
+            "request"
+        ]
+
+        session_b = _Session()
+        session_b._database.spanner_api.execute_streaming_sql.return_value = (
+            _MockIterator(PartialResultSet())
+        )
+        snap_b = self._make_snapshot(session_b, client_context=ctx_b)
+        result_b = await snap_b.execute_sql("SELECT 1", request_options=shared_options)
+        async for _ in result_b:
+            pass
+        req_b = session_b._database.spanner_api.execute_streaming_sql.call_args.kwargs[
+            "request"
+        ]
+
+        self.assertEqual(
+            dict(req_a.request_options.client_context.secure_context),
+            {"tenant": "A", "only_a": "secret"},
+        )
+        self.assertEqual(
+            dict(req_b.request_options.client_context.secure_context),
+            {"tenant": "B"},
+        )
+        self.assertEqual(req_a.request_options.transaction_tag, "")
+        self.assertEqual(req_b.request_options.transaction_tag, "")
+        self.assertEqual(shared_options.priority, RequestOptions.Priority.PRIORITY_LOW)
+        self.assertEqual(shared_options.request_tag, "req-orig")
+        self.assertEqual(shared_options.transaction_tag, "keep-tag")
+        self.assertNotIn("client_context", shared_options)
+
     async def test_read_twice_single_use_fails(self):
         from google.cloud.spanner_v1.keyset import KeySet
 
@@ -2237,6 +2296,71 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             ),
             f"Expected {leader_header} in {metadata}",
         )
+
+    async def test_streamed_result_set_records_metrics_completion_on_close(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+
+        class CancellableStream:
+            def __init__(self, items):
+                self._items = iter(items)
+                self.cancel = mock.Mock()
+
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                try:
+                    return next(self._items)
+                except StopIteration:
+                    raise StopAsyncIteration
+
+        fields = [StructType.Field(name="col", type_=Type(code=TypeCode.INT64))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        first_partial = PartialResultSet(
+            metadata=metadata_pb, resume_token=b"tok-1", last=False
+        )
+        first_partial.values.append(Value(string_value="1"))
+        second_partial = PartialResultSet(last=True)
+        second_partial.values.append(Value(string_value="2"))
+
+        raw_stream = CancellableStream([first_partial, second_partial])
+        database = _Database()
+        database.spanner_api.execute_streaming_sql = mock.Mock(return_value=raw_stream)
+        session = _Session(database)
+        snapshot = self._make_snapshot(session, multi_use=False)
+
+        mock_tracer = mock.Mock()
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            result_set = await snapshot.execute_sql(SQL_QUERY)
+            async_iter = result_set.__aiter__()
+            first_row = await async_iter.__anext__()
+
+            self.assertEqual(first_row, [1])
+            mock_tracer.record_operation_start.assert_called_once()
+            mock_tracer.record_operation_completion.assert_not_called()
+            raw_stream.cancel.assert_not_called()
+
+            await result_set._close()
+            mock_tracer.record_operation_completion.assert_called_once()
+            raw_stream.cancel.assert_called_once()
+            await async_iter.aclose()
+            mock_tracer.record_operation_completion.assert_called_once()
+
+            mock_tracer.reset_mock()
+            database.spanner_api.execute_streaming_sql.reset_mock()
+            unstarted_snapshot = self._make_snapshot(session, multi_use=False)
+            unstarted = await unstarted_snapshot.execute_sql(SQL_QUERY)
+            await unstarted._close()
+            self.assertEqual([row async for row in unstarted], [])
+            database.spanner_api.execute_streaming_sql.assert_not_called()
+            mock_tracer.record_operation_start.assert_not_called()
+            mock_tracer.record_operation_completion.assert_not_called()
 
 
 class _Database(object):

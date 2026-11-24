@@ -421,6 +421,45 @@ class TestOperationMetricsIntegration(
                 check_operation_count=False,
             )
 
+    def test_operation_latency_recorded_on_streamed_result_set_close(self):
+        fields = [("col1", TypeCode.INT64)]
+        partials = _make_partial_result_sets(
+            fields,
+            [
+                {"values": ["1"], "resume_token": b"token-1", "last": False},
+                {"values": ["2"], "last": True},
+            ],
+        )
+        add_execute_streaming_sql_results("select 1", partials)
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with self.patched_metrics_environment(meter_provider):
+            database = self._setup_database()
+            with database.snapshot() as snapshot:
+                results = snapshot.execute_sql("select 1")
+                rows = iter(results)
+                self.assertEqual(next(rows), [1])
+
+                # Stream is still mid-flight; operation metrics must not be recorded yet.
+                self._assert_metrics_not_recorded(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+
+                # Closing the StreamedResultSet records completion metrics immediately
+                # even while `results` and `rows` remain alive in local scope.
+                results._close()
+                self._assert_operation_metrics_recorded(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+
+                # Idempotent: closing again does not double-record.
+                results._close()
+                rows.close()
+                self._assert_operation_metrics_recorded(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+
 
 class TestOperationMetricsAsyncIntegration(
     AsyncMockServerTestBase, _OperationMetricsAssertionsMixin
@@ -653,10 +692,47 @@ class TestOperationMetricsAsyncIntegration(
                     check_count=False,
                 )
 
-                # AsyncStreamedResultSet.__aiter__ does not close _response_iterator on aclose().
-                await results._response_iterator.aclose()
                 await row_iterator.aclose()
 
+                self._assert_operation_metrics_recorded(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+
+    async def test_async_operation_latency_recorded_on_streamed_result_set_close(self):
+        fields = [("col1", TypeCode.INT64)]
+        partials = _make_partial_result_sets(
+            fields,
+            [
+                {"values": ["1"], "resume_token": b"token-1", "last": False},
+                {"values": ["2"], "last": True},
+            ],
+        )
+        add_execute_streaming_sql_results("select 1", partials)
+        reader = InMemoryMetricReader()
+        meter_provider = MeterProvider(metric_readers=[reader])
+
+        with self.patched_metrics_environment(meter_provider):
+            database = await self._setup_database()
+            async with database.snapshot() as snapshot:
+                results = await snapshot.execute_sql("select 1")
+                rows = aiter(results)
+                self.assertEqual(await anext(rows), [1])
+
+                # Stream is still mid-flight; operation metrics must not be recorded yet.
+                self._assert_metrics_not_recorded(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+
+                # Closing the StreamedResultSet records completion metrics immediately
+                # even while `results` and `rows` remain alive in local scope.
+                await results._close()
+                self._assert_operation_metrics_recorded(
+                    reader, method="Spanner.ExecuteStreamingSql"
+                )
+
+                # Idempotent: closing again does not double-record.
+                await results._close()
+                await rows.aclose()
                 self._assert_operation_metrics_recorded(
                     reader, method="Spanner.ExecuteStreamingSql"
                 )
