@@ -280,6 +280,22 @@ class Client(ClientWithProject):
             UNIVERSE_DOMAIN=universe_domain
         )
 
+    def _resolve_admin_client_options(self):
+        """Return ``admin_client_options``, inheriting ``universe_domain`` from
+        ``client_options`` if unset so admin clients report the right universe."""
+        admin_options = self._admin_client_options
+        client_universe = _get_client_option(self._client_options, "universe_domain")
+        if (
+            not client_universe
+            or _get_client_option(admin_options, "universe_domain") is not None
+        ):
+            return admin_options
+        if admin_options is None or isinstance(admin_options, dict):
+            return {**(admin_options or {}), "universe_domain": client_universe}
+        admin_options = copy.copy(admin_options)
+        admin_options.universe_domain = client_universe
+        return admin_options
+
     def _create_gapic_client_channel(self, client_class, grpc_transport):
         if self._emulator_host is not None:
             api_endpoint = self._emulator_host
@@ -371,7 +387,7 @@ class Client(ClientWithProject):
             )
             klass = _create_gapic_client(
                 bigtable_admin_v2.BaseBigtableTableAdminClient,
-                client_options=self._admin_client_options,
+                client_options=self._resolve_admin_client_options(),
                 transport=transport,
             )
             self._table_admin_client = klass(self)
@@ -408,7 +424,7 @@ class Client(ClientWithProject):
             )
             klass = _create_gapic_client(
                 bigtable_admin_v2.BigtableInstanceAdminClient,
-                client_options=self._admin_client_options,
+                client_options=self._resolve_admin_client_options(),
                 transport=transport,
             )
             self._instance_admin_client = klass(self)
