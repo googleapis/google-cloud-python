@@ -40,8 +40,16 @@ LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+ALL_PYTHON: List[str] = [
     "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+    "3.15",
+]
+
+UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.11",
     "3.12",
     "3.13",
@@ -88,7 +96,6 @@ MYPY_CONFIG_FILE = next(
 
 
 nox.options.sessions = [
-    "unit-3.10",
     "unit-3.11",
     "unit-3.12",
     "unit-3.13",
@@ -212,12 +219,15 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
 )
 def unit(session, protobuf_implementation):
+    if session.python not in UNIT_TEST_PYTHON_VERSIONS:
+        session.skip(f"Python {session.python} is not supported.")
+
     # Install all test dependencies, then install this package in-place.
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -329,7 +339,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.10")
+@nox.session(python="3.11")
 def docs(session):
     """Build the docs for this library."""
 
@@ -364,7 +374,7 @@ def docs(session):
     )
 
 
-@nox.session(python="3.10")
+@nox.session(python="3.11")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 

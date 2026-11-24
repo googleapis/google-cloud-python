@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.63.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.63.0...google-auth-v2.63.1) (2026-11-21)
+
+
+### Bug Fixes
+
+* **auth:** support universe_domain in jwt and _jwt_async credentials ([#19133](https://github.com/googleapis/google-cloud-python/issues/19133)) ([a2b9b8f](https://github.com/googleapis/google-cloud-python/commit/a2b9b8f9edbaa9794e639b6f796e7f36cfdd97de))
+
 ## [2.63.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.62.2...google-auth-v2.63.0) (2026-11-20)
 
 
