@@ -249,13 +249,19 @@ def build_logger() -> Logger:
     return create_autospec(Logger, instance=True)
 
 
-def build_scoped_credentials() -> Credentials:
+def build_scoped_credentials(universe_domain: str = "googleapis.com") -> Credentials:
     """Builds and returns a mock scoped credentials for testing."""
 
     class _ScopedCredentials(Credentials, Scoped):
         pass
 
-    return create_autospec(spec=_ScopedCredentials, instance=True)
+    creds = create_autospec(spec=_ScopedCredentials, instance=True)
+    creds.universe_domain = universe_domain
+    creds.with_scopes.return_value.universe_domain = universe_domain
+    creds.with_scopes.return_value.with_quota_project.return_value.universe_domain = (
+        universe_domain
+    )
+    return creds
 
 
 def build_spanner_api() -> SpannerClient:

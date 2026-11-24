@@ -1562,7 +1562,7 @@ class TestInitializeMetrics(unittest.TestCase):
     ):
         from google.cloud.spanner_v1 import client as MUT
 
-        creds = build_scoped_credentials()
+        creds = build_scoped_credentials(universe_domain="custom.universe")
         creds.project_id = "resolved-from-creds"
         MUT._metrics_monitor_initialized = False
         try:
@@ -1630,7 +1630,7 @@ class TestInitializeMetrics(unittest.TestCase):
     ):
         from google.cloud.spanner_v1 import client as MUT
 
-        creds = build_scoped_credentials()
+        creds = build_scoped_credentials(universe_domain="custom.universe")
         MUT._metrics_monitor_initialized = False
         try:
             MUT.Client(

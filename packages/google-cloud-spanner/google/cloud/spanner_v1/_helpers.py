@@ -1541,21 +1541,6 @@ def _drain_stream(iterator):
     _GLOBAL_STREAM_DRAINER.drain(iterator)
 
 
-def _is_mock_object(value) -> bool:
-    """Return True when ``value`` is a ``unittest.mock`` or ``mock`` object.
-
-    Args:
-        value: Any object to inspect.
-
-    Returns:
-        bool: True if any class in ``value``'s MRO comes from
-            ``unittest.mock`` or ``mock.mock``.
-    """
-    return any(
-        cls.__module__ in ("unittest.mock", "mock.mock") for cls in type(value).__mro__
-    )
-
-
 def _validate_universe_domain(client_options, credentials) -> None:
     """Validate that credentials belong to the configured universe domain.
 
@@ -1564,9 +1549,8 @@ def _validate_universe_domain(client_options, credentials) -> None:
     ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` -> ``"googleapis.com"``), and verifies
     compatibility via :func:`google.api_core.universe.compare_domains`.
 
-    Skips validation when ``credentials`` is ``None``,
-    :class:`~google.auth.credentials.AnonymousCredentials`, or a mock object
-    whose ``universe_domain`` attribute is itself a mock.
+    Skips validation when ``credentials`` is ``None`` or
+    :class:`~google.auth.credentials.AnonymousCredentials`.
 
     Args:
         client_options: ``ClientOptions``, ``dict``, or ``None``.
@@ -1586,7 +1570,4 @@ def _validate_universe_domain(client_options, credentials) -> None:
         getattr(client_options, "universe_domain", None),
         os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
     )
-    creds_universe = getattr(credentials, "universe_domain", None)
-    if _is_mock_object(creds_universe):
-        return
     api_core_universe.compare_domains(client_universe, credentials)
