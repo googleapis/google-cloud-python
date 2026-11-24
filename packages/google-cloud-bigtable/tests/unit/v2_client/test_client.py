@@ -15,6 +15,7 @@
 
 import mock
 import pytest
+from google.api_core.client_options import ClientOptions
 
 from ._testing import _make_credentials
 
@@ -515,28 +516,31 @@ def test_client_admin_clients_endpoint(
                 assert admin_client.universe_domain == expected_universe
 
 
-def test_client_admin_clients_inherit_universe_wo_mutating_options():
-    from google.api_core.client_options import ClientOptions
-
-    for admin_client_options in (
+@pytest.mark.parametrize(
+    "admin_client_options",
+    [
         {"api_endpoint": "admin.custom.test:443"},
         ClientOptions(api_endpoint="admin.custom.test:443"),
-    ):
-        client = _make_client(
-            project=PROJECT,
-            credentials=_make_credentials(),
-            admin=True,
-            client_options={"universe_domain": "tpc.test"},
-            admin_client_options=admin_client_options,
-        )
-        assert client.table_admin_client.universe_domain == "tpc.test"
-        assert client.instance_admin_client.universe_domain == "tpc.test"
-        # the options object passed in by the caller is left untouched
-        assert client._admin_client_options is admin_client_options
-        if isinstance(admin_client_options, dict):
-            assert admin_client_options == {"api_endpoint": "admin.custom.test:443"}
-        else:
-            assert admin_client_options.universe_domain is None
+    ],
+)
+def test_client_admin_clients_inherit_universe_wo_mutating_options(
+    admin_client_options,
+):
+    client = _make_client(
+        project=PROJECT,
+        credentials=_make_credentials(),
+        admin=True,
+        client_options={"universe_domain": "tpc.test"},
+        admin_client_options=admin_client_options,
+    )
+    assert client.table_admin_client.universe_domain == "tpc.test"
+    assert client.instance_admin_client.universe_domain == "tpc.test"
+    # the options object passed in by the caller is left untouched
+    assert client._admin_client_options is admin_client_options
+    if isinstance(admin_client_options, dict):
+        assert admin_client_options == {"api_endpoint": "admin.custom.test:443"}
+    else:
+        assert admin_client_options.universe_domain is None
 
 
 def test_client_admin_clients_w_universe_env_set_after_construction():
