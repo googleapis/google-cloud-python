@@ -139,6 +139,65 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             await snapshot.execute_sql("SELECT 1")
 
+    async def test_execute_sql_reuses_shared_request_options_across_tenants(self):
+        from google.protobuf import struct_pb2
+
+        from google.cloud.spanner_v1.types import RequestOptions
+
+        shared_options = RequestOptions(
+            priority=RequestOptions.Priority.PRIORITY_LOW,
+            request_tag="req-orig",
+            transaction_tag="keep-tag",
+        )
+        ctx_a = RequestOptions.ClientContext(
+            secure_context={
+                "tenant": struct_pb2.Value(string_value="A"),
+                "only_a": struct_pb2.Value(string_value="secret"),
+            }
+        )
+        ctx_b = RequestOptions.ClientContext(
+            secure_context={"tenant": struct_pb2.Value(string_value="B")}
+        )
+
+        session_a = _Session()
+        session_a._database.spanner_api.execute_streaming_sql.return_value = (
+            _MockIterator(PartialResultSet())
+        )
+        snap_a = self._make_snapshot(session_a, client_context=ctx_a)
+        result_a = await snap_a.execute_sql("SELECT 1", request_options=shared_options)
+        async for _ in result_a:
+            pass
+        req_a = session_a._database.spanner_api.execute_streaming_sql.call_args.kwargs[
+            "request"
+        ]
+
+        session_b = _Session()
+        session_b._database.spanner_api.execute_streaming_sql.return_value = (
+            _MockIterator(PartialResultSet())
+        )
+        snap_b = self._make_snapshot(session_b, client_context=ctx_b)
+        result_b = await snap_b.execute_sql("SELECT 1", request_options=shared_options)
+        async for _ in result_b:
+            pass
+        req_b = session_b._database.spanner_api.execute_streaming_sql.call_args.kwargs[
+            "request"
+        ]
+
+        self.assertEqual(
+            dict(req_a.request_options.client_context.secure_context),
+            {"tenant": "A", "only_a": "secret"},
+        )
+        self.assertEqual(
+            dict(req_b.request_options.client_context.secure_context),
+            {"tenant": "B"},
+        )
+        self.assertEqual(req_a.request_options.transaction_tag, "")
+        self.assertEqual(req_b.request_options.transaction_tag, "")
+        self.assertEqual(shared_options.priority, RequestOptions.Priority.PRIORITY_LOW)
+        self.assertEqual(shared_options.request_tag, "req-orig")
+        self.assertEqual(shared_options.transaction_tag, "keep-tag")
+        self.assertNotIn("client_context", shared_options)
+
     async def test_read_twice_single_use_fails(self):
         from google.cloud.spanner_v1.keyset import KeySet
 
@@ -772,7 +831,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
 
         item_one = mock.Mock(
             value=0,
-            resume_token=b"",
+            resume_token=b"r1",
             metadata=None,
             precommit_token=None,
             last=False,
@@ -829,8 +888,17 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             SpannerMetricsTracerFactory,
         )
 
-        item = mock.Mock(
+        item_one = mock.Mock(
             value=0,
+            resume_token=b"r1",
+            metadata=None,
+            precommit_token=None,
+            last=False,
+            _pb=None,
+            spec=["value", "resume_token", "metadata", "precommit_token", "last"],
+        )
+        item_two = mock.Mock(
+            value=1,
             resume_token=b"",
             metadata=None,
             precommit_token=None,
@@ -838,7 +906,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             _pb=None,
             spec=["value", "resume_token", "metadata", "precommit_token", "last"],
         )
-        raw = _MockIterator(item)
+        raw = _MockIterator(item_one, item_two)
         restart = mock.Mock(return_value=raw)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         database = _Database()
@@ -857,7 +925,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
 
         # Breaking early must not raise ValueError during aclose()
         async for it in resumable:
-            self.assertEqual(it, item)
+            self.assertEqual(it, item_one)
             break
         await resumable.aclose()
 
@@ -976,8 +1044,17 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             "metrics export failure"
         )
 
-        item = mock.Mock(
+        item_one = mock.Mock(
             value=0,
+            resume_token=b"r1",
+            metadata=None,
+            precommit_token=None,
+            last=False,
+            _pb=None,
+            spec=["value", "resume_token", "metadata", "precommit_token", "last"],
+        )
+        item_two = mock.Mock(
+            value=1,
             resume_token=b"",
             metadata=None,
             precommit_token=None,
@@ -985,7 +1062,7 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             _pb=None,
             spec=["value", "resume_token", "metadata", "precommit_token", "last"],
         )
-        mock_iterator = _MockIterator(item)
+        mock_iterator = _MockIterator(item_one, item_two)
         mock_iterator.cancel = mock.Mock()
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         database = _Database()
@@ -1009,9 +1086,59 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
                 break
             await resumable.aclose()
 
-            self.assertEqual(items, [item])
+            self.assertEqual(items, [item_one])
             mock_tracer.record_operation_completion.assert_called_once()
             mock_iterator.cancel.assert_called_once()
+
+            # Also verify error is handled when stream finishes normally before yield
+            mock_tracer.reset_mock()
+            resumable_done = _restart_on_unavailable(
+                mock.Mock(return_value=_MockIterator(item_two)),
+                request,
+                session=session,
+                transaction=snapshot,
+                request_id_manager=session._database,
+                resource_info={"project": "p"},
+            )
+            # Take the final item and stop pulling, like StreamedResultSet does.
+            first = await resumable_done.__anext__()
+            self.assertEqual(first, item_two)
+            # Completion is recorded before the final yield...
+            mock_tracer.record_operation_completion.assert_called_once()
+
+            await resumable_done.aclose()
+            # ...and the finally doesn't record it a second time.
+            mock_tracer.record_operation_completion.assert_called_once()
+
+            # Also verify when stream_finished is set via item.last=True
+            mock_tracer.reset_mock()
+            item_last = mock.Mock(
+                value=2,
+                resume_token=b"",
+                metadata=None,
+                precommit_token=None,
+                last=True,
+                _pb=None,
+                spec=["value", "resume_token", "metadata", "precommit_token", "last"],
+            )
+            with mock.patch(
+                "google.cloud.spanner_v1._async.snapshot._drain_stream"
+            ) as mock_drain:
+                resumable_last = _restart_on_unavailable(
+                    mock.Mock(return_value=_MockIterator(item_last)),
+                    request,
+                    session=session,
+                    transaction=snapshot,
+                    request_id_manager=session._database,
+                    resource_info={"project": "p"},
+                )
+                first_last = await resumable_last.__anext__()
+                self.assertEqual(first_last, item_last)
+                mock_drain.assert_called_once()
+                mock_tracer.record_operation_completion.assert_called_once()
+
+                await resumable_last.aclose()
+                mock_tracer.record_operation_completion.assert_called_once()
 
     async def test_restart_on_unavailable_metrics_completion_error_preserves_query_error(
         self,

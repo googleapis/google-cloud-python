@@ -31,12 +31,25 @@ FLAKE8_VERSION = "flake8==6.1.0"
 BLACK_VERSION = "black[jupyter]==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
 ISORT_VERSION = "isort==5.11.0"
+# Temporarily pin pytest<9.2 because pytest 9.2.0 applies filterwarnings=error
+# before pytest_configure hooks run, turning pytest-asyncio's unset
+# asyncio_default_fixture_loop_scope warning into an error. Remove once
+# pytest 9.2+ warning and fixture scope deprecations are resolved.
+PYTEST_VERSION = "pytest<9.2"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+ALL_PYTHON: List[str] = [
     "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+    "3.15",
+]
+
+UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.11",
     "3.12",
     "3.13",
@@ -47,7 +60,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
-    "pytest",
+    PYTEST_VERSION,
     "pytest-cov",
     "pytest-asyncio",
 ]
@@ -60,7 +73,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
-    "pytest",
+    PYTEST_VERSION,
     "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
@@ -83,7 +96,6 @@ MYPY_CONFIG_FILE = next(
 
 
 nox.options.sessions = [
-    "unit-3.10",
     "unit-3.11",
     "unit-3.12",
     "unit-3.13",
@@ -207,12 +219,15 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
 )
 def unit(session, protobuf_implementation):
+    if session.python not in UNIT_TEST_PYTHON_VERSIONS:
+        session.skip(f"Python {session.python} is not supported.")
+
     # Install all test dependencies, then install this package in-place.
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -324,7 +339,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.10")
+@nox.session(python="3.11")
 def docs(session):
     """Build the docs for this library."""
 
@@ -359,7 +374,7 @@ def docs(session):
     )
 
 
-@nox.session(python="3.10")
+@nox.session(python="3.11")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 

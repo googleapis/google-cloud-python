@@ -115,6 +115,7 @@ from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import (
     DEFAULT_GET_JOB_TIMEOUT,
+    DEFAULT_INSERT_ROWS_RETRY,
     DEFAULT_JOB_RETRY,
     DEFAULT_RETRY,
     DEFAULT_TIMEOUT,
@@ -142,7 +143,6 @@ ResumableTimeoutType = Union[
 ]  # for resumable media methods
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
-    # os.PathLike is only subscriptable in Python 3.9+, thus shielding with a condition.
     PathType = Union[str, bytes, os.PathLike[str], os.PathLike[bytes], io.IOBase]
 _DEFAULT_CHUNKSIZE = 100 * 1024 * 1024  # 100 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
@@ -272,7 +272,9 @@ class Client(ClientWithProject):
         default_job_creation_mode (Optional[str]):
             Sets the default job creation mode used by query methods such as
             query_and_wait().  For lightweight queries, JOB_CREATION_OPTIONAL is
-            generally recommended.
+            generally recommended. If unset, query_and_wait() uses
+            JOB_CREATION_OPTIONAL for ``ARROW`` results and creates a job
+            otherwise.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -3049,13 +3051,8 @@ class Client(ClientWithProject):
                     )
 
             else:
-                dataframe.to_csv(
-                    tmppath,
-                    index=False,
-                    header=False,
-                    encoding="utf-8",
-                    float_format="%.17g",
-                    date_format="%Y-%m-%d %H:%M:%S.%f",
+                _pandas_helpers.dataframe_to_csv(
+                    dataframe, new_job_config.schema, tmppath
                 )
 
             with open(tmppath, "rb") as tmpfile:
@@ -3808,6 +3805,13 @@ class Client(ClientWithProject):
                 The maximum total number of rows from this request.
             query_results_format (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsFormat]]):
                 [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
+
+                With ``ARROW``, the query uses ``JOB_CREATION_OPTIONAL``
+                unless :attr:`default_job_creation_mode` is set. Results that
+                fit in one page then have no job, so the returned iterator's
+                ``job_id`` is ``None``. To always create a job, set
+                ``default_job_creation_mode`` to ``JOB_CREATION_REQUIRED`` or
+                use :meth:`query`.
             compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
                 [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
             timestamp_precision (Optional[enums.TimestampPrecision]):
@@ -4062,7 +4066,7 @@ class Client(ClientWithProject):
         skip_invalid_rows: Optional[bool] = None,
         ignore_unknown_values: Optional[bool] = None,
         template_suffix: Optional[str] = None,
-        retry: retries.Retry = DEFAULT_RETRY,
+        retry: retries.Retry = DEFAULT_INSERT_ROWS_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
     ) -> Sequence[dict]:
         """Insert rows into a table without applying local type conversions.
@@ -4116,7 +4120,12 @@ class Client(ClientWithProject):
                 based on the schema of the template table. See
                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
             retry (Optional[google.api_core.retry.Retry]):
-                How to retry the RPC.
+                How to retry the RPC. Defaults to
+                :data:`~google.cloud.bigquery.retry.DEFAULT_INSERT_ROWS_RETRY`,
+                which, unlike :data:`~google.cloud.bigquery.retry.DEFAULT_RETRY`,
+                does not retry :class:`requests.exceptions.SSLError`, since
+                for streaming inserts that usually indicates an invalid request
+                (e.g. a schema mismatch) rather than a transient failure.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
@@ -4186,6 +4195,7 @@ class Client(ClientWithProject):
         path = "%s/insertAll" % table.path
         # We can always retry, because every row has an insert ID.
         span_attributes = {"path": path}
+
         try:
             response = self._call_api(
                 retry,
@@ -4196,12 +4206,15 @@ class Client(ClientWithProject):
                 data=data,
                 timeout=timeout,
             )
-        except requests.exceptions.SSLError as exc:
-            msg = (
-                "An SSL/Connection error occurred while streaming rows. This "
-                "could be due to an invalid request (e.g., invalid table schema)."
-            )
-            raise requests.exceptions.SSLError(msg) from exc
+        except (requests.exceptions.SSLError, core_exceptions.RetryError) as exc:
+            cause = exc.cause if isinstance(exc, core_exceptions.RetryError) else exc
+            if isinstance(cause, requests.exceptions.SSLError):
+                msg = (
+                    "An SSL/Connection error occurred while streaming rows. This "
+                    "could be due to an invalid request (e.g., invalid table schema)."
+                )
+                raise requests.exceptions.SSLError(msg) from exc
+            raise
         errors = []
 
         for error in response.get("insertErrors", ()):

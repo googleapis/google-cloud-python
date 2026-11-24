@@ -14,6 +14,7 @@
 
 import asyncio
 import datetime
+import logging
 
 try:
     from unittest import mock
@@ -28,14 +29,15 @@ except ImportError:
     pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import (
-    client_options as client_options_lib,
-)
-from google.api_core import (
+    _observability,
     exceptions,
     gapic_v1,
     grpc_helpers_async,
     retry_async,
     timeout,
+)
+from google.api_core import (
+    client_options as client_options_lib,
 )
 
 
@@ -400,10 +402,11 @@ async def test_wrap_method_async_otel_tracing_enabled_success(
     assert result == "async_success"
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
+        kind="INTERNAL",
         attributes={
             "rpc.system.name": expected_rpc_system,
             "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+            "url.domain": "googleapis.com",
         },
     )
     mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
@@ -466,6 +469,33 @@ async def test_wrap_method_async_otel_tracing_client_options(
 
     assert result == "success"
     mock_provider.get_tracer.assert_called_once_with("google.api_core")
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_default_host(mock_otel):
+    """Proves that async wrap_method falls back to default_host when api_endpoint is unset."""
+    mock_target = mock.AsyncMock(return_value="success")
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        client_options=client_options_lib.ClientOptions(),
+        method_name="/google.showcase.v1beta1.Echo/Echo",
+        default_host="localhost:7469",
+    )
+    result = await wrapped()
+
+    assert result == "success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.showcase.v1beta1.Echo/Echo",
+        kind="INTERNAL",
+        attributes={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "url.domain": "googleapis.com",
+            "server.address": "localhost",
+            "server.port": 7469,
+        },
+    )
 
 
 @pytest.mark.asyncio
@@ -602,3 +632,57 @@ async def test_invoke_wrapped_method_with_metadata_and_no_client_info():
     method.assert_called_once_with(
         mock.sentinel.request, metadata=[("custom-header", "val")]
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "service_logger,expected_logger",
+    [
+        pytest.param(
+            logging.getLogger("google.cloud.bigtable_v2"),
+            logging.getLogger("google.cloud.bigtable_v2"),
+            id="explicit_service_logger_bound",
+        ),
+        pytest.param(
+            None,
+            _observability._DEFAULT_LOGGER,
+            id="unset_service_logger_uses_default",
+        ),
+    ],
+)
+async def test_wrap_method_async_binds_service_logger_context(
+    service_logger, expected_logger
+):
+    """Proves async wrap_method binds service_logger across await and resets afterward."""
+    observed_loggers = []
+
+    async def record_active_logger(*args, **kwargs):
+        await asyncio.sleep(0)
+        observed_loggers.append(_observability._ACTIVE_SERVICE_LOGGER.get())
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        record_active_logger, kind="rest_asyncio", service_logger=service_logger
+    )
+
+    # Live ContextVar before the RPC starts (no leaked state).
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+    await wrapped()
+    # Snapshot captured inside wrapped() across await while _trace_span() was active.
+    assert observed_loggers == [expected_logger]
+    # Live ContextVar after wrapped() returns (cleanly reset).
+    assert _observability._ACTIVE_SERVICE_LOGGER.get() is _observability._DEFAULT_LOGGER
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_grpc_stub_binds_service_logger():
+    """Proves async wrap_method preserves an explicit service_logger on a real gRPC stub."""
+    bigtable_logger = logging.getLogger("google.cloud.bigtable_v2")
+    channel = aio.insecure_channel("localhost:1")
+    try:
+        stub = channel.unary_unary("/google.bigtable.v2.Bigtable/MutateRow")
+        wrapped = gapic_v1.method_async.wrap_method(
+            stub, kind="grpc_asyncio", service_logger=bigtable_logger
+        )
+    finally:
+        await channel.close()
+    assert wrapped._service_logger is bigtable_logger

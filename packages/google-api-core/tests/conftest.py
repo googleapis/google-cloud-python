@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import os
 import sys
 import types
@@ -43,7 +44,9 @@ def mock_otel(monkeypatch):
 
     mock_trace = mock.Mock()
     mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.get_current_span.return_value = mock_span
     mock_trace.SpanKind.CLIENT = "CLIENT"
+    mock_trace.SpanKind.INTERNAL = "INTERNAL"
     mock_trace.StatusCode.ERROR = "ERROR"
 
     with (
@@ -56,6 +59,9 @@ def mock_otel(monkeypatch):
             {
                 "opentelemetry": mock.Mock(trace=mock_trace),
                 "opentelemetry.trace": mock_trace,
+                "opentelemetry.trace.status": mock.Mock(),
+                "opentelemetry.trace.propagation.tracecontext": mock.Mock(),
+                "opentelemetry.instrumentation.grpc": mock.Mock(),
             },
         ),
     ):
@@ -94,3 +100,19 @@ def mock_async_channel():
     channel._stream_unary_interceptors = []
     channel._stream_stream_interceptors = []
     return channel
+
+
+@pytest.fixture
+def mock_logger():
+    """Provides a strict autospecced logging.Logger instance."""
+    return mock.create_autospec(logging.Logger, instance=True, spec_set=True)
+
+
+@pytest.fixture
+def mock_service_logger(monkeypatch, mock_logger):
+    """Enables experimental error logging and binds mock_logger as the active service logger."""
+    from google.api_core import _observability
+
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_LOGGING_ENABLED", "true")
+    with _observability._service_logger_context(mock_logger):
+        yield mock_logger

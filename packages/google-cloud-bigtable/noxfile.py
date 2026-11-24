@@ -57,7 +57,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
-    "pytest-asyncio==0.21.2",
+    "pytest-asyncio>=0.26.0",
     "pytest-order==1.3.0",
     RUFF_VERSION,
     "pyyaml==6.0.2",
@@ -512,9 +512,6 @@ def docfx(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
-    # Customization: Add extra sections to the table of contents for the Classic vs Async clients
-    session.install("pyyaml")
-    session.run("python", "docs/scripts/patch_devsite_toc.py")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

@@ -416,10 +416,17 @@ class BigtableDataClientAsync(ClientWithProject):
         ):
             # raise error if not in an event loop in async client
             CrossSync.verify_async_event_loop()
-            self._channel_refresh_task = CrossSync.create_daemon_task(
-                self._manage_channel,
-                task_name=f"{self.__class__.__name__} channel refresh",
-            )
+            try:
+                self._channel_refresh_task = CrossSync.create_daemon_task(
+                    self._manage_channel,
+                    task_name=f"{self.__class__.__name__} channel refresh",
+                )
+            except Exception as e:
+                _LOGGER.warning(
+                    f"Failed to start background channel refresh task: {e}. "
+                    "Channel refresh will be disabled."
+                )
+                self._channel_refresh_task = None
 
     @CrossSync.convert
     async def close(self, timeout: float | None = 2.0):
@@ -1150,18 +1157,29 @@ class _DataApiTargetAsync(abc.ABC):
             default_retryable_errors or ()
         )
 
+        if CrossSync.is_async:
+            try:
+                CrossSync.verify_async_event_loop()
+            except RuntimeError as e:
+                raise RuntimeError(
+                    f"{self.__class__.__name__} must be created within an async event loop context."
+                ) from e
         try:
-            self._register_instance_future = CrossSync.create_task(
-                self.client._register_instance,
-                self.instance_id,
-                self.app_profile_id,
-                id(self),
-                sync_executor=self.client._executor,
+            self._register_instance_future: CrossSync.Future[None] | None = (
+                CrossSync.create_task(
+                    self.client._register_instance,
+                    self.instance_id,
+                    self.app_profile_id,
+                    id(self),
+                    sync_executor=self.client._executor,
+                )
             )
-        except RuntimeError as e:
-            raise RuntimeError(
-                f"{self.__class__.__name__} must be created within an async event loop context."
-            ) from e
+        except Exception as e:
+            _LOGGER.warning(
+                f"Failed to start background instance registration: {e}. "
+                "Requests will proceed without proactive channel warming."
+            )
+            self._register_instance_future = None
 
     def _create_operation(
         self, op_type: OperationType, **kwargs
@@ -1680,6 +1698,9 @@ class _DataApiTargetAsync(abc.ABC):
         operation_timeout, attempt_timeout = _get_timeouts(
             operation_timeout, attempt_timeout, self
         )
+        attempt_timeout_gen = _attempt_timeout_generator(
+            attempt_timeout, operation_timeout
+        )
 
         if not mutations:
             raise ValueError("No mutations provided")
@@ -1695,23 +1716,27 @@ class _DataApiTargetAsync(abc.ABC):
             predicate = retries.if_exception_type()
 
         with self._create_operation(OperationType.MUTATE_ROW) as operation_metric:
-            target = partial(
-                self.client._gapic_client.mutate_row,
-                request=MutateRowRequest(
-                    row_key=row_key.encode("utf-8")
-                    if isinstance(row_key, str)
-                    else row_key,
-                    mutations=[mutation._to_pb() for mutation in mutations_list],
-                    app_profile_id=self.app_profile_id,
-                    **self._request_path,
-                ),
-                timeout=attempt_timeout,
-                retry=None,
+            request = MutateRowRequest(
+                row_key=row_key.encode("utf-8")
+                if isinstance(row_key, str)
+                else row_key,
+                mutations=[mutation._to_pb() for mutation in mutations_list],
+                app_profile_id=self.app_profile_id,
+                **self._request_path,
             )
+
+            @CrossSync.convert
+            async def execute_rpc():
+                return await self.client._gapic_client.mutate_row(
+                    request=request,
+                    timeout=next(attempt_timeout_gen),
+                    retry=None,
+                )
+
             return await tracked_retry(
                 retry_fn=CrossSync.retry_target,
                 operation=operation_metric,
-                target=target,
+                target=execute_rpc,
                 predicate=predicate,
                 timeout=operation_timeout,
             )

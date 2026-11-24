@@ -7102,8 +7102,75 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(requests.exceptions.SSLError) as context:
             client.insert_rows_json(table, ROWS)
 
+        # The default retry for streaming inserts does not retry SSLErrors.
+        self.assertEqual(conn.api_request.call_count, 1)
         self.assertIn("invalid table schema", str(context.exception))
         self.assertIn("SSL/Connection error occurred", str(context.exception))
+
+    def test_insert_rows_json_w_ssl_error_w_default_retry(self):
+        """When a caller opts into DEFAULT_RETRY, SSLErrors are retried until
+        the deadline, and the resulting RetryError is still surfaced as a
+        descriptive SSLError."""
+        import requests.exceptions
+        from google.api_core import exceptions as core_exceptions
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = "PROJECT"
+        DS_ID = "DS_ID"
+        TABLE_ID = "TABLE_ID"
+        ROWS = [{"full_name": "Bhettye Rhubble", "age": "27", "joined": None}]
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=object())
+        conn = client._connection = make_connection({})
+        conn.api_request.side_effect = requests.exceptions.SSLError("EOF occurred")
+
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        table = Table(table_ref)
+
+        # Keep the test fast: negligible backoff and a very short deadline.
+        retry = DEFAULT_RETRY.with_delay(initial=0.001, maximum=0.001).with_deadline(
+            0.05
+        )
+        with self.assertRaises(requests.exceptions.SSLError) as context:
+            client.insert_rows_json(table, ROWS, retry=retry)
+
+        self.assertGreater(conn.api_request.call_count, 1)
+        self.assertIn("invalid table schema", str(context.exception))
+        self.assertIn("SSL/Connection error occurred", str(context.exception))
+        self.assertIsInstance(context.exception.__cause__, core_exceptions.RetryError)
+
+    def test_insert_rows_json_w_retry_error_non_ssl_cause(self):
+        """A RetryError caused by something other than an SSLError is re-raised
+        unchanged."""
+        import requests.exceptions
+        from google.api_core import exceptions as core_exceptions
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = "PROJECT"
+        DS_ID = "DS_ID"
+        TABLE_ID = "TABLE_ID"
+        ROWS = [{"full_name": "Bhettye Rhubble", "age": "27", "joined": None}]
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=object())
+        conn = client._connection = make_connection({})
+        retry_error = core_exceptions.RetryError(
+            "Deadline exceeded",
+            cause=requests.exceptions.ConnectionError("connection reset"),
+        )
+        conn.api_request.side_effect = retry_error
+
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        table = Table(table_ref)
+
+        with self.assertRaises(core_exceptions.RetryError) as context:
+            client.insert_rows_json(table, ROWS)
+
+        self.assertIs(context.exception, retry_error)
 
     def test_list_partitions(self):
         from google.cloud.bigquery.table import Table
@@ -9578,6 +9645,101 @@ class TestClientUpload(object):
         assert sent_file.closed
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.CSV
+
+    def test_load_table_from_dataframe_with_csv_source_format_datetime_objects(self):
+        pandas = pytest.importorskip("pandas")
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        schema = [
+            SchemaField("dt_col", "DATETIME"),
+            SchemaField("ts_col", "TIMESTAMP"),
+            SchemaField("str_col", "STRING"),
+        ]
+        dataframe = pandas.DataFrame(
+            {
+                "dt_col": [
+                    datetime.datetime(1, 1, 1, 0, 0, 0),
+                    None,
+                    pandas.NaT,
+                    datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                ],
+                "ts_col": [
+                    datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+                    None,
+                    "0002-01-01 00:00:00+00:00",
+                    datetime.datetime(
+                        9999, 12, 31, 23, 59, 59, 999999, tzinfo=datetime.timezone.utc
+                    ),
+                ],
+                "str_col": ["a", None, "b", "c"],
+            },
+            dtype="object",
+        )
+        job_config = job.LoadJobConfig(
+            schema=schema,
+            source_format=job.SourceFormat.CSV,
+        )
+
+        captured_csv = []
+
+        def fake_load_table_from_file(self_client, file_obj, *args, **kwargs):
+            captured_csv.append(file_obj.read().decode("utf-8"))
+            return mock.Mock()
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file",
+            autospec=True,
+            side_effect=fake_load_table_from_file,
+        )
+        with load_patch:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config
+            )
+
+        assert captured_csv == [
+            "0001-01-01 00:00:00,0001-01-01 00:00:00+00:00,a\n"
+            ",,\n"
+            ",0002-01-01 00:00:00+00:00,b\n"
+            "9999-12-31 23:59:59.999999,9999-12-31 23:59:59.999999+00:00,c\n"
+        ]
+
+    def test_load_table_from_dataframe_with_csv_source_format_no_schema(self):
+        pandas = pytest.importorskip("pandas")
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        dataframe = pandas.DataFrame({"x": [object(), object()]})
+        job_config = job.LoadJobConfig(
+            write_disposition=job.WriteDisposition.WRITE_TRUNCATE,
+            source_format=job.SourceFormat.CSV,
+        )
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        schema_patch = mock.patch(
+            "google.cloud.bigquery._pandas_helpers.dataframe_to_bq_schema",
+            autospec=True,
+            return_value=None,
+        )
+        with (
+            load_patch as load_table_from_file,
+            schema_patch,
+            pytest.warns(
+                PendingDeprecationWarning,
+                match="Schema could not be detected for all columns",
+            ),
+        ):
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config
+            )
+
+        load_table_from_file.assert_called_once()
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.schema is None
         assert sent_config.source_format == job.SourceFormat.CSV
 
     def test_load_table_from_dataframe_w_higher_scale_decimal128_datatype(self):

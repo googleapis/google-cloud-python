@@ -46,6 +46,53 @@ class TestConnection(unittest.TestCase):
         client = object()
         conn = self._make_one(client)
         self.assertIs(conn._client, client)
+        self.assertEqual(conn.API_BASE_URL, conn.DEFAULT_API_ENDPOINT)
+
+    def test_none_universe_domain_falls_back_to_default(self):
+        client = mock.Mock(universe_domain=None, spec=["universe_domain"])
+        conn = self._make_one(client)
+        self.assertEqual(conn.API_BASE_URL, conn.DEFAULT_API_ENDPOINT)
+
+    def test_empty_universe_domain_raises(self):
+        from google.api_core.universe import EmptyUniverseError
+
+        client = mock.Mock(universe_domain="", spec=["universe_domain"])
+        with self.assertRaises(EmptyUniverseError):
+            self._make_one(client)
+
+    def test_universe_domain_url(self):
+        client = mock.Mock(universe_domain="example.com", spec=["universe_domain"])
+        conn = self._make_one(client)
+        self.assertEqual(conn.API_BASE_URL, "https://logging.example.com")
+        self.assertEqual(
+            conn.build_api_url("/entries:write"),
+            "https://logging.example.com/v2/entries:write?prettyPrint=false",
+        )
+
+    def test_custom_endpoint_overrides_universe_domain(self):
+        custom_endpoint = "https://custom.logging.endpoint"
+        client = mock.Mock(universe_domain="example.com", spec=["universe_domain"])
+        conn = self._make_one(client, api_endpoint=custom_endpoint)
+        self.assertEqual(conn.API_BASE_URL, custom_endpoint)
+        self.assertEqual(
+            conn.build_api_url("/entries:write"),
+            "https://custom.logging.endpoint/v2/entries:write?prettyPrint=false",
+        )
+
+    def test_mtls_does_not_override_custom_universe_domain(self):
+        http = mock.Mock(is_mtls=True, spec=["is_mtls"])
+        client = mock.Mock(
+            universe_domain="example.com",
+            _http=http,
+            spec=["universe_domain", "_http"],
+        )
+        conn = self._make_one(client)
+        self.assertFalse(conn.ALLOW_AUTO_SWITCH_TO_MTLS_URL)
+        self.assertIsNone(conn.API_BASE_MTLS_URL)
+        self.assertEqual(
+            conn.build_api_url("/entries:write"),
+            "https://logging.example.com/v2/entries:write?prettyPrint=false",
+        )
 
     def test_build_api_url_w_custom_endpoint(self):
         from urllib.parse import parse_qsl, urlsplit
@@ -349,6 +396,50 @@ class Test_LoggingAPI(unittest.TestCase):
 
         self.assertEqual(conn._called_with["method"], "DELETE")
         self.assertEqual(conn._called_with["path"], path)
+
+    def test_background_thread_transport_batch_commit_universe_domain(self):
+        import json
+        import logging
+        import os
+
+        import requests
+
+        from google.cloud.logging import Client
+        from google.cloud.logging.handlers.transports import BackgroundThreadTransport
+
+        http = mock.create_autospec(requests.Session, instance=True)
+        response = requests.Response()
+        response.status_code = 200
+        response._content = b"{}"
+        http.request.return_value = response
+
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com"}
+        ):
+            client = Client(
+                project=self.PROJECT,
+                _http=http,
+                _use_grpc=False,
+            )
+
+        self.assertIsInstance(client.logging_api, self._get_target_class())
+        transport = BackgroundThreadTransport(client, self.LOGGER_NAME)
+        record = logging.LogRecord(
+            "mylogger", logging.INFO, __file__, 1, "hello world", None, None
+        )
+        transport.send(record, "hello world")
+        transport.flush()
+        transport.close()
+
+        http.request.assert_called_once()
+        call_kwargs = http.request.call_args.kwargs
+        self.assertEqual(call_kwargs["method"], "POST")
+        self.assertEqual(
+            call_kwargs["url"],
+            "https://logging.example.com/v2/entries:write?prettyPrint=false",
+        )
+        payload = json.loads(call_kwargs["data"])
+        self.assertEqual(payload["entries"][0]["textPayload"], "hello world")
 
 
 class Test_SinksAPI(unittest.TestCase):

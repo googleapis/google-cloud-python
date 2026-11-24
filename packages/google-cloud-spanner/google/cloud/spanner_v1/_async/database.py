@@ -55,14 +55,18 @@ from google.cloud.spanner_v1._async.snapshot import Snapshot, _restart_on_unavai
 from google.cloud.spanner_v1._async.streamed import StreamedResultSet
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
+    _clone_request_options,
     _merge_query_options,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
-    _metadata_with_request_id,
-    _metadata_with_request_id_and_req_id,
 )
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
+from google.cloud.spanner_v1.request_id_header import (
+    REQ_ID_HEADER_KEY,
+    X_GOOG_SPANNER_REQUEST_ID_SPAN_ATTR,
+    _CachedPrefixDescriptor,
+)
 from google.cloud.spanner_v1.services.spanner.async_client import (
     SpannerAsyncClient as SpannerClient,
 )
@@ -183,6 +187,8 @@ class Database(object):
 
     __transport_lock = threading.Lock()
     __transports_to_channel_id = dict()
+    _channel_id_val = 0
+    _req_id_prefix = _CachedPrefixDescriptor()
 
     def __init__(
         self,
@@ -566,23 +572,17 @@ class Database(object):
 
         return self._spanner_api
 
-    def metadata_with_request_id(
-        self, nth_request, nth_attempt, prior_metadata=[], span=None
-    ):
-        if span is None:
-            span = get_current_span()
+    @property
+    def _channel_id(self):
+        return self._channel_id_val
 
-        return _metadata_with_request_id(
-            self._nth_client_id,
-            self._channel_id,
-            nth_request,
-            nth_attempt,
-            prior_metadata,
-            span,
-        )
+    @_channel_id.setter
+    def _channel_id(self, value):
+        self._channel_id_val = value
+        self.__dict__.pop("_req_id_prefix", None)
 
     def metadata_and_request_id(
-        self, nth_request, nth_attempt, prior_metadata=[], span=None
+        self, nth_request, nth_attempt, prior_metadata=None, span=None
     ):
         """Return metadata and request ID string.
 
@@ -601,17 +601,38 @@ class Database(object):
         if span is None:
             span = get_current_span()
 
-        return _metadata_with_request_id_and_req_id(
-            self._nth_client_id,
-            self._channel_id,
-            nth_request,
-            nth_attempt,
-            prior_metadata,
-            span,
+        req_id = f"{self._req_id_prefix}{nth_request}.{nth_attempt}"
+        metadata = (
+            [*prior_metadata, (REQ_ID_HEADER_KEY, req_id)]
+            if prior_metadata
+            else [(REQ_ID_HEADER_KEY, req_id)]
         )
 
+        if span is not None and span.is_recording():
+            span.set_attribute(X_GOOG_SPANNER_REQUEST_ID_SPAN_ATTR, req_id)
+
+        return metadata, req_id
+
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=None, span=None
+    ):
+        if span is None:
+            span = get_current_span()
+
+        req_id = f"{self._req_id_prefix}{nth_request}.{nth_attempt}"
+        metadata = (
+            [*prior_metadata, (REQ_ID_HEADER_KEY, req_id)]
+            if prior_metadata
+            else [(REQ_ID_HEADER_KEY, req_id)]
+        )
+
+        if span is not None and span.is_recording():
+            span.set_attribute(X_GOOG_SPANNER_REQUEST_ID_SPAN_ATTR, req_id)
+
+        return metadata
+
     def with_error_augmentation(
-        self, nth_request, nth_attempt, prior_metadata=[], span=None
+        self, nth_request, nth_attempt, prior_metadata=None, span=None
     ):
         """Context manager for gRPC calls with error augmentation.
 
@@ -630,16 +651,17 @@ class Database(object):
         if span is None:
             span = get_current_span()
 
-        metadata, request_id = _metadata_with_request_id_and_req_id(
-            self._nth_client_id,
-            self._channel_id,
-            nth_request,
-            nth_attempt,
-            prior_metadata,
-            span,
+        req_id = f"{self._req_id_prefix}{nth_request}.{nth_attempt}"
+        metadata = (
+            [*prior_metadata, (REQ_ID_HEADER_KEY, req_id)]
+            if prior_metadata
+            else [(REQ_ID_HEADER_KEY, req_id)]
         )
 
-        return metadata, _augment_errors_with_request_id(request_id)
+        if span is not None and span.is_recording():
+            span.set_attribute(X_GOOG_SPANNER_REQUEST_ID_SPAN_ATTR, req_id)
+
+        return metadata, _augment_errors_with_request_id(req_id)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -667,18 +689,19 @@ class Database(object):
         """
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        db_name = self.database_id
-        if "-" in db_name:
-            if self._database_dialect == DatabaseDialect.POSTGRESQL:
-                db_name = f'"{db_name}"'
-            else:
-                db_name = f"`{db_name}`"
+        database_id = str(self.database_id)
+        if self._database_dialect == DatabaseDialect.POSTGRESQL:
+            escaped = database_id.replace('"', '""')
+            quoted_database_id = f'"{escaped}"'
+        else:
+            escaped = database_id.replace("\\", "\\\\").replace("`", "\\`")
+            quoted_database_id = f"`{escaped}`"
         if type(self._encryption_config) is dict:
             self._encryption_config = EncryptionConfig(**self._encryption_config)
 
         request = CreateDatabaseRequest(
             parent=self._instance.name,
-            create_statement="CREATE DATABASE %s" % (db_name,),
+            create_statement=f"CREATE DATABASE {quoted_database_id}",
             extra_statements=list(self._ddl_statements),
             encryption_config=self._encryption_config,
             database_dialect=self._database_dialect,
@@ -901,8 +924,10 @@ class Database(object):
         )
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
+        else:
+            # Always clone non-None input so clearing transaction_tag never
+            # mutates a caller-provided RequestOptions or dict subclass.
+            request_options = _clone_request_options(request_options)
         request_options.transaction_tag = None
 
         if params is not None:
@@ -991,13 +1016,13 @@ class Database(object):
     @property
     def _next_nth_request(self):
         if self._instance and self._instance._client:
-            return self._instance._client._next_nth_request
+            return getattr(self._instance._client, "_next_nth_request", 1)
         return 1
 
     @property
     def _nth_client_id(self):
         if self._instance and self._instance._client:
-            return self._instance._client._nth_client_id
+            return getattr(self._instance._client, "_nth_client_id", 0)
         return 0
 
     def session(self, labels=None, database_role=None):
