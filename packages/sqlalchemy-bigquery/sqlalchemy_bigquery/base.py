@@ -530,10 +530,16 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
     @staticmethod
     def _maybe_reescape(binary):
         binary = binary._clone()
+        binary.modifiers = binary.modifiers.copy()
         escape = binary.modifiers.pop("escape", None)
-        if escape and escape != "\\":
+        if (
+            escape
+            and escape != "\\"
+            and isinstance(getattr(binary.right, "value", None), str)
+        ):
+            binary.right = binary.right._clone()
             binary.right.value = escape.join(
-                v.replace(escape, "\\")
+                v.replace("\\", "\\\\").replace(escape, "\\")
                 for v in binary.right.value.split(escape + escape)
             )
         return binary
