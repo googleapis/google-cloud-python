@@ -415,6 +415,13 @@ def _setup_direct_path_and_credentials(
             set to `True` without `attempt_direct_path_xds_over_interconnect`
             in the ``googleapis.com`` universe.
     """
+    if attempt_direct_path or attempt_direct_path_xds_over_interconnect is not None:
+        use_dp_interconnect = _resolve_direct_path_interconnect(
+            attempt_direct_path_xds_over_interconnect
+        )
+    else:
+        use_dp_interconnect = False
+
     credentials = _resolve_credentials(
         credentials=credentials,
         credentials_file=credentials_file,
@@ -422,13 +429,6 @@ def _setup_direct_path_and_credentials(
         scopes=scopes,
         quota_project_id=quota_project_id,
     )
-
-    if attempt_direct_path or attempt_direct_path_xds_over_interconnect is not None:
-        use_dp_interconnect = _resolve_direct_path_interconnect(
-            attempt_direct_path_xds_over_interconnect
-        )
-    else:
-        use_dp_interconnect = False
 
     # DirectPath and DirectPath over Interconnect are only supported in the
     # Google Default Universe (googleapis.com). Disable both if either the

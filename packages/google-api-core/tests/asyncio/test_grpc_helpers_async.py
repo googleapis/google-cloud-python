@@ -906,7 +906,7 @@ def test_create_channel_async_invalid_env_var_raises(google_auth_default, monkey
             "storage-direct.googleapis.com:443",
             attempt_direct_path=True,
         )
-    google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
+    google_auth_default.assert_not_called()
 
 
 @mock.patch("grpc.ssl_channel_credentials")
