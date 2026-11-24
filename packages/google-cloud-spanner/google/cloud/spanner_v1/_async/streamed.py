@@ -62,6 +62,7 @@ class StreamedResultSet(object):
         self._field_decoders = None
         self._lazy_decode = lazy_decode  # Return protobuf values
         self._done = False
+        self._closed = False
 
     @property
     def fields(self):
@@ -301,21 +302,49 @@ class StreamedResultSet(object):
         if response_pb.last:
             self._done = True
 
+    @CrossSync.convert
+    async def _close(self) -> None:
+        """Close the underlying response iterator idempotently."""
+        if self._closed:
+            return
+        self._closed = True
+        self._rows = []
+        iterator = self._response_iterator
+        if iterator is None:
+            return
+        if CrossSync.is_async:
+            close_methods = ("aclose", "close", "cancel")
+        else:
+            close_methods = ("close", "cancel")
+        try:
+            for method_name in close_methods:
+                close_method = getattr(iterator, method_name, None)
+                if close_method is not None:
+                    await CrossSync.run_if_async(close_method)
+                    return
+        except Exception:
+            pass
+
     @CrossSync.convert(sync_name="__iter__")
     async def __aiter__(self):
-        while True:
-            if not self._rows:
+        try:
+            while True:
+                if self._closed:
+                    return
+                if not self._rows:
+                    try:
+                        await self._consume_next()
+                    except StopAsyncIteration:
+                        return
+                iter_rows, self._rows = self._rows, []
+                for row in iter_rows:
+                    if self._closed:
+                        return
+                    yield row
                 if self._done:
                     return
-                try:
-                    await self._consume_next()
-                except StopAsyncIteration:
-                    return
-            iter_rows, self._rows = self._rows, []
-            for row in iter_rows:
-                yield row
-            if self._done:
-                return
+        finally:
+            await self._close()
 
     def decode_row(self, row: []) -> []:
         """Decodes a row from protobuf values to Python objects. This function
@@ -375,17 +404,23 @@ class StreamedResultSet(object):
                 "stream consumption has already started."
             )
 
-        while not self._done and len(self._rows) < 2:
-            try:
-                await self._consume_next()
-            except StopAsyncIteration:
-                break
-
-        if len(self._rows) == 1:
-            return self._rows.pop()
-        if not self._rows:
+        if self._closed:
             return None
-        raise ValueError("Expected one result; got more.")
+
+        try:
+            while not self._done and len(self._rows) < 2:
+                try:
+                    await self._consume_next()
+                except StopAsyncIteration:
+                    break
+
+            if len(self._rows) == 1:
+                return self._rows.pop()
+            if not self._rows:
+                return None
+            raise ValueError("Expected one result; got more.")
+        finally:
+            await self._close()
 
     @CrossSync.convert
     async def to_dict_list(self):
@@ -399,12 +434,15 @@ class StreamedResultSet(object):
         """
         rows = []
         column_names = None
-        async for row in self:
-            if column_names is None:
-                column_names = [
-                    column.name for column in self._metadata.row_type.fields
-                ]
-            rows.append(dict(zip(column_names, row)))
+        try:
+            async for row in self:
+                if column_names is None:
+                    column_names = [
+                        column.name for column in self._metadata.row_type.fields
+                    ]
+                rows.append(dict(zip(column_names, row)))
+        finally:
+            await self._close()
         return rows
 
 

@@ -2297,6 +2297,71 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             f"Expected {leader_header} in {metadata}",
         )
 
+    async def test_streamed_result_set_records_metrics_completion_on_close(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.metrics.metrics_tracer_factory import (
+            MetricsTracerFactory,
+        )
+
+        class CancellableStream:
+            def __init__(self, items):
+                self._items = iter(items)
+                self.cancel = mock.Mock()
+
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                try:
+                    return next(self._items)
+                except StopIteration:
+                    raise StopAsyncIteration
+
+        fields = [StructType.Field(name="col", type_=Type(code=TypeCode.INT64))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+        first_partial = PartialResultSet(
+            metadata=metadata_pb, resume_token=b"tok-1", last=False
+        )
+        first_partial.values.append(Value(string_value="1"))
+        second_partial = PartialResultSet(last=True)
+        second_partial.values.append(Value(string_value="2"))
+
+        raw_stream = CancellableStream([first_partial, second_partial])
+        database = _Database()
+        database.spanner_api.execute_streaming_sql = mock.Mock(return_value=raw_stream)
+        session = _Session(database)
+        snapshot = self._make_snapshot(session, multi_use=False)
+
+        mock_tracer = mock.Mock()
+        with mock.patch.object(
+            MetricsTracerFactory, "create_metrics_tracer", return_value=mock_tracer
+        ):
+            result_set = await snapshot.execute_sql(SQL_QUERY)
+            async_iter = result_set.__aiter__()
+            first_row = await async_iter.__anext__()
+
+            self.assertEqual(first_row, [1])
+            mock_tracer.record_operation_start.assert_called_once()
+            mock_tracer.record_operation_completion.assert_not_called()
+            raw_stream.cancel.assert_not_called()
+
+            await result_set._close()
+            mock_tracer.record_operation_completion.assert_called_once()
+            raw_stream.cancel.assert_called_once()
+            await async_iter.aclose()
+            mock_tracer.record_operation_completion.assert_called_once()
+
+            mock_tracer.reset_mock()
+            database.spanner_api.execute_streaming_sql.reset_mock()
+            unstarted_snapshot = self._make_snapshot(session, multi_use=False)
+            unstarted = await unstarted_snapshot.execute_sql(SQL_QUERY)
+            await unstarted._close()
+            self.assertEqual([row async for row in unstarted], [])
+            database.spanner_api.execute_streaming_sql.assert_not_called()
+            mock_tracer.record_operation_start.assert_not_called()
+            mock_tracer.record_operation_completion.assert_not_called()
+
 
 class _Database(object):
     def __init__(self):
