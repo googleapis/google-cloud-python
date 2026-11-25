@@ -2345,6 +2345,21 @@ class TestCredentials(object):
             ),
             pytest.param(None, None, id="missing_token_url"),
             pytest.param("https://[invalid/v1/token", None, id="malformed_token_url"),
+            pytest.param(
+                "https://evil.com\\@sts.googleapis.com/v1/token",
+                None,
+                id="userinfo_in_token_url",
+            ),
+            pytest.param(
+                "https://sts.googleapis.com#evil.com",
+                None,
+                id="fragment_in_token_url",
+            ),
+            pytest.param(
+                "https://.googleapis.com/v1/token",
+                None,
+                id="empty_label_token_url",
+            ),
         ],
     )
     def test_get_project_id_skips_non_default_universe_endpoints(

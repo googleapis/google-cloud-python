@@ -67,15 +67,24 @@ _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.{universe_domain}/v1/pro
 _DEFAULT_TOKEN_URL = "https://sts.{universe_domain}/v1/token"
 
 
+_DEFAULT_UNIVERSE_HOST_PATTERN = re.compile(
+    rf"^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*{re.escape(credentials.DEFAULT_UNIVERSE_DOMAIN)}$"
+)
+
+
 def _has_default_universe_host(url):
     """Checks whether a URL's host is in the default universe domain."""
+    if not isinstance(url, str) or "#" in url:
+        return False
     try:
-        host = urlparse(url).hostname
-        return host is not None and (
-            host == credentials.DEFAULT_UNIVERSE_DOMAIN
-            or host.endswith(f".{credentials.DEFAULT_UNIVERSE_DOMAIN}")
-        )
-    except (ValueError, TypeError, AttributeError):
+        parsed = urlparse(url)
+        # Reject userinfo ("@" in netloc) without rejecting "@" in the path
+        # (such as service account emails in service_account_impersonation_url).
+        if "@" in parsed.netloc:
+            return False
+        host = parsed.hostname
+        return bool(host and _DEFAULT_UNIVERSE_HOST_PATTERN.fullmatch(host))
+    except ValueError:
         return False
 
 
