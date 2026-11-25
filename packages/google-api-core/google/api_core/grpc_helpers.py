@@ -17,8 +17,6 @@
 import collections
 import functools
 import os
-import re
-import urllib.parse
 import warnings
 from typing import (
     Callable,
@@ -43,10 +41,6 @@ from google.api_core import exceptions, general_helpers, universe
 from google.api_core._feature_gating_helpers import _strtobool
 
 _DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT"
-_GOOGLEAPIS_HOST_PATTERN = re.compile(
-    rf"^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*{re.escape(universe.DEFAULT_UNIVERSE)}$",
-    re.IGNORECASE,
-)
 
 
 def _resolve_direct_path_interconnect(
@@ -85,24 +79,16 @@ def _resolve_direct_path_interconnect(
 
 def _extract_target_host(target: str) -> str:
     """Extracts the host from a target URI or address."""
-    stripped_target = target
-    for prefix in ("google-c2p:///", "dns:///", "https://", "http://"):
-        if target.startswith(prefix):
-            stripped_target = target.removeprefix(prefix)
-            break
-    try:
-        return urllib.parse.urlsplit(f"//{stripped_target}").hostname or target
-    except ValueError:
-        return target
+    parsed = universe._parse_target(target)
+    return parsed.host if parsed is not None else target
 
 
 def _is_googleapis_host(target: str) -> bool:
-    """Returns True if ``target`` resolves to a ``googleapis.com`` host."""
-    return (
-        "@" not in target
-        and "#" not in target
-        and bool(_GOOGLEAPIS_HOST_PATTERN.fullmatch(_extract_target_host(target)))
-    )
+    """Returns True if ``target`` is a DirectPath-eligible ``googleapis.com`` host."""
+    parsed = universe._parse_target(target)
+    if parsed is None or parsed.authority:
+        return False
+    return bool(universe._GOOGLEAPIS_HOST_PATTERN.fullmatch(parsed.host))
 
 
 def _extract_direct_path_authority(target: str) -> Optional[str]:
@@ -475,7 +461,7 @@ def _setup_direct_path_and_credentials(
             target,
             attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
         )
-    elif not target.startswith("google-c2p:///"):
+    elif not target.lower().startswith("google-c2p:///"):
         clean_host = _extract_target_host(target)
         if clean_host.endswith("-direct.googleapis.com") and len(clean_host) > len(
             "-direct.googleapis.com"
@@ -614,34 +600,21 @@ def _modify_target_for_direct_path(
             original target may already denote Direct Path.
     """
 
-    # Strip standard URI scheme prefixes ("dns:///", "https://", "http://") if
-    # `attempt_direct_path` is enabled, as the Direct Path prefix `google-c2p:///`
-    # will be used instead.
-    for scheme_prefix in ("dns:///", "https://", "http://"):
-        if target.startswith(scheme_prefix):
-            target = target.removeprefix(scheme_prefix)
-            break
+    parsed = universe._parse_target(target)
+    if parsed is None or parsed.authority:
+        return target
 
-    direct_path_separator = ":///"
-    if direct_path_separator not in target:
-        if "?" in target:
-            host_part, query_part = target.split("?", 1)
-            target_without_port = host_part.split("/")[0].split(":")[0]
-            target = (
-                f"google-c2p{direct_path_separator}{target_without_port}?{query_part}"
-            )
-        else:
-            target_without_port = target.split("/")[0].split(":")[0]
-            # Modify the target to use Direct Path by adding the `google-c2p:///` prefix
-            target = f"google-c2p{direct_path_separator}{target_without_port}"
-
-    if attempt_direct_path_xds_over_interconnect and target.startswith(
-        "google-c2p:///"
+    query = parsed.query
+    if attempt_direct_path_xds_over_interconnect and "force-xds" not in query.split(
+        "&"
     ):
-        if "force-xds" not in target:
-            separator = "&" if "?" in target else "?"
-            target = f"{target}{separator}force-xds"
-    return target
+        query = f"{query}&force-xds" if query else "force-xds"
+
+    return (
+        f"google-c2p:///{parsed.host}?{query}"
+        if query
+        else f"google-c2p:///{parsed.host}"
+    )
 
 
 def apply_channel_interceptors(
