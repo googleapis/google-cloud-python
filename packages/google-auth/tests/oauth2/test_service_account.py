@@ -144,6 +144,17 @@ class TestCredentials(object):
         assert not updated._always_use_jwt_access
         assert updated._jwt_credentials is None
 
+    def test_with_universe_domain_resets_always_use_jwt_access(self):
+        """Transitioning from non-default back to default domain resets always_use_jwt_access."""
+        creds = self.make_credentials()
+        assert not creds._always_use_jwt_access
+
+        non_default = creds.with_universe_domain("custom.universe.domain")
+        assert non_default._always_use_jwt_access is True
+
+        back_to_default = non_default.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+        assert back_to_default._always_use_jwt_access is False
+
     def test_with_universe_domain_clears_jwt_credentials(self):
         """with_universe_domain clears cached self-signed JWT credentials."""
         credentials = self.make_credentials(universe_domain=FAKE_UNIVERSE_DOMAIN)
