@@ -81,6 +81,7 @@ from google.auth import (
     _service_account_info,
     credentials,
     exceptions,
+    iam,
     jwt,
     metrics,
 )
@@ -93,24 +94,6 @@ _LOGGER = logging.getLogger(__name__)
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
-# The double curly braces `{{}}` escape the inner service account email placeholder.
-# When this template is formatted via `.format(universe_domain=...)`, python evaluates
-# `{{}}` down to a single `{}` which is populated with the email downstream in `_client.py`.
-_IAM_IDTOKEN_ENDPOINT_TEMPLATE = (
-    "https://iamcredentials.{universe_domain}/v1/projects/-/"
-    "serviceAccounts/{{}}:generateIdToken"
-)
-
-
-def _validate_universe_domain(universe_domain):
-    """Validates that the universe domain is non-empty.
-
-    Raises:
-        ValueError: If the universe domain is an empty string
-            or contains only blank spaces.
-    """
-    if universe_domain is not None and not str(universe_domain).strip():
-        raise ValueError("Universe Domain cannot be an empty string.")
 
 
 class Credentials(
@@ -211,8 +194,9 @@ class Credentials(
         self._project_id = project_id
         self._quota_project_id = quota_project_id
         self._token_uri = token_uri
+        self._explicit_always_use_jwt_access = bool(always_use_jwt_access)
         self._always_use_jwt_access = always_use_jwt_access
-        _validate_universe_domain(universe_domain)
+        _helpers.validate_universe_domain(universe_domain, allow_none=True)
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
 
         # Check the normalized universe domain so None falls back to the
@@ -245,9 +229,10 @@ class Credentials(
         Raises:
             ValueError: If the info is not in the expected format.
         """
-        # Respect an explicit universe_domain kwarg from the caller, otherwise
-        # only forward from info if present and non-empty.
-        if "universe_domain" not in kwargs and info.get("universe_domain"):
+        # Respect an explicit universe_domain kwarg from the caller; otherwise
+        # forward from info whenever present and not None so empty strings still
+        # fail validation while omitted/null values let cls() apply its default.
+        if "universe_domain" not in kwargs and info.get("universe_domain") is not None:
             kwargs["universe_domain"] = info["universe_domain"]
         return cls(
             signer,
@@ -315,7 +300,7 @@ class Credentials(
         """
         return True if not self._scopes else False
 
-    def _make_copy(self):
+    def _make_copy(self, *, _copy_rab=True):
         cred = self.__class__(
             self._signer,
             service_account_email=self._service_account_email,
@@ -326,7 +311,9 @@ class Credentials(
             project_id=self._project_id,
             quota_project_id=self._quota_project_id,
             additional_claims=self._additional_claims.copy(),
-            always_use_jwt_access=self._always_use_jwt_access,
+            always_use_jwt_access=getattr(
+                self, "_explicit_always_use_jwt_access", self._always_use_jwt_access
+            ),
             universe_domain=self._universe_domain,
             trust_boundary=self._trust_boundary,
         )
@@ -335,7 +322,8 @@ class Credentials(
         # their audience without sharing mutable token state with the original.
         if self._jwt_credentials is not None:
             cred._jwt_credentials = self._jwt_credentials.with_claims()
-        self._copy_regional_access_boundary_manager(cred)
+        if _copy_rab:
+            self._copy_regional_access_boundary_manager(cred)
         return cred
 
     @_helpers.copy_docstring(credentials.Scoped)
@@ -368,6 +356,7 @@ class Credentials(
             raise exceptions.InvalidValue(
                 "always_use_jwt_access should be True for non-default universe domain"
             )
+        cred._explicit_always_use_jwt_access = bool(always_use_jwt_access)
         cred._always_use_jwt_access = always_use_jwt_access
         if not always_use_jwt_access:
             # Drop cached self-signed JWT credentials when opting out of JWT access.
@@ -376,11 +365,12 @@ class Credentials(
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        _validate_universe_domain(universe_domain)
-        cred = self._make_copy()
-        cred._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        _helpers.validate_universe_domain(universe_domain)
+        cred = self._make_copy(_copy_rab=False)
+        cred._universe_domain = universe_domain
         cred._always_use_jwt_access = (
-            cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
+            getattr(cred, "_explicit_always_use_jwt_access", False)
+            or cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
         )
         # Clear cached JWT credentials since audience/universe metadata may change.
         cred._jwt_credentials = None
@@ -686,13 +676,10 @@ class IDTokenCredentials(
         self._quota_project_id = quota_project_id
         self._use_iam_endpoint = False
 
-        _validate_universe_domain(universe_domain)
-        if not universe_domain:
-            self._universe_domain = credentials.DEFAULT_UNIVERSE_DOMAIN
-        else:
-            self._universe_domain = universe_domain
-        self._iam_id_token_endpoint = _IAM_IDTOKEN_ENDPOINT_TEMPLATE.format(
-            universe_domain=self._universe_domain
+        _helpers.validate_universe_domain(universe_domain, allow_none=True)
+        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        self._iam_id_token_endpoint = iam._get_iam_idtoken_endpoint(
+            self._universe_domain
         )
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             self._use_iam_endpoint = True
@@ -720,9 +707,10 @@ class IDTokenCredentials(
         """
         kwargs.setdefault("service_account_email", info["client_email"])
         kwargs.setdefault("token_uri", info["token_uri"])
-        # Respect an explicit universe_domain kwarg from the caller, otherwise
-        # only forward from info if present and non-empty. Let cls() handle fallback.
-        if "universe_domain" not in kwargs and info.get("universe_domain"):
+        # Respect an explicit universe_domain kwarg from the caller; otherwise
+        # forward from info whenever present and not None so empty strings still
+        # fail validation while omitted/null values let cls() apply its default.
+        if "universe_domain" not in kwargs and info.get("universe_domain") is not None:
             kwargs["universe_domain"] = info["universe_domain"]
         return cls(signer, **kwargs)
 
@@ -836,11 +824,11 @@ class IDTokenCredentials(
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        _validate_universe_domain(universe_domain)
+        _helpers.validate_universe_domain(universe_domain)
         cred = self._make_copy()
-        cred._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
-        cred._iam_id_token_endpoint = _IAM_IDTOKEN_ENDPOINT_TEMPLATE.format(
-            universe_domain=cred._universe_domain
+        cred._universe_domain = universe_domain
+        cred._iam_id_token_endpoint = iam._get_iam_idtoken_endpoint(
+            cred._universe_domain
         )
         cred._use_iam_endpoint = (
             cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN

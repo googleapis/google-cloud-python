@@ -75,17 +75,6 @@ if es is not None:  # pragma: NO COVER
     _ALGORITHM_TO_VERIFIER_CLASS["ES384"] = es.EsVerifier  # type: ignore
 
 
-def _validate_universe_domain(universe_domain):
-    """Raises if the universe domain passed to ``with_universe_domain`` is empty.
-
-    Raises:
-        google.auth.exceptions.InvalidValue: If the universe domain is None,
-            empty, or whitespace-only.
-    """
-    if not universe_domain or not universe_domain.strip():
-        raise exceptions.InvalidValue("Universe domain cannot be empty.")
-
-
 def encode(signer, payload, header=None, key_id=None):
     """Make a signed JWT.
 
@@ -539,17 +528,15 @@ class Credentials(
         # Regional Access Boundary (RAB) only applies to the default universe
         # domain. Reuse the source credentials' cached RAB state only when the
         # new credentials stay in the default universe; otherwise start with
-        # empty RAB state so a googleapis.com boundary is never sent to another
-        # universe.
-        if (
-            isinstance(
-                credentials,
-                google.auth.credentials.CredentialsWithRegionalAccessBoundary,
-            )
-            and jwt_creds.universe_domain
-            == google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
+        # empty RAB state so a default-universe boundary is never sent to
+        # another universe.
+        if isinstance(
+            credentials,
+            google.auth.credentials.CredentialsWithRegionalAccessBoundary,
         ):
-            credentials._copy_regional_access_boundary_manager(jwt_creds)
+            credentials._update_regional_access_boundary_for_universe(
+                jwt_creds, jwt_creds.universe_domain
+            )
 
         return jwt_creds
 
@@ -605,7 +592,7 @@ class Credentials(
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        _validate_universe_domain(universe_domain)
+        _helpers.validate_universe_domain(universe_domain)
         cred = self.__class__(
             self._signer,
             issuer=self._issuer,
@@ -896,7 +883,7 @@ class OnDemandCredentials(
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        _validate_universe_domain(universe_domain)
+        _helpers.validate_universe_domain(universe_domain)
         return self.__class__(
             self._signer,
             issuer=self._issuer,

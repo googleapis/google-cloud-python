@@ -54,6 +54,27 @@ _IAM_ENDPOINT = _IAM_BASE_URL + ":generateAccessToken"
 _IAM_SIGN_ENDPOINT = _IAM_BASE_URL + ":signBlob"
 _IAM_SIGNJWT_ENDPOINT = _IAM_BASE_URL + ":signJwt"
 _IAM_IDTOKEN_ENDPOINT = _IAM_BASE_URL + ":generateIdToken"
+# Template for non-default universe domains; double braces escape the service
+# account email placeholder so .format(universe_domain=...) leaves `{}` intact
+# for downstream email formatting.
+_IAM_IDTOKEN_ENDPOINT_TEMPLATE = (
+    "https://iamcredentials.{universe_domain}/v1/projects/-/"
+    "serviceAccounts/{{}}:generateIdToken"
+)
+
+
+def _get_iam_idtoken_endpoint(
+    universe_domain: str = credentials.DEFAULT_UNIVERSE_DOMAIN,
+) -> str:
+    """Returns the IAM generateIdToken endpoint template for ``universe_domain``.
+
+    Uses ``_IAM_IDTOKEN_ENDPOINT`` (which respects mTLS configuration) for the
+    default universe domain, and formats ``_IAM_IDTOKEN_ENDPOINT_TEMPLATE`` for
+    non-default universe domains.
+    """
+    if universe_domain == credentials.DEFAULT_UNIVERSE_DOMAIN:
+        return _IAM_IDTOKEN_ENDPOINT
+    return _IAM_IDTOKEN_ENDPOINT_TEMPLATE.format(universe_domain=universe_domain)
 
 
 class Signer(crypt.Signer):

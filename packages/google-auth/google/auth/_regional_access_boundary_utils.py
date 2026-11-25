@@ -361,12 +361,13 @@ class _RegionalAccessBoundaryManager(object):
 
     def clear_data(self):
         """Clears cached Regional Access Boundary location data."""
-        self._data = _RegionalAccessBoundaryData(
-            encoded_locations=None,
-            expiry=None,
-            cooldown_expiry=None,
-            cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
-        )
+        with self._update_lock:
+            self._data = _RegionalAccessBoundaryData(
+                encoded_locations=None,
+                expiry=None,
+                cooldown_expiry=None,
+                cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+            )
 
 
 class _RegionalAccessBoundaryRefreshThread(threading.Thread):

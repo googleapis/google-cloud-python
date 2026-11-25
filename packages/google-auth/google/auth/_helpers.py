@@ -533,3 +533,23 @@ def response_log(logger: logging.Logger, response: Any) -> None:
     if is_logging_enabled(logger):
         json_response = _parse_response(response)
         _response_log_base(logger, json_response)
+
+
+def validate_universe_domain(
+    universe_domain: Optional[str], *, allow_none: bool = False
+) -> None:
+    """Validates that ``universe_domain`` is a non-empty string.
+
+    Args:
+        universe_domain (Optional[str]): The universe domain to validate.
+        allow_none (bool): Whether ``None`` is permitted (allowing fallback
+            to the default universe domain). Defaults to ``False``.
+
+    Raises:
+        google.auth.exceptions.InvalidValue: If ``universe_domain`` is not a
+            non-empty string (or is ``None`` when ``allow_none=False``).
+    """
+    if universe_domain is None and allow_none:
+        return
+    if not isinstance(universe_domain, str) or not universe_domain.strip():
+        raise exceptions.InvalidValue("Universe domain cannot be empty.")

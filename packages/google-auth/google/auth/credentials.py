@@ -411,11 +411,12 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     def _update_regional_access_boundary_for_universe(
         self, target_credentials, universe_domain
     ):
-        """Updates or resets Regional Access Boundary state for a target domain."""
-        self._copy_regional_access_boundary_manager(target_credentials)
-        # RAB state is only valid for the default universe domain, so don't
-        # carry cached RAB data over when using a non-default universe domain.
-        if universe_domain != DEFAULT_UNIVERSE_DOMAIN:
+        """Copies RAB state for the default universe domain or clears it otherwise."""
+        # RAB state is only valid for the default universe domain, so only copy
+        # cached RAB state/config when targeting the default universe domain.
+        if universe_domain == DEFAULT_UNIVERSE_DOMAIN:
+            self._copy_regional_access_boundary_manager(target_credentials)
+        else:
             target_credentials._rab_manager.clear_data()
 
     def _set_regional_access_boundary(self, initial_boundary):
