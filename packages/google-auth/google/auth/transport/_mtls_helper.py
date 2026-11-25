@@ -1051,8 +1051,7 @@ class _MtlsCertManager:
         return cert_bytes, key_bytes, fingerprint
 
     def refresh(self, expected_generation: Optional[int] = None) -> bool:
-        """Loads the client certificate and increments ``generation_id`` if the
-        certificate or private key changed.
+        """Reloads client credentials and increments ``generation_id`` if changed.
 
         After the initial load (``generation_id > 0``), reload errors are
         logged at debug level, the previous certificate and key are retained,

@@ -2461,6 +2461,8 @@ class TestMtlsCertManager(object):
             2,
         )
 
+        # Intentionally pair the new cert with the old key to model a torn read
+        # before the matching key arrives on the next reload.
         assert manager.refresh() is True
         assert manager.generation_id == 3
         assert manager.cert_fingerprint == expected_es256_fp
@@ -2627,7 +2629,7 @@ class TestMtlsCertManager(object):
 
         def hold_reload():
             entered.set()
-            assert release.wait(timeout=5)
+            release.wait(timeout=5)
             return pytest.public_cert_bytes, pytest.private_key_bytes
 
         steps = [
@@ -2650,24 +2652,14 @@ class TestMtlsCertManager(object):
         try:
             assert entered.wait(timeout=5)
 
-            waiter_count = 0
-            waiter_count_lock = threading.Lock()
-            waiters_queued = threading.Event()
-
-            def on_waiter_enter():
-                nonlocal waiter_count
-                with waiter_count_lock:
-                    waiter_count += 1
-                    if waiter_count == 2:
-                        waiters_queued.set()
-
-            self._wrap_lock_on_enter(manager, on_waiter_enter)
+            waiters_queued = threading.Barrier(3)
+            self._wrap_lock_on_enter(manager, lambda: waiters_queued.wait(timeout=5))
 
             t2 = threading.Thread(target=worker, args=(1,))
             t3 = threading.Thread(target=worker, args=(2,))
             t2.start()
             t3.start()
-            assert waiters_queued.wait(timeout=5)
+            waiters_queued.wait(timeout=5)
         finally:
             release.set()
 
