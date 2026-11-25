@@ -164,13 +164,21 @@ class TestCredentials(object):
         assert delegated._subject == "user@example.com"
         assert delegated._jwt_credentials is None
 
-    @pytest.mark.parametrize("universe_domain", [None, ""])
-    def test_with_universe_domain_empty_or_none_defaults(self, universe_domain):
-        """with_universe_domain normalizes None or empty string to the default domain."""
+    def test_with_universe_domain_none_defaults(self):
+        """with_universe_domain normalizes None to the default domain."""
         credentials = self.make_credentials()
-        updated = credentials.with_universe_domain(universe_domain)
+        updated = credentials.with_universe_domain(None)
         assert updated.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert not updated._always_use_jwt_access
+
+    @pytest.mark.parametrize("empty_ud", ["", "   "])
+    def test_with_universe_domain_empty_string_raises(self, empty_ud):
+        """Explicitly passing an empty or whitespace universe domain raises ValueError."""
+        credentials = self.make_credentials()
+        with pytest.raises(
+            ValueError, match="Universe Domain cannot be an empty string"
+        ):
+            credentials.with_universe_domain(empty_ud)
 
     def test_inherits_credentials_with_universe_domain(self):
         """Credentials implements the CredentialsWithUniverseDomain interface."""
@@ -183,19 +191,29 @@ class TestCredentials(object):
         )
         assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
 
-    @pytest.mark.parametrize("universe_domain", [None, ""])
-    def test_constructor_empty_or_none_universe_domain_jwt_access(
-        self, universe_domain
-    ):
-        """None or empty universe_domain defaults without forcing JWT access."""
+    def test_constructor_none_universe_domain_jwt_access(self):
+        """None universe_domain defaults without forcing JWT access."""
         credentials = service_account.Credentials(
             SIGNER,
             self.SERVICE_ACCOUNT_EMAIL,
             self.TOKEN_URI,
-            universe_domain=universe_domain,
+            universe_domain=None,
         )
         assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert not credentials._always_use_jwt_access
+
+    @pytest.mark.parametrize("empty_ud", ["", "   "])
+    def test_constructor_empty_universe_domain_raises(self, empty_ud):
+        """Empty or whitespace universe_domain in constructor raises ValueError."""
+        with pytest.raises(
+            ValueError, match="Universe Domain cannot be an empty string"
+        ):
+            service_account.Credentials(
+                SIGNER,
+                self.SERVICE_ACCOUNT_EMAIL,
+                self.TOKEN_URI,
+                universe_domain=empty_ud,
+            )
 
     def test_from_service_account_info(self):
         credentials = service_account.Credentials.from_service_account_info(
@@ -231,20 +249,34 @@ class TestCredentials(object):
         assert credentials.universe_domain == FAKE_UNIVERSE_DOMAIN
         assert credentials._always_use_jwt_access
 
-    @pytest.mark.parametrize("explicit_universe_domain", [None, ""])
-    def test_from_service_account_info_explicit_empty_universe_domain_overrides_info(
-        self, explicit_universe_domain
+    def test_from_service_account_info_explicit_none_universe_domain_overrides_info(
+        self,
     ):
-        """Explicit None or empty universe_domain kwarg overrides the JSON value."""
+        """Explicit None universe_domain kwarg overrides the JSON value and defaults."""
         info = SERVICE_ACCOUNT_INFO.copy()
         info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
 
         credentials = service_account.Credentials.from_service_account_info(
-            info, universe_domain=explicit_universe_domain
+            info, universe_domain=None
         )
 
         assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert not credentials._always_use_jwt_access
+
+    @pytest.mark.parametrize("empty_ud", ["", "   "])
+    def test_from_service_account_info_explicit_empty_universe_domain_raises(
+        self, empty_ud
+    ):
+        """Explicit empty or whitespace universe_domain kwarg raises ValueError."""
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
+
+        with pytest.raises(
+            ValueError, match="Universe Domain cannot be an empty string"
+        ):
+            service_account.Credentials.from_service_account_info(
+                info, universe_domain=empty_ud
+            )
 
     def test_from_service_account_info_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -899,22 +931,38 @@ class TestIDTokenCredentials(object):
         call_iam_generate_id_token_endpoint.assert_called_once()
         id_token_jwt_grant.assert_not_called()
 
-    @pytest.mark.parametrize("explicit_universe_domain", [None, ""])
-    def test_from_service_account_info_explicit_empty_universe_domain_overrides_info(
-        self, explicit_universe_domain
+    def test_from_service_account_info_explicit_none_universe_domain_overrides_info(
+        self,
     ):
-        """Explicit None or empty universe_domain kwarg overrides the JSON value."""
+        """Explicit None universe_domain kwarg overrides the JSON value and defaults."""
         info = SERVICE_ACCOUNT_INFO.copy()
         info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
 
         credentials = service_account.IDTokenCredentials.from_service_account_info(
             info,
             target_audience=self.TARGET_AUDIENCE,
-            universe_domain=explicit_universe_domain,
+            universe_domain=None,
         )
 
         assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert not credentials._use_iam_endpoint
+
+    @pytest.mark.parametrize("empty_ud", ["", "   "])
+    def test_id_token_from_service_account_info_explicit_empty_universe_domain_raises(
+        self, empty_ud
+    ):
+        """Explicit empty or whitespace universe_domain kwarg raises ValueError."""
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
+
+        with pytest.raises(
+            ValueError, match="Universe Domain cannot be an empty string"
+        ):
+            service_account.IDTokenCredentials.from_service_account_info(
+                info,
+                target_audience=self.TARGET_AUDIENCE,
+                universe_domain=empty_ud,
+            )
 
     def test_from_service_account_file(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -1133,3 +1181,12 @@ class TestIDTokenCredentials(object):
 
         # Credentials should now be valid.
         assert credentials.valid
+
+    @pytest.mark.parametrize("empty_ud", ["", "   "])
+    def test_id_token_with_universe_domain_empty_string_raises(self, empty_ud):
+        """Explicitly passing an empty or whitespace universe domain raises ValueError."""
+        credentials = self.make_credentials()
+        with pytest.raises(
+            ValueError, match="Universe Domain cannot be an empty string"
+        ):
+            credentials.with_universe_domain(empty_ud)

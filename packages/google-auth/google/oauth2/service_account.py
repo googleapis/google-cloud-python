@@ -96,6 +96,17 @@ _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
+def _validate_universe_domain(universe_domain):
+    """Validates that the universe domain is non-empty.
+
+    Raises:
+        ValueError: If the universe domain is an empty string
+            or contains only blank spaces.
+    """
+    if universe_domain is not None and not str(universe_domain).strip():
+        raise ValueError("Universe Domain cannot be an empty string.")
+
+
 class Credentials(
     credentials.Signing,
     credentials.Scoped,
@@ -195,9 +206,10 @@ class Credentials(
         self._quota_project_id = quota_project_id
         self._token_uri = token_uri
         self._always_use_jwt_access = always_use_jwt_access
+        _validate_universe_domain(universe_domain)
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
 
-        # Check the normalized universe domain so None or "" falls back to the
+        # Check the normalized universe domain so None falls back to the
         # default universe domain without forcing self-signed JWT access.
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             self._always_use_jwt_access = True
@@ -360,6 +372,7 @@ class Credentials(
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
+        _validate_universe_domain(universe_domain)
         cred = self._make_copy()
         cred._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         if cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
@@ -666,6 +679,7 @@ class IDTokenCredentials(
         self._quota_project_id = quota_project_id
         self._use_iam_endpoint = False
 
+        _validate_universe_domain(universe_domain)
         if not universe_domain:
             self._universe_domain = credentials.DEFAULT_UNIVERSE_DOMAIN
         else:
@@ -818,6 +832,7 @@ class IDTokenCredentials(
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
+        _validate_universe_domain(universe_domain)
         cred = self._make_copy()
         cred._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         # Rebuild the IAM generateIdToken URL for the updated universe domain.
