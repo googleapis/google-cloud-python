@@ -1404,104 +1404,100 @@ class TestBasicsAsync(AsyncMockServerTestBase):
     async def test_async_execute_streaming_sql_retries_all_retryable_internal_errors(
         self,
     ):
-        async with self._async_database() as database:
-            for index, error_message in enumerate(_RETRYABLE_INTERNAL_ERROR_MESSAGES):
-                with self.subTest(error_message=error_message):
-                    self.spanner_service.requests.clear()
-                    sql = f"select id from async_retry_internal_{index}"
-                    add_single_result(sql, "id", TypeCode.INT64, [("1",), ("2",)])
-                    add_execute_streaming_sql_error(
-                        sql, 1, internal_server_error_status(error_message)
-                    )
-                    async with database.snapshot() as snapshot:
-                        results = await snapshot.execute_sql(sql)
-                        rows = [row async for row in results]
-                        self.assertEqual([[1], [2]], rows)
-                    execute_requests = _requests_of_type(
-                        self.spanner_service, ExecuteSqlRequest
-                    )
-                    self.assertEqual(
-                        [b"", b"1"],
-                        [request.resume_token for request in execute_requests],
-                    )
+        database = await self.get_database()
+        for index, error_message in enumerate(_RETRYABLE_INTERNAL_ERROR_MESSAGES):
+            with self.subTest(error_message=error_message):
+                self.spanner_service.requests.clear()
+                sql = f"select id from async_retry_internal_{index}"
+                add_single_result(sql, "id", TypeCode.INT64, [("1",), ("2",)])
+                add_execute_streaming_sql_error(
+                    sql, 1, internal_server_error_status(error_message)
+                )
+                async with database.snapshot() as snapshot:
+                    results = await snapshot.execute_sql(sql)
+                    rows = [row async for row in results]
+                    self.assertEqual([[1], [2]], rows)
+                execute_requests = _requests_of_type(
+                    self.spanner_service, ExecuteSqlRequest
+                )
+                self.assertEqual(
+                    [b"", b"1"],
+                    [request.resume_token for request in execute_requests],
+                )
 
     async def test_async_execute_streaming_sql_initial_and_non_retryable_internal_errors(
         self,
     ):
-        async with self._async_database() as database:
-            retryable_sql = "select id from async_initial_retry_internal"
-            add_single_result(retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
-            add_execute_streaming_sql_error(
-                retryable_sql,
-                0,
-                internal_server_error_status(
-                    "Authentication backend internal server error. Please retry."
-                ),
-            )
-            self.spanner_service.requests.clear()
-            async with database.snapshot() as snapshot:
-                results = await snapshot.execute_sql(retryable_sql)
-                rows = [row async for row in results]
-                self.assertEqual([[1], [2]], rows)
-            execute_requests = _requests_of_type(
-                self.spanner_service, ExecuteSqlRequest
-            )
-            self.assertEqual(
-                [b"", b""],
-                [request.resume_token for request in execute_requests],
-            )
+        database = await self.get_database()
+        retryable_sql = "select id from async_initial_retry_internal"
+        add_single_result(retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
+        add_execute_streaming_sql_error(
+            retryable_sql,
+            0,
+            internal_server_error_status(
+                "Authentication backend internal server error. Please retry."
+            ),
+        )
+        self.spanner_service.requests.clear()
+        async with database.snapshot() as snapshot:
+            results = await snapshot.execute_sql(retryable_sql)
+            rows = [row async for row in results]
+            self.assertEqual([[1], [2]], rows)
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(
+            [b"", b""],
+            [request.resume_token for request in execute_requests],
+        )
 
-            non_retryable_sql = "select id from async_non_retry_internal"
-            add_single_result(non_retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
-            add_execute_streaming_sql_error(
-                non_retryable_sql,
-                0,
-                internal_server_error_status("Internal server error."),
-            )
-            self.spanner_service.requests.clear()
-            async with database.snapshot() as snapshot:
-                results = await snapshot.execute_sql(non_retryable_sql)
-                with self.assertRaisesRegex(
-                    exceptions.InternalServerError, "Internal server error."
-                ):
-                    async for _ in results:
-                        pass
-            execute_requests = _requests_of_type(
-                self.spanner_service, ExecuteSqlRequest
-            )
-            self.assertEqual(1, len(execute_requests))
+        non_retryable_sql = "select id from async_non_retry_internal"
+        add_single_result(non_retryable_sql, "id", TypeCode.INT64, [("1",), ("2",)])
+        add_execute_streaming_sql_error(
+            non_retryable_sql,
+            0,
+            internal_server_error_status("Internal server error."),
+        )
+        self.spanner_service.requests.clear()
+        async with database.snapshot() as snapshot:
+            results = await snapshot.execute_sql(non_retryable_sql)
+            with self.assertRaisesRegex(
+                exceptions.InternalServerError, "Internal server error."
+            ):
+                async for _ in results:
+                    pass
+        execute_requests = _requests_of_type(self.spanner_service, ExecuteSqlRequest)
+        self.assertEqual(1, len(execute_requests))
 
     async def test_async_streamed_result_set_invalid_termination_raises_internal_error(
         self,
     ):
-        async with self._async_database() as database:
-            for sql, fields, chunks, expected_message in _invalid_termination_scenarios(
-                "async_"
-            ):
-                add_execute_streaming_sql_results(
-                    sql, _make_partial_result_sets(fields, chunks)
-                )
-                async with database.snapshot(multi_use=True) as snapshot:
-                    results = await snapshot.execute_sql(sql)
-                    with self.assertRaisesRegex(
-                        exceptions.InternalServerError, expected_message
-                    ):
-                        _ = [row async for row in results]
-                    one_or_none_results = await snapshot.execute_sql(sql)
-                    with self.assertRaisesRegex(
-                        exceptions.InternalServerError, expected_message
-                    ):
-                        await one_or_none_results.one_or_none()
-                    one_results = await snapshot.execute_sql(sql)
-                    with self.assertRaisesRegex(
-                        exceptions.InternalServerError, expected_message
-                    ):
-                        await one_results.one()
-                    dict_results = await snapshot.execute_sql(sql)
-                    with self.assertRaisesRegex(
-                        exceptions.InternalServerError, expected_message
-                    ):
-                        await dict_results.to_dict_list()
+        database = await self.get_database()
+        for sql, fields, chunks, expected_message in _invalid_termination_scenarios(
+            "async_"
+        ):
+            add_execute_streaming_sql_results(
+                sql, _make_partial_result_sets(fields, chunks)
+            )
+            async with database.snapshot(multi_use=True) as snapshot:
+                results = await snapshot.execute_sql(sql)
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    _ = [row async for row in results]
+                one_or_none_results = await snapshot.execute_sql(sql)
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    await one_or_none_results.one_or_none()
+                one_results = await snapshot.execute_sql(sql)
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    await one_results.one()
+                dict_results = await snapshot.execute_sql(sql)
+                with self.assertRaisesRegex(
+                    exceptions.InternalServerError, expected_message
+                ):
+                    await dict_results.to_dict_list()
 
 
 def _invalid_termination_scenarios(prefix: str = ""):
