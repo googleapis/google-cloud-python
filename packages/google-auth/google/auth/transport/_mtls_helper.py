@@ -982,7 +982,7 @@ class _MtlsCertManager:
 
     Tracks the active client certificate bytes, private key bytes, leaf
     certificate SHA-256 fingerprint, and a ``generation_id`` counter that
-    increments only when the loaded certificate changes.
+    increments only when the loaded certificate or private key changes.
 
     Args:
         client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
@@ -1041,20 +1041,22 @@ class _MtlsCertManager:
         return cert_bytes, key_bytes, fingerprint
 
     def refresh(self, expected_generation: Optional[int] = None) -> bool:
-        """Loads the client certificate and increments ``generation_id`` if it changed.
+        """Loads the client certificate and increments ``generation_id`` if the
+        certificate or private key changed.
 
         Args:
             expected_generation (Optional[int]): Generation ID the caller was
                 using when a request failed. If ``generation_id`` is already
                 greater than ``expected_generation``, returns ``True`` without
                 reloading. If another thread started and finished a reload while
-                this call waited for the lock and the certificate did not change,
-                returns ``False`` without reloading. If ``None``, always reloads.
+                this call waited for the lock and neither the certificate nor
+                the private key changed, returns ``False`` without reloading.
+                If ``None``, always reloads.
 
         Returns:
-            bool: ``True`` if the certificate changed (or ``generation_id`` is
-                already greater than ``expected_generation``), ``False``
-                otherwise.
+            bool: ``True`` if the certificate or private key changed (or
+                ``generation_id`` is already greater than
+                ``expected_generation``), ``False`` otherwise.
 
         Raises:
             google.auth.exceptions.ClientCertError: If loading or parsing the
@@ -1087,7 +1089,9 @@ class _MtlsCertManager:
                 raise exceptions.ClientCertError(caught_exc) from caught_exc
 
             snap = self._snapshot
-            changed = cert_bytes is not None and fingerprint != snap.fingerprint
+            changed = cert_bytes is not None and (
+                cert_bytes != snap.cert or key_bytes != snap.key
+            )
             if changed:
                 self._snapshot = _CertSnapshot(
                     cert_bytes, key_bytes, snap.generation_id + 1, fingerprint

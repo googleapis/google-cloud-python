@@ -2429,6 +2429,61 @@ class TestMtlsCertManager(object):
         )
         assert source.call_count == 3
 
+    def test_refresh_detects_chain_and_key_changes_with_same_leaf_certificate(self):
+        source = mock.Mock(
+            side_effect=[
+                (pytest.public_cert_bytes, pytest.private_key_bytes),
+                (TRUST_CHAIN_WITH_LEAF_BYTES, pytest.private_key_bytes),
+                (ES256_CERT_BYTES, pytest.private_key_bytes),
+                (ES256_CERT_BYTES, ES256_KEY_BYTES),
+                (ES256_CERT_BYTES, ES256_KEY_BYTES),
+            ]
+        )
+        manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+        expected_leaf_fp = _agent_identity_utils.calculate_certificate_fingerprint(
+            _agent_identity_utils.parse_certificate(pytest.public_cert_bytes)
+        )
+        expected_es256_fp = _agent_identity_utils.calculate_certificate_fingerprint(
+            _agent_identity_utils.parse_certificate(ES256_CERT_BYTES)
+        )
+
+        assert manager.refresh() is True
+        assert manager.generation_id == 1
+        assert manager.cert_fingerprint == expected_leaf_fp
+
+        # Same leaf cert with a different PEM chain still advances generation.
+        assert manager.refresh() is True
+        assert manager.generation_id == 2
+        assert manager.cert_fingerprint == expected_leaf_fp
+        assert manager.get_credential_snapshot() == (
+            TRUST_CHAIN_WITH_LEAF_BYTES,
+            pytest.private_key_bytes,
+            2,
+        )
+
+        assert manager.refresh() is True
+        assert manager.generation_id == 3
+        assert manager.cert_fingerprint == expected_es256_fp
+        assert manager.get_credential_snapshot() == (
+            ES256_CERT_BYTES,
+            pytest.private_key_bytes,
+            3,
+        )
+
+        # Same leaf cert with updated key bytes still advances generation.
+        assert manager.refresh() is True
+        assert manager.generation_id == 4
+        assert manager.cert_fingerprint == expected_es256_fp
+        assert manager.get_credential_snapshot() == (
+            ES256_CERT_BYTES,
+            ES256_KEY_BYTES,
+            4,
+        )
+
+        assert manager.refresh() is False
+        assert manager.generation_id == 4
+        assert source.call_count == 5
+
     def test_expected_generation_coalesces_concurrent_refreshes(self):
         barrier = threading.Barrier(4)
         source = mock.Mock(
