@@ -65,7 +65,9 @@ from .parse_url import parse_url
 # Illegal characters is intended to be all characters that are not explicitly
 # allowed as part of the flexible column names.
 # https://cloud.google.com/bigquery/docs/schemas#flexible-column-names
-FIELD_ILLEGAL_CHARACTERS = re.compile(r'[!"$()*,./;?@[\\\]^{}~\n]+', re.ASCII)
+FIELD_ILLEGAL_CHARACTERS = re.compile(
+    r'[!"$()*,./;?@[\\\]^`{}~\x00-\x1f\x7f]+', re.ASCII
+)
 
 TABLE_VALUED_ALIAS_ALIASES = "bigquery_table_valued_alias_aliases"
 
@@ -81,6 +83,9 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
     https://github.com/dropbox/PyHive/blob/master/pyhive/sqlalchemy_presto.py
     """
 
+    _UNESCAPE_IDENTIFIER_RE = re.compile(r"\\([\\`])")
+    _CONTROL_CHARACTERS_RE = re.compile(r"[\x00-\x1f\x7f]")
+
     def __init__(self, dialect):
         super(BigQueryIdentifierPreparer, self).__init__(
             dialect,
@@ -92,14 +97,18 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         # SQLAlchemy's base IdentifierPreparer defaults to escaping quotes by
         # doubling them (e.g. `""`), whereas BigQuery GoogleSQL escapes
         # backslashes and backticks inside backtick-quoted identifiers using a
-        # leading backslash (`\\` and ``\` ``).
+        # leading backslash (`\\` and ``\` ``) and disallows raw newlines.
+        if self._CONTROL_CHARACTERS_RE.search(value):
+            raise sqlalchemy.exc.CompileError(
+                "Identifier cannot contain control characters"
+            )
         value = value.replace("\\", "\\\\").replace("`", "\\`")
         if self._double_percents:
             value = value.replace("%", "%%")
         return value
 
     def _unescape_identifier(self, value):
-        return value.replace("\\`", "`").replace("\\\\", "\\")
+        return self._UNESCAPE_IDENTIFIER_RE.sub(r"\1", value)
 
     def quote_column(self, value):
         """
