@@ -298,6 +298,27 @@ def validate_universe_domain(universe_domain: Any) -> None:
         )
 
 
+def compare_universe_domains(
+    universe_domain: str, expected_universe_domain: str
+) -> None:
+    """Verifies that ``universe_domain`` matches ``expected_universe_domain``.
+
+    Args:
+        universe_domain (str): The configured universe domain.
+        expected_universe_domain (str): The expected universe domain (for
+            example, from wrapped source credentials).
+
+    Raises:
+        google.auth.exceptions.InvalidValue: If the two universe domains do
+            not match.
+    """
+    if universe_domain != expected_universe_domain:
+        raise exceptions.InvalidValue(
+            f"The configured universe domain ({universe_domain}) does not "
+            f"match the expected universe domain ({expected_universe_domain})."
+        )
+
+
 def scopes_to_string(scopes):
     """Converts scope value to a string suitable for sending to OAuth 2.0
     authorization servers.
