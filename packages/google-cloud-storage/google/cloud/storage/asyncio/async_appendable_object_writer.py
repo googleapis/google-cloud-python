@@ -441,6 +441,15 @@ class AsyncAppendableObjectWriter:
                     self._created_generation = True
                 self.generation = redirect_proto.generation
 
+    async def _abort_stream(self) -> None:
+        """Best-effort close of the current stream, then marks the writer closed."""
+        if self.write_obj_stream is not None and self.write_obj_stream.is_stream_open:
+            try:
+                await self.write_obj_stream.close()
+            except Exception as e:
+                logger.debug(f"Closing the write stream resulted in: {e}")
+        self._is_stream_open = False
+
     def _raise_if_offset_lost(self, expected_offset: Optional[int]) -> None:
         """Raises DataLoss if a reconnect reports fewer bytes than were sent.
 
@@ -643,6 +652,9 @@ class AsyncAppendableObjectWriter:
                         self.bytes_appended_since_last_flush = 0
 
                         if (self.persisted_size or 0) < write_state.initial_offset:
+                            # Close the reopened stream so a later close() can't
+                            # finalize the truncated object.
+                            await self._abort_stream()
                             raise exceptions.DataLoss(
                                 f"Unrecoverable data loss during reconnect. "
                                 f"Expected persisted_size >= {write_state.initial_offset}, "
@@ -838,7 +850,8 @@ class AsyncAppendableObjectWriter:
             try:
                 return await retry_policy(_do_close)()
             finally:
-                self._is_stream_open = False
+                # Closes a stream reopened by a retry that then failed.
+                await self._abort_stream()
 
     async def finalize(
         self,
