@@ -212,6 +212,7 @@ class Credentials(
         quota_project_id=None,
         iam_endpoint_override=None,
         trust_boundary=None,
+        universe_domain=None,
     ):
         """
         Args:
@@ -243,9 +244,18 @@ class Credentials(
                 if you wish to impersonate as a user. This feature is useful when
                 using domain wide delegation.
             trust_boundary (Mapping[str,str]): A credential trust boundary.
+            universe_domain (Optional[str]): The universe domain value. If
+                provided, it must match ``source_credentials.universe_domain``.
+
+        Raises:
+            InvalidValue: If ``universe_domain`` is invalid or does not match
+                ``source_credentials.universe_domain``.
         """
 
         super(Credentials, self).__init__()
+
+        if universe_domain is not None:
+            _helpers.validate_universe_domain(universe_domain)
 
         self._source_credentials = copy.copy(source_credentials)
         # Service account source credentials must have the _IAM_SCOPE
@@ -263,7 +273,10 @@ class Credentials(
             ):
                 self._source_credentials._create_self_signed_jwt(None)
 
-        self._universe_domain = source_credentials.universe_domain
+        source_universe = self._source_credentials.universe_domain
+        if universe_domain is not None:
+            _helpers.compare_universe_domains(universe_domain, source_universe)
+        self._universe_domain = source_universe
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates
@@ -450,6 +463,7 @@ class Credentials(
             quota_project_id=self._quota_project_id,
             iam_endpoint_override=self._iam_endpoint_override,
             trust_boundary=self._trust_boundary,
+            universe_domain=self._universe_domain,
         )
         cred._cred_file_path = self._cred_file_path
         self._copy_regional_access_boundary_manager(cred)
@@ -491,11 +505,22 @@ class Credentials(
 
         Raises:
             InvalidType: If the info["source_credentials"] are not a supported impersonation type
-            InvalidValue: If the info["service_account_impersonation_url"] is not in the expected format.
+            InvalidValue: If ``info`` has an invalid or conflicting
+                ``universe_domain`` or ``service_account_impersonation_url``.
             ValueError: If the info is not in the expected format.
         """
 
         source_credentials_info = info.get("source_credentials")
+        universe_domain = info.get("universe_domain")
+        if (
+            universe_domain is not None
+            and source_credentials_info.get("universe_domain") is None
+        ):
+            source_credentials_info = {
+                **source_credentials_info,
+                "universe_domain": universe_domain,
+            }
+
         source_credentials_type = source_credentials_info.get("type")
         if source_credentials_type == _SOURCE_CREDENTIAL_AUTHORIZED_USER_TYPE:
             from google.oauth2 import credentials
@@ -545,6 +570,7 @@ class Credentials(
             delegates,
             quota_project_id=quota_project_id,
             trust_boundary=trust_boundary,
+            universe_domain=universe_domain,
         )
 
 
