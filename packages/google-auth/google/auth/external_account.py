@@ -433,7 +433,7 @@ class Credentials(
             # Avoid sending tokens minted for non-googleapis.com endpoints
             # (e.g. another universe domain or custom proxy) to
             # cloudresourcemanager.googleapis.com.
-            if self.universe_domain == credentials.DEFAULT_UNIVERSE_DOMAIN:
+            if _has_default_universe_host(self._cloud_resource_manager_url):
                 if not _has_default_universe_host(self._token_url):
                     return None
                 # Impersonation is optional; calling _has_default_universe_host(None)

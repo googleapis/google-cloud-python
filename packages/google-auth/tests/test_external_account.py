@@ -2367,6 +2367,34 @@ class TestCredentials(object):
         assert project_id is None
         request.assert_not_called()
 
+    @pytest.mark.parametrize(
+        "universe_domain",
+        [
+            pytest.param("example.com", id="custom_universe"),
+            pytest.param(None, id="none_universe"),
+            pytest.param("", id="empty_universe"),
+        ],
+    )
+    def test_get_project_id_skips_default_crm_url_after_with_universe_domain(
+        self, universe_domain
+    ):
+        request = mock.create_autospec(transport.Request)
+        credentials = CredentialsImpl.from_info(
+            {
+                "type": "external_account",
+                "audience": self.AUDIENCE,
+                "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+                "token_url": "https://sts.example.com/v1/token",
+                "credential_source": self.CREDENTIAL_SOURCE,
+            },
+            scopes=self.SCOPES,
+        ).with_universe_domain(universe_domain)
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id is None
+        request.assert_not_called()
+
     def test_get_project_id_allows_default_universe_token_url_when_universe_omitted(
         self,
     ):
