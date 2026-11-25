@@ -518,13 +518,14 @@ def test_query_filter___key__list_with_non_in_operator(database_id, operator):
 
     key = Key("Foo", 1, project=_PROJECT, database=database_id)
     query = _make_query(_make_client(database=database_id))
-    with pytest.raises(ValueError) as exc:
-        query.add_filter("__key__", operator, [key])
-    assert "Invalid key:" in str(exc.value)
+    for bad_value in ([key], (), (key, key)):
+        with pytest.raises(ValueError) as exc:
+            query.add_filter("__key__", operator, bad_value)
+        assert "Invalid key:" in str(exc.value)
 
-    with pytest.raises(ValueError) as exc:
-        PropertyFilter("__key__", operator, [key])
-    assert "Invalid key:" in str(exc.value)
+        with pytest.raises(ValueError) as exc:
+            PropertyFilter("__key__", operator, bad_value)
+        assert "Invalid key:" in str(exc.value)
 
 
 @pytest.mark.parametrize("operator", ["IN", "NOT_IN"])
@@ -534,7 +535,7 @@ def test_query_filter___key__in_invalid_value(database_id, operator):
 
     key = Key("Foo", 1, project=_PROJECT, database=database_id)
     query = _make_query(_make_client(database=database_id))
-    for bad_value in (None, key, "not-a-list", (key,), [key, None]):
+    for bad_value in (None, key, "not-a-list", (), (key,), (key, key), [key, None]):
         with pytest.raises(ValueError) as exc:
             query.add_filter("__key__", operator, bad_value)
         assert "Invalid key:" in str(exc.value)
