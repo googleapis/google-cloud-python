@@ -19,7 +19,12 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import exceptions, external_account_authorized_user, transport
+from google.auth import (
+    environment_vars,
+    exceptions,
+    external_account_authorized_user,
+    transport,
+)
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
 TOKEN_URL = "https://sts.googleapis.com/v1/token"
@@ -629,3 +634,34 @@ class TestCredentials(object):
     def test_build_regional_access_boundary_lookup_url_invalid_audience(self, audience):
         credentials = self.make_credentials(audience=audience)
         assert credentials._build_regional_access_boundary_lookup_url() is None
+
+    def test_rab_lookup_requires_explicit_default_universe_domain(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        info = {
+            "audience": AUDIENCE,
+            "refresh_token": REFRESH_TOKEN,
+            "token_url": TOKEN_URL,
+            "token_info_url": TOKEN_INFO_URL,
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+        }
+        omitted_creds = external_account_authorized_user.Credentials.from_info(info)
+
+        assert omitted_creds.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert omitted_creds._is_regional_access_boundary_lookup_required() is False
+        assert (
+            omitted_creds.with_quota_project(
+                QUOTA_PROJECT_ID
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
+
+        explicit_info = info.copy()
+        explicit_info["universe_domain"] = DEFAULT_UNIVERSE_DOMAIN
+        explicit_creds = external_account_authorized_user.Credentials.from_info(
+            explicit_info
+        )
+        assert explicit_creds._is_regional_access_boundary_lookup_required() is True

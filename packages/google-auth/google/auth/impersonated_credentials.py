@@ -263,7 +263,9 @@ class Credentials(
             ):
                 self._source_credentials._create_self_signed_jwt(None)
 
-        self._universe_domain = source_credentials.universe_domain
+        self._universe_domain = credentials._get_explicit_universe_domain(
+            source_credentials
+        )
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates

@@ -429,6 +429,27 @@ def get_project_id(request):
     return get(request, "project/project-id")
 
 
+def _get_explicit_universe_domain(request):
+    """Get the universe domain value from the metadata server if available.
+
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+
+    Returns:
+        Optional[str]: The universe domain value, or None if the universe
+        domain endpoint returns 404 or an empty response.
+
+    Raises:
+        google.auth.exceptions.TransportError: if an error other than
+            404 occurs while retrieving metadata.
+    """
+    universe_domain = get(
+        request, "universe/universe-domain", return_none_for_not_found_error=True
+    )
+    return universe_domain or None
+
+
 def get_universe_domain(request):
     """Get the universe domain value from the metadata server.
 
@@ -444,12 +465,7 @@ def get_universe_domain(request):
         google.auth.exceptions.TransportError: if an error other than
             404 occurs while retrieving metadata.
     """
-    universe_domain = get(
-        request, "universe/universe-domain", return_none_for_not_found_error=True
-    )
-    if not universe_domain:
-        return "googleapis.com"
-    return universe_domain
+    return _get_explicit_universe_domain(request) or "googleapis.com"
 
 
 def get_service_account_info(request, service_account="default"):

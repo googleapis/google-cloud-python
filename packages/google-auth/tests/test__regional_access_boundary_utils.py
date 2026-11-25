@@ -46,7 +46,7 @@ def rab_caplog(caplog):
 
 
 class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
-    def __init__(self, universe_domain=None):
+    def __init__(self, universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN):
         super(CredentialsImpl, self).__init__()
         if universe_domain:
             self._universe_domain = universe_domain
@@ -621,7 +621,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
 
 
 class AsyncCredentialsImpl(_credentials_async.CredentialsWithRegionalAccessBoundary):
-    def __init__(self, universe_domain=None):
+    def __init__(self, universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN):
         super().__init__()
         if universe_domain:
             self._universe_domain = universe_domain

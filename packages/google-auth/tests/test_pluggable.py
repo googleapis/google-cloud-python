@@ -272,7 +272,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 
@@ -301,7 +301,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 
@@ -337,7 +337,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 
@@ -367,7 +367,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 

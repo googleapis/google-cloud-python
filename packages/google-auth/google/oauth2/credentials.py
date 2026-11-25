@@ -95,7 +95,7 @@ class Credentials(
         enable_reauth_refresh=False,
         granted_scopes=None,
         trust_boundary=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=None,
         account=None,
     ):
         """
@@ -162,7 +162,7 @@ class Credentials(
         self.refresh_handler = refresh_handler
         self._enable_reauth_refresh = enable_reauth_refresh
         self._trust_boundary = trust_boundary
-        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain = universe_domain or None
         self._account = account or ""
         self._cred_file_path = None
 
@@ -200,9 +200,7 @@ class Credentials(
         self._rapt_token = d.get("_rapt_token")
         self._enable_reauth_refresh = d.get("_enable_reauth_refresh")
         self._trust_boundary = d.get("_trust_boundary")
-        self._universe_domain = (
-            d.get("_universe_domain") or credentials.DEFAULT_UNIVERSE_DOMAIN
-        )
+        self._universe_domain = d.get("_universe_domain") or None
         self._cred_file_path = d.get("_cred_file_path")
         # The refresh_handler setter should be used to repopulate this.
         self._refresh_handler = None
@@ -380,14 +378,14 @@ class Credentials(
         return False
 
     def _perform_refresh_token(self, request):
-        if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
+        if self.universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             raise exceptions.RefreshError(
                 "User credential refresh is only supported in the default "
                 "googleapis.com universe domain, but the current universe "
                 "domain is {}. If you created the credential with an access "
                 "token, it's likely that the provided token is expired now, "
                 "please update your code with a valid token.".format(
-                    self._universe_domain
+                    self.universe_domain
                 )
             )
 
@@ -565,7 +563,7 @@ class Credentials(
             "client_secret": self.client_secret,
             "scopes": self.scopes,
             "rapt_token": self.rapt_token,
-            "universe_domain": self._universe_domain,
+            "universe_domain": self.universe_domain,
             "account": self._account,
         }
         if self.expiry:  # flatten expiry timestamp

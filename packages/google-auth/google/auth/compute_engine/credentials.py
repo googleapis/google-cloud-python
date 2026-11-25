@@ -247,21 +247,19 @@ class Credentials(
 
     @property
     def universe_domain(self):
-        if self._universe_domain_cached:
-            return self._universe_domain
+        if not self._universe_domain_cached:
+            try:
+                from google.auth.transport import requests as google_auth_requests
 
-        try:
-            from google.auth.transport import requests as google_auth_requests
+                request = google_auth_requests.Request()
+            except ImportError:
+                from google.auth.transport import _http_client
 
-            request = google_auth_requests.Request()
-        except ImportError:
-            from google.auth.transport import _http_client
+                request = _http_client.Request()
 
-            request = _http_client.Request()
-
-        self._universe_domain = _metadata.get_universe_domain(request)
-        self._universe_domain_cached = True
-        return self._universe_domain
+            self._universe_domain = _metadata._get_explicit_universe_domain(request)
+            self._universe_domain_cached = True
+        return self._universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
 
     @_helpers.copy_docstring(credentials.Credentials)
     def get_cred_info(self):

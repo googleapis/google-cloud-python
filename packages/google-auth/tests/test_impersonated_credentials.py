@@ -21,7 +21,15 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, crypt, exceptions, impersonated_credentials, transport
+from google.auth import (
+    _helpers,
+    crypt,
+    environment_vars,
+    exceptions,
+    impersonated_credentials,
+    transport,
+)
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.auth.impersonated_credentials import Credentials
 from google.oauth2 import credentials, service_account
 
@@ -1079,3 +1087,109 @@ class TestImpersonatedCredentials(object):
             == "Unable to acquire impersonated credentials: No signed JWT in response."
         )
         assert excinfo.value.args[1] == "invalid_data"
+
+    def test_rab_lookup_inherits_explicit_universe_domain_from_source(
+        self, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
+            sa_info = json.load(fh)
+        sa_info.pop("universe_domain", None)
+
+        omitted_source = service_account.Credentials.from_service_account_info(sa_info)
+        omitted_impersonated = Credentials(
+            source_credentials=omitted_source,
+            target_principal="target@example.iam.gserviceaccount.com",
+            target_scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+        )
+        assert omitted_impersonated.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert (
+            omitted_impersonated._is_regional_access_boundary_lookup_required() is False
+        )
+
+        explicit_source = omitted_source.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+        explicit_impersonated = Credentials(
+            source_credentials=explicit_source,
+            target_principal="target@example.iam.gserviceaccount.com",
+            target_scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+        )
+        assert (
+            explicit_impersonated._is_regional_access_boundary_lookup_required() is True
+        )
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
+        autospec=True,
+    )
+    def test_rab_lookup_resolves_lazy_compute_engine_source_universe_domain(
+        self, mock_get_universe_domain, monkeypatch
+    ):
+        from google.auth import compute_engine
+
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+
+        mock_get_universe_domain.return_value = None
+        missing_impersonated = Credentials(
+            source_credentials=compute_engine.Credentials(),
+            target_principal="target@example.iam.gserviceaccount.com",
+            target_scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+        )
+        assert missing_impersonated.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert (
+            missing_impersonated._is_regional_access_boundary_lookup_required() is False
+        )
+
+        mock_get_universe_domain.return_value = DEFAULT_UNIVERSE_DOMAIN
+        confirmed_impersonated = Credentials(
+            source_credentials=compute_engine.Credentials(),
+            target_principal="target@example.iam.gserviceaccount.com",
+            target_scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+        )
+        assert (
+            confirmed_impersonated._is_regional_access_boundary_lookup_required()
+            is True
+        )
+
+    def test_rab_lookup_skips_omitted_non_rab_and_custom_sources(self, monkeypatch):
+        from google.auth import downscoped
+
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        oauth_source = credentials.Credentials(token="access-token")
+        downscoped_source = downscoped.Credentials(
+            source_credentials=oauth_source,
+            credential_access_boundary=downscoped.CredentialAccessBoundary(
+                rules=[
+                    downscoped.AccessBoundaryRule(
+                        available_resource="//storage.googleapis.com/projects/_/buckets/b",
+                        available_permissions=["inRole:roles/storage.objectViewer"],
+                    )
+                ]
+            ),
+        )
+        custom_default_source = mock.Mock(universe_domain=DEFAULT_UNIVERSE_DOMAIN)
+        custom_empty_source = mock.Mock(universe_domain="")
+        custom_other_source = mock.Mock(universe_domain="example.com")
+
+        for source, expected_universe in [
+            (oauth_source, DEFAULT_UNIVERSE_DOMAIN),
+            (downscoped_source, DEFAULT_UNIVERSE_DOMAIN),
+            (custom_default_source, DEFAULT_UNIVERSE_DOMAIN),
+            (custom_empty_source, DEFAULT_UNIVERSE_DOMAIN),
+            (custom_other_source, "example.com"),
+        ]:
+            impersonated = Credentials(
+                source_credentials=source,
+                target_principal="target@example.iam.gserviceaccount.com",
+                target_scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+            )
+            assert impersonated.universe_domain == expected_universe
+            assert impersonated._is_regional_access_boundary_lookup_required() is False

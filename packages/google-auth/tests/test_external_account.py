@@ -2470,6 +2470,43 @@ class TestCredentials(object):
         assert init_mock.call_count == 1
         assert creds._impersonated_credentials == mock_impersonated
 
+    def test_rab_lookup_requires_explicit_default_universe_domain(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        info = {
+            "type": "external_account",
+            "audience": self.AUDIENCE,
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+            "token_url": self.TOKEN_URL,
+            "credential_source": self.CREDENTIAL_SOURCE,
+            "service_account_impersonation_url": self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+        }
+        omitted_creds = CredentialsImpl.from_info(info, scopes=self.SCOPES)
+
+        assert omitted_creds.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert omitted_creds._is_regional_access_boundary_lookup_required() is False
+        assert (
+            omitted_creds.with_scopes(
+                self.SCOPES
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
+        assert (
+            omitted_creds._initialize_impersonated_credentials()._is_regional_access_boundary_lookup_required()
+            is False
+        )
+
+        explicit_info = info.copy()
+        explicit_info["universe_domain"] = DEFAULT_UNIVERSE_DOMAIN
+        explicit_creds = CredentialsImpl.from_info(explicit_info, scopes=self.SCOPES)
+        assert explicit_creds._is_regional_access_boundary_lookup_required() is True
+        assert (
+            explicit_creds._initialize_impersonated_credentials()._is_regional_access_boundary_lookup_required()
+            is True
+        )
+
 
 def test_supplier_context():
     context = external_account.SupplierContext("TestTokenType", "TestAudience")
