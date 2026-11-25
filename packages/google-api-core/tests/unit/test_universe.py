@@ -16,7 +16,9 @@ import re
 import types
 
 import pytest
+from google.auth import compute_engine
 from google.auth import credentials as auth_credentials
+from google.auth.compute_engine import _metadata as compute_engine_metadata
 from google.auth.exceptions import MutualTLSChannelError
 
 from google.api_core import client_options as client_options_lib
@@ -51,6 +53,17 @@ class _StubCredentials(auth_credentials.Credentials):
 
     def refresh(self, request):  # pragma: NO COVER
         pass
+
+
+class _CachedComputeEngineCredentials(compute_engine.Credentials):
+    def __init__(self, universe_domain: str = universe.DEFAULT_UNIVERSE):
+        super().__init__()
+        self._test_universe_domain = universe_domain
+        self._universe_domain_cached = True
+
+    @property
+    def universe_domain(self) -> str:
+        return self._test_universe_domain
 
 
 def test_determine_domain():
@@ -476,6 +489,38 @@ class TestValidateCredentialsUniverse:
             universe.validate_credentials_universe(
                 TPC_UNIVERSE,
                 _Fake_Credentials(),  # type: ignore[arg-type]
+            )
+
+    @pytest.mark.parametrize(
+        "client_universe",
+        [
+            pytest.param(universe.DEFAULT_UNIVERSE, id="default_universe"),
+            pytest.param(TPC_UNIVERSE, id="custom_universe"),
+        ],
+    )
+    def test_skips_uncached_compute_engine_credentials_without_mds_request(
+        self, monkeypatch, client_universe
+    ):
+        def _fail_mds_call(*args, **kwargs):  # pragma: NO COVER
+            raise AssertionError("Unexpected Metadata Server request")
+
+        monkeypatch.setattr(compute_engine_metadata, "get", _fail_mds_call)
+        creds = compute_engine.Credentials()
+
+        assert universe.validate_credentials_universe(client_universe, creds) is None
+
+    def test_validates_cached_compute_engine_credentials(self):
+        matching_creds = _CachedComputeEngineCredentials(TPC_UNIVERSE)
+        assert (
+            universe.validate_credentials_universe(TPC_UNIVERSE, matching_creds) is None
+        )
+
+        with pytest.raises(
+            universe.UniverseMismatchError,
+            match=r"configured universe domain \(googleapis\.com\).*credentials \(apis-tpclp\.goog\)",
+        ):
+            universe.validate_credentials_universe(
+                universe.DEFAULT_UNIVERSE, matching_creds
             )
 
 

@@ -21,6 +21,7 @@ from collections.abc import Mapping
 from typing import Any, NamedTuple, Optional
 from urllib.parse import urlparse, urlsplit, urlunparse
 
+from google.auth import compute_engine
 from google.auth import credentials as auth_credentials
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 
@@ -270,8 +271,10 @@ def validate_credentials_universe(
     Call on ``self._credentials`` after ``super().__init__()`` or Application
     Default Credentials resolution rather than on the raw constructor
     ``credentials`` argument (which is ``None`` before ADC loads), and never
-    inside ``Credentials.before_request()``. Exempts ``None`` and
-    ``AnonymousCredentials`` for local emulator workflows.
+    inside ``Credentials.before_request()``. Exempts ``None``,
+    ``AnonymousCredentials``, and ``compute_engine.Credentials`` whose universe
+    domain is not yet cached in memory (avoiding synchronous Metadata Server
+    HTTP requests during client initialization).
 
     Args:
         client_universe (str): Resolved universe domain of the client.
@@ -280,11 +283,15 @@ def validate_credentials_universe(
             validation is skipped).
 
     Raises:
-        UniverseMismatchError: If ``credentials`` is configured for a different
-            universe than ``client_universe``.
+        UniverseMismatchError: If ``credentials`` has an in-memory universe
+            domain configured for a different universe than ``client_universe``.
     """
     if credentials is None or isinstance(
         credentials, auth_credentials.AnonymousCredentials
+    ):
+        return
+    if isinstance(credentials, compute_engine.Credentials) and not getattr(
+        credentials, "_universe_domain_cached", False
     ):
         return
     compare_domains(client_universe, credentials)
