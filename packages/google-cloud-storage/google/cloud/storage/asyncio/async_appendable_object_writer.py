@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import io
 import logging
+import time
 from dataclasses import dataclass
 from io import BufferedReader
 from typing import Dict, List, Optional, Tuple, Union
@@ -422,6 +424,7 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before state_lookup().")
 
+        await self._reconnect_if_dropped()
         async with self._trace_span("Storage.AsyncAppendableObjectWriter.stateLookup"):
             await self.write_obj_stream.send(
                 _storage_v2.BidiWriteObjectRequest(
@@ -498,8 +501,12 @@ class AsyncAppendableObjectWriter:
         write_state.user_buffer = io.BytesIO(b"".join([self._tail, data]))
         write_state.initial_offset = self._tail_offset
 
-    async def _replay_lost_tail(self, expected_offset: Optional[int]) -> None:
-        """After a reconnect in close() or finalize(), resends lost tail bytes.
+    async def _replay_lost_tail(
+        self,
+        expected_offset: Optional[int],
+        retry_policy: Optional[AsyncRetry] = None,
+    ) -> None:
+        """After a reconnect, resends tail bytes the server lost.
 
         Raises DataLoss if the server lost bytes the tail no longer holds.
         """
@@ -510,8 +517,59 @@ class AsyncAppendableObjectWriter:
         ):
             lost_bytes = bytes(self._tail[self.offset - self._tail_offset :])
             self.bytes_appended_since_last_flush = 0
-            await self.append(lost_bytes)
+            await self.append(lost_bytes, retry_policy=retry_policy)
         self._raise_if_offset_lost(expected_offset)
+
+    @staticmethod
+    def _remaining_retry_policy(
+        retry_policy: Optional[AsyncRetry], deadline_at: Optional[float]
+    ) -> AsyncRetry:
+        """The caller's retry policy, limited to the time left before deadline_at."""
+        if retry_policy is None:
+            retry_policy = AsyncRetry(predicate=_is_write_retryable)
+        if deadline_at is None:
+            return retry_policy
+        return retry_policy.with_timeout(max(0.0, deadline_at - time.monotonic()))
+
+    async def _drop_stream_after_failed_append(self, start_offset: int) -> None:
+        """Forgets the stream after append() failed, so the next call reconnects.
+
+        Bytes before `start_offset` were acknowledged by earlier appends, and
+        the tail still holds the unpersisted ones. The stream is cancelled
+        rather than closed, so the server doesn't persist half of this call.
+        """
+        self.offset = start_offset
+        self.bytes_appended_since_last_flush = 0
+        stream, self.write_obj_stream = self.write_obj_stream, None
+        self._is_stream_open = True
+        if stream is not None and stream.is_stream_open:
+            with contextlib.suppress(Exception):
+                await stream.socket_like_rpc.close()
+
+    async def _reconnect_if_dropped(
+        self, retry_policy: Optional[AsyncRetry] = None
+    ) -> None:
+        """Reopens the stream dropped by a failed append() and replays the tail.
+
+        Raises DataLoss, and closes the writer, if the server lost bytes the
+        tail no longer holds, or persisted part of the failed append().
+        """
+        if self.write_obj_stream is not None or not self._is_stream_open:
+            return
+        expected_offset = self.offset
+        self._is_stream_open = False
+        await self.open(retry_policy=retry_policy)
+        try:
+            if (self.persisted_size or 0) > (expected_offset or 0):
+                raise exceptions.DataLoss(
+                    f"The server persisted {self.persisted_size} bytes, more than "
+                    f"the {expected_offset} bytes acknowledged before append() "
+                    f"failed."
+                )
+            await self._replay_lost_tail(expected_offset, retry_policy)
+        except exceptions.DataLoss:
+            await self._abort_stream()
+            raise
 
     def _raise_if_offset_lost(self, expected_offset: Optional[int]) -> None:
         """Raises DataLoss if a reconnect reports fewer bytes than were sent.
@@ -678,6 +736,7 @@ class AsyncAppendableObjectWriter:
             if retry_policy is None:
                 retry_policy = AsyncRetry(predicate=_is_write_retryable)
 
+            await self._reconnect_if_dropped(retry_policy)
             strategy = _WriteResumptionStrategy()
             start_offset = self.offset or 0
             buffer = io.BytesIO(data)
@@ -766,7 +825,14 @@ class AsyncAppendableObjectWriter:
                 strategy,
                 lambda r, s: send_and_recv_generator(r, s, metadata),
             )
-            await retry_manager.execute({"write_state": write_state}, retry_policy)
+            try:
+                await retry_manager.execute({"write_state": write_state}, retry_policy)
+            except exceptions.DataLoss:
+                raise
+            except BaseException:
+                # A retry may have reopened the stream and moved self.offset.
+                await self._drop_stream_after_failed_append(start_offset)
+                raise
 
             # Sync local markers
             self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
@@ -785,6 +851,7 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before simple_flush().")
 
+        await self._reconnect_if_dropped()
         async with self._trace_span("Storage.AsyncAppendableObjectWriter.simpleFlush"):
             await self.write_obj_stream.send(
                 _storage_v2.BidiWriteObjectRequest(
@@ -805,6 +872,7 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before flush().")
 
+        await self._reconnect_if_dropped()
         async with self._trace_span("Storage.AsyncAppendableObjectWriter.flush"):
             await self.write_obj_stream.send(
                 _storage_v2.BidiWriteObjectRequest(
@@ -885,10 +953,18 @@ class AsyncAppendableObjectWriter:
                     retry_policy=retry_policy,
                 )
 
+            caller_retry_policy = retry_policy
             retry_policy = self._merge_retry_policy(retry_policy)
+            deadline_at = (
+                time.monotonic() + retry_policy.timeout
+                if retry_policy.timeout is not None
+                else None
+            )
+
+            def remaining_retry_policy():
+                return self._remaining_retry_policy(caller_retry_policy, deadline_at)
 
             attempt_count = 0
-            expected_offset = self.offset
 
             async def _do_close():
                 nonlocal attempt_count
@@ -899,18 +975,22 @@ class AsyncAppendableObjectWriter:
                         f"Re-opening the stream for close retry attempt: {attempt_count}"
                     )
                     self._is_stream_open = False
-                    await self.open()
-                    await self._replay_lost_tail(expected_offset)
+                    await self.open(retry_policy=remaining_retry_policy())
+                    await self._replay_lost_tail(
+                        expected_offset, remaining_retry_policy()
+                    )
 
                 await self.write_obj_stream.close()
-                self._tail.clear()
                 return self.persisted_size
 
             try:
+                await self._reconnect_if_dropped(remaining_retry_policy())
+                expected_offset = self.offset
                 return await retry_policy(_do_close)()
             finally:
                 # Closes a stream reopened by a retry that then failed.
                 await self._abort_stream()
+                self._tail.clear()
 
     async def finalize(
         self,
@@ -975,10 +1055,18 @@ class AsyncAppendableObjectWriter:
             )
 
         async with self._trace_span("Storage.AsyncAppendableObjectWriter.finalize"):
+            caller_retry_policy = retry_policy
             retry_policy = self._merge_retry_policy(retry_policy)
+            deadline_at = (
+                time.monotonic() + retry_policy.timeout
+                if retry_policy.timeout is not None
+                else None
+            )
+
+            def remaining_retry_policy():
+                return self._remaining_retry_policy(caller_retry_policy, deadline_at)
 
             attempt_count = 0
-            expected_offset = self.offset
 
             async def _do_finalize():
                 nonlocal attempt_count
@@ -989,19 +1077,23 @@ class AsyncAppendableObjectWriter:
                         f"Re-opening the stream for finalize retry attempt: {attempt_count}"
                     )
                     self._is_stream_open = False
-                    await self.open()
-                    await self._replay_lost_tail(expected_offset)
+                    await self.open(retry_policy=remaining_retry_policy())
+                    await self._replay_lost_tail(
+                        expected_offset, remaining_retry_policy()
+                    )
 
                 await self.write_obj_stream.send(finalize_req)
                 response = await self.write_obj_stream.recv()
                 self.object_resource = response.resource
                 self.persisted_size = self.object_resource.size
-                self._tail.clear()
                 return self.object_resource
 
             try:
+                await self._reconnect_if_dropped(remaining_retry_policy())
+                expected_offset = self.offset
                 return await retry_policy(_do_finalize)()
             finally:
+                self._tail.clear()
                 if self.write_obj_stream:
                     try:
                         await self.write_obj_stream.close()

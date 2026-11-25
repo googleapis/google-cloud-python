@@ -806,6 +806,7 @@ class TestAsyncAppendableObjectWriter:
         server_bytes = bytearray()
         persisted_bytes = 0
         failed_once = False
+        finished = False
         open_metadata = []
 
         async def fake_open(metadata=None):
@@ -817,26 +818,41 @@ class TestAsyncAppendableObjectWriter:
             del server_bytes[persisted_bytes:]
 
         async def fake_send(request):
-            nonlocal persisted_bytes, failed_once
+            nonlocal persisted_bytes, failed_once, finished
             chunk_content = request.checksummed_data.content
             if chunk_content:
                 if not failed_once and request.write_offset >= fail_at_offset:
                     failed_once = True
+                    # The broken stream can't be closed gracefully.
+                    mock_stream.is_stream_open = False
                     raise failure
                 assert request.write_offset == len(server_bytes)
                 server_bytes.extend(chunk_content)
-            if request.flush:
+            if request.flush or request.finish_write:
                 persisted_bytes = len(server_bytes)
+            finished = finished or request.finish_write
 
         async def fake_recv():
+            if finished:
+                return storage_type.BidiWriteObjectResponse(
+                    resource=storage_type.Object(size=persisted_bytes)
+                )
             return storage_type.BidiWriteObjectResponse(
                 persisted_size=persisted_bytes,
                 write_handle=storage_type.BidiWriteHandle(handle=WRITE_HANDLE),
             )
 
+        async def fake_close():
+            # A graceful close persists everything sent on the stream.
+            nonlocal persisted_bytes
+            persisted_bytes = len(server_bytes)
+            mock_stream.is_stream_open = False
+
         mock_stream.open.side_effect = fake_open
         mock_stream.send.side_effect = fake_send
         mock_stream.recv.side_effect = fake_recv
+        mock_stream.close.side_effect = fake_close
+        mock_stream.socket_like_rpc.close = AsyncMock()
         return server_bytes, open_metadata
 
     @staticmethod
@@ -971,26 +987,38 @@ class TestAsyncAppendableObjectWriter:
         )
 
     @pytest.mark.parametrize(
-        "flush_interval, payloads, fail_at_offset",
+        "flush_interval, payload_segments, fail_at_offset",
         [
             # Unflushed 1 MiB from the first append is lost when the stream
             # resets at 6 MiB, before the next flush at 9 MiB.
-            (4 * MIB, [b"P" * (5 * MIB), b"Q" * (5 * MIB)], 6 * MIB),
+            pytest.param(
+                4 * MIB,
+                [[(b"P", 5 * MIB)], [(b"Q", 5 * MIB)]],
+                6 * MIB,
+                id="2x5MiB-reset-at-6MiB",
+            ),
             # 1 MiB appends: the reset at 5 MiB loses the 5th append.
-            (4 * MIB, [bytes([65 + i]) * MIB for i in range(10)], 5 * MIB),
+            pytest.param(
+                4 * MIB,
+                [[(bytes([65 + i]), MIB)] for i in range(10)],
+                5 * MIB,
+                id="10x1MiB-reset-at-5MiB",
+            ),
             # Many small appends share one flush window (gcsfs ZonalFile.write).
-            (
+            pytest.param(
                 _MAX_CHUNK_SIZE_BYTES,
-                [bytes([i % 251]) * (64 * 1024) for i in range(100)],
+                [[(bytes([i % 251]), 64 * 1024)] for i in range(100)],
                 3 * MIB,
+                id="100x64KiB-reset-at-3MiB",
             ),
         ],
     )
     @pytest.mark.asyncio
     async def test_append_multi_call_replays_lost_tail_from_prior_appends(
-        self, mock_appendable_writer, flush_interval, payloads, fail_at_offset
+        self, mock_appendable_writer, flush_interval, payload_segments, fail_at_offset
     ):
         """Verify a reset that drops unflushed bytes of earlier calls recovers."""
+        payloads = [self._payload(segments) for segments in payload_segments]
         writer = self._make_one(
             mock_appendable_writer["mock_client"],
             writer_options={"FLUSH_INTERVAL_BYTES": flush_interval},
@@ -1086,10 +1114,10 @@ class TestAsyncAppendableObjectWriter:
         assert (writer._tail_offset, len(writer._tail)) == (2 * MIB, 0)
 
     @pytest.mark.asyncio
-    async def test_state_lookup_inside_tail_drops_whole_segments(
+    async def test_state_lookup_inside_tail_trims_confirmed_bytes(
         self, mock_appendable_writer
     ):
-        """Verify a confirmation inside the tail drops only fully persisted segments."""
+        """Verify a confirmation inside the tail drops only the confirmed bytes."""
         writer = self._make_one(
             mock_appendable_writer["mock_client"],
             writer_options={"FLUSH_INTERVAL_BYTES": 4 * MIB},
@@ -1166,21 +1194,25 @@ class TestAsyncAppendableObjectWriter:
                 if request.finish_write:
                     finish_write_attempts.append(request)
                     if len(finish_write_attempts) == 1:
+                        mock_stream.is_stream_open = False
                         raise stream_reset
                 await server_send(request)
 
             mock_stream.send.side_effect = fail_first_finish_write
         else:
+            server_close = mock_stream.close.side_effect
             close_attempts = []
 
             async def fail_first_close():
                 close_attempts.append(None)
                 if len(close_attempts) == 1:
+                    mock_stream.is_stream_open = False
                     raise stream_reset
+                await server_close()
 
             mock_stream.close.side_effect = fail_first_close
 
-        await writer.close(
+        result = await writer.close(
             finalize_on_close=finalize_on_close, retry_policy=self._fast_retry()
         )
 
@@ -1189,6 +1221,202 @@ class TestAsyncAppendableObjectWriter:
         assert len(writer._tail) == 0
         if finalize_on_close:
             assert len(finish_write_attempts) == 2
+            assert result.size == 7 * MIB
+            assert writer.persisted_size == 7 * MIB
+        else:
+            # close() returns the last confirmed size (see its docstring).
+            assert result == 4 * MIB
+
+    @pytest.mark.parametrize("next_step", ["finalize", "retry-append"])
+    @pytest.mark.asyncio
+    async def test_failed_append_after_reopen_recovers_on_next_call(
+        self, mock_appendable_writer, next_step
+    ):
+        """Verify a failed append after a mid-retry reopen can't truncate the object."""
+        writer = self._make_one(
+            mock_appendable_writer["mock_client"],
+            writer_options={"FLUSH_INTERVAL_BYTES": 4 * MIB},
+        )
+        mock_stream = mock_appendable_writer["mock_stream"]
+        server_bytes, _ = self._attach_in_memory_server(
+            mock_stream, 6 * MIB, exceptions.ServiceUnavailable("stream reset")
+        )
+        server_send = mock_stream.send.side_effect
+        fail_after_reopen = [True]
+
+        async def send(request):
+            # The retry reopens the stream, then fails for good.
+            if (
+                mock_stream.open.await_count == 2
+                and fail_after_reopen[0]
+                and request.checksummed_data.content
+            ):
+                fail_after_reopen[0] = False
+                # The stream is still open, so the writer must cancel it.
+                raise exceptions.BadRequest("fails after reopen")
+            await server_send(request)
+
+        mock_stream.send.side_effect = send
+        first = self._payload([(b"A", 4 * MIB), (b"a", MIB)])
+        second = self._payload([(b"B", 3 * MIB), (b"b", 2 * MIB)])
+
+        await writer.open()
+        await writer.append(first, retry_policy=self._fast_retry())
+        with pytest.raises(exceptions.BadRequest):
+            await writer.append(second, retry_policy=self._fast_retry())
+
+        # The writer forgets the stream and goes back to the acknowledged size.
+        assert writer.offset == len(first)
+        assert writer.write_obj_stream is None
+        assert writer.is_stream_open
+        mock_stream.socket_like_rpc.close.assert_awaited_once()
+
+        expected = first
+        if next_step == "retry-append":
+            await writer.append(second, retry_policy=self._fast_retry())
+            expected = first + second
+        result = await writer.close(
+            finalize_on_close=True, retry_policy=self._fast_retry()
+        )
+
+        assert bytes(server_bytes) == expected
+        assert result.size == len(expected)
+
+    @pytest.mark.asyncio
+    async def test_failed_append_partly_persisted_raises_data_loss_on_next_call(
+        self, mock_appendable_writer
+    ):
+        """Verify the next call fails if the server kept part of a failed append."""
+        writer = self._make_one(
+            mock_appendable_writer["mock_client"],
+            writer_options={"FLUSH_INTERVAL_BYTES": _MAX_CHUNK_SIZE_BYTES},
+        )
+        self._attach_in_memory_server(
+            mock_appendable_writer["mock_stream"],
+            3 * MIB,
+            exceptions.BadRequest("fails after a flush"),
+        )
+        await writer.open()
+        await writer.append(b"a" * MIB)
+        # The flush at 3 MiB persists part of this call before it fails.
+        with pytest.raises(exceptions.BadRequest):
+            await writer.append(b"b" * (4 * MIB))
+        assert writer.offset == MIB
+
+        with pytest.raises(exceptions.DataLoss, match="more than the 1048576 bytes"):
+            await writer.append(b"c" * MIB)
+        assert not writer.is_stream_open
+        with pytest.raises(ValueError, match="Stream is not open"):
+            await writer.close(finalize_on_close=True)
+
+    @pytest.mark.asyncio
+    async def test_close_passes_remaining_retry_policy_to_replay(
+        self, mock_appendable_writer
+    ):
+        """Verify the close() replay keeps the caller's deadline and on_error."""
+        from google.api_core.retry_async import AsyncRetry
+
+        writer = self._make_one(
+            mock_appendable_writer["mock_client"],
+            writer_options={"FLUSH_INTERVAL_BYTES": 4 * MIB},
+        )
+        mock_stream = mock_appendable_writer["mock_stream"]
+        self._attach_in_memory_server(
+            mock_stream, 100 * MIB, exceptions.ServiceUnavailable("unused")
+        )
+        await writer.open()
+        await writer.append(b"c" * (7 * MIB))
+
+        server_close = mock_stream.close.side_effect
+        close_attempts = []
+
+        async def fail_first_close():
+            close_attempts.append(None)
+            if len(close_attempts) == 1:
+                mock_stream.is_stream_open = False
+                raise exceptions.ServiceUnavailable("stream reset")
+            await server_close()
+
+        mock_stream.close.side_effect = fail_first_close
+        replay_policies = []
+        original_append = writer.append
+
+        async def recording_append(data, retry_policy=None, **kwargs):
+            replay_policies.append(retry_policy)
+            await original_append(data, retry_policy=retry_policy, **kwargs)
+
+        writer.append = recording_append
+        errors = []
+
+        def on_error(exc):
+            errors.append(exc)
+
+        caller_policy = AsyncRetry(
+            predicate=_is_write_retryable,
+            initial=0.0,
+            maximum=0.0,
+            multiplier=1.0,
+            timeout=5.0,
+            on_error=on_error,
+        )
+
+        await writer.close(retry_policy=caller_policy)
+
+        [replay_policy] = replay_policies
+        assert 0 < replay_policy.timeout <= 5.0
+        assert replay_policy._on_error is on_error
+        assert len(errors) == 1
+
+    def test_remaining_retry_policy_without_deadline_keeps_policy(self):
+        """Verify a policy without a timeout is passed through unchanged."""
+        from google.api_core.retry_async import AsyncRetry
+
+        caller_policy = AsyncRetry(predicate=_is_write_retryable, timeout=None)
+        assert (
+            AsyncAppendableObjectWriter._remaining_retry_policy(caller_policy, None)
+            is caller_policy
+        )
+        default_policy = AsyncAppendableObjectWriter._remaining_retry_policy(None, None)
+        assert default_policy._predicate is _is_write_retryable
+
+    @pytest.mark.parametrize("finalize_on_close", [False, True])
+    @pytest.mark.asyncio
+    async def test_close_reconnect_offset_mismatch_raises_data_loss_without_retry(
+        self, mock_appendable_writer, finalize_on_close
+    ):
+        """Verify close() and finalize() fail fast when a reconnect lost bytes."""
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        mock_stream = mock_appendable_writer["mock_stream"]
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_stream
+        mock_stream.is_stream_open = True
+        writer.offset = 18 * MIB
+
+        transient = exceptions.ServiceUnavailable("stream reset")
+        if finalize_on_close:
+            mock_stream.recv.side_effect = transient
+        else:
+            mock_stream.close.side_effect = transient
+
+        async def reopen_with_lost_tail(*args, **kwargs):
+            writer._is_stream_open = True
+            writer.persisted_size = 16 * MIB
+            writer.offset = 16 * MIB
+
+        writer.open = mock.AsyncMock(side_effect=reopen_with_lost_tail)
+
+        with pytest.raises(
+            exceptions.DataLoss,
+            match=f"Expected offset {18 * MIB}, got {16 * MIB}",
+        ):
+            await writer.close(
+                finalize_on_close=finalize_on_close, retry_policy=self._fast_retry()
+            )
+
+        writer.open.assert_awaited_once()
+        assert not writer._is_stream_open
+        # The stream reopened by the retry is closed again, not leaked.
+        assert mock_stream.close.await_count == (1 if finalize_on_close else 2)
 
     @pytest.mark.asyncio
     async def test_append_from_file_multi_block_retry_preserves_data(
@@ -1591,47 +1819,3 @@ class TestAsyncAppendableObjectWriter:
         assert writer.write_handle.handle == b"h2"
         writer.open.assert_awaited_once()
         assert not writer._is_stream_open
-
-    @pytest.mark.parametrize("finalize_on_close", [False, True])
-    @pytest.mark.asyncio
-    async def test_close_reconnect_offset_mismatch_raises_data_loss_without_retry(
-        self, mock_appendable_writer, finalize_on_close
-    ):
-        """Verify close() and finalize() fail fast when a reconnect lost bytes."""
-        from google.api_core.retry_async import AsyncRetry
-
-        writer = self._make_one(mock_appendable_writer["mock_client"])
-        mock_stream = mock_appendable_writer["mock_stream"]
-        writer._is_stream_open = True
-        writer.write_obj_stream = mock_stream
-        mock_stream.is_stream_open = True
-        writer.offset = 18 * MIB
-
-        transient = exceptions.ServiceUnavailable("stream reset")
-        if finalize_on_close:
-            mock_stream.recv.side_effect = transient
-        else:
-            mock_stream.close.side_effect = transient
-
-        async def reopen_with_lost_tail(*args, **kwargs):
-            writer._is_stream_open = True
-            writer.persisted_size = 16 * MIB
-            writer.offset = 16 * MIB
-
-        writer.open = mock.AsyncMock(side_effect=reopen_with_lost_tail)
-        fast_retry = AsyncRetry(
-            predicate=_is_write_retryable, initial=0.0, maximum=0.0, multiplier=1.0
-        )
-
-        with pytest.raises(
-            exceptions.DataLoss,
-            match=f"Expected offset {18 * MIB}, got {16 * MIB}",
-        ):
-            await writer.close(
-                finalize_on_close=finalize_on_close, retry_policy=fast_retry
-            )
-
-        writer.open.assert_awaited_once()
-        assert not writer._is_stream_open
-        # The stream reopened by the retry is closed again, not leaked.
-        assert mock_stream.close.await_count == (1 if finalize_on_close else 2)
