@@ -472,9 +472,11 @@ class Client(publisher_client.PublisherClient):
                 future.add_done_callback(on_publish_done)
             except BaseException as be:
                 # Exceptions can be thrown when attempting to add messages to
-                # the batch. If they're thrown, record them in publisher
-                # batching and create span, end the spans and bubble the
-                # exception up.
+                # the batch. If they're thrown, release the message's flow
+                # control reservation (on_publish_done will never run), record
+                # them in publisher batching and create span, end the spans and
+                # bubble the exception up.
+                self._flow_controller.release(message)
                 if self._open_telemetry_enabled:
                     if wrapper:
                         wrapper.end_publisher_batching_span(be)
