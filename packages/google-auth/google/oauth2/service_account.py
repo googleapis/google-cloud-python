@@ -375,8 +375,9 @@ class Credentials(
         _validate_universe_domain(universe_domain)
         cred = self._make_copy()
         cred._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
-        if cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
-            cred._always_use_jwt_access = True
+        cred._always_use_jwt_access = (
+            cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
         # Clear cached JWT credentials since audience/universe metadata may change.
         cred._jwt_credentials = None
         return cred
