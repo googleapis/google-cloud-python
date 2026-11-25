@@ -14,6 +14,7 @@
 import base64
 import collections.abc
 import re
+from typing import Any, Callable, Union
 
 import sqlalchemy
 from google.api_core.client_options import ClientOptions
@@ -171,6 +172,48 @@ class SpannerJSONIndexType(_FormatTypeMixin, types.JSON.JSONIndexType):
 
 class SpannerJSONPathType(_FormatTypeMixin, types.JSON.JSONPathType):
     """Format a JSON path sequence for Spanner JSON_VALUE path."""
+
+
+_SPANNER_BYTES_ESCAPE_TABLE = tuple(
+    chr(byte)
+    if 0x20 <= byte <= 0x7E and byte not in (0x22, 0x25, 0x27, 0x5C)
+    else f"\\x{byte:02x}"
+    for byte in range(256)
+)
+
+
+def _escape_spanner_bytes_literal(value: Union[bytes, bytearray, memoryview]) -> str:
+    """Escape a bytes-like value as a double-quoted GoogleSQL BYTES literal."""
+    if not isinstance(value, (bytes, bytearray, memoryview)):
+        raise TypeError(
+            f"Expected bytes-like object for binary literal, got {type(value).__name__}"
+        )
+    if isinstance(value, memoryview):
+        value = value.tobytes()
+    escaped = "".join(_SPANNER_BYTES_ESCAPE_TABLE[byte] for byte in value)
+    return f'b"{escaped}"'
+
+
+class _SpannerBytesLiteralMixin:
+    def literal_processor(self, dialect: Any) -> Callable[[Any], str]:
+        def process(value: Any) -> str:
+            if value is None:
+                return "NULL"
+            return _escape_spanner_bytes_literal(value)
+
+        return process
+
+
+class SpannerLargeBinary(_SpannerBytesLiteralMixin, types.LargeBinary):
+    """GoogleSQL BYTES literal support for SQLAlchemy LargeBinary."""
+
+
+class SpannerBINARY(_SpannerBytesLiteralMixin, types.BINARY):
+    """GoogleSQL BYTES literal support for SQLAlchemy BINARY."""
+
+
+class SpannerVARBINARY(_SpannerBytesLiteralMixin, types.VARBINARY):
+    """GoogleSQL BYTES literal support for SQLAlchemy VARBINARY."""
 
 
 # PickleType that can be used with Spanner.
@@ -507,38 +550,35 @@ class SpannerSQLCompiler(SQLCompiler):
             # (e.g. JSON)
             return self.process(elements.Null._instance())
 
-        if isinstance(type_, (types.JSON.JSONIndexType, types.JSON.JSONPathType)):
-            processor = type_._cached_literal_processor(self.dialect)
-            if processor:
-                return processor(value)
+        inner_type = type_.dialect_impl(self.dialect)
+        while isinstance(inner_type, TypeDecorator):
+            inner_type = inner_type.impl_instance.dialect_impl(self.dialect)
 
-        raw = ("\\", "'", '"', "\n", "\t", "\r")
-        has_ctrl = isinstance(value, str) and any(
-            (ord(ch) < 0x20 and ch not in ("\n", "\t")) or ord(ch) == 0x7F
-            for ch in value
-        )
-        if isinstance(value, str) and (
-            has_ctrl or any(single in value for single in raw)
+        if isinstance(value, str) and not isinstance(
+            inner_type,
+            (types._Binary, types.JSON.JSONIndexType, types.JSON.JSONPathType),
         ):
-            if (
-                has_ctrl
-                or '"""' in value
-                or value.endswith('"')
-                or value.endswith("\\")
-            ):
-                return _escape_spanner_string_literal(value, self.dialect)
-            if self.dialect.identifier_preparer._double_percents:
-                value = value.replace("%", "%%")
-            value = 'r"""{}"""'.format(value)
-            return value
-        else:
-            processor = type_._cached_literal_processor(self.dialect)
-            if processor:
-                return processor(value)
-            else:
-                raise NotImplementedError(
-                    "Don't know how to literal-quote value %r" % value
-                )
+            raw = ("\\", "'", '"', "\n", "\t", "\r")
+            has_ctrl = any(
+                (ord(ch) < 0x20 and ch not in ("\n", "\t")) or ord(ch) == 0x7F
+                for ch in value
+            )
+            if has_ctrl or any(single in value for single in raw):
+                if (
+                    has_ctrl
+                    or '"""' in value
+                    or value.endswith('"')
+                    or value.endswith("\\")
+                ):
+                    return _escape_spanner_string_literal(value, self.dialect)
+                if self.dialect.identifier_preparer._double_percents:
+                    value = value.replace("%", "%%")
+                return 'r"""{}"""'.format(value)
+
+        processor = type_._cached_literal_processor(self.dialect)
+        if processor:
+            return processor(value)
+        raise NotImplementedError("Don't know how to literal-quote value %r" % value)
 
     def limit_clause(self, select, **kw):
         """Build LIMIT-OFFSET clause.
@@ -988,7 +1028,6 @@ class SpannerDialect(DefaultDialect):
     encoding = "utf-8"
     max_identifier_length = 256
     max_size = MAX_SIZE
-    _legacy_binary_type_literal_encoding = "utf-8"
     _default_isolation_level = "SERIALIZABLE"
 
     execute_sequence_format = list
@@ -1028,6 +1067,9 @@ class SpannerDialect(DefaultDialect):
     colspecs = {
         types.JSON.JSONIndexType: SpannerJSONIndexType,
         types.JSON.JSONPathType: SpannerJSONPathType,
+        types.LargeBinary: SpannerLargeBinary,
+        types.BINARY: SpannerBINARY,
+        types.VARBINARY: SpannerVARBINARY,
     }
 
     @classmethod
