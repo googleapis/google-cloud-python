@@ -411,14 +411,13 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     def _update_regional_access_boundary_for_universe(
         self, target_credentials, universe_domain
     ):
-        """Updates or resets the Regional Access Boundary (RAB) state for a target domain.
-
-        RAB state is only preserved when the target is the default Google domain.
-        """
+        """Updates or resets Regional Access Boundary state for a target domain."""
         if universe_domain == DEFAULT_UNIVERSE_DOMAIN:
             self._copy_regional_access_boundary_manager(target_credentials)
         else:
-            target_credentials._rab_manager._data = None
+            target_credentials._rab_manager = (
+                _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+            )
 
     def _set_regional_access_boundary(self, initial_boundary):
         """Applies the regional_access_boundary provided via the initial_boundary on these

@@ -94,6 +94,13 @@ _LOGGER = logging.getLogger(__name__)
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
+# The double curly braces `{{}}` escape the inner service account email placeholder.
+# When this template is formatted via `.format(universe_domain=...)`, python evaluates
+# `{{}}` down to a single `{}` which is populated with the email downstream in `_client.py`.
+_IAM_IDTOKEN_ENDPOINT_TEMPLATE = (
+    "https://iamcredentials.{universe_domain}/v1/projects/-/"
+    "serviceAccounts/{{}}:generateIdToken"
+)
 
 
 def _validate_universe_domain(universe_domain):
@@ -685,10 +692,9 @@ class IDTokenCredentials(
             self._universe_domain = credentials.DEFAULT_UNIVERSE_DOMAIN
         else:
             self._universe_domain = universe_domain
-        self._iam_id_token_endpoint = iam._IAM_IDTOKEN_ENDPOINT.replace(
-            "googleapis.com", self._universe_domain
+        self._iam_id_token_endpoint = _IAM_IDTOKEN_ENDPOINT_TEMPLATE.format(
+            universe_domain=self._universe_domain
         )
-
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             self._use_iam_endpoint = True
 
@@ -834,11 +840,9 @@ class IDTokenCredentials(
         _validate_universe_domain(universe_domain)
         cred = self._make_copy()
         cred._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
-        # Rebuild the IAM generateIdToken URL for the updated universe domain.
-        cred._iam_id_token_endpoint = iam._IAM_IDTOKEN_ENDPOINT.replace(
-            "googleapis.com", cred._universe_domain
+        cred._iam_id_token_endpoint = _IAM_IDTOKEN_ENDPOINT_TEMPLATE.format(
+            universe_domain=cred._universe_domain
         )
-        # Non-default universe domains require the IAM generateIdToken endpoint.
         cred._use_iam_endpoint = (
             cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
         )

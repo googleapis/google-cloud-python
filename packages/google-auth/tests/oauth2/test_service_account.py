@@ -1210,6 +1210,15 @@ class TestIDTokenCredentials(object):
         ):
             credentials.with_universe_domain(empty_ud)
 
+    def test_id_token_credentials_universe_domain_substring_safety(self):
+        """Universe domains containing 'googleapis.com' as a substring do not corrupt endpoint."""
+        tricky_ud = "googleapis.com.custom.internal"
+        creds = self.make_credentials()
+        updated = creds.with_universe_domain(tricky_ud)
+
+        expected = f"https://iamcredentials.{tricky_ud}/v1/projects/-/serviceAccounts/{{}}:generateIdToken"
+        assert updated._iam_id_token_endpoint == expected
+
     def test_from_service_account_info_does_not_inject_default_into_kwargs(self):
         """Factory does not inject DEFAULT_UNIVERSE_DOMAIN when key is absent from info."""
         info = SERVICE_ACCOUNT_INFO.copy()
