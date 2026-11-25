@@ -276,6 +276,28 @@ def has_default_universe_host(url):
         return False
 
 
+_UNIVERSE_DOMAIN_RE = re.compile(r"[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+)*")
+
+
+def validate_universe_domain(universe_domain: Any) -> None:
+    """Validates that ``universe_domain`` is a valid non-empty domain string.
+
+    Args:
+        universe_domain (Any): The universe domain to validate.
+
+    Raises:
+        google.auth.exceptions.InvalidValue: If ``universe_domain`` is not a
+            non-empty ASCII domain string (dot-separated labels of letters,
+            digits, hyphens, or underscores).
+    """
+    if not isinstance(universe_domain, str) or not _UNIVERSE_DOMAIN_RE.fullmatch(
+        universe_domain
+    ):
+        raise exceptions.InvalidValue(
+            "Universe domain must be a valid non-empty domain string."
+        )
+
+
 def scopes_to_string(scopes):
     """Converts scope value to a string suitable for sending to OAuth 2.0
     authorization servers.
