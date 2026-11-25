@@ -2542,7 +2542,7 @@ class TestMtlsCertManager(object):
         manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
 
         # A failed first load must not stop later bursts from sharing a reload.
-        with pytest.raises(exceptions.ClientCertError):
+        with pytest.raises(OSError):
             manager.refresh(expected_generation=0)
         assert manager.refresh(expected_generation=0) is True
         assert manager.generation_id == 1
@@ -2658,24 +2658,96 @@ class TestMtlsCertManager(object):
         assert manager.get_credential_snapshot() == (None, None, 0)
 
     @pytest.mark.parametrize(
-        "cert_source",
+        "callback_error",
         [
-            mock.Mock(side_effect=exceptions.ClientCertError("bad cert config")),
-            mock.Mock(side_effect=exceptions.MutualTLSChannelError("channel error")),
-            mock.Mock(side_effect=OSError("file missing")),
-            mock.Mock(side_effect=ImportError("cryptography missing")),
-            mock.Mock(side_effect=RuntimeError("unexpected callback failure")),
-            mock.Mock(return_value=(b"not a valid pem cert", pytest.private_key_bytes)),
-            mock.Mock(return_value=(b"", pytest.private_key_bytes)),
-            mock.Mock(return_value=(pytest.public_cert_bytes, b"")),
+            exceptions.ClientCertError("bad cert config"),
+            exceptions.MutualTLSChannelError("channel error"),
+            OSError("file missing"),
+            RuntimeError("unexpected callback failure"),
         ],
     )
-    def test_initial_load_error_raises_client_cert_error(self, cert_source):
+    def test_initial_load_callback_error_propagates(self, callback_error):
+        cert_source = mock.Mock(side_effect=callback_error)
         manager = _mtls_helper._MtlsCertManager(client_cert_source=cert_source)
+
+        with pytest.raises(type(callback_error)) as exc_info:
+            manager.refresh()
+
+        assert exc_info.value is callback_error
+        assert manager.generation_id == 0
+        assert manager.get_credential_snapshot() == (None, None, 0)
+
+    @pytest.mark.parametrize(
+        "return_value",
+        [
+            (b"not a valid pem cert", pytest.private_key_bytes),
+            (b"", pytest.private_key_bytes),
+            (pytest.public_cert_bytes, b""),
+        ],
+    )
+    def test_initial_load_invalid_or_empty_cert_raises_client_cert_error(
+        self, return_value
+    ):
+        manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=mock.Mock(return_value=return_value)
+        )
 
         with pytest.raises(exceptions.ClientCertError):
             manager.refresh()
 
+        assert manager.generation_id == 0
+        assert manager.get_credential_snapshot() == (None, None, 0)
+
+    def test_initial_load_parse_import_error_raises_client_cert_error(
+        self, monkeypatch
+    ):
+        original_exc = ImportError("cryptography missing")
+        monkeypatch.setattr(
+            _agent_identity_utils,
+            "parse_certificate",
+            mock.Mock(side_effect=original_exc),
+        )
+        manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=mock.Mock(
+                return_value=(pytest.public_cert_bytes, pytest.private_key_bytes)
+            )
+        )
+
+        with pytest.raises(exceptions.ClientCertError) as exc_info:
+            manager.refresh()
+
+        assert exc_info.value.__cause__ is original_exc
+        assert manager.generation_id == 0
+        assert manager.get_credential_snapshot() == (None, None, 0)
+
+    def test_initial_load_default_discovery_error_raises_client_cert_error(
+        self, monkeypatch
+    ):
+        direct_exc = exceptions.ClientCertError("bad cert config")
+        monkeypatch.setattr(
+            _mtls_helper,
+            "get_client_ssl_credentials",
+            mock.Mock(side_effect=direct_exc),
+        )
+        manager = _mtls_helper._MtlsCertManager()
+
+        with pytest.raises(exceptions.ClientCertError) as exc_info:
+            manager.refresh()
+
+        assert exc_info.value is direct_exc
+        assert manager.generation_id == 0
+
+        wrapped_exc = OSError("file missing")
+        monkeypatch.setattr(
+            _mtls_helper,
+            "get_client_ssl_credentials",
+            mock.Mock(side_effect=wrapped_exc),
+        )
+
+        with pytest.raises(exceptions.ClientCertError) as exc_info:
+            manager.refresh()
+
+        assert exc_info.value.__cause__ is wrapped_exc
         assert manager.generation_id == 0
         assert manager.get_credential_snapshot() == (None, None, 0)
 

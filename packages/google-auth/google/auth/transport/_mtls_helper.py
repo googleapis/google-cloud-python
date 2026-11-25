@@ -1024,9 +1024,14 @@ class _MtlsCertManager:
         if self._client_cert_source is not None:
             cert_bytes, key_bytes = self._client_cert_source()
         else:
-            has_cert, cert_bytes, key_bytes, _ = get_client_ssl_credentials(
-                generate_encrypted_key=False
-            )
+            try:
+                has_cert, cert_bytes, key_bytes, _ = get_client_ssl_credentials(
+                    generate_encrypted_key=False
+                )
+            except exceptions.ClientCertError:
+                raise
+            except Exception as caught_exc:
+                raise exceptions.ClientCertError(caught_exc) from caught_exc
             if not has_cert and self._snapshot.generation_id == 0:
                 return None, None, None
 
@@ -1035,14 +1040,23 @@ class _MtlsCertManager:
                 "Client certificate or private key is empty."
             )
 
-        cert_obj = _agent_identity_utils.parse_certificate(cert_bytes)
-        fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(cert_obj)
+        try:
+            cert_obj = _agent_identity_utils.parse_certificate(cert_bytes)
+            fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(
+                cert_obj
+            )
+        except Exception as caught_exc:
+            raise exceptions.ClientCertError(caught_exc) from caught_exc
 
         return cert_bytes, key_bytes, fingerprint
 
     def refresh(self, expected_generation: Optional[int] = None) -> bool:
         """Loads the client certificate and increments ``generation_id`` if the
         certificate or private key changed.
+
+        After the initial load (``generation_id > 0``), reload errors are
+        logged at debug level, the previous certificate and key are retained,
+        and ``False`` is returned.
 
         Args:
             expected_generation (Optional[int]): Generation ID the caller was
@@ -1056,11 +1070,15 @@ class _MtlsCertManager:
         Returns:
             bool: ``True`` if the certificate or private key changed (or
                 ``generation_id`` is already greater than
-                ``expected_generation``), ``False`` otherwise.
+                ``expected_generation``), ``False`` otherwise (including when
+                a reload fails after the initial load).
 
         Raises:
-            google.auth.exceptions.ClientCertError: If loading or parsing the
-                certificate fails on the initial load (``generation_id == 0``).
+            google.auth.exceptions.ClientCertError: If default discovery,
+                empty credentials, or certificate parsing fails on the initial
+                load (``generation_id == 0``).
+            Exception: Any exception raised by ``client_cert_source`` on the
+                initial load propagates unchanged.
         """
         reload_id_at_entry = self._reload_id
         with self._lock:
@@ -1084,9 +1102,7 @@ class _MtlsCertManager:
                     )
                     self._completed_reload_id = self._reload_id
                     return False
-                if isinstance(caught_exc, exceptions.ClientCertError):
-                    raise
-                raise exceptions.ClientCertError(caught_exc) from caught_exc
+                raise
 
             snap = self._snapshot
             changed = cert_bytes is not None and (
