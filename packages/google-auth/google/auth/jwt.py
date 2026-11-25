@@ -616,10 +616,7 @@ class Credentials(
             quota_project_id=self._quota_project_id,
             universe_domain=universe_domain,
         )
-        # RAB state is only valid for the default universe domain, so don't
-        # carry cached RAB data over when switching to another universe.
-        if cred.universe_domain == google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN:
-            self._copy_regional_access_boundary_manager(cred)
+        self._update_regional_access_boundary_for_universe(cred, cred.universe_domain)
         return cred
 
     def _make_jwt(self):

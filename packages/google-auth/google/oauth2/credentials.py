@@ -379,6 +379,18 @@ class Credentials(
         """OAuth 2.0 credentials do not support independent lookup."""
         return False
 
+    def _update_regional_access_boundary_for_universe(
+        self, target_credentials, universe_domain
+    ):
+        """Updates or resets the Regional Access Boundary (RAB) state for a target domain.
+
+        RAB state is only preserved when the target is the default Google domain.
+        """
+        if universe_domain == credentials.DEFAULT_UNIVERSE_DOMAIN:
+            self._copy_regional_access_boundary_manager(target_credentials)
+        else:
+            target_credentials._rab_manager._data = None
+
     def _perform_refresh_token(self, request):
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             raise exceptions.RefreshError(
