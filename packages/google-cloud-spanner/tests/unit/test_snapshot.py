@@ -685,6 +685,89 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         self.assertEqual(request.resume_token, RESUME_TOKEN)
         self.assertNoSpans()
 
+    def test_restart_on_unavailable_all_retryable_internal_errors(self):
+        retryable_messages = (
+            "RST_STREAM",
+            "stream terminated by RST_STREAM",
+            "Received RST_STREAM with error code 2",
+            "Received unexpected EOS on DATA frame from server",
+            "HTTP/2 error code: INTERNAL_ERROR",
+            "Connection closed with unknown cause",
+            "Authentication backend internal server error. Please retry",
+            "Authentication backend internal server error. Please retry.",
+        )
+
+        for error_message in retryable_messages:
+            with self.subTest(error_message=error_message):
+                first = (
+                    self._make_item(0),
+                    self._make_item(1, resume_token=RESUME_TOKEN),
+                )
+                second = (self._make_item(2),)
+                before = _MockIterator(
+                    *first,
+                    fail_after=True,
+                    error=InternalServerError(error_message),
+                )
+                after = _MockIterator(*second)
+                request = mock.Mock(test="test", spec=["test", "resume_token"])
+                restart = mock.Mock(spec=[], side_effect=[before, after])
+                database = _Database()
+                database.spanner_api = build_spanner_api()
+                session = _Session(database)
+                derived = _build_snapshot_derived(session)
+                resumable = self._call_fut(derived, restart, request, session=session)
+                self.assertEqual(list(resumable), list(first + second))
+                self.assertEqual(len(restart.mock_calls), 2)
+                self.assertEqual(request.resume_token, RESUME_TOKEN)
+                self.assertNoSpans()
+
+    def test_restart_on_unavailable_initial_retryable_internal_error(self):
+        items = (self._make_item(0), self._make_item(1))
+        after = _MockIterator(*items)
+        request = mock.Mock(
+            test="test", resume_token=b"", spec=["test", "resume_token"]
+        )
+        restart = mock.Mock(
+            spec=[],
+            side_effect=[
+                InternalServerError(
+                    "Authentication backend internal server error. Please retry."
+                ),
+                after,
+            ],
+        )
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resumable = self._call_fut(derived, restart, request, session=session)
+        self.assertEqual(list(resumable), list(items))
+        self.assertEqual(len(restart.mock_calls), 2)
+        self.assertEqual(request.resume_token, b"")
+        self.assertNoSpans()
+
+    def test_restart_on_unavailable_non_retryable_internal_error(self):
+        request = mock.Mock(
+            test="test", resume_token=b"", spec=["test", "resume_token"]
+        )
+        restart = mock.Mock(
+            spec=[],
+            side_effect=InternalServerError("Internal server error."),
+        )
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resumable = self._call_fut(derived, restart, request, session=session)
+        with self.assertRaisesRegex(
+            InternalServerError, "Internal server error."
+        ) as context:
+            list(resumable)
+        self.assertTrue(hasattr(context.exception, "request_id"))
+        self.assertEqual(len(restart.mock_calls), 1)
+        self.assertNoSpans()
+
     def test_iteration_w_raw_w_multiuse(self):
         from google.cloud.spanner_v1 import ReadRequest
 

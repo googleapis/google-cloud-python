@@ -15,6 +15,7 @@
 """Cloud Spanner DB-API Connection class unit tests."""
 
 import datetime
+import os
 import unittest
 import warnings
 
@@ -39,7 +40,11 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     StatementType,
 )
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-from tests._builders import build_connection, build_session
+from tests._builders import (
+    build_connection,
+    build_scoped_credentials,
+    build_session,
+)
 
 PROJECT = "test-project"
 INSTANCE = "test-instance"
@@ -973,6 +978,59 @@ class TestConnection(unittest.TestCase):
         self.assertIn(
             "instance_type must be one of 'cloud' or 'omni'", str(ctx.exception)
         )
+
+    def test_connect_non_omni_client_options_end_to_end(self):
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_dbapi import connect
+
+        credentials = build_scoped_credentials()
+        env_patch = {"SPANNER_DISABLE_BUILTIN_METRICS": "true"}
+
+        with mock.patch.dict(os.environ, env_patch, clear=False):
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+
+            conn_universe = connect(
+                "test-instance",
+                project="test-project",
+                credentials=credentials,
+                client_options=ClientOptions(universe_domain="custom-universe.test"),
+            )
+            self.assertEqual(
+                conn_universe.spanner_client._client_options.universe_domain,
+                "custom-universe.test",
+            )
+            self.assertEqual(
+                conn_universe.spanner_client._host, "spanner.googleapis.com"
+            )
+            self.assertNotIn("client_options", conn_universe._connection_variables)
+
+            conn_endpoint = connect(
+                "test-instance",
+                project="test-project",
+                credentials=credentials,
+                client_options={
+                    "universe_domain": "custom-universe.test",
+                    "api_endpoint": "spanner.custom-universe.test:443",
+                },
+            )
+            self.assertEqual(
+                conn_endpoint.spanner_client._client_options.universe_domain,
+                "custom-universe.test",
+            )
+            self.assertEqual(
+                conn_endpoint.spanner_client._host,
+                "spanner.custom-universe.test:443",
+            )
+            self.assertNotIn("client_options", conn_endpoint._connection_variables)
+
+            with self.assertRaisesRegex(ValueError, r"does not accept.*unknown_option"):
+                connect(
+                    "test-instance",
+                    project="test-project",
+                    credentials=credentials,
+                    client_options={"unknown_option": "value"},
+                )
 
     def test_partition_query_data_boost_enabled(self):
         from google.cloud.spanner_dbapi.parse_utils import classify_statement
