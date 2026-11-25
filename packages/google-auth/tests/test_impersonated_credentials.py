@@ -1079,3 +1079,564 @@ class TestImpersonatedCredentials(object):
             == "Unable to acquire impersonated credentials: No signed JWT in response."
         )
         assert excinfo.value.args[1] == "invalid_data"
+
+    def _assert_refresh_and_sign_urls(
+        self,
+        creds,
+        mock_authorizedsession_sign,
+        expected_refresh_url,
+        expected_sign_url,
+    ):
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        request = self.make_request(
+            data=json.dumps({"accessToken": "token", "expireTime": expire_time}),
+            status=http_client.OK,
+        )
+        creds.refresh(request)
+        assert request.call_args[1]["url"] == expected_refresh_url
+
+        signature = creds.sign_bytes(b"signed bytes")
+        assert signature == b"signature"
+        assert mock_authorizedsession_sign.call_args[0][2] == expected_sign_url
+
+    def test_from_impersonated_service_account_info_default_url_preserves_mtls_path(
+        self,
+    ):
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO
+            )
+        )
+        assert creds.universe_domain == "googleapis.com"
+        assert creds._iam_endpoint_override is None
+
+    def test_from_impersonated_service_account_info_top_level_universe_domain(
+        self, mock_authorizedsession_sign
+    ):
+        info = {
+            "type": "impersonated_service_account",
+            "universe_domain": "example.com",
+            "service_account_impersonation_url": (
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken"
+            ),
+            "source_credentials": copy.deepcopy(SERVICE_ACCOUNT_INFO),
+        }
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info, scopes=self.TARGET_SCOPES
+            )
+        )
+
+        # Caller input dict must not be mutated.
+        assert "universe_domain" not in info["source_credentials"]
+        assert creds.universe_domain == "example.com"
+        assert creds._source_credentials.universe_domain == "example.com"
+        assert creds.with_quota_project("qp").universe_domain == "example.com"
+        assert creds.with_scopes(self.TARGET_SCOPES).universe_domain == "example.com"
+
+        self._assert_refresh_and_sign_urls(
+            creds,
+            mock_authorizedsession_sign,
+            expected_refresh_url=info["service_account_impersonation_url"],
+            expected_sign_url=(
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob"
+            ),
+        )
+
+    @pytest.mark.parametrize(
+        "impersonation_url,expected_sign_url",
+        [
+            pytest.param(
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="global_custom_universe",
+            ),
+            pytest.param(
+                "https://iamcredentials.example.com./v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://iamcredentials.example.com./v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="trailing_dot_custom_universe",
+            ),
+            pytest.param(
+                "https://us-east1-iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://us-east1-iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="dash_regional_custom_universe",
+            ),
+            pytest.param(
+                "https://us-east1.iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://us-east1.iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="dot_regional_custom_universe",
+            ),
+            pytest.param(
+                "https://iamcredentials.europe-west3.rep.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://iamcredentials.europe-west3.rep.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="rep_custom_universe",
+            ),
+            pytest.param(
+                "https://iamcredentials-us-east1.p.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://iamcredentials-us-east1.p.example.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="psc_custom_universe",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_infers_universe_from_url(
+        self, impersonation_url, expected_sign_url, mock_authorizedsession_sign
+    ):
+        info = {
+            "type": "impersonated_service_account",
+            "service_account_impersonation_url": impersonation_url,
+            "source_credentials": copy.deepcopy(SERVICE_ACCOUNT_INFO),
+        }
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info, scopes=self.TARGET_SCOPES
+            )
+        )
+
+        assert creds.universe_domain == "example.com"
+        assert creds._source_credentials.universe_domain == "example.com"
+        self._assert_refresh_and_sign_urls(
+            creds,
+            mock_authorizedsession_sign,
+            expected_refresh_url=impersonation_url,
+            expected_sign_url=expected_sign_url,
+        )
+
+    @pytest.mark.parametrize(
+        "top_level_universe,impersonation_url,expected_sign_url",
+        [
+            pytest.param(
+                None,
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="regional_default_universe",
+            ),
+            pytest.param(
+                "googleapis.com",
+                "https://iamcredentials.us-east1.rep.googleapis.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://iamcredentials.us-east1.rep.googleapis.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="rep_default_universe",
+            ),
+            pytest.param(
+                None,
+                "https://iamcredentials.us-east1.rep.mtls.googleapis.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://iamcredentials.us-east1.rep.mtls.googleapis.com/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="rep_mtls_default_universe",
+            ),
+            pytest.param(
+                None,
+                "https://proxy.internal/iam/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://proxy.internal/iam/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="custom_proxy_origin",
+            ),
+            pytest.param(
+                "example.com",
+                "https://proxy.internal/iam/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:generateAccessToken",
+                "https://proxy.internal/iam/v1/projects/-"
+                "/serviceAccounts/service-account-target@example.com:signBlob",
+                id="custom_proxy_origin_with_non_default_universe",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_preserves_custom_origin(
+        self,
+        top_level_universe,
+        impersonation_url,
+        expected_sign_url,
+        mock_donor_credentials,
+        mock_authorizedsession_sign,
+    ):
+        info = {
+            "type": "impersonated_service_account",
+            "service_account_impersonation_url": impersonation_url,
+            "source_credentials": copy.deepcopy(SERVICE_ACCOUNT_INFO),
+        }
+        if top_level_universe is not None:
+            info["universe_domain"] = top_level_universe
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info, scopes=self.TARGET_SCOPES
+            )
+        )
+
+        assert creds.universe_domain == (top_level_universe or "googleapis.com")
+        self._assert_refresh_and_sign_urls(
+            creds,
+            mock_authorizedsession_sign,
+            expected_refresh_url=impersonation_url,
+            expected_sign_url=expected_sign_url,
+        )
+
+    def test_from_impersonated_service_account_info_top_level_universe_authorized_user(
+        self,
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["universe_domain"] = "example.com"
+        info["service_account_impersonation_url"] = (
+            "https://iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/service-account-target@example.com:generateAccessToken"
+        )
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info, scopes=self.TARGET_SCOPES
+            )
+        )
+
+        assert creds.universe_domain == "example.com"
+        assert creds._source_credentials.universe_domain == "example.com"
+        request = mock.create_autospec(transport.Request)
+        with pytest.raises(exceptions.RefreshError, match="googleapis.com"):
+            creds.refresh(request)
+        request.assert_not_called()
+
+    @pytest.mark.parametrize(
+        "top_level_universe,source_universe,impersonation_url,expected_match",
+        [
+            pytest.param(
+                "example.com",
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "does not match service_account_impersonation_url host",
+                id="top_level_conflicts_with_default_url",
+            ),
+            pytest.param(
+                "example.com",
+                None,
+                "https://iamcredentials.googleapis.com./v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "does not match service_account_impersonation_url host",
+                id="trailing_dot_default_url_blocked",
+            ),
+            pytest.param(
+                "example.com",
+                "other.com",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "does not match source_credentials universe_domain",
+                id="top_level_conflicts_with_source_universe",
+            ),
+            pytest.param(
+                "example.com",
+                None,
+                "https://proxy.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "cannot use default-universe service_account_impersonation_url host",
+                id="non_default_universe_with_googleapis_proxy_url",
+            ),
+            pytest.param(
+                "example.com",
+                None,
+                "https://proxy.googleapis.com./v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "cannot use default-universe service_account_impersonation_url host",
+                id="non_default_universe_with_trailing_dot_googleapis_proxy",
+            ),
+            pytest.param(
+                None,
+                "googleapis.com",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "does not match service_account_impersonation_url host",
+                id="source_universe_conflicts_with_url_universe",
+            ),
+            pytest.param(
+                "",
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "must be a valid non-empty domain string",
+                id="empty_top_level_universe",
+            ),
+            pytest.param(
+                " example.com ",
+                None,
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "must be a valid non-empty domain string",
+                id="whitespace_top_level_universe",
+            ),
+            pytest.param(
+                123,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "must be a valid non-empty domain string",
+                id="non_string_top_level_universe",
+            ),
+            pytest.param(
+                None,
+                "",
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "must be a valid non-empty domain string",
+                id="empty_source_universe",
+            ),
+            pytest.param(
+                None,
+                None,
+                None,
+                "Cannot extract target principal",
+                id="missing_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://[invalid/v1/projects/-/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="malformed_ipv6_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com:notaport/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="invalid_port_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "http://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="plaintext_http_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://evil.com@iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="userinfo_in_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken#frag",
+                "Cannot extract target principal",
+                id="fragment_in_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken\t",
+                "Cannot extract target principal",
+                id="whitespace_in_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken:extra",
+                "Cannot extract target principal",
+                id="trailing_junk_after_action",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/:generateAccessToken",
+                "Cannot extract target principal",
+                id="empty_target_principal_in_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://./v1/projects/-/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="dot_only_host_in_url",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_validation_errors(
+        self, top_level_universe, source_universe, impersonation_url, expected_match
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        if top_level_universe is not None:
+            info["universe_domain"] = top_level_universe
+        if source_universe is not None:
+            info["source_credentials"]["universe_domain"] = source_universe
+        info["service_account_impersonation_url"] = impersonation_url
+
+        with pytest.raises(exceptions.InvalidValue, match=expected_match):
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+
+    def test_from_impersonated_service_account_info_missing_source_credentials(self):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["source_credentials"] = None
+        with pytest.raises(
+            exceptions.InvalidValue, match="source_credentials must be a mapping"
+        ):
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+
+    def test_constructor_universe_domain_validation(self):
+        source = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="example.com"
+        )
+        creds = impersonated_credentials.Credentials(
+            source_credentials=source,
+            target_principal=self.TARGET_PRINCIPAL,
+            target_scopes=self.TARGET_SCOPES,
+            universe_domain="example.com",
+        )
+        assert creds.universe_domain == "example.com"
+
+        with pytest.raises(
+            exceptions.InvalidValue,
+            match="does not match the source credential universe domain",
+        ):
+            impersonated_credentials.Credentials(
+                source_credentials=source,
+                target_principal=self.TARGET_PRINCIPAL,
+                target_scopes=self.TARGET_SCOPES,
+                universe_domain="other.com",
+            )
+
+        with pytest.raises(
+            exceptions.InvalidValue,
+            match="must be a valid non-empty domain string",
+        ):
+            impersonated_credentials.Credentials(
+                source_credentials=source,
+                target_principal=self.TARGET_PRINCIPAL,
+                target_scopes=self.TARGET_SCOPES,
+                universe_domain="   ",
+            )
+
+    @pytest.mark.parametrize(
+        "iam_endpoint_override,expected_sign_url",
+        [
+            pytest.param(
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateAccessToken",
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob",
+                id="regional_generate_access_token_override",
+            ),
+            pytest.param(
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateAccessToken?alt=json",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob?alt=json",
+                id="custom_universe_with_query",
+            ),
+            pytest.param(
+                "https://iamcredentials.example.com",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob",
+                id="origin_only_override",
+            ),
+            pytest.param(
+                "https://proxy.internal/iam/",
+                "https://proxy.internal/iam/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob",
+                id="proxy_path_prefix_override",
+            ),
+        ],
+    )
+    def test_sign_bytes_honors_iam_endpoint_override(
+        self,
+        iam_endpoint_override,
+        expected_sign_url,
+        mock_authorizedsession_sign,
+    ):
+        creds = self.make_credentials(
+            lifetime=None, iam_endpoint_override=iam_endpoint_override
+        )
+        signature = creds.sign_bytes(b"signed bytes")
+        assert signature == b"signature"
+        mock_authorizedsession_sign.assert_called_with(
+            mock.ANY,
+            "POST",
+            expected_sign_url,
+            None,
+            json={"payload": "c2lnbmVkIGJ5dGVz", "delegates": []},
+            headers={"Content-Type": "application/json"},
+        )
+
+    def test_sign_bytes_rejects_schemeless_iam_endpoint_override(self):
+        creds = self.make_credentials(
+            lifetime=None,
+            iam_endpoint_override="us-east1-iamcredentials.googleapis.com",
+        )
+        with pytest.raises(
+            exceptions.InvalidValue, match="Invalid iam_endpoint_override"
+        ):
+            creds.sign_bytes(b"signed bytes")
+
+    def test_id_token_refresh_honors_iam_endpoint_override(
+        self, mock_authorizedsession_idtoken
+    ):
+        override = (
+            "https://us-east1-iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateAccessToken"
+        )
+        source = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="example.com"
+        )
+        target_creds = self.make_credentials(
+            lifetime=None, source_credentials=source, iam_endpoint_override=override
+        )
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            target_creds, target_audience="https://example.com"
+        )
+        request = mock.create_autospec(transport.Request)
+
+        id_creds.refresh(request)
+
+        assert id_creds.token == ID_TOKEN_DATA
+        assert (
+            mock_authorizedsession_idtoken.call_args[0][2]
+            == "https://us-east1-iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateIdToken"
+        )
+
+    def test_build_iam_endpoint_preserves_mtls_prefix(self):
+        with mock.patch(
+            "google.auth.iam._IAM_DOMAIN", "iamcredentials.mtls.googleapis.com"
+        ):
+            url = impersonated_credentials._build_iam_endpoint(
+                self.TARGET_PRINCIPAL,
+                "example.com",
+                None,
+                "signBlob",
+            )
+        assert (
+            url == "https://iamcredentials.mtls.example.com/v1/projects/-"
+            "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob"
+        )

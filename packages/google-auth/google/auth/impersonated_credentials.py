@@ -30,6 +30,9 @@ import copy
 import http.client as http_client
 import json
 import logging
+import re
+import urllib.parse
+from collections.abc import Mapping
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
@@ -63,6 +66,80 @@ _SOURCE_CREDENTIAL_EXTERNAL_ACCOUNT_AUTHORIZED_USER_TYPE = (
     "external_account_authorized_user"
 )
 
+_DNS_LABEL = r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+_IAM_HOST_PATTERN = re.compile(
+    rf"^(?:{_DNS_LABEL}[.-])?iamcredentials"
+    rf"(?:-{_DNS_LABEL}\.p|\.p|\.{_DNS_LABEL}\.rep(?:\.mtls)?|\.mtls)?"
+    rf"\.({_DNS_LABEL}(?:\.{_DNS_LABEL})+)$"
+)
+
+
+def _is_host_in_domain(host, domain):
+    """Returns True if ``host`` equals ``domain`` or is a subdomain of it."""
+    return host == domain or host.endswith(f".{domain}")
+
+
+def _parse_impersonation_url(impersonation_url):
+    """Extracts (target_principal, hostname, inferred_universe) from an impersonation URL."""
+    error_msg = "Cannot extract target principal from {}".format(impersonation_url)
+    if (
+        not isinstance(impersonation_url, str)
+        or "#" in impersonation_url
+        or any(ch.isspace() or ord(ch) < 0x20 for ch in impersonation_url)
+    ):
+        raise exceptions.InvalidValue(error_msg)
+    try:
+        parsed = urllib.parse.urlsplit(impersonation_url)
+        hostname = (parsed.hostname or "").rstrip(".")
+        _ = parsed.port
+    except ValueError as exc:
+        raise exceptions.InvalidValue(error_msg) from exc
+
+    start_index = parsed.path.rfind("/")
+    if (
+        parsed.scheme != "https"
+        or not hostname
+        or "@" in parsed.netloc
+        or not parsed.path.endswith(":generateAccessToken")
+        or start_index == -1
+    ):
+        raise exceptions.InvalidValue(error_msg)
+
+    target_principal = parsed.path[start_index + 1 : -len(":generateAccessToken")]
+    if not target_principal:
+        raise exceptions.InvalidValue(error_msg)
+
+    match = _IAM_HOST_PATTERN.fullmatch(hostname)
+    inferred_universe = match.group(1) if match else None
+    return target_principal, hostname, inferred_universe
+
+
+def _build_iam_endpoint(
+    target_principal,
+    universe_domain,
+    iam_endpoint_override,
+    action,
+):
+    """Builds an IAM Credentials API URL, honoring iam_endpoint_override when set."""
+    if not iam_endpoint_override:
+        host_prefix = iam._IAM_DOMAIN.removesuffix(credentials.DEFAULT_UNIVERSE_DOMAIN)
+        return (
+            f"https://{host_prefix}{universe_domain}/v1/projects/-/"
+            f"serviceAccounts/{target_principal}:{action}"
+        )
+
+    parsed = urllib.parse.urlsplit(iam_endpoint_override)
+    if not parsed.scheme or not parsed.netloc:
+        raise exceptions.InvalidValue(
+            "Invalid iam_endpoint_override: {}".format(iam_endpoint_override)
+        )
+    if parsed.path.endswith(":generateAccessToken"):
+        path = parsed.path[: -len(":generateAccessToken")] + f":{action}"
+    else:
+        base_path = parsed.path.rstrip("/")
+        path = f"{base_path}/v1/projects/-/serviceAccounts/{target_principal}:{action}"
+    return urllib.parse.urlunsplit(parsed._replace(path=path))
+
 
 def _make_iam_token_request(
     request,
@@ -91,9 +168,9 @@ def _make_iam_token_request(
             `iamcredentials.googleapis.com` is not enabled or the
             `Service Account Token Creator` is not assigned
     """
-    iam_endpoint = iam_endpoint_override or iam._IAM_ENDPOINT.replace(
-        credentials.DEFAULT_UNIVERSE_DOMAIN, universe_domain
-    ).format(principal)
+    iam_endpoint = iam_endpoint_override or _build_iam_endpoint(
+        principal, universe_domain, None, "generateAccessToken"
+    )
 
     body = json.dumps(body).encode("utf-8")
 
@@ -212,6 +289,7 @@ class Credentials(
         quota_project_id=None,
         iam_endpoint_override=None,
         trust_boundary=None,
+        universe_domain=None,
     ):
         """
         Args:
@@ -243,9 +321,18 @@ class Credentials(
                 if you wish to impersonate as a user. This feature is useful when
                 using domain wide delegation.
             trust_boundary (Mapping[str,str]): A credential trust boundary.
+            universe_domain (Optional[str]): The universe domain value. If
+                provided, it must match ``source_credentials.universe_domain``.
+
+        Raises:
+            InvalidValue: If ``universe_domain`` is invalid or does not match
+                ``source_credentials.universe_domain``.
         """
 
         super(Credentials, self).__init__()
+
+        if universe_domain is not None:
+            _helpers.validate_universe_domain(universe_domain)
 
         self._source_credentials = copy.copy(source_credentials)
         # Service account source credentials must have the _IAM_SCOPE
@@ -263,7 +350,15 @@ class Credentials(
             ):
                 self._source_credentials._create_self_signed_jwt(None)
 
-        self._universe_domain = source_credentials.universe_domain
+        source_universe = self._source_credentials.universe_domain
+        if universe_domain is not None and source_universe != universe_domain:
+            raise exceptions.InvalidValue(
+                "The impersonated credential universe domain ({}) does not "
+                "match the source credential universe domain ({}).".format(
+                    universe_domain, source_universe
+                )
+            )
+        self._universe_domain = universe_domain or source_universe
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates
@@ -382,9 +477,12 @@ class Credentials(
     def sign_bytes(self, message):
         from google.auth.transport.requests import AuthorizedSession
 
-        iam_sign_endpoint = iam._IAM_SIGN_ENDPOINT.replace(
-            credentials.DEFAULT_UNIVERSE_DOMAIN, self.universe_domain
-        ).format(self._target_principal)
+        iam_sign_endpoint = _build_iam_endpoint(
+            self._target_principal,
+            self.universe_domain,
+            self._iam_endpoint_override,
+            "signBlob",
+        )
 
         body = {
             "payload": base64.b64encode(message).decode("utf-8"),
@@ -450,6 +548,7 @@ class Credentials(
             quota_project_id=self._quota_project_id,
             iam_endpoint_override=self._iam_endpoint_override,
             trust_boundary=self._trust_boundary,
+            universe_domain=self._universe_domain,
         )
         cred._cred_file_path = self._cred_file_path
         self._copy_regional_access_boundary_manager(cred)
@@ -491,17 +590,80 @@ class Credentials(
 
         Raises:
             InvalidType: If the info["source_credentials"] are not a supported impersonation type
-            InvalidValue: If the info["service_account_impersonation_url"] is not in the expected format.
+            InvalidValue: If ``info`` has an invalid or conflicting
+                ``source_credentials``, ``universe_domain``, or
+                ``service_account_impersonation_url``.
             ValueError: If the info is not in the expected format.
         """
 
         source_credentials_info = info.get("source_credentials")
+        if not isinstance(source_credentials_info, Mapping):
+            raise exceptions.InvalidValue("source_credentials must be a mapping.")
+
+        impersonation_url = info.get("service_account_impersonation_url")
+        target_principal, url_host, url_universe = _parse_impersonation_url(
+            impersonation_url
+        )
+
+        top_level_universe = info.get("universe_domain")
+        if top_level_universe is not None:
+            _helpers.validate_universe_domain(top_level_universe)
+        source_universe = source_credentials_info.get("universe_domain")
+        if source_universe is not None:
+            _helpers.validate_universe_domain(source_universe)
+        if (
+            top_level_universe is not None
+            and source_universe is not None
+            and top_level_universe != source_universe
+        ):
+            raise exceptions.InvalidValue(
+                "Impersonated credentials universe_domain ({}) does not match "
+                "source_credentials universe_domain ({}).".format(
+                    top_level_universe, source_universe
+                )
+            )
+
+        explicit_universe = top_level_universe or source_universe
+        if explicit_universe is not None:
+            explicit_lower = explicit_universe.lower()
+            if not _is_host_in_domain(url_host, explicit_lower):
+                if url_universe is not None:
+                    raise exceptions.InvalidValue(
+                        "Impersonated credentials universe_domain ({}) does not match "
+                        "service_account_impersonation_url host ({}).".format(
+                            explicit_universe, url_host
+                        )
+                    )
+                if explicit_lower != credentials.DEFAULT_UNIVERSE_DOMAIN and (
+                    _is_host_in_domain(url_host, credentials.DEFAULT_UNIVERSE_DOMAIN)
+                ):
+                    raise exceptions.InvalidValue(
+                        "Non-default universe_domain ({}) cannot use default-universe "
+                        "service_account_impersonation_url host ({}).".format(
+                            explicit_universe, url_host
+                        )
+                    )
+
+        resolved_universe = explicit_universe
+        if (
+            resolved_universe is None
+            and url_universe is not None
+            and url_universe != credentials.DEFAULT_UNIVERSE_DOMAIN
+        ):
+            resolved_universe = url_universe
+
+        if resolved_universe is not None and source_universe is None:
+            source_credentials_info = dict(source_credentials_info)
+            source_credentials_info["universe_domain"] = resolved_universe
+
         source_credentials_type = source_credentials_info.get("type")
         if source_credentials_type == _SOURCE_CREDENTIAL_AUTHORIZED_USER_TYPE:
-            from google.oauth2 import credentials
+            from google.oauth2 import credentials as oauth2_credentials
 
-            source_credentials = credentials.Credentials.from_authorized_user_info(
-                source_credentials_info
+            source_credentials = (
+                oauth2_credentials.Credentials.from_authorized_user_info(
+                    source_credentials_info
+                )
             )
         elif source_credentials_type == _SOURCE_CREDENTIAL_SERVICE_ACCOUNT_TYPE:
             from google.oauth2 import service_account
@@ -525,18 +687,23 @@ class Credentials(
                 )
             )
 
-        impersonation_url = info.get("service_account_impersonation_url")
-        start_index = impersonation_url.rfind("/")
-        end_index = impersonation_url.find(":generateAccessToken")
-        if start_index == -1 or end_index == -1 or start_index > end_index:
-            raise exceptions.InvalidValue(
-                "Cannot extract target principal from {}".format(impersonation_url)
-            )
-        target_principal = impersonation_url[start_index + 1 : end_index]
         delegates = info.get("delegates")
         quota_project_id = info.get("quota_project_id")
         scopes = scopes or info.get("scopes")
         trust_boundary = info.get("trust_boundary")
+
+        # Leave iam_endpoint_override unset for the exact standard default URL
+        # so mTLS endpoint selection via iam._IAM_ENDPOINT stays intact; keep
+        # the override for regional, custom-universe, and proxy URLs.
+        default_impersonation_url = (
+            "https://iamcredentials.{}/v1/projects/-/serviceAccounts/{}"
+            ":generateAccessToken"
+        ).format(credentials.DEFAULT_UNIVERSE_DOMAIN, target_principal)
+        iam_endpoint_override = (
+            None
+            if impersonation_url == default_impersonation_url
+            else impersonation_url
+        )
 
         return cls(
             source_credentials,
@@ -544,7 +711,9 @@ class Credentials(
             scopes,
             delegates,
             quota_project_id=quota_project_id,
+            iam_endpoint_override=iam_endpoint_override,
             trust_boundary=trust_boundary,
+            universe_domain=resolved_universe,
         )
 
 
@@ -615,10 +784,12 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
     def refresh(self, request):
         from google.auth.transport.requests import AuthorizedSession
 
-        iam_sign_endpoint = iam._IAM_IDTOKEN_ENDPOINT.replace(
-            credentials.DEFAULT_UNIVERSE_DOMAIN,
+        iam_sign_endpoint = _build_iam_endpoint(
+            self._target_credentials.signer_email,
             self._target_credentials.universe_domain,
-        ).format(self._target_credentials.signer_email)
+            self._target_credentials._iam_endpoint_override,
+            "generateIdToken",
+        )
 
         body = {
             "audience": self._target_audience,
