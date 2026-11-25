@@ -20,7 +20,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers
+from google.auth import _helpers, exceptions
 
 # _MOCK_BASE_LOGGER_NAME is the base logger namespace used for testing.
 _MOCK_BASE_LOGGER_NAME = "foogle"
@@ -742,3 +742,59 @@ class TestUtcFromTimestamp:
 )
 def test_has_default_universe_host(url, expected):
     assert _helpers.has_default_universe_host(url) is expected
+
+
+@pytest.mark.parametrize(
+    "universe_domain",
+    [
+        "googleapis.com",
+        "example.com",
+        "my-universe.example.com",
+        "s3nsapis.fr",
+        "fake_universe_domain",
+    ],
+)
+def test_validate_universe_domain_valid(universe_domain):
+    _helpers.validate_universe_domain(universe_domain)
+
+
+@pytest.mark.parametrize(
+    "invalid_value",
+    [
+        None,
+        "",
+        "   ",
+        " example.com",
+        "example.com ",
+        "foo bar.com",
+        "example.com\n",
+        "example.com\x00",
+        "https://example.com",
+        "googleapis.com@evil.com",
+        "example.com/path",
+        "example.com\\path",
+        "example.com?q=1",
+        "example.com#frag",
+        "example.com:443",
+        "{}.evil.com",
+        "example.com}",
+        "[example.com]",
+        "example.com%2fevil.com",
+        "googleapis.com\uff20evil.com",
+        "example.com\uff0fpath",
+        ".",
+        ".example.com",
+        "example.com.",
+        "example..com",
+        b"googleapis.com",
+        False,
+        123,
+        [],
+    ],
+)
+def test_validate_universe_domain_invalid(invalid_value):
+    with pytest.raises(
+        exceptions.InvalidValue,
+        match="Universe domain must be a valid non-empty domain string",
+    ):
+        _helpers.validate_universe_domain(invalid_value)
