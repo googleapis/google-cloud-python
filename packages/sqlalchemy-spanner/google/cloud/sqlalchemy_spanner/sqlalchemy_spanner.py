@@ -14,6 +14,7 @@
 import base64
 import collections.abc
 import re
+import string
 
 import sqlalchemy
 from google.api_core.client_options import ClientOptions
@@ -83,21 +84,187 @@ def reset_connection(dbapi_conn, connection_record, reset_state=None):
         dbapi_conn.read_only = False
 
 
+# TODO(https://github.com/googleapis/google-cloud-python/issues/19209): Move the
+# GoogleSQL identifier escaping, unquoted-identifier check, and backslash-escape
+# decoding helpers below into google.cloud.spanner_dbapi (once
+# sqlalchemy-spanner can depend on a release that includes them) so
+# spanner_dbapi, sqlalchemy-spanner, and django-google-spanner share a single
+# implementation.
+
+# GoogleSQL rejects raw newlines and unescaped ASCII control characters
+# (0x00-0x1F and 0x7F) inside quoted strings and identifiers.
+# Write them using equivalent GoogleSQL escape sequences (\n, \r, \t, or \u00xx)
+# so Spanner decodes them back to the original characters.
+_CONTROL_CHAR_ESCAPE_MAP = {
+    "\n": "\\n",
+    "\r": "\\r",
+    "\t": "\\t",
+    **{
+        chr(codepoint): f"\\u{codepoint:04x}"
+        for codepoint in (*range(0x00, 0x20), 0x7F)
+        if chr(codepoint) not in ("\n", "\r", "\t")
+    },
+}
+
 _SPANNER_STRING_ESCAPE_TABLE = str.maketrans(
     {
         "\\": "\\\\",
         '"': '\\"',
         "'": "\\'",
-        "\n": "\\n",
-        "\r": "\\r",
-        "\t": "\\t",
-        **{
-            chr(c): f"\\u{c:04x}"
-            for c in (*range(0x00, 0x20), 0x7F)
-            if chr(c) not in ("\n", "\r", "\t")
-        },
+        **_CONTROL_CHAR_ESCAPE_MAP,
     }
 )
+
+# Escape backticks as \u0060 instead of \` because spanner_dbapi currently uses
+# sqlparse to split DDLs and strip comments, and sqlparse treats \` inside a
+# backtick-quoted identifier as the closing backtick. GoogleSQL decodes \u0060
+# to a literal backtick just like \`.
+# TODO(https://github.com/googleapis/google-cloud-python/issues/19209): Switch
+# backtick escaping to \` once spanner_dbapi uses a lexical parser that
+# understands GoogleSQL backslash escapes.
+_SPANNER_IDENTIFIER_ESCAPE_TABLE = str.maketrans(
+    {
+        "\\": "\\\\",
+        "`": "\\u0060",
+        **_CONTROL_CHAR_ESCAPE_MAP,
+    }
+)
+
+# Single-character GoogleSQL backslash escapes decoded during identifier unescaping.
+_GOOGLESQL_SINGLE_CHAR_UNESCAPE_TABLE = {
+    "a": "\a",
+    "b": "\b",
+    "f": "\f",
+    "n": "\n",
+    "r": "\r",
+    "t": "\t",
+    "v": "\v",
+    "\\": "\\",
+    "?": "?",
+    '"': '"',
+    "'": "'",
+    "`": "`",
+}
+
+# Expected hex digit counts for GoogleSQL numeric escapes (\xHH, \uHHHH, \UHHHHHHHH).
+_HEX_ESCAPE_DIGIT_COUNTS = {"x": 2, "X": 2, "u": 4, "U": 8}
+
+# GoogleSQL unquoted identifiers must start with an ASCII letter or '_' and
+# continue with ASCII letters, digits, or '_'.
+_UNQUOTED_IDENTIFIER_FIRST_CHARS = frozenset(string.ascii_letters + "_")
+_UNQUOTED_IDENTIFIER_CHARS = frozenset(string.ascii_letters + string.digits + "_")
+_OCTAL_DIGITS = frozenset("01234567")
+_HEX_DIGITS = frozenset(string.hexdigits)
+
+
+def _is_valid_unquoted_identifier(value: str) -> bool:
+    """Return True if value can be used unquoted in GoogleSQL.
+
+    Unquoted GoogleSQL identifiers must start with an ASCII letter or ``_``
+    and contain only ASCII letters, digits, or ``_``.
+
+    Example:
+        ``"col_1"`` returns ``True``; ``"1col"`` and ``"col-1"`` return
+        ``False``.
+    """
+    return (
+        bool(value)
+        and value[0] in _UNQUOTED_IDENTIFIER_FIRST_CHARS
+        and all(character in _UNQUOTED_IDENTIFIER_CHARS for character in value[1:])
+    )
+
+
+def _decode_octal_escape(value: str, escape_start_index: int) -> tuple[str, int]:
+    r"""Decode a 3-digit GoogleSQL octal escape (\ooo) for bytes 0x00-0xFF.
+
+    Starts at the first octal digit (after ``\``) and returns
+    ``(decoded_character, next_index)``, where ``next_index`` points just past
+    the 3 octal digits.
+
+    Example:
+        Decoding ``r"a\101b"`` from ``escape_start_index=2`` returns
+        ``("A", 5)``.
+    """
+    end_index = escape_start_index + 3
+    octal_digits = value[escape_start_index:end_index]
+    if len(octal_digits) < 3 or not all(
+        digit in _OCTAL_DIGITS for digit in octal_digits
+    ):
+        raise ValueError(
+            f"Invalid octal escape sequence in identifier: \\{octal_digits}"
+        )
+    octal_value = int(octal_digits, 8)
+    if octal_value > 0xFF:
+        raise ValueError(
+            f"Invalid octal escape sequence in identifier: \\{octal_digits}"
+        )
+    return chr(octal_value), end_index
+
+
+def _decode_hex_escape(
+    value: str, escape_start_index: int, digit_count: int
+) -> tuple[str, int]:
+    r"""Decode a GoogleSQL hex or Unicode escape (\xHH, \uHHHH, \UHHHHHHHH).
+
+    Starts at the escape prefix character (``x``, ``X``, ``u``, or ``U``) and
+    returns ``(decoded_character, next_index)``, where ``next_index`` points
+    just past the hex digits.
+
+    Example:
+        Decoding ``r"\u0060z"`` with ``escape_start_index=1, digit_count=4``
+        returns ``("`", 6)``.
+    """
+    escape_character = value[escape_start_index]
+    digits_start_index = escape_start_index + 1
+    end_index = digits_start_index + digit_count
+    hex_digits = value[digits_start_index:end_index]
+    if len(hex_digits) < digit_count or not all(
+        digit in _HEX_DIGITS for digit in hex_digits
+    ):
+        raise ValueError(
+            f"Invalid \\{escape_character} escape sequence in identifier: "
+            f"\\{escape_character}{hex_digits}"
+        )
+    codepoint = int(hex_digits, 16)
+    # UTF-16 surrogates (U+D800-U+DFFF) and values above U+10FFFF are invalid
+    # Unicode scalar values in GoogleSQL \u/\U escapes.
+    if escape_character in ("u", "U") and (
+        0xD800 <= codepoint <= 0xDFFF or codepoint > 0x10FFFF
+    ):
+        raise ValueError(f"Invalid Unicode codepoint in identifier: U+{codepoint:04X}")
+    return chr(codepoint), end_index
+
+
+def _decode_googlesql_escape(value: str, backslash_index: int) -> tuple[str, int]:
+    r"""Decode one GoogleSQL backslash escape sequence at ``backslash_index``.
+
+    Returns ``(decoded_character, next_index)``, where ``next_index`` is the
+    first index after the escape sequence.
+
+    Example:
+        Decoding ``r"a\nb"`` from ``backslash_index=1`` returns ``("\n", 3)``.
+    """
+    escape_start_index = backslash_index + 1
+    if escape_start_index >= len(value):
+        raise ValueError(f"Unterminated escape sequence in identifier: {value!r}")
+
+    escape_character = value[escape_start_index]
+
+    # 1. Single-character escape (e.g. \n, \\, \`, \").
+    single_character = _GOOGLESQL_SINGLE_CHAR_UNESCAPE_TABLE.get(escape_character)
+    if single_character is not None:
+        return single_character, escape_start_index + 1
+
+    # 2. Fixed 3-digit octal escape (\ooo, restricted to single-byte 0x00-0xFF).
+    if escape_character in _OCTAL_DIGITS:
+        return _decode_octal_escape(value, escape_start_index)
+
+    # 3. Fixed-width hexadecimal or Unicode escape (\xHH, \uHHHH, \UHHHHHHHH).
+    digit_count = _HEX_ESCAPE_DIGIT_COUNTS.get(escape_character)
+    if digit_count is not None:
+        return _decode_hex_escape(value, escape_start_index, digit_count)
+
+    raise ValueError(f"Invalid escape sequence in identifier: \\{escape_character}")
 
 
 def _escape_json_path_key(key):
@@ -353,7 +520,8 @@ class SpannerExecutionContext(DefaultExecutionContext):
 class SpannerIdentifierPreparer(IdentifierPreparer):
     """Identifiers compiler.
 
-    In Cloud Spanner backticks "`" are used for keywords escaping.
+    In Cloud Spanner backticks "`" are used for identifier quoting, and
+    GoogleSQL backslash escape sequences are used inside backticks.
     """
 
     reserved_words = RESERVED_WORDS.copy()
@@ -362,21 +530,219 @@ class SpannerIdentifierPreparer(IdentifierPreparer):
 
     def __init__(self, dialect):
         super(SpannerIdentifierPreparer, self).__init__(
-            dialect, initial_quote="`", final_quote="`"
+            dialect, initial_quote="`", final_quote="`", escape_quote="\\"
         )
 
-    def _requires_quotes(self, value):
-        """Return True if the given identifier requires quoting."""
-        lc_value = value.lower()
-        if lc_value == '"unicode"':  # don't escape default Spanner colation
-            return False
+    @staticmethod
+    def _validate_identifier(value: str) -> str:
+        """Ensure value is a str (unwrapping subclasses like quoted_name)."""
+        if not isinstance(value, str):
+            raise TypeError(f"Identifier must be a string, got {type(value).__name__}")
+        return value if type(value) is str else str(value)
 
+    def _escape_identifier(self, value: str) -> str:
+        r"""Escape an identifier's contents for use inside backticks.
+
+        Replaces backslashes, backticks, and control characters with GoogleSQL
+        escape sequences (and doubles ``%`` when required by paramstyle).
+
+        Example:
+            ``r"a`b\c"`` becomes ``r"a\u0060b\\c"``.
+        """
+        identifier = self._validate_identifier(value)
+        escaped = identifier.translate(_SPANNER_IDENTIFIER_ESCAPE_TABLE)
+        # Under format/pyformat paramstyle, spanner_dbapi expects literal '%'
+        # characters in SQL templates to be doubled as '%%'.
+        if self._double_percents:
+            escaped = escaped.replace("%", "%%")
+        return escaped
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/19209): Move
+    # the GoogleSQL identifier unescaping and qualified-segment scanning logic
+    # (_unescape_identifier, _read_quoted_identifier, _read_unquoted_identifier,
+    # and unformat_identifiers) to google.cloud.spanner_dbapi alongside the
+    # GoogleSQL escape helpers.
+    def _unescape_identifier(self, value: str) -> str:
+        r"""Decode GoogleSQL backslash escapes inside a quoted identifier body.
+
+        Example:
+            ``r"a\u0060b\\c"`` becomes ``r"a`b\c"``.
+        """
+        identifier = self._validate_identifier(value)
+        if "\\" not in identifier:
+            return identifier
+
+        unescaped_parts: list[str] = []
+        index = 0
+        length = len(identifier)
+        while index < length:
+            backslash_index = identifier.find("\\", index)
+            if backslash_index == -1:
+                unescaped_parts.append(identifier[index:])
+                break
+            if backslash_index > index:
+                unescaped_parts.append(identifier[index:backslash_index])
+            decoded_character, index = _decode_googlesql_escape(
+                identifier, backslash_index
+            )
+            unescaped_parts.append(decoded_character)
+        return "".join(unescaped_parts)
+
+    def _read_quoted_identifier(
+        self, qualified_identifiers: str, opening_backtick_index: int
+    ) -> tuple[str, int]:
+        r"""Read and unescape one backtick-quoted segment in a qualified name.
+
+        Starts at ``opening_backtick_index`` and returns
+        ``(unescaped_segment, next_index)``, where ``next_index`` is the
+        position of the following ``.`` separator or the end of the string.
+
+        Example:
+            Reading from index 0 of ``r"`a\`b`.c"`` returns ``("a`b", 6)``,
+            where index 6 is the ``.`` before ``"c"``.
+        """
+        content_start_index = opening_backtick_index + 1
+        current_index = content_start_index
+        length = len(qualified_identifiers)
+        while current_index < length:
+            character = qualified_identifiers[current_index]
+            if character == "\\":
+                if current_index + 1 >= length:
+                    raise ValueError(
+                        f"Unterminated escape sequence in identifier: "
+                        f"{qualified_identifiers!r}"
+                    )
+                # Advance past both '\' and the escaped character so \` or \\ does
+                # not prematurely terminate the quoted identifier.
+                current_index += 2
+            elif character == "`":
+                unescaped_segment = self._unescape_identifier(
+                    qualified_identifiers[content_start_index:current_index]
+                )
+                end_index = current_index + 1
+                # A closing backtick must be followed by '.' or end of string.
+                if end_index < length and qualified_identifiers[end_index] != ".":
+                    raise ValueError(
+                        "Unexpected character after quoted identifier: "
+                        f"{qualified_identifiers!r}"
+                    )
+                return unescaped_segment, end_index
+            else:
+                current_index += 1
+        raise ValueError(f"Unterminated quoted identifier: {qualified_identifiers!r}")
+
+    @staticmethod
+    def _read_unquoted_identifier(
+        qualified_identifiers: str, start_index: int
+    ) -> tuple[str, int]:
+        """Read and validate one unquoted segment in a qualified name.
+
+        Starts at ``start_index`` and returns ``(segment, next_index)``, where
+        ``next_index`` is the position of the following ``.`` separator or the
+        end of the string.
+
+        Example:
+            Reading from index 0 of ``"schema.table"`` returns
+            ``("schema", 6)``, where index 6 is the ``.`` before ``"table"``.
+        """
+        dot_index = qualified_identifiers.find(".", start_index)
+        end_index = len(qualified_identifiers) if dot_index == -1 else dot_index
+        segment = qualified_identifiers[start_index:end_index]
+        if not _is_valid_unquoted_identifier(segment):
+            raise ValueError(
+                f"Invalid unquoted identifier segment: {qualified_identifiers!r}"
+            )
+        return segment, end_index
+
+    def unformat_identifiers(self, identifiers: str) -> list[str]:
+        r"""Split a dot-qualified SQL identifier into unescaped segments.
+
+        Example:
+            ``r"`my.schema`.`a\u0060b`.col"`` returns
+            ``["my.schema", "a`b", "col"]``.
+        """
+        qualified_identifiers = self._validate_identifier(identifiers)
+        if not qualified_identifiers:
+            return []
+
+        segments: list[str] = []
+        position = 0
+        length = len(qualified_identifiers)
+        while position < length:
+            if qualified_identifiers[position] == "`":
+                segment, position = self._read_quoted_identifier(
+                    qualified_identifiers, position
+                )
+            else:
+                segment, position = self._read_unquoted_identifier(
+                    qualified_identifiers, position
+                )
+            segments.append(segment)
+
+            if position < length:
+                # Consume the '.' separator and reject a dangling trailing dot.
+                position += 1
+                if position == length:
+                    raise ValueError(
+                        f"Trailing dot in qualified identifier: {identifiers!r}"
+                    )
+        return segments
+
+    def format_collation(
+        self, collation_name: str, collation_schema: str | None = None
+    ) -> str:
+        """Format a collation name, keeping Spanner's '"unicode"' literal unquoted.
+
+        Example:
+            ``format_collation('"unicode"')`` returns ``'"unicode"'``.
+        """
+        validated_name = self._validate_identifier(collation_name)
+        if validated_name.lower() == '"unicode"':
+            formatted_name = validated_name
+        else:
+            # Call super() with a single argument because SQLAlchemy < 2.1
+            # does not accept a collation_schema parameter.
+            formatted_name = super(SpannerIdentifierPreparer, self).format_collation(
+                validated_name
+            )
+        if collation_schema is not None:
+            return f"{self.quote_schema(collation_schema)}.{formatted_name}"
+        return formatted_name
+
+    def _requires_quotes(self, value: str) -> bool:
+        """Return True if value needs backtick quoting as a SQL identifier.
+
+        Quotes empty names, reserved keywords, identifiers containing invalid
+        unquoted characters, and mixed/upper-case names.
+
+        Example:
+            ``"users"`` returns ``False``; ``"Users"``, ``"select"``, and
+            ``"a`b"`` return ``True``.
+        """
+        identifier = self._validate_identifier(value)
+        if not identifier:
+            return True
+        lowercase_identifier = identifier.lower()
+
+        # Quote reserved keywords, identifiers with non-GoogleSQL characters, and
+        # mixed/upper-case names (matching SQLAlchemy's case-preserving convention).
         return (
-            lc_value in self.reserved_words_lc
-            or value[0] in self.illegal_initial_characters
-            or not self.legal_characters.match(str(value))
-            or (lc_value != value)
+            lowercase_identifier in self.reserved_words_lc
+            or not _is_valid_unquoted_identifier(identifier)
+            or (lowercase_identifier != identifier)
         )
+
+    def _requires_quotes_illegal_chars(self, value: str) -> bool:
+        """Return True if value cannot be written unquoted (ignoring case/keywords).
+
+        Used by SQLAlchemy when quoting function names (``sa.func``) so only
+        syntax-breaking names are wrapped in backticks.
+
+        Example:
+            ``"MyCustomFn"`` returns ``False``; ``"1fn"`` and ``"fn`name"`` return
+            ``True``.
+        """
+        return not _is_valid_unquoted_identifier(self._validate_identifier(value))
 
 
 class SpannerSQLCompiler(SQLCompiler):
