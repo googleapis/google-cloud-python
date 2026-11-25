@@ -83,7 +83,7 @@ def _extract_target_host(target: str) -> str:
     return parsed.host if parsed is not None else target
 
 
-def _is_googleapis_host(target: str) -> bool:
+def _is_direct_path_googleapis_target(target: str) -> bool:
     """Returns True if ``target`` is a DirectPath-eligible ``googleapis.com`` host."""
     parsed = universe._parse_target(target)
     if parsed is None or parsed.authority:
@@ -421,7 +421,7 @@ def _setup_direct_path_and_credentials(
     # target host or the resolved credential universe_domain is non-GDU.
     if attempt_direct_path or use_dp_interconnect:
         if not (
-            _is_googleapis_host(target)
+            _is_direct_path_googleapis_target(target)
             and getattr(credentials, "universe_domain", universe.DEFAULT_UNIVERSE)
             == universe.DEFAULT_UNIVERSE
         ):

@@ -14,11 +14,10 @@
 
 """Helpers for universe domain."""
 
-import copy
 import os
 import re
 from collections.abc import Mapping
-from typing import Any, NamedTuple, Optional
+from typing import TYPE_CHECKING, Any, NamedTuple, Optional, Union
 from urllib.parse import urlparse, urlsplit, urlunparse
 
 from google.auth import compute_engine
@@ -26,6 +25,21 @@ from google.auth import credentials as auth_credentials
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 
 from google.api_core import client_options as client_options_lib
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.auth.aio import credentials as aio_credentials
+
+try:
+    # google.auth.aio was added in google-auth 2.28.0; older supported versions
+    # (down to 2.14.1) only provide synchronous AnonymousCredentials.
+    from google.auth.aio import credentials as _aio_credentials
+
+    _ANONYMOUS_CREDENTIAL_TYPES: tuple[type[Any], ...] = (
+        auth_credentials.AnonymousCredentials,
+        _aio_credentials.AnonymousCredentials,
+    )
+except ImportError:  # pragma: NO COVER
+    _ANONYMOUS_CREDENTIAL_TYPES = (auth_credentials.AnonymousCredentials,)
 
 DEFAULT_UNIVERSE = "googleapis.com"
 UNIVERSE_DOMAIN_ENV = "GOOGLE_CLOUD_UNIVERSE_DOMAIN"
@@ -227,9 +241,7 @@ def resolve_client_universe(
     """Resolve a client's universe domain from ``client_options`` or the environment.
 
     Follows AIP-4113 precedence: ``client_options.universe_domain``, then
-    ``GOOGLE_CLOUD_UNIVERSE_DOMAIN``, then ``"googleapis.com"``. To propagate an
-    already-resolved parent universe onto a child client's options, use
-    :func:`inherit_universe_in_client_options` instead.
+    ``GOOGLE_CLOUD_UNIVERSE_DOMAIN``, then ``"googleapis.com"``.
 
     Args:
         client_options (Optional[Union[google.api_core.client_options.ClientOptions, Mapping[str, Any]]]):
@@ -264,31 +276,31 @@ def resolve_client_universe(
 
 def validate_credentials_universe(
     client_universe: str,
-    credentials: auth_credentials.Credentials | None,
+    credentials: Union[
+        auth_credentials.Credentials, "aio_credentials.Credentials", None
+    ],
 ) -> None:
     """Validate that resolved client credentials match ``client_universe``.
 
     Call on ``self._credentials`` after ``super().__init__()`` or Application
     Default Credentials resolution rather than on the raw constructor
     ``credentials`` argument (which is ``None`` before ADC loads), and never
-    inside ``Credentials.before_request()``. Exempts ``None``,
-    ``AnonymousCredentials``, and ``compute_engine.Credentials`` whose universe
-    domain is not yet cached in memory (avoiding synchronous Metadata Server
-    HTTP requests during client initialization).
+    inside ``Credentials.before_request()``. Exempts ``None``, synchronous and
+    asynchronous ``AnonymousCredentials``, and ``compute_engine.Credentials``
+    whose universe domain is not yet cached in memory (avoiding synchronous
+    Metadata Server HTTP requests during client initialization).
 
     Args:
         client_universe (str): Resolved universe domain of the client.
-        credentials (Optional[google.auth.credentials.Credentials]): Resolved
-            credentials bound to the client, or ``None`` (in which case
+        credentials (Optional[Union[google.auth.credentials.Credentials, google.auth.aio.credentials.Credentials]]):
+            Resolved credentials bound to the client, or ``None`` (in which case
             validation is skipped).
 
     Raises:
         UniverseMismatchError: If ``credentials`` has an in-memory universe
             domain configured for a different universe than ``client_universe``.
     """
-    if credentials is None or isinstance(
-        credentials, auth_credentials.AnonymousCredentials
-    ):
+    if credentials is None or isinstance(credentials, _ANONYMOUS_CREDENTIAL_TYPES):
         return
     if isinstance(credentials, compute_engine.Credentials) and not getattr(
         credentials, "_universe_domain_cached", False
@@ -297,131 +309,27 @@ def validate_credentials_universe(
     compare_domains(client_universe, credentials)
 
 
-def inherit_universe_in_client_options(
-    parent_universe: str,
-    client_options: client_options_lib.ClientOptions | Mapping[str, Any] | None = None,
-    *,
-    parent_api_endpoint: str | None = None,
-    clear_credentials: bool = False,
-) -> client_options_lib.ClientOptions | None:
-    """Inherit ``parent_universe`` onto child ``client_options`` when unset.
-
-    Caller-supplied mappings and ``ClientOptions`` instances are never mutated,
-    and an explicit ``universe_domain`` already set on ``client_options`` is
-    always preserved. Also stamps explicit ``"googleapis.com"`` when
-    ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` is set in ``os.environ`` to a different
-    universe so child clients do not drift from an explicitly configured parent.
-
-    When ``parent_api_endpoint`` is provided (for child clients that share the
-    same API endpoint family as the parent), it is inherited onto
-    ``api_endpoint`` only when both ``api_endpoint`` and ``universe_domain`` are
-    unset on ``client_options``:
-
-    1. ``client_options.api_endpoint``
-    2. ``client_options.universe_domain`` (blocks ``parent_api_endpoint``)
-    3. ``parent_api_endpoint``
-    4. ``parent_universe``
-
-    Args:
-        parent_universe (str): Resolved universe domain of the parent client.
-        client_options (Optional[Union[google.api_core.client_options.ClientOptions, Mapping[str, Any]]]):
-            Optional child ``ClientOptions`` instance or mapping. If ``None``,
-            a new ``ClientOptions`` is created when propagation is required;
-            otherwise ``None`` is returned.
-        parent_api_endpoint (Optional[str]): Optional parent ``api_endpoint``
-            override to inherit when the child targets the same API host family
-            and sets neither ``api_endpoint`` nor ``universe_domain``. Leave
-            ``None`` when the child targets a different API service.
-        clear_credentials (bool): Set to ``True`` when forwarding parent
-            ``client_options`` alongside already-resolved
-            ``credentials=self._credentials`` or a pre-built ``transport`` so
-            leftover ``credentials_file`` or ``api_key`` fields do not trigger
-            GAPIC ``DuplicateCredentialArgs`` or ``ValueError``.
-
-    Returns:
-        Optional[google.api_core.client_options.ClientOptions]: Updated
-            ``ClientOptions`` instance, or ``None`` when ``client_options`` is
-            ``None`` and default resolution already matches the parent.
-
-    Raises:
-        TypeError: If ``client_options`` is not a ``ClientOptions`` instance,
-            ``Mapping``, or ``None``.
-    """
-    env_universe = os.getenv(UNIVERSE_DOMAIN_ENV)
-    should_propagate = parent_universe != DEFAULT_UNIVERSE or (
-        env_universe is not None and env_universe.strip() != parent_universe
-    )
-    has_parent_endpoint = bool(parent_api_endpoint)
-    if client_options is None:
-        if should_propagate or has_parent_endpoint:
-            return client_options_lib.ClientOptions(
-                api_endpoint=parent_api_endpoint if has_parent_endpoint else None,
-                universe_domain=parent_universe if should_propagate else None,
-            )
-        return None
-    if isinstance(client_options, Mapping):
-        opts = client_options_lib.from_dict(client_options)
-        needs_endpoint = (
-            has_parent_endpoint
-            and not opts.api_endpoint
-            and opts.universe_domain is None
-        )
-        if opts.universe_domain is None and should_propagate:
-            opts.universe_domain = parent_universe
-        if needs_endpoint:
-            opts.api_endpoint = parent_api_endpoint
-        if clear_credentials:
-            opts.credentials_file = None
-            opts.api_key = None
-        return opts
-    if isinstance(client_options, client_options_lib.ClientOptions):
-        needs_universe = client_options.universe_domain is None and should_propagate
-        needs_endpoint = (
-            has_parent_endpoint
-            and not client_options.api_endpoint
-            and client_options.universe_domain is None
-        )
-        needs_cred_clear = clear_credentials and bool(
-            client_options.credentials_file or client_options.api_key
-        )
-        if needs_universe or needs_endpoint or needs_cred_clear:
-            opts = copy.copy(client_options)
-            if needs_universe:
-                opts.universe_domain = parent_universe
-            if needs_endpoint:
-                opts.api_endpoint = parent_api_endpoint
-            if needs_cred_clear:
-                opts.credentials_file = None
-                opts.api_key = None
-            return opts
-        return client_options
-    raise TypeError(
-        "client_options must be a ClientOptions instance, Mapping, or None; "
-        f"got {type(client_options).__name__}"
-    )
-
-
 def _parse_target(url_or_target: str) -> _ParsedTarget | None:
     """Parse an HTTP(S) URL or gRPC target into normalized components.
 
     Uses :func:`urllib.parse.urlsplit` for case-insensitive RFC 3986 scheme and
     port validation while normalizing scheme-less ``host:port`` targets and gRPC
-    path-style schemes (``dns:`` and ``google-c2p:///``). Returns ``None`` for
-    empty, non-string, userinfo/fragment-containing, unknown-scheme, or
+    path-style schemes (``dns:`` and ``google-c2p:///``). Rejects userinfo
+    (``@`` in authority/netloc) while allowing ``@`` in HTTP(S) paths and
+    queries (such as service account email endpoints). Returns ``None`` for
+    empty, non-string, userinfo- or fragment-containing, unknown-scheme, or
     malformed inputs.
     """
-    if (
-        not isinstance(url_or_target, str)
-        or not url_or_target
-        or "@" in url_or_target
-        or "#" in url_or_target
-    ):
+    if not isinstance(url_or_target, str) or not url_or_target or "#" in url_or_target:
         return None
 
     try:
         raw = urlsplit(url_or_target)
         if raw.scheme in ("http", "https"):
-            if not url_or_target[len(raw.scheme) :].startswith("://"):
+            if (
+                not url_or_target[len(raw.scheme) :].startswith("://")
+                or "@" in raw.netloc
+            ):
                 return None
             _ = raw.port
             if not raw.hostname:
@@ -448,7 +356,7 @@ def _parse_target(url_or_target: str) -> _ParsedTarget | None:
 
         inner = urlsplit(f"//{endpoint}")
         _ = inner.port
-        if inner.path or not inner.hostname:
+        if "@" in authority or "@" in inner.netloc or inner.path or not inner.hostname:
             return None
         return _ParsedTarget(
             raw.scheme if raw.scheme in ("google-c2p", "dns") else "",
@@ -465,13 +373,13 @@ def is_googleapis_host(url_or_target: str) -> bool:
 
     Matches ``googleapis.com`` and ``*.googleapis.com`` across ``https://`` URLs,
     ``host:port`` gRPC targets, ``google-c2p:///`` DirectPath targets, and
-    ``dns:///`` or ``dns://authority/`` targets while rejecting userinfo/fragment
-    characters (``@``, ``#``), unknown schemes, malformed ports, and spoofed
-    suffixes. Intended for gating default-universe-only features (such as
-    DirectPath, mTLS endpoint switching, or built-in Cloud Monitoring metrics);
-    do not use to test equality against a single default service host because
-    regional (``*.rep.googleapis.com``) and Private Service Connect
-    (``*.p.googleapis.com``) endpoints also match ``*.googleapis.com``.
+    ``dns:///`` or ``dns://authority/`` targets while rejecting userinfo in the
+    authority/netloc (``@``), fragments (``#``), unknown schemes, malformed
+    ports, and spoofed suffixes. Intended for gating default-universe-only
+    features (such as DirectPath, mTLS endpoint switching, or built-in Cloud
+    Monitoring metrics); do not use to test equality against a single default
+    service host because regional (``*.rep.googleapis.com``) and Private Service
+    Connect (``*.p.googleapis.com``) endpoints also match ``*.googleapis.com``.
 
     Args:
         url_or_target (str): HTTP(S) URL or gRPC target string to inspect.

@@ -24,16 +24,8 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.api_core import client_options as client_options_lib
 from google.api_core import universe
 
-from ..helpers import warn_deprecated_credentials_file
-
 TPC_UNIVERSE = "apis-tpclp.goog"
 ALT_UNIVERSE = "other.goog"
-CHILD_UNIVERSE = "child.goog"
-PARENT_ENDPOINT = "parent.custom.test:443"
-CHILD_ENDPOINT = "child.custom.test:443"
-TEST_QUOTA_PROJECT = "qp-1"
-TEST_API_KEY = "secret-key"
-TEST_CREDENTIALS_FILE = "/path/to/creds.json"
 
 
 class _Fake_Credentials:
@@ -523,413 +515,21 @@ class TestValidateCredentialsUniverse:
                 universe.DEFAULT_UNIVERSE, matching_creds
             )
 
-
-class TestInheritUniverseInClientOptions:
     @pytest.mark.parametrize(
-        "env_val",
+        "client_universe",
         [
-            pytest.param(None, id="env_unset"),
-            pytest.param(universe.DEFAULT_UNIVERSE, id="env_matches_gdu"),
-            pytest.param(f"  {universe.DEFAULT_UNIVERSE}  ", id="env_padded_gdu"),
+            pytest.param(universe.DEFAULT_UNIVERSE, id="default_universe"),
+            pytest.param(TPC_UNIVERSE, id="custom_universe"),
         ],
     )
-    def test_none_options_in_default_universe_returns_none(self, monkeypatch, env_val):
-        if env_val is not None:
-            monkeypatch.setenv(universe.UNIVERSE_DOMAIN_ENV, env_val)
-
+    def test_exempts_async_anonymous_credentials(self, client_universe):
+        aio_credentials = pytest.importorskip("google.auth.aio.credentials")
         assert (
-            universe.inherit_universe_in_client_options(universe.DEFAULT_UNIVERSE, None)
+            universe.validate_credentials_universe(
+                client_universe, aio_credentials.AnonymousCredentials()
+            )
             is None
         )
-
-    @pytest.mark.parametrize(
-        ("parent_universe", "env_val", "expected_universe"),
-        [
-            pytest.param(
-                TPC_UNIVERSE,
-                None,
-                TPC_UNIVERSE,
-                id="custom_parent_creates_options",
-            ),
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                TPC_UNIVERSE,
-                universe.DEFAULT_UNIVERSE,
-                id="explicit_gdu_parent_overrides_tpc_env",
-            ),
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                "",
-                universe.DEFAULT_UNIVERSE,
-                id="explicit_gdu_parent_overrides_empty_env",
-            ),
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                "   ",
-                universe.DEFAULT_UNIVERSE,
-                id="explicit_gdu_parent_overrides_whitespace_env",
-            ),
-        ],
-    )
-    def test_none_options_propagates_universe(
-        self, monkeypatch, parent_universe, env_val, expected_universe
-    ):
-        if env_val is not None:
-            monkeypatch.setenv(universe.UNIVERSE_DOMAIN_ENV, env_val)
-
-        opts = universe.inherit_universe_in_client_options(parent_universe, None)
-
-        assert opts is not None
-        assert opts.universe_domain == expected_universe
-
-    @pytest.mark.parametrize(
-        ("parent_universe", "input_dict", "expected_universe"),
-        [
-            pytest.param(
-                TPC_UNIVERSE,
-                {"quota_project_id": TEST_QUOTA_PROJECT},
-                TPC_UNIVERSE,
-                id="custom_parent_inherits_onto_unset_mapping",
-            ),
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                {"quota_project_id": TEST_QUOTA_PROJECT},
-                None,
-                id="default_parent_leaves_unset_mapping_none",
-            ),
-            pytest.param(
-                TPC_UNIVERSE,
-                {
-                    "quota_project_id": TEST_QUOTA_PROJECT,
-                    "universe_domain": CHILD_UNIVERSE,
-                },
-                CHILD_UNIVERSE,
-                id="preserves_explicit_child_universe",
-            ),
-            pytest.param(
-                TPC_UNIVERSE,
-                {"quota_project_id": TEST_QUOTA_PROJECT, "universe_domain": ""},
-                "",
-                id="preserves_explicit_empty_string_in_mapping",
-            ),
-        ],
-    )
-    def test_mapping_options_universe_inheritance(
-        self, parent_universe, input_dict, expected_universe
-    ):
-        caller_dict = dict(input_dict)
-
-        opts = universe.inherit_universe_in_client_options(parent_universe, caller_dict)
-
-        assert opts is not None
-        assert opts.universe_domain == expected_universe
-        assert opts.quota_project_id == TEST_QUOTA_PROJECT
-        assert caller_dict == input_dict
-
-    @pytest.mark.parametrize(
-        "cred_entry",
-        [
-            pytest.param(
-                {"credentials_file": TEST_CREDENTIALS_FILE},
-                id="clears_credentials_file",
-            ),
-            pytest.param({"api_key": TEST_API_KEY}, id="clears_api_key"),
-        ],
-    )
-    def test_mapping_clears_credentials_when_requested(self, cred_entry):
-        caller_dict = {"universe_domain": CHILD_UNIVERSE, **cred_entry}
-
-        opts = universe.inherit_universe_in_client_options(
-            TPC_UNIVERSE,
-            caller_dict,
-            clear_credentials=True,
-        )
-
-        assert opts is not None
-        assert opts.universe_domain == CHILD_UNIVERSE
-        assert opts.credentials_file is None
-        assert opts.api_key is None
-        assert caller_dict == {"universe_domain": CHILD_UNIVERSE, **cred_entry}
-
-    def test_mapping_preserves_credentials_when_clear_credentials_false(self):
-        opts = universe.inherit_universe_in_client_options(
-            TPC_UNIVERSE,
-            {
-                "credentials_file": TEST_CREDENTIALS_FILE,
-                "api_key": TEST_API_KEY,
-            },
-            clear_credentials=False,
-        )
-
-        assert opts is not None
-        assert opts.universe_domain == TPC_UNIVERSE
-        assert opts.credentials_file == TEST_CREDENTIALS_FILE
-        assert opts.api_key == TEST_API_KEY
-
-    @pytest.mark.parametrize(
-        ("parent_universe", "initial_universe", "clear_credentials"),
-        [
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                None,
-                False,
-                id="default_parent_unset_child",
-            ),
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                None,
-                True,
-                id="clear_credentials_without_creds_set",
-            ),
-            pytest.param(
-                TPC_UNIVERSE,
-                CHILD_UNIVERSE,
-                False,
-                id="explicit_child_universe_preserved",
-            ),
-            pytest.param(
-                TPC_UNIVERSE,
-                "",
-                False,
-                id="explicit_empty_child_universe_preserved",
-            ),
-        ],
-    )
-    def test_client_options_obj_no_changes_returns_same_instance(
-        self, parent_universe, initial_universe, clear_credentials
-    ):
-        original = client_options_lib.ClientOptions(
-            universe_domain=initial_universe,
-            quota_project_id=TEST_QUOTA_PROJECT,
-        )
-
-        result = universe.inherit_universe_in_client_options(
-            parent_universe,
-            original,
-            clear_credentials=clear_credentials,
-        )
-
-        assert result is original
-        assert result.universe_domain == initial_universe
-
-    def test_client_options_obj_inherits_via_shallow_copy(self):
-        original = client_options_lib.ClientOptions(
-            quota_project_id=TEST_QUOTA_PROJECT,
-            api_key=TEST_API_KEY,
-        )
-
-        result = universe.inherit_universe_in_client_options(TPC_UNIVERSE, original)
-
-        assert result is not original
-        assert result is not None
-        assert result.universe_domain == TPC_UNIVERSE
-        assert result.quota_project_id == TEST_QUOTA_PROJECT
-        assert result.api_key == TEST_API_KEY
-        assert original.universe_domain is None
-
-    @pytest.mark.parametrize(
-        ("initial_universe", "expected_universe"),
-        [
-            pytest.param(CHILD_UNIVERSE, CHILD_UNIVERSE, id="clear_api_key_only"),
-            pytest.param(None, TPC_UNIVERSE, id="inherit_universe_and_clear_api_key"),
-        ],
-    )
-    def test_client_options_obj_clears_api_key(
-        self, initial_universe, expected_universe
-    ):
-        original = client_options_lib.ClientOptions(
-            universe_domain=initial_universe,
-            api_key=TEST_API_KEY,
-        )
-
-        result = universe.inherit_universe_in_client_options(
-            TPC_UNIVERSE,
-            original,
-            clear_credentials=True,
-        )
-
-        assert result is not original
-        assert result is not None
-        assert result.universe_domain == expected_universe
-        assert result.api_key is None
-        assert original.universe_domain == initial_universe
-        assert original.api_key == TEST_API_KEY
-
-    def test_client_options_obj_clears_credentials_file(self):
-        with warn_deprecated_credentials_file():
-            original = client_options_lib.ClientOptions(
-                credentials_file=TEST_CREDENTIALS_FILE,
-            )
-
-        result = universe.inherit_universe_in_client_options(
-            TPC_UNIVERSE,
-            original,
-            clear_credentials=True,
-        )
-
-        assert result is not original
-        assert result is not None
-        assert result.universe_domain == TPC_UNIVERSE
-        assert result.credentials_file is None
-        assert original.credentials_file == TEST_CREDENTIALS_FILE
-
-    @pytest.mark.parametrize(
-        ("parent_universe", "expected_universe"),
-        [
-            pytest.param(universe.DEFAULT_UNIVERSE, None, id="default_parent"),
-            pytest.param(TPC_UNIVERSE, TPC_UNIVERSE, id="custom_parent"),
-        ],
-    )
-    def test_none_options_inherits_parent_api_endpoint(
-        self, parent_universe, expected_universe
-    ):
-        opts = universe.inherit_universe_in_client_options(
-            parent_universe,
-            None,
-            parent_api_endpoint=PARENT_ENDPOINT,
-        )
-
-        assert opts is not None
-        assert opts.api_endpoint == PARENT_ENDPOINT
-        assert opts.universe_domain == expected_universe
-
-    @pytest.mark.parametrize(
-        ("child_dict", "expected_endpoint", "expected_universe"),
-        [
-            pytest.param(
-                {"quota_project_id": TEST_QUOTA_PROJECT},
-                PARENT_ENDPOINT,
-                TPC_UNIVERSE,
-                id="unset_child_inherits_parent_endpoint_and_universe",
-            ),
-            pytest.param(
-                {"api_endpoint": CHILD_ENDPOINT},
-                CHILD_ENDPOINT,
-                TPC_UNIVERSE,
-                id="explicit_child_endpoint_wins_and_inherits_universe",
-            ),
-            pytest.param(
-                {"universe_domain": CHILD_UNIVERSE},
-                None,
-                CHILD_UNIVERSE,
-                id="explicit_child_universe_blocks_parent_endpoint",
-            ),
-            pytest.param(
-                {"universe_domain": universe.DEFAULT_UNIVERSE},
-                None,
-                universe.DEFAULT_UNIVERSE,
-                id="explicit_gdu_child_universe_blocks_parent_endpoint",
-            ),
-        ],
-    )
-    def test_mapping_parent_api_endpoint_precedence(
-        self, child_dict, expected_endpoint, expected_universe
-    ):
-        caller_dict = dict(child_dict)
-
-        opts = universe.inherit_universe_in_client_options(
-            TPC_UNIVERSE,
-            caller_dict,
-            parent_api_endpoint=PARENT_ENDPOINT,
-        )
-
-        assert opts is not None
-        assert opts.api_endpoint == expected_endpoint
-        assert opts.universe_domain == expected_universe
-        assert caller_dict == child_dict
-
-    @pytest.mark.parametrize(
-        (
-            "parent_universe",
-            "child_endpoint",
-            "child_universe",
-            "expected_endpoint",
-            "expected_universe",
-            "expect_same_instance",
-        ),
-        [
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                None,
-                None,
-                PARENT_ENDPOINT,
-                None,
-                False,
-                id="default_parent_copies_only_parent_endpoint",
-            ),
-            pytest.param(
-                TPC_UNIVERSE,
-                None,
-                None,
-                PARENT_ENDPOINT,
-                TPC_UNIVERSE,
-                False,
-                id="custom_parent_copies_both_endpoint_and_universe",
-            ),
-            pytest.param(
-                TPC_UNIVERSE,
-                CHILD_ENDPOINT,
-                None,
-                CHILD_ENDPOINT,
-                TPC_UNIVERSE,
-                False,
-                id="child_endpoint_preserved_while_universe_inherited",
-            ),
-            pytest.param(
-                TPC_UNIVERSE,
-                None,
-                CHILD_UNIVERSE,
-                None,
-                CHILD_UNIVERSE,
-                True,
-                id="child_universe_blocks_parent_endpoint_returns_same_obj",
-            ),
-            pytest.param(
-                universe.DEFAULT_UNIVERSE,
-                CHILD_ENDPOINT,
-                None,
-                CHILD_ENDPOINT,
-                None,
-                True,
-                id="default_parent_with_child_endpoint_returns_same_obj",
-            ),
-        ],
-    )
-    def test_client_options_obj_parent_api_endpoint_precedence(
-        self,
-        parent_universe,
-        child_endpoint,
-        child_universe,
-        expected_endpoint,
-        expected_universe,
-        expect_same_instance,
-    ):
-        original = client_options_lib.ClientOptions(
-            api_endpoint=child_endpoint,
-            universe_domain=child_universe,
-        )
-
-        result = universe.inherit_universe_in_client_options(
-            parent_universe,
-            original,
-            parent_api_endpoint=PARENT_ENDPOINT,
-        )
-
-        assert result is not None
-        assert (result is original) is expect_same_instance
-        assert result.api_endpoint == expected_endpoint
-        assert result.universe_domain == expected_universe
-        assert original.api_endpoint == child_endpoint
-        assert original.universe_domain == child_universe
-
-    def test_invalid_client_options_type_raises_type_error(self):
-        with pytest.raises(TypeError, match="ClientOptions instance, Mapping, or None"):
-            # Pass an invalid str on purpose to verify runtime TypeError handling;
-            # mypy flags the intentional type mismatch without this ignore.
-            universe.inherit_universe_in_client_options(
-                universe.DEFAULT_UNIVERSE,
-                "invalid",  # type: ignore[arg-type]
-            )
 
 
 class TestIsGoogleapisHost:
@@ -975,6 +575,16 @@ class TestIsGoogleapisHost:
                 "https://storage.googleapis.com:443/v1?alt=json",
                 True,
                 id="https_url_with_path_and_query",
+            ),
+            pytest.param(
+                "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/my-sa@my-project.iam.gserviceaccount.com:generateAccessToken",
+                True,
+                id="https_service_account_email_in_path",
+            ),
+            pytest.param(
+                "https://storage.googleapis.com/v1/b?user=sa@example.com",
+                True,
+                id="https_at_in_query",
             ),
             pytest.param(
                 "HTTPS://storage.googleapis.com:443/v1",
@@ -1070,12 +680,42 @@ class TestIsGoogleapisHost:
             pytest.param("[invalid.googleapis.com", False, id="malformed_bare_ipv6"),
             pytest.param("user@storage.googleapis.com:443", False, id="userinfo_at"),
             pytest.param(
+                "https://user@storage.googleapis.com:443/v1",
+                False,
+                id="https_userinfo_at",
+            ),
+            pytest.param(
+                "https://storage.example.com:443@storage.googleapis.com/v1",
+                False,
+                id="https_spoofed_userinfo_host",
+            ),
+            pytest.param(
+                "dns://user@8.8.8.8/storage.googleapis.com:443",
+                False,
+                id="dns_authority_userinfo_at",
+            ),
+            pytest.param(
+                "dns:///user@storage.googleapis.com:443",
+                False,
+                id="dns_target_userinfo_at",
+            ),
+            pytest.param(
+                "google-c2p:///user@storage-direct.googleapis.com",
+                False,
+                id="c2p_userinfo_at",
+            ),
+            pytest.param(
                 "storage.example.com:443@storage.googleapis.com",
                 False,
                 id="spoofed_userinfo_host",
             ),
             pytest.param(
                 "storage.googleapis.com#example.com", False, id="fragment_hash"
+            ),
+            pytest.param(
+                "https://storage.googleapis.com/v1#fragment",
+                False,
+                id="https_fragment_hash",
             ),
             pytest.param(
                 "another-c2p:///storage.googleapis.com", False, id="unknown_scheme"
