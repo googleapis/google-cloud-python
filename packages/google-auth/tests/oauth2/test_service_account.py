@@ -155,6 +155,16 @@ class TestCredentials(object):
         back_to_default = non_default.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
         assert back_to_default._always_use_jwt_access is False
 
+
+    def test_with_universe_domain_clears_rab_state_for_non_default_domain(self):
+        """Switching to a non-default universe domain clears cached RAB data."""
+        creds = self.make_credentials()
+        creds._rab_manager._data = mock.Mock()
+
+        custom_creds = creds.with_universe_domain("custom.universe.domain")
+        assert custom_creds._rab_manager._data is None
+
+    
     def test_with_universe_domain_clears_jwt_credentials(self):
         """with_universe_domain clears cached self-signed JWT credentials."""
         credentials = self.make_credentials(universe_domain=FAKE_UNIVERSE_DOMAIN)

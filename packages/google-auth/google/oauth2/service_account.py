@@ -380,6 +380,9 @@ class Credentials(
         )
         # Clear cached JWT credentials since audience/universe metadata may change.
         cred._jwt_credentials = None
+        # RAB state is only valid for the default universe domain.
+        if cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
+            cred._rab_manager._data = None
         return cred
 
     def with_subject(self, subject):
