@@ -2484,6 +2484,20 @@ class TestMtlsCertManager(object):
         assert manager.generation_id == 4
         assert source.call_count == 5
 
+    @staticmethod
+    def _wrap_lock_on_enter(manager, on_enter):
+        real_lock = manager._lock
+
+        class _HookedLock(object):
+            def __enter__(self):
+                on_enter()
+                return real_lock.__enter__()
+
+            def __exit__(self, *args):
+                return real_lock.__exit__(*args)
+
+        manager._lock = _HookedLock()
+
     def test_expected_generation_coalesces_concurrent_refreshes(self):
         barrier = threading.Barrier(4)
         source = mock.Mock(
@@ -2509,14 +2523,15 @@ class TestMtlsCertManager(object):
         results = [None] * 4
 
         def worker(idx):
-            barrier.wait()
+            barrier.wait(timeout=5)
             results[idx] = manager.refresh(expected_generation=1)
 
         threads = [threading.Thread(target=worker, args=(i,)) for i in range(4)]
         for t in threads:
             t.start()
         for t in threads:
-            t.join()
+            t.join(timeout=5)
+            assert not t.is_alive()
 
         assert results == [True, True, True, True]
         assert manager.generation_id == 2
@@ -2548,28 +2563,63 @@ class TestMtlsCertManager(object):
         assert manager.generation_id == 1
 
         reload_source = mock.Mock(side_effect=[reload_result] * 6)
-
-        def slow_source():
-            time.sleep(0.1)
-            return reload_source()
-
-        source.side_effect = slow_source
-        barrier = threading.Barrier(6)
+        source.side_effect = reload_source
+        # Ensure all 6 threads capture reload_id before any acquires _lock.
+        entry_barrier = threading.Barrier(6)
+        self._wrap_lock_on_enter(manager, lambda: entry_barrier.wait(timeout=5))
         results = [None] * 6
 
         def worker(idx):
-            barrier.wait()
             results[idx] = manager.refresh(expected_generation=1)
 
         threads = [threading.Thread(target=worker, args=(i,)) for i in range(6)]
         for t in threads:
             t.start()
         for t in threads:
-            t.join()
+            t.join(timeout=5)
+            assert not t.is_alive()
 
         assert results == [False] * 6
         assert manager.generation_id == 1
-        assert 1 <= reload_source.call_count < 6
+        assert reload_source.call_count == 1
+
+    def test_concurrent_failed_initial_load_does_not_suppress_waiter(self):
+        steps = [
+            mock.Mock(side_effect=OSError("initial failure")),
+            lambda: (pytest.public_cert_bytes, pytest.private_key_bytes),
+        ]
+        manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=lambda: steps.pop(0)()
+        )
+        # Ensure both threads read reload_id == 0 before either acquires _lock.
+        entry_barrier = threading.Barrier(2)
+        self._wrap_lock_on_enter(manager, lambda: entry_barrier.wait(timeout=5))
+
+        outcomes = [None, None]
+
+        def worker(idx):
+            try:
+                outcomes[idx] = manager.refresh(expected_generation=0)
+            except OSError as exc:
+                outcomes[idx] = exc
+
+        threads = [threading.Thread(target=worker, args=(i,)) for i in range(2)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join(timeout=5)
+            assert not t.is_alive()
+
+        errors = [outcome for outcome in outcomes if isinstance(outcome, OSError)]
+        successes = [outcome for outcome in outcomes if outcome is True]
+        assert len(errors) == 1
+        assert len(successes) == 1
+        assert manager.generation_id == 1
+        assert manager.get_credential_snapshot() == (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+            1,
+        )
 
     def test_mid_reload_arrival_does_not_reuse_earlier_read(self):
         entered = threading.Event()
@@ -2577,7 +2627,7 @@ class TestMtlsCertManager(object):
 
         def hold_reload():
             entered.set()
-            release.wait(timeout=5)
+            assert release.wait(timeout=5)
             return pytest.public_cert_bytes, pytest.private_key_bytes
 
         steps = [
@@ -2590,24 +2640,44 @@ class TestMtlsCertManager(object):
         )
         assert manager.refresh() is True
 
-        results = [None, None]
+        results = [None, None, None]
 
         def worker(idx):
             results[idx] = manager.refresh(expected_generation=1)
 
         t1 = threading.Thread(target=worker, args=(0,))
         t1.start()
-        assert entered.wait(timeout=5)
+        try:
+            assert entered.wait(timeout=5)
 
-        t2 = threading.Thread(target=worker, args=(1,))
-        t2.start()
-        time.sleep(0.02)
-        release.set()
+            waiter_count = 0
+            waiter_count_lock = threading.Lock()
+            waiters_queued = threading.Event()
 
-        t1.join()
-        t2.join()
-        assert results == [False, True]
+            def on_waiter_enter():
+                nonlocal waiter_count
+                with waiter_count_lock:
+                    waiter_count += 1
+                    if waiter_count == 2:
+                        waiters_queued.set()
+
+            self._wrap_lock_on_enter(manager, on_waiter_enter)
+
+            t2 = threading.Thread(target=worker, args=(1,))
+            t3 = threading.Thread(target=worker, args=(2,))
+            t2.start()
+            t3.start()
+            assert waiters_queued.wait(timeout=5)
+        finally:
+            release.set()
+
+        for t in (t1, t2, t3):
+            t.join(timeout=5)
+            assert not t.is_alive()
+
+        assert results == [False, True, True]
         assert manager.generation_id == 2
+        assert steps == []
 
     def test_get_credential_snapshot_does_not_block_during_refresh(self):
         entered_reload = threading.Event()
@@ -2639,6 +2709,7 @@ class TestMtlsCertManager(object):
         finally:
             release_reload.set()
             refresh_thread.join(timeout=5)
+            assert not refresh_thread.is_alive()
 
         assert manager.get_credential_snapshot() == (
             ES256_CERT_BYTES,
