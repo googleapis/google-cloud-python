@@ -81,7 +81,6 @@ from google.auth import (
     _service_account_info,
     credentials,
     exceptions,
-    iam,
     jwt,
     metrics,
 )

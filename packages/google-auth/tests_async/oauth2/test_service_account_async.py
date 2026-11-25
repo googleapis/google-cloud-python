@@ -17,7 +17,16 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, crypt, environment_vars, jwt, transport
+from google.auth import _credentials_async as credentials_async
+from google.auth import (
+    _helpers,
+    _regional_access_boundary_utils,
+    crypt,
+    environment_vars,
+    jwt,
+    transport,
+)
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.oauth2 import _service_account_async as service_account
 from tests.oauth2 import test_service_account
 
@@ -384,6 +393,40 @@ class TestCredentials(object):
             new_instance._rab_manager.refresh_manager,
             _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
         )
+
+    def test_with_universe_domain(self):
+        """Async credentials cleanly inherit and process with_universe_domain copying."""
+        credentials = self.make_credentials()
+
+        # 1. Assert that the original instance is indeed an async credential object
+        assert isinstance(credentials, credentials_async.Credentials)
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert not credentials._always_use_jwt_access
+
+        # Transition to custom universe
+        custom_creds = credentials.with_universe_domain("custom.universe.domain")
+
+        # 2. Assert that the copy retains async inheritance and subclass identity
+        assert isinstance(custom_creds, service_account.Credentials)
+        assert isinstance(custom_creds, credentials_async.Credentials)
+        assert custom_creds.universe_domain == "custom.universe.domain"
+        assert custom_creds._always_use_jwt_access is True
+
+        # 3. Explicitly verify that its RAB manager retains the asynchronous refresh worker implementation
+        assert isinstance(
+            custom_creds._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+        assert custom_creds._rab_manager._data.encoded_locations is None
+
+        # Transition back to GDU
+        back_to_gdu = custom_creds.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+
+        # 4. Confirm async credentials class is preserved on the return transition
+        assert isinstance(back_to_gdu, service_account.Credentials)
+        assert isinstance(back_to_gdu, credentials_async.Credentials)
+        assert back_to_gdu.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert back_to_gdu._always_use_jwt_access is False
 
 
 class TestIDTokenCredentials(object):
