@@ -15,6 +15,8 @@
 """Wrapper for streaming results."""
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.streamed"
+from typing import NoReturn
+
 from google.protobuf.struct_pb2 import ListValue, Value
 
 from google.cloud import exceptions
@@ -62,6 +64,7 @@ class StreamedResultSet(object):
         self._field_decoders = None
         self._lazy_decode = lazy_decode  # Return protobuf values
         self._done = False
+        self._error = None
         self._closed = False
 
     @property
@@ -273,6 +276,25 @@ class StreamedResultSet(object):
         if remaining_values > full_values_count:
             self._append_to_current_row(values[batch_end:])
 
+    def _set_terminal_error(self, message: str) -> NoReturn:
+        """Record a sticky terminal InternalServerError and raise it."""
+        self._error = exceptions.InternalServerError(message)
+        self._done = True
+        raise self._error
+
+    def _validate_stream_termination(self) -> None:
+        """Validate that the stream did not end mid-chunk or mid-row.
+
+        :raises: :exc:`~google.cloud.exceptions.InternalServerError`: If the
+            stream ended with a pending chunked value or an incomplete row.
+        """
+        if self._pending_chunk is not None:
+            self._set_terminal_error(
+                "Stream ended while waiting for continuation of chunked value."
+            )
+        if self._current_row:
+            self._set_terminal_error("Stream ended with an incomplete row.")
+
     @CrossSync.convert
     async def _consume_next(self):
         """Consume the next partial result set from the stream.
@@ -288,12 +310,20 @@ class StreamedResultSet(object):
         if response_pb.HasField("stats"):  # last response
             self._stats = response.stats
 
+        if (response_pb.values or response_pb.chunked_value) and not self.fields:
+            self._set_terminal_error("Missing row_type in PartialResultSet metadata.")
+
         if self._pending_chunk is not None or response_pb.chunked_value:
             values = list(response_pb.values)
-            if self._pending_chunk is not None:
-                values[0] = self._merge_chunk(values[0])
-            if response_pb.chunked_value:
-                self._pending_chunk = values.pop()
+            if values:
+                if self._pending_chunk is not None:
+                    values[0] = self._merge_chunk(values[0])
+                if response_pb.chunked_value:
+                    self._pending_chunk = values.pop()
+            elif response_pb.chunked_value:
+                self._set_terminal_error(
+                    "Received chunked_value=True with empty values."
+                )
         else:
             values = response_pb.values
 
@@ -327,14 +357,21 @@ class StreamedResultSet(object):
 
     @CrossSync.convert(sync_name="__iter__")
     async def __aiter__(self):
+        if self._error is not None:
+            raise self._error
         try:
             while True:
                 if self._closed:
                     return
                 if not self._rows:
+                    if self._done:
+                        self._validate_stream_termination()
+                        return
                     try:
                         await self._consume_next()
                     except StopAsyncIteration:
+                        self._done = True
+                        self._validate_stream_termination()
                         return
                 iter_rows, self._rows = self._rows, []
                 for row in iter_rows:
@@ -342,6 +379,7 @@ class StreamedResultSet(object):
                         return
                     yield row
                 if self._done:
+                    self._validate_stream_termination()
                     return
         finally:
             await self._close()
@@ -395,6 +433,8 @@ class StreamedResultSet(object):
         :raises: :exc:`ValueError`: If there are multiple results.
         :raises: :exc:`RuntimeError`: If consumption has already occurred,
             in whole or in part.
+        :raises: :exc:`~google.cloud.exceptions.InternalServerError`: If the
+            stream ended with a pending chunked value or an incomplete row.
         """
         # Sanity check: Has consumption of this query already started?
         # If it has, then this is an exception.
@@ -404,6 +444,8 @@ class StreamedResultSet(object):
                 "stream consumption has already started."
             )
 
+        if self._error is not None:
+            raise self._error
         if self._closed:
             return None
 
@@ -412,7 +454,11 @@ class StreamedResultSet(object):
                 try:
                     await self._consume_next()
                 except StopAsyncIteration:
+                    self._done = True
                     break
+
+            if self._done:
+                self._validate_stream_termination()
 
             if len(self._rows) == 1:
                 return self._rows.pop()
