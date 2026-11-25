@@ -32,8 +32,8 @@ from google.protobuf.struct_pb2 import Struct
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._helpers import (
     _augment_error_with_request_id,
-    _check_rst_stream_error,
     _drain_stream,
+    _is_retryable_internal_error,
     _make_execute_sql_request,
     _make_value_pb,
     _merge_client_context,
@@ -69,10 +69,6 @@ from google.cloud.spanner_v1.types.transaction import (
     TransactionSelector,
 )
 
-_STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
-    "RST_STREAM",
-    "Received unexpected EOS on DATA frame from server",
-)
 _TRANSACTION_BEGIN_TIMEOUT_SECONDS = 30.0
 _MAX_BUFFERED_CHUNKS = 512
 
@@ -199,13 +195,10 @@ def _restart_on_unavailable(
                 else:
                     stream_finished = True
             except (ServiceUnavailable, InternalServerError) as exc:
-                is_retryable = isinstance(exc, ServiceUnavailable) or any(
-                    (
-                        resumable_message in exc.message
-                        for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
-                    )
-                )
-                if not safe_to_retry or not is_retryable:
+                if not safe_to_retry or (
+                    isinstance(exc, InternalServerError)
+                    and (not _is_retryable_internal_error(exc))
+                ):
                     raise _augment_error_with_request_id(exc, current_request_id)
                 del item_buffer[:]
                 request.resume_token = resume_token
@@ -774,7 +767,7 @@ class _SnapshotBase(_SessionWrapper):
 
             response = _retry(
                 attempt_tracking_method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                allowed_exceptions={InternalServerError: _is_retryable_internal_error},
             )
         return [partition.partition_token for partition in response.partitions]
 
@@ -849,7 +842,7 @@ class _SnapshotBase(_SessionWrapper):
 
             response = _retry(
                 attempt_tracking_method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                allowed_exceptions={InternalServerError: _is_retryable_internal_error},
             )
         return [partition.partition_token for partition in response.partitions]
 
@@ -927,7 +920,7 @@ class _SnapshotBase(_SessionWrapper):
                 wrapped_method,
                 before_next_retry=before_next_retry,
                 allowed_exceptions={
-                    InternalServerError: _check_rst_stream_error,
+                    InternalServerError: _is_retryable_internal_error,
                     Aborted: None,
                 },
             )

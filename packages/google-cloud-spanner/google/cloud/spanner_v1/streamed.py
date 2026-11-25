@@ -17,9 +17,12 @@
 
 """Wrapper for streaming results."""
 
+from typing import NoReturn
+
 from google.protobuf.struct_pb2 import ListValue, Value
 
 from google.cloud import exceptions
+from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._helpers import _get_type_decoder, _parse_nullable
 from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSetMetadata
 from google.cloud.spanner_v1.types.type import TypeCode
@@ -54,6 +57,8 @@ class StreamedResultSet(object):
         self._field_decoders = None
         self._lazy_decode = lazy_decode
         self._done = False
+        self._error = None
+        self._closed = False
 
     @property
     def fields(self):
@@ -242,6 +247,24 @@ class StreamedResultSet(object):
         if remaining_values > full_values_count:
             self._append_to_current_row(values[batch_end:])
 
+    def _set_terminal_error(self, message: str) -> NoReturn:
+        """Record a sticky terminal InternalServerError and raise it."""
+        self._error = exceptions.InternalServerError(message)
+        self._done = True
+        raise self._error
+
+    def _validate_stream_termination(self) -> None:
+        """Validate that the stream did not end mid-chunk or mid-row.
+
+        :raises: :exc:`~google.cloud.exceptions.InternalServerError`: If the
+            stream ended with a pending chunked value or an incomplete row."""
+        if self._pending_chunk is not None:
+            self._set_terminal_error(
+                "Stream ended while waiting for continuation of chunked value."
+            )
+        if self._current_row:
+            self._set_terminal_error("Stream ended with an incomplete row.")
+
     def _consume_next(self):
         """Consume the next partial result set from the stream.
 
@@ -252,32 +275,71 @@ class StreamedResultSet(object):
             self._metadata = response_pb.metadata
         if response_pb.HasField("stats"):
             self._stats = response.stats
+        if (response_pb.values or response_pb.chunked_value) and (not self.fields):
+            self._set_terminal_error("Missing row_type in PartialResultSet metadata.")
         if self._pending_chunk is not None or response_pb.chunked_value:
             values = list(response_pb.values)
-            if self._pending_chunk is not None:
-                values[0] = self._merge_chunk(values[0])
-            if response_pb.chunked_value:
-                self._pending_chunk = values.pop()
+            if values:
+                if self._pending_chunk is not None:
+                    values[0] = self._merge_chunk(values[0])
+                if response_pb.chunked_value:
+                    self._pending_chunk = values.pop()
+            elif response_pb.chunked_value:
+                self._set_terminal_error(
+                    "Received chunked_value=True with empty values."
+                )
         else:
             values = response_pb.values
         self._merge_values(values)
         if response_pb.last:
             self._done = True
 
+    def _close(self) -> None:
+        """Close the underlying response iterator idempotently."""
+        if self._closed:
+            return
+        self._closed = True
+        self._rows = []
+        iterator = self._response_iterator
+        if iterator is None:
+            return
+        close_methods = ("close", "cancel")
+        try:
+            for method_name in close_methods:
+                close_method = getattr(iterator, method_name, None)
+                if close_method is not None:
+                    CrossSync._Sync_Impl.run_if_async(close_method)
+                    return
+        except Exception:
+            pass
+
     def __iter__(self):
-        while True:
-            if not self._rows:
+        if self._error is not None:
+            raise self._error
+        try:
+            while True:
+                if self._closed:
+                    return
+                if not self._rows:
+                    if self._done:
+                        self._validate_stream_termination()
+                        return
+                    try:
+                        self._consume_next()
+                    except StopIteration:
+                        self._done = True
+                        self._validate_stream_termination()
+                        return
+                iter_rows, self._rows = (self._rows, [])
+                for row in iter_rows:
+                    if self._closed:
+                        return
+                    yield row
                 if self._done:
+                    self._validate_stream_termination()
                     return
-                try:
-                    self._consume_next()
-                except StopIteration:
-                    return
-            iter_rows, self._rows = (self._rows, [])
-            for row in iter_rows:
-                yield row
-            if self._done:
-                return
+        finally:
+            self._close()
 
     def decode_row(self, row: []) -> []:
         """Decodes a row from protobuf values to Python objects. This function
@@ -322,21 +384,33 @@ class StreamedResultSet(object):
 
         :raises: :exc:`ValueError`: If there are multiple results.
         :raises: :exc:`RuntimeError`: If consumption has already occurred,
-            in whole or in part."""
+            in whole or in part.
+        :raises: :exc:`~google.cloud.exceptions.InternalServerError`: If the
+            stream ended with a pending chunked value or an incomplete row."""
         if self._metadata is not None:
             raise RuntimeError(
                 "Can not call `.one` or `.one_or_none` after stream consumption has already started."
             )
-        while not self._done and len(self._rows) < 2:
-            try:
-                self._consume_next()
-            except StopIteration:
-                break
-        if len(self._rows) == 1:
-            return self._rows.pop()
-        if not self._rows:
+        if self._error is not None:
+            raise self._error
+        if self._closed:
             return None
-        raise ValueError("Expected one result; got more.")
+        try:
+            while not self._done and len(self._rows) < 2:
+                try:
+                    self._consume_next()
+                except StopIteration:
+                    self._done = True
+                    break
+            if self._done:
+                self._validate_stream_termination()
+            if len(self._rows) == 1:
+                return self._rows.pop()
+            if not self._rows:
+                return None
+            raise ValueError("Expected one result; got more.")
+        finally:
+            self._close()
 
     def to_dict_list(self):
         """Return the result of a query as a list of dictionaries.
@@ -348,12 +422,15 @@ class StreamedResultSet(object):
         :returns: result rows as a list of dictionaries"""
         rows = []
         column_names = None
-        for row in self:
-            if column_names is None:
-                column_names = [
-                    column.name for column in self._metadata.row_type.fields
-                ]
-            rows.append(dict(zip(column_names, row)))
+        try:
+            for row in self:
+                if column_names is None:
+                    column_names = [
+                        column.name for column in self._metadata.row_type.fields
+                    ]
+                rows.append(dict(zip(column_names, row)))
+        finally:
+            self._close()
         return rows
 
 

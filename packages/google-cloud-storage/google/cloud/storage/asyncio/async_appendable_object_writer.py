@@ -14,7 +14,6 @@
 
 import io
 import logging
-from dataclasses import dataclass
 from io import BufferedReader
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -50,7 +49,6 @@ _DEFAULT_FLUSH_INTERVAL_BYTES = 16 * 1024 * 1024  # 16 MiB
 _BIDI_WRITE_REDIRECTED_TYPE_URL = (
     "type.googleapis.com/google.storage.v2.BidiWriteObjectRedirectedError"
 )
-_marker = object()
 logger = logging.getLogger(__name__)
 
 
@@ -102,46 +100,6 @@ def _is_write_retryable(exc):
     return False
 
 
-@dataclass(frozen=True)
-class Preconditions:
-    """Preconditions for :class:`AsyncAppendableObjectWriter` operations.
-
-    Generation preconditions (``if_generation_match``,
-    ``if_generation_not_match``) apply only when creating or overwriting an
-    object (``WriteObjectSpec``). Metageneration preconditions
-    (``if_metageneration_match``, ``if_metageneration_not_match``) apply to both
-    creating/overwriting (``WriteObjectSpec``) and appending to an existing
-    appendable object (``AppendObjectSpec``). GCS only checks metageneration
-    preconditions when no ``write_handle`` is sent, so they cannot be combined
-    with ``write_handle``.
-
-    :type if_generation_match: Optional[int]
-    :param if_generation_match: (Optional) Makes the operation conditional on
-        whether the object's current generation matches the given value. Setting
-        to ``0`` makes the operation succeed only if there are no live versions
-        of the object.
-
-    :type if_generation_not_match: Optional[int]
-    :param if_generation_not_match: (Optional) Makes the operation conditional
-        on whether the object's current generation does not match the given
-        value. If no live object exists, the precondition fails.
-
-    :type if_metageneration_match: Optional[int]
-    :param if_metageneration_match: (Optional) Makes the operation conditional
-        on whether the object's current metageneration matches the given value.
-
-    :type if_metageneration_not_match: Optional[int]
-    :param if_metageneration_not_match: (Optional) Makes the operation
-        conditional on whether the object's current metageneration does not
-        match the given value.
-    """
-
-    if_generation_match: Optional[int] = None
-    if_generation_not_match: Optional[int] = None
-    if_metageneration_match: Optional[int] = None
-    if_metageneration_not_match: Optional[int] = None
-
-
 class AsyncAppendableObjectWriter:
     """Class for appending data to a GCS Appendable Object asynchronously."""
 
@@ -154,7 +112,6 @@ class AsyncAppendableObjectWriter:
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
         storage_class: Optional[str] = None,
-        preconditions: Optional[Preconditions] = None,
     ):
         """
         Class for appending data to a GCS Appendable Object.
@@ -208,8 +165,7 @@ class AsyncAppendableObjectWriter:
             object doesn't exist in the bucket (useful for not accidentally
             overwriting existing objects).
 
-            Warning: If `None` and no generation precondition is set in
-            `preconditions`, a new object is created. If an object with the
+            Warning: If `None`, a new object is created. If an object with the
             same name already exists, it will be overwritten the moment
             `writer.open()` is called.
 
@@ -228,66 +184,14 @@ class AsyncAppendableObjectWriter:
         :param storage_class: (Optional) Storage class of the object bytes.
             If specified, it overrides the bucket's `storage_class`. If not, object storage class
             will be the same as bucket's storage_class.
-
-        :type preconditions: Optional[:class:`Preconditions`]
-        :param preconditions: (Optional) Preconditions for the write operation.
-            Generation preconditions (``if_generation_match``,
-            ``if_generation_not_match``) require ``generation`` to be ``None``.
-            Metageneration preconditions (``if_metageneration_match``,
-            ``if_metageneration_not_match``) apply to the existing object: the
-            one being overwritten, or the one being appended to when
-            ``generation > 0``. They cannot be combined with ``write_handle``,
-            because GCS only checks them when ``write_handle`` is empty. A
-            mismatch raises :class:`google.api_core.exceptions.FailedPrecondition`
-            from ``open()``. Preconditions are not re-sent when the writer
-            reconnects to a generation it created.
-
-        :raises TypeError: If ``preconditions`` is not a :class:`Preconditions`
-            instance.
-        :raises ValueError: If ``generation`` is set together with a generation
-            precondition, or ``write_handle`` together with a metageneration
-            precondition, in ``preconditions``.
         """
         _utils.raise_if_no_fast_crc32c()
-        if preconditions is not None and not isinstance(preconditions, Preconditions):
-            raise TypeError("preconditions must be an instance of Preconditions")
-        if (
-            generation is not None
-            and preconditions is not None
-            and (
-                preconditions.if_generation_match is not None
-                or preconditions.if_generation_not_match is not None
-            )
-        ):
-            raise ValueError(
-                "if_generation_match/if_generation_not_match require generation=None; "
-                "generation=0 already means if_generation_match=0 and generation > 0 "
-                "appends to an existing object. To overwrite using a fetched Blob, "
-                "pass generation=None to from_blob."
-            )
-        if (
-            write_handle
-            and preconditions is not None
-            and (
-                preconditions.if_metageneration_match is not None
-                or preconditions.if_metageneration_not_match is not None
-            )
-        ):
-            raise ValueError(
-                "if_metageneration_match/if_metageneration_not_match cannot be "
-                "combined with write_handle: GCS only checks metageneration "
-                "preconditions when write_handle is empty."
-            )
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
         self.write_handle = write_handle
         self.generation = generation
         self.storage_class = storage_class
-        self.preconditions = preconditions
-        # Set once this writer creates a new generation; `preconditions` then no
-        # longer apply to the object being reconnected to.
-        self._created_generation = False
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -316,20 +220,6 @@ class AsyncAppendableObjectWriter:
         self._flush_count = 0
         self.blob: Optional[Blob] = None
 
-    def _trace_span(
-        self,
-        name: str,
-        attributes: Optional[Dict[str, Union[str, int]]] = None,
-    ):
-        """Creates a T2 OpenTelemetry span only for top-level public API calls."""
-        return _utils.create_top_level_trace_span(
-            self,
-            self.client,
-            self.bucket_name,
-            name,
-            attributes=attributes,
-        )
-
     @classmethod
     def from_blob(
         cls,
@@ -337,8 +227,6 @@ class AsyncAppendableObjectWriter:
         blob: Blob,
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
-        preconditions: Optional[Preconditions] = None,
-        generation=_marker,
     ) -> "AsyncAppendableObjectWriter":
         """Creates an AsyncAppendableObjectWriter from an existing Blob object.
 
@@ -371,36 +259,17 @@ class AsyncAppendableObjectWriter:
         :param writer_options: (Optional) Configuration settings for the underlying
             appendable writer.
 
-        :type preconditions: Optional[:class:`Preconditions`]
-        :param preconditions: (Optional) Preconditions for the write operation.
-            Generation preconditions require ``generation`` to be ``None``.
-            Warning: a Blob fetched from GCS has ``blob.generation`` set, so
-            unless ``generation=None`` is passed the writer appends to that
-            generation, including when only metageneration preconditions are
-            given.
-
-        :type generation: Optional[int]
-        :param generation: (Optional) Overrides ``blob.generation``, which is
-            used by default. Pass ``None`` to overwrite the object using a
-            fetched Blob, for example with
-            ``Preconditions(if_generation_match=blob.generation)``.
-
         :rtype: :class:`AsyncAppendableObjectWriter`
         :returns: An initialized writer instance.
-        :raises ValueError: If ``generation`` (``blob.generation`` by default)
-            is set together with a generation precondition, or
-            ``write_handle`` together with a metageneration precondition, in
-            ``preconditions``.
         """
         instance = cls(
             client=client,
             bucket_name=blob.bucket.name,
             object_name=blob.name,
-            generation=blob.generation if generation is _marker else generation,
+            generation=blob.generation,
             write_handle=write_handle,
             writer_options=writer_options,
             storage_class=blob.storage_class,
-            preconditions=preconditions,
         )
         instance.blob = blob
         return instance
@@ -417,15 +286,14 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before state_lookup().")
 
-        async with self._trace_span("Storage.AsyncAppendableObjectWriter.stateLookup"):
-            await self.write_obj_stream.send(
-                _storage_v2.BidiWriteObjectRequest(
-                    state_lookup=True,
-                )
+        await self.write_obj_stream.send(
+            _storage_v2.BidiWriteObjectRequest(
+                state_lookup=True,
             )
-            response = await self.write_obj_stream.recv()
-            self.persisted_size = response.persisted_size
-            return self.persisted_size
+        )
+        response = await self.write_obj_stream.recv()
+        self.persisted_size = response.persisted_size
+        return self.persisted_size
 
     def _on_open_error(self, exc):
         """Extracts routing token and write handle on redirect error during open."""
@@ -436,9 +304,6 @@ class AsyncAppendableObjectWriter:
             if redirect_proto.write_handle:
                 self.write_handle = redirect_proto.write_handle
             if redirect_proto.generation:
-                if not self.generation:
-                    # The redirected create already produced this generation.
-                    self._created_generation = True
                 self.generation = redirect_proto.generation
 
     def _merge_retry_policy(
@@ -473,73 +338,61 @@ class AsyncAppendableObjectWriter:
         """Opens the underlying bidi-gRPC stream.
 
         :raises ValueError: If the stream is already open.
-        :raises google.api_core.exceptions.FailedPrecondition: If a precondition
-            in ``preconditions`` (or ``generation=0``) is not met.
 
         """
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
-        async with self._trace_span("Storage.AsyncAppendableObjectWriter.open"):
-            retry_policy = self._merge_retry_policy(retry_policy)
+        retry_policy = self._merge_retry_policy(retry_policy)
 
-            async def _do_open():
-                current_metadata = list(metadata) if metadata else []
-                creating = not self.generation
+        async def _do_open():
+            current_metadata = list(metadata) if metadata else []
 
-                # Cleanup stream from previous failed attempt, if any.
-                if self.write_obj_stream:
-                    if self.write_obj_stream.is_stream_open:
-                        try:
-                            await self.write_obj_stream.close()
-                        except Exception as e:
-                            logger.warning(
-                                f"Error closing previous write stream during open retry. Got exception: {e}"
-                            )
-                    self.write_obj_stream = None
-                    self._is_stream_open = False
-
-                self.write_obj_stream = _AsyncWriteObjectStream(
-                    client=self.client.grpc_client,
-                    bucket_name=self.bucket_name,
-                    object_name=self.object_name,
-                    blob=self.blob,
-                    generation_number=self.generation,
-                    write_handle=self.write_handle,
-                    routing_token=self._routing_token,
-                    storage_class=self.storage_class,
-                    preconditions=(
-                        None if self._created_generation else self.preconditions
-                    ),
-                )
-
-                if self._routing_token:
-                    current_metadata.append(
-                        (
-                            "x-goog-request-params",
-                            f"routing_token={self._routing_token}",
+            # Cleanup stream from previous failed attempt, if any.
+            if self.write_obj_stream:
+                if self.write_obj_stream.is_stream_open:
+                    try:
+                        await self.write_obj_stream.close()
+                    except Exception as e:
+                        logger.warning(
+                            f"Error closing previous write stream during open retry. Got exception: {e}"
                         )
-                    )
+                self.write_obj_stream = None
+                self._is_stream_open = False
 
-                await self.write_obj_stream.open(
-                    metadata=current_metadata if current_metadata else None
+            self.write_obj_stream = _AsyncWriteObjectStream(
+                client=self.client.grpc_client,
+                bucket_name=self.bucket_name,
+                object_name=self.object_name,
+                blob=self.blob,
+                generation_number=self.generation,
+                write_handle=self.write_handle,
+                routing_token=self._routing_token,
+                storage_class=self.storage_class,
+            )
+
+            if self._routing_token:
+                current_metadata.append(
+                    ("x-goog-request-params", f"routing_token={self._routing_token}")
                 )
 
-                if self.write_obj_stream.generation_number:
-                    if creating:
-                        self._created_generation = True
-                    self.generation = self.write_obj_stream.generation_number
-                if self.write_obj_stream.write_handle:
-                    self.write_handle = self.write_obj_stream.write_handle
-                if self.write_obj_stream.persisted_size is not None:
-                    self.persisted_size = self.write_obj_stream.persisted_size
-                    # set offset while opening
-                    self.offset = self.persisted_size
+            await self.write_obj_stream.open(
+                metadata=current_metadata if current_metadata else None
+            )
 
-                self._is_stream_open = True
-                self._routing_token = None
+            if self.write_obj_stream.generation_number:
+                self.generation = self.write_obj_stream.generation_number
+            if self.write_obj_stream.write_handle:
+                self.write_handle = self.write_obj_stream.write_handle
+            if self.write_obj_stream.persisted_size is not None:
+                self.persisted_size = self.write_obj_stream.persisted_size
+                # set offset while opening
+                self.offset = self.persisted_size
 
-            await retry_policy(_do_open)()
+            self._is_stream_open = True
+            self._routing_token = None
+
+        await retry_policy(_do_open)()
 
     async def append(
         self,
@@ -578,106 +431,100 @@ class AsyncAppendableObjectWriter:
             logger.debug("No data provided to append; returning without action.")
             return
 
-        async with self._trace_span(
-            "Storage.AsyncAppendableObjectWriter.append",
-            attributes={"gcp.storage.payload.size_bytes": len(data)},
+        if retry_policy is None:
+            retry_policy = AsyncRetry(predicate=_is_write_retryable)
+
+        strategy = _WriteResumptionStrategy()
+        buffer = io.BytesIO(data)
+        attempt_count = 0
+
+        def send_and_recv_generator(
+            requests: List[BidiWriteObjectRequest],
+            state: Dict[str, _WriteState],
+            metadata: Optional[List[Tuple[str, str]]] = None,
         ):
-            if retry_policy is None:
-                retry_policy = AsyncRetry(predicate=_is_write_retryable)
+            async def generator():
+                nonlocal attempt_count
+                nonlocal requests
+                attempt_count += 1
+                resp = None
+                write_state = state["write_state"]
+                # If this is a retry or redirect, we must re-open the stream
+                if attempt_count > 1 or write_state.routing_token:
+                    logger.info(
+                        f"Re-opening the stream with attempt_count: {attempt_count}"
+                    )
 
-            strategy = _WriteResumptionStrategy()
-            buffer = io.BytesIO(data)
-            attempt_count = 0
-
-            def send_and_recv_generator(
-                requests: List[BidiWriteObjectRequest],
-                state: Dict[str, _WriteState],
-                metadata: Optional[List[Tuple[str, str]]] = None,
-            ):
-                async def generator():
-                    nonlocal attempt_count
-                    nonlocal requests
-                    attempt_count += 1
-                    resp = None
-                    write_state = state["write_state"]
-                    # If this is a retry or redirect, we must re-open the stream
-                    if attempt_count > 1 or write_state.routing_token:
-                        logger.info(
-                            f"Re-opening the stream with attempt_count: {attempt_count}"
-                        )
-
-                        current_metadata = list(metadata) if metadata else []
-                        if write_state.routing_token:
-                            current_metadata.append(
-                                (
-                                    "x-goog-request-params",
-                                    f"routing_token={write_state.routing_token}",
-                                )
+                    current_metadata = list(metadata) if metadata else []
+                    if write_state.routing_token:
+                        current_metadata.append(
+                            (
+                                "x-goog-request-params",
+                                f"routing_token={write_state.routing_token}",
                             )
-                            self._routing_token = write_state.routing_token
+                        )
+                        self._routing_token = write_state.routing_token
 
-                        self._is_stream_open = False
-                        await self.open(metadata=current_metadata)
+                    self._is_stream_open = False
+                    await self.open(metadata=current_metadata)
 
-                        write_state.persisted_size = self.persisted_size
-                        write_state.write_handle = self.write_handle
-                        write_state.routing_token = None
+                    write_state.persisted_size = self.persisted_size
+                    write_state.write_handle = self.write_handle
+                    write_state.routing_token = None
 
-                        write_state.user_buffer.seek(write_state.persisted_size)
-                        write_state.bytes_sent = write_state.persisted_size
-                        write_state.bytes_since_last_flush = 0
-                        self.bytes_appended_since_last_flush = 0
+                    write_state.user_buffer.seek(write_state.persisted_size)
+                    write_state.bytes_sent = write_state.persisted_size
+                    write_state.bytes_since_last_flush = 0
+                    self.bytes_appended_since_last_flush = 0
 
-                        requests = strategy.generate_requests(state)
+                    requests = strategy.generate_requests(state)
 
-                    for chunk_req in requests:
-                        await self.write_obj_stream.send(chunk_req)
-                        if chunk_req.flush:
-                            self._flush_count += 1
+                for chunk_req in requests:
+                    await self.write_obj_stream.send(chunk_req)
+                    if chunk_req.flush:
+                        self._flush_count += 1
 
-                        resp = None
-                        if chunk_req.state_lookup:
-                            # TODO: if there's error, it'll raise error
-                            # and will be handled by `recover_state_on_failure`
-                            resp = await self.write_obj_stream.recv()
+                    resp = None
+                    if chunk_req.state_lookup:
+                        # TODO: if there's error, it'll raise error
+                        # and will be handled by `recover_state_on_failure`
+                        resp = await self.write_obj_stream.recv()
 
-                        if resp:
-                            if resp.persisted_size is not None:
-                                self.persisted_size = resp.persisted_size
-                                state[
-                                    "write_state"
-                                ].persisted_size = resp.persisted_size
-                                self.offset = self.persisted_size
-                            if resp.write_handle:
-                                self.write_handle = resp.write_handle
-                                state["write_state"].write_handle = resp.write_handle
+                    if resp:
+                        if resp.persisted_size is not None:
+                            self.persisted_size = resp.persisted_size
+                            state["write_state"].persisted_size = resp.persisted_size
+                            self.offset = self.persisted_size
+                        if resp.write_handle:
+                            self.write_handle = resp.write_handle
+                            state["write_state"].write_handle = resp.write_handle
 
-                        yield resp
+                    yield resp
 
-                return generator()
+            return generator()
 
-            # State initialization
-            write_state = _WriteState(
-                _MAX_CHUNK_SIZE_BYTES,
-                buffer,
-                self.flush_interval,
-                enable_checksum=enable_checksum,
-            )
-            write_state.write_handle = self.write_handle
-            write_state.persisted_size = self.persisted_size
-            # offset is set during `open()` call.
-            write_state.bytes_sent = self.offset or 0
-            write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
+        # State initialization
+        write_state = _WriteState(
+            _MAX_CHUNK_SIZE_BYTES,
+            buffer,
+            self.flush_interval,
+            enable_checksum=enable_checksum,
+        )
+        write_state.write_handle = self.write_handle
+        write_state.persisted_size = self.persisted_size
+        # offset is set during `open()` call.
+        write_state.bytes_sent = self.offset or 0
+        write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
 
-            retry_manager = _BidiStreamRetryManager(
-                _WriteResumptionStrategy(),
-                lambda r, s: send_and_recv_generator(r, s, metadata),
-            )
-            await retry_manager.execute({"write_state": write_state}, retry_policy)
+        retry_manager = _BidiStreamRetryManager(
+            _WriteResumptionStrategy(),
+            lambda r, s: send_and_recv_generator(r, s, metadata),
+        )
+        await retry_manager.execute({"write_state": write_state}, retry_policy)
 
-            # Sync local markers
-            self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
-            self.offset = write_state.bytes_sent
+        # Sync local markers
+        self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
+        self.offset = write_state.bytes_sent
 
     async def simple_flush(self) -> None:
         """Flushes the data to the server.
@@ -691,13 +538,12 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before simple_flush().")
 
-        async with self._trace_span("Storage.AsyncAppendableObjectWriter.simpleFlush"):
-            await self.write_obj_stream.send(
-                _storage_v2.BidiWriteObjectRequest(
-                    flush=True,
-                )
+        await self.write_obj_stream.send(
+            _storage_v2.BidiWriteObjectRequest(
+                flush=True,
             )
-            self.bytes_appended_since_last_flush = 0
+        )
+        self.bytes_appended_since_last_flush = 0
 
     async def flush(self) -> int:
         """Flushes the data to the server.
@@ -711,18 +557,17 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before flush().")
 
-        async with self._trace_span("Storage.AsyncAppendableObjectWriter.flush"):
-            await self.write_obj_stream.send(
-                _storage_v2.BidiWriteObjectRequest(
-                    flush=True,
-                    state_lookup=True,
-                )
+        await self.write_obj_stream.send(
+            _storage_v2.BidiWriteObjectRequest(
+                flush=True,
+                state_lookup=True,
             )
-            response = await self.write_obj_stream.recv()
-            self.persisted_size = response.persisted_size
-            self.offset = self.persisted_size
-            self.bytes_appended_since_last_flush = 0
-            return self.persisted_size
+        )
+        response = await self.write_obj_stream.recv()
+        self.persisted_size = response.persisted_size
+        self.offset = self.persisted_size
+        self.bytes_appended_since_last_flush = 0
+        return self.persisted_size
 
     async def close(
         self,
@@ -775,44 +620,43 @@ class AsyncAppendableObjectWriter:
                 "full_object_checksum can only be provided when finalize_on_close is True."
             )
 
-        async with self._trace_span("Storage.AsyncAppendableObjectWriter.close"):
-            if finalize_on_close:
-                return await self.finalize(
-                    full_object_checksum=full_object_checksum,
-                    retry_policy=retry_policy,
+        if finalize_on_close:
+            return await self.finalize(
+                full_object_checksum=full_object_checksum,
+                retry_policy=retry_policy,
+            )
+
+        retry_policy = self._merge_retry_policy(retry_policy)
+
+        attempt_count = 0
+        expected_offset = self.offset
+
+        async def _do_close():
+            nonlocal attempt_count
+            attempt_count += 1
+
+            if attempt_count > 1:
+                logger.info(
+                    f"Re-opening the stream for close retry attempt: {attempt_count}"
                 )
-
-            retry_policy = self._merge_retry_policy(retry_policy)
-
-            attempt_count = 0
-            expected_offset = self.offset
-
-            async def _do_close():
-                nonlocal attempt_count
-                attempt_count += 1
-
-                if attempt_count > 1:
-                    logger.info(
-                        f"Re-opening the stream for close retry attempt: {attempt_count}"
-                    )
-                    self._is_stream_open = False
-                    await self.open()
-                    if (
-                        self.offset is not None
-                        and expected_offset is not None
-                        and self.offset != expected_offset
-                    ):
-                        raise exceptions.InternalServerError(
-                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
-                        )
-
-                await self.write_obj_stream.close()
-                return self.persisted_size
-
-            try:
-                return await retry_policy(_do_close)()
-            finally:
                 self._is_stream_open = False
+                await self.open()
+                if (
+                    self.offset is not None
+                    and expected_offset is not None
+                    and self.offset != expected_offset
+                ):
+                    raise exceptions.InternalServerError(
+                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                    )
+
+            await self.write_obj_stream.close()
+            return self.persisted_size
+
+        try:
+            return await retry_policy(_do_close)()
+        finally:
+            self._is_stream_open = False
 
     async def finalize(
         self,
@@ -874,49 +718,48 @@ class AsyncAppendableObjectWriter:
                 ),
             )
 
-        async with self._trace_span("Storage.AsyncAppendableObjectWriter.finalize"):
-            retry_policy = self._merge_retry_policy(retry_policy)
+        retry_policy = self._merge_retry_policy(retry_policy)
 
-            attempt_count = 0
-            expected_offset = self.offset
+        attempt_count = 0
+        expected_offset = self.offset
 
-            async def _do_finalize():
-                nonlocal attempt_count
-                attempt_count += 1
+        async def _do_finalize():
+            nonlocal attempt_count
+            attempt_count += 1
 
-                if attempt_count > 1:
-                    logger.info(
-                        f"Re-opening the stream for finalize retry attempt: {attempt_count}"
-                    )
-                    self._is_stream_open = False
-                    await self.open()
-                    if (
-                        self.offset is not None
-                        and expected_offset is not None
-                        and self.offset != expected_offset
-                    ):
-                        raise exceptions.InternalServerError(
-                            f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
-                        )
-
-                await self.write_obj_stream.send(finalize_req)
-                response = await self.write_obj_stream.recv()
-                self.object_resource = response.resource
-                self.persisted_size = self.object_resource.size
-                return self.object_resource
-
-            try:
-                return await retry_policy(_do_finalize)()
-            finally:
-                if self.write_obj_stream:
-                    try:
-                        await self.write_obj_stream.close()
-                    except Exception as e:
-                        logger.debug(
-                            f"Stream close during finalize cleanup resulted in: {e}"
-                        )
+            if attempt_count > 1:
+                logger.info(
+                    f"Re-opening the stream for finalize retry attempt: {attempt_count}"
+                )
                 self._is_stream_open = False
-                self.offset = None
+                await self.open()
+                if (
+                    self.offset is not None
+                    and expected_offset is not None
+                    and self.offset != expected_offset
+                ):
+                    raise exceptions.InternalServerError(
+                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                    )
+
+            await self.write_obj_stream.send(finalize_req)
+            response = await self.write_obj_stream.recv()
+            self.object_resource = response.resource
+            self.persisted_size = self.object_resource.size
+            return self.object_resource
+
+        try:
+            return await retry_policy(_do_finalize)()
+        finally:
+            if self.write_obj_stream:
+                try:
+                    await self.write_obj_stream.close()
+                except Exception as e:
+                    logger.debug(
+                        f"Stream close during finalize cleanup resulted in: {e}"
+                    )
+            self._is_stream_open = False
+            self.offset = None
 
     @property
     def is_stream_open(self) -> bool:
@@ -949,8 +792,5 @@ class AsyncAppendableObjectWriter:
         :param file_obj: A file handle opened in binary mode for reading.
 
         """
-        async with self._trace_span(
-            "Storage.AsyncAppendableObjectWriter.appendFromFile"
-        ):
-            while block := file_obj.read(block_size):
-                await self.append(block)
+        while block := file_obj.read(block_size):
+            await self.append(block)

@@ -72,6 +72,115 @@ class TestHelpersExtra(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(ValueError):
             await MUT._retry(func, retry_count=1, delay=0.01)
 
+    async def test_retry_with_all_retryable_internal_error_messages(self):
+        from unittest import mock
+
+        from google.api_core.exceptions import InternalServerError
+
+        from google.cloud.spanner_v1._helpers import _is_retryable_internal_error
+
+        retryable_messages = [
+            "Received unexpected EOS on DATA frame from server",
+            "RST_STREAM",
+            "stream terminated by RST_STREAM",
+            "Received RST_STREAM with error code 2",
+            "HTTP/2 error code: INTERNAL_ERROR",
+            "Connection closed with unknown cause",
+            "Authentication backend internal server error. Please retry",
+            "Authentication backend internal server error. Please retry.",
+        ]
+        errors = [
+            InternalServerError(error_message) for error_message in retryable_messages
+        ]
+        call_count = 0
+
+        async def func():
+            nonlocal call_count
+            call_count += 1
+            if call_count <= len(errors):
+                raise errors[call_count - 1]
+            return "done"
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep",
+            new_callable=mock.AsyncMock,
+        ) as sleep_mock:
+            result = await MUT._retry(
+                func,
+                retry_count=len(errors),
+                allowed_exceptions={InternalServerError: _is_retryable_internal_error},
+                delay=2,
+            )
+
+        self.assertEqual(result, "done")
+        self.assertEqual(call_count, len(errors) + 1)
+        self.assertEqual(sleep_mock.call_count, len(errors))
+
+    async def test_retry_with_non_retryable_internal_error(self):
+        from unittest import mock
+
+        from google.api_core.exceptions import InternalServerError
+
+        from google.cloud.spanner_v1._helpers import _is_retryable_internal_error
+
+        call_count = 0
+
+        async def func():
+            nonlocal call_count
+            call_count += 1
+            raise InternalServerError("non-retryable internal error")
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep",
+            new_callable=mock.AsyncMock,
+        ) as sleep_mock:
+            with self.assertRaisesRegex(
+                InternalServerError, "non-retryable internal error"
+            ):
+                await MUT._retry(
+                    func,
+                    allowed_exceptions={
+                        InternalServerError: _is_retryable_internal_error
+                    },
+                    delay=2,
+                )
+
+        self.assertEqual(call_count, 1)
+        sleep_mock.assert_not_called()
+
+    async def test_retry_internal_error_exhausted(self):
+        from unittest import mock
+
+        from google.api_core.exceptions import InternalServerError
+
+        from google.cloud.spanner_v1._helpers import _is_retryable_internal_error
+
+        call_count = 0
+
+        async def func():
+            nonlocal call_count
+            call_count += 1
+            raise InternalServerError("HTTP/2 error code: INTERNAL_ERROR")
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep",
+            new_callable=mock.AsyncMock,
+        ) as sleep_mock:
+            with self.assertRaisesRegex(
+                InternalServerError, "HTTP/2 error code: INTERNAL_ERROR"
+            ):
+                await MUT._retry(
+                    func,
+                    retry_count=2,
+                    allowed_exceptions={
+                        InternalServerError: _is_retryable_internal_error
+                    },
+                    delay=2,
+                )
+
+        self.assertEqual(call_count, 3)
+        self.assertEqual(sleep_mock.call_count, 2)
+
     async def test_retry_before_next_retry_callback(self):
         # coverage for line 62-65
         count = 0
