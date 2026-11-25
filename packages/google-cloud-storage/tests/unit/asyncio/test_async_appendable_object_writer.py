@@ -870,3 +870,56 @@ class TestAsyncAppendableObjectWriter:
         assert writer.write_handle.handle == b"h2"
         writer.open.assert_awaited_once()
         assert not writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_append_redirect_reopens_with_new_handle_and_one_routing_header(
+        self, mock_appendable_writer
+    ):
+        """Verify a redirect during append() reopens with the redirect's handle and token."""
+        from google.api_core.retry_async import AsyncRetry
+
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        mock_stream = mock_appendable_writer["mock_stream"]
+        mock_stream_cls = mock_appendable_writer["mock_stream_cls"]
+        await writer.open()
+
+        redirected_handle = storage_type.BidiWriteHandle(handle=b"redirected-handle")
+        redirect = exceptions.Aborted(
+            "redirect",
+            errors=[
+                BidiWriteObjectRedirectedError(
+                    routing_token="redirect-token",
+                    write_handle=redirected_handle,
+                )
+            ],
+        )
+        sends = []
+
+        async def send(request):
+            sends.append(request)
+            if len(sends) == 1:
+                raise redirect
+
+        mock_stream.send.side_effect = send
+        # The reopened stream doesn't return a handle of its own.
+        mock_stream.write_handle = None
+        fast_retry = AsyncRetry(
+            predicate=_is_write_retryable, initial=0.0, maximum=0.0, multiplier=1.0
+        )
+
+        await writer.append(
+            b"data", retry_policy=fast_retry, metadata=[("x-custom-header", "1")]
+        )
+
+        reopen_kwargs = mock_stream_cls.call_args.kwargs
+        assert reopen_kwargs["write_handle"] == redirected_handle
+        assert reopen_kwargs["routing_token"] == "redirect-token"
+        reopen_metadata = mock_stream.open.call_args.kwargs["metadata"]
+        assert (
+            reopen_metadata.count(
+                ("x-goog-request-params", "routing_token=redirect-token")
+            )
+            == 1
+        )
+        assert ("x-custom-header", "1") in reopen_metadata
+        assert writer.write_handle == redirected_handle
