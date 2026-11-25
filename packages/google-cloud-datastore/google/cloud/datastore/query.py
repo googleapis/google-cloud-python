@@ -47,9 +47,9 @@ def _validate_key_filter_value(operator, value):
         if not isinstance(value, list) or not all(
             isinstance(item, Key) for item in value
         ):
-            raise ValueError('Invalid key: "%s"' % value)
+            raise ValueError(f'Invalid key: "{value}"')
     elif not isinstance(value, Key):
-        raise ValueError('Invalid key: "%s"' % value)
+        raise ValueError(f'Invalid key: "{value}"')
 
 
 class BaseFilter(ABC):
