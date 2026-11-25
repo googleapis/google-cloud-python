@@ -150,6 +150,25 @@ def _replace_adapter(session, prefix, adapter, previous_adapter=None):
     )
 
 
+class _MtlsAdapterState(object):
+    """Session-scoped mTLS adapter state shared across shallow copies of Request."""
+
+    def __init__(self, adapter=None, generation_id=None, unavailable=False):
+        self.lock = threading.Lock()
+        self.adapter = adapter
+        self.generation_id = generation_id
+        self.unavailable = unavailable
+
+    def __deepcopy__(self, memo):
+        copied = _MtlsAdapterState(
+            generation_id=self.generation_id,
+            unavailable=self.unavailable,
+        )
+        memo[id(self)] = copied
+        copied.adapter = copy.deepcopy(self.adapter, memo)
+        return copied
+
+
 class Request(transport.Request):
     """Requests request adapter.
 
@@ -178,9 +197,6 @@ class Request(transport.Request):
     """
 
     _cert_manager = None
-    _mtls_adapter = None
-    _adapter_generation_id = None
-    _mtls_unavailable = False
 
     def __init__(
         self,
@@ -192,41 +208,56 @@ class Request(transport.Request):
 
         self.session = session
         self._cert_manager = cert_manager
-        self._mtls_adapter = None
-        self._adapter_generation_id = None
-        self._mtls_unavailable = False
-        self._mtls_lock = threading.Lock()
+        self._mtls_state = _MtlsAdapterState()
+
+    @property
+    def _mtls_lock(self):
+        return self._mtls_state.lock
+
+    @property
+    def _mtls_adapter(self):
+        return self._mtls_state.adapter
+
+    @property
+    def _adapter_generation_id(self):
+        return self._mtls_state.generation_id
+
+    @property
+    def _mtls_unavailable(self):
+        return self._mtls_state.unavailable
 
     def __copy__(self):
         copied = object.__new__(type(self))
         copied.__dict__.update(self.__dict__)
-        copied._mtls_lock = threading.Lock()
         return copied
 
     def __deepcopy__(self, memo):
         copied = object.__new__(type(self))
         memo[id(self)] = copied
-        for key, value in self.__dict__.items():
-            if key == "_mtls_lock":
-                copied._mtls_lock = threading.Lock()
-            else:
+        with self._mtls_state.lock:
+            for key, value in self.__dict__.items():
                 setattr(copied, key, copy.deepcopy(value, memo))
         return copied
 
     def __getstate__(self):
         state = self.__dict__.copy()
-        state["_mtls_lock"] = None
         state["_cert_manager"] = None
-        state["_mtls_adapter"] = None
-        state["_adapter_generation_id"] = None
+        state["_mtls_state"] = None
+        state["_mtls_unavailable"] = self._mtls_state.unavailable
         return state
 
     def __setstate__(self, state):
+        unavailable = state.get("_mtls_unavailable", False)
         self.__dict__.update(state)
-        self._mtls_lock = threading.Lock()
+        for legacy_key in (
+            "_mtls_lock",
+            "_mtls_adapter",
+            "_adapter_generation_id",
+            "_mtls_unavailable",
+        ):
+            self.__dict__.pop(legacy_key, None)
         self._cert_manager = None
-        self._mtls_adapter = None
-        self._adapter_generation_id = None
+        self._mtls_state = _MtlsAdapterState(unavailable=unavailable)
 
     def __del__(self):
         try:
@@ -255,10 +286,11 @@ class Request(transport.Request):
         # slash prevents requests' startswith() matching from matching lookalike domains.
         parsed = urllib_parse.urlparse(url)
         prefix = f"{parsed.scheme}://{parsed.netloc.lower()}/"
-        with self._mtls_lock:
+        state = self._mtls_state
+        with state.lock:
             session_adapter = self.session.get_adapter(url if parsed.path else prefix)
             is_owned_adapter = (
-                self._mtls_adapter is not None and session_adapter is self._mtls_adapter
+                state.adapter is not None and session_adapter is state.adapter
             )
             # Never overwrite a caller-mounted custom adapter or a more specific
             # sub-path mount.
@@ -271,17 +303,14 @@ class Request(transport.Request):
             previous_adapter = None
             if self._cert_manager is not None:
                 if self._cert_manager.generation_id == 0:
-                    self._cert_manager.refresh()
+                    self._cert_manager.refresh(expected_generation=0)
                 cert, key, current_gen = self._cert_manager.get_credential_snapshot()
                 if current_gen == 0 or cert is None or key is None:
                     return
-                if (
-                    self._mtls_adapter is None
-                    or self._adapter_generation_id != current_gen
-                ):
-                    previous_adapter = self._mtls_adapter
+                if state.adapter is None or state.generation_id != current_gen:
+                    previous_adapter = state.adapter
                     pool_source = previous_adapter or session_adapter
-                    self._mtls_adapter = _MutualTlsAdapter(
+                    state.adapter = _MutualTlsAdapter(
                         cert,
                         key,
                         max_retries=pool_source.max_retries,
@@ -289,16 +318,16 @@ class Request(transport.Request):
                         pool_maxsize=pool_source._pool_maxsize,
                         pool_block=pool_source._pool_block,
                     )
-                    self._adapter_generation_id = current_gen
-            elif self._mtls_adapter is None:
-                if self._mtls_unavailable or not _mtls_helper.check_use_client_cert():
+                    state.generation_id = current_gen
+            elif state.adapter is None:
+                if state.unavailable or not _mtls_helper.check_use_client_cert():
                     return
                 has_cert, cert, key = _mtls_helper.get_client_cert_and_key()
                 if not has_cert:
-                    self._mtls_unavailable = True
+                    state.unavailable = True
                     return
 
-                self._mtls_adapter = _MutualTlsAdapter(
+                state.adapter = _MutualTlsAdapter(
                     cert,
                     key,
                     max_retries=session_adapter.max_retries,
@@ -307,11 +336,11 @@ class Request(transport.Request):
                     pool_block=session_adapter._pool_block,
                 )
 
-            if session_adapter is not self._mtls_adapter:
+            if session_adapter is not state.adapter:
                 _replace_adapter(
                     self.session,
                     prefix,
-                    self._mtls_adapter,
+                    state.adapter,
                     previous_adapter=previous_adapter,
                 )
 
