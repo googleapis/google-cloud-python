@@ -1209,3 +1209,15 @@ class TestIDTokenCredentials(object):
             ValueError, match="Universe Domain cannot be an empty string"
         ):
             credentials.with_universe_domain(empty_ud)
+
+    def test_from_service_account_info_does_not_inject_default_into_kwargs(self):
+        """Factory does not inject DEFAULT_UNIVERSE_DOMAIN when key is absent from info."""
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info.pop("universe_domain", None)
+
+        with mock.patch.object(
+            service_account.Credentials, "__init__", return_value=None
+        ) as mock_init:
+            service_account.Credentials.from_service_account_info(info)
+            _, kwargs = mock_init.call_args
+            assert "universe_domain" not in kwargs

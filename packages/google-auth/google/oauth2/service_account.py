@@ -239,12 +239,10 @@ class Credentials(
         Raises:
             ValueError: If the info is not in the expected format.
         """
-        # Respect an explicit universe_domain kwarg from the caller instead of
-        # letting a missing, null, or empty JSON value overwrite it.
-        if "universe_domain" not in kwargs:
-            kwargs["universe_domain"] = (
-                info.get("universe_domain") or credentials.DEFAULT_UNIVERSE_DOMAIN
-            )
+        # Respect an explicit universe_domain kwarg from the caller, otherwise
+        # only forward from info if present and non-empty.
+        if "universe_domain" not in kwargs and info.get("universe_domain"):
+            kwargs["universe_domain"] = info["universe_domain"]
         return cls(
             signer,
             service_account_email=info["client_email"],
@@ -717,12 +715,10 @@ class IDTokenCredentials(
         """
         kwargs.setdefault("service_account_email", info["client_email"])
         kwargs.setdefault("token_uri", info["token_uri"])
-        # Respect an explicit universe_domain kwarg from the caller instead of
-        # letting a missing, null, or empty JSON value overwrite it.
-        if "universe_domain" not in kwargs:
-            kwargs["universe_domain"] = (
-                info.get("universe_domain") or credentials.DEFAULT_UNIVERSE_DOMAIN
-            )
+        # Respect an explicit universe_domain kwarg from the caller, otherwise
+        # only forward from info if present and non-empty. Let cls() handle fallback.
+        if "universe_domain" not in kwargs and info.get("universe_domain"):
+            kwargs["universe_domain"] = info["universe_domain"]
         return cls(signer, **kwargs)
 
     @classmethod
