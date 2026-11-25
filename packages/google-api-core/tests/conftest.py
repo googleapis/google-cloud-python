@@ -20,6 +20,8 @@ from unittest import mock
 
 import pytest
 
+from google.api_core import universe
+
 
 @pytest.fixture(scope="session", autouse=True)
 def mock_mtls_env():
@@ -32,6 +34,12 @@ def mock_mtls_env():
         },
     ):
         yield
+
+
+@pytest.fixture(autouse=True)
+def clean_universe_env(monkeypatch):
+    """Autouse fixture to isolate unit tests from workstation GOOGLE_CLOUD_UNIVERSE_DOMAIN."""
+    monkeypatch.delenv(universe.UNIVERSE_DOMAIN_ENV, raising=False)
 
 
 @pytest.fixture
