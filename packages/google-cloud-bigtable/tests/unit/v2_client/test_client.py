@@ -424,6 +424,20 @@ def test_client__create_gapic_client_channel_w_endpoint_w_emulator_host():
             "bigtableadmin.tpc.test:443",
             "tpc.test",
         ),
+        (
+            {"universe_domain": "googleapis.com"},
+            None,
+            "tpc.test",
+            "bigtableadmin.googleapis.com:443",
+            "googleapis.com",
+        ),
+        (
+            None,
+            {"universe_domain": "googleapis.com"},
+            "tpc.test",
+            "bigtableadmin.googleapis.com:443",
+            "googleapis.com",
+        ),
         # explicit api_endpoint takes precedence over universe_domain within the same tier,
         # while admin_client_options takes precedence over client_options
         (

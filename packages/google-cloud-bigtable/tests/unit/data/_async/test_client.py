@@ -103,6 +103,19 @@ def mock_metrics_batch_write():
         yield
 
 
+class _StubCredentials(oauth2_credentials.Credentials):
+    """Non-anonymous credential stub with a read-only ``universe_domain``
+    property across all supported ``google-auth`` versions."""
+
+    def __init__(self, universe_domain: str = "googleapis.com"):
+        super().__init__("token")
+        self._test_universe_domain = universe_domain
+
+    @property
+    def universe_domain(self) -> str:
+        return self._test_universe_domain
+
+
 @CrossSync.convert_class(
     sync_name="TestBigtableDataClient",
     add_mapping_for_name="TestBigtableDataClient",
@@ -127,9 +140,7 @@ class TestBigtableDataClientAsync:
             warnings.filterwarnings("ignore", category=RuntimeWarning)
         else:
             # set some default values
-            kwargs["credentials"] = kwargs.get(
-                "credentials", oauth2_credentials.Credentials("token")
-            )
+            kwargs["credentials"] = kwargs.get("credentials", _StubCredentials())
             kwargs["project"] = kwargs.get("project", "project-id")
         if use_mtls is not None:
             env_mask["GOOGLE_API_USE_MTLS_ENDPOINT"] = use_mtls
@@ -145,7 +156,7 @@ class TestBigtableDataClientAsync:
         )
 
         expected_project = "project-id"
-        expected_credentials = oauth2_credentials.Credentials("token")
+        expected_credentials = _StubCredentials()
         client = self._make_client(
             project="project-id",
             credentials=expected_credentials,
@@ -294,7 +305,7 @@ class TestBigtableDataClientAsync:
     ):
         import os
 
-        expected_credentials = oauth2_credentials.Credentials("token")
+        expected_credentials = _StubCredentials()
         expected_project = "custom_project"
         cert_source = mock.Mock()
         input_options = client_options.ClientOptions(
@@ -1314,8 +1325,7 @@ class TestBigtableDataClientAsync:
     @CrossSync.pytest
     async def test_credential_universe_domain_matches_GDU(self):
         """Test with credentials"""
-        creds = AnonymousCredentials()
-        creds._universe_domain = "googleapis.com"
+        creds = _StubCredentials("googleapis.com")
         async with self._make_client(project="project_id", credentials=creds) as client:
             assert client.universe_domain == "googleapis.com"
 
@@ -1334,13 +1344,9 @@ class TestBigtableDataClientAsync:
         """Test that configured universe domain errors with mismatched universe
         domain credentials.
         """
-        creds = AnonymousCredentials()
-        universe_exists = hasattr(creds, "universe_domain")
-        if not universe_exists:
-            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds._universe_domain = "different-universe"
+        creds = _StubCredentials("different-universe")
         with pytest.raises(ValueError) as exc:
             self._make_client(
                 project="project_id",
@@ -1364,8 +1370,7 @@ class TestBigtableDataClientAsync:
         import os
 
         universe_domain = "custom-universe.test"
-        creds = oauth2_credentials.Credentials("token")
-        creds._universe_domain = universe_domain
+        creds = _StubCredentials(universe_domain)
         options = client_options.ClientOptions(universe_domain=universe_domain)
         async with self._make_client(
             project="project_id",
@@ -1422,15 +1427,13 @@ class TestBigtableDataClientAsync:
     async def test_metrics_exporter_disabled_with_custom_api_endpoint(self):
         """BigtableMetricsExporter should be disabled when a custom api_endpoint is set."""
         universe_domain = "custom-universe.test"
-        tpc_creds = oauth2_credentials.Credentials("token")
-        tpc_creds._universe_domain = universe_domain
         cases = [
             (
-                oauth2_credentials.Credentials("token"),
+                _StubCredentials(),
                 client_options.ClientOptions(api_endpoint="bigtable.custom.local:443"),
             ),
             (
-                tpc_creds,
+                _StubCredentials(universe_domain),
                 client_options.ClientOptions(
                     api_endpoint="bigtable.custom.local:443",
                     universe_domain=universe_domain,
@@ -1465,8 +1468,7 @@ class TestBigtableDataClientAsync:
         """
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
-        creds._universe_domain = universe_domain
+        creds = _StubCredentials(universe_domain)
         async with self._make_client(
             project="project_id",
             credentials=creds,
