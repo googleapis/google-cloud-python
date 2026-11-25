@@ -170,10 +170,7 @@ class Credentials(
                 later.
         """
         config_info = self.constructor_args()
-        config_info.update(
-            type=_EXTERNAL_ACCOUNT_AUTHORIZED_USER_JSON_TYPE,
-            universe_domain=self.universe_domain,
-        )
+        config_info.update(type=_EXTERNAL_ACCOUNT_AUTHORIZED_USER_JSON_TYPE)
         if config_info["expiry"]:
             config_info["expiry"] = config_info["expiry"].isoformat() + "Z"
 

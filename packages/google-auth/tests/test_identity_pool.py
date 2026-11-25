@@ -32,7 +32,6 @@ from google.auth import (
     metrics,
     transport,
 )
-from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
@@ -877,7 +876,6 @@ class TestCredentials(object):
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE_TEXT_URL,
             "workforce_pool_user_project": WORKFORCE_POOL_USER_PROJECT,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_file_credential_source(self):
@@ -892,7 +890,6 @@ class TestCredentials(object):
             "token_url": TOKEN_URL,
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE_TEXT_URL,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_url_credential_source(self):
@@ -907,7 +904,6 @@ class TestCredentials(object):
             "token_url": TOKEN_URL,
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE_JSON_URL,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_certificate_credential_source(self):
@@ -922,7 +918,6 @@ class TestCredentials(object):
             "token_url": TOKEN_URL,
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE_CERTIFICATE,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_non_default_certificate_credential_source(self):
@@ -937,7 +932,6 @@ class TestCredentials(object):
             "token_url": TOKEN_URL,
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE_CERTIFICATE_NOT_DEFAULT,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_default_token_url(self):
@@ -953,7 +947,6 @@ class TestCredentials(object):
             "subject_token_type": SUBJECT_TOKEN_TYPE,
             "token_url": TOKEN_URL,
             "credential_source": self.CREDENTIAL_SOURCE_TEXT_URL,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_default_token_url_with_universe_domain(self):

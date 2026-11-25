@@ -240,7 +240,6 @@ class Credentials(
             service_account_impersonation=config_info.pop(
                 "service_account_impersonation_options", None
             ),
-            universe_domain=self.universe_domain,
         )
         config_info.pop("scopes", None)
         config_info.pop("default_scopes", None)

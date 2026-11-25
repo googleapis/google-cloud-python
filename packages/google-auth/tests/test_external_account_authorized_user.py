@@ -406,7 +406,7 @@ class TestCredentials(object):
         assert info["token_info_url"] == TOKEN_INFO_URL
         assert info["client_id"] == CLIENT_ID
         assert info["client_secret"] == CLIENT_SECRET
-        assert info["universe_domain"] == DEFAULT_UNIVERSE_DOMAIN
+        assert "universe_domain" not in info
         assert "token" not in info
         assert "expiry" not in info
         assert "revoke_url" not in info
@@ -445,7 +445,7 @@ class TestCredentials(object):
         assert info["token_info_url"] == TOKEN_INFO_URL
         assert info["client_id"] == CLIENT_ID
         assert info["client_secret"] == CLIENT_SECRET
-        assert info["universe_domain"] == DEFAULT_UNIVERSE_DOMAIN
+        assert "universe_domain" not in info
         assert "token" not in info
         assert "expiry" not in info
         assert "revoke_url" not in info
@@ -652,6 +652,19 @@ class TestCredentials(object):
 
         assert omitted_creds.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert omitted_creds._is_regional_access_boundary_lookup_required() is False
+        assert "universe_domain" not in omitted_creds.info
+        assert (
+            external_account_authorized_user.Credentials.from_info(
+                omitted_creds.info
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
+        assert (
+            external_account_authorized_user.Credentials.from_info(
+                json.loads(omitted_creds.to_json())
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
         assert (
             omitted_creds.with_quota_project(
                 QUOTA_PROJECT_ID
@@ -665,3 +678,10 @@ class TestCredentials(object):
             explicit_info
         )
         assert explicit_creds._is_regional_access_boundary_lookup_required() is True
+        assert explicit_creds.info["universe_domain"] == DEFAULT_UNIVERSE_DOMAIN
+        assert (
+            external_account_authorized_user.Credentials.from_info(
+                explicit_creds.info
+            )._is_regional_access_boundary_lookup_required()
+            is True
+        )

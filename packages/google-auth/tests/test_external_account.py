@@ -561,7 +561,6 @@ class TestCredentials(object):
             "token_url": self.TOKEN_URL,
             "credential_source": self.CREDENTIAL_SOURCE.copy(),
             "workforce_pool_user_project": self.WORKFORCE_POOL_USER_PROJECT,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_full_options(self):
@@ -2487,6 +2486,13 @@ class TestCredentials(object):
 
         assert omitted_creds.universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert omitted_creds._is_regional_access_boundary_lookup_required() is False
+        assert "universe_domain" not in omitted_creds.info
+        assert (
+            CredentialsImpl.from_info(
+                omitted_creds.info, scopes=self.SCOPES
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
         assert (
             omitted_creds.with_scopes(
                 self.SCOPES
@@ -2502,6 +2508,13 @@ class TestCredentials(object):
         explicit_info["universe_domain"] = DEFAULT_UNIVERSE_DOMAIN
         explicit_creds = CredentialsImpl.from_info(explicit_info, scopes=self.SCOPES)
         assert explicit_creds._is_regional_access_boundary_lookup_required() is True
+        assert explicit_creds.info["universe_domain"] == DEFAULT_UNIVERSE_DOMAIN
+        assert (
+            CredentialsImpl.from_info(
+                explicit_creds.info, scopes=self.SCOPES
+            )._is_regional_access_boundary_lookup_required()
+            is True
+        )
         assert (
             explicit_creds._initialize_impersonated_credentials()._is_regional_access_boundary_lookup_required()
             is True

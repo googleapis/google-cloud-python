@@ -1223,7 +1223,6 @@ class TestCredentials(object):
             "token_url": TOKEN_URL,
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_token_info_url(self):
@@ -1284,7 +1283,6 @@ class TestCredentials(object):
             "subject_token_type": SUBJECT_TOKEN_TYPE,
             "token_url": TOKEN_URL,
             "credential_source": self.CREDENTIAL_SOURCE.copy(),
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_info_with_default_token_url_with_universe_domain(self):
