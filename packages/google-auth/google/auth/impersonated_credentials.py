@@ -30,6 +30,8 @@ import copy
 import http.client as http_client
 import json
 import logging
+import re
+import urllib.parse
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
@@ -62,6 +64,60 @@ _SOURCE_CREDENTIAL_SERVICE_ACCOUNT_TYPE = "service_account"
 _SOURCE_CREDENTIAL_EXTERNAL_ACCOUNT_AUTHORIZED_USER_TYPE = (
     "external_account_authorized_user"
 )
+
+_DNS_LABEL = r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+_IAM_HOST_PATTERN = re.compile(
+    rf"^(?:{_DNS_LABEL}[.-])?iamcredentials"
+    rf"(?:-{_DNS_LABEL}\.p|\.p|\.{_DNS_LABEL}\.rep(?:\.mtls)?|\.mtls)?"
+    rf"\.({_DNS_LABEL}(?:\.{_DNS_LABEL})+)$"
+)
+
+
+def _extract_universe_from_iam_host(hostname):
+    """Extracts the universe domain from a Google IAM Credentials hostname.
+
+    Recognizes standard global, regional (``<region>-iamcredentials.<u_d>`` or
+    ``<region>.iamcredentials.<u_d>``), REP
+    (``iamcredentials.<region>.rep[.mtls].<u_d>``), PSC
+    (``iamcredentials[-<ep>].p.<u_d>``), and mTLS
+    (``iamcredentials.mtls.<u_d>``) hostnames. Returns ``None`` for custom
+    proxy hostnames.
+    """
+    match = _IAM_HOST_PATTERN.fullmatch(hostname.lower())
+    return match.group(1) if match else None
+
+
+def _parse_impersonation_url(impersonation_url):
+    """Validates an impersonation URL and extracts ``(target_principal, hostname)``."""
+    error_msg = f"Cannot extract target principal from {impersonation_url}"
+    if (
+        not isinstance(impersonation_url, str)
+        or "#" in impersonation_url
+        or any(ch.isspace() or ord(ch) < 0x20 for ch in impersonation_url)
+    ):
+        raise exceptions.InvalidValue(error_msg)
+    try:
+        parsed = urllib.parse.urlsplit(impersonation_url)
+        hostname = (parsed.hostname or "").removesuffix(".")
+        _ = parsed.port
+    except ValueError as exc:
+        raise exceptions.InvalidValue(error_msg) from exc
+
+    start_index = parsed.path.rfind("/")
+    if (
+        parsed.scheme != "https"
+        or not hostname
+        or "@" in parsed.netloc
+        or not parsed.path.endswith(":generateAccessToken")
+        or start_index == -1
+    ):
+        raise exceptions.InvalidValue(error_msg)
+
+    target_principal = parsed.path[start_index + 1 : -len(":generateAccessToken")]
+    if not target_principal:
+        raise exceptions.InvalidValue(error_msg)
+
+    return target_principal, hostname
 
 
 def _make_iam_token_request(
@@ -511,7 +567,36 @@ class Credentials(
         """
 
         source_credentials_info = info.get("source_credentials")
+        impersonation_url = info.get("service_account_impersonation_url")
+        target_principal, url_host = _parse_impersonation_url(impersonation_url)
+        url_universe = _extract_universe_from_iam_host(url_host)
+
         universe_domain = info.get("universe_domain")
+        explicit_universe = (
+            universe_domain
+            if universe_domain is not None
+            else source_credentials_info.get("universe_domain")
+        )
+        if explicit_universe is not None:
+            _helpers.validate_universe_domain(explicit_universe)
+            if url_universe is not None:
+                _helpers.compare_universe_domains(
+                    explicit_universe.lower(), url_universe
+                )
+            elif (
+                explicit_universe.lower() != credentials.DEFAULT_UNIVERSE_DOMAIN
+                and _helpers.has_default_universe_host(f"https://{url_host}")
+            ):
+                raise exceptions.InvalidValue(
+                    f"Non-default universe domain ({explicit_universe}) cannot "
+                    f"use default-universe impersonation URL host ({url_host})."
+                )
+        elif (
+            url_universe is not None
+            and url_universe != credentials.DEFAULT_UNIVERSE_DOMAIN
+        ):
+            universe_domain = url_universe
+
         if (
             universe_domain is not None
             and source_credentials_info.get("universe_domain") is None
@@ -523,10 +608,12 @@ class Credentials(
 
         source_credentials_type = source_credentials_info.get("type")
         if source_credentials_type == _SOURCE_CREDENTIAL_AUTHORIZED_USER_TYPE:
-            from google.oauth2 import credentials
+            from google.oauth2 import credentials as oauth2_credentials
 
-            source_credentials = credentials.Credentials.from_authorized_user_info(
-                source_credentials_info
+            source_credentials = (
+                oauth2_credentials.Credentials.from_authorized_user_info(
+                    source_credentials_info
+                )
             )
         elif source_credentials_type == _SOURCE_CREDENTIAL_SERVICE_ACCOUNT_TYPE:
             from google.oauth2 import service_account
@@ -550,18 +637,23 @@ class Credentials(
                 )
             )
 
-        impersonation_url = info.get("service_account_impersonation_url")
-        start_index = impersonation_url.rfind("/")
-        end_index = impersonation_url.find(":generateAccessToken")
-        if start_index == -1 or end_index == -1 or start_index > end_index:
-            raise exceptions.InvalidValue(
-                "Cannot extract target principal from {}".format(impersonation_url)
-            )
-        target_principal = impersonation_url[start_index + 1 : end_index]
         delegates = info.get("delegates")
         quota_project_id = info.get("quota_project_id")
         scopes = scopes or info.get("scopes")
         trust_boundary = info.get("trust_boundary")
+
+        # Leave iam_endpoint_override unset for the exact standard default URL
+        # so mTLS endpoint selection via iam._IAM_ENDPOINT stays intact; keep
+        # the override for regional, custom-universe, and proxy URLs.
+        default_impersonation_url = (
+            "https://iamcredentials.{}/v1/projects/-/serviceAccounts/{}"
+            ":generateAccessToken"
+        ).format(credentials.DEFAULT_UNIVERSE_DOMAIN, target_principal)
+        iam_endpoint_override = (
+            None
+            if impersonation_url == default_impersonation_url
+            else impersonation_url
+        )
 
         return cls(
             source_credentials,
@@ -569,6 +661,7 @@ class Credentials(
             scopes,
             delegates,
             quota_project_id=quota_project_id,
+            iam_endpoint_override=iam_endpoint_override,
             trust_boundary=trust_boundary,
             universe_domain=universe_domain,
         )
