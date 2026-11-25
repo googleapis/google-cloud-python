@@ -110,3 +110,86 @@ class TestSigner(object):
         with pytest.raises(exceptions.TransportError):
             signer.sign("123")
         request.call_count == 3
+
+
+@pytest.mark.parametrize(
+    "universe_domain,override,action,expected_url",
+    [
+        pytest.param(
+            "googleapis.com",
+            None,
+            "generateAccessToken",
+            "https://iamcredentials.googleapis.com/v1/projects/-"
+            "/serviceAccounts/sa@example.com:generateAccessToken",
+            id="default_universe",
+        ),
+        pytest.param(
+            "example.com",
+            None,
+            "signBlob",
+            "https://iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/sa@example.com:signBlob",
+            id="custom_universe",
+        ),
+        pytest.param(
+            "example.com",
+            "https://us-east1-iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/sa@example.com:generateAccessToken?alt=json",
+            "generateIdToken",
+            "https://us-east1-iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/sa@example.com:generateIdToken?alt=json",
+            id="override_rewrites_action_and_preserves_query",
+        ),
+        pytest.param(
+            "googleapis.com",
+            "https://proxy.example.com/iam/",
+            "signBlob",
+            "https://proxy.example.com/iam/v1/projects/-"
+            "/serviceAccounts/sa@example.com:signBlob",
+            id="override_proxy_path_prefix",
+        ),
+        pytest.param(
+            "googleapis.com",
+            "https://us-east1-iamcredentials.googleapis.com",
+            "signBlob",
+            "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+            "/serviceAccounts/sa@example.com:signBlob",
+            id="override_origin_only",
+        ),
+    ],
+)
+def test_build_iam_endpoint(universe_domain, override, action, expected_url):
+    assert (
+        iam._build_iam_endpoint("sa@example.com", universe_domain, override, action)
+        == expected_url
+    )
+
+
+def test_build_iam_endpoint_preserves_mtls_prefix():
+    with mock.patch(
+        "google.auth.iam._IAM_DOMAIN", "iamcredentials.mtls.googleapis.com"
+    ):
+        url = iam._build_iam_endpoint(
+            "sa@example.com",
+            "example.com",
+            None,
+            "signBlob",
+        )
+    assert (
+        url == "https://iamcredentials.mtls.example.com/v1/projects/-"
+        "/serviceAccounts/sa@example.com:signBlob"
+    )
+
+
+@pytest.mark.parametrize(
+    "bad_override",
+    [
+        "us-east1-iamcredentials.googleapis.com",
+        "https://",
+    ],
+)
+def test_build_iam_endpoint_invalid_override(bad_override):
+    with pytest.raises(exceptions.InvalidValue, match="Invalid iam_endpoint_override"):
+        iam._build_iam_endpoint(
+            "sa@example.com", "googleapis.com", bad_override, "signBlob"
+        )
