@@ -311,6 +311,11 @@ class AsyncAppendableObjectWriter:
                 f"flush_interval must be a multiple of {_MAX_CHUNK_SIZE_BYTES}, but provided {self.flush_interval}"
             )
         self.bytes_appended_since_last_flush = 0
+        # Bytes sent since the last server-confirmed persisted offset,
+        # starting at `_tail_offset`. They are replayed if the stream breaks
+        # and the server drops unflushed bytes from earlier calls.
+        self._tail = bytearray()
+        self._tail_offset = 0
         self._routing_token: Optional[str] = None
         self.object_resource: Optional[_storage_v2.Object] = None
         self._flush_count = 0
@@ -425,6 +430,7 @@ class AsyncAppendableObjectWriter:
             )
             response = await self.write_obj_stream.recv()
             self.persisted_size = response.persisted_size
+            self._trim_tail(self.persisted_size)
             return self.persisted_size
 
     def _on_open_error(self, exc):
@@ -449,6 +455,63 @@ class AsyncAppendableObjectWriter:
             except Exception as e:
                 logger.debug(f"Closing the write stream resulted in: {e}")
         self._is_stream_open = False
+
+    def _trim_tail(self, confirmed_offset: Optional[int]) -> None:
+        """Drops tail bytes before `confirmed_offset`, which the server persisted."""
+        bytes_to_drop = (confirmed_offset or 0) - self._tail_offset
+        if bytes_to_drop > 0:
+            del self._tail[:bytes_to_drop]
+            self._tail_offset = confirmed_offset
+
+    def _record_tail(self, data: bytes, data_offset: int, confirmed_offset: int):
+        """Keeps the part of `data` the server has not confirmed as persisted."""
+        if self._tail_offset + len(self._tail) != data_offset:
+            self._tail.clear()
+            self._tail_offset = data_offset
+        self._trim_tail(confirmed_offset)
+        keep_from = self._tail_offset + len(self._tail) - data_offset
+        self._tail += memoryview(data).cast("B")[keep_from:]
+        # Normally less than flush_interval. Cap it in case confirmations lag.
+        self._trim_tail(self._tail_offset + len(self._tail) - 2 * self.flush_interval)
+
+    async def _rewind_into_tail(self, write_state: _WriteState, data: bytes) -> None:
+        """Prepends the tail to the buffer after a reconnect lost earlier bytes.
+
+        Called when the server's persisted size is before the start of the
+        current buffer. Raises DataLoss if the tail does not cover the gap.
+        """
+        tail_precedes_buffer = (
+            self._tail_offset + len(self._tail) == write_state.initial_offset
+        )
+        earliest_held = (
+            self._tail_offset if tail_precedes_buffer else write_state.initial_offset
+        )
+        if (self.persisted_size or 0) < earliest_held:
+            # Close the reopened stream so a later close() can't finalize the
+            # truncated object.
+            await self._abort_stream()
+            raise exceptions.DataLoss(
+                f"Unrecoverable data loss during reconnect. "
+                f"Expected persisted_size >= {earliest_held}, "
+                f"got {self.persisted_size}."
+            )
+        write_state.user_buffer = io.BytesIO(b"".join([self._tail, data]))
+        write_state.initial_offset = self._tail_offset
+
+    async def _replay_lost_tail(self, expected_offset: Optional[int]) -> None:
+        """After a reconnect in close() or finalize(), resends lost tail bytes.
+
+        Raises DataLoss if the server lost bytes the tail no longer holds.
+        """
+        if (
+            self.offset is not None
+            and expected_offset == self._tail_offset + len(self._tail)
+            and self._tail_offset <= self.offset < expected_offset
+        ):
+            lost_bytes = bytes(self._tail[self.offset - self._tail_offset :])
+            self.bytes_appended_since_last_flush = 0
+            await self.append(lost_bytes)
+        self._raise_if_offset_lost(expected_offset)
 
     def _raise_if_offset_lost(self, expected_offset: Optional[int]) -> None:
         """Raises DataLoss if a reconnect reports fewer bytes than were sent.
@@ -582,9 +645,8 @@ class AsyncAppendableObjectWriter:
         requests persistence (``flush=True``) each time ``flush_interval``
         bytes have been sent since the last flush. Bytes after the last
         ``flush_interval`` boundary are only guaranteed durable after
-        ``flush()`` or ``close()``. If the stream breaks before then and the
-        server lost them, a later ``append()`` raises
-        :class:`~google.api_core.exceptions.DataLoss`.
+        ``flush()`` or ``close()``. The writer keeps those bytes and resends
+        them if the stream breaks and the server dropped them.
 
         :type data: bytes
         :param data: The bytes to append to the object.
@@ -600,8 +662,8 @@ class AsyncAppendableObjectWriter:
 
         :raises ValueError: If the stream is not open.
         :raises google.api_core.exceptions.DataLoss: If reconnecting after a
-            stream failure reveals that unpersisted bytes from an earlier
-            ``append()`` call were lost.
+            stream failure reveals that the server lost bytes the writer no
+            longer holds.
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before append().")
@@ -617,6 +679,7 @@ class AsyncAppendableObjectWriter:
                 retry_policy = AsyncRetry(predicate=_is_write_retryable)
 
             strategy = _WriteResumptionStrategy()
+            start_offset = self.offset or 0
             buffer = io.BytesIO(data)
             attempt_count = 0
 
@@ -652,14 +715,7 @@ class AsyncAppendableObjectWriter:
                         self.bytes_appended_since_last_flush = 0
 
                         if (self.persisted_size or 0) < write_state.initial_offset:
-                            # Close the reopened stream so a later close() can't
-                            # finalize the truncated object.
-                            await self._abort_stream()
-                            raise exceptions.DataLoss(
-                                f"Unrecoverable data loss during reconnect. "
-                                f"Expected persisted_size >= {write_state.initial_offset}, "
-                                f"got {self.persisted_size}."
-                            )
+                            await self._rewind_into_tail(write_state, data)
 
                         write_state.persisted_size = self.persisted_size
                         write_state.write_handle = self.write_handle
@@ -700,7 +756,7 @@ class AsyncAppendableObjectWriter:
                 buffer,
                 self.flush_interval,
                 enable_checksum=enable_checksum,
-                initial_offset=self.offset or 0,
+                initial_offset=start_offset,
             )
             write_state.write_handle = self.write_handle
             write_state.persisted_size = self.persisted_size
@@ -715,6 +771,7 @@ class AsyncAppendableObjectWriter:
             # Sync local markers
             self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
             self.offset = write_state.bytes_sent
+            self._record_tail(data, start_offset, write_state.persisted_size or 0)
 
     async def simple_flush(self) -> None:
         """Flushes the data to the server.
@@ -759,6 +816,7 @@ class AsyncAppendableObjectWriter:
             self.persisted_size = response.persisted_size
             self.offset = self.persisted_size
             self.bytes_appended_since_last_flush = 0
+            self._trim_tail(self.persisted_size)
             return self.persisted_size
 
     async def close(
@@ -842,9 +900,10 @@ class AsyncAppendableObjectWriter:
                     )
                     self._is_stream_open = False
                     await self.open()
-                    self._raise_if_offset_lost(expected_offset)
+                    await self._replay_lost_tail(expected_offset)
 
                 await self.write_obj_stream.close()
+                self._tail.clear()
                 return self.persisted_size
 
             try:
@@ -931,12 +990,13 @@ class AsyncAppendableObjectWriter:
                     )
                     self._is_stream_open = False
                     await self.open()
-                    self._raise_if_offset_lost(expected_offset)
+                    await self._replay_lost_tail(expected_offset)
 
                 await self.write_obj_stream.send(finalize_req)
                 response = await self.write_obj_stream.recv()
                 self.object_resource = response.resource
                 self.persisted_size = self.object_resource.size
+                self._tail.clear()
                 return self.object_resource
 
             try:
