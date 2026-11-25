@@ -25,6 +25,7 @@ import pytest
 from google.api_core import client_options, grpc_helpers
 from google.api_core import exceptions as core_exceptions
 from google.auth.credentials import AnonymousCredentials
+from google.oauth2 import credentials as oauth2_credentials
 
 from google.cloud.bigtable.data import TABLE_DEFAULT, mutations
 from google.cloud.bigtable.data._cross_sync import CrossSync
@@ -99,7 +100,9 @@ class TestBigtableDataClient:
 
             warnings.filterwarnings("ignore", category=RuntimeWarning)
         else:
-            kwargs["credentials"] = kwargs.get("credentials", AnonymousCredentials())
+            kwargs["credentials"] = kwargs.get(
+                "credentials", oauth2_credentials.Credentials("token")
+            )
             kwargs["project"] = kwargs.get("project", "project-id")
         if use_mtls is not None:
             env_mask["GOOGLE_API_USE_MTLS_ENDPOINT"] = use_mtls
@@ -114,7 +117,7 @@ class TestBigtableDataClient:
         )
 
         expected_project = "project-id"
-        expected_credentials = AnonymousCredentials()
+        expected_credentials = oauth2_credentials.Credentials("token")
         client = self._make_client(
             project="project-id", credentials=expected_credentials, use_emulator=False
         )
@@ -250,23 +253,37 @@ class TestBigtableDataClient:
     def test_metrics_exporter_init_shares_arguments(
         self, exporter_mock_sync, exporter_mock_async
     ):
-        expected_credentials = AnonymousCredentials()
+        import os
+
+        expected_credentials = oauth2_credentials.Credentials("token")
         expected_project = "custom_project"
-        expected_options = client_options.ClientOptions()
-        expected_options.credentials_file = None
-        expected_options.quota_project_id = None
+        cert_source = mock.Mock()
+        input_options = client_options.ClientOptions(
+            client_cert_source=cert_source,
+            api_audience="https://bigtable.googleapis.com/",
+        )
         mock_called = (
             exporter_mock_async if CrossSync._Sync_Impl.is_async else exporter_mock_sync
         )
-        with self._make_client(
-            project=expected_project,
-            credentials=expected_credentials,
-            client_options=expected_options,
-            use_emulator=False,
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
         ):
-            mock_called.assert_called_once_with(
-                credentials=expected_credentials, client_options=expected_options
-            )
+            with self._make_client(
+                project=expected_project,
+                credentials=expected_credentials,
+                client_options=input_options,
+                use_emulator=False,
+            ) as client:
+                mock_called.assert_called_once()
+                call_kwargs = mock_called.call_args.kwargs
+                assert call_kwargs["credentials"] == client._credentials
+                exporter_options = call_kwargs["client_options"]
+                assert isinstance(exporter_options, client_options.ClientOptions)
+                assert exporter_options is not input_options
+                assert exporter_options.universe_domain == "googleapis.com"
+                assert exporter_options.client_cert_source is cert_source
+                assert exporter_options.api_endpoint is None
+                assert exporter_options.api_audience is None
 
     @mock.patch(
         "google.cloud.bigtable.data._async.client.BigtableMetricsExporter",
@@ -1116,52 +1133,45 @@ class TestBigtableDataClient:
         err_msg = f"The configured universe domain ({universe_domain}) does not match the universe domain found in the credentials ({creds.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         assert exc.value.args[0] == err_msg
 
-    def test_metrics_exporter_disabled_outside_gdu(self):
-        """BigtableMetricsExporter should be disabled when universe_domain != googleapis.com."""
+    def test_metrics_exporter_uses_universe_domain(self):
+        """BigtableMetricsExporter should stay enabled in custom universes and target monitoring.{universe_domain}."""
         import os
 
         universe_domain = "custom-universe.test"
-        creds = AnonymousCredentials()
+        creds = oauth2_credentials.Credentials("token")
         creds._universe_domain = universe_domain
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        with (
-            mock.patch(
-                "google.cloud.bigtable.data._async.client.BigtableMetricsExporter"
-            ) as exporter_mock_async,
-            mock.patch(
-                "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
-            ) as exporter_mock_sync,
+        with self._make_client(
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_emulator=False,
+            use_mtls="never",
+        ) as client:
+            assert client.universe_domain == universe_domain
+            assert client.api_endpoint == f"bigtable.{universe_domain}"
+            assert len(client._metrics.handlers) == 1
+            exporter = client._metrics.handlers[0]._exporter
+            assert exporter.client.universe_domain == universe_domain
+            assert exporter.client.api_endpoint == f"monitoring.{universe_domain}"
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain}
         ):
             with self._make_client(
                 project="project_id",
                 credentials=creds,
-                client_options=options,
                 use_emulator=False,
                 use_mtls="never",
             ) as client:
                 assert client.universe_domain == universe_domain
                 assert client.api_endpoint == f"bigtable.{universe_domain}"
-                assert len(client._metrics.handlers) == 0
-                exporter_mock_async.assert_not_called()
-                exporter_mock_sync.assert_not_called()
-            with mock.patch.dict(
-                os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain}
-            ):
-                with self._make_client(
-                    project="project_id",
-                    credentials=creds,
-                    use_emulator=False,
-                    use_mtls="never",
-                ) as client:
-                    assert client.universe_domain == universe_domain
-                    assert client.api_endpoint == f"bigtable.{universe_domain}"
-                    assert len(client._metrics.handlers) == 0
-                    exporter_mock_async.assert_not_called()
-                    exporter_mock_sync.assert_not_called()
+                assert len(client._metrics.handlers) == 1
+                exporter = client._metrics.handlers[0]._exporter
+                assert exporter.client.universe_domain == universe_domain
+                assert exporter.client.api_endpoint == f"monitoring.{universe_domain}"
 
-    def test_metrics_exporter_disabled_with_custom_api_endpoint(self):
-        """BigtableMetricsExporter should be disabled when a custom api_endpoint is set."""
-        options = client_options.ClientOptions(api_endpoint="bigtable.custom.local:443")
+    def test_metrics_exporter_disabled_with_anonymous_credentials(self):
+        """BigtableMetricsExporter should be disabled when AnonymousCredentials are used."""
         with (
             mock.patch(
                 "google.cloud.bigtable.data._async.client.BigtableMetricsExporter"
@@ -1173,14 +1183,51 @@ class TestBigtableDataClient:
             with self._make_client(
                 project="project_id",
                 credentials=AnonymousCredentials(),
-                client_options=options,
                 use_emulator=False,
                 use_mtls="never",
             ) as client:
-                assert client.api_endpoint == "bigtable.custom.local:443"
                 assert len(client._metrics.handlers) == 0
                 exporter_mock_async.assert_not_called()
                 exporter_mock_sync.assert_not_called()
+
+    def test_metrics_exporter_disabled_with_custom_api_endpoint(self):
+        """BigtableMetricsExporter should be disabled when a custom api_endpoint is set."""
+        universe_domain = "custom-universe.test"
+        tpc_creds = oauth2_credentials.Credentials("token")
+        tpc_creds._universe_domain = universe_domain
+        cases = [
+            (
+                oauth2_credentials.Credentials("token"),
+                client_options.ClientOptions(api_endpoint="bigtable.custom.local:443"),
+            ),
+            (
+                tpc_creds,
+                client_options.ClientOptions(
+                    api_endpoint="bigtable.custom.local:443",
+                    universe_domain=universe_domain,
+                ),
+            ),
+        ]
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.BigtableMetricsExporter"
+            ) as exporter_mock_async,
+            mock.patch(
+                "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+            ) as exporter_mock_sync,
+        ):
+            for creds, options in cases:
+                with self._make_client(
+                    project="project_id",
+                    credentials=creds,
+                    client_options=options,
+                    use_emulator=False,
+                    use_mtls="never",
+                ) as client:
+                    assert client.api_endpoint == "bigtable.custom.local:443"
+                    assert len(client._metrics.handlers) == 0
+                    exporter_mock_async.assert_not_called()
+                    exporter_mock_sync.assert_not_called()
 
     def test_configured_universe_domain_matches_credentials(self):
         """Test that configured universe domain succeeds with matching universe
@@ -2854,10 +2901,7 @@ class TestMutateRow:
                     ]
                     mutation = mutations.DeleteAllFromRow()
                     table.mutate_row(
-                        "row_key",
-                        mutation,
-                        operation_timeout=10.0,
-                        attempt_timeout=5.0,
+                        "row_key", mutation, operation_timeout=10.0, attempt_timeout=5.0
                     )
                     mock_timeout_gen.assert_called_once_with(5.0, 10.0)
                     assert mock_gapic.call_count == 2

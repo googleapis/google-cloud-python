@@ -32,7 +32,6 @@ import google.auth._default
 import google.auth.credentials
 from google.api_core import client_options as client_options_lib
 from google.api_core import retry as retries
-from google.api_core import universe
 from google.api_core.exceptions import (
     Aborted,
     Cancelled,
@@ -212,12 +211,22 @@ class BigtableDataClient(ClientWithProject):
         has_custom_endpoint = bool(client_options and client_options.api_endpoint)
         if (
             self._emulator_host is None
-            and self.universe_domain == universe.DEFAULT_UNIVERSE
+            and (
+                not isinstance(
+                    self._credentials, google.auth.credentials.AnonymousCredentials
+                )
+            )
             and (not has_custom_endpoint)
         ):
             try:
                 exporter = BigtableMetricsExporter(
-                    credentials=self._credentials, client_options=client_options
+                    credentials=self._credentials,
+                    client_options=client_options_lib.ClientOptions(
+                        universe_domain=self.universe_domain,
+                        client_cert_source=client_options.client_cert_source
+                        if client_options
+                        else None,
+                    ),
                 )
                 handlers.append(
                     GoogleCloudMetricsHandler(
@@ -1430,9 +1439,7 @@ class _DataApiTarget(abc.ABC):
 
             def execute_rpc():
                 return self.client._gapic_client.mutate_row(
-                    request=request,
-                    timeout=next(attempt_timeout_gen),
-                    retry=None,
+                    request=request, timeout=next(attempt_timeout_gen), retry=None
                 )
 
             return tracked_retry(
