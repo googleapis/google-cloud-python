@@ -38,7 +38,6 @@ import re
 import threading
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Optional
-from urllib.parse import urlparse
 
 from google.auth import (
     _helpers,
@@ -65,27 +64,6 @@ _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.{universe_domain}/v1/projects/"
 # Default Google sts token url.
 _DEFAULT_TOKEN_URL = "https://sts.{universe_domain}/v1/token"
-
-
-_DEFAULT_UNIVERSE_HOST_PATTERN = re.compile(
-    rf"^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*{re.escape(credentials.DEFAULT_UNIVERSE_DOMAIN)}$"
-)
-
-
-def _has_default_universe_host(url):
-    """Checks whether a URL's host is in the default universe domain."""
-    if not isinstance(url, str) or "#" in url:
-        return False
-    try:
-        parsed = urlparse(url)
-        # Reject userinfo ("@" in netloc) without rejecting "@" in the path
-        # (such as service account emails in service_account_impersonation_url).
-        if "@" in parsed.netloc:
-            return False
-        host = parsed.hostname
-        return bool(host and _DEFAULT_UNIVERSE_HOST_PATTERN.fullmatch(host))
-    except ValueError:
-        return False
 
 
 @dataclass
@@ -442,15 +420,15 @@ class Credentials(
             # Avoid sending tokens minted for non-googleapis.com endpoints
             # (e.g. another universe domain or custom proxy) to
             # cloudresourcemanager.googleapis.com.
-            if _has_default_universe_host(self._cloud_resource_manager_url):
-                if not _has_default_universe_host(self._token_url):
+            if _helpers.has_default_universe_host(self._cloud_resource_manager_url):
+                if not _helpers.has_default_universe_host(self._token_url):
                     return None
-                # Impersonation is optional; calling _has_default_universe_host(None)
-                # returns False and would block non-impersonated default-universe
-                # credentials.
+                # Impersonation is optional; calling
+                # has_default_universe_host(None) returns False and would block
+                # non-impersonated default-universe credentials.
                 if (
                     self._service_account_impersonation_url
-                    and not _has_default_universe_host(
+                    and not _helpers.has_default_universe_host(
                         self._service_account_impersonation_url
                     )
                 ):

@@ -697,3 +697,48 @@ class TestUtcFromTimestamp:
         with pytest.raises((OverflowError, OSError, ValueError)):
             # Large enough to fail on most systems (Year 300,000+)
             _helpers.utcfromtimestamp(9999999999999)
+
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        pytest.param("https://googleapis.com/v1/token", True, id="exact_default"),
+        pytest.param("https://sts.googleapis.com/v1/token", True, id="subdomain"),
+        pytest.param("HTTPS://STS.GOOGLEAPIS.COM/v1/token", True, id="uppercase_host"),
+        pytest.param(
+            "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+            "/serviceAccounts/sa@p.iam.gserviceaccount.com:generateAccessToken",
+            True,
+            id="at_sign_in_path",
+        ),
+        pytest.param("https://sts.example.com/v1/token", False, id="other_universe"),
+        pytest.param(
+            "https://sts.googleapis.com.evil.com/v1/token",
+            False,
+            id="spoofed_suffix",
+        ),
+        pytest.param("https://evilgoogleapis.com/v1/token", False, id="missing_dot"),
+        pytest.param(
+            "https://.googleapis.com/v1/token", False, id="empty_leading_label"
+        ),
+        pytest.param(
+            "https://foo..googleapis.com/v1/token", False, id="empty_middle_label"
+        ),
+        pytest.param(
+            "https://evil.com@sts.googleapis.com/v1/token",
+            False,
+            id="userinfo_at",
+        ),
+        pytest.param(
+            "https://evil.com\\@sts.googleapis.com/v1/token",
+            False,
+            id="userinfo_backslash_at",
+        ),
+        pytest.param("https://sts.googleapis.com#evil.com", False, id="fragment_hash"),
+        pytest.param("https://[invalid/v1/token", False, id="malformed_url"),
+        pytest.param("", False, id="empty_string"),
+        pytest.param(None, False, id="none_input"),
+    ],
+)
+def test_has_default_universe_host(url, expected):
+    assert _helpers.has_default_universe_host(url) is expected
