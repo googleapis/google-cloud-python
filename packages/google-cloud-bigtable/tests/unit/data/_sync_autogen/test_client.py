@@ -1247,6 +1247,78 @@ class TestBigtableDataClient:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
 
+    def test_adc_credentials_universe_mismatch(self):
+        """Resolved ADC credentials must be validated against client universe_domain before opening a channel."""
+        import os
+
+        from google.api_core.universe import UniverseMismatchError
+
+        with (
+            mock.patch(
+                "google.auth.default",
+                return_value=(_StubCredentials("tpc.test"), "project_id"),
+            ),
+            mock.patch.object(
+                CrossSync._Sync_Impl.GapicClient, "__init__"
+            ) as gapic_init,
+        ):
+            with pytest.raises(UniverseMismatchError):
+                self._make_client(
+                    project="project_id",
+                    credentials=None,
+                    use_emulator=False,
+                    use_mtls="never",
+                )
+            gapic_init.assert_not_called()
+        with (
+            mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "tpc.test"}),
+            mock.patch(
+                "google.auth.default",
+                return_value=(_StubCredentials("googleapis.com"), "project_id"),
+            ),
+            mock.patch.object(
+                CrossSync._Sync_Impl.GapicClient, "__init__"
+            ) as gapic_init,
+        ):
+            with pytest.raises(UniverseMismatchError):
+                self._make_client(
+                    project="project_id",
+                    credentials=None,
+                    use_emulator=False,
+                    use_mtls="never",
+                )
+            gapic_init.assert_not_called()
+
+    def test_anonymous_credentials_allowed_in_custom_universe(self):
+        """AnonymousCredentials should be exempted from universe validation in custom universes."""
+        universe_domain = "tpc.test"
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        with self._make_client(
+            project="project_id",
+            credentials=AnonymousCredentials(),
+            client_options=options,
+            use_emulator=False,
+            use_mtls="never",
+        ) as client:
+            assert client.universe_domain == universe_domain
+            assert len(client._metrics.handlers) == 0
+
+    def test_uncached_compute_engine_credentials_skip_validation(self):
+        """Uncached compute_engine.Credentials should not trigger synchronous MDS requests."""
+        from google.auth import compute_engine
+
+        creds = compute_engine.Credentials()
+        options = client_options.ClientOptions(universe_domain="tpc.test")
+        with self._make_client(
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_emulator=False,
+            use_mtls="never",
+        ) as client:
+            assert client.universe_domain == "tpc.test"
+            assert not getattr(creds, "_universe_domain_cached", False)
+
 
 @CrossSync._Sync_Impl.add_mapping_decorator("TestTable")
 class TestTable:

@@ -25,7 +25,7 @@ class _FakeStub(object):
         self.method_calls = []
 
 
-def _make_credentials():
+def _make_credentials(universe_domain=None):
     import google.auth.credentials
 
     from google.cloud.bigtable_v2 import BigtableClient
@@ -41,7 +41,11 @@ def _make_credentials():
 
     # Needed to mock universe domain and quota project for new data client tests
     credentials_with_scopes = mock.Mock(spec=_CredentialsWithScopesAndQuotaProject)
-    credentials_with_scopes.universe_domain = BigtableClient._DEFAULT_UNIVERSE
+    credentials_with_scopes.universe_domain = (
+        universe_domain
+        if universe_domain is not None
+        else BigtableClient._DEFAULT_UNIVERSE
+    )
     credentials_with_scopes.with_quota_project.return_value = credentials_with_scopes
     credentials.with_scopes.return_value = credentials_with_scopes
 

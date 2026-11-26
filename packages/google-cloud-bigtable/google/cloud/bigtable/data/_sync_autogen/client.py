@@ -32,6 +32,7 @@ import google.auth._default
 import google.auth.credentials
 from google.api_core import client_options as client_options_lib
 from google.api_core import retry as retries
+from google.api_core import universe
 from google.api_core.exceptions import (
     Aborted,
     Cancelled,
@@ -55,6 +56,7 @@ from google.cloud.bigtable.data._helpers import (
     _get_retryable_errors,
     _get_timeouts,
     _retry_exception_factory,
+    _validate_credentials_universe,
     _validate_timeouts,
     _WarmedInstanceKey,
 )
@@ -186,6 +188,14 @@ class BigtableDataClient(ClientWithProject):
             project=project,
             client_options=client_options,
         )
+        if self._emulator_host is None:
+            client_universe = universe.determine_domain(
+                client_options.universe_domain if client_options else None,
+                os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+            )
+            _validate_credentials_universe(
+                client_universe, getattr(self, "_credentials", None)
+            )
         self._gapic_client = GapicClient(
             credentials=credentials,
             client_options=client_options,
@@ -194,15 +204,6 @@ class BigtableDataClient(ClientWithProject):
                 *args, **kwargs, channel=self._build_grpc_channel
             ),
         )
-        if (
-            credentials
-            and hasattr(credentials, "universe_domain")
-            and (credentials.universe_domain != self.universe_domain)
-            and (self._emulator_host is None)
-        ):
-            raise ValueError(
-                f"The configured universe domain ({self.universe_domain}) does not match the universe domain found in the credentials ({self._credentials.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-            )
         self._is_closed = CrossSync._Sync_Impl.Event()
         self._disable_background_refresh = bool(
             kwargs.get("_disable_background_refresh", False)

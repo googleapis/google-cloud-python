@@ -41,6 +41,7 @@ from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
 
 from google.cloud import bigtable, bigtable_admin_v2
 from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE, Cluster
+from google.cloud.bigtable.data._helpers import _validate_credentials_universe
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.transports import (
     BigtableInstanceAdminGrpcTransport,
@@ -304,6 +305,7 @@ class Client(ClientWithProject):
         universe_domain = universe.determine_domain(
             _get_client_option(self._admin_client_options, "universe_domain"), None
         )
+        _validate_credentials_universe(universe_domain, self._credentials)
         api_endpoint = _get_client_option(self._admin_client_options, "api_endpoint")
         if api_endpoint:
             return api_endpoint

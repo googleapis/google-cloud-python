@@ -516,7 +516,7 @@ def test_client_admin_clients_endpoint(
                 os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = env_universe
             client = _make_client(
                 project=PROJECT,
-                credentials=_make_credentials(),
+                credentials=_make_credentials(universe_domain=expected_universe),
                 admin=True,
                 client_options=co,
                 admin_client_options=aco,
@@ -542,7 +542,7 @@ def test_client_admin_clients_inherit_universe_wo_mutating_options(
 ):
     client = _make_client(
         project=PROJECT,
-        credentials=_make_credentials(),
+        credentials=_make_credentials(universe_domain="tpc.test"),
         admin=True,
         client_options={"universe_domain": "tpc.test"},
         admin_client_options=admin_client_options,
@@ -608,7 +608,9 @@ def test_client_admin_clients_universe_env_read_at_construction(
     with mock.patch.dict(os.environ, {}, clear=False):
         set_env(env_at_construction)
         client = _make_client(
-            project=PROJECT, credentials=_make_credentials(), admin=True
+            project=PROJECT,
+            credentials=_make_credentials(universe_domain=expected_universe),
+            admin=True,
         )
         set_env(env_at_first_use)
 
@@ -651,6 +653,53 @@ def test_client_admin_clients_w_empty_universe_domain(
             _ = client.table_admin_client
         with pytest.raises(EmptyUniverseError):
             _ = client.instance_admin_client
+
+
+@pytest.mark.parametrize(
+    "cred_universe,client_options,admin_client_options,env_universe",
+    [
+        ("tpc.test", None, None, None),
+        ("googleapis.com", {"universe_domain": "tpc.test"}, None, None),
+        ("googleapis.com", None, {"universe_domain": "tpc.test"}, None),
+        ("googleapis.com", None, None, "tpc.test"),
+    ],
+)
+def test_client_admin_clients_mismatched_credentials_universe(
+    cred_universe, client_options, admin_client_options, env_universe
+):
+    import os
+
+    from google.api_core.universe import UniverseMismatchError
+
+    with mock.patch.dict(os.environ, {}, clear=False):
+        if env_universe is None:
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+        else:
+            os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = env_universe
+        client = _make_client(
+            project=PROJECT,
+            credentials=_make_credentials(universe_domain=cred_universe),
+            admin=True,
+            client_options=client_options,
+            admin_client_options=admin_client_options,
+        )
+        with pytest.raises(UniverseMismatchError):
+            _ = client.table_admin_client
+        with pytest.raises(UniverseMismatchError):
+            _ = client.instance_admin_client
+
+
+def test_client_admin_clients_anonymous_credentials_in_custom_universe():
+    from google.auth.credentials import AnonymousCredentials
+
+    client = _make_client(
+        project=PROJECT,
+        credentials=AnonymousCredentials(),
+        admin=True,
+        client_options={"universe_domain": "tpc.test"},
+    )
+    assert client.table_admin_client.transport.host == "bigtableadmin.tpc.test:443"
+    assert client.instance_admin_client.transport.host == "bigtableadmin.tpc.test:443"
 
 
 def test_client_project_path():
