@@ -457,18 +457,21 @@ class Page:
         Returns the cached start indices of the elements in `attribute_name`,
         or None if they are not sorted or an element has no text segment.
         """
-        if attribute_name not in self._start_indices:
-            try:
-                start_indices = [
-                    element._text_segment.start_index
-                    for element in getattr(self, attribute_name)
-                ]
-            except IndexError:
-                start_indices = None
-            else:
-                if start_indices != sorted(start_indices):
-                    start_indices = None
-            self._start_indices[attribute_name] = start_indices
+        if attribute_name in self._start_indices:
+            return self._start_indices[attribute_name]
+
+        try:
+            start_indices = [
+                element._text_segment.start_index
+                for element in getattr(self, attribute_name)
+            ]
+        except IndexError:
+            self._start_indices[attribute_name] = None
+            return None
+
+        self._start_indices[attribute_name] = (
+            start_indices if start_indices == sorted(start_indices) else None
+        )
         return self._start_indices[attribute_name]
 
     @cached_property
