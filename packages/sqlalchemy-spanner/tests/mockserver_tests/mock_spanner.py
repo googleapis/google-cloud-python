@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import base64
+import collections.abc
 from concurrent import futures
+from typing import Any
 
 import google.cloud.spanner_v1.types.commit_response as commit
 import google.cloud.spanner_v1.types.result_set as result_set
@@ -32,23 +34,71 @@ import tests.mockserver_tests.spanner_pb2_grpc as spanner_grpc
 from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
 
 
+def _normalize_param_value(value: Any) -> Any:
+    """Recursively convert mappings and non-string iterables to hashable tuples."""
+    if isinstance(value, collections.abc.Mapping):
+        return tuple(
+            sorted((key, _normalize_param_value(val)) for key, val in value.items())
+        )
+    if not isinstance(value, (str, bytes)) and hasattr(value, "__iter__"):
+        return tuple(_normalize_param_value(item) for item in value)
+    return value
+
+
+def _normalize_params(params) -> tuple:
+    """Convert a query parameter mapping into a deterministic, hashable key.
+
+    ``MockSpanner.param_results`` indexes mocked results by ``(sql, params_key)``.
+    Incoming ``ExecuteSqlRequest.params`` values arrive as protobuf ``Struct``
+    mappings whose values may be unhashable (e.g., ``list``, nested ``dict``/
+    ``Struct``, or protobuf ``RepeatedComposite``), so we sort items by key and
+    recursively normalize nested mappings and non-string iterables to tuples.
+
+    Example:
+        ``{"table_names": ["t1", "t2"], "table_schema": ""}`` becomes
+        ``(("table_names", ("t1", "t2")), ("table_schema", ""))``.
+    """
+    if not params:
+        return ()
+    return tuple(
+        sorted(
+            (key, _normalize_param_value(value)) for key, value in dict(params).items()
+        )
+    )
+
+
+def _normalize_sql(sql: str) -> str:
+    """Lowercase and collapse whitespace so SQL matching ignores formatting."""
+    return " ".join(sql.lower().split())
+
+
 class MockSpanner:
     def __init__(self):
         self.results = {}
+        self.param_results = {}
 
-    def add_result(self, sql: str, result: result_set.ResultSet):
-        self.results[sql.lower().strip()] = result
+    def add_result(self, sql: str, result: result_set.ResultSet, params=None):
+        key = _normalize_sql(sql)
+        if params is None:
+            self.results[key] = result
+        else:
+            self.param_results[(key, _normalize_params(params))] = result
 
-    def get_result(self, sql: str) -> result_set.ResultSet:
-        result = self.results.get(sql.lower().strip())
+    def get_result(self, sql: str, params=None) -> result_set.ResultSet:
+        key = _normalize_sql(sql)
+        if params is not None:
+            result = self.param_results.get((key, _normalize_params(params)))
+            if result is not None:
+                return result
+        result = self.results.get(key)
         if result is None:
             raise ValueError(f"No result found for {sql}")
         return result
 
     def get_result_as_partial_result_sets(
-        self, sql: str, started_transaction: transaction.Transaction
+        self, sql: str, started_transaction: transaction.Transaction, params=None
     ) -> [result_set.PartialResultSet]:
-        result: result_set.ResultSet = self.get_result(sql)
+        result: result_set.ResultSet = self.get_result(sql, params=params)
         partials = []
         first = True
         if len(result.rows) == 0:
@@ -136,7 +186,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
                 request.session, request.transaction.begin
             )
         partials = self.mock_spanner.get_result_as_partial_result_sets(
-            request.sql, started_transaction
+            request.sql, started_transaction, params=request.params
         )
         for result in partials:
             yield result
@@ -151,11 +201,11 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
             )
         first = True
         for statement in request.statements:
-            result = self.mock_spanner.get_result(statement.sql)
+            result = self.mock_spanner.get_result(
+                statement.sql, params=statement.params
+            )
             if first and started_transaction is not None:
-                result = result_set.ResultSet(
-                    self.mock_spanner.get_result(statement.sql)
-                )
+                result = result_set.ResultSet(result)
                 result.metadata = ResultSetMetadata(result.metadata)
                 result.metadata.transaction = started_transaction
             response.result_sets.append(result)

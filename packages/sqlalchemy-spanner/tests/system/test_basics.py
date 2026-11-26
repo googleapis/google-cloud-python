@@ -13,11 +13,15 @@
 # limitations under the License.
 import datetime
 import os
+from contextlib import contextmanager
 from typing import Optional
+from unittest import mock
 
 import pytest
+from google.cloud.spanner_v1.database import Database
 from sqlalchemy import (
     BIGINT,
+    DDL,
     Boolean,
     Column,
     ForeignKey,
@@ -26,6 +30,7 @@ from sqlalchemy import (
     Integer,
     MetaData,
     PrimaryKeyConstraint,
+    Sequence,
     String,
     Table,
     delete,
@@ -35,8 +40,10 @@ from sqlalchemy import (
     text,
     update,
 )
+from sqlalchemy.engine.reflection import ObjectKind
+from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
-from sqlalchemy.testing import eq_, is_none, is_not_none, is_true
+from sqlalchemy.testing import eq_, in_, is_false, is_none, is_not_none, is_true
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 from sqlalchemy.types import REAL
 
@@ -439,3 +446,205 @@ class TestBasics(fixtures.TablesTest):
 
         finally:
             Base.metadata.drop_all(engine)
+
+
+class TestReflection(fixtures.TablesTest):
+    @classmethod
+    @contextmanager
+    def _assert_single_ddl_batch(cls, expected_statement_count):
+        """Assert the wrapped block issues one update_ddl call of expected size."""
+        ddl_batches = []
+        original_update_ddl = Database.update_ddl
+
+        def record_update_ddl(database, ddl_statements, *args, **kwargs):
+            ddl_batches.append(list(ddl_statements))
+            return original_update_ddl(database, ddl_statements, *args, **kwargs)
+
+        with mock.patch.object(Database, "update_ddl", record_update_ddl):
+            yield
+
+        eq_(1, len(ddl_batches))
+        eq_(expected_statement_count, len(ddl_batches[0]))
+
+    @classmethod
+    def _setup_once_tables(cls):
+        with cls._assert_single_ddl_batch(expected_statement_count=7):
+            super()._setup_once_tables()
+
+    @classmethod
+    def _teardown_once_metadata_bind(cls):
+        with cls._assert_single_ddl_batch(expected_statement_count=8):
+            super()._teardown_once_metadata_bind()
+
+    @classmethod
+    def define_tables(cls, metadata):
+        """Define schema objects so setup and teardown each run as one DDL batch.
+
+        Registering the schema and view statements via ``metadata`` DDL events
+        (``before_create`` / ``after_create`` and ``before_drop`` /
+        ``after_drop``) keeps them inside ``TablesTest``'s single
+        ``create_all`` / ``drop_all`` transaction, so ``spanner_dbapi`` batches
+        all statements into one ``UpdateDatabaseDdlRequest`` for setup and one
+        for teardown.
+        """
+        event.listen(
+            metadata,
+            "before_create",
+            DDL("CREATE SCHEMA IF NOT EXISTS reflection_schema"),
+        )
+        items = Table(
+            "reflection_items",
+            metadata,
+            Column("id", Integer, primary_key=True),
+            Column("name", String(20)),
+        )
+        Index("idx_reflection_items_name", items.c.name)
+        Table(
+            "reflection_item_tags",
+            metadata,
+            Column("id", Integer, primary_key=True),
+            Column(
+                "item_id",
+                Integer,
+                ForeignKey("reflection_items.id", name="fk_reflection_item_tags"),
+            ),
+        )
+        Table(
+            "reflection_schema_items",
+            metadata,
+            Column("id", Integer, primary_key=True),
+            schema="reflection_schema",
+        )
+        Sequence("reflection_seq", metadata=metadata)
+        event.listen(
+            metadata,
+            "after_create",
+            DDL(
+                "CREATE VIEW reflection_items_view SQL SECURITY INVOKER AS "
+                "SELECT reflection_items.id AS id, reflection_items.name AS name "
+                "FROM reflection_items"
+            ),
+        )
+        event.listen(
+            metadata,
+            "before_drop",
+            DDL("DROP VIEW IF EXISTS reflection_items_view"),
+        )
+        event.listen(
+            metadata,
+            "after_drop",
+            DDL("DROP SCHEMA IF EXISTS reflection_schema"),
+        )
+
+    def test_reflection_methods(self, connection):
+        inspector = inspect(connection)
+
+        is_true(inspector.has_table("reflection_items"))
+        is_true(
+            inspector.has_table("reflection_schema_items", schema="reflection_schema")
+        )
+        is_false(inspector.has_table("does_not_exist"))
+
+        is_true(inspector.has_sequence("reflection_seq"))
+        is_false(inspector.has_sequence("does_not_exist"))
+
+        in_("reflection_items", inspector.get_table_names())
+        in_(
+            "reflection_schema_items",
+            inspector.get_table_names(schema="reflection_schema"),
+        )
+        in_("reflection_items_view", inspector.get_view_names())
+        in_("reflection_seq", inspector.get_sequence_names())
+        in_("reflection_schema", inspector.get_schema_names())
+        in_(
+            "reflection_items.id",
+            inspector.get_view_definition("reflection_items_view"),
+        )
+
+        eq_(2, len(inspector.get_columns("reflection_items")))
+        multi_columns = inspector.get_multi_columns(
+            filter_names={"reflection_items", "reflection_item_tags"}
+        )
+        in_((None, "reflection_items"), multi_columns)
+        in_((None, "reflection_item_tags"), multi_columns)
+        eq_({}, inspector.get_multi_columns(filter_names=[]))
+        in_(
+            (None, "reflection_items_view"),
+            inspector.get_multi_columns(
+                filter_names=["reflection_items_view"], kind=ObjectKind.VIEW
+            ),
+        )
+
+        eq_(
+            ["id"],
+            inspector.get_pk_constraint("reflection_items")["constrained_columns"],
+        )
+        in_(
+            (None, "reflection_items"),
+            inspector.get_multi_pk_constraint(filter_names=["reflection_items"]),
+        )
+        eq_(
+            ["idx_reflection_items_name"],
+            [idx["name"] for idx in inspector.get_indexes("reflection_items")],
+        )
+        in_(
+            (None, "reflection_items"),
+            inspector.get_multi_indexes(filter_names=["reflection_items"]),
+        )
+        eq_(
+            ["fk_reflection_item_tags"],
+            [fk["name"] for fk in inspector.get_foreign_keys("reflection_item_tags")],
+        )
+        in_(
+            (None, "reflection_item_tags"),
+            inspector.get_multi_foreign_keys(filter_names=["reflection_item_tags"]),
+        )
+        eq_([], inspector.get_unique_constraints("reflection_items"))
+
+    @pytest.mark.parametrize(
+        "payload",
+        [
+            "' OR '1'='1' UNION ALL SELECT 'pwned' --",
+            '" OR "1"="1" UNION ALL SELECT "pwned" --',
+        ],
+    )
+    def test_reflection_sql_injection_prevented(self, connection, payload):
+        inspector = inspect(connection)
+
+        is_false(inspector.has_table(payload))
+        is_false(inspector.has_table("reflection_items", schema=payload))
+        is_false(inspector.has_sequence(payload))
+        is_false(inspector.has_sequence("reflection_seq", schema=payload))
+        eq_([], inspector.get_table_names(schema=payload))
+        eq_([], inspector.get_view_names(schema=payload))
+        eq_([], inspector.get_sequence_names(schema=payload))
+        with pytest.raises(NoSuchTableError, match="UNION ALL"):
+            inspector.get_view_definition(payload)
+        with pytest.raises(NoSuchTableError, match="reflection_items_view"):
+            inspector.get_view_definition("reflection_items_view", schema=payload)
+        eq_([], inspector.get_columns(payload))
+        eq_([], inspector.get_columns("reflection_items", schema=payload))
+        eq_({}, inspector.get_multi_columns(filter_names=[payload]))
+        eq_({}, inspector.get_multi_columns(schema=payload))
+        eq_(
+            [(None, "reflection_items")],
+            list(
+                inspector.get_multi_columns(
+                    filter_names=["reflection_items", payload]
+                ).keys()
+            ),
+        )
+        eq_([], inspector.get_indexes(payload))
+        eq_([], inspector.get_indexes("reflection_items", schema=payload))
+        eq_({}, inspector.get_multi_indexes(filter_names=[payload]))
+        eq_({}, inspector.get_multi_indexes(schema=payload))
+        eq_([], inspector.get_pk_constraint(payload))
+        eq_([], inspector.get_pk_constraint("reflection_items", schema=payload))
+        eq_({}, inspector.get_multi_pk_constraint(filter_names=[payload]))
+        eq_({}, inspector.get_multi_pk_constraint(schema=payload))
+        eq_([], inspector.get_foreign_keys(payload))
+        eq_([], inspector.get_foreign_keys("reflection_item_tags", schema=payload))
+        eq_({}, inspector.get_multi_foreign_keys(filter_names=[payload]))
+        eq_({}, inspector.get_multi_foreign_keys(schema=payload))
+        eq_([], inspector.get_unique_constraints(payload))
+        eq_([], inspector.get_unique_constraints("reflection_items", schema=payload))

@@ -726,3 +726,104 @@ class TestUtcFromTimestamp:
         with pytest.raises((OverflowError, OSError, ValueError)):
             # Large enough to fail on most systems (Year 300,000+)
             _helpers.utcfromtimestamp(9999999999999)
+
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        pytest.param("https://googleapis.com/v1/token", True, id="exact_default"),
+        pytest.param("https://sts.googleapis.com/v1/token", True, id="subdomain"),
+        pytest.param("HTTPS://STS.GOOGLEAPIS.COM/v1/token", True, id="uppercase_host"),
+        pytest.param(
+            "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+            "/serviceAccounts/sa@p.iam.gserviceaccount.com:generateAccessToken",
+            True,
+            id="at_sign_in_path",
+        ),
+        pytest.param("https://sts.example.com/v1/token", False, id="other_universe"),
+        pytest.param(
+            "https://sts.googleapis.com.evil.com/v1/token",
+            False,
+            id="spoofed_suffix",
+        ),
+        pytest.param("https://evilgoogleapis.com/v1/token", False, id="missing_dot"),
+        pytest.param(
+            "https://.googleapis.com/v1/token", False, id="empty_leading_label"
+        ),
+        pytest.param(
+            "https://foo..googleapis.com/v1/token", False, id="empty_middle_label"
+        ),
+        pytest.param(
+            "https://evil.com@sts.googleapis.com/v1/token",
+            False,
+            id="userinfo_at",
+        ),
+        pytest.param(
+            "https://evil.com\\@sts.googleapis.com/v1/token",
+            False,
+            id="userinfo_backslash_at",
+        ),
+        pytest.param("https://sts.googleapis.com#evil.com", False, id="fragment_hash"),
+        pytest.param("https://[invalid/v1/token", False, id="malformed_url"),
+        pytest.param("", False, id="empty_string"),
+        pytest.param(None, False, id="none_input"),
+    ],
+)
+def test_has_default_universe_host(url, expected):
+    assert _helpers.has_default_universe_host(url) is expected
+
+
+@pytest.mark.parametrize(
+    "universe_domain",
+    [
+        "googleapis.com",
+        "example.com",
+        "my-universe.example.com",
+        "s3nsapis.fr",
+        "fake_universe_domain",
+    ],
+)
+def test_validate_universe_domain_valid(universe_domain):
+    _helpers.validate_universe_domain(universe_domain)
+
+
+@pytest.mark.parametrize(
+    "invalid_value",
+    [
+        None,
+        "",
+        "   ",
+        " example.com",
+        "example.com ",
+        "foo bar.com",
+        "example.com\n",
+        "example.com\x00",
+        "https://example.com",
+        "googleapis.com@evil.com",
+        "example.com/path",
+        "example.com\\path",
+        "example.com?q=1",
+        "example.com#frag",
+        "example.com:443",
+        "{}.evil.com",
+        "example.com}",
+        "[example.com]",
+        "example.com%2fevil.com",
+        "googleapis.com\uff20evil.com",
+        "example.com\uff0fpath",
+        ".",
+        ".example.com",
+        "example.com.",
+        "example..com",
+        b"googleapis.com",
+        False,
+        123,
+        [],
+    ],
+)
+def test_validate_universe_domain_invalid(invalid_value):
+    with pytest.raises(
+        exceptions.InvalidValue,
+        match="Universe domain must be a valid non-empty domain string",
+    ):
+        _helpers.validate_universe_domain(invalid_value)
