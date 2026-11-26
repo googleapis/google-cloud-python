@@ -14,8 +14,10 @@
 
 """Client for interacting with the Google Cloud RuntimeConfig API."""
 
-import google.api_core.client_options
-from google.cloud.client import ClientWithProject
+from google.cloud.client import (
+    ClientWithProject,
+    _validate_credentials_universe,
+)
 
 from google.cloud.runtimeconfig._http import Connection
 from google.cloud.runtimeconfig.config import Config
@@ -53,7 +55,8 @@ class Client(ClientWithProject):
     :type client_options: :class:`~google.api_core.client_options.ClientOptions`
         or :class:`dict`
     :param client_options: (Optional) Client options used to set user options
-        on the client. API Endpoint should be set through client_options.
+        on the client. A non-default universe domain or API endpoint should be
+        set through client_options.
     """
 
     SCOPE = ("https://www.googleapis.com/auth/cloudruntimeconfig",)
@@ -68,20 +71,13 @@ class Client(ClientWithProject):
         client_options=None,
     ):
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http
+            project=project,
+            credentials=credentials,
+            client_options=client_options,
+            _http=_http,
         )
-
-        kw_args = {"client_info": client_info}
-        if client_options:
-            if isinstance(client_options, dict):
-                client_options = google.api_core.client_options.from_dict(
-                    client_options
-                )
-            if client_options.api_endpoint:
-                api_endpoint = client_options.api_endpoint
-                kw_args["api_endpoint"] = api_endpoint
-
-        self._connection = Connection(self, **kw_args)
+        _validate_credentials_universe(self._universe_domain, self._credentials)
+        self._connection = Connection(self, client_info=client_info)
 
     def config(self, config_name):
         """Factory constructor for config object.
