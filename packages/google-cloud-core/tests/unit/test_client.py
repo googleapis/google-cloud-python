@@ -23,7 +23,12 @@ from google.cloud.client import HAS_GOOGLE_AUTH_API_KEY
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(spec=google.auth.credentials.CredentialsWithQuotaProject)
+    credentials = mock.Mock(
+        spec=google.auth.credentials.CredentialsWithQuotaProject,
+        universe_domain="googleapis.com",
+    )
+    credentials.with_quota_project.return_value.universe_domain = "googleapis.com"
+    return credentials
 
 
 class Test_ClientFactoryMixin(unittest.TestCase):
