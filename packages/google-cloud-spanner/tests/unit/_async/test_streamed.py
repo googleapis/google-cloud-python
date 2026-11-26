@@ -799,7 +799,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual([i async for i in streamed], [])
+        self.assertEqual(streamed._rows, [])
         self.assertEqual(streamed._current_row, BARE)
 
     @CrossSync.pytest
@@ -845,7 +845,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual([i async for i in streamed], [BARE[0:3], BARE[3:6]])
+        self.assertEqual(streamed._rows, [BARE[0:3], BARE[3:6]])
         self.assertEqual(streamed._current_row, BARE[6:])
 
     @CrossSync.pytest
@@ -863,7 +863,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         BEFORE = ["Phred Phlyntstone"]
         streamed._current_row[:] = BEFORE
         streamed._merge_values([])
-        self.assertEqual([i async for i in streamed], [])
+        self.assertEqual(streamed._rows, [])
         self.assertEqual(streamed._current_row, BEFORE)
 
     @CrossSync.pytest
@@ -883,7 +883,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         MERGED = [42]
         TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
-        self.assertEqual([i async for i in streamed], [])
+        self.assertEqual(streamed._rows, [])
         self.assertEqual(streamed._current_row, BEFORE + MERGED)
 
     @CrossSync.pytest
@@ -924,7 +924,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         TO_MERGE = [self._make_value(item) for item in MERGED]
         VALUES = BEFORE + MERGED
         streamed._merge_values(TO_MERGE)
-        self.assertEqual([i async for i in streamed], [VALUES[0:3], VALUES[3:6]])
+        self.assertEqual(streamed._rows, [VALUES[0:3], VALUES[3:6]])
         self.assertEqual(streamed._current_row, VALUES[6:])
 
     @CrossSync.pytest
@@ -1000,7 +1000,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         source = CrossSync.Mock(_transaction_id=None, spec=["_transaction_id"])
         streamed = self._make_one(iterator, source=source)
         await streamed._consume_next()
-        self.assertEqual([i async for i in streamed], [])
+        self.assertEqual(streamed._rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
 
@@ -1022,7 +1022,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         source = CrossSync.Mock(_transaction_id=TXN_ID, spec=["_transaction_id"])
         streamed = self._make_one(iterator, source=source)
         await streamed._consume_next()
-        self.assertEqual([i async for i in streamed], [])
+        self.assertEqual(streamed._rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
         self.assertEqual(source._transaction_id, TXN_ID)
@@ -1042,7 +1042,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         streamed = self._make_one(iterator)
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         await streamed._consume_next()
-        self.assertEqual([i async for i in streamed], [])
+        self.assertEqual(streamed._rows, [])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, VALUES[0])
 
@@ -1072,7 +1072,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         streamed._pending_chunk = self._make_value("Phred ")
         await streamed._consume_next()
         self.assertEqual(
-            [i async for i in streamed],
+            streamed._rows,
             [["Phred Phlyntstone", BARE[1], BARE[2]], [BARE[3], BARE[4], BARE[5]]],
         )
         self.assertEqual(streamed._current_row, [BARE[6]])
@@ -1113,6 +1113,7 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
     async def test___iter___one_result_set_partial(self):
         from google.protobuf.struct_pb2 import Value
 
+        from google.cloud import exceptions
         from google.cloud.spanner_v1 import TypeCode
 
         FIELDS = [
@@ -1128,9 +1129,11 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         result_set = self._make_partial_result_set(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
-        found = [i async for i in streamed]
-        self.assertEqual(found, [])
-        self.assertEqual([i async for i in streamed], [])
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended with an incomplete row.",
+        ):
+            _ = [i async for i in streamed]
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
 
@@ -2921,6 +2924,417 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         self.assertEqual(len(res.list_value.values), 2)
         self.assertTrue(res.list_value.values[0].HasField("null_value"))
         self.assertEqual(res.list_value.values[1].string_value, "v1")
+
+    @CrossSync.pytest
+    async def test___iter___chunked_value_eof_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value("partial ")],
+            metadata=metadata,
+            chunked_value=True,
+            last=False,
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            _ = [row async for row in streamed]
+
+    @CrossSync.pytest
+    async def test___iter___chunked_value_last_flag_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [
+                self._make_value(1),
+                self._make_value("Alice"),
+                self._make_value(2),
+                self._make_value("Bob "),
+            ],
+            metadata=metadata,
+            chunked_value=True,
+            last=True,
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        first_rows = []
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            async for row in streamed:
+                first_rows.append(row)
+        self.assertEqual(first_rows, [[1, "Alice"]])
+        # Re-iteration after failure must yield 0 rows and still raise.
+        second_rows = []
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            async for row in streamed:
+                second_rows.append(row)
+        self.assertEqual(second_rows, [])
+
+    @CrossSync.pytest
+    async def test___iter___chunked_value_followed_by_empty_last_chunk_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+        chunk1 = self._make_partial_result_set(
+            [self._make_value("partial ")],
+            metadata=metadata,
+            chunked_value=True,
+            last=False,
+        )
+        chunk2 = self._make_partial_result_set([], chunked_value=False, last=True)
+        iterator = _MockCancellableIterator(chunk1, chunk2)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            _ = [row async for row in streamed]
+
+    @CrossSync.pytest
+    async def test___iter___empty_values_with_chunked_value_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+        chunk1 = self._make_partial_result_set(
+            [self._make_value("Alice")],
+            metadata=metadata,
+            chunked_value=False,
+            last=False,
+        )
+        chunk2 = self._make_partial_result_set([], chunked_value=True, last=False)
+        iterator = _MockCancellableIterator(chunk1, chunk2)
+        streamed = self._make_one(iterator)
+        first_rows = []
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Received chunked_value=True with empty values.",
+        ):
+            async for row in streamed:
+                first_rows.append(row)
+        self.assertEqual(first_rows, [["Alice"]])
+        # Sticky terminal error must still raise on re-iteration rather than returning [].
+        second_rows = []
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Received chunked_value=True with empty values.",
+        ):
+            async for row in streamed:
+                second_rows.append(row)
+        self.assertEqual(second_rows, [])
+
+    @CrossSync.pytest
+    async def test___iter___incomplete_row_last_flag_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value(1), self._make_value("Alice"), self._make_value(2)],
+            metadata=metadata,
+            last=True,
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        first_rows = []
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended with an incomplete row.",
+        ):
+            async for row in streamed:
+                first_rows.append(row)
+        self.assertEqual(first_rows, [[1, "Alice"]])
+        second_rows = []
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended with an incomplete row.",
+        ):
+            async for row in streamed:
+                second_rows.append(row)
+        self.assertEqual(second_rows, [])
+
+    @CrossSync.pytest
+    async def test___iter___missing_row_type_with_values_error(self):
+        from google.cloud import exceptions
+
+        metadata = self._make_result_set_metadata([])
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value(1)], metadata=metadata, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Missing row_type in PartialResultSet metadata.",
+        ):
+            _ = [row async for row in streamed]
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Missing row_type in PartialResultSet metadata.",
+        ):
+            _ = [row async for row in streamed]
+
+    @CrossSync.pytest
+    async def test___iter___missing_row_type_with_chunked_value_error(self):
+        from google.cloud import exceptions
+
+        partial_result_set = self._make_partial_result_set(
+            [], chunked_value=True, last=False
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Missing row_type in PartialResultSet metadata.",
+        ):
+            _ = [row async for row in streamed]
+
+    @CrossSync.pytest
+    async def test___iter___zero_columns_empty_values(self):
+        metadata = self._make_result_set_metadata([])
+        stats = self._make_result_set_stats(row_count_exact=3)
+        partial_result_set = self._make_partial_result_set(
+            [], metadata=metadata, stats=stats, last=True
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        found = [row async for row in streamed]
+        self.assertEqual(found, [])
+        self.assertEqual(streamed.stats, stats)
+
+    @CrossSync.pytest
+    async def test___iter___chunked_value_with_intermediate_empty_chunk(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+        chunk1 = self._make_partial_result_set(
+            [self._make_value("hello ")],
+            metadata=metadata,
+            chunked_value=True,
+            last=False,
+        )
+        chunk2 = self._make_partial_result_set([], chunked_value=False, last=False)
+        chunk3 = self._make_partial_result_set(
+            [self._make_value("world")], chunked_value=False, last=True
+        )
+        iterator = _MockCancellableIterator(chunk1, chunk2, chunk3)
+        streamed = self._make_one(iterator)
+        found = [row async for row in streamed]
+        self.assertEqual(found, [["hello world"]])
+
+    @CrossSync.pytest
+    async def test_one_or_none_chunked_value_eof_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value("partial ")],
+            metadata=metadata,
+            chunked_value=True,
+            last=False,
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            await streamed.one_or_none()
+        # Sticky terminal error must propagate across subsequent consumers.
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            _ = [row async for row in streamed]
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            await streamed.to_dict_list()
+
+    @CrossSync.pytest
+    async def test_one_or_none_chunked_value_last_flag_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value("complete"), self._make_value("partial ")],
+            metadata=metadata,
+            chunked_value=True,
+            last=True,
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            await streamed.one_or_none()
+
+    @CrossSync.pytest
+    async def test_one_or_none_incomplete_row_eof_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        chunk1 = self._make_partial_result_set(
+            [self._make_value(1), self._make_value("Alice")],
+            metadata=metadata,
+            last=False,
+        )
+        chunk2 = self._make_partial_result_set([self._make_value(2)], last=False)
+        iterator = _MockCancellableIterator(chunk1, chunk2)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended with an incomplete row.",
+        ):
+            await streamed.one_or_none()
+
+    @CrossSync.pytest
+    async def test_one_or_none_incomplete_row_last_flag_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value(1), self._make_value("Alice"), self._make_value(2)],
+            metadata=metadata,
+            last=True,
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended with an incomplete row.",
+        ):
+            await streamed.one_or_none()
+
+    @CrossSync.pytest
+    async def test_one_incomplete_row_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value(1)], metadata=metadata, last=False
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended with an incomplete row.",
+        ):
+            await streamed.one()
+
+    @CrossSync.pytest
+    async def test_to_dict_list_chunked_value_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+        partial_result_set = self._make_partial_result_set(
+            [self._make_value("Alice"), self._make_value("partial ")],
+            metadata=metadata,
+            chunked_value=True,
+            last=False,
+        )
+        iterator = _MockCancellableIterator(partial_result_set)
+        streamed = self._make_one(iterator)
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            await streamed.to_dict_list()
+
+    @CrossSync.pytest
+    async def test_one_or_none_after_terminal_error_raises_runtime_error(self):
+        from google.cloud import exceptions
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [self._make_scalar_field("name", TypeCode.STRING)]
+        metadata = self._make_result_set_metadata(fields)
+
+        chunked_stream = self._make_one(
+            _MockCancellableIterator(
+                self._make_partial_result_set(
+                    [self._make_value("partial ")],
+                    metadata=metadata,
+                    chunked_value=True,
+                    last=False,
+                )
+            )
+        )
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Stream ended while waiting for continuation of chunked value.",
+        ):
+            await chunked_stream.one_or_none()
+        with pytest.raises(
+            RuntimeError,
+            match="Can not call `.one` or `.one_or_none` after stream consumption has already started.",
+        ):
+            await chunked_stream.one_or_none()
+
+        empty_chunked_stream = self._make_one(
+            _MockCancellableIterator(
+                self._make_partial_result_set(
+                    [], metadata=metadata, chunked_value=True, last=False
+                )
+            )
+        )
+        with pytest.raises(
+            exceptions.InternalServerError,
+            match="Received chunked_value=True with empty values.",
+        ):
+            _ = [row async for row in empty_chunked_stream]
+        with pytest.raises(
+            RuntimeError,
+            match="Can not call `.one` or `.one_or_none` after stream consumption has already started.",
+        ):
+            await empty_chunked_stream.one_or_none()
 
     def _make_int_partial(self, values, *, with_metadata=False, last=False):
         from google.cloud.spanner_v1 import TypeCode

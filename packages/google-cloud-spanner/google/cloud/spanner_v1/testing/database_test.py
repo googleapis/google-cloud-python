@@ -22,9 +22,9 @@ from google.api_core import grpc_helpers
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE, Database
 from google.cloud.spanner_v1.services.spanner.client import SpannerClient
-from google.cloud.spanner_v1.services.spanner.transports import (
+from google.cloud.spanner_v1.services.spanner.transports import SpannerTransport
+from google.cloud.spanner_v1.services.spanner.transports.grpc import (
     SpannerGrpcTransport,
-    SpannerTransport,
 )
 from google.cloud.spanner_v1.testing.interceptors import (
     MethodAbortInterceptor,
@@ -52,6 +52,7 @@ class TestDatabase(Database):
         database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
         database_role=None,
         enable_drop_protection=False,
+        proto_descriptors=None,
     ):
         super().__init__(
             database_id,
@@ -63,6 +64,7 @@ class TestDatabase(Database):
             database_dialect,
             database_role,
             enable_drop_protection,
+            proto_descriptors,
         )
         self._method_count_interceptor = MethodCountInterceptor()
         self._method_abort_interceptor = MethodAbortInterceptor()
@@ -78,10 +80,15 @@ class TestDatabase(Database):
             client = self._instance._client
             client_info = client._client_info
             client_options = client._client_options
+            if (
+                not hasattr(self, "_x_goog_request_id_interceptor")
+                or self._x_goog_request_id_interceptor is None
+            ):
+                self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
+            if self._x_goog_request_id_interceptor not in self._interceptors:
+                self._interceptors.append(self._x_goog_request_id_interceptor)
             if self._instance.emulator_host is not None:
                 channel = grpc.insecure_channel(self._instance.emulator_host)
-                self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
-                self._interceptors.append(self._x_goog_request_id_interceptor)
                 channel = grpc.intercept_channel(channel, *self._interceptors)
                 transport = SpannerGrpcTransport(channel=channel)
                 self._spanner_api = SpannerClient(
@@ -89,8 +96,6 @@ class TestDatabase(Database):
                 )
                 return self._spanner_api
             if getattr(client, "instance_type", None) == "omni":
-                self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
-                self._interceptors.append(self._x_goog_request_id_interceptor)
                 from google.cloud.spanner_v1._helpers import (
                     _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
                 )
