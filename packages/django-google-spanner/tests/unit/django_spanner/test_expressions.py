@@ -19,8 +19,8 @@ class TestExpressions(SpannerSimpleTestClass):
         sql_compiled, _ = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_report.name AS name FROM tests_report ORDER BY "
-            + "tests_report.name IS NULL, tests_report.name DESC",
+            "SELECT `tests_report`.`name` AS `name` FROM `tests_report` ORDER BY "
+            + "`tests_report`.`name` IS NULL, `tests_report`.`name` DESC",
         )
 
     def test_order_by_sql_query_with_order_by_null_first(self):
@@ -29,8 +29,8 @@ class TestExpressions(SpannerSimpleTestClass):
         sql_compiled, _ = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_report.name AS name FROM tests_report ORDER BY "
-            + "tests_report.name IS NOT NULL, tests_report.name DESC",
+            "SELECT `tests_report`.`name` AS `name` FROM `tests_report` ORDER BY "
+            + "`tests_report`.`name` IS NOT NULL, `tests_report`.`name` DESC",
         )
 
     def test_order_by_sql_query_with_order_by_name(self):
@@ -39,5 +39,6 @@ class TestExpressions(SpannerSimpleTestClass):
         sql_compiled, _ = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_report.name AS name FROM tests_report ORDER BY " + "1 ASC",
+            "SELECT `tests_report`.`name` AS `name` FROM `tests_report` ORDER BY "
+            + "1 ASC",
         )

@@ -38,8 +38,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.name AS name, SUBSTR(CAST(tests_author.name AS "
-            + "STRING), 0, 10) AS name_as_prefix FROM tests_author",
+            "SELECT `tests_author`.`name` AS `name`, SUBSTR(CAST(`tests_author`.`name` AS "
+            + "STRING), 0, 10) AS `name_as_prefix` FROM `tests_author`",
         )
         self.assertEqual(params, ())
 
@@ -54,8 +54,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.num AS num, CAST(tests_author.num AS FLOAT64) "
-            + "AS num_as_float FROM tests_author",
+            "SELECT `tests_author`.`num` AS `num`, CAST(`tests_author`.`num` AS FLOAT64) "
+            + "AS `num_as_float` FROM `tests_author`",
         )
         self.assertEqual(params, ())
 
@@ -70,9 +70,9 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.name AS name, CONCAT(IFNULL(tests_author.name, %s), "
-            + "IFNULL(CONCAT(IFNULL(%s, %s), IFNULL(tests_author.last_name, "
-            + "%s)), %s)) AS full_name FROM tests_author",
+            "SELECT `tests_author`.`name` AS `name`, CONCAT(IFNULL(`tests_author`.`name`, %s), "
+            + "IFNULL(CONCAT(IFNULL(%s, %s), IFNULL(`tests_author`.`last_name`, "
+            + "%s)), %s)) AS `full_name` FROM `tests_author`",
         )
         self.assertEqual(params, ("", " ", "", "", ""))
 
@@ -87,8 +87,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.num AS num, (1 / TAN(tests_author.num)) AS num_cot "
-            + "FROM tests_author",
+            "SELECT `tests_author`.`num` AS `num`, (1 / TAN(`tests_author`.`num`)) AS `num_cot` "
+            + "FROM `tests_author`",
         )
         self.assertEqual(params, ())
 
@@ -103,8 +103,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.num AS num, ((tests_author.num) * 180 / "
-            + "3.141592653589793) AS num_degrees FROM tests_author",
+            "SELECT `tests_author`.`num` AS `num`, ((`tests_author`.`num`) * 180 / "
+            + "3.141592653589793) AS `num_degrees` FROM `tests_author`",
         )
         self.assertEqual(params, ())
 
@@ -119,8 +119,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.num AS num, SUBSTR(tests_author.name, %s, %s) AS "
-            + "first_initial FROM tests_author",
+            "SELECT `tests_author`.`num` AS `num`, SUBSTR(`tests_author`.`name`, %s, %s) AS "
+            + "`first_initial` FROM `tests_author`",
         )
         self.assertEqual(params, (1, 1))
 
@@ -135,8 +135,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.num AS num, SUBSTR(tests_author.name, (%s * %s), %s) "
-            + "AS last_letter FROM tests_author",
+            "SELECT `tests_author`.`num` AS `num`, SUBSTR(`tests_author`.`name`, (%s * %s), %s) "
+            + "AS `last_letter` FROM `tests_author`",
         )
         self.assertEqual(params, (1, -1, 1))
 
@@ -150,8 +150,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.num AS num, LOG(%s, tests_author.num) AS log FROM "
-            + "tests_author",
+            "SELECT `tests_author`.`num` AS `num`, LOG(%s, `tests_author`.`num`) AS `log` FROM "
+            + "`tests_author`",
         )
         self.assertEqual(params, (10,))
 
@@ -165,8 +165,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.name AS name, TO_CODE_POINTS(tests_author.name)"
-            + "[OFFSET(0)] AS name_code_point FROM tests_author",
+            "SELECT `tests_author`.`name` AS `name`, TO_CODE_POINTS(`tests_author`.`name`)"
+            + "[OFFSET(0)] AS `name_code_point` FROM `tests_author`",
         )
         self.assertEqual(params, ())
 
@@ -179,7 +179,7 @@ class TestUtils(SpannerSimpleTestClass):
         compiler = SQLCompiler(q1.query, self.connection, "default")
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         expected_sql = (
-            "SELECT tests_author.num AS num FROM tests_author WHERE tests_author.num "
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE `tests_author`.`num` "
             + "= (3.141592653589793)"
         )
         self.assertEqual(
@@ -198,8 +198,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.num AS num, ((tests_author.num) * 3.141592653589793 "
-            "/ 180) AS num_radians FROM tests_author",
+            "SELECT `tests_author`.`num` AS `num`, ((`tests_author`.`num`) * 3.141592653589793 "
+            "/ 180) AS `num_radians` FROM `tests_author`",
         )
         self.assertEqual(params, ())
 
@@ -215,8 +215,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.name AS name, STRPOS(tests_author.name, %s) AS "
-            + "smith_index FROM tests_author",
+            "SELECT `tests_author`.`name` AS `name`, STRPOS(`tests_author`.`name`, %s) AS "
+            + "`smith_index` FROM `tests_author`",
         )
         self.assertEqual(params, ("Smith",))
 
@@ -230,8 +230,8 @@ class TestUtils(SpannerSimpleTestClass):
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
             sql_query,
-            "SELECT tests_author.name AS name, SUBSTR(tests_author.name, %s, %s) AS "
-            + "name_prefix FROM tests_author",
+            "SELECT `tests_author`.`name` AS `name`, SUBSTR(`tests_author`.`name`, %s, %s) AS "
+            + "`name_prefix` FROM `tests_author`",
         )
         self.assertEqual(params, (1, 5))
 
@@ -360,7 +360,7 @@ class TestUtils(SpannerSimpleTestClass):
         query_sql, query_params = SQLCompiler(
             queryset.query, self.connection, "default"
         ).as_sql()
-        self.assertIn("CAST(NULL AS STRING) AS null_text", query_sql)
-        self.assertIn("COALESCE(CAST(NULL AS STRING), %s) AS coalesced", query_sql)
-        self.assertIn("ELSE CAST(NULL AS STRING) END AS cased", query_sql)
+        self.assertIn("CAST(NULL AS STRING) AS `null_text`", query_sql)
+        self.assertIn("COALESCE(CAST(NULL AS STRING), %s) AS `coalesced`", query_sql)
+        self.assertIn("ELSE CAST(NULL AS STRING) END AS `cased`", query_sql)
         self.assertEqual(query_params, ("fallback", 0, "ok"))

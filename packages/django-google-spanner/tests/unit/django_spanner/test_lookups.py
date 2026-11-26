@@ -24,8 +24,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_number.decimal_num AS decimal_num FROM tests_number WHERE "
-            + "tests_number.decimal_num <= %s",
+            "SELECT `tests_number`.`decimal_num` AS `decimal_num` FROM `tests_number` WHERE "
+            + "`tests_number`.`decimal_num` <= %s",
         )
         self.assertEqual(params, (Decimal("1.1"),))
 
@@ -36,8 +36,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_number.num AS num FROM tests_number WHERE "
-            + "tests_number.num <= %s",
+            "SELECT `tests_number`.`num` AS `num` FROM `tests_number` WHERE "
+            + "`tests_number`.`num` <= %s",
         )
         self.assertEqual(params, (1,))
 
@@ -47,8 +47,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_number.num AS num FROM tests_number WHERE "
-            + "tests_number.item_id = %s",
+            "SELECT `tests_number`.`num` AS `num` FROM `tests_number` WHERE "
+            + "`tests_number`.`item_id` = %s",
         )
         self.assertEqual(params, (10,))
 
@@ -57,8 +57,8 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
-            "SELECT tests_number.num AS num FROM tests_number WHERE "
-            + "tests_number.item_id = (tests_number.num)"
+            "SELECT `tests_number`.`num` AS `num` FROM `tests_number` WHERE "
+            + "`tests_number`.`item_id` = (`tests_number`.`num`)"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ())
@@ -69,8 +69,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("^abc",))
 
@@ -80,8 +80,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("abc$",))
 
@@ -91,8 +91,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("(?i)^abc",))
 
@@ -102,8 +102,8 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
-            "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+            "SELECT `tests_author`.`name` AS `name` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(UPPER(`tests_author`.`name`) AS STRING), "
             + "REPLACE(REPLACE(REPLACE(CONCAT('^', (UPPER(%s))), "
             + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
         )
@@ -116,8 +116,8 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
-            "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+            "SELECT `tests_author`.`name` AS `name` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(UPPER(`tests_author`.`name`) AS STRING), "
             + "REPLACE(REPLACE(REPLACE(CONCAT('^(?i)', (UPPER(%s))), "
             + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
         )
@@ -131,8 +131,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
 
         expected_sql = (
-            "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+            "SELECT `tests_author`.`name` AS `name` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(UPPER(`tests_author`.`name`) AS STRING), "
             + "REPLACE(REPLACE(REPLACE(CONCAT('', (UPPER(%s)), '$'), "
             + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
         )
@@ -145,8 +145,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("abc",))
 
@@ -156,8 +156,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("(?i)abc",))
 
@@ -167,8 +167,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
 
         expected_sql = (
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(UPPER(`tests_author`.`name`) AS STRING), "
             + "(UPPER(%s)))"
         )
         self.assertEqual(sql_compiled, expected_sql)
@@ -180,8 +180,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
 
         expected_sql = (
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(UPPER(`tests_author`.`name`) AS STRING), "
             + "CONCAT('(?i)', (UPPER(%s))))"
         )
         self.assertEqual(sql_compiled, expected_sql)
@@ -193,8 +193,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("(?i)abc",))
 
@@ -204,8 +204,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("abc",))
 
@@ -214,8 +214,8 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
-            "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+            "SELECT `tests_author`.`name` AS `name` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(UPPER(`tests_author`.`name`) AS STRING), "
             + "REPLACE(REPLACE(REPLACE(CONCAT('(?i)', (UPPER(%s))), "
             + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
         )
@@ -227,8 +227,8 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
-            "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+            "SELECT `tests_author`.`name` AS `name` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(UPPER(`tests_author`.`name`) AS STRING), "
             + 'REPLACE(REPLACE(REPLACE((UPPER(%s)), "\\\\", "\\\\\\\\"), '
             + '"%%", r"\\%%"), "_", r"\\_"))'
         )
@@ -242,8 +242,8 @@ class TestLookups(SpannerSimpleTestClass):
 
         self.assertEqual(
             sql_compiled,
-            "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "SELECT `tests_author`.`num` AS `num` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS(CAST(`tests_author`.`name` AS STRING), %s)",
         )
         self.assertEqual(params, ("^(?i)abc$",))
 
@@ -253,9 +253,9 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
 
         expected_sql = (
-            "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS((UPPER(tests_author.last_name)), "
-            + "CONCAT('^(?i)', CAST(UPPER(tests_author.name) AS STRING), '$'))"
+            "SELECT `tests_author`.`name` AS `name` FROM `tests_author` WHERE "
+            + "REGEXP_CONTAINS((UPPER(`tests_author`.`last_name`)), "
+            + "CONCAT('^(?i)', CAST(UPPER(`tests_author`.`name`) AS STRING), '$'))"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ())
@@ -266,9 +266,9 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
 
         expected_sql = (
-            "SELECT tests_author.name AS name FROM tests_author WHERE "
+            "SELECT `tests_author`.`name` AS `name` FROM `tests_author` WHERE "
             + "REGEXP_CONTAINS((UPPER(CONCAT('^(?i)', "
-            + "CAST(UPPER(tests_author.name) AS STRING), '$'))), %s)"
+            + "CAST(UPPER(`tests_author`.`name`) AS STRING), '$'))), %s)"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))

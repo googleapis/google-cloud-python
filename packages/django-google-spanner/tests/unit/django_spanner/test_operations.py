@@ -31,7 +31,7 @@ class TestOperations(SpannerSimpleTestClass):
 
     def test_quote_name(self):
         quoted_name = self.db_operations.quote_name("abc")
-        self.assertEqual(quoted_name, "abc")
+        self.assertEqual(quoted_name, "`abc`")
 
     def test_quote_name_empty_string(self):
         self.assertEqual(self.db_operations.quote_name(""), "")
@@ -39,7 +39,9 @@ class TestOperations(SpannerSimpleTestClass):
     def test_quote_name_regular_identifiers(self):
         for identifier in ("_", "_col_1", "TestsAuthor", "col123", "table", "value"):
             with self.subTest(identifier=identifier):
-                self.assertEqual(self.db_operations.quote_name(identifier), identifier)
+                self.assertEqual(
+                    self.db_operations.quote_name(identifier), f"`{identifier}`"
+                )
 
     def test_quote_name_spanner_reserved_keyword_escaped(self):
         quoted_name = self.db_operations.quote_name("ALL")
@@ -265,14 +267,14 @@ class TestOperations(SpannerSimpleTestClass):
             {"RUNNING_SPANNER_BACKEND_TESTS": "1"},
         ):
             self.assertEqual(
-                self.db_operations.quote_name("my col-name"), "my_col_name"
+                self.db_operations.quote_name("my col-name"), "`my_col_name`"
             )
             self.assertEqual(self.db_operations.quote_name("SELECT"), "`SELECT`")
             self.assertEqual(
                 self.db_operations.quote_name("my-col.name"), "`my_col.name`"
             )
-            self.assertEqual(self.db_operations.quote_name("my-select"), "my_select")
-            self.assertEqual(self.db_operations.quote_name("ALL "), "ALL_")
+            self.assertEqual(self.db_operations.quote_name("my-select"), "`my_select`")
+            self.assertEqual(self.db_operations.quote_name("ALL "), "`ALL_`")
             self.assertEqual(
                 self.db_operations.quote_name("my col`; DROP TABLE t"),
                 r"`my_col\x60;_DROP_TABLE_t`",
@@ -281,10 +283,10 @@ class TestOperations(SpannerSimpleTestClass):
             self.assertEqual(self.db_operations.quote_name("a b\nc"), r"`a_b\nc`")
             self.assertEqual(self.db_operations.quote_name("`already`"), "`already`")
             self.assertEqual(self.db_operations.quote_name(""), "")
-            self.assertEqual(self.db_operations.quote_name("   "), "___")
+            self.assertEqual(self.db_operations.quote_name("   "), "`___`")
             self.assertEqual(
                 self.db_operations.quote_name("Generated model check constraint a > 0"),
-                "Generated_model_check_constraint_a___0",
+                "`Generated_model_check_constraint_a___0`",
             )
             for sample in ("my col-name", "SELECT", "`a b-c`", "a b\nc"):
                 once = self.db_operations.quote_name(sample)
@@ -316,7 +318,7 @@ class TestOperations(SpannerSimpleTestClass):
     def test_sql_flush(self):
         self.assertEqual(
             self.db_operations.sql_flush(style=no_style(), tables=["Table1", "Table2"]),
-            ["DELETE FROM Table1 WHERE 1=1", "DELETE FROM Table2 WHERE 1=1"],
+            ["DELETE FROM `Table1` WHERE 1=1", "DELETE FROM `Table2` WHERE 1=1"],
         )
 
     def test_sql_flush_empty_table_list(self):
@@ -684,12 +686,12 @@ class TestOperations(SpannerSimpleTestClass):
         field1 = mock.MagicMock(column="id")
         field2 = mock.MagicMock(column="name")
         sql, params = self.db_operations.returning_columns([field1, field2])
-        self.assertEqual(sql, "THEN RETURN id, name")
+        self.assertEqual(sql, "THEN RETURN `id`, `name`")
         self.assertEqual(params, ())
 
     def test_returning_columns_with_strings(self):
         sql, params = self.db_operations.returning_columns(["id", "created_at"])
-        self.assertEqual(sql, "THEN RETURN id, created_at")
+        self.assertEqual(sql, "THEN RETURN `id`, `created_at`")
         self.assertEqual(params, ())
 
     def test_returning_columns_empty(self):
@@ -700,7 +702,7 @@ class TestOperations(SpannerSimpleTestClass):
     def test_return_insert_columns_alias(self):
         field = mock.MagicMock(column="id")
         sql, params = self.db_operations.return_insert_columns([field])
-        self.assertEqual(sql, "THEN RETURN id")
+        self.assertEqual(sql, "THEN RETURN `id`")
         self.assertEqual(params, ())
 
     def test_savepoint_sql(self):
