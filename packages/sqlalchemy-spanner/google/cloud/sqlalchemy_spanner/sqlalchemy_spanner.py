@@ -14,7 +14,7 @@
 import base64
 import collections.abc
 import re
-from typing import Any, Callable, Union
+from typing import Any, Callable, Optional, Union
 
 import sqlalchemy
 from google.api_core.client_options import ClientOptions
@@ -123,6 +123,98 @@ def _escape_spanner_string_literal(value, dialect=None):
     return f'"{escaped}"'
 
 
+# Characters that cannot safely use SQLAlchemy's default single-quoted literal
+# processor ('...'). In GoogleSQL, backslashes act as escape characters inside
+# single-quoted strings—for example, "\' OR 1=1 --" would escape the closing
+# quote—and multiline or quoted values need raw triple quotes or explicit
+# double-quoted escaping.
+_STRING_CHARS_REQUIRING_SPANNER_QUOTING = ("\\", "'", '"', "\n", "\t", "\r")
+
+
+def _has_control_characters_disallowed_in_raw_string(value: str) -> bool:
+    r'''Return True if value has ASCII control chars unsafe in r"""...""".
+
+    Unlike standard double-quoted GoogleSQL strings (which reject all raw
+    ASCII control characters ``0x00``–``0x1F`` and ``0x7F``), raw triple-quoted
+    strings (``r"""..."""``) preserve literal newlines (``\n``, ``0x0A``) and
+    tabs (``\t``, ``0x09``). All other control characters—such as NUL
+    (``\x00``), carriage return (``\r``, ``0x0D``, which line-ending
+    normalization can alter), and DEL (``\x7f``)—must be escaped inside a
+    double-quoted literal instead.
+
+    Example:
+        ``"a\nb\tc"`` returns ``False``; ``"a\x00b"`` and ``"a\rb"`` return
+        ``True``.
+    '''
+    return any(
+        # Check C0 control characters (0x00..0x1F) excluding \n and \t, plus DEL (0x7F).
+        (ord(character) < 0x20 and character not in ("\n", "\t"))
+        or ord(character) == 0x7F
+        for character in value
+    )
+
+
+def _render_special_spanner_string_literal(value: str, dialect: Any) -> Optional[str]:
+    r'''Render a string with special characters as a safe GoogleSQL literal.
+
+    SQLAlchemy's default string literal processor wraps values in single quotes
+    and only escapes ``'`` as ``''``. Because GoogleSQL treats ``\`` as an
+    escape prefix inside ``'...'``, values containing backslashes, quotes, or
+    control characters must be formatted differently:
+
+    * Prefer a raw triple-quoted string when safe, doubling ``%`` to ``%%`` if
+      pyformat parameter escaping is enabled.
+    * Fall back to a double-quoted escaped string when ``value`` contains
+      disallowed control characters, embeds ``"""``, or ends with ``"`` or
+      ``\``.
+
+    Returns ``None`` for plain strings without special characters so the caller
+    can delegate to SQLAlchemy's standard single-quoted literal processor.
+
+    Example:
+        ``r"\' OR 1=1 --"`` -> ``r"""\' OR 1=1 --"""``;
+        ``"has\x00null"`` -> ``"has\u0000null"``;
+        ``"plain"`` -> ``None``.
+    '''
+    has_disallowed_control_characters = (
+        _has_control_characters_disallowed_in_raw_string(value)
+    )
+    needs_special_quoting = has_disallowed_control_characters or any(
+        character in value for character in _STRING_CHARS_REQUIRING_SPANNER_QUOTING
+    )
+    if not needs_special_quoting:
+        return None
+
+    # Raw triple-quoted strings cannot safely contain '"""', end with '"' or
+    # '\' (which interferes with the closing '"""' delimiter), or preserve ASCII
+    # control characters other than '\n' and '\t'.
+    if (
+        has_disallowed_control_characters
+        or '"""' in value
+        or value.endswith('"')
+        or value.endswith("\\")
+    ):
+        return _escape_spanner_string_literal(value, dialect)
+
+    if dialect.identifier_preparer._double_percents:
+        value = value.replace("%", "%%")
+    return f'r"""{value}"""'
+
+
+def _unwrap_sqlalchemy_type(type_: Any, dialect: Any) -> Any:
+    """Unwrap TypeDecorator and Variant wrappers to the core SQLAlchemy type.
+
+    Example:
+        A ``TypeDecorator`` wrapping ``LargeBinary`` or
+        ``String().with_variant(LargeBinary(), "spanner+spanner")`` unwraps to
+        ``SpannerLargeBinary`` (a ``types._Binary`` subclass).
+    """
+    resolved_type = type_.dialect_impl(dialect)
+    while isinstance(resolved_type, TypeDecorator):
+        resolved_type = resolved_type.impl_instance.dialect_impl(dialect)
+    return resolved_type
+
+
 def _is_json_path_sequence(value):
     """Return True if value is a sequence of JSON path steps (not str/bytes)."""
     return not isinstance(value, (str, bytes, bytearray)) and isinstance(
@@ -174,28 +266,65 @@ class SpannerJSONPathType(_FormatTypeMixin, types.JSON.JSONPathType):
     """Format a JSON path sequence for Spanner JSON_VALUE path."""
 
 
+# Precomputed 256-entry lookup table mapping each byte (0x00..0xFF) to its
+# safe representation inside a double-quoted GoogleSQL BYTES literal (b"...").
+#
+# Printable ASCII bytes (0x20 ' ' through 0x7E '~') are emitted literally,
+# except for four characters that are hex-escaped as \xHH:
+#   - 0x22 ('"') : closing delimiter of b"..." (e.g. b'a"b' -> b"a\x22b");
+#                  using \x22 instead of \" also ensures DDL splitters like
+#                  sqlparse never mistake an escaped quote for the end of b"..."
+#   - 0x5C ('\\'): GoogleSQL escape prefix (e.g. b"a\\b" -> b"a\x5cb")
+#   - 0x27 ("'") : escaped defensively so payloads like b"\\' OR 1=1 --"
+#                  render as b"\x5c\x27 OR 1=1 --" with no raw quotes
+#   - 0x25 ('%') : escaped as \x25 so literals like b"%s" render as b"\x25s"
+#                  and cannot be mistaken for pyformat placeholders by
+#                  spanner_dbapi
+#
+# Non-printable control bytes (0x00..0x1F, 0x7F) and non-ASCII bytes
+# (0x80..0xFF) are always emitted as \xHH hex escapes rather than raw bytes
+# (e.g. b"\n" -> b"\x0a", bytes([0, 255]) -> b"\x00\xff").
 _SPANNER_BYTES_ESCAPE_TABLE = tuple(
     chr(byte)
-    if 0x20 <= byte <= 0x7E and byte not in (0x22, 0x25, 0x27, 0x5C)
+    if (0x20 <= byte <= 0x7E and byte not in (ord('"'), ord("%"), ord("'"), ord("\\")))
     else f"\\x{byte:02x}"
     for byte in range(256)
 )
 
 
 def _escape_spanner_bytes_literal(value: Union[bytes, bytearray, memoryview]) -> str:
-    """Escape a bytes-like value as a double-quoted GoogleSQL BYTES literal."""
+    r"""Escape a bytes-like value as a double-quoted GoogleSQL BYTES literal.
+
+    Example:
+        ``rb"\' OR 1=1 --"`` becomes ``b"\x5c\x27 OR 1=1 --"`` and
+        ``b"\n%s"`` becomes ``b"\x0a\x25s"``.
+    """
     if not isinstance(value, (bytes, bytearray, memoryview)):
         raise TypeError(
             f"Expected bytes-like object for binary literal, got {type(value).__name__}"
         )
     if isinstance(value, memoryview):
+        # Flatten multi-dimensional or non-byte-typed memoryviews (such as
+        # memoryview(b"abcd").cast("I")) into raw byte values before indexing.
         value = value.tobytes()
     escaped = "".join(_SPANNER_BYTES_ESCAPE_TABLE[byte] for byte in value)
     return f'b"{escaped}"'
 
 
 class _SpannerBytesLiteralMixin:
+    """Mixin overriding literal_processor to render GoogleSQL b"..." literals.
+
+    SQLAlchemy's default binary literal processor decodes bytes as UTF-8 and
+    wraps them in single quotes, which fails on non-UTF-8 bytes and allows
+    backslash-quote SQL injection in GoogleSQL. Attaching this mixin via
+    SpannerDialect.colspecs ensures LargeBinary, BINARY, VARBINARY, BLOB
+    (a LargeBinary subclass), ARRAY(LargeBinary), TypeDecorator wrappers, and
+    Variant types all format BYTES literals consistently.
+    """
+
     def literal_processor(self, dialect: Any) -> Callable[[Any], str]:
+        """Return a processor that formats bytes-like values as b"..."."""
+
         def process(value: Any) -> str:
             if value is None:
                 return "NULL"
@@ -532,17 +661,11 @@ class SpannerSQLCompiler(SQLCompiler):
         return self._json_value_binary(binary, **kw)
 
     def render_literal_value(self, value, type_):
-        """Render the value of a bind parameter as a quoted literal.
+        """Render the value of a bind parameter as a GoogleSQL literal.
 
-        This is used for statement sections that do not accept bind parameters
-        on the target driver/database.
-
-        This should be implemented by subclasses using the quoting services
-        of the DBAPI.
-
-        Cloud spanner supports prefixed backslash to escape non-alphanumeric characters
-        in string. Override the method to add  additional escape before using it to
-        generate a SQL statement.
+        This is used when SQLAlchemy embeds literal values directly into SQL
+        (for example with ``literal_binds=True``, ``literal_execute=True``,
+        column ``DEFAULT`` clauses, or ``Computed`` columns).
         """
         if value is None and not type_.should_evaluate_none:
             # issue #10535 - handle NULL in the compiler without placing
@@ -550,30 +673,24 @@ class SpannerSQLCompiler(SQLCompiler):
             # (e.g. JSON)
             return self.process(elements.Null._instance())
 
-        inner_type = type_.dialect_impl(self.dialect)
-        while isinstance(inner_type, TypeDecorator):
-            inner_type = inner_type.impl_instance.dialect_impl(self.dialect)
+        # Resolve TypeDecorator and Variant wrappers to the underlying Spanner
+        # type so we know whether a Python str belongs to a string column or
+        # will be converted by a wrapper (for example, a TypeDecorator over
+        # LargeBinary that accepts str inputs and encodes them in bind_param).
+        underlying_type = _unwrap_sqlalchemy_type(type_, self.dialect)
 
+        # Only apply GoogleSQL string-literal escaping to genuine string types.
+        # Binary and JSON path types have dedicated literal processors (such as
+        # b"..." or JSONPath formatting) and must pass through below.
         if isinstance(value, str) and not isinstance(
-            inner_type,
+            underlying_type,
             (types._Binary, types.JSON.JSONIndexType, types.JSON.JSONPathType),
         ):
-            raw = ("\\", "'", '"', "\n", "\t", "\r")
-            has_ctrl = any(
-                (ord(ch) < 0x20 and ch not in ("\n", "\t")) or ord(ch) == 0x7F
-                for ch in value
+            rendered_string = _render_special_spanner_string_literal(
+                value, self.dialect
             )
-            if has_ctrl or any(single in value for single in raw):
-                if (
-                    has_ctrl
-                    or '"""' in value
-                    or value.endswith('"')
-                    or value.endswith("\\")
-                ):
-                    return _escape_spanner_string_literal(value, self.dialect)
-                if self.dialect.identifier_preparer._double_percents:
-                    value = value.replace("%", "%%")
-                return 'r"""{}"""'.format(value)
+            if rendered_string is not None:
+                return rendered_string
 
         processor = type_._cached_literal_processor(self.dialect)
         if processor:
@@ -1067,6 +1184,9 @@ class SpannerDialect(DefaultDialect):
     colspecs = {
         types.JSON.JSONIndexType: SpannerJSONIndexType,
         types.JSON.JSONPathType: SpannerJSONPathType,
+        # Override binary types (and subclasses such as BLOB via LargeBinary)
+        # so SQL literal rendering produces GoogleSQL b"..." literals instead
+        # of SQLAlchemy's single-quoted UTF-8 fallback.
         types.LargeBinary: SpannerLargeBinary,
         types.BINARY: SpannerBINARY,
         types.VARBINARY: SpannerVARBINARY,

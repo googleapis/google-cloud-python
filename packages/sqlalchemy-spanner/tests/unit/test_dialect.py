@@ -19,6 +19,7 @@ from unittest.mock import MagicMock
 
 import pytest
 import sqlalchemy as sa
+import sqlparse
 from google.cloud.spanner_dbapi import parse_utils
 from sqlalchemy.sql.compiler import OPERATORS
 from sqlalchemy.sql.operators import json_getitem_op
@@ -352,6 +353,14 @@ class TestSpannerDialect(fixtures.TestBase):
             '"has\\u0000null"',
         )
         eq_(
+            compiler.render_literal_value("has\x7fdel", sa.String()),
+            '"has\\u007fdel"',
+        )
+        eq_(
+            compiler.render_literal_value("has\nnewline\tand\ttab", sa.String()),
+            'r"""has\nnewline\tand\ttab"""',
+        )
+        eq_(
             compiler.render_literal_value('100% "quoted" mid', sa.String()),
             'r"""100%% "quoted" mid"""',
         )
@@ -369,6 +378,7 @@ class TestSpannerDialect(fixtures.TestBase):
             ),
             (bytearray(b"a\x00\xff"), 'b"a\\x00\\xff"'),
             (memoryview(b"a\x00\xff"), 'b"a\\x00\\xff"'),
+            # Non-byte-format and multi-dimensional memoryviews must flatten to bytes
             (memoryview(b"abcd").cast("I"), 'b"abcd"'),
             (memoryview(b"abcd").cast("B", (2, 2)), 'b"abcd"'),
             (None, "NULL"),
@@ -625,6 +635,7 @@ class TestSpannerDialect(fixtures.TestBase):
     def test_binary_literal_in_computed_and_default_ddl(self):
         """CREATE TABLE preserves BYTES types and escapes DEFAULT/Computed."""
         dialect = SpannerDialect(paramstyle="format")
+        semicolon_payload = b'"; DROP TABLE users; --'
         items = sa.Table(
             "items",
             sa.MetaData(),
@@ -641,12 +652,22 @@ class TestSpannerDialect(fixtures.TestBase):
                 sa.LargeBinary,
                 sa.Computed(sa.func.coalesce(sa.column("payload"), rb"\' OR 1=1 --")),
             ),
+            sa.Column(
+                "semicolon_blob",
+                sa.LargeBinary,
+                server_default=sa.DefaultClause(sa.literal(semicolon_payload)),
+            ),
         )
         ddl = str(sa.schema.CreateTable(items).compile(dialect=dialect))
         assert "payload BYTES(20)" in ddl
         assert "fixed BYTES(16)" in ddl
         assert 'default_blob BYTES(MAX) DEFAULT (b"\\x5c\\x27 OR 1=1 --")' in ddl
         assert 'AS (coalesce(payload, b"\\x5c\\x27 OR 1=1 --")) STORED' in ddl
+        assert (
+            'semicolon_blob BYTES(MAX) DEFAULT (b"\\x22; DROP TABLE users; --")' in ddl
+        )
+        # Escaping '"' as \x22 keeps sqlparse from splitting DDL on ';'
+        eq_(sqlparse.split(ddl), [ddl.strip()])
 
     def test_unqualified_delete_compiles_with_dummy_where(self):
         """Test that unqualified DELETE statements automatically append WHERE 1=1."""
