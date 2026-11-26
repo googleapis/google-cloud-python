@@ -412,6 +412,8 @@ class Credentials(
         new_additional_claims.update(additional_claims or {})
         cred = self._make_copy()
         cred._additional_claims = new_additional_claims
+        # Clear cached JWT credentials so they regenerate with the new claims
+        cred._jwt_credentials = None
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)

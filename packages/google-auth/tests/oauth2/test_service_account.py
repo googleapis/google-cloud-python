@@ -917,6 +917,18 @@ class TestCredentials(object):
             credentials.refresh(None)
         assert excinfo.match("domain wide delegation is not supported")
 
+    def test_with_claims_clears_jwt_credentials(self):
+        """with_claims clears cached self-signed JWT credentials so stale JWT state is not reused."""
+        credentials = self.make_credentials(universe_domain=FAKE_UNIVERSE_DOMAIN)
+        credentials._create_self_signed_jwt(f"https://compute.{FAKE_UNIVERSE_DOMAIN}/")
+        assert credentials._jwt_credentials is not None
+
+        updated = credentials.with_claims({"custom_key": "custom_val"})
+
+        # FAILS WITHOUT FIX:
+        # _make_copy() cloned _jwt_credentials, so updated._jwt_credentials is not None.
+        assert updated._jwt_credentials is None
+
 
 class TestIDTokenCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"
