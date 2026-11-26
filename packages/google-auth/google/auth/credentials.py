@@ -417,7 +417,9 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         if universe_domain == DEFAULT_UNIVERSE_DOMAIN:
             self._copy_regional_access_boundary_manager(target_credentials)
         else:
-            target_credentials._rab_manager.clear_data()
+            rab_manager = getattr(target_credentials, "_rab_manager", None)
+            if rab_manager is not None:
+                rab_manager.clear_data()
 
     def _set_regional_access_boundary(self, initial_boundary):
         """Applies the regional_access_boundary provided via the initial_boundary on these
