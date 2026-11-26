@@ -224,7 +224,8 @@ class TestCredentials(object):
         """Explicitly passing None, empty, whitespace, or non-str raises InvalidValue."""
         credentials = self.make_credentials()
         with pytest.raises(
-            exceptions.InvalidValue, match="Universe domain cannot be empty."
+            exceptions.InvalidValue,
+            match="Universe domain must be a valid non-empty domain string.",
         ):
             credentials.with_universe_domain(invalid_ud)
 
@@ -254,7 +255,8 @@ class TestCredentials(object):
     def test_constructor_empty_universe_domain_raises(self, invalid_ud):
         """Empty, whitespace, or non-str universe_domain in constructor raises."""
         with pytest.raises(
-            exceptions.InvalidValue, match="Universe domain cannot be empty."
+            exceptions.InvalidValue,
+            match="Universe domain must be a valid non-empty domain string.",
         ):
             service_account.Credentials(
                 SIGNER,
@@ -320,7 +322,8 @@ class TestCredentials(object):
         info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
 
         with pytest.raises(
-            exceptions.InvalidValue, match="Universe domain cannot be empty."
+            exceptions.InvalidValue,
+            match="Universe domain must be a valid non-empty domain string.",
         ):
             service_account.Credentials.from_service_account_info(
                 info, universe_domain=empty_ud
@@ -335,7 +338,8 @@ class TestCredentials(object):
         info["universe_domain"] = empty_ud
 
         with pytest.raises(
-            exceptions.InvalidValue, match="Universe domain cannot be empty."
+            exceptions.InvalidValue,
+            match="Universe domain must be a valid non-empty domain string.",
         ):
             service_account.Credentials.from_service_account_info(info)
 
@@ -1029,7 +1033,8 @@ class TestIDTokenCredentials(object):
         info["universe_domain"] = FAKE_UNIVERSE_DOMAIN
 
         with pytest.raises(
-            exceptions.InvalidValue, match="Universe domain cannot be empty."
+            exceptions.InvalidValue,
+            match="Universe domain must be a valid non-empty domain string.",
         ):
             service_account.IDTokenCredentials.from_service_account_info(
                 info,
@@ -1046,7 +1051,8 @@ class TestIDTokenCredentials(object):
         info["universe_domain"] = empty_ud
 
         with pytest.raises(
-            exceptions.InvalidValue, match="Universe domain cannot be empty."
+            exceptions.InvalidValue,
+            match="Universe domain must be a valid non-empty domain string.",
         ):
             service_account.IDTokenCredentials.from_service_account_info(
                 info, target_audience=self.TARGET_AUDIENCE
@@ -1269,7 +1275,8 @@ class TestIDTokenCredentials(object):
         """Explicitly passing None, empty, whitespace, or non-str raises InvalidValue."""
         credentials = self.make_credentials()
         with pytest.raises(
-            exceptions.InvalidValue, match="Universe domain cannot be empty."
+            exceptions.InvalidValue,
+            match="Universe domain must be a valid non-empty domain string.",
         ):
             credentials.with_universe_domain(invalid_ud)
 

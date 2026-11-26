@@ -459,7 +459,8 @@ class TestCredentials(object):
         # 5. Reject None or empty universe domain
         for invalid_ud in (None, "", "   "):
             with pytest.raises(
-                exceptions.InvalidValue, match="Universe domain cannot be empty."
+                exceptions.InvalidValue,
+                match="Universe domain must be a valid non-empty domain string.",
             ):
                 credentials.with_universe_domain(invalid_ud)
 
@@ -567,7 +568,8 @@ class TestIDTokenCredentials(object):
 
         for invalid_ud in (None, "", "   "):
             with pytest.raises(
-                exceptions.InvalidValue, match="Universe domain cannot be empty."
+                exceptions.InvalidValue,
+                match="Universe domain must be a valid non-empty domain string.",
             ):
                 credentials.with_universe_domain(invalid_ud)
 
