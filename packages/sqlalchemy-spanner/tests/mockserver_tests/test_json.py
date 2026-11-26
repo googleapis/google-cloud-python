@@ -20,7 +20,6 @@ from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteSqlRequest,
     JsonObject,
-    ResultSet,
     TypeCode,
 )
 from sqlalchemy import func, select, text
@@ -29,6 +28,7 @@ from sqlalchemy.testing import eq_, is_instance_of, is_not_none
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_has_table_result,
     add_result,
     add_single_result,
     add_update_count,
@@ -39,14 +39,7 @@ class TestJson(MockServerTestBase):
     def test_create_table(self):
         from tests.mockserver_tests.json_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="venues"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("venues")
         engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests

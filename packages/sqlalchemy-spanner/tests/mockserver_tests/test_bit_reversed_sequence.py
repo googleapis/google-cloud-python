@@ -19,13 +19,14 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
-    ResultSet,
 )
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of, is_not_none
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_has_sequence_result,
+    add_has_table_result,
     add_result,
 )
 
@@ -34,22 +35,8 @@ class TestBitReversedSequence(MockServerTestBase):
     def test_create_table(self):
         from tests.mockserver_tests.bit_reversed_sequence_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
-        add_result(
-            """SELECT true
-                FROM INFORMATION_SCHEMA.SEQUENCES
-                WHERE NAME="singer_id"
-                AND SCHEMA=""
-                LIMIT 1""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
+        add_has_sequence_result("singer_id")
         engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests

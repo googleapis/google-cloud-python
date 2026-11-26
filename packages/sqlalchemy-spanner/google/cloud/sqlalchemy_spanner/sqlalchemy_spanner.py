@@ -14,12 +14,12 @@
 import base64
 import collections.abc
 import re
-from typing import Any
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import sqlalchemy
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
-from google.cloud.spanner_v1 import Client, TransactionOptions
+from google.cloud.spanner_v1 import Client, TransactionOptions, param_types
 from google.cloud.spanner_v1.data_types import JsonObject
 from sqlalchemy import ForeignKeyConstraint, PickleType, TypeDecorator, types
 from sqlalchemy.engine.base import Engine
@@ -1114,26 +1114,141 @@ class SpannerDialect(DefaultDialect):
             table_type_query = table_type_query + " AND "
         return table_type_query
 
-    def _get_table_filter_query(
-        self, filter_names, info_schema_table, append_query=False
-    ):
+    @staticmethod
+    def _normalize_name_param(name: Optional[str]) -> Optional[str]:
+        """Convert SQLAlchemy ``str`` subclasses (e.g. ``quoted_name``) to ``str``.
+
+        Unwrapping ``str`` subclasses avoids custom string proxy objects in
+        Spanner bind parameters while preserving ``None`` (bound as ``NULL``).
+
+        Example:
+            ``_normalize_name_param(quoted_name("users", True))`` -> ``"users"``
+            ``_normalize_name_param(None)`` -> ``None``
         """
-        Generates WHERE query for tables or views for which
-        information is reflected.
+        return str(name) if isinstance(name, str) else name
+
+    @classmethod
+    def _normalize_schema_param(cls, schema: Optional[str]) -> str:
+        """Normalize an optional schema name to Spanner's string representation.
+
+        Cloud Spanner's ``INFORMATION_SCHEMA`` stores the default schema as ``""``
+        rather than ``NULL``, so both ``None`` and ``""`` map to ``""``.
+
+        Example:
+            ``_normalize_schema_param(None)`` -> ``""``
+            ``_normalize_schema_param("my_schema")`` -> ``"my_schema"``
+        """
+        if not schema:
+            return ""
+        normalized = cls._normalize_name_param(schema)
+        return "" if normalized is None else normalized
+
+    def _get_table_filter_query(
+        self,
+        filter_names: Optional[Iterable[str]],
+        info_schema_table: str,
+        append_query: bool = False,
+    ) -> str:
+        """Generate a parameterized ``IN UNNEST`` predicate for ``filter_names``.
+
+        Example:
+            ``_get_table_filter_query(["users"], "col", append_query=True)`` ->
+            ``"(col.table_name IN UNNEST(@table_names))  AND "``
+            ``_get_table_filter_query(None, "col", append_query=True)`` -> ``""``
         """
         table_filter_query = ""
         if filter_names is not None:
-            for table_name in filter_names:
-                query = f"{info_schema_table}.table_name = '{table_name}'"
-                if table_filter_query != "":
-                    table_filter_query = table_filter_query + " OR " + query
-                else:
-                    table_filter_query = query
-            table_filter_query = "(" + table_filter_query + ") "
+            table_filter_query = (
+                f"({info_schema_table}.table_name IN UNNEST(@table_names)) "
+            )
             if append_query:
                 table_filter_query = table_filter_query + " AND "
 
         return table_filter_query
+
+    def _prepare_multi_reflection_filters(
+        self,
+        schema: Optional[str],
+        filter_names: Optional[Iterable[str]],
+        info_schema_table: str,
+        kind: Optional["ObjectKind"],
+    ) -> Optional[Tuple[str, str, Dict[str, Any], Dict[str, Any]]]:
+        """Build parameterized WHERE clauses and bind parameters for ``get_multi_*``.
+
+        Returns ``None`` when ``filter_names`` is an empty non-``None``
+        collection so callers can return ``{}`` without issuing a query.
+
+        Example:
+            ``_prepare_multi_reflection_filters("s", ["users"], "col", None)``
+            returns ``(table_filter_query, table_type_query, params, param_types)``
+            where ``params={"table_schema": "s", "table_names": ["users"]}``.
+        """
+        table_type_query = self._get_table_type_query(kind, True)
+        params: Dict[str, Any] = {"table_schema": self._normalize_schema_param(schema)}
+        query_param_types: Dict[str, Any] = {"table_schema": param_types.STRING}
+
+        if filter_names is not None:
+            filter_name_list = [
+                self._normalize_name_param(name) for name in filter_names
+            ]
+            if not filter_name_list:
+                return None
+            params["table_names"] = filter_name_list
+            query_param_types["table_names"] = param_types.Array(param_types.STRING)
+
+        table_filter_query = self._get_table_filter_query(
+            filter_names, info_schema_table, True
+        )
+        return table_filter_query, table_type_query, params, query_param_types
+
+    def _query_schema_object_names(
+        self, connection: Any, sql: str, schema: Optional[str]
+    ) -> List[str]:
+        """Run a single-column ``information_schema`` query filtered by schema.
+
+        Example:
+            Used by ``get_table_names``, ``get_view_names``, and
+            ``get_sequence_names`` to return matching names such as
+            ``["singers", "albums"]``.
+        """
+        params = {"table_schema": self._normalize_schema_param(schema)}
+        query_param_types = {"table_schema": param_types.STRING}
+        with connection.connection.database.snapshot() as snapshot:
+            rows = list(
+                snapshot.execute_sql(sql, params=params, param_types=query_param_types)
+            )
+        return [row[0] for row in rows]
+
+    def _record_exists_for_schema(
+        self,
+        connection: Any,
+        sql: str,
+        schema: Optional[str],
+        name_param: str,
+        name_value: Optional[str],
+    ) -> bool:
+        """Run a parameterized existence check and drain the result stream.
+
+        Materializes the ``LIMIT 1`` result via ``list(...)`` rather than
+        returning inside a loop so the underlying gRPC stream reaches EOF.
+
+        Example:
+            Used by ``has_table`` (``name_param="table_name"``) and
+            ``has_sequence`` (``name_param="sequence_name"``).
+        """
+        params = {
+            "table_schema": self._normalize_schema_param(schema),
+            name_param: self._normalize_name_param(name_value),
+        }
+        query_param_types = {
+            "table_schema": param_types.STRING,
+            name_param: param_types.STRING,
+        }
+        with connection.connection.database.snapshot() as snapshot:
+            rows = list(
+                snapshot.execute_sql(sql, params=params, param_types=query_param_types)
+            )
+        return bool(rows)
 
     def create_connect_args(self, url):
         """Parse connection args from the given URL.
@@ -1197,16 +1312,9 @@ class SpannerDialect(DefaultDialect):
         sql = """
             SELECT table_name
             FROM information_schema.views
-            WHERE TABLE_SCHEMA='{}'
-            """.format(schema or "")
-
-        all_views = []
-        with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
-            for view in rows:
-                all_views.append(view[0])
-
-        return all_views
+            WHERE TABLE_SCHEMA = @table_schema
+            """
+        return self._query_schema_object_names(connection, sql, schema)
 
     @engine_to_connection
     def get_sequence_names(self, connection, schema=None, **kw):
@@ -1226,15 +1334,9 @@ class SpannerDialect(DefaultDialect):
         sql = """
             SELECT name
             FROM information_schema.sequences
-            WHERE SCHEMA='{}'
-            """.format(schema or "")
-        all_sequences = []
-        with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
-            for seq in rows:
-                all_sequences.append(seq[0])
-
-        return all_sequences
+            WHERE SCHEMA = @table_schema
+            """
+        return self._query_schema_object_names(connection, sql, schema)
 
     @engine_to_connection
     def get_view_definition(self, connection, view_name, schema=None, **kw):
@@ -1255,11 +1357,21 @@ class SpannerDialect(DefaultDialect):
         sql = """
             SELECT view_definition
             FROM information_schema.views
-            WHERE TABLE_SCHEMA='{schema_name}' AND TABLE_NAME='{view_name}'
-            """.format(schema_name=schema or "", view_name=view_name)
+            WHERE TABLE_SCHEMA = @table_schema AND TABLE_NAME = @view_name
+            """
+        params = {
+            "table_schema": self._normalize_schema_param(schema),
+            "view_name": self._normalize_name_param(view_name),
+        }
+        query_param_types = {
+            "table_schema": param_types.STRING,
+            "view_name": param_types.STRING,
+        }
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             if rows == []:
                 raise NoSuchTableError(f"{schema if schema else ''}.{view_name}")
             result = rows[0][0]
@@ -1294,11 +1406,12 @@ class SpannerDialect(DefaultDialect):
                 definition of a database column.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "col", True)
-        schema_filter_query = " col.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "col", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
             SELECT col.table_schema, col.table_name, col.column_name,
@@ -1310,7 +1423,7 @@ class SpannerDialect(DefaultDialect):
             WHERE
                 {table_filter_query}
                 {table_type_query}
-                {schema_filter_query}
+                col.table_schema = @table_schema AND
                 col.table_catalog = ''
             ORDER BY
                 col.table_catalog,
@@ -1320,10 +1433,11 @@ class SpannerDialect(DefaultDialect):
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
         with connection.connection.database.snapshot() as snap:
-            columns = list(snap.execute_sql(sql))
+            columns = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for col in columns:
@@ -1423,11 +1537,12 @@ class SpannerDialect(DefaultDialect):
                 definition of an index.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "i", True)
-        schema_filter_query = " i.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "i", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
             SELECT
@@ -1473,7 +1588,7 @@ class SpannerDialect(DefaultDialect):
             WHERE
                 {table_filter_query}
                 {table_type_query}
-                {schema_filter_query}
+                i.table_schema = @table_schema AND
                 i.index_type != 'PRIMARY_KEY'
                 AND i.index_type != 'SEARCH'
                 AND i.spanner_is_managed = FALSE
@@ -1483,11 +1598,12 @@ class SpannerDialect(DefaultDialect):
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for row in rows:
@@ -1564,11 +1680,12 @@ class SpannerDialect(DefaultDialect):
                 definition of a primary key constraint.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
-        schema_filter_query = " tc.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "tc", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
             SELECT tc.table_schema, tc.table_name, kcu.column_name
@@ -1580,17 +1697,18 @@ class SpannerDialect(DefaultDialect):
                 AND tc.TABLE_SCHEMA = t.TABLE_SCHEMA
                 AND tc.TABLE_NAME = t.TABLE_NAME
             WHERE {table_filter_query} {table_type_query}
-            {schema_filter_query} tc.CONSTRAINT_TYPE = "PRIMARY KEY"
+            tc.table_schema = @table_schema AND tc.CONSTRAINT_TYPE = "PRIMARY KEY"
             ORDER BY tc.table_catalog ASC, tc.table_schema ASC,
                      tc.table_name ASC, kcu.ordinal_position ASC
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for row in rows:
@@ -1675,11 +1793,12 @@ class SpannerDialect(DefaultDialect):
                 a foreign key definition.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
-        schema_filter_query = " tc.table_schema = '{schema}' AND".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "tc", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
         SELECT
@@ -1723,16 +1842,17 @@ class SpannerDialect(DefaultDialect):
             WHERE
                 {table_filter_query}
                 {table_type_query}
-                {schema_filter_query}
+                tc.table_schema = @table_schema AND
                 tc.constraint_type = "FOREIGN KEY"
             """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for row in rows:
@@ -1792,17 +1912,9 @@ class SpannerDialect(DefaultDialect):
         sql = """
 SELECT table_name
 FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
-""".format(schema=schema or "")
-
-        table_names = []
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(sql)
-
-            for row in rows:
-                table_names.append(row[0])
-
-        return table_names
+WHERE table_type = 'BASE TABLE' AND table_schema = @table_schema
+"""
+        return self._query_schema_object_names(connection, sql, schema)
 
     @engine_to_connection
     def get_unique_constraints(self, connection, table_name, schema=None, **kw):
@@ -1825,15 +1937,25 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
 JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
     USING (TABLE_CATALOG, TABLE_SCHEMA, CONSTRAINT_NAME)
 WHERE
-    tc.TABLE_NAME="{table_name}"
-    AND tc.TABLE_SCHEMA="{table_schema}"
+    tc.TABLE_NAME = @table_name
+    AND tc.TABLE_SCHEMA = @table_schema
     AND tc.CONSTRAINT_TYPE = "UNIQUE"
     AND tc.CONSTRAINT_NAME IS NOT NULL
-""".format(table_schema=schema or "", table_name=table_name)
+"""
+        params = {
+            "table_schema": self._normalize_schema_param(schema),
+            "table_name": self._normalize_name_param(table_name),
+        }
+        query_param_types = {
+            "table_schema": param_types.STRING,
+            "table_name": param_types.STRING,
+        }
 
         cols = []
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(sql)
+        with connection.connection.database.snapshot() as snapshot:
+            rows = list(
+                snapshot.execute_sql(sql, params=params, param_types=query_param_types)
+            )
 
             for row in rows:
                 cols.append({"name": row[0], "column_names": [row[1]]})
@@ -1855,20 +1977,15 @@ WHERE
         Returns:
             bool: True, if the given table exists, False otherwise.
         """
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(
-                """
+        sql = """
 SELECT true
 FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="{table_schema}" AND TABLE_NAME="{table_name}"
+WHERE TABLE_SCHEMA = @table_schema AND TABLE_NAME = @table_name
 LIMIT 1
-""".format(table_schema=schema or "", table_name=table_name)
-            )
-
-            for _ in rows:
-                return True
-
-        return False
+"""
+        return self._record_exists_for_schema(
+            connection, sql, schema, "table_name", table_name
+        )
 
     @engine_to_connection
     def has_sequence(self, connection, sequence_name, schema=None, **kw):
@@ -1878,22 +1995,16 @@ LIMIT 1
         `sequence_name`, return True if the given sequence exists in
         the database, False otherwise.
         """
-
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(
-                """
-                SELECT true
-                FROM INFORMATION_SCHEMA.SEQUENCES
-                WHERE NAME="{sequence_name}"
-                AND SCHEMA="{schema}"
-                LIMIT 1
-                """.format(sequence_name=sequence_name, schema=schema or "")
-            )
-
-            for _ in rows:
-                return True
-
-        return False
+        sql = """
+SELECT true
+FROM INFORMATION_SCHEMA.SEQUENCES
+WHERE NAME = @sequence_name
+AND SCHEMA = @table_schema
+LIMIT 1
+"""
+        return self._record_exists_for_schema(
+            connection, sql, schema, "sequence_name", sequence_name
+        )
 
     def set_isolation_level(self, conn_proxy, level):
         """Set the connection isolation level.
