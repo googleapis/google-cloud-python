@@ -21,7 +21,10 @@ from sqlalchemy.sql.operators import json_getitem_op
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 
-from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerDialect
+from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
+    SpannerDialect,
+    _escape_json_path_key,
+)
 
 
 class TestSpannerDialect(fixtures.TestBase):
@@ -241,6 +244,26 @@ class TestSpannerDialect(fixtures.TestBase):
             '"$.\\"users\\"[0].\\"True\\".\\"first\\\\\\"name\\".\\"back\\\\\\\\\\"") '
             "AS anon_1 \nFROM records",
         )
+
+    def test_escape_json_path_key_edge_cases(self):
+        """Test _escape_json_path_key across quote and backslash boundaries."""
+        cases = [
+            ("", ""),
+            ("simple", "simple"),
+            ("\\", "\\\\"),
+            ("\\\\", "\\\\\\\\"),
+            ('"', '\\"'),
+            ('\\"', '\\\\\\"'),
+            ('\\\\"', '\\\\\\\\\\"'),
+            ('a\\b"c\\', 'a\\b\\"c\\\\'),
+            ('"\\"', '\\"\\\\\\"'),
+            ('a\\"b\\"c\\d\\', 'a\\\\\\"b\\\\\\"c\\d\\\\'),
+            ("\\\\\\a", "\\\\\\a"),
+            ('\\\\\\"\\\\\\a\\\\', '\\\\\\\\\\\\\\"\\\\\\a\\\\\\\\'),
+            (123, "123"),
+        ]
+        for raw_key, expected in cases:
+            eq_(_escape_json_path_key(raw_key), expected)
 
     def test_json_getitem_statement_cache_and_bindparam_reuse(self):
         """Test statement caching and explicit bindparam reuse without mutation."""
