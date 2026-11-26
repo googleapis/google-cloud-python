@@ -13,6 +13,7 @@
 # limitations under the License.
 import base64
 import collections.abc
+import functools
 import re
 
 import sqlalchemy
@@ -280,6 +281,7 @@ def engine_to_connection(function):
     database in case of an engine-related use.
     """
 
+    @functools.wraps(function)
     def wrapper(self, connection, *args, **kwargs):
         """
         Args:
@@ -290,7 +292,11 @@ def engine_to_connection(function):
                 SQLAlchemy connection or engine object.
         """
         if isinstance(connection, Engine):
-            connection = connection.connect()
+            opened_connection = connection.connect()
+            try:
+                return function(self, opened_connection, *args, **kwargs)
+            finally:
+                opened_connection.close()
 
         return function(self, connection, *args, **kwargs)
 

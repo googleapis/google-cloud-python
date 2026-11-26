@@ -14,6 +14,7 @@
 
 import datetime
 
+import pytest
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_v1 import (
@@ -36,7 +37,9 @@ from sqlalchemy import (
     select,
     text,
 )
+from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.pool import QueuePool
 from sqlalchemy.testing import eq_, is_instance_of
 
 from tests.mockserver_tests.mock_server_test_base import (
@@ -318,3 +321,95 @@ LIMIT 1
             singer = session.query(Singer).filter(Singer.id == 1).first()
             session.delete(singer)
             session.commit()
+
+    def test_engine_to_connection_returns_pooled_connection(self):
+        add_result(
+            """SELECT true
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
+LIMIT 1
+""",
+            ResultSet(),
+        )
+        add_result(
+            """
+            SELECT view_definition
+            FROM information_schema.views
+            WHERE TABLE_SCHEMA='' AND TABLE_NAME='missing_view'
+            """,
+            ResultSet(),
+        )
+        engine = create_engine(
+            "spanner:///projects/p/instances/i/databases/d",
+            poolclass=QueuePool,
+            pool_size=1,
+            max_overflow=0,
+            pool_timeout=1,
+            connect_args={
+                "client": self.client,
+                "logger": MockServerTestBase.logger,
+            },
+        )
+        try:
+            assert engine.dialect.has_table(engine, "singers") is False
+            eq_(engine.pool.checkedout(), 0)
+
+            with pytest.raises(NoSuchTableError, match=r"\.missing_view") as exc_info:
+                engine.dialect.get_view_definition(engine, "missing_view")
+            # Verify the pooled connection is returned even while the exception
+            # traceback remains referenced.
+            assert exc_info.value is not None
+            eq_(engine.pool.checkedout(), 0)
+
+            with engine.connect() as connection:
+                eq_(engine.pool.checkedout(), 1)
+                assert connection is not None
+            eq_(engine.pool.checkedout(), 0)
+        finally:
+            engine.dispose()
+
+    def test_engine_to_connection_consecutive_checkouts_single_connection_pool(self):
+        add_result(
+            """
+            SELECT view_definition
+            FROM information_schema.views
+            WHERE TABLE_SCHEMA='' AND TABLE_NAME='missing_view'
+            """,
+            ResultSet(),
+        )
+        add_result(
+            """SELECT true
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
+LIMIT 1
+""",
+            ResultSet(),
+        )
+        engine = create_engine(
+            "spanner:///projects/p/instances/i/databases/d",
+            poolclass=QueuePool,
+            pool_size=1,
+            max_overflow=0,
+            pool_timeout=0.1,
+            connect_args={
+                "client": self.client,
+                "logger": MockServerTestBase.logger,
+            },
+        )
+        try:
+            caught = False
+            try:
+                engine.dialect.get_view_definition(engine, "missing_view")
+            except NoSuchTableError:
+                caught = True
+                # Verify the sole pooled connection is returned before entering
+                # the handler so subsequent checkouts succeed while the traceback
+                # is active.
+                assert engine.dialect.has_table(engine, "singers") is False
+                with engine.connect() as connection:
+                    eq_(engine.pool.checkedout(), 1)
+                    assert connection is not None
+            assert caught is True
+            eq_(engine.pool.checkedout(), 0)
+        finally:
+            engine.dispose()

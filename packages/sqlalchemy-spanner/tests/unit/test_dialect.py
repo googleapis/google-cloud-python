@@ -15,7 +15,10 @@
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
+import pytest
 import sqlalchemy as sa
+from sqlalchemy.engine.base import Connection, Engine
+from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.sql.compiler import OPERATORS
 from sqlalchemy.sql.operators import json_getitem_op
 from sqlalchemy.testing import eq_
@@ -548,3 +551,60 @@ class TestSpannerDialect(fixtures.TestBase):
             "FROM records \n"
             "WHERE JSON_VALUE(records.data, :data_1) IS NULL",
         )
+
+    @staticmethod
+    def _mock_connection_with_rows(rows):
+        mock_connection = MagicMock(spec=Connection)
+        mock_snapshot = MagicMock()
+        mock_snapshot.execute_sql.return_value = rows
+        snapshot_cm = mock_connection.connection.database.snapshot.return_value
+        snapshot_cm.__enter__.return_value = mock_snapshot
+        return mock_connection
+
+    def test_engine_to_connection_closes_connection_on_return(self):
+        """Test that engine_to_connection closes the temporary connection on return."""
+        dialect = SpannerDialect()
+        mock_engine = MagicMock(spec=Engine)
+        mock_connection = self._mock_connection_with_rows([(True,)])
+        mock_engine.connect.return_value = mock_connection
+
+        assert dialect.has_table(mock_engine, "my_table") is True
+        mock_engine.connect.assert_called_once_with()
+        mock_connection.close.assert_called_once_with()
+
+    def test_engine_to_connection_closes_connection_on_exception(self):
+        """Test that engine_to_connection closes the temporary connection on error."""
+        dialect = SpannerDialect()
+        mock_engine = MagicMock(spec=Engine)
+        mock_connection = self._mock_connection_with_rows([])
+        mock_engine.connect.return_value = mock_connection
+
+        with pytest.raises(NoSuchTableError, match=r"\.missing_view"):
+            dialect.get_view_definition(mock_engine, "missing_view")
+
+        mock_engine.connect.assert_called_once_with()
+        mock_connection.close.assert_called_once_with()
+
+    def test_engine_to_connection_does_not_close_existing_connection(self):
+        """Test that engine_to_connection leaves caller-owned Connections open."""
+        dialect = SpannerDialect()
+        mock_connection = self._mock_connection_with_rows([])
+
+        assert dialect.has_table(mock_connection, "my_table") is False
+        mock_connection.close.assert_not_called()
+
+    def test_engine_to_connection_nested_calls_open_and_close_once(self):
+        """Test nested decorated calls reuse the opened connection and close once."""
+        dialect = SpannerDialect()
+        mock_engine = MagicMock(spec=Engine)
+        mock_connection = self._mock_connection_with_rows([])
+        mock_engine.connect.return_value = mock_connection
+
+        eq_(dialect.get_columns(mock_engine, "my_table"), [])
+        mock_engine.connect.assert_called_once_with()
+        mock_connection.close.assert_called_once_with()
+
+    def test_engine_to_connection_preserves_metadata(self):
+        """Test that engine_to_connection preserves wrapped method metadata."""
+        eq_(SpannerDialect.has_table.__name__, "has_table")
+        assert "Check if the given table exists." in SpannerDialect.has_table.__doc__
