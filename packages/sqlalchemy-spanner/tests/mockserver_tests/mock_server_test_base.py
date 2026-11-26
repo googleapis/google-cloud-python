@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
+from typing import Optional
 
 import google.cloud.spanner_v1.types.result_set as result_set
 import google.cloud.spanner_v1.types.type as spanner_type
@@ -35,8 +36,37 @@ from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
 from tests.mockserver_tests.mock_spanner import SpannerServicer, start_mock_server
 
 
-def add_result(sql: str, result: ResultSet):
-    MockServerTestBase.spanner_service.mock_spanner.add_result(sql, result)
+def add_result(sql: str, result: ResultSet, params: Optional[dict] = None) -> None:
+    MockServerTestBase.spanner_service.mock_spanner.add_result(
+        sql, result, params=params
+    )
+
+
+def add_has_table_result(
+    table_name: str, schema: str = "", result: Optional[ResultSet] = None
+) -> None:
+    add_result(
+        """SELECT true
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = @table_schema AND TABLE_NAME = @table_name
+LIMIT 1""",
+        result if result is not None else ResultSet(),
+        params={"table_schema": schema, "table_name": table_name},
+    )
+
+
+def add_has_sequence_result(
+    sequence_name: str, schema: str = "", result: Optional[ResultSet] = None
+) -> None:
+    add_result(
+        """SELECT true
+FROM INFORMATION_SCHEMA.SEQUENCES
+WHERE NAME = @sequence_name
+AND SCHEMA = @table_schema
+LIMIT 1""",
+        result if result is not None else ResultSet(),
+        params={"sequence_name": sequence_name, "table_schema": schema},
+    )
 
 
 def add_update_count(

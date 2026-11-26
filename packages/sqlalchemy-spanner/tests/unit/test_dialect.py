@@ -19,14 +19,20 @@ import pytest
 import sqlalchemy as sa
 import sqlparse
 from google.cloud.spanner_dbapi import parse_utils
+from google.cloud.spanner_v1 import param_types
+from sqlalchemy.engine.reflection import ObjectKind
+from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.schema import CreateTable
-from sqlalchemy.sql import quoted_name
 from sqlalchemy.sql.compiler import OPERATORS
+from sqlalchemy.sql.elements import quoted_name
 from sqlalchemy.sql.operators import json_getitem_op
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 
-from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerDialect
+from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
+    SpannerDialect,
+    _escape_json_path_key,
+)
 
 
 class TestSpannerDialect(fixtures.TestBase):
@@ -246,6 +252,26 @@ class TestSpannerDialect(fixtures.TestBase):
             '"$.\\"users\\"[0].\\"True\\".\\"first\\\\\\"name\\".\\"back\\\\\\\\\\"") '
             "AS anon_1 \nFROM records",
         )
+
+    def test_escape_json_path_key_edge_cases(self):
+        """Test _escape_json_path_key across quote and backslash boundaries."""
+        cases = [
+            ("", ""),
+            ("simple", "simple"),
+            ("\\", "\\\\"),
+            ("\\\\", "\\\\\\\\"),
+            ('"', '\\"'),
+            ('\\"', '\\\\\\"'),
+            ('\\\\"', '\\\\\\\\\\"'),
+            ('a\\b"c\\', 'a\\b\\"c\\\\'),
+            ('"\\"', '\\"\\\\\\"'),
+            ('a\\"b\\"c\\d\\', 'a\\\\\\"b\\\\\\"c\\d\\\\'),
+            ("\\\\\\a", "\\\\\\a"),
+            ('\\\\\\"\\\\\\a\\\\', '\\\\\\\\\\\\\\"\\\\\\a\\\\\\\\'),
+            (123, "123"),
+        ]
+        for raw_key, expected in cases:
+            eq_(_escape_json_path_key(raw_key), expected)
 
     def test_json_getitem_statement_cache_and_bindparam_reuse(self):
         """Test statement caching and explicit bindparam reuse without mutation."""
@@ -871,3 +897,216 @@ class TestSpannerDialect(fixtures.TestBase):
                 parse_utils.classify_statement(statements[0]).statement_type,
                 parse_utils.StatementType.DDL,
             )
+
+    def _create_mock_connection(self, rows=None):
+        connection = MagicMock()
+        mock_snapshot = MagicMock()
+        mock_snapshot.execute_sql.return_value = rows if rows is not None else []
+        connection.connection.database.snapshot.return_value.__enter__.return_value = (
+            mock_snapshot
+        )
+        return connection, mock_snapshot
+
+    @pytest.mark.parametrize(
+        ("method_name", "name_param", "rows", "expected_result"),
+        [
+            ("get_view_names", None, [], []),
+            ("get_sequence_names", None, [], []),
+            ("get_table_names", None, [], []),
+            ("get_view_definition", "view_name", [("SELECT 1",)], "SELECT 1"),
+            ("get_unique_constraints", "table_name", [], []),
+            ("has_table", "table_name", [], False),
+            ("has_sequence", "sequence_name", [], False),
+        ],
+    )
+    def test_reflection_binds_parameters(
+        self, method_name, name_param, rows, expected_result
+    ):
+        """Reflection methods bind schema and object names as STRING parameters."""
+        dialect = SpannerDialect()
+        malicious_schema = "' OR '1'='1\" UNION ALL SELECT secret FROM users --"
+        malicious_name = "tbl' OR '1'='1\" UNION ALL SELECT secret FROM users --"
+
+        connection, mock_snapshot = self._create_mock_connection(rows=rows)
+        args = (malicious_name,) if name_param else ()
+        result = getattr(dialect, method_name)(
+            connection, *args, schema=malicious_schema
+        )
+        eq_(result, expected_result)
+
+        call_args = mock_snapshot.execute_sql.call_args
+        executed_sql = call_args.args[0]
+        assert malicious_schema not in executed_sql
+        assert "@table_schema" in executed_sql
+
+        expected_params = {"table_schema": malicious_schema}
+        expected_types = {"table_schema": param_types.STRING}
+        if name_param:
+            assert malicious_name not in executed_sql
+            assert f"@{name_param}" in executed_sql
+            expected_params[name_param] = malicious_name
+            expected_types[name_param] = param_types.STRING
+
+        eq_(call_args.kwargs["params"], expected_params)
+        eq_(call_args.kwargs["param_types"], expected_types)
+
+        # Default schema=None must normalize to "" for Spanner INFORMATION_SCHEMA.
+        default_connection, default_snapshot = self._create_mock_connection(rows=rows)
+        getattr(dialect, method_name)(default_connection, *args)
+        eq_(
+            default_snapshot.execute_sql.call_args.kwargs["params"]["table_schema"],
+            "",
+        )
+
+    def test_get_view_definition_missing_raises(self):
+        """get_view_definition raises NoSuchTableError when the view is absent."""
+        dialect = SpannerDialect()
+        connection, _ = self._create_mock_connection(rows=[])
+        with pytest.raises(NoSuchTableError, match=r"\.missing_view"):
+            dialect.get_view_definition(connection, "missing_view")
+
+    @pytest.mark.parametrize(
+        "method_name",
+        [
+            "get_multi_columns",
+            "get_multi_indexes",
+            "get_multi_pk_constraint",
+            "get_multi_foreign_keys",
+        ],
+    )
+    def test_get_multi_binds_filter_names_with_unnest(self, method_name):
+        """get_multi_* methods parameterize filter_names via IN UNNEST(@table_names)."""
+        dialect = SpannerDialect()
+        malicious_schema = "s' OR '1'='1"
+        malicious_table = "t' OR '1'='1 --"
+        connection, mock_snapshot = self._create_mock_connection()
+
+        eq_(
+            getattr(dialect, method_name)(
+                connection,
+                schema=malicious_schema,
+                filter_names=[malicious_table, "other_table"],
+            ),
+            {},
+        )
+        call_args = mock_snapshot.execute_sql.call_args
+        executed_sql = call_args.args[0]
+        assert malicious_schema not in executed_sql
+        assert malicious_table not in executed_sql
+        assert "IN UNNEST(@table_names)" in executed_sql
+        eq_(
+            call_args.kwargs["params"],
+            {
+                "table_schema": malicious_schema,
+                "table_names": [malicious_table, "other_table"],
+            },
+        )
+        eq_(
+            call_args.kwargs["param_types"],
+            {
+                "table_schema": param_types.STRING,
+                "table_names": param_types.Array(param_types.STRING),
+            },
+        )
+
+    @pytest.mark.parametrize(
+        "method_name",
+        [
+            "get_multi_columns",
+            "get_multi_indexes",
+            "get_multi_pk_constraint",
+            "get_multi_foreign_keys",
+        ],
+    )
+    def test_get_multi_omits_unnest_when_filter_names_is_none(self, method_name):
+        """filter_names=None reflects all tables without an UNNEST predicate."""
+        dialect = SpannerDialect()
+        connection, mock_snapshot = self._create_mock_connection()
+
+        eq_(
+            getattr(dialect, method_name)(connection, schema="s", filter_names=None), {}
+        )
+        call_args = mock_snapshot.execute_sql.call_args
+        assert "UNNEST(@table_names)" not in call_args.args[0]
+        eq_(call_args.kwargs["params"], {"table_schema": "s"})
+        eq_(call_args.kwargs["param_types"], {"table_schema": param_types.STRING})
+
+    @pytest.mark.parametrize(
+        "method_name",
+        [
+            "get_multi_columns",
+            "get_multi_indexes",
+            "get_multi_pk_constraint",
+            "get_multi_foreign_keys",
+        ],
+    )
+    def test_get_multi_short_circuits_on_empty_filter_names(self, method_name):
+        """Empty filter_names=[] returns {} without executing SQL after kind check."""
+        dialect = SpannerDialect()
+        connection, mock_snapshot = self._create_mock_connection()
+
+        eq_(getattr(dialect, method_name)(connection, filter_names=[]), {})
+        mock_snapshot.execute_sql.assert_not_called()
+
+        with pytest.raises(
+            NotImplementedError,
+            match="Spanner does not support MATERIALIZED VIEWS",
+        ):
+            getattr(dialect, method_name)(
+                connection, filter_names=[], kind=ObjectKind.MATERIALIZED_VIEW
+            )
+
+    @pytest.mark.parametrize(
+        "method_name",
+        [
+            "get_multi_columns",
+            "get_multi_indexes",
+            "get_multi_pk_constraint",
+            "get_multi_foreign_keys",
+        ],
+    )
+    def test_get_multi_normalizes_set_and_quoted_name_inputs(self, method_name):
+        """Non-list iterables and SQLAlchemy quoted_name normalize to list[str]."""
+        dialect = SpannerDialect()
+        connection, mock_snapshot = self._create_mock_connection()
+
+        getattr(dialect, method_name)(
+            connection,
+            schema=quoted_name("my_schema", True),
+            filter_names={quoted_name("users", True)},
+        )
+        params = mock_snapshot.execute_sql.call_args.kwargs["params"]
+        eq_(params["table_schema"], "my_schema")
+        assert type(params["table_schema"]) is str
+        eq_(params["table_names"], ["users"])
+        assert type(params["table_names"][0]) is str
+
+    @pytest.mark.parametrize(
+        "method_name",
+        [
+            "get_columns",
+            "get_indexes",
+            "get_pk_constraint",
+            "get_foreign_keys",
+        ],
+    )
+    def test_single_table_reflection_binds_parameters(self, method_name):
+        """Single-table methods delegate to get_multi_* with bound parameters."""
+        dialect = SpannerDialect()
+        malicious_schema = "s' OR '1'='1"
+        malicious_table = "t' OR '1'='1 --"
+        connection, mock_snapshot = self._create_mock_connection()
+
+        eq_(
+            getattr(dialect, method_name)(
+                connection, malicious_table, schema=malicious_schema
+            ),
+            [],
+        )
+        call_args = mock_snapshot.execute_sql.call_args
+        assert malicious_schema not in call_args.args[0]
+        assert malicious_table not in call_args.args[0]
+        eq_(
+            call_args.kwargs["params"],
+            {"table_schema": malicious_schema, "table_names": [malicious_table]},
+        )
