@@ -42,6 +42,21 @@ from google.api_core.client_info import ClientInfo
 from google.cloud import exceptions
 from google.cloud import version
 
+try:
+    from google.api_core.universe import (  # type: ignore[attr-defined]
+        is_googleapis_host as _is_googleapis_url,
+    )
+except ImportError:  # pragma: NO COVER
+    # TODO(universe-domain): Remove fallback once google-api-core >= 2.44.0.
+    def _is_googleapis_url(url_or_target: str) -> bool:  # type: ignore[misc]
+        host = (
+            urlsplit(
+                url_or_target if "://" in url_or_target else f"//{url_or_target}"
+            ).hostname
+            or ""
+        ).lower()
+        return host == DEFAULT_UNIVERSE or host.endswith(f".{DEFAULT_UNIVERSE}")
+
 
 API_BASE_URL = "https://www.googleapis.com"
 """The base of the API call URL."""

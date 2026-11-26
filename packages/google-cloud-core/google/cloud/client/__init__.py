@@ -59,6 +59,43 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_API_KEY = False  # pragma: NO COVER
     # TODO: Investigate adding a test for google.auth.api_key ImportError (https://github.com/googleapis/python-cloud-core/issues/334)
 
+try:
+    from google.api_core.universe import (  # type: ignore[attr-defined]
+        resolve_client_universe as _resolve_client_universe,
+        validate_credentials_universe as _validate_credentials_universe,
+    )
+except ImportError:  # pragma: NO COVER
+    # TODO(universe-domain): Remove fallbacks once google-api-core >= 2.44.0.
+    def _resolve_client_universe(client_options=None) -> str:  # type: ignore[misc]
+        if client_options is None:
+            options_universe = None
+        elif isinstance(client_options, Mapping):
+            options_universe = client_options.get("universe_domain")
+        elif isinstance(client_options, google.api_core.client_options.ClientOptions):
+            options_universe = client_options.universe_domain
+        else:
+            raise TypeError(
+                "client_options must be a ClientOptions instance, Mapping, or None; "
+                f"got {type(client_options).__name__}"
+            )
+        return google.api_core.universe.determine_domain(
+            options_universe,
+            os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        ).strip()
+
+    def _validate_credentials_universe(  # type: ignore[misc]
+        client_universe, credentials
+    ) -> None:
+        if credentials is None or isinstance(
+            credentials, google.auth.credentials.AnonymousCredentials
+        ):
+            return
+        if isinstance(
+            credentials, google.auth.compute_engine.Credentials
+        ) and not getattr(credentials, "_universe_domain_cached", False):
+            return
+        google.api_core.universe.compare_domains(client_universe, credentials)
+
 
 _GOOGLE_AUTH_CREDENTIALS_HELP = (
     "This library only supports credentials from google-auth-library-python. "
