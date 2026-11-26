@@ -13,12 +13,12 @@
 # limitations under the License.
 
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
-from google.cloud.spanner_v1 import ResultSet
 from sqlalchemy.testing import eq_, is_instance_of
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
-    add_result,
+    add_has_sequence_result,
+    add_has_table_result,
 )
 
 
@@ -26,22 +26,8 @@ class TestCommitTimestamp(MockServerTestBase):
     def test_create_table(self):
         from tests.mockserver_tests.commit_timestamp_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
-        add_result(
-            """SELECT true
-                FROM INFORMATION_SCHEMA.SEQUENCES
-                WHERE NAME="singer_id"
-                AND SCHEMA=""
-                LIMIT 1""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
+        add_has_sequence_result("singer_id")
         engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests

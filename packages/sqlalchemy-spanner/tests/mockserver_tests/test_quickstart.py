@@ -23,27 +23,19 @@ from google.cloud.spanner_v1 import (
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of, is_not_none
 
-from tests.mockserver_tests.mock_server_test_base import MockServerTestBase, add_result
+from tests.mockserver_tests.mock_server_test_base import (
+    MockServerTestBase,
+    add_has_table_result,
+    add_result,
+)
 
 
 class TestQuickStart(MockServerTestBase):
     def test_create_tables(self):
         from tests.mockserver_tests.quickstart_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="user_account"
-LIMIT 1""",
-            ResultSet(),
-        )
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="address"
-LIMIT 1""",
-            ResultSet(),
-        )
+        add_has_table_result("user_account")
+        add_has_table_result("address")
 
         engine = self.create_engine()
         Base.metadata.create_all(engine)
