@@ -29,6 +29,7 @@ from sqlalchemy.sql.operators import json_getitem_op
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 
+from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
     SpannerDialect,
     _escape_json_path_key,
@@ -824,12 +825,6 @@ class TestSpannerDialect(fixtures.TestBase):
             ):
                 CreateTable(invalid_table).compile(dialect=dialect)
 
-    @pytest.mark.skip(
-        reason=(
-            "Requires SpannerIdentifierPreparer escaping from "
-            "https://github.com/googleapis/google-cloud-python/pull/19210"
-        )
-    )
     def test_post_create_table_prevents_backtick_backslash_and_newline_ddl_injection(
         self,
     ):
@@ -897,6 +892,423 @@ class TestSpannerDialect(fixtures.TestBase):
                 parse_utils.classify_statement(statements[0]).statement_type,
                 parse_utils.StatementType.DDL,
             )
+
+    def test_identifier_preparer_escapes_backticks_backslashes_and_controls(self):
+        """Test GoogleSQL identifier escaping and quoting rules."""
+        dialect = SpannerDialect()
+        preparer = dialect.identifier_preparer
+
+        eq_(preparer.escape_quote, "\\")
+
+        # Valid unquoted GoogleSQL identifiers remain unquoted
+        for identifier in ("users", "_", "_private_1", "col_a1"):
+            eq_(preparer.quote(identifier), identifier)
+
+        # Default Spanner collation sentinel remains unquoted only in format_collation,
+        # while identifiers literally named '"unicode"' are properly backtick-quoted.
+        eq_(preparer.format_collation('"unicode"'), '"unicode"')
+        eq_(preparer.format_collation('"UNICODE"'), '"UNICODE"')
+        eq_(preparer.format_collation("my_collation"), "my_collation")
+        eq_(preparer.format_collation("MyCollation"), "`MyCollation`")
+        eq_(
+            preparer.format_collation("col`; DROP TABLE x"),
+            "`col\\u0060; DROP TABLE x`",
+        )
+        eq_(
+            preparer.format_collation(
+                "my_collation", collation_schema="sch`; DROP TABLE x"
+            ),
+            "`sch\\u0060; DROP TABLE x`.my_collation",
+        )
+        eq_(
+            preparer.format_collation('"unicode"', collation_schema="sch"),
+            'sch."unicode"',
+        )
+        eq_(
+            str(
+                sa.collate(sa.literal_column("c"), '"unicode"').compile(dialect=dialect)
+            ),
+            'c COLLATE "unicode"',
+        )
+        eq_(
+            str(
+                sa.collate(sa.literal_column("c"), "my_collation").compile(
+                    dialect=dialect
+                )
+            ),
+            "c COLLATE my_collation",
+        )
+        eq_(preparer.quote('"unicode"'), '`"unicode"`')
+        eq_(preparer.quote('"UNICODE"'), '`"UNICODE"`')
+
+        # Reserved words (both ANSI and Spanner-specific) must be quoted
+        for keyword in ("select", "SELECT", "from", "struct", "unnest"):
+            eq_(preparer.quote(keyword), f"`{keyword}`")
+
+        # Comprehensive permutations: whitespace, non-ASCII/UTF-8, symbols, '$',
+        # leading digits, newlines, quotes, backslashes, backticks, empty string.
+        cases = [
+            (" ", "` `"),
+            ("~", "`~`"),
+            ("\x80", "`\x80`"),
+            ("Café", "`Café`"),
+            ("café", "`café`"),
+            ("🎵", "`🎵`"),
+            ("Café`\\🎵", "`Café\\u0060\\\\🎵`"),
+            ("semi;colon", "`semi;colon`"),
+            ("`", "`\\u0060`"),
+            ("\\", "`\\\\`"),
+            ("\\\\", "`\\\\\\\\`"),
+            ("\\`", "`\\\\\\u0060`"),
+            ("\\\\`", "`\\\\\\\\\\u0060`"),
+            ("\\\\\\`", "`\\\\\\\\\\\\\\u0060`"),
+            ("\\\\`\\\\`", "`\\\\\\\\\\u0060\\\\\\\\\\u0060`"),
+            ("foo\n", "`foo\\n`"),
+            ("\nfoo", "`\\nfoo`"),
+            ("foo\nbar", "`foo\\nbar`"),
+            ("select\n", "`select\\n`"),
+            ("Line1\nLine2\r\nLine3", "`Line1\\nLine2\\r\\nLine3`"),
+            ("Col\a\b\f\t\vName", "`Col\\u0007\\u0008\\u000c\\t\\u000bName`"),
+            ("Null\0Char", "`Null\\u0000Char`"),
+            ("Del\x7fChar", "`Del\\u007fChar`"),
+            ("$foo", "`$foo`"),
+            ("foo$", "`foo$`"),
+            ("foo$bar", "`foo$bar`"),
+            ("1column", "`1column`"),
+            ("MixedCase", "`MixedCase`"),
+            ('a"b', '`a"b`'),
+            ("a'b", "`a'b`"),
+            ("TrailingBackslash\\", "`TrailingBackslash\\\\`"),
+            ("foo\\` SELECT 1 --", "`foo\\\\\\u0060 SELECT 1 --`"),
+            ("a\\u0060b", "`a\\\\u0060b`"),
+            ("col`; DROP TABLE users; --", "`col\\u0060; DROP TABLE users; --`"),
+            ("", "``"),
+            (sa.sql.quoted_name("users", quote=True), "`users`"),
+            (
+                sa.sql.quoted_name("forced`\\name\n", quote=True),
+                "`forced\\u0060\\\\name\\n`",
+            ),
+            (
+                sa.sql.elements._truncated_label("long`\\label\n"),
+                "`long\\u0060\\\\label\\n`",
+            ),
+        ]
+        for raw_identifier, expected_quoted in cases:
+            eq_(preparer.quote(raw_identifier), expected_quoted)
+            # Repeat call exercises self._strings cache consistently
+            eq_(preparer.quote(raw_identifier), expected_quoted)
+            if not isinstance(raw_identifier, sa.sql.quoted_name):
+                eq_(preparer.unformat_identifiers(expected_quoted), [raw_identifier])
+
+        # Explicit quote=False opt-out on quoted_name is respected by SQLAlchemy
+        unquoted_name = sa.sql.quoted_name("unquoted_raw", quote=False)
+        eq_(preparer.quote(unquoted_name), "unquoted_raw")
+
+        # Function names use _requires_quotes_illegal_chars
+        for function_name, expected_function_sql in (
+            ("MyCustomFn", "MyCustomFn()"),
+            ("fn\n", "`fn\\n`()"),
+            ("fn$name", "`fn$name`()"),
+            ("1fn", "`1fn`()"),
+            ("café", "`café`()"),
+            ("fn`inject", "`fn\\u0060inject`()"),
+            ('"unicode"', '`"unicode"`()'),
+        ):
+            eq_(
+                str(getattr(sa.func, function_name)().compile(dialect=dialect)),
+                expected_function_sql,
+            )
+        eq_(
+            str(sa.func.my_pkg.my_fn().compile(dialect=dialect)),
+            "my_pkg.my_fn()",
+        )
+
+    def test_identifier_preparer_all_ascii_control_characters(self):
+        """Test every ASCII control character (0x00..0x1F and 0x7F) is escaped."""
+        dialect = SpannerDialect()
+        preparer = dialect.identifier_preparer
+
+        named_escapes = {0x0A: "\\n", 0x0D: "\\r", 0x09: "\\t"}
+        for codepoint in (*range(0x00, 0x20), 0x7F):
+            identifier = f"col{chr(codepoint)}name"
+            escaped = preparer._escape_identifier(identifier)
+            # No raw ASCII control character may remain in the escaped identifier
+            assert all(0x20 <= ord(character) != 0x7F for character in escaped)
+            expected_escape = named_escapes.get(codepoint, f"\\u{codepoint:04x}")
+            eq_(escaped, f"col{expected_escape}name")
+            eq_(preparer.quote(identifier), f"`{escaped}`")
+            eq_(preparer._unescape_identifier(escaped), identifier)
+
+    def test_identifier_preparer_double_percents_depends_on_paramstyle(self):
+        """Test percent doubling matches dialect paramstyle."""
+        format_dialect = SpannerDialect(dbapi=spanner_dbapi)
+        named_dialect = SpannerDialect(paramstyle="named")
+
+        eq_(format_dialect.identifier_preparer.quote("rate_%s"), "`rate_%%s`")
+        eq_(
+            format_dialect.identifier_preparer.quote(
+                sa.sql.quoted_name("a%s", quote=True)
+            ),
+            "`a%%s`",
+        )
+        eq_(named_dialect.identifier_preparer.quote("rate_%s"), "`rate_%s`")
+
+    def test_identifier_injection_prevented_in_dql_dml_and_ddl(self):
+        """Test malicious identifiers cannot inject SQL, DDL, or confuse sqlparse."""
+        dialect = SpannerDialect(dbapi=spanner_dbapi)
+        malicious_schema = "sch`; DROP TABLE users; --"
+        malicious_table = "t`; DROP TABLE users; --"
+        malicious_column = "c\\`; DROP TABLE users; /*"
+        malicious_comment_column = "c2` /* comment */ --"
+        malicious_index = "idx`; DROP TABLE users; DROP TABLE x"
+        malicious_foreign_key = "fk`; DROP TABLE users; --"
+        malicious_parent = "parent`; DROP TABLE users; --"
+        malicious_sequence = "seq`; DROP TABLE users; --"
+
+        metadata = sa.MetaData(schema=malicious_schema)
+        parent = sa.Table(
+            malicious_parent,
+            metadata,
+            sa.Column("id", sa.Integer, primary_key=True),
+        )
+        table = sa.Table(
+            malicious_table,
+            metadata,
+            sa.Column("id", sa.Integer, primary_key=True),
+            sa.Column(malicious_column, sa.String(64)),
+            sa.Column(malicious_comment_column, sa.String(64)),
+            sa.ForeignKeyConstraint(["id"], [parent.c.id], name=malicious_foreign_key),
+            sa.Index(
+                malicious_index,
+                "id",
+                spanner_storing=[malicious_column],
+                spanner_interleave_in=malicious_parent,
+            ),
+        )
+        sequence = sa.Sequence(malicious_sequence, schema=malicious_schema)
+
+        # DQL (including schema-aliased tables, labels, and aliases) & DML
+        label_name = "lbl`/* comment */ --"
+        alias_name = "al`; DROP TABLE users"
+        aliased_table = table.alias(alias_name)
+        select_statement = sa.select(
+            aliased_table.c[malicious_column].label(label_name)
+        )
+        select_sql = str(select_statement.compile(dialect=dialect))
+        assert (
+            "`sch\\u0060; DROP TABLE users; --`.`t\\u0060; DROP TABLE users; --`"
+            in select_sql
+        )
+        assert "AS `al\\u0060; DROP TABLE users`" in select_sql
+        assert "AS `lbl\\u0060/* comment */ --`" in select_sql
+        classified_select = spanner_dbapi.parse_utils.classify_statement(select_sql)
+        eq_(
+            classified_select.statement_type,
+            spanner_dbapi.parsed_statement.StatementType.QUERY,
+        )
+        assert "`lbl\\u0060/* comment */ --`" in classified_select.statement.sql
+
+        insert_sql = str(
+            table.insert()
+            .values({"id": 1, malicious_column: "v"})
+            .returning(table.c[malicious_column])
+            .compile(dialect=dialect)
+        )
+        assert "`t\\u0060; DROP TABLE users; --`" in insert_sql
+        assert "THEN RETURN `c\\\\\\u0060; DROP TABLE users; /*`" in insert_sql
+        eq_(
+            spanner_dbapi.parse_utils.classify_statement(insert_sql).statement_type,
+            spanner_dbapi.parsed_statement.StatementType.INSERT,
+        )
+
+        update_sql = str(
+            table.update().values({malicious_column: "v"}).compile(dialect=dialect)
+        )
+        assert "WHERE 1=1" in update_sql
+        eq_(
+            spanner_dbapi.parse_utils.classify_statement(update_sql).statement_type,
+            spanner_dbapi.parsed_statement.StatementType.UPDATE,
+        )
+
+        delete_sql = str(
+            sa.delete(table)
+            .returning(table.c[malicious_column])
+            .compile(dialect=dialect)
+        )
+        assert (
+            "DELETE FROM `sch\\u0060; DROP TABLE users; --`."
+            "`t\\u0060; DROP TABLE users; --`" in delete_sql
+        )
+        assert (
+            "THEN RETURN `t\\u0060;_DROP_TABLE_users;_--_1`."
+            "`c\\\\\\u0060; DROP TABLE users; /*`" in delete_sql
+        )
+
+        # DDL with semicolons/comments inside escaped identifiers stays unsplit
+        create_table_sql = str(sa.schema.CreateTable(table).compile(dialect=dialect))
+        assert "`fk\\u0060; DROP TABLE users; --`" in create_table_sql
+        eq_(sqlparse.split(create_table_sql), [create_table_sql.strip()])
+
+        create_index_sql = str(
+            sa.schema.CreateIndex(next(iter(table.indexes))).compile(dialect=dialect)
+        )
+        eq_(
+            create_index_sql,
+            "CREATE INDEX `sch\\u0060; DROP TABLE users; --`."
+            "`idx\\u0060; DROP TABLE users; DROP TABLE x` "
+            "ON `sch\\u0060; DROP TABLE users; --`.`t\\u0060; DROP TABLE users; --` "
+            "(id) STORING (`c\\\\\\u0060; DROP TABLE users; /*`), "
+            "INTERLEAVE IN `parent\\u0060; DROP TABLE users; --`",
+        )
+        eq_(sqlparse.split(create_index_sql), [create_index_sql])
+
+        drop_table_sql = str(sa.schema.DropTable(table).compile(dialect=dialect))
+        eq_(
+            sqlparse.split(drop_table_sql),
+            [
+                "DROP INDEX `idx\\u0060; DROP TABLE users; DROP TABLE x`;",
+                "ALTER TABLE `sch\\u0060; DROP TABLE users; --`."
+                "`t\\u0060; DROP TABLE users; --` "
+                "DROP CONSTRAINT `fk\\u0060; DROP TABLE users; --`;",
+                "DROP TABLE `sch\\u0060; DROP TABLE users; --`."
+                "`t\\u0060; DROP TABLE users; --`",
+            ],
+        )
+
+        for sequence_sql in (
+            str(sa.schema.CreateSequence(sequence).compile(dialect=dialect)),
+            str(sa.schema.DropSequence(sequence).compile(dialect=dialect)),
+            str(sa.select(sequence.next_value()).compile(dialect=dialect)),
+        ):
+            assert (
+                "`sch\\u0060; DROP TABLE users; --`."
+                "`seq\\u0060; DROP TABLE users; --`" in sequence_sql
+            )
+            eq_(sqlparse.split(sequence_sql), [sequence_sql])
+
+    def test_identifier_preparer_unescape_and_unformat_identifiers(self):
+        """Test single-pass unescaping, multipart unformatting, and unhappy paths."""
+        dialect = SpannerDialect(dbapi=spanner_dbapi)
+        preparer = dialect.identifier_preparer
+
+        # Single-pass unescaping covers all GoogleSQL escape sequences and does not
+        # corrupt escaped backslashes followed by escape letters (e.g. \\n).
+        eq_(preparer._unescape_identifier("a\\\\nb"), "a\\nb")
+        eq_(
+            preparer._unescape_identifier("a\\a\\b\\f\\n\\r\\t\\vb"), "a\a\b\f\n\r\t\vb"
+        )
+        eq_(preparer._unescape_identifier("\\?\\\"\\'\\`\\\\"), "?\"'`\\")
+        eq_(preparer._unescape_identifier("a\\u0060b\\`c"), "a`b`c")
+        eq_(preparer._unescape_identifier("\\000\\101\\377"), "\x00A\xff")
+        eq_(preparer._unescape_identifier("\\x41\\X42\\U0001f600"), "AB\U0001f600")
+        eq_(
+            preparer._unescape_identifier("\\ud7ff\\ue000\\U0010ffff"),
+            "\ud7ff\ue000\U0010ffff",
+        )
+        eq_(preparer._unescape_identifier("a%%b"), "a%%b")
+        eq_(preparer._unescape_identifier("plain_identifier"), "plain_identifier")
+
+        # Empty, unquoted, mixed, and multipart unformat_identifiers cases
+        eq_(preparer.unformat_identifiers(""), [])
+        eq_(preparer.unformat_identifiers("``"), [""])
+        eq_(preparer.unformat_identifiers("``.``"), ["", ""])
+        eq_(
+            preparer.unformat_identifiers("schema.table.column"),
+            ["schema", "table", "column"],
+        )
+        eq_(
+            preparer.unformat_identifiers("schema.`tab.le`.col"),
+            ["schema", "tab.le", "col"],
+        )
+        eq_(
+            preparer.unformat_identifiers("`a\\u0060b`.col.`c\\\\d`"),
+            ["a`b", "col", "c\\d"],
+        )
+        parts = ["sch`ma\\", "tab.le\\", "col\n`name"]
+        formatted = ".".join(preparer.quote(part) for part in parts)
+        eq_(preparer.unformat_identifiers(formatted), parts)
+
+        # quote_schema escapes malicious schema names as single identifiers
+        eq_(
+            preparer.quote_schema("sch`; DROP TABLE x"),
+            "`sch\\u0060; DROP TABLE x`",
+        )
+
+        # External GoogleSQL backslash-escaped identifiers unformat cleanly too
+        eq_(
+            preparer.unformat_identifiers("`a\\\\`.`\\``.`.`"),
+            ["a\\", "`", "."],
+        )
+
+        # Invalid/truncated escape sequences fail explicitly
+        with pytest.raises(ValueError, match="Unterminated escape sequence"):
+            preparer._unescape_identifier("abc\\")
+        for invalid_escape in ("\\z", "\\800"):
+            with pytest.raises(ValueError, match="Invalid escape sequence"):
+                preparer._unescape_identifier(invalid_escape)
+        for invalid_octal in ("\\0", "\\77", "\\01a", "\\400", "\\777"):
+            with pytest.raises(ValueError, match="Invalid octal escape sequence"):
+                preparer._unescape_identifier(invalid_octal)
+        for invalid_hex, escape_letter in (
+            ("\\x4", "x"),
+            ("\\x4z", "x"),
+            ("\\X4", "X"),
+            ("\\X4z", "X"),
+        ):
+            with pytest.raises(
+                ValueError, match=f"Invalid \\\\{escape_letter} escape sequence"
+            ):
+                preparer._unescape_identifier(invalid_hex)
+        for invalid_short_unicode, escape_letter in (
+            ("\\u12", "u"),
+            ("\\u12zz", "u"),
+            ("\\U1234", "U"),
+            ("\\U1234567z", "U"),
+        ):
+            with pytest.raises(
+                ValueError, match=f"Invalid \\\\{escape_letter} escape sequence"
+            ):
+                preparer._unescape_identifier(invalid_short_unicode)
+        for invalid_unicode in ("\\ud800", "\\udfff", "\\U0000d800", "\\U00110000"):
+            with pytest.raises(ValueError, match="Invalid Unicode codepoint"):
+                preparer._unescape_identifier(invalid_unicode)
+
+        # Malformed qualified identifier strings fail explicitly
+        malformed_cases = [
+            ("`abc\\", "Unterminated escape sequence"),
+            ("`unclosed", "Unterminated quoted identifier"),
+            ("`bad\\`", "Unterminated quoted identifier"),
+            ("`a`.`b` EXTRA", "Unexpected character after quoted identifier"),
+            ("`a.b`c.d", "Unexpected character after quoted identifier"),
+            ("a.", "Trailing dot in qualified identifier"),
+            ("`a`.", "Trailing dot in qualified identifier"),
+            (".", "Invalid unquoted identifier segment"),
+            ("a..b", "Invalid unquoted identifier segment"),
+            (".a", "Invalid unquoted identifier segment"),
+            ("1bad.col", "Invalid unquoted identifier segment"),
+            (" a ", "Invalid unquoted identifier segment"),
+            ("a`b", "Invalid unquoted identifier segment"),
+            ("café", "Invalid unquoted identifier segment"),
+            ("`a`.`b", "Unterminated quoted identifier"),
+        ]
+        for malformed, expected_message in malformed_cases:
+            with pytest.raises(ValueError, match=expected_message):
+                preparer.unformat_identifiers(malformed)
+
+        # Non-string inputs fail with TypeError across preparer entrypoints
+        for invalid_value in (None, 123, b"bytes"):
+            for preparer_method in (
+                preparer.quote,
+                preparer.quote_identifier,
+                preparer.format_collation,
+                preparer._escape_identifier,
+                preparer._unescape_identifier,
+                preparer.unformat_identifiers,
+                preparer._requires_quotes,
+                preparer._requires_quotes_illegal_chars,
+            ):
+                with pytest.raises(TypeError, match="Identifier must be a string"):
+                    preparer_method(invalid_value)
 
     def _create_mock_connection(self, rows=None):
         connection = MagicMock()
