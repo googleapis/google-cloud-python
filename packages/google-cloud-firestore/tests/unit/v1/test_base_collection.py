@@ -468,7 +468,9 @@ def test__auto_id_fallback_to_random(mock_system_rand_choice, mock_rand_choice):
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
 
 
 def _make_client():

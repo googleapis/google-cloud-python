@@ -39,7 +39,9 @@ class Test_LoggingAPI(unittest.TestCase):
     @staticmethod
     def make_logging_api():
         # Create a dummy credentials object to help ensure unit test isolation
-        creds = mock.Mock(spec=google.auth.credentials.Credentials)
+        creds = mock.Mock(
+            spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+        )
 
         # Pass those credentials to the GAPIC client
         gapic_client = LoggingServiceV2Client(credentials=creds)
@@ -49,7 +51,9 @@ class Test_LoggingAPI(unittest.TestCase):
 
     def test_ctor(self):
         # Create a dummy credentials object to help ensure unit test isolation
-        creds = mock.Mock(spec=google.auth.credentials.Credentials)
+        creds = mock.Mock(
+            spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+        )
 
         # Pass those credentials to the GAPIC client
         gapic_client = LoggingServiceV2Client(credentials=creds)
@@ -217,7 +221,9 @@ class Test_SinksAPI(unittest.TestCase):
     @staticmethod
     def make_sinks_api():
         # Create a dummy credentials object to help ensure unit test isolation
-        creds = mock.Mock(spec=google.auth.credentials.Credentials)
+        creds = mock.Mock(
+            spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+        )
 
         # Pass those credentials to the GAPIC client
         gapic_client = ConfigServiceV2Client(credentials=creds)
@@ -227,7 +233,9 @@ class Test_SinksAPI(unittest.TestCase):
 
     def test_ctor(self):
         # Create a dummy credentials object to help ensure unit test isolation
-        creds = mock.Mock(spec=google.auth.credentials.Credentials)
+        creds = mock.Mock(
+            spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+        )
 
         # Pass those credentials to the GAPIC client
         gapic_client = ConfigServiceV2Client(credentials=creds)
@@ -433,7 +441,9 @@ class Test_MetricsAPI(unittest.TestCase):
     @staticmethod
     def make_metrics_api():
         # Create a dummy credentials object to help ensure unit test isolation
-        creds = mock.Mock(spec=google.auth.credentials.Credentials)
+        creds = mock.Mock(
+            spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+        )
 
         # Pass those credentials to the GAPIC client
         gapic_client = MetricsServiceV2Client(credentials=creds)
@@ -443,7 +453,9 @@ class Test_MetricsAPI(unittest.TestCase):
 
     def test_ctor(self):
         # Create a dummy credentials object to help ensure unit test isolation
-        creds = mock.Mock(spec=google.auth.credentials.Credentials)
+        creds = mock.Mock(
+            spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+        )
 
         # Pass those credentials to the GAPIC client
         gapic_client = MetricsServiceV2Client(credentials=creds)

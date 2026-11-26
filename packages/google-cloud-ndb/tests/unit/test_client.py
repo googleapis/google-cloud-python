@@ -28,7 +28,7 @@ from google.cloud.ndb import context as context_module
 
 @contextlib.contextmanager
 def patch_credentials(project):
-    creds = mock.Mock(spec=credentials.Credentials)
+    creds = mock.Mock(spec=credentials.Credentials, universe_domain="googleapis.com")
     patch = mock.patch("google.auth.default", return_value=(creds, project))
     with patch:
         yield creds

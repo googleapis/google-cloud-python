@@ -49,7 +49,9 @@ def use_local_magics_context(monkeypatch):
         local_context = magics.Context()
         local_context._project = "unit-test-project"
         mock_credentials = mock.create_autospec(
-            google.auth.credentials.Credentials, instance=True
+            google.auth.credentials.Credentials,
+            instance=True,
+            universe_domain="googleapis.com",
         )
         local_context._credentials = mock_credentials
         monkeypatch.setattr(magics, "context", local_context)
@@ -153,7 +155,9 @@ def test_context_resolves_unset_credentials_and_project():
 
     project = "prahj-ekt"
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, project)
@@ -176,7 +180,9 @@ def test_context_with_default_connection(monkeypatch):
     magics.context._connection = None
 
     default_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     credentials_patch = mock.patch(
         "google.auth.default", return_value=(default_credentials, "project-from-env")
@@ -214,7 +220,9 @@ def test_context_credentials_and_project_can_be_set_explicitly():
     project1 = "one-project-55564"
     project2 = "other-project-52569"
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, project1)
@@ -242,7 +250,9 @@ def test_context_with_custom_connection(monkeypatch):
     )
 
     default_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     credentials_patch = mock.patch(
         "google.auth.default", return_value=(default_credentials, "project-from-env")
@@ -329,7 +339,9 @@ def test__run_query_dry_run_without_errors_is_silent():
 
 def test__make_bqstorage_client_false():
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     test_client = bigquery.Client(
         project="test_project", credentials=credentials_mock, location="test_location"
@@ -343,7 +355,9 @@ def test__make_bqstorage_client_false():
 )
 def test__make_bqstorage_client_true():
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     test_client = bigquery.Client(
         project="test_project", credentials=credentials_mock, location="test_location"
@@ -357,7 +371,9 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     ImportError.
     """
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     test_client = bigquery.Client(
         project="test_project", credentials=credentials_mock, location="test_location"
@@ -379,7 +395,9 @@ def test__make_bqstorage_client_true_obsolete_dependency():
     version, returns None, and raises a warning.
     """
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     test_client = bigquery.Client(
         project="test_project", credentials=credentials_mock, location="test_location"
@@ -410,7 +428,9 @@ def test__make_bqstorage_client_true_obsolete_dependency():
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     with pytest.raises(ImportError) as exc_context, missing_grpcio_lib:
@@ -468,7 +488,9 @@ def test_bigquery_magic_without_optional_arguments(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     mock_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     # Set up the context with monkeypatch so that it's reset for subsequent
@@ -515,7 +537,9 @@ def test_bigquery_magic_default_connection_user_agent(monkeypatch):
     magics.context._connection = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -539,7 +563,9 @@ def test_bigquery_magic_with_legacy_sql(monkeypatch, use_local_magics_context):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     run_query_patch = mock.patch(
@@ -561,7 +587,9 @@ def test_bigquery_magic_with_result_saved_to_variable(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     ipython_ns_cleanup.append((ip, "df"))
@@ -597,7 +625,9 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     clear_patch = mock.patch(
@@ -621,7 +651,9 @@ def test_bigquery_magic_clears_display_in_non_verbose_mode(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     clear_patch = mock.patch(
@@ -648,7 +680,9 @@ def test_bigquery_magic_with_bqstorage_from_argument(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     mock_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     # Set up the context with monkeypatch so that it's reset for subsequent
@@ -720,7 +754,9 @@ def test_bigquery_magic_with_rest_client_requested(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     mock_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     # Set up the context with monkeypatch so that it's reset for subsequent
@@ -765,7 +801,9 @@ def test_bigquery_magic_w_max_results_invalid(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -788,7 +826,9 @@ def test_bigquery_magic_w_max_results_valid_calls_queryjob_result(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -823,7 +863,9 @@ def test_bigquery_magic_w_max_results_query_job_results_fails(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -862,7 +904,9 @@ def test_bigquery_magic_w_table_id_invalid(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -893,7 +937,9 @@ def test_bigquery_magic_w_missing_query(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -921,7 +967,9 @@ def test_bigquery_magic_w_table_id_and_destination_var(ipython_ns_cleanup, monke
     ipython_ns_cleanup.append((ip, "df"))
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -962,7 +1010,9 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -1005,7 +1055,9 @@ def test_bigquery_magic_dryrun_option_sets_job_config(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     magics.context.project = "project-from-context"
@@ -1028,7 +1080,9 @@ def test_bigquery_magic_dryrun_option_returns_query_job(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context.project = "project-from-context"
     query_job_mock = mock.create_autospec(
@@ -1056,7 +1110,9 @@ def test_bigquery_magic_dryrun_option_variable_error_message(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     magics.context.project = "project-from-context"
@@ -1087,7 +1143,9 @@ def test_bigquery_magic_dryrun_option_saves_query_job_to_variable(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context.project = "project-from-context"
     query_job_mock = mock.create_autospec(
@@ -1121,7 +1179,9 @@ def test_bigquery_magic_saves_query_job_to_variable_on_error(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     magics.context.project = "project-from-context"
@@ -1158,7 +1218,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_invalid(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -1197,7 +1259,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(
     query_results = {"jobReference": job_reference, "totalRows": 0, "jobComplete": True}
     data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -1237,7 +1301,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace(monkeypatch):
     query_results = {"jobReference": job_reference, "totalRows": 0, "jobComplete": True}
     data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -1277,7 +1343,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter(monkeypatch):
     query_results = {"jobReference": job_reference, "totalRows": 0, "jobComplete": True}
     data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -1306,7 +1374,11 @@ def test_bigquery_magic_with_no_query_cache(monkeypatch):
     monkeypatch.setattr(
         magics.context,
         "credentials",
-        mock.create_autospec(google.auth.credentials.Credentials, instance=True),
+        mock.create_autospec(
+            google.auth.credentials.Credentials,
+            instance=True,
+            universe_domain="googleapis.com",
+        ),
     )
     monkeypatch.setattr(magics.context, "project", "project-from-context")
 
@@ -1340,7 +1412,9 @@ def test_context_with_no_query_cache_from_context(monkeypatch):
     context = magics.Context()
     conn = make_connection()
     context._connection = conn
-    context.credentials = mock.create_autospec(google.auth.credentials.Credentials)
+    context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
     context.default_query_job_config = bigquery.QueryJobConfig(use_query_cache=False)
     context.project = "project-from-context"
     monkeypatch.setattr(magics, "context", context)
@@ -1372,7 +1446,9 @@ def test_bigquery_magic_w_progress_bar_type_w_context_setter(monkeypatch):
     magics.context.progress_bar_type = "tqdm_gui"
 
     mock_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     # Set up the context with monkeypatch so that it's reset for subsequent
@@ -1419,7 +1495,9 @@ def test_bigquery_magic_with_progress_bar_type(monkeypatch):
     context = magics.Context()
     conn = make_connection()
     context._connection = conn
-    context.credentials = mock.create_autospec(google.auth.credentials.Credentials)
+    context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
     context.progress_bar_type = None
     context.project = "unit-test-project"
     monkeypatch.setattr(magics, "context", context)
@@ -1447,7 +1525,9 @@ def test_bigquery_magic_with_project(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -1574,7 +1654,9 @@ def test_bigquery_magic_with_multiple_options(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -1605,7 +1687,9 @@ def test_bigquery_magic_with_string_params(ipython_ns_cleanup, monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -1645,7 +1729,9 @@ def test_bigquery_magic_with_dict_params(ipython_ns_cleanup, monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -1692,7 +1778,9 @@ def test_bigquery_magic_with_dict_params_nonexisting(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     sql = "SELECT @foo AS foo"
@@ -1708,7 +1796,9 @@ def test_bigquery_magic_with_dict_params_incorrect_syntax(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     sql = "SELECT @foo AS foo"
@@ -1725,7 +1815,9 @@ def test_bigquery_magic_with_dict_params_duplicate(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     sql = "SELECT @foo AS foo"
@@ -1744,7 +1836,9 @@ def test_bigquery_magic_with_option_value_incorrect(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context.project = "unit-test-project"
 
@@ -1764,7 +1858,9 @@ def test_bigquery_magic_with_dict_params_negative_value(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -1807,7 +1903,9 @@ def test_bigquery_magic_with_dict_params_array_value(ipython_ns_cleanup, monkeyp
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -1850,7 +1948,9 @@ def test_bigquery_magic_with_dict_params_tuple_value(ipython_ns_cleanup, monkeyp
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -1893,7 +1993,9 @@ def test_bigquery_magic_with_improperly_formatted_params(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     sql = "SELECT @num AS num"
@@ -1914,7 +2016,9 @@ def test_bigquery_magic_valid_query_in_existing_variable(
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context.project = "unit-test-project"
 
@@ -1955,7 +2059,9 @@ def test_bigquery_magic_nonexisting_query_variable(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context.project = "unit-test-project"
 
@@ -1981,7 +2087,9 @@ def test_bigquery_magic_empty_query_variable_name(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context.project = "unit-test-project"
     run_query_patch = mock.patch(
@@ -2004,7 +2112,9 @@ def test_bigquery_magic_query_variable_non_string(ipython_ns_cleanup, monkeypatc
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context.project = "unit-test-project"
 
@@ -2032,7 +2142,9 @@ def test_bigquery_magic_query_variable_not_identifier(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     magics.context.project = "unit-test-project"
@@ -2061,7 +2173,9 @@ def test_bigquery_magic_with_invalid_multiple_option_values(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     sql = "SELECT @foo AS foo"
@@ -2080,7 +2194,9 @@ def test_bigquery_magic_omits_tracebacks_from_error_message(monkeypatch):
     bigquery.load_ipython_extension(ip)
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -2109,7 +2225,9 @@ def test_bigquery_magic_w_destination_table_invalid_format(monkeypatch):
     magics.context._project = None
 
     credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     default_patch = mock.patch(
         "google.auth.default", return_value=(credentials_mock, "general-project")
@@ -2136,7 +2254,9 @@ def test_bigquery_magic_w_destination_table(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context._project = "test-project"
 
@@ -2170,7 +2290,9 @@ def test_bigquery_magic_create_dataset_fails(monkeypatch):
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
     magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
     magics.context._project = "test-project"
 

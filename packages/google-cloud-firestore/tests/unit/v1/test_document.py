@@ -625,7 +625,9 @@ def test_documentreference_on_snapshot(watch):
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
 
 
 def _make_client(project=DEFAULT_TEST_PROJECT, database=None):

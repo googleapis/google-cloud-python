@@ -63,10 +63,12 @@ from test_utils.imports import maybe_fail_import
 from tests.unit.helpers import make_connection
 
 
-def _make_credentials():
+def _make_credentials(universe_domain="googleapis.com"):
     import google.auth.credentials
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain=universe_domain
+    )
 
 
 def _make_list_partitons_meta_info(project, dataset_id, table_id, num_rows=0):
@@ -149,7 +151,7 @@ class TestClient(unittest.TestCase):
 
     @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"})
     def test_ctor_w_only_env_universe(self):
-        creds = _make_credentials()
+        creds = _make_credentials(universe_domain="foo.com")
         http = object()
         client = self._make_one(
             project=self.PROJECT,
@@ -194,7 +196,7 @@ class TestClient(unittest.TestCase):
         reason="universe_domain not supported with google-api-core < 2.15.0",
     )
     def test_ctor_w_client_options_universe(self):
-        creds = _make_credentials()
+        creds = _make_credentials(universe_domain="foo.com")
         http = object()
         client_options = {"universe_domain": "foo.com"}
         client = self._make_one(
@@ -863,7 +865,7 @@ class TestClient(unittest.TestCase):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
 
         mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
-        creds = _make_credentials()
+        creds = _make_credentials(universe_domain="foo.com")
         client = self._make_one(
             project=self.PROJECT,
             credentials=creds,
@@ -882,7 +884,7 @@ class TestClient(unittest.TestCase):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
 
         mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
-        creds = _make_credentials()
+        creds = _make_credentials(universe_domain="foo.com")
         client = self._make_one(
             project=self.PROJECT,
             credentials=creds,
@@ -1118,7 +1120,7 @@ class TestClient(unittest.TestCase):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
 
         mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
-        creds = _make_credentials()
+        creds = _make_credentials(universe_domain="foo.com")
         client = self._make_one(
             project=self.PROJECT,
             credentials=creds,

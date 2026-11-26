@@ -200,7 +200,9 @@ def test_default_no_data_leakage(setup):
     from google.cloud.bigquery import client
     from google.cloud.bigquery import job
 
-    mock_credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+    mock_credentials = mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
     test_client = client.Client(
         project="test_project", credentials=mock_credentials, location="test_location"
     )
@@ -248,7 +250,9 @@ def test_span_creation_error(setup):
     from google.cloud.bigquery import client
     from google.api_core.exceptions import GoogleAPICallError, InvalidArgument
 
-    mock_credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+    mock_credentials = mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
     test_client = client.Client(
         project="test_project", credentials=mock_credentials, location="test_location"
     )

@@ -3587,7 +3587,10 @@ class TestRowIterator(unittest.TestCase):
         ):
             client = client_module.Client(
                 project="proj",
-                credentials=mock.Mock(spec=google.auth.credentials.Credentials),
+                credentials=mock.Mock(
+                    spec=google.auth.credentials.Credentials,
+                    universe_domain="googleapis.com",
+                ),
             )
             row_iterator = mut.RowIterator(
                 client,
@@ -3641,7 +3644,10 @@ class TestRowIterator(unittest.TestCase):
         ):
             client = client_module.Client(
                 project="proj",
-                credentials=mock.Mock(spec=google.auth.credentials.Credentials),
+                credentials=mock.Mock(
+                    spec=google.auth.credentials.Credentials,
+                    universe_domain="googleapis.com",
+                ),
             )
             row_iterator = mut.RowIterator(
                 client,
@@ -4968,7 +4974,10 @@ class TestRowIterator(unittest.TestCase):
         ):
             client = client_module.Client(
                 project="proj",
-                credentials=mock.Mock(spec=google.auth.credentials.Credentials),
+                credentials=mock.Mock(
+                    spec=google.auth.credentials.Credentials,
+                    universe_domain="googleapis.com",
+                ),
             )
             row_iterator = mut.RowIterator(
                 client,
@@ -5022,7 +5031,10 @@ class TestRowIterator(unittest.TestCase):
         ):
             client = client_module.Client(
                 project="proj",
-                credentials=mock.Mock(spec=google.auth.credentials.Credentials),
+                credentials=mock.Mock(
+                    spec=google.auth.credentials.Credentials,
+                    universe_domain="googleapis.com",
+                ),
             )
             row_iterator = mut.RowIterator(
                 client,

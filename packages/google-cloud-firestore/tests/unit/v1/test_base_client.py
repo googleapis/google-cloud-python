@@ -164,8 +164,7 @@ def test_baseclient__firestore_api_helper_async_wo_emulator():
 
 def test_baseclient__firestore_api_helper_w_emulator():
     emulator_host = "localhost:8081"
-    with mock.patch("os.getenv") as getenv:
-        getenv.return_value = emulator_host
+    with mock.patch("os.environ", {"FIRESTORE_EMULATOR_HOST": emulator_host}):
         client = _make_default_base_client()
 
     client_options = client._client_options = mock.Mock()
@@ -222,9 +221,7 @@ def test_baseclient___rpc_metadata_property():
 
 def test_baseclient__rpc_metadata_property_with_emulator():
     emulator_host = "localhost:8081"
-    with mock.patch("os.getenv") as getenv:
-        getenv.return_value = emulator_host
-
+    with mock.patch("os.environ", {"FIRESTORE_EMULATOR_HOST": emulator_host}):
         credentials = _make_credentials()
         database = "quanta"
         client = _make_base_client(
@@ -248,8 +245,7 @@ def test_baseclient__emulator_channel():
     emulator_host = "localhost:8081"
     credentials = _make_credentials()
     database = "quanta"
-    with mock.patch("os.getenv") as getenv:
-        getenv.return_value = emulator_host
+    with mock.patch("os.environ", {"FIRESTORE_EMULATOR_HOST": emulator_host}):
         credentials.id_token = None
         client = _make_base_client(
             project=PROJECT, credentials=credentials, database=database
@@ -266,8 +262,7 @@ def test_baseclient__emulator_channel():
     # NOTE: On windows, emulation requires an insecure channel. If this is
     # altered to use a secure channel, start by verifying that it still
     # works as expected on windows.
-    with mock.patch("os.getenv") as getenv:
-        getenv.return_value = emulator_host
+    with mock.patch("os.environ", {"FIRESTORE_EMULATOR_HOST": emulator_host}):
         credentials.id_token = "test"
         client = _make_base_client(
             project=PROJECT, credentials=credentials, database=database
@@ -299,8 +294,7 @@ def test_baseclient__target_helper_w_emulator_host():
     emulator_host = "localhost:8081"
     credentials = _make_credentials()
     database = "quanta"
-    with mock.patch("os.getenv") as getenv:
-        getenv.return_value = emulator_host
+    with mock.patch("os.environ", {"FIRESTORE_EMULATOR_HOST": emulator_host}):
         credentials.id_token = None
         client = _make_base_client(
             project=PROJECT, credentials=credentials, database=database
@@ -545,7 +539,9 @@ def test__get_doc_mask_w_paths():
 def _make_credentials():
     import google.oauth2.credentials
 
-    return mock.Mock(spec=google.oauth2.credentials.Credentials)
+    return mock.Mock(
+        spec=google.oauth2.credentials.Credentials, universe_domain="googleapis.com"
+    )
 
 
 def _make_batch_response(**kwargs):

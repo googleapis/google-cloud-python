@@ -40,7 +40,9 @@ def _to_pyarrow(value):
 
 
 def make_client(project="PROJECT", **kw):
-    credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+    credentials = mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
     return google.cloud.bigquery.client.Client(project, credentials, **kw)
 
 

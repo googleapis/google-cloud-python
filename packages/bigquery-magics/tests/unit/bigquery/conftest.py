@@ -63,7 +63,9 @@ def missing_grpcio_lib():
 @pytest.fixture
 def mock_credentials(monkeypatch):
     credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
+        google.auth.credentials.Credentials,
+        instance=True,
+        universe_domain="googleapis.com",
     )
 
     # Set up the context with monkeypatch so that it's reset for subsequent

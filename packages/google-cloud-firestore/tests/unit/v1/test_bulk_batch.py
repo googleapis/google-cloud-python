@@ -88,7 +88,9 @@ def test_bulkwritebatch_write_w_retry_timeout():
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
+    )
 
 
 def _make_client(project="seventy-nine"):
