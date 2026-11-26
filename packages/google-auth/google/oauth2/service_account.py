@@ -196,7 +196,8 @@ class Credentials(
         self._token_uri = token_uri
         self._explicit_always_use_jwt_access = bool(always_use_jwt_access)
         self._always_use_jwt_access = always_use_jwt_access
-        _helpers.validate_universe_domain(universe_domain, allow_none=True)
+        if universe_domain is not None:
+            _helpers.validate_universe_domain(universe_domain)
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
 
         # Check the normalized universe domain so None falls back to the
@@ -676,7 +677,8 @@ class IDTokenCredentials(
         self._quota_project_id = quota_project_id
         self._use_iam_endpoint = False
 
-        _helpers.validate_universe_domain(universe_domain, allow_none=True)
+        if universe_domain is not None:
+            _helpers.validate_universe_domain(universe_domain)
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         self._iam_id_token_endpoint = iam._get_iam_idtoken_endpoint(
             self._universe_domain

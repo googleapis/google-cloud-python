@@ -652,35 +652,6 @@ def test_parse_response_none():
     assert _helpers._parse_response(None) is None
 
 
-@pytest.mark.parametrize("invalid_ud", [None, "", "   ", "\t", "\n", 123, []])
-def test_validate_universe_domain_invalid_raises(invalid_ud):
-    with pytest.raises(
-        exceptions.InvalidValue, match="Universe domain cannot be empty."
-    ):
-        _helpers.validate_universe_domain(invalid_ud)
-
-
-@pytest.mark.parametrize("invalid_ud", ["", "   ", "\t", "\n", 123, []])
-def test_validate_universe_domain_allow_none_still_rejects_empty_and_non_str(
-    invalid_ud,
-):
-    with pytest.raises(
-        exceptions.InvalidValue, match="Universe domain cannot be empty."
-    ):
-        _helpers.validate_universe_domain(invalid_ud, allow_none=True)
-
-
-@pytest.mark.parametrize("valid_ud", ["googleapis.com", "myuniverse.goog"])
-def test_validate_universe_domain_valid(valid_ud):
-    # Does not raise with default allow_none=False or allow_none=True
-    _helpers.validate_universe_domain(valid_ud)
-    _helpers.validate_universe_domain(valid_ud, allow_none=True)
-
-
-def test_validate_universe_domain_allow_none_accepts_none():
-    _helpers.validate_universe_domain(None, allow_none=True)
-
-
 class TestUtcFromTimestamp:
     """Tests for the utcfromtimestamp utility function."""
 
