@@ -32,7 +32,12 @@ import google.auth.compute_engine
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud import _helpers
 from google.cloud import _http
-from google.cloud.client import _CREDENTIALS_REFRESH_TIMEOUT, Client, ClientWithProject
+from google.cloud.client import (
+    _CREDENTIALS_REFRESH_TIMEOUT,
+    _validate_credentials_universe,
+    Client,
+    ClientWithProject,
+)
 
 DEFAULT_PROJECT_ID = "test-proj"
 DEFAULT_UNIVERSE = "googleapis.com"
@@ -187,18 +192,28 @@ class TestClientAndConnectionUniverse:
     def test_credentials_universe_validation(
         self, monkeypatch: pytest.MonkeyPatch, assert_no_googleapis_calls: None
     ) -> None:
-        # Case 2a: TPC client + GDU credentials raises UniverseMismatchError
-        with pytest.raises(UniverseMismatchError):
-            _MockServiceClient(
-                credentials=_FakeCredentials(DEFAULT_UNIVERSE),
-                client_options={"universe_domain": CUSTOM_UNIVERSE},
-            )
+        # Unconfigured credential mocks do not fail in __init__ when _http is unused
+        unconfigured_mock = mock.Mock(spec=auth_credentials.Credentials)
+        assert _MockServiceClient(credentials=unconfigured_mock).universe_domain == (
+            DEFAULT_UNIVERSE
+        )
 
-        # Case 2b: GDU client + TPC credentials raises UniverseMismatchError
+        # Case 2a: TPC client + GDU credentials raises UniverseMismatchError on HTTP use
+        tpc_with_gdu_creds = _MockServiceClient(
+            credentials=_FakeCredentials(DEFAULT_UNIVERSE),
+            client_options={"universe_domain": CUSTOM_UNIVERSE},
+        )
         with pytest.raises(UniverseMismatchError):
-            _MockServiceClient(credentials=_FakeCredentials(CUSTOM_UNIVERSE))
+            tpc_with_gdu_creds._connection.api_request("GET", "/items")
 
-        # ADC credentials validated after resolution
+        # Case 2b: GDU client + TPC credentials raises UniverseMismatchError on HTTP use
+        gdu_with_tpc_creds = _MockServiceClient(
+            credentials=_FakeCredentials(CUSTOM_UNIVERSE)
+        )
+        with pytest.raises(UniverseMismatchError):
+            _ = gdu_with_tpc_creds._http
+
+        # ADC credentials validated on HTTP use after resolution
         monkeypatch.setenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", CUSTOM_UNIVERSE)
         with mock.patch.object(
             google.auth,
@@ -206,40 +221,43 @@ class TestClientAndConnectionUniverse:
             autospec=True,
             return_value=(_FakeCredentials(DEFAULT_UNIVERSE), DEFAULT_PROJECT_ID),
         ):
+            adc_client = _MockServiceClient()
             with pytest.raises(UniverseMismatchError):
-                _MockServiceClient()
+                _ = adc_client._http
 
         # Exemptions: None (when _http provided), AnonymousCredentials, uncached GCE
-        assert (
-            Client(
-                _http=object(), client_options={"universe_domain": CUSTOM_UNIVERSE}
-            ).universe_domain
-            == CUSTOM_UNIVERSE
+        custom_http_client = Client(
+            _http=object(), client_options={"universe_domain": CUSTOM_UNIVERSE}
         )
-        assert (
-            _MockServiceClient(
-                credentials=auth_credentials.AnonymousCredentials(),
-                client_options={"universe_domain": CUSTOM_UNIVERSE},
-            ).universe_domain
-            == CUSTOM_UNIVERSE
+        assert custom_http_client.universe_domain == CUSTOM_UNIVERSE
+        _validate_credentials_universe(
+            custom_http_client.universe_domain, custom_http_client._credentials
         )
+
+        anon_client = _MockServiceClient(
+            credentials=auth_credentials.AnonymousCredentials(),
+            client_options={"universe_domain": CUSTOM_UNIVERSE},
+        )
+        assert anon_client.universe_domain == CUSTOM_UNIVERSE
+        assert anon_client._connection.api_request("GET", "/items") == {}
+
         uncached_gce = google.auth.compute_engine.Credentials()
-        assert (
-            _MockServiceClient(
-                credentials=uncached_gce,
-                client_options={"universe_domain": CUSTOM_UNIVERSE},
-            ).universe_domain
-            == CUSTOM_UNIVERSE
+        uncached_client = _MockServiceClient(
+            credentials=uncached_gce,
+            client_options={"universe_domain": CUSTOM_UNIVERSE},
         )
+        assert uncached_client.universe_domain == CUSTOM_UNIVERSE
+        assert uncached_client._http is not None
 
         # Cached GCE credentials ARE validated
         cached_gce = google.auth.compute_engine.Credentials(scopes=("s",))
         cached_gce._universe_domain_cached = True  # type: ignore[attr-defined]
+        cached_gce_client = _MockServiceClient(
+            credentials=cached_gce,
+            client_options={"universe_domain": CUSTOM_UNIVERSE},
+        )
         with pytest.raises(UniverseMismatchError):
-            _MockServiceClient(
-                credentials=cached_gce,
-                client_options={"universe_domain": CUSTOM_UNIVERSE},
-            )
+            _ = cached_gce_client._http
 
     def test_custom_api_endpoint_and_bare_client_fallbacks(self) -> None:
         client = _MockServiceClient(
@@ -353,9 +371,8 @@ class TestClientAndConnectionUniverse:
         assert emulator_conn.get_api_base_url_for_mtls() == "localhost:9023"
 
         no_mtls_conn = _NoMtlsServiceConnection(gdu_client)
-        assert (
-            no_mtls_conn.get_api_base_url_for_mtls() == "https://nomtls.googleapis.com"
-        )
+        with pytest.raises(ValueError, match="mTLS endpoint is not available"):
+            no_mtls_conn.get_api_base_url_for_mtls()
         monkeypatch.setenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         assert (
             no_mtls_conn.get_api_base_url_for_mtls() == "https://nomtls.googleapis.com"

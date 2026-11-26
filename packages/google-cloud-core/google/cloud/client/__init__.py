@@ -14,11 +14,13 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
+from collections.abc import Mapping
 import io
 import json
 import os
 from pickle import PicklingError
-from typing import Set, Tuple, Union
+from typing import Optional, Set, Tuple, Union
+from urllib.parse import urlsplit
 
 # PEP 0810: Explicit Lazy Imports
 # Python 3.15+ natively intercepts and defers these imports.
@@ -32,8 +34,10 @@ from typing import Set, Tuple, Union
 __lazy_modules__: Set[str] = {
     "google.api_core.client_options",
     "google.api_core.exceptions",
+    "google.api_core.universe",
     "google.auth",
     "google.auth.api_key",
+    "google.auth.compute_engine",
     "google.auth.environment_vars",
     "google.auth.credentials",
     "google.auth.transport.requests",
@@ -44,8 +48,10 @@ __lazy_modules__: Set[str] = {
 
 import google.api_core.client_options
 import google.api_core.exceptions
+import google.api_core.universe
 import google.auth
 from google.auth import environment_vars
+import google.auth.compute_engine
 import google.auth.credentials
 import google.auth.transport.requests
 from google.cloud._helpers import _determine_default_project
@@ -217,7 +223,8 @@ class Client(_ClientFactoryMixin):
     """
 
     def __init__(self, credentials=None, _http=None, client_options=None):
-        if isinstance(client_options, dict):
+        self._universe_domain = _resolve_client_universe(client_options)
+        if isinstance(client_options, Mapping):
             client_options = google.api_core.client_options.from_dict(client_options)
         if client_options is None:
             client_options = google.api_core.client_options.ClientOptions()
@@ -265,6 +272,16 @@ class Client(_ClientFactoryMixin):
 
         self._http_internal = _http
         self._client_cert_source = client_options.client_cert_source
+        self._api_endpoint = client_options.api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        :rtype: str
+        :returns: The resolved universe domain string.
+        """
+        return self._universe_domain
 
     def __getstate__(self):
         """Explicitly state that clients are not pickleable."""
@@ -277,6 +294,17 @@ class Client(_ClientFactoryMixin):
             )
         )
 
+    def _get_default_host(self) -> Optional[str]:
+        """Extract the default service hostname from an attached connection."""
+        connection = getattr(self, "_connection", None)
+        api_base_url = getattr(connection, "API_BASE_URL", None)
+        if not isinstance(api_base_url, str) or not api_base_url:
+            return None
+        parsed = urlsplit(
+            api_base_url if "://" in api_base_url else f"//{api_base_url}"
+        )
+        return parsed.hostname
+
     @property
     def _http(self):
         """Getter for object used for HTTP transport.
@@ -285,9 +313,14 @@ class Client(_ClientFactoryMixin):
         :returns: An HTTP object.
         """
         if self._http_internal is None:
+            _validate_credentials_universe(self._universe_domain, self._credentials)
+            session_kwargs = {"refresh_timeout": _CREDENTIALS_REFRESH_TIMEOUT}
+            default_host = self._get_default_host()
+            if default_host is not None:
+                session_kwargs["default_host"] = default_host
             self._http_internal = google.auth.transport.requests.AuthorizedSession(
                 self._credentials,
-                refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT,
+                **session_kwargs,
             )
             self._http_internal.configure_mtls_channel(self._client_cert_source)
         return self._http_internal
