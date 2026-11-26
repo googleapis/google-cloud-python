@@ -72,6 +72,17 @@ async def main(project_id, instance_id, table_id):
     # [END bigtable_async_hw_create_table]
 
     try:
+        # Wait for table creation to propagate to the data plane.
+        from google.api_core.exceptions import FailedPrecondition
+
+        await table.read_row(
+            b"greeting0",
+            operation_timeout=120,
+            retryable_errors=(
+                *table.default_read_rows_retryable_errors,
+                FailedPrecondition,
+            ),
+        )
         # [START bigtable_async_hw_write_rows]
         print("Writing some greetings to the table.")
         greetings = [b"Hello World!", b"Hello Cloud Bigtable!", b"Hello Python!"]
