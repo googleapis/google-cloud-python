@@ -14,6 +14,7 @@
 import base64
 import collections.abc
 import re
+from typing import Any
 
 import sqlalchemy
 from google.api_core.client_options import ClientOptions
@@ -100,18 +101,29 @@ _SPANNER_STRING_ESCAPE_TABLE = str.maketrans(
 )
 
 
-def _escape_json_path_key(key):
-    """Escape a JSON member key for use inside double-quoted GoogleSQL JSONPath.
+def _escape_json_path_key(key: Any) -> str:
+    r"""Escape a JSON member key for use inside double-quoted GoogleSQL JSONPath.
 
-    GoogleSQL's JSONPath lexer (`kEscKeyLexerStandard`) consumes `\\[^"]` as a
-    two-character pair during tokenization, while `RemoveBackSlashFollowedByChar`
-    only unescapes `\\"`. Doubling backslashes only when immediately preceding
-    `"` or end-of-string preserves interior backslashes while preventing any
-    trailing or quote-adjacent backslash from unescaping a `"` delimiter.
+    GoogleSQL double-quoted JSONPath keys (``."..."``) unescape ``\"`` to
+    ``"``, while keeping backslashes before any other character literal. As a
+    result, any run of backslashes immediately before a ``"`` or at the end of
+    the key (directly preceding the closing ``"``) must be doubled so it does
+    not escape the quote delimiter, while backslashes before other characters
+    are kept as-is.
     """
-    s = str(key)
-    s = re.sub(r'(\\+)(?="|\Z)', r"\g<1>\g<1>", s)
-    return s.replace('"', '\\"')
+    raw_key = str(key)
+    if "\\" not in raw_key:
+        return raw_key.replace('"', '\\"')
+    if '"' not in raw_key and not raw_key.endswith("\\"):
+        return raw_key
+    # Splitting on `"` puts every backslash run that precedes `"` or end-of-string
+    # at the end of a part, avoiding regex lookahead backtracking.
+    parts = raw_key.split('"')
+    for index, part in enumerate(parts):
+        if part.endswith("\\"):
+            stripped_length = len(part.rstrip("\\"))
+            parts[index] = part + part[stripped_length:]
+    return '\\"'.join(parts)
 
 
 def _escape_spanner_string_literal(value, dialect=None):
