@@ -73,7 +73,7 @@ async def main(project_id, instance_id, table_id):
 
     try:
         # Wait for table creation to propagate to the data plane.
-        from google.api_core.exceptions import FailedPrecondition
+        from google.api_core.exceptions import FailedPrecondition, NotFound
 
         await table.read_row(
             b"greeting0",
@@ -81,6 +81,7 @@ async def main(project_id, instance_id, table_id):
             retryable_errors=(
                 *table.default_read_rows_retryable_errors,
                 FailedPrecondition,
+                NotFound,
             ),
         )
         # [START bigtable_async_hw_write_rows]
