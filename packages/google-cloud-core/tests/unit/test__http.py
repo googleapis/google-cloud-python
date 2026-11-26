@@ -170,8 +170,8 @@ class TestJSONConnection(unittest.TestCase):
     def _make_mock_one(self, *args, **kw):
         class MockConnection(self._get_target_class()):
             API_URL_TEMPLATE = "{api_base_url}/mock/{api_version}{path}"
-            API_BASE_URL = "http://mock"
-            API_BASE_MTLS_URL = "https://mock.mtls"
+            API_BASE_URL = "http://mock.googleapis.com"
+            API_BASE_MTLS_URL = "https://mock.mtls.googleapis.com"
             API_VERSION = "vMOCK"
 
         return MockConnection(*args, **kw)
@@ -254,14 +254,14 @@ class TestJSONConnection(unittest.TestCase):
         conn = self._make_mock_one(client)
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
             uri = conn.get_api_base_url_for_mtls()
-            self.assertEqual(uri, "https://mock.mtls")
+            self.assertEqual(uri, "https://mock.mtls.googleapis.com")
 
     def test_get_api_base_url_for_mtls_env_never(self):
         client = object()
         conn = self._make_mock_one(client)
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
             uri = conn.get_api_base_url_for_mtls()
-            self.assertEqual(uri, "http://mock")
+            self.assertEqual(uri, "http://mock.googleapis.com")
 
     def test_get_api_base_url_for_mtls_env_auto(self):
         client = mock.Mock()
@@ -272,7 +272,7 @@ class TestJSONConnection(unittest.TestCase):
         # ALLOW_AUTO_SWITCH_TO_MTLS_URL is False, so use regular endpoint.
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
             uri = conn.get_api_base_url_for_mtls()
-            self.assertEqual(uri, "http://mock")
+            self.assertEqual(uri, "http://mock.googleapis.com")
 
         # ALLOW_AUTO_SWITCH_TO_MTLS_URL is True, so now endpoint dependes
         # on client._http.is_mtls
@@ -280,12 +280,12 @@ class TestJSONConnection(unittest.TestCase):
 
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
             uri = conn.get_api_base_url_for_mtls()
-            self.assertEqual(uri, "http://mock")
+            self.assertEqual(uri, "http://mock.googleapis.com")
 
         client._http.is_mtls = True
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
             uri = conn.get_api_base_url_for_mtls()
-            self.assertEqual(uri, "https://mock.mtls")
+            self.assertEqual(uri, "https://mock.mtls.googleapis.com")
 
     def test__make_request_no_data_no_content_type_no_headers(self):
         from google.cloud._http import CLIENT_INFO_HEADER

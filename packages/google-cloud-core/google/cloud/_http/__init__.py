@@ -20,7 +20,7 @@ import json
 import os
 import platform
 from typing import Optional, Set
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 import warnings
 
 # PEP 0810: Explicit Lazy Imports
@@ -34,11 +34,15 @@ import warnings
 # imports are ignored, making their presence safe.
 __lazy_modules__: Set[str] = {
     "google.api_core.client_info",
+    "google.api_core.universe",
+    "google.auth.exceptions",
     "google.cloud.exceptions",
     "google.cloud.version",
 }
 
 from google.api_core.client_info import ClientInfo
+from google.api_core.universe import DEFAULT_UNIVERSE, determine_domain
+from google.auth.exceptions import MutualTLSChannelError
 from google.cloud import exceptions
 from google.cloud import version
 
@@ -202,6 +206,9 @@ class JSONConnection(Connection):
     API_BASE_URL: Optional[str] = None
     """The base of the API call URL."""
 
+    DEFAULT_API_ENDPOINT_TEMPLATE: Optional[str] = None
+    """Template for default base URL with ``{universe_domain}`` placeholder."""
+
     API_BASE_MTLS_URL: Optional[str] = None
     """The base of the API call URL for mutual TLS."""
 
@@ -213,6 +220,33 @@ class JSONConnection(Connection):
 
     API_URL_TEMPLATE: Optional[str] = None
     """A template for the URL of a particular API call."""
+
+    def __init__(self, client, client_info=None, api_endpoint=None):
+        super(JSONConnection, self).__init__(client, client_info)
+        # Fall back to client_options.api_endpoint recorded on the client when
+        # no explicit api_endpoint argument was passed to Connection.__init__.
+        client_api_endpoint = getattr(client, "_api_endpoint", None)
+        if api_endpoint is None and isinstance(client_api_endpoint, str):
+            api_endpoint = client_api_endpoint
+        self._custom_api_endpoint = bool(api_endpoint)
+        # Override API_BASE_URL on this instance when a custom endpoint is set
+        # (from either source); otherwise expand the subclass template for the
+        # client's resolved universe_domain.
+        if api_endpoint:
+            self.API_BASE_URL = api_endpoint
+        elif self.DEFAULT_API_ENDPOINT_TEMPLATE:
+            # Read the client's resolved universe_domain when present as a
+            # string, falling back to the default universe otherwise.
+            client_universe = getattr(client, "universe_domain", None)
+            if client_universe is not None and not isinstance(client_universe, str):
+                client_universe = None
+            universe_domain = determine_domain(client_universe, None).strip()
+            # Support both lowercase ({universe_domain}, used in veneers) and
+            # uppercase ({UNIVERSE_DOMAIN}, used in api_core/GAPIC) templates.
+            self.API_BASE_URL = self.DEFAULT_API_ENDPOINT_TEMPLATE.format(
+                universe_domain=universe_domain,
+                UNIVERSE_DOMAIN=universe_domain,
+            )
 
     def get_api_base_url_for_mtls(self, api_base_url=None):
         """Return the api base url for mutual TLS.
@@ -236,17 +270,41 @@ class JSONConnection(Connection):
 
         :rtype: str
         :returns: The api base url used for mTLS.
+        :raises ~google.auth.exceptions.MutualTLSChannelError: If
+            `GOOGLE_API_USE_MTLS_ENDPOINT=always` is set outside `googleapis.com`.
+        :raises ValueError: If `GOOGLE_API_USE_MTLS_ENDPOINT=always` is set when
+            `API_BASE_MTLS_URL` is not available.
         """
         if api_base_url:
             return api_base_url
 
+        if self._custom_api_endpoint:
+            return self.API_BASE_URL
+
         env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        client_universe = getattr(self._client, "universe_domain", None)
+        if (
+            isinstance(client_universe, str)
+            and client_universe.lower() != DEFAULT_UNIVERSE
+        ):
+            if env == "always":
+                raise MutualTLSChannelError(
+                    f"mTLS is not supported in any universe other than {DEFAULT_UNIVERSE}."
+                )
+            return self.API_BASE_URL
+
+        # Preserve non-googleapis.com endpoints set by subclasses (e.g. emulators).
+        if self.API_BASE_URL and not _is_googleapis_url(self.API_BASE_URL):
+            return self.API_BASE_URL
+
         if env == "always":
+            if not self.API_BASE_MTLS_URL:
+                raise ValueError("mTLS endpoint is not available.")
             url_to_use = self.API_BASE_MTLS_URL
         elif env == "never":
             url_to_use = self.API_BASE_URL
         else:
-            if self.ALLOW_AUTO_SWITCH_TO_MTLS_URL:
+            if self.ALLOW_AUTO_SWITCH_TO_MTLS_URL and self.API_BASE_MTLS_URL:
                 url_to_use = (
                     self.API_BASE_MTLS_URL if self.http.is_mtls else self.API_BASE_URL
                 )
