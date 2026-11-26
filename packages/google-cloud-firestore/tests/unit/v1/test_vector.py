@@ -42,9 +42,7 @@ def _make_firestore_api():
 def _make_client(firestore_api):
     client = Client(
         project="dignity",
-        credentials=mock.Mock(
-            spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
-        ),
+        credentials=mock.Mock(spec=google.auth.credentials.Credentials),
         database=None,
     )
     client._firestore_api_internal = firestore_api

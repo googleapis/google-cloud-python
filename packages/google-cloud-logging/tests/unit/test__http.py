@@ -20,9 +20,7 @@ import mock
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(
-        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
-    )
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class TestConnection(unittest.TestCase):

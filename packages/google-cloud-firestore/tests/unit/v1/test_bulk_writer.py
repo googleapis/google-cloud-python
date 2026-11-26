@@ -79,9 +79,7 @@ def _make_no_send_bulk_writer(*args, **kwargs):
 def _make_credentials():
     from google.auth.credentials import Credentials
 
-    return mock.create_autospec(
-        Credentials, project_id="project-id", universe_domain="googleapis.com"
-    )
+    return mock.create_autospec(Credentials, project_id="project-id")
 
 
 class _SyncClientMixin:

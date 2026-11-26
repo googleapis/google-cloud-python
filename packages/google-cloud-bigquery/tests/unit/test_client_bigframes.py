@@ -43,9 +43,7 @@ def make_response(body, *, status_code: int = 200):
 def client():
     """A real client object with mocked API requests."""
     credentials = mock.create_autospec(
-        google.auth.credentials.Credentials,
-        instance=True,
-        universe_domain="googleapis.com",
+        google.auth.credentials.Credentials, instance=True
     )
     http_session = mock.Mock()
     return google.cloud.bigquery.client.Client(

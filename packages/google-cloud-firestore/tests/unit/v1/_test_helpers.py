@@ -33,9 +33,7 @@ DEFAULT_TEST_PROJECT = "project-project"
 def make_test_credentials() -> google.auth.credentials.Credentials:  # type: ignore
     import google.auth.credentials  # type: ignore
 
-    return mock.Mock(
-        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
-    )
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 def make_client(

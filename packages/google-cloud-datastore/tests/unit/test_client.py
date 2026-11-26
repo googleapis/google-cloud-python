@@ -1923,9 +1923,7 @@ def _make_datastore_api(*keys, **kwargs):
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(
-        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
-    )
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None, database=None):

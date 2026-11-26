@@ -92,9 +92,7 @@ def _make_client_document(firestore_api, testcase):
     assert database == DEFAULT_DATABASE
 
     # Attach the fake GAPIC to a real client.
-    credentials = mock.Mock(
-        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
-    )
+    credentials = mock.Mock(spec=google.auth.credentials.Credentials)
     client = Client(project=project, credentials=credentials)
     client._firestore_api_internal = firestore_api
     return client, client.document(doc_path)
@@ -225,9 +223,7 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
     testcase = test_proto.listen
     testname = test_proto.description
 
-    credentials = mock.Mock(
-        spec=google.auth.credentials.Credentials, universe_domain="googleapis.com"
-    )
+    credentials = mock.Mock(spec=google.auth.credentials.Credentials)
     client = Client(project="project", credentials=credentials)
     # conformance data has db string as this
     db_str = "projects/projectID/databases/(default)"
@@ -460,7 +456,7 @@ def parse_query(testcase):
 
     _directions = {"asc": Query.ASCENDING, "desc": Query.DESCENDING}
 
-    credentials = mock.create_autospec(Credentials, universe_domain="googleapis.com")
+    credentials = mock.create_autospec(Credentials)
     client = Client("projectID", credentials)
     path = parse_path(testcase.coll_path)
     collection = client.collection(*path)

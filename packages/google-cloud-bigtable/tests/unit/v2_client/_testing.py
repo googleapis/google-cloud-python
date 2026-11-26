@@ -38,13 +38,11 @@ def _make_credentials():
         pass
 
     credentials = mock.Mock(spec=_CredentialsWithScopesAndQuotaProject)
-    credentials.universe_domain = BigtableClient._DEFAULT_UNIVERSE
 
     # Needed to mock universe domain and quota project for new data client tests
     credentials_with_scopes = mock.Mock(spec=_CredentialsWithScopesAndQuotaProject)
     credentials_with_scopes.universe_domain = BigtableClient._DEFAULT_UNIVERSE
     credentials_with_scopes.with_quota_project.return_value = credentials_with_scopes
-    credentials_with_scopes.with_scopes.return_value = credentials_with_scopes
     credentials.with_scopes.return_value = credentials_with_scopes
 
     return credentials

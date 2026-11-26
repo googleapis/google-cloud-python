@@ -24,12 +24,10 @@ VENEER_HEADER_REGEX = re.compile(
 )
 
 
-def _make_credentials(universe_domain="googleapis.com"):
+def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(
-        spec=google.auth.credentials.Credentials, universe_domain=universe_domain
-    )
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class TestClient(unittest.TestCase):
@@ -126,7 +124,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_ctor_w_universe_domain_dict_http(self):
-        creds = _make_credentials(universe_domain="example.com")
+        creds = _make_credentials()
         client = self._make_one(
             project=self.PROJECT,
             credentials=creds,
@@ -139,7 +137,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_w_universe_domain_client_options_object_http(self):
         from google.api_core.client_options import ClientOptions
 
-        creds = _make_credentials(universe_domain="example.com")
+        creds = _make_credentials()
         client_options = ClientOptions(universe_domain="example.com")
         client = self._make_one(
             project=self.PROJECT,
@@ -153,7 +151,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_w_universe_domain_env_var_http(self):
         import os
 
-        creds = _make_credentials(universe_domain="example.com")
+        creds = _make_credentials()
         with mock.patch.dict(
             os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com"}
         ):
@@ -168,7 +166,7 @@ class TestClient(unittest.TestCase):
 
         from google.api_core.client_options import ClientOptions
 
-        creds = _make_credentials(universe_domain="example.com")
+        creds = _make_credentials()
         with mock.patch.dict(
             os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "env-universe.example.com"}
         ):
