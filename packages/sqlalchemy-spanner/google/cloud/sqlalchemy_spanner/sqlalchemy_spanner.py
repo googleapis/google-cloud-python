@@ -15,11 +15,13 @@ import base64
 import collections.abc
 import functools
 import re
+import string
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import sqlalchemy
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
-from google.cloud.spanner_v1 import Client, TransactionOptions
+from google.cloud.spanner_v1 import Client, TransactionOptions, param_types
 from google.cloud.spanner_v1.data_types import JsonObject
 from sqlalchemy import ForeignKeyConstraint, PickleType, TypeDecorator, types
 from sqlalchemy.engine.base import Engine
@@ -84,35 +86,212 @@ def reset_connection(dbapi_conn, connection_record, reset_state=None):
         dbapi_conn.read_only = False
 
 
+# TODO(https://github.com/googleapis/google-cloud-python/issues/19209): Move the
+# GoogleSQL identifier escaping, unquoted-identifier check, and backslash-escape
+# decoding helpers below into google.cloud.spanner_dbapi (once
+# sqlalchemy-spanner can depend on a release that includes them) so
+# spanner_dbapi, sqlalchemy-spanner, and django-google-spanner share a single
+# implementation.
+
+# GoogleSQL rejects raw newlines and unescaped ASCII control characters
+# (0x00-0x1F and 0x7F) inside quoted strings and identifiers.
+# Write them using equivalent GoogleSQL escape sequences (\n, \r, \t, or \u00xx)
+# so Spanner decodes them back to the original characters.
+_CONTROL_CHAR_ESCAPE_MAP = {
+    "\n": "\\n",
+    "\r": "\\r",
+    "\t": "\\t",
+    **{
+        chr(codepoint): f"\\u{codepoint:04x}"
+        for codepoint in (*range(0x00, 0x20), 0x7F)
+        if chr(codepoint) not in ("\n", "\r", "\t")
+    },
+}
+
 _SPANNER_STRING_ESCAPE_TABLE = str.maketrans(
     {
         "\\": "\\\\",
         '"': '\\"',
         "'": "\\'",
-        "\n": "\\n",
-        "\r": "\\r",
-        "\t": "\\t",
-        **{
-            chr(c): f"\\u{c:04x}"
-            for c in (*range(0x00, 0x20), 0x7F)
-            if chr(c) not in ("\n", "\r", "\t")
-        },
+        **_CONTROL_CHAR_ESCAPE_MAP,
     }
 )
 
+# Escape backticks as \u0060 instead of \` because spanner_dbapi currently uses
+# sqlparse to split DDLs and strip comments, and sqlparse treats \` inside a
+# backtick-quoted identifier as the closing backtick. GoogleSQL decodes \u0060
+# to a literal backtick just like \`.
+# TODO(https://github.com/googleapis/google-cloud-python/issues/19209): Switch
+# backtick escaping to \` once spanner_dbapi uses a lexical parser that
+# understands GoogleSQL backslash escapes.
+_SPANNER_IDENTIFIER_ESCAPE_TABLE = str.maketrans(
+    {
+        "\\": "\\\\",
+        "`": "\\u0060",
+        **_CONTROL_CHAR_ESCAPE_MAP,
+    }
+)
 
-def _escape_json_path_key(key):
-    """Escape a JSON member key for use inside double-quoted GoogleSQL JSONPath.
+# Single-character GoogleSQL backslash escapes decoded during identifier unescaping.
+_GOOGLESQL_SINGLE_CHAR_UNESCAPE_TABLE = {
+    "a": "\a",
+    "b": "\b",
+    "f": "\f",
+    "n": "\n",
+    "r": "\r",
+    "t": "\t",
+    "v": "\v",
+    "\\": "\\",
+    "?": "?",
+    '"': '"',
+    "'": "'",
+    "`": "`",
+}
 
-    GoogleSQL's JSONPath lexer (`kEscKeyLexerStandard`) consumes `\\[^"]` as a
-    two-character pair during tokenization, while `RemoveBackSlashFollowedByChar`
-    only unescapes `\\"`. Doubling backslashes only when immediately preceding
-    `"` or end-of-string preserves interior backslashes while preventing any
-    trailing or quote-adjacent backslash from unescaping a `"` delimiter.
+# Expected hex digit counts for GoogleSQL numeric escapes (\xHH, \uHHHH, \UHHHHHHHH).
+_HEX_ESCAPE_DIGIT_COUNTS = {"x": 2, "X": 2, "u": 4, "U": 8}
+
+# GoogleSQL unquoted identifiers must start with an ASCII letter or '_' and
+# continue with ASCII letters, digits, or '_'.
+_UNQUOTED_IDENTIFIER_FIRST_CHARS = frozenset(string.ascii_letters + "_")
+_UNQUOTED_IDENTIFIER_CHARS = frozenset(string.ascii_letters + string.digits + "_")
+_OCTAL_DIGITS = frozenset("01234567")
+_HEX_DIGITS = frozenset(string.hexdigits)
+
+
+def _is_valid_unquoted_identifier(value: str) -> bool:
+    """Return True if value can be used unquoted in GoogleSQL.
+
+    Unquoted GoogleSQL identifiers must start with an ASCII letter or ``_``
+    and contain only ASCII letters, digits, or ``_``.
+
+    Example:
+        ``"col_1"`` returns ``True``; ``"1col"`` and ``"col-1"`` return
+        ``False``.
     """
-    s = str(key)
-    s = re.sub(r'(\\+)(?="|\Z)', r"\g<1>\g<1>", s)
-    return s.replace('"', '\\"')
+    return (
+        bool(value)
+        and value[0] in _UNQUOTED_IDENTIFIER_FIRST_CHARS
+        and all(character in _UNQUOTED_IDENTIFIER_CHARS for character in value[1:])
+    )
+
+
+def _decode_octal_escape(value: str, escape_start_index: int) -> tuple[str, int]:
+    r"""Decode a 3-digit GoogleSQL octal escape (\ooo) for bytes 0x00-0xFF.
+
+    Starts at the first octal digit (after ``\``) and returns
+    ``(decoded_character, next_index)``, where ``next_index`` points just past
+    the 3 octal digits.
+
+    Example:
+        Decoding ``r"a\101b"`` from ``escape_start_index=2`` returns
+        ``("A", 5)``.
+    """
+    end_index = escape_start_index + 3
+    octal_digits = value[escape_start_index:end_index]
+    if len(octal_digits) < 3 or not all(
+        digit in _OCTAL_DIGITS for digit in octal_digits
+    ):
+        raise ValueError(
+            f"Invalid octal escape sequence in identifier: \\{octal_digits}"
+        )
+    octal_value = int(octal_digits, 8)
+    if octal_value > 0xFF:
+        raise ValueError(
+            f"Invalid octal escape sequence in identifier: \\{octal_digits}"
+        )
+    return chr(octal_value), end_index
+
+
+def _decode_hex_escape(
+    value: str, escape_start_index: int, digit_count: int
+) -> tuple[str, int]:
+    r"""Decode a GoogleSQL hex or Unicode escape (\xHH, \uHHHH, \UHHHHHHHH).
+
+    Starts at the escape prefix character (``x``, ``X``, ``u``, or ``U``) and
+    returns ``(decoded_character, next_index)``, where ``next_index`` points
+    just past the hex digits.
+
+    Example:
+        Decoding ``r"\u0060z"`` with ``escape_start_index=1, digit_count=4``
+        returns ``("`", 6)``.
+    """
+    escape_character = value[escape_start_index]
+    digits_start_index = escape_start_index + 1
+    end_index = digits_start_index + digit_count
+    hex_digits = value[digits_start_index:end_index]
+    if len(hex_digits) < digit_count or not all(
+        digit in _HEX_DIGITS for digit in hex_digits
+    ):
+        raise ValueError(
+            f"Invalid \\{escape_character} escape sequence in identifier: "
+            f"\\{escape_character}{hex_digits}"
+        )
+    codepoint = int(hex_digits, 16)
+    # UTF-16 surrogates (U+D800-U+DFFF) and values above U+10FFFF are invalid
+    # Unicode scalar values in GoogleSQL \u/\U escapes.
+    if escape_character in ("u", "U") and (
+        0xD800 <= codepoint <= 0xDFFF or codepoint > 0x10FFFF
+    ):
+        raise ValueError(f"Invalid Unicode codepoint in identifier: U+{codepoint:04X}")
+    return chr(codepoint), end_index
+
+
+def _decode_googlesql_escape(value: str, backslash_index: int) -> tuple[str, int]:
+    r"""Decode one GoogleSQL backslash escape sequence at ``backslash_index``.
+
+    Returns ``(decoded_character, next_index)``, where ``next_index`` is the
+    first index after the escape sequence.
+
+    Example:
+        Decoding ``r"a\nb"`` from ``backslash_index=1`` returns ``("\n", 3)``.
+    """
+    escape_start_index = backslash_index + 1
+    if escape_start_index >= len(value):
+        raise ValueError(f"Unterminated escape sequence in identifier: {value!r}")
+
+    escape_character = value[escape_start_index]
+
+    # 1. Single-character escape (e.g. \n, \\, \`, \").
+    single_character = _GOOGLESQL_SINGLE_CHAR_UNESCAPE_TABLE.get(escape_character)
+    if single_character is not None:
+        return single_character, escape_start_index + 1
+
+    # 2. Fixed 3-digit octal escape (\ooo, restricted to single-byte 0x00-0xFF).
+    if escape_character in _OCTAL_DIGITS:
+        return _decode_octal_escape(value, escape_start_index)
+
+    # 3. Fixed-width hexadecimal or Unicode escape (\xHH, \uHHHH, \UHHHHHHHH).
+    digit_count = _HEX_ESCAPE_DIGIT_COUNTS.get(escape_character)
+    if digit_count is not None:
+        return _decode_hex_escape(value, escape_start_index, digit_count)
+
+    raise ValueError(f"Invalid escape sequence in identifier: \\{escape_character}")
+
+
+def _escape_json_path_key(key: Any) -> str:
+    r"""Escape a JSON member key for use inside double-quoted GoogleSQL JSONPath.
+
+    GoogleSQL double-quoted JSONPath keys (``."..."``) unescape ``\"`` to
+    ``"``, while keeping backslashes before any other character literal. As a
+    result, any run of backslashes immediately before a ``"`` or at the end of
+    the key (directly preceding the closing ``"``) must be doubled so it does
+    not escape the quote delimiter, while backslashes before other characters
+    are kept as-is.
+    """
+    raw_key = str(key)
+    if "\\" not in raw_key:
+        return raw_key.replace('"', '\\"')
+    if '"' not in raw_key and not raw_key.endswith("\\"):
+        return raw_key
+    # Splitting on `"` puts every backslash run that precedes `"` or end-of-string
+    # at the end of a part, avoiding regex lookahead backtracking.
+    parts = raw_key.split('"')
+    for index, part in enumerate(parts):
+        if part.endswith("\\"):
+            stripped_length = len(part.rstrip("\\"))
+            parts[index] = part + part[stripped_length:]
+    return '\\"'.join(parts)
 
 
 def _escape_spanner_string_literal(value, dialect=None):
@@ -359,7 +538,8 @@ class SpannerExecutionContext(DefaultExecutionContext):
 class SpannerIdentifierPreparer(IdentifierPreparer):
     """Identifiers compiler.
 
-    In Cloud Spanner backticks "`" are used for keywords escaping.
+    In Cloud Spanner backticks "`" are used for identifier quoting, and
+    GoogleSQL backslash escape sequences are used inside backticks.
     """
 
     reserved_words = RESERVED_WORDS.copy()
@@ -368,21 +548,219 @@ class SpannerIdentifierPreparer(IdentifierPreparer):
 
     def __init__(self, dialect):
         super(SpannerIdentifierPreparer, self).__init__(
-            dialect, initial_quote="`", final_quote="`"
+            dialect, initial_quote="`", final_quote="`", escape_quote="\\"
         )
 
-    def _requires_quotes(self, value):
-        """Return True if the given identifier requires quoting."""
-        lc_value = value.lower()
-        if lc_value == '"unicode"':  # don't escape default Spanner colation
-            return False
+    @staticmethod
+    def _validate_identifier(value: str) -> str:
+        """Ensure value is a str (unwrapping subclasses like quoted_name)."""
+        if not isinstance(value, str):
+            raise TypeError(f"Identifier must be a string, got {type(value).__name__}")
+        return value if type(value) is str else str(value)
 
+    def _escape_identifier(self, value: str) -> str:
+        r"""Escape an identifier's contents for use inside backticks.
+
+        Replaces backslashes, backticks, and control characters with GoogleSQL
+        escape sequences (and doubles ``%`` when required by paramstyle).
+
+        Example:
+            ``r"a`b\c"`` becomes ``r"a\u0060b\\c"``.
+        """
+        identifier = self._validate_identifier(value)
+        escaped = identifier.translate(_SPANNER_IDENTIFIER_ESCAPE_TABLE)
+        # Under format/pyformat paramstyle, spanner_dbapi expects literal '%'
+        # characters in SQL templates to be doubled as '%%'.
+        if self._double_percents:
+            escaped = escaped.replace("%", "%%")
+        return escaped
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/19209): Move
+    # the GoogleSQL identifier unescaping and qualified-segment scanning logic
+    # (_unescape_identifier, _read_quoted_identifier, _read_unquoted_identifier,
+    # and unformat_identifiers) to google.cloud.spanner_dbapi alongside the
+    # GoogleSQL escape helpers.
+    def _unescape_identifier(self, value: str) -> str:
+        r"""Decode GoogleSQL backslash escapes inside a quoted identifier body.
+
+        Example:
+            ``r"a\u0060b\\c"`` becomes ``r"a`b\c"``.
+        """
+        identifier = self._validate_identifier(value)
+        if "\\" not in identifier:
+            return identifier
+
+        unescaped_parts: list[str] = []
+        index = 0
+        length = len(identifier)
+        while index < length:
+            backslash_index = identifier.find("\\", index)
+            if backslash_index == -1:
+                unescaped_parts.append(identifier[index:])
+                break
+            if backslash_index > index:
+                unescaped_parts.append(identifier[index:backslash_index])
+            decoded_character, index = _decode_googlesql_escape(
+                identifier, backslash_index
+            )
+            unescaped_parts.append(decoded_character)
+        return "".join(unescaped_parts)
+
+    def _read_quoted_identifier(
+        self, qualified_identifiers: str, opening_backtick_index: int
+    ) -> tuple[str, int]:
+        r"""Read and unescape one backtick-quoted segment in a qualified name.
+
+        Starts at ``opening_backtick_index`` and returns
+        ``(unescaped_segment, next_index)``, where ``next_index`` is the
+        position of the following ``.`` separator or the end of the string.
+
+        Example:
+            Reading from index 0 of ``r"`a\`b`.c"`` returns ``("a`b", 6)``,
+            where index 6 is the ``.`` before ``"c"``.
+        """
+        content_start_index = opening_backtick_index + 1
+        current_index = content_start_index
+        length = len(qualified_identifiers)
+        while current_index < length:
+            character = qualified_identifiers[current_index]
+            if character == "\\":
+                if current_index + 1 >= length:
+                    raise ValueError(
+                        f"Unterminated escape sequence in identifier: "
+                        f"{qualified_identifiers!r}"
+                    )
+                # Advance past both '\' and the escaped character so \` or \\ does
+                # not prematurely terminate the quoted identifier.
+                current_index += 2
+            elif character == "`":
+                unescaped_segment = self._unescape_identifier(
+                    qualified_identifiers[content_start_index:current_index]
+                )
+                end_index = current_index + 1
+                # A closing backtick must be followed by '.' or end of string.
+                if end_index < length and qualified_identifiers[end_index] != ".":
+                    raise ValueError(
+                        "Unexpected character after quoted identifier: "
+                        f"{qualified_identifiers!r}"
+                    )
+                return unescaped_segment, end_index
+            else:
+                current_index += 1
+        raise ValueError(f"Unterminated quoted identifier: {qualified_identifiers!r}")
+
+    @staticmethod
+    def _read_unquoted_identifier(
+        qualified_identifiers: str, start_index: int
+    ) -> tuple[str, int]:
+        """Read and validate one unquoted segment in a qualified name.
+
+        Starts at ``start_index`` and returns ``(segment, next_index)``, where
+        ``next_index`` is the position of the following ``.`` separator or the
+        end of the string.
+
+        Example:
+            Reading from index 0 of ``"schema.table"`` returns
+            ``("schema", 6)``, where index 6 is the ``.`` before ``"table"``.
+        """
+        dot_index = qualified_identifiers.find(".", start_index)
+        end_index = len(qualified_identifiers) if dot_index == -1 else dot_index
+        segment = qualified_identifiers[start_index:end_index]
+        if not _is_valid_unquoted_identifier(segment):
+            raise ValueError(
+                f"Invalid unquoted identifier segment: {qualified_identifiers!r}"
+            )
+        return segment, end_index
+
+    def unformat_identifiers(self, identifiers: str) -> list[str]:
+        r"""Split a dot-qualified SQL identifier into unescaped segments.
+
+        Example:
+            ``r"`my.schema`.`a\u0060b`.col"`` returns
+            ``["my.schema", "a`b", "col"]``.
+        """
+        qualified_identifiers = self._validate_identifier(identifiers)
+        if not qualified_identifiers:
+            return []
+
+        segments: list[str] = []
+        position = 0
+        length = len(qualified_identifiers)
+        while position < length:
+            if qualified_identifiers[position] == "`":
+                segment, position = self._read_quoted_identifier(
+                    qualified_identifiers, position
+                )
+            else:
+                segment, position = self._read_unquoted_identifier(
+                    qualified_identifiers, position
+                )
+            segments.append(segment)
+
+            if position < length:
+                # Consume the '.' separator and reject a dangling trailing dot.
+                position += 1
+                if position == length:
+                    raise ValueError(
+                        f"Trailing dot in qualified identifier: {identifiers!r}"
+                    )
+        return segments
+
+    def format_collation(
+        self, collation_name: str, collation_schema: str | None = None
+    ) -> str:
+        """Format a collation name, keeping Spanner's '"unicode"' literal unquoted.
+
+        Example:
+            ``format_collation('"unicode"')`` returns ``'"unicode"'``.
+        """
+        validated_name = self._validate_identifier(collation_name)
+        if validated_name.lower() == '"unicode"':
+            formatted_name = validated_name
+        else:
+            # Call super() with a single argument because SQLAlchemy < 2.1
+            # does not accept a collation_schema parameter.
+            formatted_name = super(SpannerIdentifierPreparer, self).format_collation(
+                validated_name
+            )
+        if collation_schema is not None:
+            return f"{self.quote_schema(collation_schema)}.{formatted_name}"
+        return formatted_name
+
+    def _requires_quotes(self, value: str) -> bool:
+        """Return True if value needs backtick quoting as a SQL identifier.
+
+        Quotes empty names, reserved keywords, identifiers containing invalid
+        unquoted characters, and mixed/upper-case names.
+
+        Example:
+            ``"users"`` returns ``False``; ``"Users"``, ``"select"``, and
+            ``"a`b"`` return ``True``.
+        """
+        identifier = self._validate_identifier(value)
+        if not identifier:
+            return True
+        lowercase_identifier = identifier.lower()
+
+        # Quote reserved keywords, identifiers with non-GoogleSQL characters, and
+        # mixed/upper-case names (matching SQLAlchemy's case-preserving convention).
         return (
-            lc_value in self.reserved_words_lc
-            or value[0] in self.illegal_initial_characters
-            or not self.legal_characters.match(str(value))
-            or (lc_value != value)
+            lowercase_identifier in self.reserved_words_lc
+            or not _is_valid_unquoted_identifier(identifier)
+            or (lowercase_identifier != identifier)
         )
+
+    def _requires_quotes_illegal_chars(self, value: str) -> bool:
+        """Return True if value cannot be written unquoted (ignoring case/keywords).
+
+        Used by SQLAlchemy when quoting function names (``sa.func``) so only
+        syntax-breaking names are wrapped in backticks.
+
+        Example:
+            ``"MyCustomFn"`` returns ``False``; ``"1fn"`` and ``"fn`name"`` return
+            ``True``.
+        """
+        return not _is_valid_unquoted_identifier(self._validate_identifier(value))
 
 
 class SpannerSQLCompiler(SQLCompiler):
@@ -828,7 +1206,7 @@ class SpannerDDLCompiler(DDLCompiler):
             text += " NOT ENFORCED"
         return text
 
-    def post_create_table(self, table):
+    def post_create_table(self, table: sqlalchemy.Table) -> str:
         """Build statements to be executed after CREATE TABLE.
 
         Includes "primary key" and "interleaved table" statements generation.
@@ -839,16 +1217,29 @@ class SpannerDDLCompiler(DDLCompiler):
         Returns:
             str: primary key difinition to add to the table CREATE request.
         """
-        cols = [col.name for col in table.primary_key.columns]
-        post_cmds = " PRIMARY KEY ({})".format(", ".join(cols))
+        primary_key_columns = [
+            self.preparer.quote(column.name) for column in table.primary_key.columns
+        ]
+        post_cmds = f" PRIMARY KEY ({', '.join(primary_key_columns)})"
 
         if "TEMPORARY" in table._prefixes:
             raise NotImplementedError("Temporary tables are not supported.")
 
-        if table.kwargs.get("spanner_interleave_in"):
-            post_cmds += ",\nINTERLEAVE IN PARENT {}".format(
-                table.kwargs["spanner_interleave_in"]
+        interleave_in = table.kwargs.get("spanner_interleave_in")
+        if interleave_in is None:
+            parent_table = None
+        elif isinstance(interleave_in, sqlalchemy.Table):
+            parent_table = self.preparer.format_table(interleave_in)
+        elif isinstance(interleave_in, str):
+            parent_table = self.preparer.quote(interleave_in) if interleave_in else None
+        else:
+            raise TypeError(
+                "spanner_interleave_in must be a string or Table, "
+                f"got {type(interleave_in).__name__}"
             )
+
+        if parent_table is not None:
+            post_cmds += f",\nINTERLEAVE IN PARENT {parent_table}"
 
             if table.kwargs.get("spanner_interleave_on_delete_cascade"):
                 post_cmds += " ON DELETE CASCADE"
@@ -1108,26 +1499,141 @@ class SpannerDialect(DefaultDialect):
             table_type_query = table_type_query + " AND "
         return table_type_query
 
-    def _get_table_filter_query(
-        self, filter_names, info_schema_table, append_query=False
-    ):
+    @staticmethod
+    def _normalize_name_param(name: Optional[str]) -> Optional[str]:
+        """Convert SQLAlchemy ``str`` subclasses (e.g. ``quoted_name``) to ``str``.
+
+        Unwrapping ``str`` subclasses avoids custom string proxy objects in
+        Spanner bind parameters while preserving ``None`` (bound as ``NULL``).
+
+        Example:
+            ``_normalize_name_param(quoted_name("users", True))`` -> ``"users"``
+            ``_normalize_name_param(None)`` -> ``None``
         """
-        Generates WHERE query for tables or views for which
-        information is reflected.
+        return str(name) if isinstance(name, str) else name
+
+    @classmethod
+    def _normalize_schema_param(cls, schema: Optional[str]) -> str:
+        """Normalize an optional schema name to Spanner's string representation.
+
+        Cloud Spanner's ``INFORMATION_SCHEMA`` stores the default schema as ``""``
+        rather than ``NULL``, so both ``None`` and ``""`` map to ``""``.
+
+        Example:
+            ``_normalize_schema_param(None)`` -> ``""``
+            ``_normalize_schema_param("my_schema")`` -> ``"my_schema"``
+        """
+        if not schema:
+            return ""
+        normalized = cls._normalize_name_param(schema)
+        return "" if normalized is None else normalized
+
+    def _get_table_filter_query(
+        self,
+        filter_names: Optional[Iterable[str]],
+        info_schema_table: str,
+        append_query: bool = False,
+    ) -> str:
+        """Generate a parameterized ``IN UNNEST`` predicate for ``filter_names``.
+
+        Example:
+            ``_get_table_filter_query(["users"], "col", append_query=True)`` ->
+            ``"(col.table_name IN UNNEST(@table_names))  AND "``
+            ``_get_table_filter_query(None, "col", append_query=True)`` -> ``""``
         """
         table_filter_query = ""
         if filter_names is not None:
-            for table_name in filter_names:
-                query = f"{info_schema_table}.table_name = '{table_name}'"
-                if table_filter_query != "":
-                    table_filter_query = table_filter_query + " OR " + query
-                else:
-                    table_filter_query = query
-            table_filter_query = "(" + table_filter_query + ") "
+            table_filter_query = (
+                f"({info_schema_table}.table_name IN UNNEST(@table_names)) "
+            )
             if append_query:
                 table_filter_query = table_filter_query + " AND "
 
         return table_filter_query
+
+    def _prepare_multi_reflection_filters(
+        self,
+        schema: Optional[str],
+        filter_names: Optional[Iterable[str]],
+        info_schema_table: str,
+        kind: Optional["ObjectKind"],
+    ) -> Optional[Tuple[str, str, Dict[str, Any], Dict[str, Any]]]:
+        """Build parameterized WHERE clauses and bind parameters for ``get_multi_*``.
+
+        Returns ``None`` when ``filter_names`` is an empty non-``None``
+        collection so callers can return ``{}`` without issuing a query.
+
+        Example:
+            ``_prepare_multi_reflection_filters("s", ["users"], "col", None)``
+            returns ``(table_filter_query, table_type_query, params, param_types)``
+            where ``params={"table_schema": "s", "table_names": ["users"]}``.
+        """
+        table_type_query = self._get_table_type_query(kind, True)
+        params: Dict[str, Any] = {"table_schema": self._normalize_schema_param(schema)}
+        query_param_types: Dict[str, Any] = {"table_schema": param_types.STRING}
+
+        if filter_names is not None:
+            filter_name_list = [
+                self._normalize_name_param(name) for name in filter_names
+            ]
+            if not filter_name_list:
+                return None
+            params["table_names"] = filter_name_list
+            query_param_types["table_names"] = param_types.Array(param_types.STRING)
+
+        table_filter_query = self._get_table_filter_query(
+            filter_names, info_schema_table, True
+        )
+        return table_filter_query, table_type_query, params, query_param_types
+
+    def _query_schema_object_names(
+        self, connection: Any, sql: str, schema: Optional[str]
+    ) -> List[str]:
+        """Run a single-column ``information_schema`` query filtered by schema.
+
+        Example:
+            Used by ``get_table_names``, ``get_view_names``, and
+            ``get_sequence_names`` to return matching names such as
+            ``["singers", "albums"]``.
+        """
+        params = {"table_schema": self._normalize_schema_param(schema)}
+        query_param_types = {"table_schema": param_types.STRING}
+        with connection.connection.database.snapshot() as snapshot:
+            rows = list(
+                snapshot.execute_sql(sql, params=params, param_types=query_param_types)
+            )
+        return [row[0] for row in rows]
+
+    def _record_exists_for_schema(
+        self,
+        connection: Any,
+        sql: str,
+        schema: Optional[str],
+        name_param: str,
+        name_value: Optional[str],
+    ) -> bool:
+        """Run a parameterized existence check and drain the result stream.
+
+        Materializes the ``LIMIT 1`` result via ``list(...)`` rather than
+        returning inside a loop so the underlying gRPC stream reaches EOF.
+
+        Example:
+            Used by ``has_table`` (``name_param="table_name"``) and
+            ``has_sequence`` (``name_param="sequence_name"``).
+        """
+        params = {
+            "table_schema": self._normalize_schema_param(schema),
+            name_param: self._normalize_name_param(name_value),
+        }
+        query_param_types = {
+            "table_schema": param_types.STRING,
+            name_param: param_types.STRING,
+        }
+        with connection.connection.database.snapshot() as snapshot:
+            rows = list(
+                snapshot.execute_sql(sql, params=params, param_types=query_param_types)
+            )
+        return bool(rows)
 
     def create_connect_args(self, url):
         """Parse connection args from the given URL.
@@ -1191,16 +1697,9 @@ class SpannerDialect(DefaultDialect):
         sql = """
             SELECT table_name
             FROM information_schema.views
-            WHERE TABLE_SCHEMA='{}'
-            """.format(schema or "")
-
-        all_views = []
-        with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
-            for view in rows:
-                all_views.append(view[0])
-
-        return all_views
+            WHERE TABLE_SCHEMA = @table_schema
+            """
+        return self._query_schema_object_names(connection, sql, schema)
 
     @engine_to_connection
     def get_sequence_names(self, connection, schema=None, **kw):
@@ -1220,15 +1719,9 @@ class SpannerDialect(DefaultDialect):
         sql = """
             SELECT name
             FROM information_schema.sequences
-            WHERE SCHEMA='{}'
-            """.format(schema or "")
-        all_sequences = []
-        with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
-            for seq in rows:
-                all_sequences.append(seq[0])
-
-        return all_sequences
+            WHERE SCHEMA = @table_schema
+            """
+        return self._query_schema_object_names(connection, sql, schema)
 
     @engine_to_connection
     def get_view_definition(self, connection, view_name, schema=None, **kw):
@@ -1249,11 +1742,21 @@ class SpannerDialect(DefaultDialect):
         sql = """
             SELECT view_definition
             FROM information_schema.views
-            WHERE TABLE_SCHEMA='{schema_name}' AND TABLE_NAME='{view_name}'
-            """.format(schema_name=schema or "", view_name=view_name)
+            WHERE TABLE_SCHEMA = @table_schema AND TABLE_NAME = @view_name
+            """
+        params = {
+            "table_schema": self._normalize_schema_param(schema),
+            "view_name": self._normalize_name_param(view_name),
+        }
+        query_param_types = {
+            "table_schema": param_types.STRING,
+            "view_name": param_types.STRING,
+        }
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             if rows == []:
                 raise NoSuchTableError(f"{schema if schema else ''}.{view_name}")
             result = rows[0][0]
@@ -1288,11 +1791,12 @@ class SpannerDialect(DefaultDialect):
                 definition of a database column.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "col", True)
-        schema_filter_query = " col.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "col", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
             SELECT col.table_schema, col.table_name, col.column_name,
@@ -1304,7 +1808,7 @@ class SpannerDialect(DefaultDialect):
             WHERE
                 {table_filter_query}
                 {table_type_query}
-                {schema_filter_query}
+                col.table_schema = @table_schema AND
                 col.table_catalog = ''
             ORDER BY
                 col.table_catalog,
@@ -1314,10 +1818,11 @@ class SpannerDialect(DefaultDialect):
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
         with connection.connection.database.snapshot() as snap:
-            columns = list(snap.execute_sql(sql))
+            columns = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for col in columns:
@@ -1417,11 +1922,12 @@ class SpannerDialect(DefaultDialect):
                 definition of an index.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "i", True)
-        schema_filter_query = " i.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "i", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
             SELECT
@@ -1467,7 +1973,7 @@ class SpannerDialect(DefaultDialect):
             WHERE
                 {table_filter_query}
                 {table_type_query}
-                {schema_filter_query}
+                i.table_schema = @table_schema AND
                 i.index_type != 'PRIMARY_KEY'
                 AND i.index_type != 'SEARCH'
                 AND i.spanner_is_managed = FALSE
@@ -1477,11 +1983,12 @@ class SpannerDialect(DefaultDialect):
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for row in rows:
@@ -1558,11 +2065,12 @@ class SpannerDialect(DefaultDialect):
                 definition of a primary key constraint.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
-        schema_filter_query = " tc.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "tc", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
             SELECT tc.table_schema, tc.table_name, kcu.column_name
@@ -1574,17 +2082,18 @@ class SpannerDialect(DefaultDialect):
                 AND tc.TABLE_SCHEMA = t.TABLE_SCHEMA
                 AND tc.TABLE_NAME = t.TABLE_NAME
             WHERE {table_filter_query} {table_type_query}
-            {schema_filter_query} tc.CONSTRAINT_TYPE = "PRIMARY KEY"
+            tc.table_schema = @table_schema AND tc.CONSTRAINT_TYPE = "PRIMARY KEY"
             ORDER BY tc.table_catalog ASC, tc.table_schema ASC,
                      tc.table_name ASC, kcu.ordinal_position ASC
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for row in rows:
@@ -1669,11 +2178,12 @@ class SpannerDialect(DefaultDialect):
                 a foreign key definition.
                 The schema is ``None`` if no schema is provided.
         """
-        table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
-        schema_filter_query = " tc.table_schema = '{schema}' AND".format(
-            schema=schema or ""
+        filters = self._prepare_multi_reflection_filters(
+            schema, filter_names, "tc", kind
         )
-        table_type_query = self._get_table_type_query(kind, True)
+        if filters is None:
+            return {}
+        table_filter_query, table_type_query, params, query_param_types = filters
 
         sql = """
         SELECT
@@ -1717,16 +2227,17 @@ class SpannerDialect(DefaultDialect):
             WHERE
                 {table_filter_query}
                 {table_type_query}
-                {schema_filter_query}
+                tc.table_schema = @table_schema AND
                 tc.constraint_type = "FOREIGN KEY"
             """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
-            schema_filter_query=schema_filter_query,
         )
 
         with connection.connection.database.snapshot() as snap:
-            rows = list(snap.execute_sql(sql))
+            rows = list(
+                snap.execute_sql(sql, params=params, param_types=query_param_types)
+            )
             result_dict = {}
 
             for row in rows:
@@ -1786,17 +2297,9 @@ class SpannerDialect(DefaultDialect):
         sql = """
 SELECT table_name
 FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
-""".format(schema=schema or "")
-
-        table_names = []
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(sql)
-
-            for row in rows:
-                table_names.append(row[0])
-
-        return table_names
+WHERE table_type = 'BASE TABLE' AND table_schema = @table_schema
+"""
+        return self._query_schema_object_names(connection, sql, schema)
 
     @engine_to_connection
     def get_unique_constraints(self, connection, table_name, schema=None, **kw):
@@ -1819,15 +2322,25 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
 JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
     USING (TABLE_CATALOG, TABLE_SCHEMA, CONSTRAINT_NAME)
 WHERE
-    tc.TABLE_NAME="{table_name}"
-    AND tc.TABLE_SCHEMA="{table_schema}"
+    tc.TABLE_NAME = @table_name
+    AND tc.TABLE_SCHEMA = @table_schema
     AND tc.CONSTRAINT_TYPE = "UNIQUE"
     AND tc.CONSTRAINT_NAME IS NOT NULL
-""".format(table_schema=schema or "", table_name=table_name)
+"""
+        params = {
+            "table_schema": self._normalize_schema_param(schema),
+            "table_name": self._normalize_name_param(table_name),
+        }
+        query_param_types = {
+            "table_schema": param_types.STRING,
+            "table_name": param_types.STRING,
+        }
 
         cols = []
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(sql)
+        with connection.connection.database.snapshot() as snapshot:
+            rows = list(
+                snapshot.execute_sql(sql, params=params, param_types=query_param_types)
+            )
 
             for row in rows:
                 cols.append({"name": row[0], "column_names": [row[1]]})
@@ -1849,20 +2362,15 @@ WHERE
         Returns:
             bool: True, if the given table exists, False otherwise.
         """
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(
-                """
+        sql = """
 SELECT true
 FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="{table_schema}" AND TABLE_NAME="{table_name}"
+WHERE TABLE_SCHEMA = @table_schema AND TABLE_NAME = @table_name
 LIMIT 1
-""".format(table_schema=schema or "", table_name=table_name)
-            )
-
-            for _ in rows:
-                return True
-
-        return False
+"""
+        return self._record_exists_for_schema(
+            connection, sql, schema, "table_name", table_name
+        )
 
     @engine_to_connection
     def has_sequence(self, connection, sequence_name, schema=None, **kw):
@@ -1872,22 +2380,16 @@ LIMIT 1
         `sequence_name`, return True if the given sequence exists in
         the database, False otherwise.
         """
-
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(
-                """
-                SELECT true
-                FROM INFORMATION_SCHEMA.SEQUENCES
-                WHERE NAME="{sequence_name}"
-                AND SCHEMA="{schema}"
-                LIMIT 1
-                """.format(sequence_name=sequence_name, schema=schema or "")
-            )
-
-            for _ in rows:
-                return True
-
-        return False
+        sql = """
+SELECT true
+FROM INFORMATION_SCHEMA.SEQUENCES
+WHERE NAME = @sequence_name
+AND SCHEMA = @table_schema
+LIMIT 1
+"""
+        return self._record_exists_for_schema(
+            connection, sql, schema, "sequence_name", sequence_name
+        )
 
     def set_isolation_level(self, conn_proxy, level):
         """Set the connection isolation level.

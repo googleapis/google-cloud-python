@@ -14,15 +14,17 @@
 
 import datetime
 
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
 import pytest
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteSqlRequest,
-    ResultSet,
     TypeCode,
 )
+from google.protobuf.struct_pb2 import NULL_VALUE, ListValue, Value
 from sqlalchemy import (
     BigInteger,
     Column,
@@ -34,6 +36,7 @@ from sqlalchemy import (
     Table,
     create_engine,
     func,
+    inspect,
     select,
     text,
 )
@@ -44,6 +47,7 @@ from sqlalchemy.testing import eq_, is_instance_of
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_has_table_result,
     add_result,
     add_select1_result,
     add_singer_query_result,
@@ -100,14 +104,7 @@ class TestBasics(MockServerTestBase):
             eq_(spanner_now.timestamp(), now.timestamp())
 
     def test_create_table(self):
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="users"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("users")
         engine = self.create_engine()
         metadata = MetaData()
         Table(
@@ -134,14 +131,7 @@ LIMIT 1
         )
 
     def test_create_table_in_schema(self):
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="schema" AND TABLE_NAME="users"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("users", schema="schema")
         engine = self.create_engine()
         metadata = MetaData()
         Table(
@@ -173,14 +163,7 @@ LIMIT 1
 
     def test_create_multiple_tables(self):
         for i in range(2):
-            add_result(
-                f"""SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="table{i}"
-LIMIT 1
-""",
-                ResultSet(),
-            )
+            add_has_table_result(f"table{i}")
         engine = self.create_engine()
         metadata = MetaData()
         for i in range(2):
@@ -323,21 +306,15 @@ LIMIT 1
             session.commit()
 
     def test_engine_to_connection_returns_pooled_connection(self):
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
         add_result(
             """
             SELECT view_definition
             FROM information_schema.views
-            WHERE TABLE_SCHEMA='' AND TABLE_NAME='missing_view'
+            WHERE TABLE_SCHEMA = @table_schema AND TABLE_NAME = @view_name
             """,
-            ResultSet(),
+            result_set.ResultSet(),
+            params={"table_schema": "", "view_name": "missing_view"},
         )
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
@@ -373,18 +350,12 @@ LIMIT 1
             """
             SELECT view_definition
             FROM information_schema.views
-            WHERE TABLE_SCHEMA='' AND TABLE_NAME='missing_view'
+            WHERE TABLE_SCHEMA = @table_schema AND TABLE_NAME = @view_name
             """,
-            ResultSet(),
+            result_set.ResultSet(),
+            params={"table_schema": "", "view_name": "missing_view"},
         )
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
             poolclass=QueuePool,
@@ -413,3 +384,116 @@ LIMIT 1
             eq_(engine.pool.checkedout(), 0)
         finally:
             engine.dispose()
+
+    def test_reflection_sends_parameterized_execute_sql_requests(self):
+        malicious_schema = 's" OR "1"="1'
+        malicious_table = "t' OR '1'='1\" UNION ALL SELECT 'x' --"
+
+        add_has_table_result(malicious_table, schema=malicious_schema)
+        engine = self.create_engine()
+        inspector = inspect(engine)
+        eq_(
+            False,
+            inspector.has_table(malicious_table, schema=malicious_schema),
+        )
+
+        execute_requests = [
+            request
+            for request in self.spanner_service.requests
+            if isinstance(request, ExecuteSqlRequest)
+        ]
+        eq_(1, len(execute_requests))
+        execute_request = execute_requests[0]
+        assert malicious_schema not in execute_request.sql
+        assert malicious_table not in execute_request.sql
+        eq_(malicious_schema, execute_request.params["table_schema"])
+        eq_(malicious_table, execute_request.params["table_name"])
+        eq_("STRING", execute_request.param_types["table_schema"].code.name)
+        eq_("STRING", execute_request.param_types["table_name"].code.name)
+
+    def test_get_multi_columns_sends_array_parameter_over_grpc(self):
+        malicious_schema = "s' OR '1'='1"
+        malicious_table = "t' OR '1'='1 --"
+        fields = [
+            ("table_schema", spanner_type.TypeCode.STRING),
+            ("table_name", spanner_type.TypeCode.STRING),
+            ("column_name", spanner_type.TypeCode.STRING),
+            ("spanner_type", spanner_type.TypeCode.STRING),
+            ("is_nullable", spanner_type.TypeCode.STRING),
+            ("generation_expression", spanner_type.TypeCode.STRING),
+            ("column_default", spanner_type.TypeCode.STRING),
+        ]
+        columns_result = result_set.ResultSet(
+            metadata=result_set.ResultSetMetadata(
+                row_type=spanner_type.StructType(
+                    fields=[
+                        spanner_type.StructType.Field(
+                            name=name, type=spanner_type.Type(code=code)
+                        )
+                        for name, code in fields
+                    ]
+                )
+            ),
+            rows=[
+                ListValue(
+                    values=[
+                        Value(string_value="my_schema"),
+                        Value(string_value="users"),
+                        Value(string_value="id"),
+                        Value(string_value="INT64"),
+                        Value(string_value="NO"),
+                        Value(null_value=NULL_VALUE),
+                        Value(null_value=NULL_VALUE),
+                    ]
+                )
+            ],
+        )
+        add_result(
+            """SELECT col.table_schema, col.table_name, col.column_name,
+                col.spanner_type, col.is_nullable, col.generation_expression,
+                col.column_default
+            FROM information_schema.columns as col
+            JOIN information_schema.tables AS t
+                USING (TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME)
+            WHERE
+                (col.table_name IN UNNEST(@table_names)) AND
+                (t.table_type = 'BASE TABLE') AND
+                col.table_schema = @table_schema AND
+                col.table_catalog = ''
+            ORDER BY
+                col.table_catalog,
+                col.table_schema,
+                col.table_name,
+                col.ordinal_position""",
+            columns_result,
+            params={
+                "table_schema": malicious_schema,
+                "table_names": ["users", malicious_table],
+            },
+        )
+        engine = self.create_engine()
+        inspector = inspect(engine)
+        reflected = inspector.get_multi_columns(
+            schema=malicious_schema, filter_names=["users", malicious_table]
+        )
+        assert ("my_schema", "users") in reflected
+        eq_("id", reflected[("my_schema", "users")][0]["name"])
+        eq_(False, reflected[("my_schema", "users")][0]["nullable"])
+
+        execute_requests = [
+            request
+            for request in self.spanner_service.requests
+            if isinstance(request, ExecuteSqlRequest)
+        ]
+        eq_(1, len(execute_requests))
+        execute_request = execute_requests[0]
+        assert malicious_schema not in execute_request.sql
+        assert malicious_table not in execute_request.sql
+        eq_(malicious_schema, execute_request.params["table_schema"])
+        eq_(["users", malicious_table], list(execute_request.params["table_names"]))
+        eq_("STRING", execute_request.param_types["table_schema"].code.name)
+        eq_("ARRAY", execute_request.param_types["table_names"].code.name)
+        eq_(
+            "STRING",
+            execute_request.param_types["table_names"].array_element_type.code.name,
+        )

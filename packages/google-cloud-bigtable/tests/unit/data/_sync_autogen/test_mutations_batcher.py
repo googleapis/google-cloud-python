@@ -353,7 +353,7 @@ class TestMutationsBatcher:
                     instance._retryable_errors
                     == table.default_mutate_rows_retryable_errors
                 )
-                CrossSync._Sync_Impl.yield_to_event_loop()
+                CrossSync._Sync_Impl.wait([instance._flush_timer])
                 assert flush_timer_mock.call_count == 1
                 assert flush_timer_mock.call_args[0][0] == 5
                 assert isinstance(instance._flush_timer, CrossSync._Sync_Impl.Future)
@@ -406,7 +406,7 @@ class TestMutationsBatcher:
                 assert instance._operation_timeout == operation_timeout
                 assert instance._attempt_timeout == attempt_timeout
                 assert instance._retryable_errors == retryable_errors
-                CrossSync._Sync_Impl.yield_to_event_loop()
+                CrossSync._Sync_Impl.wait([instance._flush_timer])
                 assert flush_timer_mock.call_count == 1
                 assert flush_timer_mock.call_args[0][0] == flush_interval
                 assert isinstance(instance._flush_timer, CrossSync._Sync_Impl.Future)
@@ -441,7 +441,7 @@ class TestMutationsBatcher:
                 assert instance._flow_control._in_flight_mutation_count == 0
                 assert instance._flow_control._in_flight_mutation_bytes == 0
                 assert instance._entries_processed_since_last_raise == 0
-                CrossSync._Sync_Impl.yield_to_event_loop()
+                CrossSync._Sync_Impl.wait([instance._flush_timer])
                 assert flush_timer_mock.call_count == 1
                 assert flush_timer_mock.call_args[0][0] is None
                 assert isinstance(instance._flush_timer, CrossSync._Sync_Impl.Future)
