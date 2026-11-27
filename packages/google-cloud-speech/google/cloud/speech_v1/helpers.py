@@ -82,6 +82,7 @@ class SpeechHelpers(object):
             requests=self._streaming_request_iterable(config, requests),
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
         )
 
     def _streaming_request_iterable(self, config, requests):
