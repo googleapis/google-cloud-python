@@ -29,3 +29,60 @@ def test_to_grpc_metadata():
     metadata = info.to_grpc_metadata()
 
     assert metadata == (client_info.METRICS_METADATA_KEY, info.to_user_agent())
+
+
+def test_to_grpc_metadata_with_detected_agent(monkeypatch):
+    monkeypatch.setenv("GEMINI_CLI", "1")
+    info = client_info.ClientInfo(
+        python_version="3.11.0",
+        grpc_version="1.60.0",
+        api_core_version="2.19.0",
+        gapic_version="2.14.0",
+    )
+
+    key, value = info.to_grpc_metadata()
+
+    assert key == "x-goog-api-client"
+    assert (
+        value == "gl-python/3.11.0 grpc/1.60.0 gax/2.19.0 gapic/2.14.0 agent/gemini_cli"
+    )
+
+
+def test_to_grpc_metadata_evaluates_env_at_client_construction(monkeypatch):
+    # Simulate module-level DEFAULT_CLIENT_INFO created while an agent env var
+    # was inherited, followed by daemon opt-out before client construction.
+    monkeypatch.setenv("CLAUDECODE", "1")
+    module_default_info = client_info.ClientInfo(
+        python_version="3.11.0",
+        grpc_version="1.60.0",
+        api_core_version="2.19.0",
+        gapic_version="2.14.0",
+    )
+    assert module_default_info.agent == "claude_code"
+
+    monkeypatch.setenv("GOOGLE_CLOUD_DISABLE_METRICS", "true")
+    _, value = module_default_info.to_grpc_metadata()
+    assert value == "gl-python/3.11.0 grpc/1.60.0 gax/2.19.0 gapic/2.14.0"
+
+
+def test_to_grpc_metadata_respects_explicit_agent_override(monkeypatch):
+    monkeypatch.setenv("CLAUDECODE", "1")
+    suppressed = client_info.ClientInfo(
+        python_version="3.11.0",
+        grpc_version="1.60.0",
+        api_core_version="2.19.0",
+        agent="",
+    )
+    _, suppressed_val = suppressed.to_grpc_metadata()
+    assert suppressed_val == "gl-python/3.11.0 grpc/1.60.0 gax/2.19.0"
+
+    overridden = client_info.ClientInfo(
+        python_version="3.11.0",
+        grpc_version="1.60.0",
+        api_core_version="2.19.0",
+        agent="custom_daemon",
+    )
+    _, overridden_val = overridden.to_grpc_metadata()
+    assert (
+        overridden_val == "gl-python/3.11.0 grpc/1.60.0 gax/2.19.0 agent/custom_daemon"
+    )
