@@ -457,13 +457,12 @@ class AsyncAppendableObjectWriter:
 
                     current_metadata = list(metadata) if metadata else []
                     if write_state.routing_token:
-                        current_metadata.append(
-                            (
-                                "x-goog-request-params",
-                                f"routing_token={write_state.routing_token}",
-                            )
-                        )
+                        # open() adds the routing token header. Adding it here
+                        # too sends a duplicate entry, which GCS rejects.
                         self._routing_token = write_state.routing_token
+                    if write_state.write_handle:
+                        # Reopen with the write handle from the redirect, if any.
+                        self.write_handle = write_state.write_handle
 
                     self._is_stream_open = False
                     await self.open(metadata=current_metadata)
