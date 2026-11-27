@@ -1079,3 +1079,92 @@ class TestImpersonatedCredentials(object):
             == "Unable to acquire impersonated credentials: No signed JWT in response."
         )
         assert excinfo.value.args[1] == "invalid_data"
+
+    @pytest.mark.parametrize(
+        "iam_endpoint_override,expected_sign_url",
+        [
+            pytest.param(
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateAccessToken",
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob",
+                id="full_generate_access_token_url",
+            ),
+            pytest.param(
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateAccessToken?alt=json",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob?alt=json",
+                id="full_url_with_query",
+            ),
+            pytest.param(
+                "https://proxy.example.com/iam/",
+                "https://proxy.example.com/iam/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob",
+                id="proxy_base_url_with_path_prefix",
+            ),
+            pytest.param(
+                "https://us-east1-iamcredentials.googleapis.com",
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob",
+                id="origin_only_override",
+            ),
+        ],
+    )
+    def test_sign_bytes_uses_iam_endpoint_override(
+        self,
+        iam_endpoint_override,
+        expected_sign_url,
+        mock_authorizedsession_sign,
+    ):
+        creds = self.make_credentials(
+            lifetime=None, iam_endpoint_override=iam_endpoint_override
+        )
+        signature = creds.sign_bytes(b"signed bytes")
+
+        assert signature == b"signature"
+        mock_authorizedsession_sign.assert_called_once_with(
+            mock.ANY,
+            "POST",
+            expected_sign_url,
+            None,
+            json={"payload": "c2lnbmVkIGJ5dGVz", "delegates": []},
+            headers={"Content-Type": "application/json"},
+        )
+
+    def test_sign_bytes_rejects_schemeless_iam_endpoint_override(self):
+        creds = self.make_credentials(
+            lifetime=None,
+            iam_endpoint_override="us-east1-iamcredentials.googleapis.com",
+        )
+        with pytest.raises(
+            exceptions.InvalidValue, match="Invalid iam_endpoint_override"
+        ):
+            creds.sign_bytes(b"signed bytes")
+
+    def test_id_token_refresh_uses_iam_endpoint_override(
+        self, mock_authorizedsession_idtoken
+    ):
+        override = (
+            "https://us-east1-iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateAccessToken"
+        )
+        source = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="example.com"
+        )
+        target_creds = self.make_credentials(
+            lifetime=None, source_credentials=source, iam_endpoint_override=override
+        )
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            target_creds, target_audience="https://example.com"
+        )
+        request = mock.create_autospec(transport.Request)
+
+        id_creds.refresh(request)
+
+        assert id_creds.token == ID_TOKEN_DATA
+        assert (
+            mock_authorizedsession_idtoken.call_args[0][2]
+            == "https://us-east1-iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateIdToken"
+        )

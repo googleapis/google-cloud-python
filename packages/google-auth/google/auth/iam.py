@@ -22,6 +22,8 @@ API`_'s auth-related functionality.
 import base64
 import http.client as http_client
 import json
+import urllib.parse
+from typing import Optional
 
 from google.auth import _exponential_backoff, _helpers, credentials, crypt, exceptions
 from google.auth.transport import _mtls_helper
@@ -54,6 +56,50 @@ _IAM_ENDPOINT = _IAM_BASE_URL + ":generateAccessToken"
 _IAM_SIGN_ENDPOINT = _IAM_BASE_URL + ":signBlob"
 _IAM_SIGNJWT_ENDPOINT = _IAM_BASE_URL + ":signJwt"
 _IAM_IDTOKEN_ENDPOINT = _IAM_BASE_URL + ":generateIdToken"
+
+
+def _build_iam_endpoint(
+    target_principal: str,
+    universe_domain: str,
+    iam_endpoint_override: Optional[str],
+    action: str,
+) -> str:
+    """Builds an IAM Credentials API URL, using ``iam_endpoint_override`` when set.
+
+    Args:
+        target_principal (str): The target service account email.
+        universe_domain (str): The configured universe domain.
+        iam_endpoint_override (Optional[str]): Optional IAM endpoint override
+            URL (either a full ``:generateAccessToken`` URL or a base origin /
+            path prefix).
+        action (str): The IAM Credentials API RPC suffix (for example,
+            ``"generateAccessToken"``, ``"signBlob"``, or ``"generateIdToken"``).
+
+    Returns:
+        str: The resolved IAM Credentials API endpoint URL.
+
+    Raises:
+        google.auth.exceptions.InvalidValue: If ``iam_endpoint_override`` is
+            missing a URL scheme or host.
+    """
+    if not iam_endpoint_override:
+        host_prefix = _IAM_DOMAIN.removesuffix(credentials.DEFAULT_UNIVERSE_DOMAIN)
+        return (
+            f"https://{host_prefix}{universe_domain}/v1/projects/-/"
+            f"serviceAccounts/{target_principal}:{action}"
+        )
+
+    parsed = urllib.parse.urlsplit(iam_endpoint_override)
+    if not parsed.scheme or not parsed.netloc:
+        raise exceptions.InvalidValue(
+            f"Invalid iam_endpoint_override: {iam_endpoint_override}"
+        )
+    if parsed.path.endswith(":generateAccessToken"):
+        path = parsed.path[: -len(":generateAccessToken")] + f":{action}"
+    else:
+        base_path = parsed.path.rstrip("/")
+        path = f"{base_path}/v1/projects/-/serviceAccounts/{target_principal}:{action}"
+    return urllib.parse.urlunsplit(parsed._replace(path=path))
 
 
 class Signer(crypt.Signer):
