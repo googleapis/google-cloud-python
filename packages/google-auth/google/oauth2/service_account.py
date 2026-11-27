@@ -550,8 +550,18 @@ class Credentials(
         metrics.add_metric_header(headers, metrics.CRED_TYPE_SA_JWT)
         self.apply(headers, token=token)
 
-    @_helpers.copy_docstring(credentials.CredentialsWithRegionalAccessBoundary)
-    def _perform_refresh_token(self, request):
+    def _try_refresh_self_signed_jwt(self, request):
+        """Refreshes self-signed JWT credentials if applicable.
+
+        Returns:
+            bool: ``True`` if a self-signed JWT was refreshed and stored on
+                ``self.token`` and ``self.expiry``; ``False`` if the caller
+                should fall back to the OAuth 2.0 assertion grant.
+
+        Raises:
+            google.auth.exceptions.RefreshError: If a non-default universe
+                domain cannot use a self-signed JWT.
+        """
         if self._always_use_jwt_access and not self._jwt_credentials:
             # If self signed jwt should be used but jwt credential is not
             # created, try to create one with scopes
@@ -572,13 +582,19 @@ class Credentials(
             self._jwt_credentials.refresh(request)
             self.token = self._jwt_credentials.token.decode()
             self.expiry = self._jwt_credentials.expiry
-        else:
-            assertion = self._make_authorization_grant_assertion()
-            access_token, expiry, _ = _client.jwt_grant(
-                request, self._token_uri, assertion
-            )
-            self.token = access_token
-            self.expiry = expiry
+            return True
+
+        return False
+
+    @_helpers.copy_docstring(credentials.CredentialsWithRegionalAccessBoundary)
+    def _perform_refresh_token(self, request):
+        if self._try_refresh_self_signed_jwt(request):
+            return
+
+        assertion = self._make_authorization_grant_assertion()
+        access_token, expiry, _ = _client.jwt_grant(request, self._token_uri, assertion)
+        self.token = access_token
+        self.expiry = expiry
 
     def _create_self_signed_jwt(self, audience):
         """Create a self-signed JWT from the credentials if requirements are met.

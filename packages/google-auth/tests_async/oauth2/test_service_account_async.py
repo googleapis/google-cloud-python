@@ -17,7 +17,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, crypt, environment_vars, jwt, transport
+from google.auth import _helpers, crypt, environment_vars, exceptions, jwt, transport
 from google.oauth2 import _service_account_async as service_account
 from tests.oauth2 import test_service_account
 
@@ -258,6 +258,159 @@ class TestCredentials(object):
         )
         assert payload["iss"] == self.SERVICE_ACCOUNT_EMAIL
         assert payload["aud"] == "https://storage.universe.foo/"
+
+    @mock.patch("google.oauth2._client_async.jwt_grant", autospec=True)
+    @pytest.mark.asyncio
+    async def test_refresh_unscoped_non_default_universe_domain_requires_self_signed_jwt(
+        self, jwt_grant
+    ):
+        """Async unscoped non-default universe refresh raises RefreshError."""
+        jwt_grant.return_value = (
+            "token",
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {},
+        )
+        credentials = service_account.Credentials(
+            test_service_account.SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            universe_domain="universe.foo",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        with pytest.raises(
+            exceptions.RefreshError,
+            match="self-signed JWT credentials could not be created",
+        ):
+            await credentials.refresh(request)
+
+        jwt_grant.assert_not_called()
+
+    @mock.patch("google.oauth2._client_async.jwt_grant", autospec=True)
+    @pytest.mark.asyncio
+    async def test_before_request_unscoped_non_default_universe_domain_without_hostname(
+        self, jwt_grant
+    ):
+        """Async unscoped non-default universe fails if URL has no hostname."""
+        jwt_grant.return_value = (
+            "token",
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {},
+        )
+        credentials = service_account.Credentials(
+            test_service_account.SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            universe_domain="universe.foo",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        with pytest.raises(
+            exceptions.RefreshError,
+            match="self-signed JWT credentials could not be created",
+        ):
+            await credentials.before_request(request, "GET", "/storage/v1/b", {})
+
+        jwt_grant.assert_not_called()
+
+    @mock.patch("google.oauth2._client_async.jwt_grant", autospec=True)
+    @pytest.mark.asyncio
+    async def test_refresh_non_gdu_domain_wide_delegation_not_supported(
+        self, jwt_grant
+    ):
+        """Async non-default universe rejects domain-wide delegation."""
+        jwt_grant.return_value = (
+            "token",
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {},
+        )
+        credentials = service_account.Credentials(
+            test_service_account.SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            subject="user@example.com",
+            universe_domain="universe.foo",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        with pytest.raises(
+            exceptions.RefreshError,
+            match="domain wide delegation is not supported",
+        ):
+            await credentials.refresh(request)
+
+        jwt_grant.assert_not_called()
+
+    @mock.patch("google.oauth2._client_async.jwt_grant", autospec=True)
+    @pytest.mark.asyncio
+    async def test_before_request_scoped_non_default_universe_domain_uses_scopes(
+        self, jwt_grant
+    ):
+        """Async scoped non-default universe before_request uses scope-based JWT."""
+        jwt_grant.return_value = (
+            "token",
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {},
+        )
+        credentials = service_account.Credentials(
+            test_service_account.SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            scopes=["https://www.googleapis.com/auth/cloud-platform"],
+            universe_domain="universe.foo",
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+        headers = {}
+
+        await credentials.before_request(
+            request, "GET", "https://storage.universe.foo/storage/v1/b", headers
+        )
+
+        jwt_grant.assert_not_called()
+        assert headers["authorization"].startswith("Bearer ")
+        payload = jwt.decode(
+            headers["authorization"].split(" ", 1)[1],
+            test_service_account.PUBLIC_CERT_BYTES,
+        )
+        assert payload["scope"] == "https://www.googleapis.com/auth/cloud-platform"
+        assert "aud" not in payload
+        assert not credentials._url_jwt_credentials_cache
+
+    @mock.patch("google.oauth2._client_async.jwt_grant", autospec=True)
+    @pytest.mark.asyncio
+    async def test_before_request_preserves_explicit_jwt_audience(self, jwt_grant):
+        """Async before_request uses explicit self-signed JWT audience without jwt_grant."""
+        jwt_grant.return_value = (
+            "token",
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {},
+        )
+        credentials = service_account.Credentials(
+            test_service_account.SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            universe_domain="universe.foo",
+        )
+        explicit_audience = "https://compute.universe.foo/"
+        credentials._create_self_signed_jwt(explicit_audience)
+        request = mock.create_autospec(transport.Request, instance=True)
+        headers = {}
+
+        await credentials.before_request(
+            request,
+            "GET",
+            "https://us-central1-compute.universe.foo/v1/projects",
+            headers,
+        )
+
+        jwt_grant.assert_not_called()
+        assert headers["authorization"].startswith("Bearer ")
+        payload = jwt.decode(
+            headers["authorization"].split(" ", 1)[1],
+            test_service_account.PUBLIC_CERT_BYTES,
+        )
+        assert payload["aud"] == explicit_audience
+        assert not credentials._url_jwt_credentials_cache
 
     @pytest.mark.asyncio
     async def test_before_request_triggers_rab_refresh(self, monkeypatch):

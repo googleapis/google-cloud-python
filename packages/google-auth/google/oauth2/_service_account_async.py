@@ -91,6 +91,13 @@ class Credentials(
 
     @_helpers.copy_docstring(credentials_async.Credentials)
     async def refresh(self, request):
+        # Enforce the same self-signed JWT and non-default universe rules as
+        # the sync path before falling back to jwt_grant (which targets
+        # oauth2.googleapis.com). This is synchronous because
+        # jwt.Credentials.refresh() only signs locally and performs no I/O.
+        if self._try_refresh_self_signed_jwt(request):
+            return
+
         assertion = self._make_authorization_grant_assertion()
         access_token, expiry, _ = await _client_async.jwt_grant(
             request, self._token_uri, assertion
