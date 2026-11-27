@@ -14,12 +14,48 @@
 
 """Helpers for universe domain."""
 
-from typing import Any, Optional
-from urllib.parse import urlparse, urlunparse
+import os
+import re
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, NamedTuple, Optional, Union
+from urllib.parse import urlparse, urlsplit, urlunparse
 
+from google.auth import compute_engine
+from google.auth import credentials as auth_credentials
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 
+from google.api_core import client_options as client_options_lib
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.auth.aio import credentials as aio_credentials
+
+try:
+    # google.auth.aio was added in google-auth 2.28.0; older supported versions
+    # (down to 2.14.1) only provide synchronous AnonymousCredentials.
+    from google.auth.aio import credentials as _aio_credentials
+
+    _ANONYMOUS_CREDENTIAL_TYPES: tuple[type[Any], ...] = (
+        auth_credentials.AnonymousCredentials,
+        _aio_credentials.AnonymousCredentials,
+    )
+except ImportError:  # pragma: NO COVER
+    _ANONYMOUS_CREDENTIAL_TYPES = (auth_credentials.AnonymousCredentials,)
+
 DEFAULT_UNIVERSE = "googleapis.com"
+UNIVERSE_DOMAIN_ENV = "GOOGLE_CLOUD_UNIVERSE_DOMAIN"
+_GOOGLEAPIS_HOST_PATTERN = re.compile(
+    rf"^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*{re.escape(DEFAULT_UNIVERSE)}$",
+    re.IGNORECASE,
+)
+
+
+class _ParsedTarget(NamedTuple):
+    """Normalized components of an HTTP(S) URL or gRPC target string."""
+
+    scheme: str
+    authority: str
+    host: str
+    query: str
 
 
 class EmptyUniverseError(ValueError):
@@ -197,3 +233,160 @@ def get_api_endpoint(
         return default_mtls_endpoint
     else:
         return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+
+
+def resolve_client_universe(
+    client_options: client_options_lib.ClientOptions | Mapping[str, Any] | None = None,
+) -> str:
+    """Resolve a client's universe domain from ``client_options`` or the environment.
+
+    Follows AIP-4113 precedence: ``client_options.universe_domain``, then
+    ``GOOGLE_CLOUD_UNIVERSE_DOMAIN``, then ``"googleapis.com"``.
+
+    Args:
+        client_options (Optional[Union[google.api_core.client_options.ClientOptions, Mapping[str, Any]]]):
+            Optional ``ClientOptions`` instance or mapping passed to
+            ``Client.__init__``. If ``None``, falls back to
+            ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` and then ``"googleapis.com"``.
+
+    Returns:
+        str: The resolved universe domain string.
+
+    Raises:
+        EmptyUniverseError: If the configured universe domain is an empty string.
+        TypeError: If ``client_options`` is not a ``ClientOptions`` instance,
+            ``Mapping``, or ``None``.
+    """
+    if client_options is None:
+        options_universe = None
+    elif isinstance(client_options, Mapping):
+        options_universe = client_options.get("universe_domain")
+    elif isinstance(client_options, client_options_lib.ClientOptions):
+        options_universe = client_options.universe_domain
+    else:
+        raise TypeError(
+            "client_options must be a ClientOptions instance, Mapping, or None; "
+            f"got {type(client_options).__name__}"
+        )
+    return determine_domain(
+        options_universe,
+        os.getenv(UNIVERSE_DOMAIN_ENV),
+    )
+
+
+def validate_credentials_universe(
+    client_universe: str,
+    credentials: Union[
+        auth_credentials.Credentials, "aio_credentials.Credentials", None
+    ],
+) -> None:
+    """Validate that resolved client credentials match ``client_universe``.
+
+    Call on ``self._credentials`` after ``super().__init__()`` or Application
+    Default Credentials resolution rather than on the raw constructor
+    ``credentials`` argument (which is ``None`` before ADC loads), and never
+    inside ``Credentials.before_request()``. Exempts ``None``, synchronous and
+    asynchronous ``AnonymousCredentials``, and ``compute_engine.Credentials``
+    whose universe domain is not yet cached in memory (avoiding synchronous
+    Metadata Server HTTP requests during client initialization).
+
+    Args:
+        client_universe (str): Resolved universe domain of the client.
+        credentials (Optional[Union[google.auth.credentials.Credentials, google.auth.aio.credentials.Credentials]]):
+            Resolved credentials bound to the client, or ``None`` (in which case
+            validation is skipped).
+
+    Raises:
+        UniverseMismatchError: If ``credentials`` has an in-memory universe
+            domain configured for a different universe than ``client_universe``.
+    """
+    if credentials is None or isinstance(credentials, _ANONYMOUS_CREDENTIAL_TYPES):
+        return
+    if isinstance(credentials, compute_engine.Credentials) and not getattr(
+        credentials, "_universe_domain_cached", False
+    ):
+        return
+    compare_domains(client_universe, credentials)
+
+
+def _parse_target(url_or_target: str) -> _ParsedTarget | None:
+    """Parse an HTTP(S) URL or gRPC target into normalized components.
+
+    Uses :func:`urllib.parse.urlsplit` for case-insensitive RFC 3986 scheme and
+    port validation while normalizing scheme-less ``host:port`` targets and gRPC
+    path-style schemes (``dns:`` and ``google-c2p:///``). Rejects userinfo
+    (``@`` in authority/netloc) while allowing ``@`` in HTTP(S) paths and
+    queries (such as service account email endpoints). Returns ``None`` for
+    empty, non-string, userinfo- or fragment-containing, unknown-scheme, or
+    malformed inputs.
+    """
+    if not isinstance(url_or_target, str) or not url_or_target or "#" in url_or_target:
+        return None
+
+    try:
+        raw = urlsplit(url_or_target)
+        if raw.scheme in ("http", "https"):
+            if (
+                not url_or_target[len(raw.scheme) :].startswith("://")
+                or "@" in raw.netloc
+            ):
+                return None
+            _ = raw.port
+            if not raw.hostname:
+                return None
+            return _ParsedTarget(raw.scheme, "", raw.hostname, raw.query)
+
+        if raw.scheme == "google-c2p":
+            if not url_or_target[len(raw.scheme) :].startswith(":///"):
+                return None
+            endpoint = raw.path.removeprefix("/")
+            authority = ""
+            query = raw.query
+        elif raw.scheme == "dns":
+            _ = raw.port
+            endpoint = raw.path.removeprefix("/")
+            authority = raw.netloc
+            query = raw.query
+        elif "://" in url_or_target:
+            return None
+        else:
+            endpoint = url_or_target
+            authority = ""
+            query = ""
+
+        inner = urlsplit(f"//{endpoint}")
+        _ = inner.port
+        if "@" in authority or "@" in inner.netloc or inner.path or not inner.hostname:
+            return None
+        return _ParsedTarget(
+            raw.scheme if raw.scheme in ("google-c2p", "dns") else "",
+            authority,
+            inner.hostname,
+            query or inner.query,
+        )
+    except ValueError:
+        return None
+
+
+def is_googleapis_host(url_or_target: str) -> bool:
+    """Return True if an HTTP(S) URL or gRPC target resolves to ``googleapis.com``.
+
+    Matches ``googleapis.com`` and ``*.googleapis.com`` across ``https://`` URLs,
+    ``host:port`` gRPC targets, ``google-c2p:///`` DirectPath targets, and
+    ``dns:///`` or ``dns://authority/`` targets while rejecting userinfo in the
+    authority/netloc (``@``), fragments (``#``), unknown schemes, malformed
+    ports, and spoofed suffixes. Intended for gating default-universe-only
+    features (such as DirectPath, mTLS endpoint switching, or built-in Cloud
+    Monitoring metrics); do not use to test equality against a single default
+    service host because regional (``*.rep.googleapis.com``) and Private Service
+    Connect (``*.p.googleapis.com``) endpoints also match ``*.googleapis.com``.
+
+    Args:
+        url_or_target (str): HTTP(S) URL or gRPC target string to inspect.
+
+    Returns:
+        bool: True if the target hostname is ``googleapis.com`` or a valid
+            subdomain of ``googleapis.com``; False otherwise.
+    """
+    parsed = _parse_target(url_or_target)
+    return bool(parsed and _GOOGLEAPIS_HOST_PATTERN.fullmatch(parsed.host))

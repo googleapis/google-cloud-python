@@ -1173,6 +1173,26 @@ def test__extract_target_host(target, expected_host):
             True,
             "google-c2p:///storage-direct.googleapis.com?foo=bar&force-xds",
         ),
+        (
+            "dns:storage-direct.googleapis.com:443",
+            False,
+            "google-c2p:///storage-direct.googleapis.com",
+        ),
+        (
+            "HTTPS://storage-direct.googleapis.com:443/v1",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "dns://8.8.8.8/storage-direct.googleapis.com:443",
+            True,
+            "dns://8.8.8.8/storage-direct.googleapis.com:443",
+        ),
+        (
+            "another-c2p:///storage-direct.googleapis.com",
+            True,
+            "another-c2p:///storage-direct.googleapis.com",
+        ),
     ],
 )
 def test__modify_target_for_direct_path_interconnect(
@@ -1464,47 +1484,6 @@ def test_create_channel_interconnect_gated_by_attempt_direct_path(
     )
 
 
-@pytest.mark.parametrize(
-    "target,expected",
-    [
-        ("storage.googleapis.com:443", True),
-        ("storage.googleapis.com", True),
-        ("googleapis.com:443", True),
-        ("googleapis.com", True),
-        ("storage-direct.googleapis.com:443", True),
-        ("us-east1-pubsub.googleapis.com:443", True),
-        ("storage.mtls.googleapis.com:443", True),
-        ("storage.mtls.sandbox.googleapis.com:443", True),
-        ("a.googleapis.com:443", True),
-        ("STORAGE.GOOGLEAPIS.COM:443", True),
-        ("dns:///storage.googleapis.com:443", True),
-        ("https://storage.googleapis.com:443/v1", True),
-        ("http://storage.googleapis.com:443", True),
-        ("google-c2p:///storage-direct.googleapis.com?force-xds", True),
-        ("storage.universe.domain:443", False),
-        ("dns:///storage.universe.domain:443", False),
-        ("https://storage.universe.domain:443", False),
-        ("google-c2p:///storage.universe.domain", False),
-        ("evilgoogleapis.com:443", False),
-        ("storage.googleapis.com.universe.domain:443", False),
-        (".googleapis.com:443", False),
-        ("-direct.googleapis.com:443", False),
-        ("storage-.googleapis.com:443", False),
-        ("a..b.googleapis.com:443", False),
-        ("https://?.googleapis.com", False),
-        ("[invalid.googleapis.com", False),
-        ("user@storage.googleapis.com:443", False),
-        ("storage.universe.domain:443@storage.googleapis.com", False),
-        ("storage.googleapis.com#universe.domain", False),
-        ("another-c2p:///storage.googleapis.com", False),
-        ("[::1]:8080", False),
-        ("", False),
-    ],
-)
-def test__is_googleapis_host(target, expected):
-    assert grpc_helpers._is_googleapis_host(target) is expected
-
-
 @mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("grpc.metadata_call_credentials")
 @mock.patch("google.auth.transport.grpc.AuthMetadataPlugin")
@@ -1554,6 +1533,7 @@ def test__compose_channel_credentials_legacy_auth_metadata_plugin(
     [
         "storage.universe.domain:443",
         "dns:///storage.universe.domain:443",
+        "dns://8.8.8.8/storage.googleapis.com:443",
         "evilgoogleapis.com:443",
         "storage.googleapis.com.universe.domain:443",
     ],
