@@ -1097,3 +1097,47 @@ class TestUserAccessTokenCredentials(object):
             cred.before_request(mock.Mock(), "GET", "https://example.com", {})
             refresh.assert_called()
             apply.assert_called()
+
+    @mock.patch(
+        "google.auth._cloud_sdk.get_universe_domain",
+        return_value="non-default.universe.domain",
+    )
+    @mock.patch(
+        "google.auth._cloud_sdk.get_auth_access_token", return_value="mock-token-tpc"
+    )
+    def test_refresh_blocks_non_default_universe(self, mock_get_token, mock_get_ud):
+        """Verifies that refreshing fails when pointing to a non-default universe domain."""
+        creds = credentials.UserAccessTokenCredentials()
+
+        with pytest.raises(exceptions.InvalidValue) as exc_info:
+            creds.refresh(None)
+
+        assert "does not match the expected universe domain" in str(exc_info.value)
+        # Ensure the token retrieve subprocess was never called
+        mock_get_token.assert_not_called()
+
+    @mock.patch(
+        "google.auth._cloud_sdk.get_universe_domain", return_value="invalid@domain"
+    )
+    @mock.patch("google.auth._cloud_sdk.get_auth_access_token")
+    def test_refresh_blocks_invalid_universe_format(self, mock_get_token, mock_get_ud):
+        """Verifies that refreshing fails on syntactically invalid universe domains."""
+        creds = credentials.UserAccessTokenCredentials()
+
+        with pytest.raises(exceptions.InvalidValue) as exc_info:
+            creds.refresh(None)
+
+        assert "Universe domain must be a valid non-empty domain string" in str(
+            exc_info.value
+        )
+        mock_get_token.assert_not_called()
+
+    @mock.patch("google.auth._cloud_sdk.get_universe_domain", return_value=None)
+    @mock.patch(
+        "google.auth._cloud_sdk.get_auth_access_token", return_value="mock-token-gdu"
+    )
+    def test_gdu_universe_succeeds(self, mock_get_token, mock_get_ud):
+        """Verifies that default universe domain setups refresh successfully."""
+        creds = credentials.UserAccessTokenCredentials()
+        creds.refresh(None)
+        assert creds.token == "mock-token-gdu"

@@ -605,6 +605,7 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
         super(UserAccessTokenCredentials, self).__init__()
         self._account = account
         self._quota_project_id = quota_project_id
+        self._verified_universe_domain = None
 
     def with_account(self, account):
         """Create a new instance with the given account.
@@ -631,9 +632,30 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
                 so just set it to `None`.
 
         Raises:
+            google.auth.exceptions.InvalidValue: If the resolved universe domain
+                is invalid or does not match the default universe domain.
             google.auth.exceptions.UserAccessTokenError: If the access token
                 refresh failed.
         """
+        # Cache the verified universe domain to prevent repeated subprocess calls on subsequent refreshes
+        if not self._verified_universe_domain:
+            # Since this credential retrieves tokens dynamically from the active gcloud CLI session,
+            # we must check the active gcloud universe domain configuration to ensure it matches
+            # standard GDU boundaries before obtaining the token.
+            sdk_universe = (
+                _cloud_sdk.get_universe_domain() or credentials.DEFAULT_UNIVERSE_DOMAIN
+            )
+
+            # 1. Validate the syntax of the resolved universe domain
+            _helpers.validate_universe_domain(sdk_universe)
+
+            # 2. Verify that it matches the expected default universe (googleapis.com)
+            _helpers.compare_universe_domains(
+                sdk_universe, credentials.DEFAULT_UNIVERSE_DOMAIN
+            )
+
+            self._verified_universe_domain = sdk_universe
+
         self.token = _cloud_sdk.get_auth_access_token(self._account)
 
     @_helpers.copy_docstring(credentials.Credentials)

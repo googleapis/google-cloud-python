@@ -31,6 +31,12 @@ _CLOUD_SDK_POSIX_COMMAND = "gcloud"
 _CLOUD_SDK_WINDOWS_COMMAND = "gcloud.cmd"
 # The command to get the Cloud SDK configuration
 _CLOUD_SDK_CONFIG_GET_PROJECT_COMMAND = ("config", "get", "project")
+# The command to get the active Cloud SDK universe domain
+_CLOUD_SDK_CONFIG_GET_UNIVERSE_DOMAIN_COMMAND = (
+    "config",
+    "get",
+    "core/universe_domain",
+)
 # The command to get google user access token
 _CLOUD_SDK_USER_ACCESS_TOKEN_COMMAND = ("auth", "print-access-token")
 # Cloud SDK's application-default client ID
@@ -148,3 +154,31 @@ def get_auth_access_token(account=None):
             "Failed to obtain access token", caught_exc
         )
         raise new_exc from caught_exc
+
+
+def get_universe_domain():
+    """Gets the universe domain from the environment or Cloud SDK configuration.
+
+    Returns:
+        Optional[str]: The universe domain if set, otherwise None.
+    """
+    # Check standard environment variable first
+    env_universe = os.environ.get("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+    if env_universe and env_universe.strip():
+        return env_universe.strip()
+
+    # Fall back to active gcloud CLI configuration
+    if os.name == "nt":
+        command = _CLOUD_SDK_WINDOWS_COMMAND
+    else:
+        command = _CLOUD_SDK_POSIX_COMMAND
+
+    try:
+        # Safely run the command ignoring stderr to keep results clean
+        universe_domain = _run_subprocess_ignore_stderr(
+            (command,) + _CLOUD_SDK_CONFIG_GET_UNIVERSE_DOMAIN_COMMAND
+        )
+        universe_domain = _helpers.from_bytes(universe_domain).strip()
+        return universe_domain if universe_domain else None
+    except (subprocess.CalledProcessError, OSError, IOError):
+        return None
