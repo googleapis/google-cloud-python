@@ -800,26 +800,26 @@ def test_validate_universe_domain_invalid(invalid_value):
         _helpers.validate_universe_domain(invalid_value)
 
 
-def test_compare_universe_domains_match():
-    _helpers.compare_universe_domains("example.com", "example.com")
+@pytest.mark.parametrize(
+    "universe_domain,expected_universe_domain",
+    [
+        ("example.com", "example.com"),
+        ("Googleapis.com", "googleapis.com"),
+        ("googleapis.com", "GOOGLEAPIS.COM"),
+        ("My-Universe.Example.Com", "my-universe.example.com"),
+    ],
+)
+def test_compare_universe_domains_match(universe_domain, expected_universe_domain):
+    _helpers.compare_universe_domains(universe_domain, expected_universe_domain)
 
 
 def test_compare_universe_domains_mismatch():
     with pytest.raises(
         exceptions.InvalidValue,
-        match=r"The configured universe domain \(example\.com\) does not "
+        match=r"The configured universe domain \(Example\.com\) does not "
         r"match the expected universe domain \(googleapis\.com\)\.",
     ):
-        _helpers.compare_universe_domains("example.com", "googleapis.com")
-
-
-def test_compare_universe_domains_case_sensitive_mismatch():
-    with pytest.raises(
-        exceptions.InvalidValue,
-        match=r"The configured universe domain \(Googleapis\.com\) does not "
-        r"match the expected universe domain \(googleapis\.com\)\.",
-    ):
-        _helpers.compare_universe_domains("Googleapis.com", "googleapis.com")
+        _helpers.compare_universe_domains("Example.com", "googleapis.com")
 
 
 @pytest.mark.parametrize(

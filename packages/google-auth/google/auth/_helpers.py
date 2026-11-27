@@ -303,6 +303,8 @@ def compare_universe_domains(
 ) -> None:
     """Verifies that ``universe_domain`` matches ``expected_universe_domain``.
 
+    Performs a case-insensitive comparison after validating both domain strings.
+
     Args:
         universe_domain (Any): The configured universe domain.
         expected_universe_domain (Any): The expected universe domain (for
@@ -314,7 +316,7 @@ def compare_universe_domains(
     """
     validate_universe_domain(universe_domain)
     validate_universe_domain(expected_universe_domain)
-    if universe_domain != expected_universe_domain:
+    if universe_domain.lower() != expected_universe_domain.lower():
         raise exceptions.InvalidValue(
             f"The configured universe domain ({universe_domain}) does not "
             f"match the expected universe domain ({expected_universe_domain})."
