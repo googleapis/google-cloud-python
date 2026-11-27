@@ -2515,6 +2515,54 @@ class TestAsyncMultiRangeDownloader:
             with pytest.raises(ValueError, match="Pool is closed"):
                 await task
 
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_raises_overflow_failure_while_a_stream_is_opening(
+        self, mock_cls_stream
+    ):
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            MultiStreamConfig,
+        )
+
+        s1 = self._make_mock_stream(read_handle=b"h1")
+        s2 = self._make_mock_stream(read_handle=b"h2")
+        s3 = self._make_mock_stream(read_handle=b"h3")
+        s3_open_cancelled = asyncio.Event()
+
+        async def s3_open(*args, **kwargs):
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                s3_open_cancelled.set()
+                raise
+
+        s3.open = AsyncMock(side_effect=s3_open)
+        mock_cls_stream.side_effect = [s1, s2, s3]
+        config = MultiStreamConfig(
+            min_streams=1, max_streams=3, target_io_depth=1, target_bytes=50
+        )
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            self._make_mock_client(), "b", "o", multi_stream_config=config
+        )
+
+        async def side_effect_dl(pooled_stream, batch, *args, **kwargs):
+            if pooled_stream.stream is s2:
+                raise DataCorruption(None, "checksum mismatch")
+            await asyncio.Event().wait()
+
+        with mock.patch.object(
+            mrd, "_download_ranges_on_stream", side_effect=side_effect_dl
+        ):
+            # The first range fills s1, the second fails on s2, and the third
+            # waits for s3, whose open() never returns.
+            ranges = [(i * 50, 50, BytesIO()) for i in range(3)]
+            with pytest.raises(DataCorruption, match="checksum mismatch"):
+                await asyncio.wait_for(mrd.download_ranges(ranges), timeout=5)
+
+        assert s3_open_cancelled.is_set()
+
     @pytest.mark.asyncio
     async def test_stream_pool_contiguous_distribution_when_saturated(self):
         from google.cloud.storage.asyncio._stream_pool import (

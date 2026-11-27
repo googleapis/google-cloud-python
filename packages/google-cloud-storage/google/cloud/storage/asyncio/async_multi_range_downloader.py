@@ -851,9 +851,11 @@ class AsyncMultiRangeDownloader:
             ``bytes_to_read <= 0``.
         :raises BufferError: if fewer than ``bytes_to_read`` bytes are returned
             for a buffer destination.
-        :raises DataCorruption: if a checksum mismatch is detected while reading
-            data. The downloader is closed before this is raised, so calling
-            :meth:`close` afterwards raises :exc:`ValueError`.
+        :raises DataCorruption: if a checksum, offset, or byte-count mismatch is
+            detected while reading data (offset and byte-count are checked even
+            when ``enable_checksum=False``). The downloader is closed before
+            this is raised, so calling :meth:`close` afterwards raises
+            :exc:`ValueError`.
 
         """
 
@@ -928,10 +930,16 @@ class AsyncMultiRangeDownloader:
                         overflow_tasks: List[asyncio.Task] = []
                         try:
                             while remaining_overflow and pending_scale_tasks:
-                                _, pending_scale_tasks = await asyncio.wait(
-                                    pending_scale_tasks,
+                                running = {t for t in overflow_tasks if not t.done()}
+                                done, _ = await asyncio.wait(
+                                    pending_scale_tasks | running,
                                     return_when=asyncio.FIRST_COMPLETED,
                                 )
+                                for t in done & running:
+                                    t.result()  # Raise a failed overflow batch now.
+                                if not done & pending_scale_tasks:
+                                    continue
+                                pending_scale_tasks -= done
                                 if pool._closed:
                                     break
                                 if pending_scale_tasks:
