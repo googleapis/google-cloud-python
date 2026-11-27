@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.72.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.72.1...google-cloud-spanner-v3.72.2) (2026-11-27)
+
+
+### Bug Fixes
+
+* **spanner:** avoid mutating caller RequestOptions in place ([#19187](https://github.com/googleapis/google-cloud-python/issues/19187)) ([e281fa2](https://github.com/googleapis/google-cloud-python/commit/e281fa26583019abd5e43e31bf401790425742c1))
+* **spanner:** close underlying stream on streamed result set teardown ([#19156](https://github.com/googleapis/google-cloud-python/issues/19156)) ([ea5494c](https://github.com/googleapis/google-cloud-python/commit/ea5494c6a9e86ecb02090dfa5b63f29b1a47ae3e))
+* **spanner:** eliminate silent SQL truncation in DB-API ([#19046](https://github.com/googleapis/google-cloud-python/issues/19046)) ([8dcaede](https://github.com/googleapis/google-cloud-python/commit/8dcaedeac0348bdf9761c006745c9d5e0de71822))
+* **spanner:** escape identifier delimiters and validate table names ([#19052](https://github.com/googleapis/google-cloud-python/issues/19052)) ([8dcaede](https://github.com/googleapis/google-cloud-python/commit/8dcaedeac0348bdf9761c006745c9d5e0de71822))
+* **spanner:** forward client_options in spanner_dbapi.connect() ([#19183](https://github.com/googleapis/google-cloud-python/issues/19183)) ([9529bf8](https://github.com/googleapis/google-cloud-python/commit/9529bf89be84ace6a99bc95a3b4a2ea778819a67))
+* **spanner:** harden identifier escaping in dbapi driver ([#19054](https://github.com/googleapis/google-cloud-python/issues/19054)) ([8dcaede](https://github.com/googleapis/google-cloud-python/commit/8dcaedeac0348bdf9761c006745c9d5e0de71822))
+* **spanner:** preserve client_options, client_info, instance_type, and TLS settings in Client.copy() ([#19193](https://github.com/googleapis/google-cloud-python/issues/19193)) ([6a00b4a](https://github.com/googleapis/google-cloud-python/commit/6a00b4a64500c6cce9b697a88e1f0f26a6d9c535))
+* **spanner:** quote database names when creating databases ([#19053](https://github.com/googleapis/google-cloud-python/issues/19053)) ([8dcaede](https://github.com/googleapis/google-cloud-python/commit/8dcaedeac0348bdf9761c006745c9d5e0de71822))
+* **spanner:** retry additional transient InternalServerError errors ([#19175](https://github.com/googleapis/google-cloud-python/issues/19175)) ([c7c957d](https://github.com/googleapis/google-cloud-python/commit/c7c957d6674606972d4653bd393a1363fa6e5483))
+* **spanner:** support parameters and preserve safety in partitioned DML ([#19035](https://github.com/googleapis/google-cloud-python/issues/19035)) ([8dcaede](https://github.com/googleapis/google-cloud-python/commit/8dcaedeac0348bdf9761c006745c9d5e0de71822))
+
 ## [3.72.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.72.0...google-cloud-spanner-v3.72.1) (2026-11-22)
 
 
