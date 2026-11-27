@@ -13,16 +13,13 @@
 # limitations under the License.
 
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
-from google.cloud.spanner_v1 import (
-    FixedSizePool,
-    ResultSet,
-)
+from google.cloud.spanner_v1 import FixedSizePool
 from sqlalchemy import create_engine
 from sqlalchemy.testing import eq_, is_instance_of
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
-    add_result,
+    add_has_table_result,
 )
 
 
@@ -32,30 +29,9 @@ class TestNullFilteredIndex(MockServerTestBase):
     def test_create_table(self):
         from tests.mockserver_tests.interleaved_index import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="albums"
-LIMIT 1
-""",
-            ResultSet(),
-        )
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="tracks"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
+        add_has_table_result("albums")
+        add_has_table_result("tracks")
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
             connect_args={"client": self.client, "pool": FixedSizePool(size=10)},

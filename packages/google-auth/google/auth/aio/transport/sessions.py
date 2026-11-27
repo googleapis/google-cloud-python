@@ -30,6 +30,7 @@ from google.auth.aio import transport
 from google.auth.aio.credentials import Credentials
 from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
+from google.oauth2 import service_account
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
@@ -246,6 +247,9 @@ class AsyncAuthorizedSession:
             and refresh credentials. If not passed,
             an instance of :class:`~google.auth.aio.transport.aiohttp.Request`
             is created.
+        default_host (Optional[str]): A host like "pubsub.googleapis.com".
+            This is used when a self-signed JWT is created from service
+            account credentials.
 
     Raises:
         - google.auth.exceptions.TransportError: If `auth_request` is `None`
@@ -259,14 +263,17 @@ class AsyncAuthorizedSession:
         self,
         credentials: Union[Credentials, google.auth.credentials.Credentials],
         auth_request: Optional[transport.Request] = None,
+        default_host: Optional[str] = None,
     ):
         if isinstance(credentials, google.auth.credentials.Credentials):
-            credentials = _SyncCredentialsAdapter(credentials)
-        elif not isinstance(credentials, Credentials):
+            adapted_credentials: Credentials = _SyncCredentialsAdapter(credentials)
+        elif isinstance(credentials, Credentials):
+            adapted_credentials = credentials
+        else:
             raise exceptions.InvalidType(
                 f"The configured credentials of type {type(credentials)} are invalid and must be of type `google.auth.aio.credentials.Credentials` or `google.auth.credentials.Credentials`"
             )
-        self._credentials: Credentials = credentials
+        self._credentials: Credentials = adapted_credentials
         _auth_request = auth_request
         if not _auth_request and AIOHTTP_INSTALLED:
             _auth_request = AiohttpRequest()
@@ -280,6 +287,15 @@ class AsyncAuthorizedSession:
                 "`auth_request` must either be configured or the external package `aiohttp` must be installed to use the default value."
             )
         self._auth_request = _auth_request
+        self._default_host = default_host
+        # https://google.aip.dev/auth/4111
+        # Attempt to use self-signed JWTs when a service account is used.
+        # Configure after constructor validation so a failed __init__ does not
+        # mutate the caller's credentials.
+        if isinstance(credentials, service_account.Credentials):
+            credentials._create_self_signed_jwt(
+                "https://{}/".format(self._default_host) if self._default_host else None
+            )
         self._mtls_rotation_lock: Optional[asyncio.Lock] = None
         self._mtls_check_counter = 0
         self._mtls_reconfig_counter = 0

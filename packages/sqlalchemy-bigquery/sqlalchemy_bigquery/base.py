@@ -45,6 +45,7 @@ from google.cloud.bigquery.table import (
 from sqlalchemy import util
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
+from sqlalchemy.engine.url import URL
 from sqlalchemy.exc import NoSuchColumnError, NoSuchTableError
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql import elements, selectable
@@ -64,7 +65,9 @@ from .parse_url import parse_url
 # Illegal characters is intended to be all characters that are not explicitly
 # allowed as part of the flexible column names.
 # https://cloud.google.com/bigquery/docs/schemas#flexible-column-names
-FIELD_ILLEGAL_CHARACTERS = re.compile(r'[!"$()*,./;?@[\\\]^{}~\n]+', re.ASCII)
+FIELD_ILLEGAL_CHARACTERS = re.compile(
+    r'[!"$()*,./;?@[\\\]^`{}~\x00-\x1f\x7f]+', re.ASCII
+)
 
 TABLE_VALUED_ALIAS_ALIASES = "bigquery_table_valued_alias_aliases"
 
@@ -80,6 +83,9 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
     https://github.com/dropbox/PyHive/blob/master/pyhive/sqlalchemy_presto.py
     """
 
+    _UNESCAPE_IDENTIFIER_RE = re.compile(r"\\([\\`])")
+    _CONTROL_CHARACTERS_RE = re.compile(r"[\x00-\x1f\x7f]")
+
     def __init__(self, dialect):
         super(BigQueryIdentifierPreparer, self).__init__(
             dialect,
@@ -91,14 +97,18 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         # SQLAlchemy's base IdentifierPreparer defaults to escaping quotes by
         # doubling them (e.g. `""`), whereas BigQuery GoogleSQL escapes
         # backslashes and backticks inside backtick-quoted identifiers using a
-        # leading backslash (`\\` and ``\` ``).
+        # leading backslash (`\\` and ``\` ``) and disallows raw newlines.
+        if self._CONTROL_CHARACTERS_RE.search(value):
+            raise sqlalchemy.exc.CompileError(
+                "Identifier cannot contain control characters"
+            )
         value = value.replace("\\", "\\\\").replace("`", "\\`")
         if self._double_percents:
             value = value.replace("%", "%%")
         return value
 
     def _unescape_identifier(self, value):
-        return value.replace("\\`", "`").replace("\\\\", "\\")
+        return self._UNESCAPE_IDENTIFIER_RE.sub(r"\1", value)
 
     def quote_column(self, value):
         """
@@ -530,10 +540,21 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
     @staticmethod
     def _maybe_reescape(binary):
         binary = binary._clone()
+        binary.modifiers = binary.modifiers.copy()
         escape = binary.modifiers.pop("escape", None)
         if escape and escape != "\\":
+            if not (
+                isinstance(binary.right, elements.BindParameter)
+                and binary.right.unique
+                and isinstance(binary.right.value, str)
+            ):
+                raise sqlalchemy.exc.CompileError(
+                    "BigQuery only supports a custom escape character for literal "
+                    "strings"
+                )
+            binary.right = binary.right._clone()
             binary.right.value = escape.join(
-                v.replace(escape, "\\")
+                v.replace("\\", "\\\\").replace(escape, "\\")
                 for v in binary.right.value.split(escape + escape)
             )
         return binary
@@ -1255,6 +1276,33 @@ class BQArray(sqlalchemy.sql.sqltypes.ARRAY):
         return process_array_literal
 
 
+class _CredentialsHidingURL(URL):
+    """A URL that also hides ``credentials_base64`` when it hides the password."""
+
+    __slots__ = ()
+
+    def render_as_string(self, hide_password=True):
+        url = self
+        if hide_password and "credentials_base64" in self.query:
+            url = self.update_query_dict({"credentials_base64": "***"})
+        return URL.render_as_string(url, hide_password=hide_password)
+
+    def difference_update_query(self, names):
+        # The base method returns a plain URL, which would show the key again.
+        url = URL.difference_update_query(self, names)
+        return url if url is self else type(self).create(*url)
+
+    def __hash__(self):
+        # This URL equals a plain URL with the same fields, so it must hash the
+        # same, and the masked string from render_as_string() would not.
+        return hash(URL.create(*self))
+
+    def __reduce__(self):
+        # SQLAlchemy 1.4 unpickles every URL as a plain URL, which would show
+        # the key again.
+        return (type(self).create, tuple(self))
+
+
 class BigQueryDialect(DefaultDialect):
     name = "bigquery"
     driver = "bigquery"
@@ -1403,6 +1451,14 @@ class BigQueryDialect(DefaultDialect):
             self.project_id = self.project_id or client.project
             self.billing_project_id = self.billing_project_id or client.project
             return ([], {"client": client})
+
+    @classmethod
+    def engine_created(cls, engine):
+        super(BigQueryDialect, cls).engine_created(engine)
+        # SQLAlchemy hides only the password when it prints a URL, and this
+        # parameter holds a whole service account key.
+        if "credentials_base64" in engine.url.query:
+            engine.url = _CredentialsHidingURL.create(*engine.url)
 
     def _get_table_or_view_names(self, connection, item_types, schema=None):
         current_schema = schema or self.dataset_id

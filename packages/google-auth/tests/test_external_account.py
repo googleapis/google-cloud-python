@@ -2319,6 +2319,121 @@ class TestCredentials(object):
         )
         assert crm_request_kwargs["url"] == expected_url
 
+    @pytest.mark.parametrize(
+        "token_url,impersonation_url",
+        [
+            pytest.param(
+                "https://sts.example.com/v1/token",
+                None,
+                id="non_default_token_url",
+            ),
+            pytest.param(
+                "https://sts.googleapis.com/v1/token",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@p.iam.gserviceaccount.com:generateAccessToken",
+                id="non_default_impersonation_url",
+            ),
+            pytest.param(
+                "https://sts.googleapis.com.evil.com/v1/token",
+                None,
+                id="spoofed_host_suffix",
+            ),
+            pytest.param(
+                "https://evilgoogleapis.com/v1/token",
+                None,
+                id="missing_subdomain_dot",
+            ),
+            pytest.param(None, None, id="missing_token_url"),
+            pytest.param("https://[invalid/v1/token", None, id="malformed_token_url"),
+            pytest.param(
+                "https://evil.com\\@sts.googleapis.com/v1/token",
+                None,
+                id="userinfo_in_token_url",
+            ),
+            pytest.param(
+                "https://sts.googleapis.com#evil.com",
+                None,
+                id="fragment_in_token_url",
+            ),
+            pytest.param(
+                "https://.googleapis.com/v1/token",
+                None,
+                id="empty_label_token_url",
+            ),
+        ],
+    )
+    def test_get_project_id_skips_non_default_universe_endpoints(
+        self, token_url, impersonation_url
+    ):
+        request = mock.create_autospec(transport.Request)
+        info = {
+            "type": "external_account",
+            "audience": self.AUDIENCE,
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+            "token_url": token_url,
+            "credential_source": self.CREDENTIAL_SOURCE,
+        }
+        if impersonation_url is not None:
+            info["service_account_impersonation_url"] = impersonation_url
+        credentials = CredentialsImpl.from_info(info, scopes=self.SCOPES)
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id is None
+        request.assert_not_called()
+
+    @pytest.mark.parametrize(
+        "universe_domain",
+        [
+            pytest.param("example.com", id="custom_universe"),
+            pytest.param(None, id="none_universe"),
+            pytest.param("", id="empty_universe"),
+        ],
+    )
+    def test_get_project_id_skips_default_crm_url_after_with_universe_domain(
+        self, universe_domain
+    ):
+        request = mock.create_autospec(transport.Request)
+        credentials = CredentialsImpl.from_info(
+            {
+                "type": "external_account",
+                "audience": self.AUDIENCE,
+                "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+                "token_url": "https://sts.example.com/v1/token",
+                "credential_source": self.CREDENTIAL_SOURCE,
+            },
+            scopes=self.SCOPES,
+        ).with_universe_domain(universe_domain)
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id is None
+        request.assert_not_called()
+
+    def test_get_project_id_allows_default_universe_token_url_when_universe_omitted(
+        self,
+    ):
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=self.SUCCESS_RESPONSE.copy(),
+            cloud_resource_manager_status=http_client.OK,
+            cloud_resource_manager_data=self.CLOUD_RESOURCE_MANAGER_SUCCESS_RESPONSE,
+        )
+        credentials = CredentialsImpl.from_info(
+            {
+                "type": "external_account",
+                "audience": self.AUDIENCE,
+                "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+                "token_url": self.TOKEN_URL,
+                "credential_source": self.CREDENTIAL_SOURCE,
+            },
+            scopes=self.SCOPES,
+        )
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id == self.PROJECT_ID
+
     def test_refresh_with_existing_impersonated_credentials(self):
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL

@@ -19,7 +19,6 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
-    ResultSet,
     TypeCode,
 )
 from sqlalchemy.orm import Session
@@ -27,6 +26,7 @@ from sqlalchemy.testing import eq_, is_instance_of, is_not_none
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_has_table_result,
     add_result,
     add_update_count,
 )
@@ -36,14 +36,7 @@ class TestPickleType(MockServerTestBase):
     def test_create_table(self):
         from tests.mockserver_tests.pickle_type_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="user_preferences"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("user_preferences")
         engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests
