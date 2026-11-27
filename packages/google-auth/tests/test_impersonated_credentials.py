@@ -1536,3 +1536,21 @@ class TestImpersonatedCredentials(object):
             impersonated_credentials.Credentials.from_impersonated_service_account_info(
                 info
             )
+
+    @pytest.mark.parametrize("source_credentials_value", [None, "invalid"])
+    def test_from_impersonated_service_account_info_missing_source_credentials(
+        self, source_credentials_value
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        if source_credentials_value is None:
+            info.pop("source_credentials", None)
+        else:
+            info["source_credentials"] = source_credentials_value
+
+        with pytest.raises(
+            exceptions.InvalidValue,
+            match="The 'source_credentials' field is required",
+        ):
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )

@@ -26,6 +26,7 @@ service account.
 """
 
 import base64
+import collections.abc
 import copy
 import http.client as http_client
 import json
@@ -567,6 +568,10 @@ class Credentials(
         """
 
         source_credentials_info = info.get("source_credentials")
+        if not isinstance(source_credentials_info, collections.abc.Mapping):
+            raise exceptions.InvalidValue(
+                "The 'source_credentials' field is required in the impersonated service account info."
+            )
         impersonation_url = info.get("service_account_impersonation_url")
         target_principal, url_host = _parse_impersonation_url(impersonation_url)
         url_universe = _extract_universe_from_iam_host(url_host)
@@ -580,9 +585,7 @@ class Credentials(
         if explicit_universe is not None:
             _helpers.validate_universe_domain(explicit_universe)
             if url_universe is not None:
-                _helpers.compare_universe_domains(
-                    explicit_universe.lower(), url_universe
-                )
+                _helpers.compare_universe_domains(explicit_universe, url_universe)
             elif (
                 explicit_universe.lower() != credentials.DEFAULT_UNIVERSE_DOMAIN
                 and _helpers.has_default_universe_host(f"https://{url_host}")
