@@ -222,7 +222,7 @@ class Blob(_PropertyMixin):
             Get the blob's name.
         """
         name = _bytes_to_unicode(name)
-        super(Blob, self).__init__(name=name)
+        super().__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
         self._bucket = bucket
@@ -269,7 +269,7 @@ class Blob(_PropertyMixin):
         """
         if value is not None and value > 0 and value % self._CHUNK_SIZE_MULTIPLE != 0:
             raise ValueError(
-                "Chunk size must be a multiple of %d." % (self._CHUNK_SIZE_MULTIPLE,)
+                f"Chunk size must be a multiple of {self._CHUNK_SIZE_MULTIPLE:d}."
             )
         self._chunk_size = value
 
@@ -5300,7 +5300,7 @@ class Retention(dict):
             retention_expiration_time = _datetime_to_rfc3339(retention_expiration_time)
         data["retentionExpirationTime"] = retention_expiration_time
 
-        super(Retention, self).__init__(data)
+        super().__init__(data)
         self._blob = blob
 
     @classmethod
@@ -5393,7 +5393,7 @@ class ObjectCustomContextPayload(dict):
 
     def __init__(self, value=None):
         data = {"value": value}
-        super(ObjectCustomContextPayload, self).__init__(data)
+        super().__init__(data)
         self._contexts = None
 
     @property
@@ -5460,7 +5460,7 @@ class ObjectContexts(dict):
                     )
                 payload._contexts = self
             data["custom"] = custom
-        super(ObjectContexts, self).__init__(data)
+        super().__init__(data)
         self._blob = blob
 
     @classmethod

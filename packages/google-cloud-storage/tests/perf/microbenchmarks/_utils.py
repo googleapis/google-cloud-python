@@ -15,7 +15,7 @@ import io
 import os
 import socket
 import statistics
-from typing import Any, List, Optional, Union
+from typing import Any
 
 import psutil
 
@@ -26,9 +26,9 @@ def publish_benchmark_extra_info(
     benchmark: Any,
     params: Any,
     benchmark_group: str = "read",
-    true_times: List[float] = [],
-    download_bytes_list: Optional[List[int]] = None,
-    duration: Optional[Union[float, List[float]]] = None,
+    true_times: list[float] = [],
+    download_bytes_list: list[int] | None = None,
+    duration: float | list[float] | None = None,
 ) -> None:
     """
     Helper function to publish benchmark parameters to the extra_info property.

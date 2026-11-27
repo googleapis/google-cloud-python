@@ -26,7 +26,7 @@ _DEFAULT_CONNECT_TIMEOUT = 61
 _DEFAULT_READ_TIMEOUT = 60
 
 
-class RequestsMixin(object):
+class RequestsMixin:
     """Mix-in class implementing ``requests``-specific behavior.
 
     These are methods that are more general purpose, with implementations

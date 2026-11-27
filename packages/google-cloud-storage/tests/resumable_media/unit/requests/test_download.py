@@ -28,7 +28,7 @@ EXAMPLE_URL = URL_PREFIX + "{OBJECT}?alt=media"
 EXPECTED_TIMEOUT = (61, 60)
 
 
-class TestDownload(object):
+class TestDownload:
     def test__write_to_stream_no_hash_check(self):
         stream = io.BytesIO()
         download = download_mod.Download(EXAMPLE_URL, stream=stream)
@@ -104,7 +104,7 @@ class TestDownload(object):
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
         bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -177,7 +177,7 @@ class TestDownload(object):
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
         bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -198,7 +198,7 @@ class TestDownload(object):
         mock_full_content_length = len(chunk1) + 123
         headers = {"x-goog-stored-content-length": mock_full_content_length}
         bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers[_helpers._HASH_HEADER] = header_value
         response = _mock_response(chunks=[chunk1], headers=headers)
 
@@ -269,7 +269,7 @@ class TestDownload(object):
 
         transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
 
-        range_bytes = "bytes={:d}-{:d}".format(0, end)
+        range_bytes = f"bytes={0:d}-{end:d}"
         assert download._headers["range"] == range_bytes
         assert download.finished
 
@@ -326,7 +326,7 @@ class TestDownload(object):
 
         chunks = (b"zero zero", b"niner tango")
         bad_checksum = "anVzdCBub3QgdGhpcyAxLA=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers = {_helpers._HASH_HEADER: header_value}
         transport = mock.Mock(spec=["request"])
         transport.request.return_value = _mock_response(chunks=chunks, headers=headers)
@@ -369,7 +369,7 @@ class TestDownload(object):
         headers = {}  # Empty headers
         end = 16383
         self._consume_helper(end=end, headers=headers)
-        range_bytes = "bytes={:d}-{:d}".format(0, end)
+        range_bytes = f"bytes={0:d}-{end:d}"
         # Make sure the headers have been modified.
         assert headers == {"range": range_bytes}
 
@@ -459,7 +459,7 @@ class TestDownload(object):
             "stream": True,
         }
         transport.request.assert_called_once_with("GET", expected_url, **called_kwargs)
-        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        range_bytes = f"bytes={offset:d}-{end:d}"
         assert download._headers["range"] == range_bytes
 
     def test_consume_w_bytes_downloaded(self):
@@ -489,7 +489,7 @@ class TestDownload(object):
             "stream": True,
         }
         transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
-        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        range_bytes = f"bytes={offset:d}-{end:d}"
         assert download._headers["range"] == range_bytes
 
     def test_consume_w_bytes_downloaded_range_read(self):
@@ -525,7 +525,7 @@ class TestDownload(object):
             "stream": True,
         }
         transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
-        range_bytes = "bytes={:d}-{:d}".format(offset + start, end)
+        range_bytes = f"bytes={offset + start:d}-{end:d}"
         assert download._headers["range"] == range_bytes
 
     def test_consume_gzip_reset_stream_w_bytes_downloaded(self):
@@ -568,7 +568,7 @@ class TestDownload(object):
             download.consume(transport)
 
 
-class TestRawDownload(object):
+class TestRawDownload:
     def test__write_to_stream_no_hash_check(self):
         stream = io.BytesIO()
         download = download_mod.RawDownload(EXAMPLE_URL, stream=stream)
@@ -629,7 +629,7 @@ class TestRawDownload(object):
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
         bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_raw_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -673,7 +673,7 @@ class TestRawDownload(object):
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
         bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -696,7 +696,7 @@ class TestRawDownload(object):
         mock_full_content_length = len(chunk1) + 123
         headers = {"x-goog-stored-content-length": mock_full_content_length}
         bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers[_helpers._HASH_HEADER] = header_value
         response = _mock_raw_response(chunks=[chunk1], headers=headers)
 
@@ -766,7 +766,7 @@ class TestRawDownload(object):
             timeout=EXPECTED_TIMEOUT if timeout is None else timeout,
         )
 
-        range_bytes = "bytes={:d}-{:d}".format(0, end)
+        range_bytes = f"bytes={0:d}-{end:d}"
         assert download._headers["range"] == range_bytes
         assert download.finished
 
@@ -825,7 +825,7 @@ class TestRawDownload(object):
 
         chunks = (b"zero zero", b"niner tango")
         bad_checksum = "anVzdCBub3QgdGhpcyAxLA=="
-        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        header_value = f"crc32c={bad_checksum},md5={bad_checksum}"
         headers = {_helpers._HASH_HEADER: header_value}
         transport = mock.Mock(spec=["request"])
         transport.request.return_value = _mock_raw_response(
@@ -870,7 +870,7 @@ class TestRawDownload(object):
         headers = {}  # Empty headers
         end = 16383
         self._consume_helper(end=end, headers=headers)
-        range_bytes = "bytes={:d}-{:d}".format(0, end)
+        range_bytes = f"bytes={0:d}-{end:d}"
         # Make sure the headers have been modified.
         assert headers == {"range": range_bytes}
 
@@ -962,7 +962,7 @@ class TestRawDownload(object):
             "stream": True,
         }
         transport.request.assert_called_once_with("GET", expected_url, **called_kwargs)
-        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        range_bytes = f"bytes={offset:d}-{end:d}"
         assert download._headers["range"] == range_bytes
 
     def test_consume_w_bytes_downloaded(self):
@@ -992,7 +992,7 @@ class TestRawDownload(object):
             "stream": True,
         }
         transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
-        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        range_bytes = f"bytes={offset:d}-{end:d}"
         assert download._headers["range"] == range_bytes
 
     def test_consume_w_bytes_downloaded_range_read(self):
@@ -1028,7 +1028,7 @@ class TestRawDownload(object):
             "stream": True,
         }
         transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
-        range_bytes = "bytes={:d}-{:d}".format(start + offset, end)
+        range_bytes = f"bytes={start + offset:d}-{end:d}"
         assert download._headers["range"] == range_bytes
 
     def test_consume_gzip_reset_stream_w_bytes_downloaded(self):
@@ -1075,16 +1075,16 @@ class TestRawDownload(object):
             download.consume(transport)
 
 
-class TestChunkedDownload(object):
+class TestChunkedDownload:
     @staticmethod
     def _response_content_range(start_byte, end_byte, total_bytes):
-        return "bytes {:d}-{:d}/{:d}".format(start_byte, end_byte, total_bytes)
+        return f"bytes {start_byte:d}-{end_byte:d}/{total_bytes:d}"
 
     def _response_headers(self, start_byte, end_byte, total_bytes):
         content_length = end_byte - start_byte + 1
         resp_range = self._response_content_range(start_byte, end_byte, total_bytes)
         return {
-            "content-length": "{:d}".format(content_length),
+            "content-length": f"{content_length:d}",
             "content-range": resp_range,
         }
 
@@ -1136,7 +1136,7 @@ class TestChunkedDownload(object):
         # Actually consume the chunk and check the output.
         ret_val = download.consume_next_chunk(transport)
         assert ret_val is transport.request.return_value
-        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        range_bytes = f"bytes={start:d}-{start + chunk_size - 1:d}"
         download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
             "GET",
@@ -1165,7 +1165,7 @@ class TestChunkedDownload(object):
         # Actually consume the chunk and check the output.
         download.consume_next_chunk(transport, timeout=14.7)
 
-        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        range_bytes = f"bytes={start:d}-{start + chunk_size - 1:d}"
         download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
             "GET",
@@ -1176,16 +1176,16 @@ class TestChunkedDownload(object):
         )
 
 
-class TestRawChunkedDownload(object):
+class TestRawChunkedDownload:
     @staticmethod
     def _response_content_range(start_byte, end_byte, total_bytes):
-        return "bytes {:d}-{:d}/{:d}".format(start_byte, end_byte, total_bytes)
+        return f"bytes {start_byte:d}-{end_byte:d}/{total_bytes:d}"
 
     def _response_headers(self, start_byte, end_byte, total_bytes):
         content_length = end_byte - start_byte + 1
         resp_range = self._response_content_range(start_byte, end_byte, total_bytes)
         return {
-            "content-length": "{:d}".format(content_length),
+            "content-length": f"{content_length:d}",
             "content-range": resp_range,
         }
 
@@ -1237,7 +1237,7 @@ class TestRawChunkedDownload(object):
         # Actually consume the chunk and check the output.
         ret_val = download.consume_next_chunk(transport)
         assert ret_val is transport.request.return_value
-        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        range_bytes = f"bytes={start:d}-{start + chunk_size - 1:d}"
         download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
             "GET",
@@ -1267,7 +1267,7 @@ class TestRawChunkedDownload(object):
         # Actually consume the chunk and check the output.
         download.consume_next_chunk(transport, timeout=14.7)
 
-        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        range_bytes = f"bytes={start:d}-{start + chunk_size - 1:d}"
         download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
             "GET",
@@ -1284,7 +1284,7 @@ class TestRawChunkedDownload(object):
         assert download.total_bytes == total_bytes
 
 
-class Test__add_decoder(object):
+class Test__add_decoder:
     def test_non_gzipped(self):
         response_raw = mock.Mock(headers={}, spec=["headers"])
         md5_hash = download_mod._add_decoder(response_raw, mock.sentinel.md5_hash)
@@ -1314,7 +1314,7 @@ class Test__add_decoder(object):
         response_raw._decoder.flush()
 
 
-class Test_GzipDecoder(object):
+class Test_GzipDecoder:
     def test_constructor(self):
         decoder = download_mod._GzipDecoder(mock.sentinel.md5_hash)
         assert decoder._checksum is mock.sentinel.md5_hash
@@ -1330,7 +1330,7 @@ class Test_GzipDecoder(object):
         md5_hash.update.assert_called_once_with(data)
 
 
-class Test_BrotliDecoder(object):
+class Test_BrotliDecoder:
     def test_constructor(self):
         decoder = download_mod._BrotliDecoder(mock.sentinel.md5_hash)
         assert decoder._checksum is mock.sentinel.md5_hash

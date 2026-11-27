@@ -15,7 +15,7 @@
 """A Least Recently Used (LRU) cache implementation."""
 
 from collections import OrderedDict
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 K = TypeVar("K")
 V = TypeVar("V")
@@ -39,7 +39,7 @@ class LRUCache(Generic[K, V]):
         """Return the capacity of the cache."""
         return self._capacity
 
-    def get(self, key: K, default: Optional[V] = None) -> Optional[V]:
+    def get(self, key: K, default: V | None = None) -> V | None:
         """Retrieve an item from the cache.
 
         If the key exists, it is moved to the end (marked as most recently used).

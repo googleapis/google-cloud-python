@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
 
 import hashlib
 import http.client
@@ -31,7 +30,7 @@ def test_do_nothing():
     assert ret_val is None
 
 
-class Test_header_required(object):
+class Test_header_required:
     def _success_helper(self, **kwargs):
         name = "some-header"
         value = "The Right Hand Side"
@@ -68,7 +67,7 @@ class Test_header_required(object):
         callback.assert_called_once_with()
 
 
-class Test_require_status_code(object):
+class Test_require_status_code:
     @staticmethod
     def _get_status_code(response):
         return response.status_code
@@ -202,7 +201,7 @@ def test__DoNothingHash():
     assert return_value is None
 
 
-class Test__get_expected_checksum(object):
+class Test__get_expected_checksum:
     @pytest.mark.parametrize("template", ["crc32c={},md5={}", "crc32c={}, md5={}"])
     @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
     @mock.patch("google.cloud.storage._media._helpers._LOGGER")
@@ -250,7 +249,7 @@ class Test__get_expected_checksum(object):
         _LOGGER.info.assert_called_once_with(expected_msg)
 
 
-class Test__parse_checksum_header(object):
+class Test__parse_checksum_header:
     CRC32C_CHECKSUM = "3q2+7w=="
     MD5_CHECKSUM = "c2l4dGVlbmJ5dGVzbG9uZw=="
 
@@ -267,7 +266,7 @@ class Test__parse_checksum_header(object):
         assert crc32c_header is None
 
     def test_crc32c_only(self):
-        header_value = "crc32c={}".format(self.CRC32C_CHECKSUM)
+        header_value = f"crc32c={self.CRC32C_CHECKSUM}"
         response = None
         md5_header = _helpers._parse_checksum_header(
             header_value, response, checksum_label="md5"
@@ -279,7 +278,7 @@ class Test__parse_checksum_header(object):
         assert crc32c_header == self.CRC32C_CHECKSUM
 
     def test_md5_only(self):
-        header_value = "md5={}".format(self.MD5_CHECKSUM)
+        header_value = f"md5={self.MD5_CHECKSUM}"
         response = None
         md5_header = _helpers._parse_checksum_header(
             header_value, response, checksum_label="md5"
@@ -291,9 +290,7 @@ class Test__parse_checksum_header(object):
         assert crc32c_header is None
 
     def test_both_crc32c_and_md5(self):
-        header_value = "crc32c={},md5={}".format(
-            self.CRC32C_CHECKSUM, self.MD5_CHECKSUM
-        )
+        header_value = f"crc32c={self.CRC32C_CHECKSUM},md5={self.MD5_CHECKSUM}"
         response = None
         md5_header = _helpers._parse_checksum_header(
             header_value, response, checksum_label="md5"
@@ -306,7 +303,7 @@ class Test__parse_checksum_header(object):
 
     def test_md5_multiple_matches(self):
         another_checksum = "eW91IGRpZCBXQVQgbm93Pw=="
-        header_value = "md5={},md5={}".format(self.MD5_CHECKSUM, another_checksum)
+        header_value = f"md5={self.MD5_CHECKSUM},md5={another_checksum}"
         response = mock.sentinel.response
 
         with pytest.raises(InvalidResponse) as exc_info:
@@ -321,7 +318,7 @@ class Test__parse_checksum_header(object):
         assert error.args[2] == [self.MD5_CHECKSUM, another_checksum]
 
 
-class Test__parse_generation_header(object):
+class Test__parse_generation_header:
     GENERATION_VALUE = 1641590104888641
 
     def test_empty_value(self):
@@ -337,7 +334,7 @@ class Test__parse_generation_header(object):
         assert generation_header == self.GENERATION_VALUE
 
 
-class Test__is_decompressive_transcoding(object):
+class Test__is_decompressive_transcoding:
     def test_empty_value(self):
         headers = {}
         response = _mock_response(headers=headers)
@@ -362,7 +359,7 @@ class Test__is_decompressive_transcoding(object):
         assert _helpers._is_decompressive_transcoding(response, _get_headers) is False
 
 
-class Test__get_generation_from_url(object):
+class Test__get_generation_from_url:
     GENERATION_VALUE = 1641590104888641
     MEDIA_URL = (
         "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object?alt=media"
@@ -378,7 +375,7 @@ class Test__get_generation_from_url(object):
         assert generation == self.GENERATION_VALUE
 
 
-class Test__add_query_parameters(object):
+class Test__add_query_parameters:
     def test_w_empty_list(self):
         query_params = {}
         MEDIA_URL = "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object"
@@ -388,20 +385,16 @@ class Test__add_query_parameters(object):
     def test_wo_existing_qs(self):
         query_params = {"one": "One", "two": "Two"}
         MEDIA_URL = "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object"
-        expected = "&".join(
-            ["{}={}".format(name, value) for name, value in query_params.items()]
-        )
+        expected = "&".join([f"{name}={value}" for name, value in query_params.items()])
         new_url = _helpers.add_query_parameters(MEDIA_URL, query_params)
-        assert new_url == "{}?{}".format(MEDIA_URL, expected)
+        assert new_url == f"{MEDIA_URL}?{expected}"
 
     def test_w_existing_qs(self):
         query_params = {"one": "One", "two": "Two"}
         MEDIA_URL = "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object?alt=media"
-        expected = "&".join(
-            ["{}={}".format(name, value) for name, value in query_params.items()]
-        )
+        expected = "&".join([f"{name}={value}" for name, value in query_params.items()])
         new_url = _helpers.add_query_parameters(MEDIA_URL, query_params)
-        assert new_url == "{}&{}".format(MEDIA_URL, expected)
+        assert new_url == f"{MEDIA_URL}&{expected}"
 
 
 def test__get_uploaded_checksum_from_headers_error_handling():

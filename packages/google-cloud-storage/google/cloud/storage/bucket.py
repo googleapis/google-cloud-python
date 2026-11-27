@@ -270,7 +270,7 @@ class LifecycleRuleConditions(dict):
         if not _factory and not conditions:
             raise ValueError("Supply at least one condition")
 
-        super(LifecycleRuleConditions, self).__init__(conditions)
+        super().__init__(conditions)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -515,7 +515,7 @@ class IAMConfiguration(dict):
             data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
                 uniform_bucket_level_access_locked_time
             )
-        super(IAMConfiguration, self).__init__(data)
+        super().__init__(data)
         self._bucket = bucket
 
     @classmethod
@@ -679,7 +679,7 @@ class Bucket(_PropertyMixin):
             Get the bucket's name.
         """
         name = _validate_name(name)
-        super(Bucket, self).__init__(name=name)
+        super().__init__(name=name)
         self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
@@ -704,7 +704,7 @@ class Bucket(_PropertyMixin):
         :param value: The properties to be set.
         """
         self._label_removals.clear()
-        return super(Bucket, self)._set_properties(value)
+        return super()._set_properties(value)
 
     @property
     def rpo(self):
@@ -1124,7 +1124,7 @@ class Bucket(_PropertyMixin):
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
         with self._create_trace_span(name="Storage.Bucket.update"):
-            super(Bucket, self).update(
+            super().update(
                 client=client,
                 timeout=timeout,
                 if_metageneration_match=if_metageneration_match,
@@ -1192,7 +1192,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.reload"):
             try:
-                super(Bucket, self).reload(
+                super().reload(
                     client=client,
                     projection=projection,
                     timeout=timeout,
@@ -1271,7 +1271,7 @@ class Bucket(_PropertyMixin):
                     self._properties["labels"][removed_label] = None
 
             # Call the superclass method.
-            super(Bucket, self).patch(
+            super().patch(
                 client=client,
                 if_metageneration_match=if_metageneration_match,
                 if_metageneration_not_match=if_metageneration_not_match,
@@ -1732,10 +1732,10 @@ class Bucket(_PropertyMixin):
                 if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                     message = (
                         "Refusing to delete bucket with more than "
-                        "%d objects. If you actually want to delete "
+                        f"{self._MAX_OBJECTS_FOR_ITERATION:d} objects. If you actually want to delete "
                         "this bucket, please delete the objects "
                         "yourself before calling Bucket.delete()."
-                    ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                    )
                     raise ValueError(message)
 
                 # Ignore 404 errors on delete.
@@ -2414,9 +2414,7 @@ class Bucket(_PropertyMixin):
             )
 
             new_blob = Blob(bucket=self, name=new_name)
-            api_path = "{blob_path}/moveTo/o/{new_name}".format(
-                blob_path=blob.path, new_name=_quote(new_blob.name)
-            )
+            api_path = f"{blob.path}/moveTo/o/{_quote(new_blob.name)}"
 
             move_result = client._post_resource(
                 api_path,
@@ -2771,9 +2769,7 @@ class Bucket(_PropertyMixin):
                 yield LifecycleRuleAbortIncompleteMultipartUpload.from_api_repr(rule)
             else:
                 warnings.warn(
-                    "Unknown lifecycle rule type received: {}. Please upgrade to the latest version of google-cloud-storage.".format(
-                        rule
-                    ),
+                    f"Unknown lifecycle rule type received: {rule}. Please upgrade to the latest version of google-cloud-storage.",
                     UserWarning,
                     stacklevel=1,
                 )
@@ -3610,11 +3606,11 @@ class Bucket(_PropertyMixin):
                 if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                     message = (
                         "Refusing to make public recursively with more than "
-                        "%d objects. If you actually want to make every object "
+                        f"{self._MAX_OBJECTS_FOR_ITERATION:d} objects. If you actually want to make every object "
                         "in this bucket public, iterate through the blobs "
                         "returned by 'Bucket.list_blobs()' and call "
                         "'make_public' on each one."
-                    ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                    )
                     raise ValueError(message)
 
                 for blob in blobs:
@@ -3707,11 +3703,11 @@ class Bucket(_PropertyMixin):
                 if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                     message = (
                         "Refusing to make private recursively with more than "
-                        "%d objects. If you actually want to make every object "
+                        f"{self._MAX_OBJECTS_FOR_ITERATION:d} objects. If you actually want to make every object "
                         "in this bucket private, iterate through the blobs "
                         "returned by 'Bucket.list_blobs()' and call "
                         "'make_private' on each one."
-                    ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                    )
                     raise ValueError(message)
 
                 for blob in blobs:

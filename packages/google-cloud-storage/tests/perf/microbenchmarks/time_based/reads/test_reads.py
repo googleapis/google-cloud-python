@@ -19,7 +19,7 @@ import multiprocessing
 import os
 import random
 import time
-from typing import List, NamedTuple, Optional
+from typing import NamedTuple
 
 import pytest
 
@@ -50,7 +50,7 @@ async def create_client():
     return AsyncGrpcClient()
 
 
-def _aggregate_download_results(results: List[DownloadResult]) -> DownloadResult:
+def _aggregate_download_results(results: list[DownloadResult]) -> DownloadResult:
     if not results:
         raise ValueError("At least one download result is required.")
 
@@ -68,7 +68,7 @@ def _aggregate_download_results(results: List[DownloadResult]) -> DownloadResult
 
 
 def _calculate_average_throughput_mib_s(
-    download_bytes_list: List[int], download_elapsed_times: List[float]
+    download_bytes_list: list[int], download_elapsed_times: list[float]
 ) -> float:
     total_bytes_downloaded = sum(download_bytes_list)
     total_elapsed_time = sum(download_elapsed_times)
@@ -80,8 +80,8 @@ def _calculate_average_throughput_mib_s(
 
 def _build_download_result(
     total_bytes_downloaded: int,
-    measured_start_time: Optional[float],
-    measured_end_time: Optional[float],
+    measured_start_time: float | None,
+    measured_end_time: float | None,
 ) -> DownloadResult:
     if measured_start_time is None or measured_end_time is None:
         raise ValueError("No downloads completed during the measured interval.")

@@ -13,8 +13,7 @@
 # limitations under the License.
 
 import unittest
-
-import mock
+from unittest import mock
 
 from google.cloud.storage._helpers import _NOW, _UTC
 from google.cloud.storage.retry import DEFAULT_RETRY, DEFAULT_RETRY_IF_ETAG_IN_JSON
@@ -439,7 +438,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         )
 
 
-class _Client(object):
+class _Client:
     DEFAULT_PROJECT = "project-123"
 
     def __init__(self, connection=None, project=DEFAULT_PROJECT):

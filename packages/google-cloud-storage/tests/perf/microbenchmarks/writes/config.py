@@ -13,7 +13,6 @@
 # limitations under the License.
 import itertools
 import os
-from typing import Dict, List
 
 import yaml
 
@@ -23,7 +22,7 @@ except ModuleNotFoundError:
     from parameters import WriteParameters
 
 
-def get_write_params() -> Dict[str, List[WriteParameters]]:
+def get_write_params() -> dict[str, list[WriteParameters]]:
     """Generates benchmark parameters from a YAML configuration file.
 
     This function reads the configuration from `config.yaml`, located in the
@@ -36,9 +35,9 @@ def get_write_params() -> Dict[str, List[WriteParameters]]:
         names and values are lists of `WriteParameters` instances for that
         workload.
     """
-    params: Dict[str, List[WriteParameters]] = {}
+    params: dict[str, list[WriteParameters]] = {}
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
-    with open(config_path, "r") as f:
+    with open(config_path) as f:
         config = yaml.safe_load(f)
 
     common_params = config["common"]

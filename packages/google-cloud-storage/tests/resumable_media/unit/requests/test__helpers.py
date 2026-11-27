@@ -20,7 +20,7 @@ from google.cloud.storage._media.requests import _request_helpers
 EXPECTED_TIMEOUT = (61, 60)
 
 
-class TestRequestsMixin(object):
+class TestRequestsMixin:
     def test__get_status_code(self):
         status_code = int(http.client.OK)
         response = _make_response(status_code)
@@ -37,7 +37,7 @@ class TestRequestsMixin(object):
         assert body == _request_helpers.RequestsMixin._get_body(response)
 
 
-class TestRawRequestsMixin(object):
+class TestRawRequestsMixin:
     def test__get_body_wo_content_consumed(self):
         body = b"This is the payload."
         raw = mock.Mock(spec=["stream"])

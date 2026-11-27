@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2017 Google LLC
 #
@@ -22,8 +21,8 @@ import json
 import time
 import unittest
 import urllib.parse
+from unittest import mock
 
-import mock
 import pytest
 
 from google.cloud.storage._helpers import _UTC

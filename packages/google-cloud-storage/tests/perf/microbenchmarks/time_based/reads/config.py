@@ -13,7 +13,6 @@
 # limitations under the License.
 import itertools
 import os
-from typing import Dict, List
 
 import yaml
 
@@ -25,11 +24,11 @@ except ModuleNotFoundError:
     from reads.parameters import TimeBasedReadParameters
 
 
-def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
+def _get_params() -> dict[str, list[TimeBasedReadParameters]]:
     """Generates a dictionary of benchmark parameters for time based read operations."""
-    params: Dict[str, List[TimeBasedReadParameters]] = {}
+    params: dict[str, list[TimeBasedReadParameters]] = {}
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
-    with open(config_path, "r") as f:
+    with open(config_path) as f:
         config = yaml.safe_load(f)
 
     common_params = config["common"]

@@ -57,7 +57,7 @@ class Connection(_http.JSONConnection):
     DEFAULT_API_MTLS_ENDPOINT = "https://storage.mtls.googleapis.com"
 
     def __init__(self, client, client_info=None, api_endpoint=None):
-        super(Connection, self).__init__(client, client_info)
+        super().__init__(client, client_info)
         self.API_BASE_URL = api_endpoint or self.DEFAULT_API_ENDPOINT
         self.API_BASE_MTLS_URL = self.DEFAULT_API_MTLS_ENDPOINT
         self.ALLOW_AUTO_SWITCH_TO_MTLS_URL = api_endpoint is None
@@ -103,7 +103,7 @@ class Connection(_http.JSONConnection):
                 except Exception as e:
                     logger.debug(f"Failed cache.get_or_queue_fetch in api_request: {e}")
 
-        call = functools.partial(super(Connection, self).api_request, *args, **kwargs)
+        call = functools.partial(super().api_request, *args, **kwargs)
         with create_trace_span(
             name="Storage.Connection.api_request",
             attributes=span_attributes,

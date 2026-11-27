@@ -76,8 +76,8 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
         response = tr_requests.AuthorizedSession.request(
             self, method, url, data=data, headers=headers, **kwargs
         )
-        response.headers[_helpers._HASH_HEADER] = "crc32c={},md5={}".format(
-            self.EMPTY_CRC32C, self.EMPTY_MD5
+        response.headers[_helpers._HASH_HEADER] = (
+            f"crc32c={self.EMPTY_CRC32C},md5={self.EMPTY_MD5}"
         )
         return response
 
@@ -258,7 +258,7 @@ def check_error_response(exc_info, status_code, message):
     assert error.args[4] == http.client.PARTIAL_CONTENT
 
 
-class TestDownload(object):
+class TestDownload:
     @staticmethod
     def _get_target_class():
         return resumable_requests.Download
@@ -559,7 +559,7 @@ def consume_chunks(download, authorized_transport, total_bytes, actual_contents)
     return num_responses, response
 
 
-class TestChunkedDownload(object):
+class TestChunkedDownload:
     @staticmethod
     def _get_target_class():
         return resumable_requests.ChunkedDownload

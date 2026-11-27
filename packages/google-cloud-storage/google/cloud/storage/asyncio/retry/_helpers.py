@@ -15,7 +15,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional, Tuple
 
 from google.api_core import exceptions
 from google.rpc import status_pb2
@@ -36,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 def _handle_redirect(
     exc: Exception,
-) -> Tuple[Optional[str], Optional[bytes]]:
+) -> tuple[str | None, bytes | None]:
     """
     Extracts routing token and read handle from a gRPC error.
 

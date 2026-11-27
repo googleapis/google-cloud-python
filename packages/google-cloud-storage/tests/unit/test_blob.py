@@ -21,10 +21,10 @@ import json
 import os
 import tempfile
 import unittest
+from unittest import mock
 from unittest.mock import patch
 from urllib.parse import urlencode
 
-import mock
 import pytest
 from google.cloud.exceptions import NotFound
 
@@ -554,8 +554,8 @@ class Test_Blob(unittest.TestCase):
         quoted_name = parse.quote(encoded_name, safe=b"/~")
 
         if virtual_hosted_style:
-            expected_api_access_endpoint = "https://{}.storage.googleapis.com".format(
-                bucket.name
+            expected_api_access_endpoint = (
+                f"https://{bucket.name}.storage.googleapis.com"
             )
         elif bucket_bound_hostname:
             expected_api_access_endpoint = _bucket_bound_hostname_url(
@@ -1105,7 +1105,7 @@ class Test_Blob(unittest.TestCase):
         download_url = blob._get_download_url(client)
         expected_url = (
             "https://storage.googleapis.com/download/storage/v1/b/"
-            "fictional/o/pretend.txt?alt=media&userProject={}".format(user_project)
+            f"fictional/o/pretend.txt?alt=media&userProject={user_project}"
         )
         self.assertEqual(download_url, expected_url)
 
@@ -5194,12 +5194,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, bytes_rewritten)
         self.assertEqual(size, object_size)
 
-        expected_path = "/b/%s/o/%s/rewriteTo/b/%s/o/%s" % (
-            source_bucket.name,
-            source_name,
-            other_bucket_name,
-            dest_name,
-        )
+        expected_path = f"/b/{source_bucket.name}/o/{source_name}/rewriteTo/b/{other_bucket_name}/o/{dest_name}"
         expected_data = {}
         expected_query_params = {}
         expected_headers = {}
@@ -5246,12 +5241,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, bytes_rewritten)
         self.assertEqual(size, object_size)
 
-        expected_path = "/b/%s/o/%s/rewriteTo/b/%s/o/%s" % (
-            source_bucket.name,
-            source_name,
-            other_bucket_name,
-            dest_name,
-        )
+        expected_path = f"/b/{source_bucket.name}/o/{source_name}/rewriteTo/b/{other_bucket_name}/o/{dest_name}"
         expected_data = {"generation": dest_generation}
         expected_query_params = {"sourceGeneration": source_generation}
         expected_headers = {}
@@ -5303,12 +5293,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, bytes_rewritten)
         self.assertEqual(size, object_size)
 
-        expected_path = "/b/%s/o/%s/rewriteTo/b/%s/o/%s" % (
-            source_bucket.name,
-            source_name,
-            other_bucket_name,
-            dest_name,
-        )
+        expected_path = f"/b/{source_bucket.name}/o/{source_name}/rewriteTo/b/{other_bucket_name}/o/{dest_name}"
         expected_data = {"generation": dest_generation}
         expected_query_params = {
             "ifSourceGenerationMatch": source_generation,
@@ -5352,10 +5337,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, bytes_rewritten)
         self.assertEqual(size, object_size)
 
-        expected_path = "/b/name/o/%s/rewriteTo/b/%s/o/%s" % (
-            source_name,
-            other_bucket_name,
-            dest_name,
+        expected_path = (
+            f"/b/name/o/{source_name}/rewriteTo/b/{other_bucket_name}/o/{dest_name}"
         )
         expected_query_params = {}
         expected_data = {}
@@ -6788,14 +6771,14 @@ class Test__add_query_parameters(unittest.TestCase):
         self.assertEqual(self._call_fut(BASE_URL, NV_LIST), f"{BASE_URL}&{expected}")
 
 
-class _Connection(object):
+class _Connection:
     API_BASE_URL = "http://example.com"
     USER_AGENT = "testing 1.2.3"
     user_agent = "testing 1.2.3"
     credentials = object()
 
 
-class _Bucket(object):
+class _Bucket:
     def __init__(self, client=None, name="name", user_project=None):
         if client is None:
             client = Test_Blob._make_client()

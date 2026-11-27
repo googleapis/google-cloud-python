@@ -31,16 +31,14 @@ def ensure_bucket(transport):
         )
 
         if not post_response.ok:
-            raise ValueError(
-                "{}: {}".format(post_response.status_code, post_response.reason)
-            )
+            raise ValueError(f"{post_response.status_code}: {post_response.reason}")
 
 
 def cleanup_bucket(transport):
     del_response = utils.retry_transient_errors(transport.delete)(utils.BUCKET_URL)
 
     if not del_response.ok:
-        raise ValueError("{}: {}".format(del_response.status_code, del_response.reason))
+        raise ValueError(f"{del_response.status_code}: {del_response.reason}")
 
 
 @pytest.fixture(scope="session")

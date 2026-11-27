@@ -22,7 +22,6 @@ import datetime
 import logging
 import os
 import secrets
-import sys
 from contextlib import contextmanager
 from hashlib import md5
 from urllib.parse import urlsplit, urlunsplit
@@ -206,7 +205,7 @@ def create_trace_span_helper(client, bucket_name, name, attributes=None, **kwarg
             raise
 
 
-class _PropertyMixin(object):
+class _PropertyMixin:
     """Abstract mixin for cloud storage classes with associated properties.
 
     Non-abstract subclasses should implement:
@@ -640,10 +639,7 @@ def _base64_md5hash(buffer_object):
     :rtype: str
     :returns: A base64 encoded digest of the MD5 hash.
     """
-    if sys.version_info >= (3, 9):
-        hash_obj = md5(usedforsecurity=False)
-    else:
-        hash_obj = md5()
+    hash_obj = md5(usedforsecurity=False)
     _write_buffer_to_hash(buffer_object, hash_obj)
     digest_bytes = hash_obj.digest()
     return base64.b64encode(digest_bytes)

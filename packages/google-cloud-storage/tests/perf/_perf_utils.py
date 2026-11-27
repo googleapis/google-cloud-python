@@ -148,8 +148,8 @@ def convert_to_cloud_monitoring(bucket_name, results, workers):
                 + "library=python-storage,"
                 + "api={},".format(res.get("ApiName"))
                 + "op={},".format(res.get("Op"))
-                + "workers={},".format(workers)
-                + "object_size={},".format(object_size)
+                + f"workers={workers},"
+                + f"object_size={object_size},"
                 + "transfer_offset={},".format(res.get("TransferOffset", 0))
                 + "transfer_size={},".format(res.get("TransferSize", object_size))
                 + "app_buffer_size={},".format(res.get("AppBufferSize"))

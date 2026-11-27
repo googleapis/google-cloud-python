@@ -1,5 +1,3 @@
-# coding=utf-8
-
 # Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +15,8 @@
 import io
 import string
 import unittest
+from unittest import mock
 
-import mock
 from google.api_core.exceptions import RequestRangeNotSatisfiable
 
 from google.cloud.storage.fileio import CHUNK_SIZE_MULTIPLE
