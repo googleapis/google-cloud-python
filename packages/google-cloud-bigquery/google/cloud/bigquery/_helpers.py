@@ -15,27 +15,32 @@
 """Shared helper functions for BigQuery API classes."""
 
 import base64
+import copy
 import datetime
 import decimal
 import json
 import math
-import re
 import os
+import re
 import textwrap
 import warnings
+from collections.abc import Mapping
 from typing import Any, Optional, Tuple, Type, Union
 
 from dateutil import relativedelta
-from google.cloud._helpers import UTC  # type: ignore
-from google.cloud._helpers import _date_from_iso8601_date
-from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _RFC3339_MICROS
-from google.cloud._helpers import _RFC3339_NO_FRACTION
-from google.cloud._helpers import _to_bytes
-from google.cloud.bigquery import enums
-
-from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import client_options as client_options_lib
+from google.api_core.universe import UniverseMismatchError
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud._helpers import (
+    _RFC3339_MICROS,
+    _RFC3339_NO_FRACTION,
+    UTC,  # type: ignore
+    _date_from_iso8601_date,
+    _datetime_from_microseconds,
+    _to_bytes,
+)
+
+from google.cloud.bigquery import enums
 
 TimeoutType = Union[float, None]
 
@@ -77,7 +82,7 @@ _SUPPORTED_RANGE_ELEMENTS = {"TIMESTAMP", "DATETIME", "DATE"}
 
 
 def _get_client_universe(
-    client_options: Optional[Union[client_options_lib.ClientOptions, dict]]
+    client_options: client_options_lib.ClientOptions | Mapping[str, Any] | None,
 ) -> str:
     """Retrieves the specified universe setting.
 
@@ -87,7 +92,7 @@ def _get_client_universe(
         str: resolved universe setting.
 
     """
-    if isinstance(client_options, dict):
+    if isinstance(client_options, Mapping):
         client_options = client_options_lib.from_dict(client_options)
     universe = _DEFAULT_UNIVERSE
     options_universe = getattr(client_options, "universe_domain", None)
@@ -104,27 +109,63 @@ def _get_client_universe(
     return universe
 
 
-def _validate_universe(client_universe: str, credentials: ga_credentials.Credentials):
+def _validate_universe(
+    client_universe: str, credentials: ga_credentials.Credentials | None
+) -> None:
     """Validates that client provided universe and universe embedded in credentials match.
 
     Args:
         client_universe (str): The universe domain configured via the client options.
-        credentials (ga_credentials.Credentials): The credentials being used in the client.
+        credentials (ga_credentials.Credentials | None): The credentials being
+            used in the client. Validation is skipped when ``None`` or
+            ``AnonymousCredentials``.
 
     Raises:
-        ValueError: when client_universe does not match the universe in credentials.
+        google.api_core.universe.UniverseMismatchError: (subclass of ``ValueError``)
+            when ``client_universe`` does not match the universe in ``credentials``.
     """
-    if hasattr(credentials, "universe_domain"):
-        cred_universe = getattr(credentials, "universe_domain")
-        if isinstance(cred_universe, str):
-            if client_universe != cred_universe:
-                raise ValueError(
-                    "The configured universe domain "
-                    f"({client_universe}) does not match the universe domain "
-                    f"found in the credentials ({cred_universe}). "
-                    "If you haven't configured the universe domain explicitly, "
-                    f"`{_DEFAULT_UNIVERSE}` is the default."
-                )
+    if credentials is None or isinstance(
+        credentials, ga_credentials.AnonymousCredentials
+    ):
+        return
+    cred_universe = getattr(credentials, "universe_domain", None)
+    if isinstance(cred_universe, str) and client_universe != cred_universe:
+        raise UniverseMismatchError(client_universe, cred_universe)
+
+
+# TODO(universe-domain): Replace with google.api_core.universe.inherit_universe_in_client_options
+# once minimum allowed google-api-core version exceeds 2.44.0.
+def _inherit_universe_in_client_options(
+    parent_universe: str,
+    client_options: client_options_lib.ClientOptions | Mapping[str, Any] | None = None,
+) -> client_options_lib.ClientOptions | None:
+    """Inherit parent universe domain when child client_options leaves it unset.
+
+    Caller-supplied mappings and ``ClientOptions`` instances are not mutated.
+    """
+    should_inherit = (
+        parent_universe != _DEFAULT_UNIVERSE
+        or _get_client_universe(None) != parent_universe
+    )
+    if client_options is None:
+        if should_inherit:
+            return client_options_lib.ClientOptions(universe_domain=parent_universe)
+        return None
+    if isinstance(client_options, Mapping):
+        opts = client_options_lib.from_dict(client_options)
+        if not opts.universe_domain and (should_inherit or opts.universe_domain == ""):
+            opts.universe_domain = parent_universe
+        return opts
+    if isinstance(client_options, client_options_lib.ClientOptions):
+        if not client_options.universe_domain and (
+            should_inherit or client_options.universe_domain == ""
+        ):
+            opts = copy.copy(client_options)
+            opts.universe_domain = parent_universe
+            return opts
+        return client_options
+    # Preserve non-ClientOptions objects (such as unittest.mock sentinels in caller tests).
+    return client_options
 
 
 def _get_bigquery_host():
@@ -648,7 +689,7 @@ def _range_field_to_json(range_element_type, value):
         end = value.get("end")
     else:
         raise ValueError(
-            f"Unsupported type of RANGE value {value}, must be " "string or dict"
+            f"Unsupported type of RANGE value {value}, must be string or dict"
         )
 
     start = _range_element_to_json(start, range_element_type)

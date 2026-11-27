@@ -49,11 +49,9 @@ import google.api_core.client_options
 import google.api_core.exceptions as core_exceptions
 import google.cloud._helpers  # type: ignore
 import requests
-from google import resumable_media  # type: ignore
 from google.api_core import page_iterator
 from google.api_core import retry as retries
 from google.api_core.iam import Policy
-from google.cloud import exceptions  # pytype: disable=import-error
 from google.cloud.client import (
     ClientWithProject,  # type: ignore  # pytype: disable=import-error
 )
@@ -61,6 +59,9 @@ from google.resumable_media.requests import (
     MultipartUpload,  # type: ignore
     ResumableUpload,
 )
+
+from google import resumable_media  # type: ignore
+from google.cloud import exceptions  # pytype: disable=import-error
 
 try:
     from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
@@ -71,6 +72,7 @@ except ImportError:
 
 
 from google.auth.credentials import Credentials
+
 from google.cloud.bigquery import (
     _job_helpers,
     _pandas_helpers,
@@ -90,6 +92,7 @@ from google.cloud.bigquery._helpers import (
     _get_bigquery_host,
     _get_client_universe,
     _get_sub_prop,
+    _inherit_universe_in_client_options,
     _record_field_to_json,
     _str_or_none,
     _validate_universe,
@@ -133,9 +136,9 @@ from google.cloud.bigquery.table import (
 )
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
-pandas = (
-    _versions_helpers.PANDAS_VERSIONS.try_import()
-)  # mypy check fails because pandas import is outside module, there are type: ignore comments related to this
+# mypy check fails because pandas import is outside module; related
+# `type: ignore` comments appear below.
+pandas = _versions_helpers.PANDAS_VERSIONS.try_import()
 
 
 ResumableTimeoutType = Union[
@@ -143,6 +146,9 @@ ResumableTimeoutType = Union[
 ]  # for resumable media methods
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
+    import google.api_core.gapic_v1.client_info
+    import google.cloud.bigquery_storage
+
     PathType = Union[str, bytes, os.PathLike[str], os.PathLike[bytes], io.IOBase]
 _DEFAULT_CHUNKSIZE = 100 * 1024 * 1024  # 100 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
@@ -295,13 +301,13 @@ class Client(ClientWithProject):
         default_load_job_config: Optional[LoadJobConfig] = None,
         client_info: Optional[google.api_core.client_info.ClientInfo] = None,
         client_options: Optional[
-            Union[google.api_core.client_options.ClientOptions, Dict[str, Any]]
+            Union[google.api_core.client_options.ClientOptions, Mapping[str, Any]]
         ] = None,
         default_job_creation_mode: Optional[str] = None,
     ) -> None:
         if client_options is None:
             client_options = {}
-        if isinstance(client_options, dict):
+        if isinstance(client_options, Mapping):
             client_options = google.api_core.client_options.from_dict(client_options)
         # assert isinstance(client_options, google.api_core.client_options.ClientOptions)
 
@@ -314,23 +320,26 @@ class Client(ClientWithProject):
 
         kw_args: Dict[str, Any] = {"client_info": client_info}
         bq_host = _get_bigquery_host()
-        kw_args["api_endpoint"] = bq_host if bq_host != _DEFAULT_HOST else None
-        client_universe = None
+        has_emulator_endpoint = bool(bq_host) and bq_host.rstrip("/") != _DEFAULT_HOST
+        kw_args["api_endpoint"] = bq_host if has_emulator_endpoint else None
+        client_universe = _get_client_universe(client_options)
+        default_universe_endpoint = _DEFAULT_HOST_TEMPLATE.replace(
+            "{UNIVERSE_DOMAIN}", client_universe
+        )
         if client_options.api_endpoint:
-            api_endpoint = client_options.api_endpoint
-            kw_args["api_endpoint"] = api_endpoint
-        else:
-            client_universe = _get_client_universe(client_options)
-            if client_universe != _DEFAULT_UNIVERSE:
-                kw_args["api_endpoint"] = _DEFAULT_HOST_TEMPLATE.replace(
-                    "{UNIVERSE_DOMAIN}", client_universe
-                )
-        # Ensure credentials and universe are not in conflict.
-        if hasattr(self, "_credentials") and client_universe is not None:
-            _validate_universe(client_universe, self._credentials)
+            kw_args["api_endpoint"] = client_options.api_endpoint
+        elif not has_emulator_endpoint and client_universe != _DEFAULT_UNIVERSE:
+            kw_args["api_endpoint"] = default_universe_endpoint
+        # Ensure credentials and universe are not in conflict, even when
+        # client_options.api_endpoint is set.
+        _validate_universe(client_universe, getattr(self, "_credentials", None))
 
         self._connection = Connection(self, **kw_args)
-        self._universe_domain = _get_client_universe(client_options)
+        self._universe_domain = client_universe
+        effective_base_url = self._connection.API_BASE_URL or _DEFAULT_HOST
+        self._has_custom_api_endpoint = (
+            effective_base_url.rstrip("/") != default_universe_endpoint
+        )
         self._location = location
         self._default_load_job_config = copy.deepcopy(default_load_job_config)
         self.default_job_creation_mode = default_job_creation_mode
@@ -349,6 +358,11 @@ class Client(ClientWithProject):
     def location(self):
         """Default location for jobs / datasets / tables."""
         return self._location
+
+    @property
+    def universe_domain(self) -> str:
+        """The universe domain used by the client instance."""
+        return self._universe_domain
 
     @property
     def default_job_creation_mode(self):
@@ -643,15 +657,15 @@ class Client(ClientWithProject):
 
     def _ensure_bqstorage_client(
         self,
-        bqstorage_client: Optional[
-            "google.cloud.bigquery_storage.BigQueryReadClient"
-        ] = None,
-        client_options: Optional[google.api_core.client_options.ClientOptions] = None,
-        client_info: Optional[
-            "google.api_core.gapic_v1.client_info.ClientInfo"
-        ] = DEFAULT_BQSTORAGE_CLIENT_INFO,
-        transport: Optional[Callable[..., Any]] = None,
-    ) -> Optional["google.cloud.bigquery_storage.BigQueryReadClient"]:
+        bqstorage_client: google.cloud.bigquery_storage.BigQueryReadClient
+        | None = None,
+        client_options: google.api_core.client_options.ClientOptions
+        | Mapping[str, Any]
+        | None = None,
+        client_info: google.api_core.gapic_v1.client_info.ClientInfo
+        | None = DEFAULT_BQSTORAGE_CLIENT_INFO,
+        transport: Callable[..., Any] | None = None,
+    ) -> google.cloud.bigquery_storage.BigQueryReadClient | None:
         """Create a BigQuery Storage API client using this client's credentials.
 
         Args:
@@ -660,8 +674,8 @@ class Client(ClientWithProject):
                 instance is created and returned.
             client_options:
                 Custom options used with a new BigQuery Storage client instance
-                if one is created. If ``None``, the new client uses this
-                client's universe domain.
+                if one is created. If ``None`` or its ``universe_domain`` is
+                unset, the new client inherits this client's universe domain.
             client_info:
                 The client info used with a new BigQuery Storage client
                 instance if one is created.
@@ -670,7 +684,10 @@ class Client(ClientWithProject):
                 client instance. If ``None``, the default transport is used.
 
         Returns:
-            A BigQuery Storage API client.
+            A BigQuery Storage API client, or ``None`` if
+            ``google-cloud-bigquery-storage`` is missing/outdated or if a
+            custom BigQuery endpoint is configured without an explicit
+            BigQuery Storage ``api_endpoint``.
         """
 
         try:
@@ -731,10 +748,24 @@ class Client(ClientWithProject):
             )
 
         if bqstorage_client is None:
-            if client_options is None and self._universe_domain != _DEFAULT_UNIVERSE:
-                # Without this, the BigQuery Storage client uses googleapis.com.
-                client_options = google.api_core.client_options.ClientOptions(
-                    universe_domain=self._universe_domain
+            client_options = _inherit_universe_in_client_options(
+                self._universe_domain, client_options
+            )
+            if self._has_custom_api_endpoint and not getattr(
+                client_options, "api_endpoint", None
+            ):
+                warnings.warn(
+                    "Cannot create a BigQuery Storage client when a custom BigQuery "
+                    "api_endpoint or BIGQUERY_EMULATOR_HOST is configured without an "
+                    "explicit BigQuery Storage api_endpoint (or matching "
+                    "universe_domain on Client); falling back to REST.",
+                    UserWarning,
+                    stacklevel=2,
+                )
+                return None
+            if isinstance(client_options, google.api_core.client_options.ClientOptions):
+                _validate_universe(
+                    _get_client_universe(client_options), self._credentials
                 )
             bqstorage_client = bigquery_storage.BigQueryReadClient(
                 credentials=self._credentials,
@@ -758,7 +789,8 @@ class Client(ClientWithProject):
 
         Returns:
             A BigQuery Storage API client, or ``None`` if
-            google-cloud-bigquery-storage is missing or outdated.
+            ``google-cloud-bigquery-storage`` is missing/outdated or cannot be
+            configured for a custom BigQuery endpoint.
         """
         with self._shared_bqstorage_client_lock:
             if self._shared_bqstorage_client is None:
