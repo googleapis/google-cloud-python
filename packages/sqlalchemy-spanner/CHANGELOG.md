@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/sqlalchemy-spanner/#history
 
+## [1.21.1](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.21.0...sqlalchemy-spanner-v1.21.1) (2026-11-27)
+
+
+### Bug Fixes
+
+* **sqlalchemy-spanner:** fix ReDoS in JSON path key escaping ([#19239](https://github.com/googleapis/google-cloud-python/issues/19239)) ([6dde694](https://github.com/googleapis/google-cloud-python/commit/6dde694c49763daeb9c586f4b638de3a2ec77130))
+* **sqlalchemy-spanner:** parameterize information_schema reflection queries ([#19236](https://github.com/googleapis/google-cloud-python/issues/19236)) ([9df7e1d](https://github.com/googleapis/google-cloud-python/commit/9df7e1dfd82a70420ea87bd50c246e8851806d6b))
+* **sqlalchemy-spanner:** properly escape identifiers ([#19210](https://github.com/googleapis/google-cloud-python/issues/19210)) ([49dddee](https://github.com/googleapis/google-cloud-python/commit/49dddeea15f6be1ac3e427bbc381b069d562170e))
+* **sqlalchemy-spanner:** quote DDL identifiers in CREATE TABLE ([#19238](https://github.com/googleapis/google-cloud-python/issues/19238)) ([78f6e5a](https://github.com/googleapis/google-cloud-python/commit/78f6e5a8ec153b31595db8eb8cd7345ad28d6562))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.20.1...sqlalchemy-spanner-v1.21.0) (2026-11-12)
 
 
