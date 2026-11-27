@@ -38,6 +38,19 @@ if TYPE_CHECKING:  # pragma: NO COVER
 
 DEFAULT_UNIVERSE_DOMAIN = _helpers.DEFAULT_UNIVERSE_DOMAIN
 
+
+def _get_explicit_universe_domain(creds):
+    """Returns the explicitly configured universe domain from creds, or None."""
+    # Read public universe_domain first so lazy credentials (such as Compute
+    # Engine) resolve metadata before we inspect _universe_domain.
+    universe_domain = getattr(creds, "universe_domain", DEFAULT_UNIVERSE_DOMAIN)
+    if universe_domain and universe_domain != DEFAULT_UNIVERSE_DOMAIN:
+        return universe_domain
+    if isinstance(creds, Credentials):
+        return getattr(creds, "_universe_domain", None)
+    return None
+
+
 # These constants are deprecated and no longer used.
 # They are kept solely for backward compatibility with older implementations.
 NO_OP_TRUST_BOUNDARY_LOCATIONS: List[str] = []
@@ -77,8 +90,9 @@ class Credentials(_BaseCredentials):
         """Optional[dict]: Cache of a trust boundary response which has a list
         of allowed regions and an encoded string representation of credentials
         trust boundary."""
-        self._universe_domain = DEFAULT_UNIVERSE_DOMAIN
-        """Optional[str]: The universe domain value, default is googleapis.com
+        self._universe_domain = None
+        """Optional[str]: The explicitly configured universe domain, or None
+        if omitted.
         """
 
         self._use_non_blocking_refresh = False
@@ -144,7 +158,7 @@ class Credentials(_BaseCredentials):
     @property
     def universe_domain(self):
         """The universe domain value."""
-        return self._universe_domain
+        return getattr(self, "_universe_domain", None) or DEFAULT_UNIVERSE_DOMAIN
 
     def get_cred_info(self):
         """The credential information JSON.
@@ -503,8 +517,13 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
             return False
 
-        # Skip for non-default universe domains.
+        # Skip unless the universe domain is explicitly confirmed to be
+        # googleapis.com. Checking self.universe_domain first lets lazy
+        # subclasses (such as Compute Engine) resolve metadata before we
+        # inspect _universe_domain.
         if self.universe_domain != DEFAULT_UNIVERSE_DOMAIN:
+            return False
+        if getattr(self, "_universe_domain", None) != DEFAULT_UNIVERSE_DOMAIN:
             return False
 
         return True

@@ -94,7 +94,7 @@ class Credentials(
         revoke_url=None,
         scopes=None,
         quota_project_id=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=None,
         trust_boundary=None,
     ):
         """Instantiates a external account authorized user credentials object.
@@ -140,7 +140,7 @@ class Credentials(
         self._revoke_url = revoke_url
         self._quota_project_id = quota_project_id
         self._scopes = scopes
-        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain = universe_domain or None
         self._cred_file_path = None
         self._trust_boundary = trust_boundary
 
@@ -439,9 +439,7 @@ class Credentials(
             revoke_url=info.get("revoke_url"),
             quota_project_id=info.get("quota_project_id"),
             scopes=info.get("scopes"),
-            universe_domain=info.get(
-                "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
-            ),
+            universe_domain=info.get("universe_domain"),
             trust_boundary=info.get("trust_boundary"),
             **kwargs,
         )

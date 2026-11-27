@@ -963,7 +963,10 @@ class TestCredentials(object):
             "true",
         )
         monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
-        self.credentials._set_blocking_regional_access_boundary_lookup()
+        creds = self.credentials.with_universe_domain(
+            auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        creds._set_blocking_regional_access_boundary_lookup()
 
         response = mock.create_autospec(transport.Response, instance=True)
         response.status = http_client.OK
@@ -975,7 +978,7 @@ class TestCredentials(object):
         )
 
         headers = {}
-        self.credentials.before_request(
+        creds.before_request(
             request,
             "GET",
             "https://pubsub.googleapis.com/v1/projects/p/topics",
@@ -985,6 +988,62 @@ class TestCredentials(object):
         assert "authorization" in headers
         assert headers["x-allowed-locations"] == "0xA30"
         request.assert_called_once()
+
+    def test_before_request_omitted_universe_skips_rab_lookup(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        self.credentials._set_blocking_regional_access_boundary_lookup()
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        headers = {}
+        self.credentials.before_request(
+            request,
+            "GET",
+            "https://pubsub.googleapis.com/v1/projects/p/topics",
+            headers,
+        )
+
+        assert "authorization" in headers
+        assert "x-allowed-locations" not in headers
+        request.assert_not_called()
+        assert (
+            self.credentials.with_claims(
+                audience="https://other.googleapis.com/"
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
+        assert (
+            self.credentials.with_quota_project(
+                "project-id"
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
+
+    def test_from_signing_credentials_preserves_explicit_universe_for_rab(
+        self, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        info = SERVICE_ACCOUNT_INFO.copy()
+        info.pop("universe_domain", None)
+        omitted_sa = service_account.Credentials.from_service_account_info(info)
+        omitted_jwt = jwt.Credentials.from_signing_credentials(
+            omitted_sa, "https://pubsub.googleapis.com/"
+        )
+        assert omitted_jwt.universe_domain == auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        assert omitted_jwt._is_regional_access_boundary_lookup_required() is False
+
+        explicit_sa = omitted_sa.with_universe_domain(
+            auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        explicit_jwt = jwt.Credentials.from_signing_credentials(
+            explicit_sa, "https://pubsub.googleapis.com/"
+        )
+        assert explicit_jwt._is_regional_access_boundary_lookup_required() is True
 
     def test_impersonated_credentials_with_non_default_jwt_source(
         self, signer, monkeypatch

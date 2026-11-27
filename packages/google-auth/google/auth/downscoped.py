@@ -439,7 +439,7 @@ class Credentials(credentials.CredentialsWithQuotaProject):
         source_credentials,
         credential_access_boundary,
         quota_project_id=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=None,
     ):
         """Instantiates a downscoped credentials object using the provided source
         credentials and credential access boundary rules.
@@ -470,7 +470,7 @@ class Credentials(credentials.CredentialsWithQuotaProject):
         self._source_credentials = source_credentials
         self._credential_access_boundary = credential_access_boundary
         self._quota_project_id = quota_project_id
-        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain = universe_domain or None
         self._sts_client = sts.Client(
             _STS_TOKEN_URL_PATTERN.format(self.universe_domain)
         )

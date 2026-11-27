@@ -336,7 +336,10 @@ class TestCredentials(object):
             "true",
         )
         monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
-        self.credentials._set_blocking_regional_access_boundary_lookup()
+        creds = self.credentials.with_universe_domain(
+            auth_credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        creds._set_blocking_regional_access_boundary_lookup()
 
         response = mock.AsyncMock(spec=aio_transport.Response)
         response.status_code = http_client.OK
@@ -348,7 +351,7 @@ class TestCredentials(object):
         request = mock.AsyncMock(spec=aio_transport.Request, return_value=response)
 
         headers = {}
-        await self.credentials.before_request(
+        await creds.before_request(
             request,
             "GET",
             "https://pubsub.googleapis.com/v1/projects/p/topics",

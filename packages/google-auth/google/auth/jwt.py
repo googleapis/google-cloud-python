@@ -394,7 +394,7 @@ class Credentials(
         additional_claims=None,
         token_lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
         quota_project_id=None,
-        universe_domain=google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=None,
     ):
         """
         Args:
@@ -419,9 +419,7 @@ class Credentials(
         self._audience = audience
         self._token_lifetime = token_lifetime
         self._quota_project_id = quota_project_id
-        self._universe_domain = (
-            universe_domain or google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
-        )
+        self._universe_domain = universe_domain or None
 
         if additional_claims is None:
             additional_claims = {}
@@ -447,9 +445,7 @@ class Credentials(
         kwargs.setdefault("subject", info["client_email"])
         kwargs.setdefault("issuer", info["client_email"])
         if not kwargs.get("universe_domain"):
-            kwargs["universe_domain"] = info.get(
-                "universe_domain", google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
-            )
+            kwargs["universe_domain"] = info.get("universe_domain")
         return cls(signer, **kwargs)
 
     @classmethod
@@ -518,10 +514,8 @@ class Credentials(
         kwargs.setdefault("issuer", credentials.signer_email)
         kwargs.setdefault("subject", credentials.signer_email)
         if not kwargs.get("universe_domain"):
-            kwargs["universe_domain"] = getattr(
-                credentials,
-                "universe_domain",
-                google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
+            kwargs["universe_domain"] = (
+                google.auth.credentials._get_explicit_universe_domain(credentials)
             )
         jwt_creds = cls(credentials.signer, audience=audience, **kwargs)
 
@@ -716,7 +710,7 @@ class OnDemandCredentials(
         token_lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
         max_cache_size=_DEFAULT_MAX_CACHE_SIZE,
         quota_project_id=None,
-        universe_domain=google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=None,
     ):
         """
         Args:
@@ -741,9 +735,7 @@ class OnDemandCredentials(
         self._subject = subject
         self._token_lifetime = token_lifetime
         self._quota_project_id = quota_project_id
-        self._universe_domain = (
-            universe_domain or google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
-        )
+        self._universe_domain = universe_domain or None
 
         if additional_claims is None:
             additional_claims = {}
@@ -770,9 +762,7 @@ class OnDemandCredentials(
         kwargs.setdefault("subject", info["client_email"])
         kwargs.setdefault("issuer", info["client_email"])
         if not kwargs.get("universe_domain"):
-            kwargs["universe_domain"] = info.get(
-                "universe_domain", google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
-            )
+            kwargs["universe_domain"] = info.get("universe_domain")
         return cls(signer, **kwargs)
 
     @classmethod
@@ -837,10 +827,8 @@ class OnDemandCredentials(
         kwargs.setdefault("issuer", credentials.signer_email)
         kwargs.setdefault("subject", credentials.signer_email)
         if not kwargs.get("universe_domain"):
-            kwargs["universe_domain"] = getattr(
-                credentials,
-                "universe_domain",
-                google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN,
+            kwargs["universe_domain"] = (
+                google.auth.credentials._get_explicit_universe_domain(credentials)
             )
         return cls(credentials.signer, **kwargs)
 

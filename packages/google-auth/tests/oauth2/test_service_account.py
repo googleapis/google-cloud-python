@@ -19,7 +19,15 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, crypt, exceptions, iam, jwt, transport
+from google.auth import (
+    _helpers,
+    crypt,
+    environment_vars,
+    exceptions,
+    iam,
+    jwt,
+    transport,
+)
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.oauth2 import service_account
 
@@ -104,7 +112,8 @@ class TestCredentials(object):
         assert credentials._signer.key_id == SERVICE_ACCOUNT_INFO["private_key_id"]
         assert credentials.service_account_email == SERVICE_ACCOUNT_INFO["client_email"]
         assert credentials._token_uri == SERVICE_ACCOUNT_INFO["token_uri"]
-        assert credentials._universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert credentials._universe_domain is None
         assert not credentials._always_use_jwt_access
 
     def test_from_service_account_info_non_gdu(self):
@@ -287,6 +296,39 @@ class TestCredentials(object):
     def test_build_regional_access_boundary_lookup_url_with_subject(self):
         credentials = self.make_credentials().with_subject("user@example.com")
         assert credentials._build_regional_access_boundary_lookup_url() is None
+
+    def test_rab_lookup_requires_explicit_default_universe_domain(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        info_without_universe = SERVICE_ACCOUNT_INFO.copy()
+        info_without_universe.pop("universe_domain", None)
+        omitted_creds = service_account.Credentials.from_service_account_info(
+            info_without_universe
+        )
+
+        assert omitted_creds.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert omitted_creds._is_regional_access_boundary_lookup_required() is False
+        assert (
+            omitted_creds.with_scopes(
+                ["email"]
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
+        assert (
+            omitted_creds.with_quota_project(
+                "p"
+            )._is_regional_access_boundary_lookup_required()
+            is False
+        )
+
+        info_with_universe = info_without_universe.copy()
+        info_with_universe["universe_domain"] = DEFAULT_UNIVERSE_DOMAIN
+        explicit_creds = service_account.Credentials.from_service_account_info(
+            info_with_universe
+        )
+        assert explicit_creds._is_regional_access_boundary_lookup_required() is True
 
     def test_with_token_uri(self):
         credentials = self.make_credentials()
@@ -701,7 +743,8 @@ class TestIDTokenCredentials(object):
             self.TARGET_AUDIENCE,
             universe_domain=None,
         )
-        assert credentials._universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert credentials._universe_domain is None
 
     def test_from_service_account_info(self):
         credentials = service_account.IDTokenCredentials.from_service_account_info(

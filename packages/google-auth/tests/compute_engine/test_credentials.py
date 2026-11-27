@@ -90,8 +90,8 @@ class TestCredentials(object):
         assert self.credentials.service_account_email == "default"
         # No quota project
         assert not self.credentials._quota_project_id
-        # Universe domain is the default and not cached
-        assert self.credentials._universe_domain == "googleapis.com"
+        # Universe domain is unset and not cached
+        assert self.credentials._universe_domain is None
         assert not self.credentials._universe_domain_cached
 
     @mock.patch(
@@ -262,7 +262,7 @@ class TestCredentials(object):
         assert creds._universe_domain_cached
 
     @mock.patch(
-        "google.auth.compute_engine._metadata.get_universe_domain",
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
         return_value="googleapis.com",
     )
     def test_token_usage_metrics(self, mock_get_universe_domain):
@@ -275,13 +275,13 @@ class TestCredentials(object):
         assert headers["x-goog-api-client"] == "cred-type/mds"
 
     @mock.patch(
-        "google.auth.compute_engine._metadata.get_universe_domain",
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
         return_value="fake_universe_domain",
     )
     def test_universe_domain(self, get_universe_domain):
         # Check the default state
         assert not self.credentials._universe_domain_cached
-        assert self.credentials._universe_domain == "googleapis.com"
+        assert self.credentials._universe_domain is None
 
         # calling the universe_domain property should trigger a call to
         # get_universe_domain to fetch the value. The value should be cached.
@@ -295,7 +295,7 @@ class TestCredentials(object):
         assert self.credentials.universe_domain == "fake_universe_domain"
         get_universe_domain.assert_called_once()
 
-    @mock.patch("google.auth.compute_engine._metadata.get_universe_domain")
+    @mock.patch("google.auth.compute_engine._metadata._get_explicit_universe_domain")
     def test_user_provided_universe_domain(self, get_universe_domain):
         assert self.credentials_with_all_fields.universe_domain == FAKE_UNIVERSE_DOMAIN
         assert self.credentials_with_all_fields._universe_domain_cached
@@ -347,7 +347,8 @@ class TestCredentials(object):
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     @mock.patch(
-        "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
+        autospec=True,
     )
     def test_build_regional_access_boundary_lookup_url_explicit_email_standard(
         self, mock_get_universe_domain, mock_get_service_account_info, monkeypatch
@@ -372,7 +373,8 @@ class TestCredentials(object):
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     @mock.patch(
-        "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
+        autospec=True,
     )
     def test_build_regional_access_boundary_lookup_url_explicit_email_mtls(
         self, mock_get_universe_domain, mock_get_service_account_info, monkeypatch
@@ -394,7 +396,8 @@ class TestCredentials(object):
         assert url == expected_url
 
     @mock.patch(
-        "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
+        autospec=True,
     )
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
@@ -431,6 +434,7 @@ class TestCredentials(object):
             "true",
         )
         creds = self.credentials
+        creds._universe_domain = "googleapis.com"
         creds._universe_domain_cached = True
 
         # Valid email formats should pass.
@@ -447,6 +451,44 @@ class TestCredentials(object):
 
         creds._service_account_email = "principal://iam.googleapis.com/projects/1234567890/locations/global/workloadIdentityPools/my-project.svc.id.goog/subject/ns/my-namespace/sa/my-kubernetes-sa"
         assert creds._is_regional_access_boundary_lookup_required() is False
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
+        autospec=True,
+    )
+    def test_rab_lookup_skipped_when_metadata_universe_domain_missing(
+        self, mock_get_universe_domain, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        mock_get_universe_domain.return_value = None
+        creds = credentials.Credentials()
+
+        assert creds._is_regional_access_boundary_lookup_required() is False
+        assert creds.universe_domain == "googleapis.com"
+        assert (
+            creds.with_scopes(["scope"])._is_regional_access_boundary_lookup_required()
+            is False
+        )
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata._get_explicit_universe_domain",
+        autospec=True,
+    )
+    def test_rab_lookup_allowed_when_metadata_confirms_default_universe(
+        self, mock_get_universe_domain, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
+        mock_get_universe_domain.return_value = "googleapis.com"
+        creds = credentials.Credentials()
+
+        assert creds._is_regional_access_boundary_lookup_required() is True
+        mock_get_universe_domain.assert_called_once()
 
     def test_build_regional_access_boundary_lookup_url_with_invalid_email(self):
         creds = self.credentials
@@ -472,6 +514,7 @@ class TestCredentials(object):
             "scopes": ["one", "two"],
         }
         creds = self.credentials
+        creds._universe_domain = "googleapis.com"
         creds._universe_domain_cached = True
         creds._service_account_email = "default"
 

@@ -596,6 +596,17 @@ def test_get_universe_domain_not_found():
     assert universe_domain == "googleapis.com"
 
 
+def test_get_explicit_universe_domain():
+    ok_request = make_request("googleapis.com", headers={"content-type": "text/plain"})
+    assert _metadata._get_explicit_universe_domain(ok_request) == "googleapis.com"
+
+    empty_request = make_request("", headers={"content-type": "text/plain"})
+    assert _metadata._get_explicit_universe_domain(empty_request) is None
+
+    not_found_request = make_request("not found", status=http_client.NOT_FOUND)
+    assert _metadata._get_explicit_universe_domain(not_found_request) is None
+
+
 @mock.patch("time.sleep", return_value=None)
 def test_get_universe_domain_retryable_error_failure(_mock_sleep):
     # Test that if the universe domain endpoint returns a retryable error

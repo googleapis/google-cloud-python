@@ -993,8 +993,16 @@ class TestCredentials(object):
 
         unpickled = pickle.loads(pickle.dumps(creds))
 
-        # make sure the unpickled cred sets _universe_domain to default.
+        # make sure the unpickled cred returns default universe_domain without
+        # backfilling _universe_domain.
         assert unpickled.universe_domain == "googleapis.com"
+        assert unpickled._universe_domain is None
+
+    def test_pickle_and_unpickle_custom_universe_domain(self):
+        custom_creds = self.make_credentials().with_universe_domain("example.com")
+        unpickled_custom = pickle.loads(pickle.dumps(custom_creds))
+        assert unpickled_custom.universe_domain == "example.com"
+        assert unpickled_custom._universe_domain == "example.com"
 
     def test_pickle_and_unpickle_with_refresh_handler(self):
         expected_expiry = _helpers.utcnow() + datetime.timedelta(seconds=2800)

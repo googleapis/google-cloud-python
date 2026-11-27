@@ -20,7 +20,6 @@ from unittest import mock
 import pytest  # type: ignore
 
 from google.auth import exceptions, pluggable
-from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from tests.test__default import WORKFORCE_AUDIENCE
 
 CLIENT_ID = "username"
@@ -272,7 +271,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 
@@ -301,7 +300,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 
@@ -337,7 +336,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 
@@ -367,7 +366,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
             workforce_pool_user_project=None,
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            universe_domain=None,
             trust_boundary=None,
         )
 
@@ -397,7 +396,6 @@ class TestCredentials(object):
             "token_url": TOKEN_URL,
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE,
-            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_token_info_url(self):

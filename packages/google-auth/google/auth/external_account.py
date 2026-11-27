@@ -125,7 +125,7 @@ class Credentials(
         scopes=None,
         default_scopes=None,
         workforce_pool_user_project=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=None,
         trust_boundary=None,
     ):
         """Instantiates an external account credentials object.
@@ -167,14 +167,14 @@ class Credentials(
         super(Credentials, self).__init__()
         self._audience = audience
         self._subject_token_type = subject_token_type
-        self._universe_domain = universe_domain
+        self._universe_domain = universe_domain or None
         self._token_url = token_url
         if self._token_url == _DEFAULT_TOKEN_URL:
             self._token_url = self._token_url.replace(
-                "{universe_domain}", self._universe_domain
+                "{universe_domain}", self.universe_domain
             )
         self._cloud_resource_manager_url = _CLOUD_RESOURCE_MANAGER.replace(
-            "{universe_domain}", self._universe_domain
+            "{universe_domain}", self.universe_domain
         )
         self._token_info_url = token_info_url
         self._credential_source = credential_source
@@ -763,9 +763,7 @@ class Credentials(
             credential_source=info.get("credential_source"),
             quota_project_id=info.get("quota_project_id"),
             workforce_pool_user_project=info.get("workforce_pool_user_project"),
-            universe_domain=info.get(
-                "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
-            ),
+            universe_domain=info.get("universe_domain"),
             trust_boundary=info.get("trust_boundary"),
             **kwargs,
         )

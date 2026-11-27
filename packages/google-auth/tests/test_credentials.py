@@ -418,6 +418,7 @@ def test_before_request_triggers_rab_refresh(monkeypatch):
         lookup.return_value = {"encodedLocations": "0xA30"}
 
         creds = CredentialsImpl()
+        creds._universe_domain = credentials.DEFAULT_UNIVERSE_DOMAIN
         creds = creds._set_blocking_regional_access_boundary_lookup()
 
         request = mock.Mock()
@@ -453,3 +454,36 @@ def test_maybe_start_regional_access_boundary_refresh_invalid_url():
     credentials_instance._maybe_start_regional_access_boundary_refresh(
         request, url=object()
     )
+
+
+def test_rab_lookup_skipped_when_universe_domain_omitted(monkeypatch):
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
+    )
+    with mock.patch("google.oauth2._client._lookup_regional_access_boundary") as lookup:
+        creds = CredentialsImpl()
+        creds = creds._set_blocking_regional_access_boundary_lookup()
+
+        assert creds.universe_domain == credentials.DEFAULT_UNIVERSE_DOMAIN
+        assert creds._is_regional_access_boundary_lookup_required() is False
+
+        headers = {}
+        creds.before_request(mock.Mock(), "GET", "http://example.com", headers)
+
+        lookup.assert_not_called()
+        assert "x-allowed-locations" not in headers
+
+
+def test_rab_lookup_skipped_for_unpickled_credentials_without_universe_domain(
+    monkeypatch,
+):
+    monkeypatch.setenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        "true",
+    )
+    creds = CredentialsImpl.__new__(CredentialsImpl)
+    creds.__setstate__({})
+
+    assert creds.universe_domain == credentials.DEFAULT_UNIVERSE_DOMAIN
+    assert creds._is_regional_access_boundary_lookup_required() is False
