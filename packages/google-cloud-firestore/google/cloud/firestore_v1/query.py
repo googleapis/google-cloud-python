@@ -37,7 +37,7 @@ from google.api_core import exceptions, gapic_v1
 from google.api_core import retry as retries
 
 from google.cloud import firestore_v1
-from google.cloud.firestore_v1 import aggregation, transaction
+from google.cloud.firestore_v1 import _helpers, aggregation, transaction
 from google.cloud.firestore_v1.base_document import (
     DocumentSnapshot,
 )
@@ -276,14 +276,37 @@ class Query(BaseQuery):
 
     def _retry_query_after_exception(self, exc, retry, transaction):
         """Helper method for :meth:`stream`."""
-        if transaction is None:  # no snapshot-based retry inside transaction
-            if retry is gapic_v1.method.DEFAULT:
-                transport = self._client._firestore_api._transport
-                gapic_callable = transport.run_query
-                retry = gapic_callable._retry
-            return retry._predicate(exc)
+        if transaction is not None:  # no snapshot-based retry inside transaction
+            return False
 
-        return False
+        retry = _helpers.resolve_stream_retry(self._client, "run_query", retry)
+        if retry is None:
+            return False
+
+        return retry._predicate(exc)
+
+    def _resume_query(self, last_snapshot, num_yielded):
+        """Build the query that continues a stream after ``last_snapshot``.
+
+        Returns:
+            The query to run, or ``None`` if the original ``limit`` has
+            already been reached.
+        """
+        if last_snapshot is None:
+            # Nothing has been yielded yet, so run the original query again.
+            # Calling ``start_after(None)`` would drop any start cursor the
+            # caller set.
+            return self
+
+        limit = self._limit
+        if limit is not None:
+            limit -= num_yielded
+            if limit <= 0:
+                return None
+
+        # The resumed query must not skip the offset again, and it may only
+        # return what is left of the limit.
+        return self.start_after(last_snapshot)._copy(limit=limit, offset=None)
 
     def find_nearest(
         self,
@@ -430,22 +453,34 @@ class Query(BaseQuery):
         )
 
         last_snapshot = None
+        num_yielded = 0
+        backoff = None
 
         while True:
             try:
                 response = next(response_iterator, None)
             except exceptions.GoogleAPICallError as exc:
-                if self._retry_query_after_exception(exc, retry, transaction):
-                    new_query = self.start_after(last_snapshot)
-                    response_iterator, _ = new_query._get_stream_iterator(
-                        transaction,
-                        retry,
-                        timeout,
-                        read_time=read_time,
-                    )
-                    continue
-                else:
+                if not self._retry_query_after_exception(exc, retry, transaction):
                     raise
+
+                resume_query = self._resume_query(last_snapshot, num_yielded)
+                if resume_query is None:  # limit already reached
+                    break
+
+                if backoff is None:
+                    backoff = _helpers.StreamResumeBackoff(
+                        _helpers.resolve_stream_retry(self._client, "run_query", retry)
+                    )
+                if not backoff.wait():
+                    raise
+
+                response_iterator, _ = resume_query._get_stream_iterator(
+                    transaction,
+                    retry,
+                    timeout,
+                    read_time=read_time,
+                )
+                continue
 
             if response is None:  # EOI
                 break
@@ -463,6 +498,8 @@ class Query(BaseQuery):
                 )
             if snapshot is not None:
                 last_snapshot = snapshot
+                num_yielded += 1
+                backoff = None  # progress was made; reset the backoff
                 yield snapshot
 
         return metrics
