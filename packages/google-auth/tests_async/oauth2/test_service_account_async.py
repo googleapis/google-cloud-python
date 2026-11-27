@@ -17,7 +17,21 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, crypt, environment_vars, jwt, transport
+from google.auth import _credentials_async as credentials_async
+from google.auth import (
+    _helpers,
+    _regional_access_boundary_utils,
+    crypt,
+    environment_vars,
+    exceptions,
+    iam,
+    jwt,
+    transport,
+)
+from google.auth.credentials import (
+    DEFAULT_UNIVERSE_DOMAIN,
+    CredentialsWithUniverseDomain,
+)
 from google.oauth2 import _service_account_async as service_account
 from tests.oauth2 import test_service_account
 
@@ -385,6 +399,71 @@ class TestCredentials(object):
             _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
         )
 
+    def test_with_universe_domain(self):
+        """Async credentials cleanly inherit and process with_universe_domain copying."""
+        fake_rab_encoded_locations = "0xA30"
+        credentials = self.make_credentials()
+
+        credentials._rab_manager._data = _regional_access_boundary_utils._RegionalAccessBoundaryData(
+            encoded_locations=fake_rab_encoded_locations,
+            expiry=_helpers.utcnow() + datetime.timedelta(hours=1),
+            cooldown_expiry=None,
+            cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+        )
+
+        # 1. Assert that the original instance is an async credential object
+        assert isinstance(credentials, credentials_async.Credentials)
+        assert isinstance(credentials, CredentialsWithUniverseDomain)
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert not credentials._always_use_jwt_access
+        assert (
+            credentials._rab_manager._data.encoded_locations
+            == fake_rab_encoded_locations
+        )
+
+        # 2. Staying within the default universe preserves RAB state and async refresh manager
+        same_default = credentials.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+        assert isinstance(same_default, service_account.Credentials)
+        assert isinstance(same_default, credentials_async.Credentials)
+        assert (
+            same_default._rab_manager._data.encoded_locations
+            == fake_rab_encoded_locations
+        )
+        assert isinstance(
+            same_default._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+
+        # 3. Transitioning to a custom universe clears RAB data while retaining async refresh manager
+        custom_creds = credentials.with_universe_domain("custom.universe.domain")
+        assert isinstance(custom_creds, service_account.Credentials)
+        assert isinstance(custom_creds, credentials_async.Credentials)
+        assert custom_creds.universe_domain == "custom.universe.domain"
+        assert custom_creds._always_use_jwt_access is True
+        assert isinstance(
+            custom_creds._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+        assert custom_creds._rab_manager._data.encoded_locations is None
+        assert custom_creds._rab_manager._data.expiry is None
+
+        # 4. Transitioning back to the default universe resets _always_use_jwt_access
+        # and keeps cleared RAB state (requiring a fresh lookup).
+        back_to_default = custom_creds.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+        assert isinstance(back_to_default, service_account.Credentials)
+        assert isinstance(back_to_default, credentials_async.Credentials)
+        assert back_to_default.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert back_to_default._always_use_jwt_access is False
+        assert back_to_default._rab_manager._data.encoded_locations is None
+
+        # 5. Reject None or empty universe domain
+        for invalid_ud in (None, "", "   "):
+            with pytest.raises(
+                exceptions.InvalidValue,
+                match="Universe domain must be a valid non-empty domain string.",
+            ):
+                credentials.with_universe_domain(invalid_ud)
+
 
 class TestIDTokenCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"
@@ -464,6 +543,35 @@ class TestIDTokenCredentials(object):
         credentials = self.make_credentials()
         new_credentials = credentials.with_quota_project("project-foo")
         assert new_credentials._quota_project_id == "project-foo"
+
+    def test_with_universe_domain(self):
+        """Async IDTokenCredentials inherits CredentialsWithUniverseDomain."""
+        credentials = self.make_credentials()
+        assert isinstance(credentials, CredentialsWithUniverseDomain)
+        assert isinstance(credentials, credentials_async.Credentials)
+
+        custom = credentials.with_universe_domain("custom.universe.domain")
+        assert isinstance(custom, service_account.IDTokenCredentials)
+        assert isinstance(custom, credentials_async.Credentials)
+        assert custom.universe_domain == "custom.universe.domain"
+        assert custom._use_iam_endpoint is True
+        assert (
+            custom._iam_id_token_endpoint
+            == "https://iamcredentials.custom.universe.domain/v1/projects/-/serviceAccounts/{}:generateIdToken"
+        )
+
+        default = custom.with_universe_domain(DEFAULT_UNIVERSE_DOMAIN)
+        assert isinstance(default, service_account.IDTokenCredentials)
+        assert default.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+        assert default._use_iam_endpoint is False
+        assert default._iam_id_token_endpoint == iam._IAM_IDTOKEN_ENDPOINT
+
+        for invalid_ud in (None, "", "   "):
+            with pytest.raises(
+                exceptions.InvalidValue,
+                match="Universe domain must be a valid non-empty domain string.",
+            ):
+                credentials.with_universe_domain(invalid_ud)
 
     def test__make_authorization_grant_assertion(self):
         credentials = self.make_credentials()

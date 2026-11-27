@@ -359,6 +359,16 @@ class _RegionalAccessBoundaryManager(object):
             # Perform the atomic swap of the state object.
             self._data = updated_data
 
+    def clear_data(self):
+        """Clears cached Regional Access Boundary location data."""
+        with self._update_lock:
+            self._data = _RegionalAccessBoundaryData(
+                encoded_locations=None,
+                expiry=None,
+                cooldown_expiry=None,
+                cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+            )
+
 
 class _RegionalAccessBoundaryRefreshThread(threading.Thread):
     """Thread for background refreshing of the Regional Access Boundary."""

@@ -528,17 +528,15 @@ class Credentials(
         # Regional Access Boundary (RAB) only applies to the default universe
         # domain. Reuse the source credentials' cached RAB state only when the
         # new credentials stay in the default universe; otherwise start with
-        # empty RAB state so a googleapis.com boundary is never sent to another
-        # universe.
-        if (
-            isinstance(
-                credentials,
-                google.auth.credentials.CredentialsWithRegionalAccessBoundary,
-            )
-            and jwt_creds.universe_domain
-            == google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN
+        # empty RAB state so a default-universe boundary is never sent to
+        # another universe.
+        if isinstance(
+            credentials,
+            google.auth.credentials.CredentialsWithRegionalAccessBoundary,
         ):
-            credentials._copy_regional_access_boundary_manager(jwt_creds)
+            credentials._update_regional_access_boundary_for_universe(
+                jwt_creds, jwt_creds.universe_domain
+            )
 
         return jwt_creds
 
@@ -605,10 +603,7 @@ class Credentials(
             quota_project_id=self._quota_project_id,
             universe_domain=universe_domain,
         )
-        # RAB state is only valid for the default universe domain, so don't
-        # carry cached RAB data over when switching to another universe.
-        if cred.universe_domain == google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN:
-            self._copy_regional_access_boundary_manager(cred)
+        self._update_regional_access_boundary_for_universe(cred, cred.universe_domain)
         return cred
 
     def _make_jwt(self):

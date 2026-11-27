@@ -101,6 +101,7 @@ class Credentials(
     credentials.Scoped,
     credentials.CredentialsWithQuotaProject,
     credentials.CredentialsWithTokenUri,
+    credentials.CredentialsWithUniverseDomain,
     credentials.CredentialsWithRegionalAccessBoundary,
 ):
     """Service account credentials
@@ -193,10 +194,15 @@ class Credentials(
         self._project_id = project_id
         self._quota_project_id = quota_project_id
         self._token_uri = token_uri
+        self._explicit_always_use_jwt_access = bool(always_use_jwt_access)
         self._always_use_jwt_access = always_use_jwt_access
+        if universe_domain is not None:
+            _helpers.validate_universe_domain(universe_domain)
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
 
-        if universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
+        # Check the normalized universe domain so None falls back to the
+        # default universe domain without forcing self-signed JWT access.
+        if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             self._always_use_jwt_access = True
 
         self._jwt_credentials = None
@@ -224,14 +230,16 @@ class Credentials(
         Raises:
             ValueError: If the info is not in the expected format.
         """
+        # Respect an explicit universe_domain kwarg from the caller; otherwise
+        # forward from info whenever present and not None so empty strings still
+        # fail validation while omitted/null values let cls() apply its default.
+        if "universe_domain" not in kwargs and info.get("universe_domain") is not None:
+            kwargs["universe_domain"] = info["universe_domain"]
         return cls(
             signer,
             service_account_email=info["client_email"],
             token_uri=info["token_uri"],
             project_id=info.get("project_id"),
-            universe_domain=info.get(
-                "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
-            ),
             trust_boundary=info.get("trust_boundary"),
             **kwargs,
         )
@@ -293,7 +301,7 @@ class Credentials(
         """
         return True if not self._scopes else False
 
-    def _make_copy(self):
+    def _make_copy(self, *, _copy_rab=True):
         cred = self.__class__(
             self._signer,
             service_account_email=self._service_account_email,
@@ -304,12 +312,19 @@ class Credentials(
             project_id=self._project_id,
             quota_project_id=self._quota_project_id,
             additional_claims=self._additional_claims.copy(),
-            always_use_jwt_access=self._always_use_jwt_access,
+            always_use_jwt_access=getattr(
+                self, "_explicit_always_use_jwt_access", self._always_use_jwt_access
+            ),
             universe_domain=self._universe_domain,
             trust_boundary=self._trust_boundary,
         )
         cred._cred_file_path = self._cred_file_path
-        self._copy_regional_access_boundary_manager(cred)
+        # Clone cached self-signed JWT credentials so audience-bound copies keep
+        # their audience without sharing mutable token state with the original.
+        if self._jwt_credentials is not None:
+            cred._jwt_credentials = self._jwt_credentials.with_claims()
+        if _copy_rab:
+            self._copy_regional_access_boundary_manager(cred)
         return cred
 
     @_helpers.copy_docstring(credentials.Scoped)
@@ -317,6 +332,8 @@ class Credentials(
         cred = self._make_copy()
         cred._scopes = scopes
         cred._default_scopes = default_scopes
+        # Clear cached JWT credentials so subsequent refreshes reflect the new scopes.
+        cred._jwt_credentials = None
         return cred
 
     def with_always_use_jwt_access(self, always_use_jwt_access):
@@ -340,15 +357,26 @@ class Credentials(
             raise exceptions.InvalidValue(
                 "always_use_jwt_access should be True for non-default universe domain"
             )
+        cred._explicit_always_use_jwt_access = bool(always_use_jwt_access)
         cred._always_use_jwt_access = always_use_jwt_access
+        if not always_use_jwt_access:
+            # Drop cached self-signed JWT credentials when opting out of JWT access.
+            cred._jwt_credentials = None
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        cred = self._make_copy()
+        _helpers.validate_universe_domain(universe_domain)
+        cred = self._make_copy(_copy_rab=False)
         cred._universe_domain = universe_domain
-        if universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
-            cred._always_use_jwt_access = True
+        cred._always_use_jwt_access = (
+            getattr(cred, "_explicit_always_use_jwt_access", False)
+            or cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
+        # Clear cached JWT credentials since audience/universe metadata may change.
+        cred._jwt_credentials = None
+        # RAB state is only valid for the default universe domain.
+        self._update_regional_access_boundary_for_universe(cred, cred._universe_domain)
         return cred
 
     def with_subject(self, subject):
@@ -363,6 +391,9 @@ class Credentials(
         """
         cred = self._make_copy()
         cred._subject = subject
+        # Clear cached JWT credentials since subject delegation does not use
+        # self-signed JWTs.
+        cred._jwt_credentials = None
         return cred
 
     def with_claims(self, additional_claims):
@@ -381,6 +412,8 @@ class Credentials(
         new_additional_claims.update(additional_claims or {})
         cred = self._make_copy()
         cred._additional_claims = new_additional_claims
+        # Clear cached JWT credentials so they regenerate with the new claims
+        cred._jwt_credentials = None
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
@@ -560,6 +593,7 @@ class IDTokenCredentials(
     credentials.Signing,
     credentials.CredentialsWithQuotaProject,
     credentials.CredentialsWithTokenUri,
+    credentials.CredentialsWithUniverseDomain,
 ):
     """Open ID Connect ID Token-based service account credentials.
 
@@ -645,14 +679,12 @@ class IDTokenCredentials(
         self._quota_project_id = quota_project_id
         self._use_iam_endpoint = False
 
-        if not universe_domain:
-            self._universe_domain = credentials.DEFAULT_UNIVERSE_DOMAIN
-        else:
-            self._universe_domain = universe_domain
-        self._iam_id_token_endpoint = iam._IAM_IDTOKEN_ENDPOINT.replace(
-            "googleapis.com", self._universe_domain
+        if universe_domain is not None:
+            _helpers.validate_universe_domain(universe_domain)
+        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        self._iam_id_token_endpoint = iam._get_iam_idtoken_endpoint(
+            self._universe_domain
         )
-
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             self._use_iam_endpoint = True
 
@@ -679,7 +711,10 @@ class IDTokenCredentials(
         """
         kwargs.setdefault("service_account_email", info["client_email"])
         kwargs.setdefault("token_uri", info["token_uri"])
-        if "universe_domain" in info:
+        # Respect an explicit universe_domain kwarg from the caller; otherwise
+        # forward from info whenever present and not None so empty strings still
+        # fail validation while omitted/null values let cls() apply its default.
+        if "universe_domain" not in kwargs and info.get("universe_domain") is not None:
             kwargs["universe_domain"] = info["universe_domain"]
         return cls(signer, **kwargs)
 
@@ -789,6 +824,19 @@ class IDTokenCredentials(
     def with_token_uri(self, token_uri):
         cred = self._make_copy()
         cred._token_uri = token_uri
+        return cred
+
+    @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
+    def with_universe_domain(self, universe_domain):
+        _helpers.validate_universe_domain(universe_domain)
+        cred = self._make_copy()
+        cred._universe_domain = universe_domain
+        cred._iam_id_token_endpoint = iam._get_iam_idtoken_endpoint(
+            cred._universe_domain
+        )
+        cred._use_iam_endpoint = (
+            cred._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
         return cred
 
     def _make_authorization_grant_assertion(self):

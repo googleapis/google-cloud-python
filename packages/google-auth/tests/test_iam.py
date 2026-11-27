@@ -110,3 +110,18 @@ class TestSigner(object):
         with pytest.raises(exceptions.TransportError):
             signer.sign("123")
         request.call_count == 3
+
+
+def test__get_iam_idtoken_endpoint():
+    assert (
+        iam._get_iam_idtoken_endpoint(google.auth.credentials.DEFAULT_UNIVERSE_DOMAIN)
+        == iam._IAM_IDTOKEN_ENDPOINT
+    )
+    assert (
+        iam._get_iam_idtoken_endpoint("universe.foo")
+        == "https://iamcredentials.universe.foo/v1/projects/-/serviceAccounts/{}:generateIdToken"
+    )
+    assert (
+        iam._get_iam_idtoken_endpoint("googleapis.com.custom.internal")
+        == "https://iamcredentials.googleapis.com.custom.internal/v1/projects/-/serviceAccounts/{}:generateIdToken"
+    )
