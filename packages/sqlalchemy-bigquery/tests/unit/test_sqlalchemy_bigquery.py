@@ -4,14 +4,23 @@
 # license that can be found in the LICENSE file or at
 # https://opensource.org/licenses/MIT.
 
+import base64
+import json
 from unittest import mock
 
 import google.api_core.exceptions
+import google.auth
+import google.auth.credentials
+import google.auth.exceptions
 import pytest
 import sqlalchemy
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.table import TableListItem
+from google.oauth2 import service_account
+from sqlalchemy.engine.url import make_url
+
+import sqlalchemy_bigquery
 
 from .conftest import setup_table
 
@@ -261,3 +270,132 @@ def test_do_execute():
     )
 
     assert cursor.execute.call_args.kwargs["job_config"] is job_config
+
+
+class _FakeServiceAccountCredentials(google.auth.credentials.AnonymousCredentials):
+    def __init__(self, project_id):
+        super().__init__()
+        self.project_id = project_id
+
+    def with_scopes(self, scopes):
+        return self
+
+
+def _patch_service_account_credentials(monkeypatch, project_id):
+    creds = _FakeServiceAccountCredentials(project_id)
+    mock_sa = mock.create_autospec(service_account.Credentials)
+    mock_sa.from_service_account_info.return_value = creds
+    mock_sa.from_service_account_file.return_value = creds
+    monkeypatch.setattr(service_account, "Credentials", mock_sa)
+
+
+def _raise_no_ambient_adc(*args, **kwargs):
+    raise google.auth.exceptions.DefaultCredentialsError("ambient ADC unavailable")
+
+
+_TENANT_A_CREDENTIALS_INFO = {
+    "type": "service_account",
+    "project_id": "tenant-a-project",
+}
+_TENANT_A_CREDENTIALS_BASE64 = base64.b64encode(
+    json.dumps(_TENANT_A_CREDENTIALS_INFO).encode()
+).decode()
+
+
+@pytest.mark.parametrize(
+    "dialect_kwargs,url_str",
+    [
+        (
+            {"credentials_info": _TENANT_A_CREDENTIALS_INFO},
+            "bigquery:///tenant_dataset",
+        ),
+        (
+            {"credentials_path": "path/to/tenant-key.json"},
+            "bigquery:///tenant_dataset",
+        ),
+        (
+            {},
+            f"bigquery:///tenant_dataset?credentials_base64={_TENANT_A_CREDENTIALS_BASE64}",
+        ),
+    ],
+    ids=["credentials_info", "credentials_path", "credentials_base64"],
+)
+def test_create_connect_args_uses_explicit_credentials_project_for_default_dataset(
+    monkeypatch, dialect_kwargs, url_str
+):
+    _patch_service_account_credentials(monkeypatch, "tenant-a-project")
+    monkeypatch.setattr(google.auth, "default", _raise_no_ambient_adc)
+    dialect = sqlalchemy_bigquery.BigQueryDialect(**dialect_kwargs)
+
+    _, kwargs = dialect.create_connect_args(make_url(url_str))
+
+    assert kwargs[
+        "client"
+    ].default_query_job_config.default_dataset == bigquery.DatasetReference(
+        "tenant-a-project", "tenant_dataset"
+    )
+
+
+def test_create_connect_args_uses_billing_project_for_unqualified_dataset(monkeypatch):
+    _patch_service_account_credentials(monkeypatch, "tenant-a-project")
+    monkeypatch.setattr(google.auth, "default", _raise_no_ambient_adc)
+    dialect = sqlalchemy_bigquery.BigQueryDialect(
+        credentials_info=_TENANT_A_CREDENTIALS_INFO,
+        billing_project_id="billing-project",
+    )
+
+    _, kwargs = dialect.create_connect_args(make_url("bigquery:///tenant_dataset"))
+
+    job_config = kwargs["client"].default_query_job_config
+    assert job_config.default_dataset == bigquery.DatasetReference(
+        "billing-project", "tenant_dataset"
+    )
+    assert job_config.connection_properties == []
+
+
+def test_create_connect_args_sets_dataset_project_for_remote_dataset(monkeypatch):
+    _patch_service_account_credentials(monkeypatch, "tenant-a-project")
+    monkeypatch.setattr(google.auth, "default", _raise_no_ambient_adc)
+    dialect = sqlalchemy_bigquery.BigQueryDialect(
+        credentials_info=_TENANT_A_CREDENTIALS_INFO,
+        billing_project_id="billing-project",
+    )
+
+    _, kwargs = dialect.create_connect_args(
+        make_url("bigquery://data-project/tenant_dataset")
+    )
+
+    job_config = kwargs["client"].default_query_job_config
+    assert job_config.default_dataset == bigquery.DatasetReference(
+        "data-project", "tenant_dataset"
+    )
+    assert [(prop.key, prop.value) for prop in job_config.connection_properties] == [
+        ("dataset_project_id", "data-project")
+    ]
+
+
+def test_setting_user_supplied_client_with_dataset_skips_ambient_adc(monkeypatch):
+    monkeypatch.setattr(
+        sqlalchemy_bigquery._helpers,
+        "create_bigquery_client",
+        mock.MagicMock(side_effect=AssertionError("should not create client")),
+    )
+    monkeypatch.setattr(google.auth, "default", _raise_no_ambient_adc)
+
+    result = sqlalchemy_bigquery.BigQueryDialect().create_connect_args(
+        make_url("bigquery:///tenant_dataset?user_supplied_client=true")
+    )
+
+    assert result == ([], {})
+
+
+def test_create_job_config_falls_back_to_auth_default_when_project_unset(monkeypatch):
+    monkeypatch.setattr(google.auth, "default", lambda: ("creds", "default-project"))
+    dialect = sqlalchemy_bigquery.BigQueryDialect()
+    dialect.dataset_id = "tenant_dataset"
+
+    job_config = dialect.create_job_config(None)
+
+    assert job_config.default_dataset == bigquery.DatasetReference(
+        "default-project", "tenant_dataset"
+    )
