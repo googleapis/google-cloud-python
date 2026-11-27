@@ -78,6 +78,7 @@ def initialize_environment(request, environ):
         environ.pop(environment_vars.GCD_DATASET, None)
         environ.pop(environment_vars.GCD_HOST, None)
         environ.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
+        environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
 
 
 @pytest.fixture
