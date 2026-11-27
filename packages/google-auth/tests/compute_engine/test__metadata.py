@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import functools
 import http.client as http_client
 import importlib
 import json
@@ -22,9 +23,17 @@ from unittest import mock
 import pytest  # type: ignore
 import requests
 
-from google.auth import _helpers, environment_vars, exceptions, transport
+from google.auth import (
+    _agent_identity_utils,
+    _helpers,
+    environment_vars,
+    exceptions,
+    transport,
+)
 from google.auth.compute_engine import _metadata
+from google.auth.transport import _mtls_helper
 from google.auth.transport import requests as google_auth_requests
+from tests.test_agent_identity_utils import AGENT_IDENTITY_CERT_BYTES
 
 PATH = "instance/service-accounts/default"
 
@@ -68,6 +77,18 @@ MDS_PING_REQUEST_HEADER = {
     "metadata-flavor": "Google",
     "x-goog-api-client": MDS_PING_METRICS_HEADER_VALUE,
 }
+
+
+@pytest.fixture(autouse=True)
+def clean_bound_token_env(monkeypatch):
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+        raising=False,
+    )
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+        raising=False,
+    )
 
 
 def make_request(data, status=http_client.OK, headers=None, retry=False):
@@ -792,24 +813,24 @@ def test_get_service_account_token_with_bound_token(
 ):
     # Test the successful path where a certificate is found and a bound token
     # is requested.
-    mock_cert = mock.sentinel.cert
-    mock_cert_bytes = b"fake_cert_bytes"
-    mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
+    cert = _agent_identity_utils.parse_certificate(AGENT_IDENTITY_CERT_BYTES)
+    mock_get_cert_and_bytes.return_value = (cert, AGENT_IDENTITY_CERT_BYTES)
     mock_should_request.return_value = True
 
     token_response = json.dumps({"access_token": "token", "expires_in": 3600})
     request = make_request(token_response, headers={"content-type": "application/json"})
 
-    _metadata.get_service_account_token(request)
+    result = _metadata.get_service_account_token(request)
 
+    assert result == ("token", utcnow() + datetime.timedelta(seconds=3600))
     mock_get_cert_and_bytes.assert_called_once()
-    mock_should_request.assert_called_once_with(mock_cert)
+    mock_should_request.assert_called_once_with(cert)
 
     request.assert_called_once()
     _, kwargs = request.call_args
     assert kwargs["method"] == "POST"
     assert kwargs["body"] == json.dumps(
-        {"certificate_chain": mock_cert_bytes.decode("utf-8")}
+        {"certificate_chain": AGENT_IDENTITY_CERT_BYTES.decode("utf-8")}
     ).encode("utf-8")
     assert kwargs["headers"]["Content-Type"] == "application/json"
 
@@ -858,14 +879,165 @@ def test_get_service_account_token_should_not_bind(
     "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
 )
 def test__build_token_request_options_unbound(mock_get_cert_and_bytes):
-    method, body, headers = _metadata._build_token_request_options(
-        ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE, bind_token=False
+    method, body, headers, bound_cert_fingerprint = (
+        _metadata._build_token_request_options(
+            ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE, bind_token=False
+        )
     )
 
     mock_get_cert_and_bytes.assert_not_called()
     assert method == "GET"
     assert body is None
     assert headers == {"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE}
+    assert bound_cert_fingerprint is None
+
+
+@mock.patch(
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+)
+def test__build_token_request_options_with_cert_manager_initial_load(mock_disk_get):
+    cert_manager = _mtls_helper._MtlsCertManager(
+        client_cert_source=lambda: (AGENT_IDENTITY_CERT_BYTES, b"fake-key")
+    )
+    request = functools.partial(
+        google_auth_requests.Request(cert_manager=cert_manager), timeout=5
+    )
+
+    method, body, headers, bound_cert_fingerprint = (
+        _metadata._build_token_request_options(
+            ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+            request=request,
+        )
+    )
+
+    mock_disk_get.assert_not_called()
+    assert cert_manager.generation_id == 1
+    assert method == "POST"
+    assert body == json.dumps(
+        {"certificate_chain": AGENT_IDENTITY_CERT_BYTES.decode("utf-8")}
+    ).encode("utf-8")
+    assert headers == {
+        "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+        "Content-Type": "application/json",
+    }
+    assert bound_cert_fingerprint == cert_manager.cert_fingerprint
+
+
+def test__build_token_request_options_with_cert_manager_loaded():
+    source = mock.Mock(return_value=(AGENT_IDENTITY_CERT_BYTES, b"fake-key"))
+    cert_manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+    cert_manager.refresh()
+    request = google_auth_requests.Request(cert_manager=cert_manager)
+
+    method, _, _, bound_cert_fingerprint = _metadata._build_token_request_options(
+        ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+        request=request,
+    )
+
+    source.assert_called_once()
+    assert method == "POST"
+    assert bound_cert_fingerprint == cert_manager.cert_fingerprint
+
+
+@pytest.mark.parametrize(
+    "load_error",
+    [
+        exceptions.ClientCertError("broken cert"),
+        exceptions.MutualTLSChannelError("default source failed"),
+    ],
+)
+def test__build_token_request_options_with_cert_manager_initial_load_error(load_error):
+    cert_manager = _mtls_helper._MtlsCertManager(
+        client_cert_source=mock.Mock(side_effect=load_error)
+    )
+    request = google_auth_requests.Request(cert_manager=cert_manager)
+
+    with pytest.raises(exceptions.RefreshError) as exc_info:
+        _metadata._build_token_request_options(
+            ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+            request=request,
+        )
+
+    assert exc_info.value.__cause__ is load_error
+
+
+@mock.patch(
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+)
+@mock.patch(
+    "google.auth.transport._mtls_helper.get_client_ssl_credentials",
+    return_value=(False, None, None, None),
+)
+def test__build_token_request_options_with_cert_manager_no_cert(
+    mock_get_ssl_creds, mock_disk_get
+):
+    cert_manager = _mtls_helper._MtlsCertManager()
+    request = google_auth_requests.Request(cert_manager=cert_manager)
+
+    method, body, headers, bound_cert_fingerprint = (
+        _metadata._build_token_request_options(
+            ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+            request=request,
+        )
+    )
+
+    mock_get_ssl_creds.assert_called_once_with(generate_encrypted_key=False)
+    mock_disk_get.assert_not_called()
+    assert method == "GET"
+    assert body is None
+    assert headers == {"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE}
+    assert bound_cert_fingerprint is None
+
+
+@mock.patch(
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+)
+def test__build_token_request_options_with_cert_manager_non_agent_cert(mock_disk_get):
+    cert_manager = _mtls_helper._MtlsCertManager(
+        client_cert_source=lambda: (NON_AGENT_IDENTITY_CERT_BYTES, b"fake-key")
+    )
+    cert_manager.refresh()
+    request = google_auth_requests.Request(cert_manager=cert_manager)
+
+    method, body, headers, bound_cert_fingerprint = (
+        _metadata._build_token_request_options(
+            ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+            request=request,
+        )
+    )
+
+    mock_disk_get.assert_not_called()
+    assert method == "GET"
+    assert body is None
+    assert headers == {"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE}
+    assert bound_cert_fingerprint is None
+
+
+@pytest.mark.parametrize(
+    "env_var",
+    [
+        environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+    ],
+)
+def test__build_token_request_options_with_cert_manager_opted_out(monkeypatch, env_var):
+    monkeypatch.setenv(env_var, "false")
+    source = mock.Mock(side_effect=exceptions.ClientCertError("should not be called"))
+    cert_manager = _mtls_helper._MtlsCertManager(client_cert_source=source)
+    request = google_auth_requests.Request(cert_manager=cert_manager)
+
+    method, body, headers, bound_cert_fingerprint = (
+        _metadata._build_token_request_options(
+            ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+            request=request,
+        )
+    )
+
+    source.assert_not_called()
+    assert method == "GET"
+    assert body is None
+    assert headers == {"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE}
+    assert bound_cert_fingerprint is None
 
 
 def test_get_service_account_info():

@@ -21,6 +21,7 @@ import pytest  # type: ignore
 import responses  # type: ignore
 
 from google.auth import (
+    _agent_identity_utils,
     _helpers,
     environment_vars,
     exceptions,
@@ -29,7 +30,11 @@ from google.auth import (
     transport,
 )
 from google.auth.compute_engine import credentials
-from google.auth.transport import requests
+from google.auth.transport import _mtls_helper, requests
+from tests.test_agent_identity_utils import (
+    AGENT_IDENTITY_CERT_BYTES,
+    NON_AGENT_IDENTITY_CERT_BYTES,
+)
 
 SAMPLE_ID_TOKEN_EXP = 1584393400
 
@@ -56,6 +61,18 @@ FAKE_QUOTA_PROJECT_ID = "fake-quota-project"
 FAKE_SCOPES = ["scope1", "scope2"]
 FAKE_DEFAULT_SCOPES = ["scope3", "scope4"]
 FAKE_UNIVERSE_DOMAIN = "fake-universe-domain"
+
+
+@pytest.fixture(autouse=True)
+def clean_bound_token_env(monkeypatch):
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+        raising=False,
+    )
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+        raising=False,
+    )
 
 
 class TestCredentials(object):
@@ -93,6 +110,7 @@ class TestCredentials(object):
         # Universe domain is the default and not cached
         assert self.credentials._universe_domain == "googleapis.com"
         assert not self.credentials._universe_domain_cached
+        assert self.credentials._bound_token_cert is None
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -119,6 +137,7 @@ class TestCredentials(object):
         # Check that the credentials have the token and proper expiration
         assert self.credentials.token == "token"
         assert self.credentials.expiry == (utcnow() + datetime.timedelta(seconds=500))
+        assert self.credentials._bound_token_cert == ("token", None)
 
         # Check the credential info
         assert (
@@ -162,6 +181,7 @@ class TestCredentials(object):
         # Check that the credentials have the token and proper expiration
         assert self.credentials.token == "token"
         assert self.credentials.expiry == (utcnow() + datetime.timedelta(seconds=500))
+        assert self.credentials._bound_token_cert == ("token", None)
 
         # Check the credential info
         assert (
@@ -501,9 +521,11 @@ class TestCredentials(object):
         mock_should_request,
         mock_get_cert_and_bytes,
     ):
-        mock_cert = mock.sentinel.cert
-        mock_cert_bytes = b"cert_content"
-        mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
+        cert = _agent_identity_utils.parse_certificate(AGENT_IDENTITY_CERT_BYTES)
+        expected_fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(
+            cert
+        )
+        mock_get_cert_and_bytes.return_value = (cert, AGENT_IDENTITY_CERT_BYTES)
 
         mock_metadata_get.side_effect = [
             {
@@ -516,15 +538,16 @@ class TestCredentials(object):
         self.credentials.refresh(None)
 
         assert self.credentials.token == "token"
+        assert self.credentials._bound_token_cert == ("token", expected_fingerprint)
         mock_get_cert_and_bytes.assert_called_once()
-        mock_should_request.assert_called_once_with(mock_cert)
+        mock_should_request.assert_called_once_with(cert)
         kwargs = mock_metadata_get.call_args[1]
         assert kwargs["params"] == {
             "scopes": "one,two",
         }
         assert kwargs["method"] == "POST"
         assert kwargs["body"] == json.dumps(
-            {"certificate_chain": mock_cert_bytes.decode("utf-8")}
+            {"certificate_chain": AGENT_IDENTITY_CERT_BYTES.decode("utf-8")}
         ).encode("utf-8")
         assert kwargs["headers"]["Content-Type"] == "application/json"
 
@@ -557,6 +580,7 @@ class TestCredentials(object):
         self.credentials.refresh(None)
 
         assert self.credentials.token == "token"
+        assert self.credentials._bound_token_cert == ("token", None)
         mock_get_cert_and_bytes.assert_called_once()
         mock_should_request.assert_called_once_with(mock_cert)
         kwargs = mock_metadata_get.call_args[1]
@@ -583,6 +607,7 @@ class TestCredentials(object):
         self.credentials.refresh(None)
 
         assert self.credentials.token == "token"
+        assert self.credentials._bound_token_cert == ("token", None)
         mock_get_cert_and_bytes.assert_called_once()
         kwargs = mock_metadata_get.call_args[1]
         assert kwargs["method"] == "GET"
@@ -639,6 +664,72 @@ class TestCredentials(object):
             "service-accounts/default/token",
         ]
 
+    @responses.activate
+    def test_refresh_with_cert_manager_binds_to_manager_cert(
+        self, monkeypatch, tmp_path
+    ):
+        # A non-Agent-Identity cert on disk would produce an unbound GET, so a
+        # bound POST shows the certificate came from the manager.
+        disk_cert = tmp_path / "cert.pem"
+        disk_cert.write_bytes(NON_AGENT_IDENTITY_CERT_BYTES)
+        disk_config = tmp_path / "certificate_config.json"
+        disk_config.write_text(
+            json.dumps({"cert_configs": {"workload": {"cert_path": str(disk_cert)}}})
+        )
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(disk_config)
+        )
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": FAKE_SERVICE_ACCOUNT_EMAIL},
+        )
+        responses.add(
+            responses.POST,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/token",
+            status=200,
+            content_type="application/json",
+            json={"access_token": "bound-token", "expires_in": 500},
+        )
+        cert_manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=lambda: (AGENT_IDENTITY_CERT_BYTES, b"fake-key")
+        )
+
+        self.credentials.refresh(requests.Request(cert_manager=cert_manager))
+
+        assert self.credentials._bound_token_cert == (
+            "bound-token",
+            cert_manager.cert_fingerprint,
+        )
+        assert json.loads(responses.calls[1].request.body) == {
+            "certificate_chain": AGENT_IDENTITY_CERT_BYTES.decode("utf-8")
+        }
+
+    @responses.activate
+    def test_refresh_with_cert_manager_initial_load_error(self):
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": FAKE_SERVICE_ACCOUNT_EMAIL},
+        )
+        load_error = exceptions.ClientCertError("broken cert")
+        cert_manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=mock.Mock(side_effect=load_error)
+        )
+
+        with pytest.raises(exceptions.RefreshError) as exc_info:
+            self.credentials.refresh(requests.Request(cert_manager=cert_manager))
+
+        assert exc_info.value.__cause__ is load_error
+        assert self.credentials._bound_token_cert is None
+
 
 class TestIDTokenCredentials(object):
     credentials = None
@@ -673,6 +764,7 @@ class TestIDTokenCredentials(object):
         )
         # No quota project
         assert not self.credentials._quota_project_id
+        assert self.credentials._bound_token_cert is None
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -958,9 +1050,11 @@ class TestIDTokenCredentials(object):
             SAMPLE_ID_TOKEN,
         ]
 
-        mock_cert = mock.sentinel.cert
-        mock_cert_bytes = b"cert_content"
-        mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
+        cert = _agent_identity_utils.parse_certificate(AGENT_IDENTITY_CERT_BYTES)
+        expected_fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(
+            cert
+        )
+        mock_get_cert_and_bytes.return_value = (cert, AGENT_IDENTITY_CERT_BYTES)
 
         request = mock.create_autospec(transport.Request, instance=True)
         self.credentials = credentials.IDTokenCredentials(
@@ -973,13 +1067,17 @@ class TestIDTokenCredentials(object):
         self.credentials.refresh(None)
 
         assert self.credentials.token == SAMPLE_ID_TOKEN
+        assert self.credentials._bound_token_cert == (
+            SAMPLE_ID_TOKEN,
+            expected_fingerprint,
+        )
         mock_get_cert_and_bytes.assert_called_once()
-        mock_should_request.assert_called_once_with(mock_cert)
+        mock_should_request.assert_called_once_with(cert)
 
         kwargs = mock_metadata_get.call_args[1]
         assert kwargs["method"] == "POST"
         assert kwargs["body"] == json.dumps(
-            {"certificate_chain": mock_cert_bytes.decode("utf-8")}
+            {"certificate_chain": AGENT_IDENTITY_CERT_BYTES.decode("utf-8")}
         ).encode("utf-8")
         assert kwargs["headers"]["Content-Type"] == "application/json"
         assert (
@@ -1012,6 +1110,7 @@ class TestIDTokenCredentials(object):
         self.credentials.refresh(None)
 
         assert self.credentials.token == SAMPLE_ID_TOKEN
+        assert self.credentials._bound_token_cert == (SAMPLE_ID_TOKEN, None)
         mock_get_cert_and_bytes.assert_not_called()
 
         kwargs = mock_metadata_get.call_args[1]
@@ -1059,6 +1158,7 @@ class TestIDTokenCredentials(object):
         self.credentials.refresh(None)
 
         assert self.credentials.token == SAMPLE_ID_TOKEN
+        assert self.credentials._bound_token_cert == (SAMPLE_ID_TOKEN, None)
         mock_get_cert_and_bytes.assert_called_once()
         mock_should_request.assert_called_once_with(mock_cert)
 
@@ -1100,6 +1200,7 @@ class TestIDTokenCredentials(object):
         self.credentials.refresh(None)
 
         assert self.credentials.token == SAMPLE_ID_TOKEN
+        assert self.credentials._bound_token_cert == (SAMPLE_ID_TOKEN, None)
         mock_get_cert_and_bytes.assert_called_once()
 
         kwargs = mock_metadata_get.call_args[1]
@@ -1339,6 +1440,7 @@ class TestIDTokenCredentials(object):
         # Check that the credentials have the token and proper expiration
         assert self.credentials.token == "idtoken"
         assert self.credentials.expiry == _helpers.utcfromtimestamp(3600)
+        assert self.credentials._bound_token_cert == ("idtoken", None)
 
         # Check the credential info
         assert (
@@ -1674,3 +1776,64 @@ class TestIDTokenCredentials(object):
                     use_metadata_identity_endpoint=False,
                     bind_id_token=bind_id_token,
                 )
+
+    @responses.activate
+    def test_id_token_refresh_with_cert_manager_bound(self):
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": FAKE_SERVICE_ACCOUNT_EMAIL},
+        )
+        responses.add(
+            responses.POST,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/identity?audience=https%3A%2F%2Faudience.com&format=full",
+            status=200,
+            content_type="text/plain",
+            body=SAMPLE_ID_TOKEN,
+        )
+        cert_manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=lambda: (AGENT_IDENTITY_CERT_BYTES, b"fake-key")
+        )
+        request = requests.Request(cert_manager=cert_manager)
+        cred = credentials.IDTokenCredentials(
+            request, "https://audience.com", use_metadata_identity_endpoint=True
+        )
+
+        cred.refresh(request)
+
+        assert cred._bound_token_cert == (
+            SAMPLE_ID_TOKEN.decode("utf-8"),
+            cert_manager.cert_fingerprint,
+        )
+        assert json.loads(responses.calls[1].request.body) == {
+            "certificate_chain": AGENT_IDENTITY_CERT_BYTES.decode("utf-8")
+        }
+
+    @responses.activate
+    def test_id_token_refresh_with_cert_manager_initial_load_error(self):
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={"email": FAKE_SERVICE_ACCOUNT_EMAIL},
+        )
+        load_error = exceptions.ClientCertError("broken cert")
+        cert_manager = _mtls_helper._MtlsCertManager(
+            client_cert_source=mock.Mock(side_effect=load_error)
+        )
+        request = requests.Request(cert_manager=cert_manager)
+        cred = credentials.IDTokenCredentials(
+            request, "https://audience.com", use_metadata_identity_endpoint=True
+        )
+
+        with pytest.raises(exceptions.RefreshError) as exc_info:
+            cred.refresh(request)
+
+        assert exc_info.value.__cause__ is load_error
+        assert cred._bound_token_cert is None

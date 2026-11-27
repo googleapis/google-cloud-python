@@ -18,6 +18,7 @@ See https://cloud.google.com/compute/docs/metadata for more details.
 """
 
 import datetime
+import functools
 import http.client as http_client
 import json
 import logging
@@ -37,6 +38,7 @@ from google.auth import (
 )
 from google.auth._exponential_backoff import ExponentialBackoff
 from google.auth.compute_engine import _mtls
+from google.auth.transport import _mtls_helper
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -481,13 +483,26 @@ def get_service_account_info(request, service_account="default"):
     return get(request, path, params={"recursive": "true"})
 
 
-def _build_token_request_options(metrics_header_value, bind_token=True):
-    """Returns (method, body, headers) for a metadata server token request.
+def _get_cert_manager(request):
+    """Returns the ``_MtlsCertManager`` attached to ``request``, if any."""
+    while isinstance(request, functools.partial):
+        request = request.func
+    cert_manager = getattr(request, "_cert_manager", None)
+    if isinstance(cert_manager, _mtls_helper._MtlsCertManager):
+        return cert_manager
+    return None
+
+
+def _build_token_request_options(metrics_header_value, bind_token=True, request=None):
+    """Returns (method, body, headers, bound_cert_fingerprint) for an MDS token request.
 
     Defaults to a standard GET request with the x-goog-api-client metrics header.
     If ``bind_token`` is ``True``, upgrades to a POST request with a JSON
     certificate_chain body and Content-Type header if an Agent Identity
     certificate is present and bound tokens are enabled.
+
+    When ``request`` carries an ``_MtlsCertManager``, certificate bytes are read
+    from the manager snapshot rather than reading the certificate file from disk.
 
     Args:
         metrics_header_value (str): Value for the x-goog-api-client header.
@@ -496,23 +511,81 @@ def _build_token_request_options(metrics_header_value, bind_token=True):
             request without reading the certificate. If ``True``, requests a
             bound token via ``POST`` when a valid Agent Identity certificate is
             present and token binding is enabled.
+        request (Optional[google.auth.transport.Request]): The request callable
+            (or a ``functools.partial`` wrapping one) used for the metadata
+            request. If it has an ``_MtlsCertManager`` attached at
+            ``_cert_manager``, the certificate snapshot is read from the manager.
 
     Returns:
-        Tuple[str, Optional[bytes], Mapping[str, str]]: A tuple of
-            (HTTP method, request body bytes, request headers).
+        Tuple[str, Optional[bytes], Mapping[str, str], Optional[str]]: A tuple of
+            (HTTP method, request body bytes, request headers,
+            bound certificate fingerprint or None).
+
+    Raises:
+        google.auth.exceptions.RefreshError: If the attached certificate manager
+            raises ``ClientCertError`` or ``MutualTLSChannelError`` during its
+            initial certificate load.
     """
     headers = {metrics.API_CLIENT_HEADER: metrics_header_value}
     if not bind_token:
-        return "GET", None, headers
+        return "GET", None, headers, None
 
-    cert, cert_bytes = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+    cert_manager = _get_cert_manager(request)
+    if cert_manager is not None:
+        if _agent_identity_utils._is_bound_token_disabled():
+            return "GET", None, headers, None
+        if cert_manager.generation_id == 0:
+            try:
+                cert_manager.refresh(expected_generation=0)
+            except (
+                exceptions.ClientCertError,
+                exceptions.MutualTLSChannelError,
+            ) as caught_exc:
+                raise exceptions.RefreshError(caught_exc) from caught_exc
+        raw_cert_bytes, _, _ = cert_manager.get_credential_snapshot()
+        if raw_cert_bytes is None:
+            return "GET", None, headers, None
+        cert, cert_bytes = _agent_identity_utils._parse_and_normalize_certificate_bytes(
+            raw_cert_bytes
+        )
+    else:
+        cert, cert_bytes = (
+            _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+        )
+
     if cert and _agent_identity_utils.should_request_bound_token(cert):
         headers["Content-Type"] = "application/json"
         body = json.dumps({"certificate_chain": cert_bytes.decode("utf-8")}).encode(
             "utf-8"
         )
-        return "POST", body, headers
-    return "GET", None, headers
+        fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(cert)
+        return "POST", body, headers, fingerprint
+    return "GET", None, headers, None
+
+
+def _get_service_account_token_and_cert_fingerprint(
+    request, service_account="default", scopes=None
+):
+    """Get the OAuth 2.0 access token, expiry, and bound certificate fingerprint."""
+    params = {}
+    if scopes:
+        if not isinstance(scopes, str):
+            scopes = ",".join(scopes)
+        params["scopes"] = scopes
+
+    method, body, headers, bound_cert_fingerprint = _build_token_request_options(
+        metrics.token_request_access_token_mds(),
+        request=request,
+    )
+
+    path = "instance/service-accounts/{0}/token".format(service_account)
+    token_json = get(
+        request, path, params=params, headers=headers, method=method, body=body
+    )
+    token_expiry = _helpers.utcnow() + datetime.timedelta(
+        seconds=token_json["expires_in"]
+    )
+    return token_json["access_token"], token_expiry, bound_cert_fingerprint
 
 
 def get_service_account_token(request, service_account="default", scopes=None):
@@ -533,24 +606,10 @@ def get_service_account_token(request, service_account="default", scopes=None):
         google.auth.exceptions.TransportError: if an error occurred while
             retrieving metadata.
     """
-    params = {}
-    if scopes:
-        if not isinstance(scopes, str):
-            scopes = ",".join(scopes)
-        params["scopes"] = scopes
-
-    method, body, headers = _build_token_request_options(
-        metrics.token_request_access_token_mds()
+    token, token_expiry, _ = _get_service_account_token_and_cert_fingerprint(
+        request, service_account=service_account, scopes=scopes
     )
-
-    path = "instance/service-accounts/{0}/token".format(service_account)
-    token_json = get(
-        request, path, params=params, headers=headers, method=method, body=body
-    )
-    token_expiry = _helpers.utcnow() + datetime.timedelta(
-        seconds=token_json["expires_in"]
-    )
-    return token_json["access_token"], token_expiry
+    return token, token_expiry
 
 
 def _is_service_account_email(email):

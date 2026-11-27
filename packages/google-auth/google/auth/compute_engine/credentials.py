@@ -21,7 +21,7 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Tuple
 
 from google.auth import (
     _helpers,
@@ -102,6 +102,7 @@ class Credentials(
 
         self._trust_boundary = trust_boundary
         self._rab_disabled = False
+        self._bound_token_cert: Optional[Tuple[str, Optional[str]]] = None
 
     def _retrieve_info(self, request):
         """Retrieve information about the service account.
@@ -147,9 +148,16 @@ class Credentials(
             self._retrieve_info(request)
             scopes = self._scopes if self._scopes is not None else self._default_scopes
             # Always fetch token with default service account email.
-            self.token, self.expiry = _metadata.get_service_account_token(
+            (
+                token,
+                expiry,
+                bound_cert_fingerprint,
+            ) = _metadata._get_service_account_token_and_cert_fingerprint(
                 request, service_account="default", scopes=scopes
             )
+            self.token = token
+            self.expiry = expiry
+            self._bound_token_cert = (token, bound_cert_fingerprint)
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
             raise new_exc from caught_exc
@@ -393,6 +401,7 @@ class IDTokenCredentials(
         self._use_metadata_identity_endpoint = use_metadata_identity_endpoint
         self._target_audience = target_audience
         self._bind_id_token = bind_id_token
+        self._bound_token_cert: Optional[Tuple[str, Optional[str]]] = None
 
         if use_metadata_identity_endpoint:
             if token_uri or additional_claims or service_account_email or signer:
@@ -523,7 +532,8 @@ class IDTokenCredentials(
                 HTTP requests.
 
         Returns:
-            Tuple[str, datetime.datetime]: The ID token and the expiry of the ID token.
+            Tuple[str, datetime.datetime, Optional[str]]: The ID token, its
+                expiry, and the bound certificate fingerprint (or None if unbound).
 
         Raises:
             google.auth.exceptions.RefreshError: If the Compute Engine metadata
@@ -534,9 +544,15 @@ class IDTokenCredentials(
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
             bind_token = getattr(self, "_bind_id_token", None) is not False
-            method, body, headers = _metadata._build_token_request_options(
+            (
+                method,
+                body,
+                headers,
+                bound_cert_fingerprint,
+            ) = _metadata._build_token_request_options(
                 metrics.token_request_id_token_mds(),
                 bind_token=bind_token,
+                request=request,
             )
 
             id_token = _metadata.get(
@@ -552,7 +568,11 @@ class IDTokenCredentials(
             raise new_exc from caught_exc
 
         _, payload, _, _ = jwt._unverified_decode(id_token)
-        return id_token, _helpers.utcfromtimestamp(payload["exp"])
+        return (
+            id_token,
+            _helpers.utcfromtimestamp(payload["exp"]),
+            bound_cert_fingerprint,
+        )
 
     def refresh(self, request):
         """Refreshes the ID token.
@@ -567,7 +587,14 @@ class IDTokenCredentials(
             ValueError: If extracting expiry from the obtained ID token fails.
         """
         if self._use_metadata_identity_endpoint:
-            self.token, self.expiry = self._call_metadata_identity_endpoint(request)
+            (
+                token,
+                expiry,
+                bound_cert_fingerprint,
+            ) = self._call_metadata_identity_endpoint(request)
+            self.token = token
+            self.expiry = expiry
+            self._bound_token_cert = (token, bound_cert_fingerprint)
         else:
             assertion = self._make_authorization_grant_assertion()
             access_token, expiry, _ = _client.id_token_jwt_grant(
@@ -575,6 +602,7 @@ class IDTokenCredentials(
             )
             self.token = access_token
             self.expiry = expiry
+            self._bound_token_cert = (access_token, None)
 
     @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
