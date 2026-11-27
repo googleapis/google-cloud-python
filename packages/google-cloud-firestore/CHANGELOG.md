@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.34.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.34.1...google-cloud-firestore-v2.34.2) (2026-11-27)
+
+
+### Documentation
+
+* **firestore:** document recursive_delete return value ([#18567](https://github.com/googleapis/google-cloud-python/issues/18567)) ([5fd0c99](https://github.com/googleapis/google-cloud-python/commit/5fd0c992da7cb2942c44ffcc8ff873239eeb8865)), refs [#17266](https://github.com/googleapis/google-cloud-python/issues/17266)
+
 ## [2.34.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.34.0...google-cloud-firestore-v2.34.1) (2026-10-08)
 
 
