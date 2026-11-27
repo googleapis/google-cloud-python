@@ -175,3 +175,42 @@ def test_get_auth_access_token_with_exception(check_output):
 
     with pytest.raises(exceptions.UserAccessTokenError):
         _cloud_sdk.get_auth_access_token(account="account")
+
+
+@pytest.mark.parametrize(
+    "data, expected_universe_domain",
+    [
+        (b"custom-universe.goog\n", "custom-universe.goog"),
+        (b"  another-universe.domain.com  \n", "another-universe.domain.com"),
+        (b"", None),
+        (b"\n", None),
+    ],
+)
+def test_get_universe_domain_success(data, expected_universe_domain):
+    # Mocking subprocess output to simulate different gcloud configurations
+    check_output_patch = mock.patch("subprocess.check_output", return_value=data)
+
+    with check_output_patch:
+        universe_domain = _cloud_sdk.get_universe_domain()
+
+    assert universe_domain == expected_universe_domain
+
+
+def test_get_universe_domain_error():
+    # Simulate gcloud failing (e.g. not installed or returns non-zero code)
+    check_output_patch = mock.patch(
+        "subprocess.check_output",
+        side_effect=subprocess.CalledProcessError(1, "gcloud"),
+    )
+
+    with check_output_patch:
+        universe_domain = _cloud_sdk.get_universe_domain()
+
+    assert universe_domain is None
+
+
+@mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "env.universe.goog"})
+def test_get_universe_domain_from_env():
+    # If standard environment variable is present, it bypasses subprocess check entirely
+    universe_domain = _cloud_sdk.get_universe_domain()
+    assert universe_domain == "env.universe.goog"
