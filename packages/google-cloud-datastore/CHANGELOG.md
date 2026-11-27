@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.27.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.27.1...google-cloud-datastore-v2.27.2) (2026-11-27)
+
+
+### Bug Fixes
+
+* **datastore:** support IN and NOT_IN operators on __key__ filters ([#19076](https://github.com/googleapis/google-cloud-python/issues/19076)) ([e40fb36](https://github.com/googleapis/google-cloud-python/commit/e40fb36505f31d1aadbde5379e90f718bd0b1743))
+
 ## [2.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.27.0...google-cloud-datastore-v2.27.1) (2026-11-12)
 
 
