@@ -1079,3 +1079,171 @@ class TestImpersonatedCredentials(object):
             == "Unable to acquire impersonated credentials: No signed JWT in response."
         )
         assert excinfo.value.args[1] == "invalid_data"
+
+    @pytest.mark.parametrize(
+        "source_info",
+        [
+            pytest.param(
+                IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO[
+                    "source_credentials"
+                ],
+                id="authorized_user_source",
+            ),
+            pytest.param(
+                SERVICE_ACCOUNT_INFO,
+                id="service_account_source",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_top_level_universe_domain(
+        self, source_info
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["source_credentials"] = copy.deepcopy(source_info)
+        info["universe_domain"] = "example.com"
+        info["service_account_impersonation_url"] = (
+            "https://iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/some@email.com:generateAccessToken"
+        )
+        original_source = copy.deepcopy(info["source_credentials"])
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        )
+
+        assert creds.universe_domain == "example.com"
+        assert creds._source_credentials.universe_domain == "example.com"
+        # Caller's source_credentials dict must not be mutated.
+        assert info["source_credentials"] == original_source
+        assert creds.with_quota_project("qp").universe_domain == "example.com"
+
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        request = self.make_request(
+            data=json.dumps({"accessToken": "token", "expireTime": expire_time}),
+            status=http_client.OK,
+        )
+        with mock.patch.object(creds._source_credentials, "refresh"):
+            creds._source_credentials.token = "source-token"
+            creds._source_credentials.expiry = _helpers.utcnow() + datetime.timedelta(
+                seconds=500
+            )
+            creds.refresh(request)
+
+        assert (
+            request.call_args[1]["url"] == "https://iamcredentials.example.com"
+            "/v1/projects/-/serviceAccounts/some@email.com:generateAccessToken"
+        )
+
+    def test_from_impersonated_service_account_info_matching_universes(self):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["universe_domain"] = "example.com"
+        info["source_credentials"]["universe_domain"] = "example.com"
+        info["service_account_impersonation_url"] = (
+            "https://iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/some@email.com:generateAccessToken"
+        )
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        )
+        assert creds.universe_domain == "example.com"
+        assert creds._source_credentials.universe_domain == "example.com"
+
+    def test_from_impersonated_service_account_info_source_only_universe(self):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["source_credentials"]["universe_domain"] = "example.com"
+        info["service_account_impersonation_url"] = (
+            "https://iamcredentials.example.com/v1/projects/-"
+            "/serviceAccounts/some@email.com:generateAccessToken"
+        )
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        )
+        assert creds.universe_domain == "example.com"
+        assert creds._source_credentials.universe_domain == "example.com"
+
+    @pytest.mark.parametrize(
+        "top_level_universe,source_universe,expected_match",
+        [
+            pytest.param(
+                "googleapis.com",
+                "other.com",
+                "does not match the expected universe domain",
+                id="top_level_conflicts_with_source",
+            ),
+            pytest.param(
+                "",
+                None,
+                "must be a valid non-empty domain string",
+                id="empty_top_level_universe",
+            ),
+            pytest.param(
+                " example.com ",
+                None,
+                "must be a valid non-empty domain string",
+                id="whitespace_top_level_universe",
+            ),
+            pytest.param(
+                123,
+                None,
+                "must be a valid non-empty domain string",
+                id="non_string_top_level_universe",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_universe_validation_errors(
+        self, top_level_universe, source_universe, expected_match
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        if top_level_universe is not None:
+            info["universe_domain"] = top_level_universe
+        if source_universe is not None:
+            info["source_credentials"]["universe_domain"] = source_universe
+
+        with pytest.raises(exceptions.InvalidValue, match=expected_match):
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+
+    def test_constructor_universe_domain_validation(self):
+        source = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="example.com"
+        )
+        creds = impersonated_credentials.Credentials(
+            source_credentials=source,
+            target_principal=self.TARGET_PRINCIPAL,
+            target_scopes=self.TARGET_SCOPES,
+            universe_domain="example.com",
+        )
+        assert creds.universe_domain == "example.com"
+
+        with pytest.raises(
+            exceptions.InvalidValue,
+            match="does not match the expected universe domain",
+        ):
+            impersonated_credentials.Credentials(
+                source_credentials=source,
+                target_principal=self.TARGET_PRINCIPAL,
+                target_scopes=self.TARGET_SCOPES,
+                universe_domain="other.com",
+            )
+
+        with pytest.raises(
+            exceptions.InvalidValue,
+            match="must be a valid non-empty domain string",
+        ):
+            impersonated_credentials.Credentials(
+                source_credentials=source,
+                target_principal=self.TARGET_PRINCIPAL,
+                target_scopes=self.TARGET_SCOPES,
+                universe_domain="   ",
+            )
