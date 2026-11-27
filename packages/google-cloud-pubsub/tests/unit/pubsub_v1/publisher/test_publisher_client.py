@@ -507,6 +507,47 @@ def test_publish_error_exceeding_flow_control_limits(creds):
         future2.result()
 
 
+def test_publish_releases_flow_control_when_message_too_large(creds):
+    publisher_options = types.PublisherOptions(
+        flow_control=types.PublishFlowControl(
+            message_limit=1,
+            byte_limit=20 * 1000 * 1000,
+            limit_exceeded_behavior=types.LimitExceededBehavior.ERROR,
+        )
+    )
+    client = publisher.Client(credentials=creds, publisher_options=publisher_options)
+    topic = "topic/path"
+
+    with pytest.raises(exceptions.MessageTooLargeError):
+        client.publish(topic, b"x" * (10 * 1000 * 1000 + 1))
+
+    assert client._flow_controller._message_count == 0
+    assert client._flow_controller._total_bytes == 0
+
+
+def test_publish_releases_flow_control_when_sequencer_raises(creds):
+    publisher_options = types.PublisherOptions(
+        flow_control=types.PublishFlowControl(
+            message_limit=1,
+            limit_exceeded_behavior=types.LimitExceededBehavior.ERROR,
+        )
+    )
+    client = publisher.Client(credentials=creds, publisher_options=publisher_options)
+    topic = "topic/path"
+
+    failing_sequencer = mock.Mock()
+    failing_sequencer.publish.side_effect = RuntimeError("boom")
+    client._get_or_create_sequencer = mock.Mock(return_value=failing_sequencer)
+    with pytest.raises(RuntimeError, match="boom"):
+        client.publish(topic, b"first")
+
+    working_sequencer = mock.Mock()
+    client._get_or_create_sequencer = mock.Mock(return_value=working_sequencer)
+    client.publish(topic, b"second")
+
+    working_sequencer.publish.assert_called_once()
+
+
 def test_publish_data_not_bytestring_error(creds):
     client = publisher.Client(credentials=creds)
     topic = "topic/path"
