@@ -411,3 +411,90 @@ def test_page_elements_large_document(large_docproto):
             assert line.text != ""
         for token in wrapped_page.tokens:
             assert token.text != ""
+
+
+def _get_children_linear_scan(element, potential_children):
+    start_index = element._text_segment.start_index
+    end_index = element._text_segment.end_index
+    children = []
+    for child in potential_children:
+        if child._text_segment.start_index >= end_index:
+            break
+        if (
+            start_index <= child._text_segment.start_index < end_index
+            and start_index < child._text_segment.end_index <= end_index
+        ):
+            children.append(child)
+    return children
+
+
+def _synthetic_page(token_segments, line_segments):
+    def layout(start, end):
+        if start is None:
+            return documentai.Document.Page.Layout()
+        return documentai.Document.Page.Layout(
+            text_anchor=documentai.Document.TextAnchor(
+                text_segments=[{"start_index": start, "end_index": end}]
+            )
+        )
+
+    docproto_page = documentai.Document.Page(
+        tokens=[
+            documentai.Document.Page.Token(layout=layout(*s)) for s in token_segments
+        ],
+        lines=[documentai.Document.Page.Line(layout=layout(*s)) for s in line_segments],
+    )
+    return page.Page(documentai_object=docproto_page, _document_text="")
+
+
+@pytest.mark.parametrize(
+    "fixture_name", ["docproto", "large_docproto", "docproto_with_symbols"]
+)
+def test_get_children_of_element_matches_linear_scan(request, fixture_name):
+    docproto = request.getfixturevalue(fixture_name)
+    for pg in docproto.pages:
+        wrapped_page = page.Page(documentai_object=pg, _document_text=docproto.text)
+        for parents, children_attribute, potential_children in [
+            (wrapped_page.blocks, "paragraphs", wrapped_page.paragraphs),
+            (wrapped_page.paragraphs, "lines", wrapped_page.lines),
+            (wrapped_page.lines, "tokens", wrapped_page.tokens),
+            (wrapped_page.tokens, "symbols", wrapped_page.symbols),
+        ]:
+            for parent in parents:
+                assert getattr(parent, children_attribute) == (
+                    _get_children_linear_scan(parent, potential_children)
+                )
+
+
+def test_get_children_of_element_skips_children_before_element():
+    words = 10_000
+    wrapped_page = _synthetic_page(
+        token_segments=[(i * 5, i * 5 + 5) for i in range(words)],
+        line_segments=[(i * 50, i * 50 + 50) for i in range(words // 10)],
+    )
+    tokens = wrapped_page.tokens
+    assert wrapped_page.lines[0].tokens == tokens[:10]
+    # Tokens before the last line must not be inspected again.
+    for token in tokens[:-10]:
+        token.__dict__["_text_segment"] = None
+
+    assert wrapped_page.lines[-1].tokens == tokens[-10:]
+
+
+def test_get_children_of_element_with_unsorted_children():
+    wrapped_page = _synthetic_page(
+        token_segments=[(0, 5), (10, 15), (5, 10)], line_segments=[(0, 10)]
+    )
+
+    assert wrapped_page._get_start_indices("tokens") is None
+    assert wrapped_page.lines[0].tokens == wrapped_page.tokens[:1]
+
+
+def test_get_children_of_element_with_empty_text_anchor():
+    wrapped_page = _synthetic_page(
+        token_segments=[(0, 5), (5, 12), (12, 15), (None, None)],
+        line_segments=[(0, 10)],
+    )
+
+    assert wrapped_page._get_start_indices("tokens") is None
+    assert wrapped_page.lines[0].tokens == wrapped_page.tokens[:1]

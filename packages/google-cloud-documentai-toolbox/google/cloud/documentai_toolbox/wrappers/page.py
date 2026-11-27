@@ -15,10 +15,11 @@
 #
 """Wrappers for Document AI Page type."""
 
+import bisect
 import dataclasses
 from abc import ABC
 from functools import cached_property
-from typing import Iterable, List, Optional, Type, TypeVar
+from typing import Dict, Iterable, List, Optional, Type, TypeVar
 
 import pandas as pd
 
@@ -182,7 +183,9 @@ class _BasePageElement(ABC):
         """
         return self.documentai_object.layout.text_anchor.text_segments[0]
 
-    def _get_children_of_element(self, potential_children: List[T]) -> List[T]:
+    def _get_children_of_element(
+        self, potential_children: List[T], attribute_name: str
+    ) -> List[T]:
         """
         Filters potential child elements to identify only those fully contained within this element.
 
@@ -194,6 +197,8 @@ class _BasePageElement(ABC):
             potential_children (List[_BasePageElement]):
                 Required. A list of wrapped page elements (e.g., words, lines, paragraphs)
                 that could potentially be children of this element.
+            attribute_name (str):
+                Required. The name of the `Page` attribute holding `potential_children`.
 
         Returns:
             List[_BasePageElement]:
@@ -203,8 +208,16 @@ class _BasePageElement(ABC):
         start_index = self._text_segment.start_index
         end_index = self._text_segment.end_index
 
+        # Skip the children that start before this element, if the
+        # start indices are known to be sorted.
+        start_indices = self._page._get_start_indices(attribute_name)
+        first = 0
+        if start_indices is not None:
+            first = bisect.bisect_left(start_indices, start_index)
+
         children = []
-        for child in potential_children:
+        for child_position in range(first, len(potential_children)):
+            child = potential_children[child_position]
             child_start_index = child._text_segment.start_index
             child_end_index = child._text_segment.end_index
 
@@ -251,7 +264,7 @@ class Token(_BasePageElement):
 
     @cached_property
     def symbols(self) -> List[Symbol]:
-        return self._get_children_of_element(self._page.symbols)
+        return self._get_children_of_element(self._page.symbols, "symbols")
 
 
 @dataclasses.dataclass
@@ -269,7 +282,7 @@ class Line(_BasePageElement):
 
     @cached_property
     def tokens(self) -> List[Token]:
-        return self._get_children_of_element(self._page.tokens)
+        return self._get_children_of_element(self._page.tokens, "tokens")
 
 
 @dataclasses.dataclass
@@ -287,7 +300,7 @@ class Paragraph(_BasePageElement):
 
     @cached_property
     def lines(self) -> List[Line]:
-        return self._get_children_of_element(self._page.lines)
+        return self._get_children_of_element(self._page.lines, "lines")
 
 
 @dataclasses.dataclass
@@ -305,7 +318,7 @@ class Block(_BasePageElement):
 
     @cached_property
     def paragraphs(self) -> List[Paragraph]:
-        return self._get_children_of_element(self._page.paragraphs)
+        return self._get_children_of_element(self._page.paragraphs, "paragraphs")
 
 
 @dataclasses.dataclass
@@ -426,6 +439,9 @@ class Page:
 
     documentai_object: documentai.Document.Page = dataclasses.field(repr=False)
     _document_text: str = dataclasses.field(repr=False)
+    _start_indices: Dict[str, Optional[List[int]]] = dataclasses.field(
+        default_factory=dict, init=False, repr=False, compare=False
+    )
 
     def _get_elements(self, element_type: Type, attribute_name: str) -> List:
         """
@@ -435,6 +451,28 @@ class Page:
         return [
             element_type(documentai_object=element, _page=self) for element in elements
         ]
+
+    def _get_start_indices(self, attribute_name: str) -> Optional[List[int]]:
+        """
+        Returns the cached start indices of the elements in `attribute_name`,
+        or None if they are not sorted or an element has no text segment.
+        """
+        if attribute_name in self._start_indices:
+            return self._start_indices[attribute_name]
+
+        try:
+            start_indices = [
+                element._text_segment.start_index
+                for element in getattr(self, attribute_name)
+            ]
+        except IndexError:
+            self._start_indices[attribute_name] = None
+            return None
+
+        self._start_indices[attribute_name] = (
+            start_indices if start_indices == sorted(start_indices) else None
+        )
+        return self._start_indices[attribute_name]
 
     @cached_property
     def text(self):
