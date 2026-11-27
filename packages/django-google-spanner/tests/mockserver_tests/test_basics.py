@@ -65,7 +65,7 @@ class TestBasics(MockServerTestBase):
 
     def test_django_select_singer(self):
         add_singer_query_result(
-            "SELECT tests_singer.id, tests_singer.first_name, tests_singer.last_name FROM tests_singer"
+            "SELECT `tests_singer`.`id`, `tests_singer`.`first_name`, `tests_singer`.`last_name` FROM `tests_singer`"
         )
         singers = Singer.objects.all()
         self.assertEqual(len(singers), 2)
@@ -77,7 +77,7 @@ class TestBasics(MockServerTestBase):
 
     def test_django_select_singer_using_other_db(self):
         add_singer_query_result(
-            "SELECT tests_singer.id, tests_singer.first_name, tests_singer.last_name FROM tests_singer"
+            "SELECT `tests_singer`.`id`, `tests_singer`.`first_name`, `tests_singer`.`last_name` FROM `tests_singer`"
         )
         singers = Singer.objects.using("secondary").all()
         self.assertEqual(len(singers), 2)
@@ -89,10 +89,10 @@ class TestBasics(MockServerTestBase):
 
     def test_insert_singer(self):
         add_single_result(
-            "INSERT INTO tests_singer "
-            "(id, first_name, last_name) "
+            "INSERT INTO `tests_singer` "
+            "(`id`, `first_name`, `last_name`) "
             "VALUES (@a0, @a1, @a2) "
-            "THEN RETURN id",
+            "THEN RETURN `id`",
             "id",
             TypeCode.INT64,
             [("1",)],
@@ -124,10 +124,10 @@ class TestBasics(MockServerTestBase):
 
         try:
             add_single_result(
-                "INSERT INTO tests_localsinger "
-                "(first_name, last_name) "
+                "INSERT INTO `tests_localsinger` "
+                "(`first_name`, `last_name`) "
                 "VALUES (@a0, @a1) "
-                "THEN RETURN id",
+                "THEN RETURN `id`",
                 "id",
                 TypeCode.INT64,
                 [("1",)],
@@ -156,7 +156,7 @@ class TestBasics(MockServerTestBase):
             "google.cloud.spanner_dbapi.parse_utils.ensure_where_clause",
             side_effect=lambda sql: sql,
         ):
-            add_update_count("UPDATE tests_singer SET last_name = @a0 WHERE 1=1", 1)
+            add_update_count("UPDATE `tests_singer` SET `last_name` = @a0 WHERE 1=1", 1)
             Singer.objects.all().update(last_name="Test")
 
             requests = [
@@ -167,7 +167,7 @@ class TestBasics(MockServerTestBase):
             self.assertEqual(len(requests), 1)
             self.assertEqual(
                 requests[0].sql,
-                "UPDATE tests_singer SET last_name = @a0 WHERE 1=1",
+                "UPDATE `tests_singer` SET `last_name` = @a0 WHERE 1=1",
             )
 
     def test_delete_all_without_dbapi_intervention(self):
@@ -176,7 +176,7 @@ class TestBasics(MockServerTestBase):
             "google.cloud.spanner_dbapi.parse_utils.ensure_where_clause",
             side_effect=lambda sql: sql,
         ):
-            add_update_count("DELETE FROM tests_singer WHERE 1=1", 1)
+            add_update_count("DELETE FROM `tests_singer` WHERE 1=1", 1)
             Singer.objects.all().delete()
 
             requests = [
@@ -187,7 +187,7 @@ class TestBasics(MockServerTestBase):
             self.assertEqual(len(requests), 1)
             self.assertEqual(
                 requests[0].sql,
-                "DELETE FROM tests_singer WHERE 1=1",
+                "DELETE FROM `tests_singer` WHERE 1=1",
             )
 
     def _make_detail_result_set(self, rows):
@@ -226,29 +226,29 @@ class TestBasics(MockServerTestBase):
 
     def test_insert_and_fetch_json_field(self):
         add_single_result(
-            "INSERT INTO tests_detail (id, value) VALUES (@a0, @a1) THEN RETURN id",
+            "INSERT INTO `tests_detail` (`id`, `value`) VALUES (@a0, @a1) THEN RETURN `id`",
             "id",
             TypeCode.INT64,
             [("1",)],
         )
         add_result(
-            "INSERT INTO tests_detail (id, value) VALUES (@a0, @a1) THEN RETURN id, value",
+            "INSERT INTO `tests_detail` (`id`, `value`) VALUES (@a0, @a1) THEN RETURN `id`, `value`",
             self._make_detail_result_set([("1", "null")]),
         )
         add_single_result(
-            "INSERT INTO tests_detail (id, value) VALUES (@a0, @a1), (@a2, @a3)",
+            "INSERT INTO `tests_detail` (`id`, `value`) VALUES (@a0, @a1), (@a2, @a3)",
             "id",
             TypeCode.INT64,
             [("10",), ("11",)],
         )
         add_single_result(
-            "UPDATE tests_detail SET value = @a0 WHERE tests_detail.id = @a1",
+            "UPDATE `tests_detail` SET `value` = @a0 WHERE `tests_detail`.`id` = @a1",
             "id",
             TypeCode.INT64,
             [("1",)],
         )
         add_result(
-            "SELECT tests_detail.id, tests_detail.value FROM tests_detail",
+            "SELECT `tests_detail`.`id`, `tests_detail`.`value` FROM `tests_detail`",
             self._make_detail_result_set(
                 [
                     ("1", '{"age": "26", "name": "Jakob"}'),
@@ -263,19 +263,19 @@ class TestBasics(MockServerTestBase):
             ),
         )
         add_result(
-            "SELECT tests_detail.id, tests_detail.value FROM tests_detail WHERE JSON_QUERY(tests_detail.value, '$.\"name\"') = @a0",
+            "SELECT `tests_detail`.`id`, `tests_detail`.`value` FROM `tests_detail` WHERE JSON_QUERY(`tests_detail`.`value`, '$.\"name\"') = @a0",
             self._make_detail_result_set([("1", '{"age": "26", "name": "Jakob"}')]),
         )
         add_result(
-            "SELECT tests_detail.id, tests_detail.value FROM tests_detail WHERE JSON_QUERY(tests_detail.value, '$.\"name\"') IS NOT NULL",
+            "SELECT `tests_detail`.`id`, `tests_detail`.`value` FROM `tests_detail` WHERE JSON_QUERY(`tests_detail`.`value`, '$.\"name\"') IS NOT NULL",
             self._make_detail_result_set([("1", '{"age": "26", "name": "Jakob"}')]),
         )
         add_result(
-            "SELECT tests_detail.id, tests_detail.value FROM tests_detail WHERE tests_detail.value = @a0",
+            "SELECT `tests_detail`.`id`, `tests_detail`.`value` FROM `tests_detail` WHERE `tests_detail`.`value` = @a0",
             self._make_detail_result_set([("8", "null")]),
         )
         add_result(
-            "SELECT tests_detail.id, tests_detail.value FROM tests_detail WHERE tests_detail.value IS NULL",
+            "SELECT `tests_detail`.`id`, `tests_detail`.`value` FROM `tests_detail` WHERE `tests_detail`.`value` IS NULL",
             self._make_detail_result_set([("3", None)]),
         )
 
@@ -413,7 +413,7 @@ class TestBasics(MockServerTestBase):
             name="first_name_alice",
         )
         sql_non_null = (
-            "SELECT @a0 AS _check  FROM UNNEST([1]) WHERE COALESCE((@a1 = @a2), @a3)"
+            "SELECT @a0 AS `_check`  FROM UNNEST([1]) WHERE COALESCE((@a1 = @a2), @a3)"
         )
 
         # Valid instance -> returns 1 row -> passes
@@ -427,7 +427,7 @@ class TestBasics(MockServerTestBase):
 
         # Null field -> emits typed CAST(NULL AS STRING) -> returns 1 row -> passes
         sql_null = (
-            "SELECT @a0 AS _check  FROM UNNEST([1]) "
+            "SELECT @a0 AS `_check`  FROM UNNEST([1]) "
             "WHERE COALESCE((CAST(NULL AS STRING) = @a1), @a2)"
         )
         add_single_result(sql_null, "_check", TypeCode.INT64, [("1",)])
@@ -478,7 +478,7 @@ class TestBasics(MockServerTestBase):
                 name="positive_rating",
             )
             sql_float = (
-                "SELECT @a0 AS _check  FROM UNNEST([1]) "
+                "SELECT @a0 AS `_check`  FROM UNNEST([1]) "
                 "WHERE COALESCE((CAST(@a1 AS FLOAT64) > @a2), @a3)"
             )
             add_single_result(sql_float, "_check", TypeCode.INT64, [("1",)])

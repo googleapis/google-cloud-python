@@ -17,18 +17,12 @@ from django.db.models.fields.json import JSONField
 from django.db.utils import DatabaseError
 from django.utils import timezone
 from django.utils.duration import duration_microseconds
-from google.cloud.spanner_dbapi.parse_utils import (
-    SPANNER_RESERVED_KEYWORDS,
-    TYPES_MAP,
-    DateStr,
-    TimestampStr,
-)
+from google.cloud.spanner_dbapi.parse_utils import TYPES_MAP, DateStr, TimestampStr
 from google.cloud.spanner_v1 import JsonObject, param_types
 
 _QUOTED_IDENTIFIER_RE = re.compile(
     r"\A`(?:\\\\|\\[abfnrtv]|\\x[0-9a-fA-F]{2}|[^`\\\x00-\x1f\x7f])+`\Z"
 )
-_REGULAR_IDENTIFIER_RE = re.compile(r"\A[A-Za-z_][A-Za-z0-9_]*\Z")
 _IDENTIFIER_ESCAPE_TABLE = str.maketrans(
     {
         **{chr(code): f"\\x{code:02x}" for code in (*range(0x20), 0x7F)},
@@ -129,12 +123,11 @@ class DatabaseOperations(BaseDatabaseOperations):
         """
         Return a quoted version of the given table, index, or column name.
 
-        Valid unreserved regular ASCII identifiers are returned unquoted, and
-        single identifiers already validly quoted using safe GoogleSQL escapes
-        are returned unchanged. All other identifiers (including reserved
-        keywords and names containing dots, spaces, hyphens, embedded
-        backticks, backslashes, or ASCII control characters) are escaped and
-        wrapped in backticks as a single identifier.
+        All identifiers are escaped and wrapped in backticks as a single
+        identifier, including reserved keywords and names containing dots,
+        spaces, hyphens, embedded backticks, backslashes, or ASCII control
+        characters. Single identifiers already validly quoted using safe
+        GoogleSQL escapes are returned unchanged.
 
         Spanner does not allow spaces, hyphens, or '>' in table, index, or
         constraint names, even when quoted. Only when running Django's own
@@ -147,7 +140,7 @@ class DatabaseOperations(BaseDatabaseOperations):
 
         :rtype: :class:`str`
         :returns: Quoted identifier, or the identifier unchanged if it is
-                  already quoted or a valid unreserved regular identifier.
+                  already quoted.
         :raises TypeError: If ``name`` is not a string.
         """
         if not isinstance(name, str):
@@ -157,15 +150,6 @@ class DatabaseOperations(BaseDatabaseOperations):
         if os.environ.get("RUNNING_SPANNER_BACKEND_TESTS") == "1":
             name = name.replace(" ", "_").replace("-", "_").replace(">", "_")
         if _QUOTED_IDENTIFIER_RE.match(name):
-            return name
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/19072):
-        # Unconditionally quote all identifiers in a follow-up PR (after fixing
-        # schema.py check-constraint/trace quoting and updating SQL tests) so
-        # reserved keyword tracking is no longer required.
-        if (
-            _REGULAR_IDENTIFIER_RE.match(name)
-            and name.upper() not in SPANNER_RESERVED_KEYWORDS
-        ):
             return name
         escaped = name.translate(_IDENTIFIER_ESCAPE_TABLE)
         return f"`{escaped}`"

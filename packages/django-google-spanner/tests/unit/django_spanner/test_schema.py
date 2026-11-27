@@ -64,10 +64,10 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.create_model(Author)
 
             schema_editor.execute.assert_called_once_with(
-                "CREATE TABLE tests_author (id INT64 NOT NULL, name STRING(40) "
-                + "NOT NULL, last_name STRING(40) NOT NULL, num INT64 NOT "
-                + "NULL, created TIMESTAMP NOT NULL, modified TIMESTAMP) "
-                + "PRIMARY KEY(id)",
+                "CREATE TABLE `tests_author` (`id` INT64 NOT NULL, `name` STRING(40) "
+                + "NOT NULL, `last_name` STRING(40) NOT NULL, `num` INT64 NOT "
+                + "NULL, `created` TIMESTAMP NOT NULL, `modified` TIMESTAMP) "
+                + "PRIMARY KEY(`id`)",
                 None,
             )
         if HAS_OPENTELEMETRY_INSTALLED:
@@ -89,7 +89,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.delete_model(Author)
 
             schema_editor.execute.assert_called_once_with(
-                "DROP TABLE tests_author",
+                "DROP TABLE `tests_author`",
             )
 
         if HAS_OPENTELEMETRY_INSTALLED:
@@ -121,7 +121,7 @@ class TestUtils(SpannerSimpleTestClass):
 
             calls = [
                 mock.call("DROP INDEX num_unique"),
-                mock.call("DROP TABLE tests_author"),
+                mock.call("DROP TABLE `tests_author`"),
             ]
 
             schema_editor.execute.assert_has_calls(calls)
@@ -159,7 +159,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.add_field(Author, new_field)
 
             schema_editor.execute.assert_called_once_with(
-                "ALTER TABLE tests_author ADD COLUMN age INT64", []
+                "ALTER TABLE `tests_author` ADD COLUMN `age` INT64", []
             )
 
     def test_add_field_with_default(self):
@@ -172,7 +172,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.add_field(Author, new_field)
 
             schema_editor.execute.assert_any_call(
-                "UPDATE tests_author SET age=%s WHERE 1=1",
+                "UPDATE `tests_author` SET `age`=%s WHERE 1=1",
                 (42,),
             )
 
@@ -189,7 +189,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.remove_field(Author, remove_field)
 
             schema_editor.execute.assert_called_once_with(
-                "ALTER TABLE tests_author DROP COLUMN num"
+                "ALTER TABLE `tests_author` DROP COLUMN `num`"
             )
 
         if HAS_OPENTELEMETRY_INSTALLED:
@@ -229,7 +229,7 @@ class TestUtils(SpannerSimpleTestClass):
 
             calls = [
                 mock.call("DROP INDEX num_unique"),
-                mock.call("ALTER TABLE tests_author DROP COLUMN num"),
+                mock.call("ALTER TABLE `tests_author` DROP COLUMN `num`"),
             ]
             schema_editor.execute.assert_has_calls(calls)
 
@@ -293,7 +293,7 @@ class TestUtils(SpannerSimpleTestClass):
             name, args, kwargs = schema_editor.execute.mock_calls[0]
             self.assertEqual(
                 str(args[0]),
-                "CREATE INDEX test_author_index_num ON tests_author (num)",
+                "CREATE INDEX `test_author_index_num` ON `tests_author` (`num`)",
             )
             self.assertEqual(kwargs["params"], None)
             self.assertEqual(name, "")
@@ -325,7 +325,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.alter_field(Author, old_field, new_field)
 
             schema_editor.execute.assert_called_once_with(
-                "ALTER TABLE tests_author RENAME COLUMN num TO author_num"
+                "ALTER TABLE `tests_author` RENAME COLUMN `num` TO `author_num`"
             )
 
     def test_alter_field_change_null_with_single_index(self):
@@ -359,9 +359,11 @@ class TestUtils(SpannerSimpleTestClass):
 
             calls = [
                 mock.call("DROP INDEX num_unique"),
-                mock.call("ALTER TABLE tests_author RENAME COLUMN num TO author_num"),
                 mock.call(
-                    "ALTER TABLE tests_author ALTER COLUMN author_num INT64 NOT NULL",
+                    "ALTER TABLE `tests_author` RENAME COLUMN `num` TO `author_num`"
+                ),
+                mock.call(
+                    "ALTER TABLE `tests_author` ALTER COLUMN `author_num` INT64 NOT NULL",
                     [],
                 ),
                 mock.call("CREATE INDEX tests_author ON tests_author (author_num)"),
@@ -491,20 +493,20 @@ class TestUtils(SpannerSimpleTestClass):
         """Tests _index_include_sql with normal fields."""
         schema_editor = DatabaseSchemaEditor(self.connection)
         sql = schema_editor._index_include_sql(Author, ["name", "last_name"])
-        self.assertEqual(sql, " STORING (name, last_name)")
+        self.assertEqual(sql, " STORING (`name`, `last_name`)")
 
     def test_index_include_sql_with_field_objects(self):
         """Tests _index_include_sql with Field instances possessing a .column attribute."""
         schema_editor = DatabaseSchemaEditor(self.connection)
         field_mock = mock.MagicMock(column="custom_col")
         sql = schema_editor._index_include_sql(Author, [field_mock])
-        self.assertEqual(sql, " STORING (custom_col)")
+        self.assertEqual(sql, " STORING (`custom_col`)")
 
     def test_index_include_sql_includes_all_fields(self):
         """Tests _index_include_sql formats all included columns directly."""
         schema_editor = DatabaseSchemaEditor(self.connection)
         sql = schema_editor._index_include_sql(Author, ["id", "name"])
-        self.assertEqual(sql, " STORING (id, name)")
+        self.assertEqual(sql, " STORING (`id`, `name`)")
 
     def test_index_include_sql_empty(self):
         """Tests _index_include_sql returns empty string when include is empty."""
@@ -542,10 +544,10 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.create_model(QuotedModel)
 
             schema_editor.execute.assert_called_once_with(
-                "CREATE TABLE `my-table` (id INT64 NOT NULL, "
+                "CREATE TABLE `my-table` (`id` INT64 NOT NULL, "
                 "`order` INT64 NOT NULL, "
                 "CONSTRAINT `my-table_order_61957483_check` "
-                "CHECK (`order` >= 0)) PRIMARY KEY(id)",
+                "CHECK (`order` >= 0)) PRIMARY KEY(`id`)",
                 None,
             )
 
@@ -619,10 +621,10 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.create_model(CustomColumnModel)
 
             schema_editor.execute.assert_called_once_with(
-                "CREATE TABLE `my-table` (id INT64 NOT NULL, "
+                "CREATE TABLE `my-table` (`id` INT64 NOT NULL, "
                 "`order` INT64 NOT NULL, "
                 "CONSTRAINT `my-table_order_61957483_check` "
-                "CHECK (`order` >= 0)) PRIMARY KEY(id)",
+                "CHECK (`order` >= 0)) PRIMARY KEY(`id`)",
                 None,
             )
 
@@ -725,7 +727,7 @@ class TestUtils(SpannerSimpleTestClass):
         schema_editor = DatabaseSchemaEditor(self.connection)
         self.assertEqual(
             schema_editor._check_sql("check_age", "age >= 0"),
-            "CONSTRAINT check_age CHECK (age >= 0)",
+            "CONSTRAINT `check_age` CHECK (age >= 0)",
         )
 
     # Keep the inline CheckedModel out of Django's global app registry.
@@ -751,9 +753,9 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.create_model(CheckedModel)
 
             schema_editor.execute.assert_called_once_with(
-                "CREATE TABLE tests_checked_model (id INT64 NOT NULL, "
-                "num INT64 NOT NULL, CONSTRAINT num_gte_0 CHECK (num >= 0)) "
-                "PRIMARY KEY(id)",
+                "CREATE TABLE `tests_checked_model` (`id` INT64 NOT NULL, "
+                "`num` INT64 NOT NULL, CONSTRAINT `num_gte_0` CHECK (`num` >= 0)) "
+                "PRIMARY KEY(`id`)",
                 None,
             )
 
@@ -778,8 +780,8 @@ class TestUtils(SpannerSimpleTestClass):
             self.assertIsNotNone(statement)
             self.assertEqual(
                 str(statement),
-                "ALTER TABLE tests_author ADD CONSTRAINT "
-                "tests_author_num_f8282a0e_check CHECK (num >= 0)",
+                "ALTER TABLE `tests_author` ADD CONSTRAINT "
+                "`tests_author_num_f8282a0e_check` CHECK (`num` >= 0)",
             )
 
     def _assert_recorded_spans(
@@ -860,7 +862,7 @@ class TestUtils(SpannerSimpleTestClass):
                 remove_field.model = Author
                 schema_editor.remove_field(Author, remove_field)
                 self.assertIn(
-                    f"ALTER TABLE {expected_sql_table} DROP COLUMN num",
+                    f"ALTER TABLE {expected_sql_table} DROP COLUMN `num`",
                     str(schema_editor.execute.call_args_list[1].args[0]),
                 )
             self._assert_recorded_spans(
@@ -888,7 +890,7 @@ class TestUtils(SpannerSimpleTestClass):
                 schema_editor.add_index(Author, index)
                 self.assertEqual(
                     str(schema_editor.execute.call_args_list[0].args[0]),
-                    f"CREATE INDEX test_order_index_num ON {expected_sql_table} (num)",
+                    f"CREATE INDEX `test_order_index_num` ON {expected_sql_table} (`num`)",
                 )
             self._assert_recorded_spans(
                 [
@@ -913,11 +915,11 @@ class TestUtils(SpannerSimpleTestClass):
                 new_field.model = Author
                 schema_editor.alter_field(Author, old_field, new_field)
                 self.assertIn(
-                    f"ALTER TABLE {expected_sql_table} RENAME COLUMN num TO author_num",
+                    f"ALTER TABLE {expected_sql_table} RENAME COLUMN `num` TO `author_num`",
                     str(schema_editor.execute.call_args_list[1].args[0]),
                 )
                 self.assertIn(
-                    f"ON {expected_sql_table} (author_num)",
+                    f"ON {expected_sql_table} (`author_num`)",
                     str(schema_editor.execute.call_args_list[3].args[0]),
                 )
             self._assert_recorded_spans(
@@ -961,7 +963,7 @@ class TestUtils(SpannerSimpleTestClass):
             {"RUNNING_SPANNER_BACKEND_TESTS": "1"},
         ):
             self._assert_unquoted_model_name_across_operations(
-                "my-table name", "my_table_name"
+                "my-table name", "`my_table_name`"
             )
 
     def test_trace_model_name_unquoted_empty_and_multiple_indexes(self) -> None:
