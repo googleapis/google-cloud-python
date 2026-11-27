@@ -284,6 +284,132 @@ class TestClient(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self._make_one(credentials=credentials, client_options=client_options)
 
+    def test_ctor_w_universe_domain_env_and_matched_credentials(self):
+        universe_domain = "example.com"
+        expected_api_endpoint = f"https://storage.{universe_domain}"
+        credentials = _make_credentials(universe_domain=universe_domain)
+        environ = {
+            "GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain,
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+        }
+
+        with mock.patch("os.environ", environ):
+            client = self._make_one(project="PROJECT", credentials=credentials)
+
+        self.assertEqual(client._connection.API_BASE_URL, expected_api_endpoint)
+        self.assertEqual(client.api_endpoint, expected_api_endpoint)
+        self.assertEqual(client.universe_domain, universe_domain)
+
+    def test_ctor_w_universe_domain_env_and_mismatched_credentials(self):
+        credentials = _make_credentials()  # default universe domain
+        environ = {
+            "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com",
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+        }
+
+        with mock.patch("os.environ", environ):
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                self._make_one(project="PROJECT", credentials=credentials)
+
+    def test_ctor_w_universe_domain_env_and_client_options(self):
+        # client_options takes precedence over the environment variable.
+        universe_domain = "other.example"
+        credentials = _make_credentials(universe_domain=universe_domain)
+        client_options = {"universe_domain": universe_domain}
+        environ = {
+            "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "example.com",
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+        }
+
+        with mock.patch("os.environ", environ):
+            client = self._make_one(
+                project="PROJECT",
+                credentials=credentials,
+                client_options=client_options,
+            )
+
+        self.assertEqual(client.universe_domain, universe_domain)
+        self.assertEqual(client.api_endpoint, f"https://storage.{universe_domain}")
+
+    def test_ctor_w_universe_domain_env_and_api_endpoint(self):
+        universe_domain = "example.com"
+        api_endpoint = "https://storage.custom.example.com"
+        credentials = _make_credentials(universe_domain=universe_domain)
+        client_options = {"api_endpoint": api_endpoint}
+        environ = {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain}
+
+        with mock.patch("os.environ", environ):
+            client = self._make_one(
+                project="PROJECT",
+                credentials=credentials,
+                client_options=client_options,
+            )
+
+        self.assertEqual(client.universe_domain, universe_domain)
+        self.assertEqual(client.api_endpoint, api_endpoint)
+
+    def test_ctor_w_universe_domain_env_default_universe(self):
+        credentials = _make_credentials()
+        environ = {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": _DEFAULT_UNIVERSE_DOMAIN}
+
+        with mock.patch("os.environ", environ):
+            client = self._make_one(project="PROJECT", credentials=credentials)
+
+        self.assertIsNone(client._universe_domain)
+        self.assertEqual(client.universe_domain, _DEFAULT_UNIVERSE_DOMAIN)
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+
+    def test_ctor_w_universe_domain_env_empty(self):
+        credentials = _make_credentials()
+        environ = {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": ""}
+
+        with mock.patch("os.environ", environ):
+            with self.assertRaises(ValueError):
+                self._make_one(project="PROJECT", credentials=credentials)
+
+    def test_ctor_w_universe_domain_env_and_mtls(self):
+        universe_domain = "example.com"
+        credentials = _make_credentials(universe_domain=universe_domain)
+        environ = {
+            "GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain,
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+        }
+
+        with mock.patch("os.environ", environ):
+            with self.assertRaisesRegex(ValueError, "mTLS"):
+                self._make_one(project="PROJECT", credentials=credentials)
+
+    def test_ctor_w_universe_domain_env_w_emulator(self):
+        # The emulator path uses anonymous credentials, which any universe accepts.
+        host = "http://localhost:8080"
+        universe_domain = "example.com"
+        environ = {
+            STORAGE_EMULATOR_ENV_VAR: host,
+            "GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain,
+        }
+
+        with mock.patch("os.environ", environ):
+            client = self._make_one()
+
+        self.assertEqual(client.universe_domain, universe_domain)
+        self.assertEqual(client._connection.API_BASE_URL, host)
+        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
+
+    def test_ctor_w_universe_domain_and_anonymous_credentials(self):
+        universe_domain = "example.com"
+        client_options = {"universe_domain": universe_domain}
+
+        client = self._make_one(
+            project="PROJECT",
+            credentials=AnonymousCredentials(),
+            client_options=client_options,
+        )
+
+        self.assertEqual(client.universe_domain, universe_domain)
+        self.assertEqual(client.api_endpoint, f"https://storage.{universe_domain}")
+
     def test_ctor_w_custom_headers(self):
         PROJECT = "PROJECT"
         credentials = _make_credentials()
@@ -462,6 +588,22 @@ class TestClient(unittest.TestCase):
 
         self.assertIsNone(client.project)
         self.assertIsInstance(client._connection, Connection)
+        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
+
+    def test_create_anonymous_client_w_universe_domain_env(self):
+        universe_domain = "example.com"
+        environ = {
+            "GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain,
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+        }
+        klass = self._get_target_class()
+
+        with mock.patch("os.environ", environ):
+            client = klass.create_anonymous_client()
+
+        self.assertIsNone(client.project)
+        self.assertEqual(client.universe_domain, universe_domain)
+        self.assertEqual(client.api_endpoint, f"https://storage.{universe_domain}")
         self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
 
     def test__push_batch_and__pop_batch(self):
