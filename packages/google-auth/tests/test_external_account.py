@@ -20,7 +20,13 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, exceptions, external_account, transport
+from google.auth import (
+    _helpers,
+    environment_vars,
+    exceptions,
+    external_account,
+    transport,
+)
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN, TokenState
 
 IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
@@ -1029,7 +1035,11 @@ class TestCredentials(object):
             is credentials._impersonated_credentials._rab_manager
         )
 
-    def test_cached_token_initializes_impersonated_credentials(self):
+    def test_cached_token_initializes_impersonated_credentials(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         # Initialize credentials with impersonation.
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
@@ -1059,6 +1069,27 @@ class TestCredentials(object):
 
             # Verify delegation occurred.
             mock_rab_refresh.assert_called_once_with(request, "https://example.com")
+
+    def test_cached_token_skips_impersonated_init_when_rab_disabled(self, monkeypatch):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "false",
+        )
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            scopes=self.SCOPES,
+        )
+        credentials.token = "CACHED_SA_TOKEN"
+        credentials.expiry = _helpers.utcnow() + datetime.timedelta(seconds=3600)
+
+        request = self.make_mock_request(status=http_client.OK, data={})
+        headers = {}
+        credentials.before_request(request, "GET", "https://example.com", headers)
+
+        assert credentials._impersonated_credentials is None
+        assert headers["authorization"] == "Bearer CACHED_SA_TOKEN"
+        assert "x-allowed-locations" not in headers
+        request.assert_not_called()
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
@@ -2288,6 +2319,121 @@ class TestCredentials(object):
         )
         assert crm_request_kwargs["url"] == expected_url
 
+    @pytest.mark.parametrize(
+        "token_url,impersonation_url",
+        [
+            pytest.param(
+                "https://sts.example.com/v1/token",
+                None,
+                id="non_default_token_url",
+            ),
+            pytest.param(
+                "https://sts.googleapis.com/v1/token",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@p.iam.gserviceaccount.com:generateAccessToken",
+                id="non_default_impersonation_url",
+            ),
+            pytest.param(
+                "https://sts.googleapis.com.evil.com/v1/token",
+                None,
+                id="spoofed_host_suffix",
+            ),
+            pytest.param(
+                "https://evilgoogleapis.com/v1/token",
+                None,
+                id="missing_subdomain_dot",
+            ),
+            pytest.param(None, None, id="missing_token_url"),
+            pytest.param("https://[invalid/v1/token", None, id="malformed_token_url"),
+            pytest.param(
+                "https://evil.com\\@sts.googleapis.com/v1/token",
+                None,
+                id="userinfo_in_token_url",
+            ),
+            pytest.param(
+                "https://sts.googleapis.com#evil.com",
+                None,
+                id="fragment_in_token_url",
+            ),
+            pytest.param(
+                "https://.googleapis.com/v1/token",
+                None,
+                id="empty_label_token_url",
+            ),
+        ],
+    )
+    def test_get_project_id_skips_non_default_universe_endpoints(
+        self, token_url, impersonation_url
+    ):
+        request = mock.create_autospec(transport.Request)
+        info = {
+            "type": "external_account",
+            "audience": self.AUDIENCE,
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+            "token_url": token_url,
+            "credential_source": self.CREDENTIAL_SOURCE,
+        }
+        if impersonation_url is not None:
+            info["service_account_impersonation_url"] = impersonation_url
+        credentials = CredentialsImpl.from_info(info, scopes=self.SCOPES)
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id is None
+        request.assert_not_called()
+
+    @pytest.mark.parametrize(
+        "universe_domain",
+        [
+            pytest.param("example.com", id="custom_universe"),
+            pytest.param(None, id="none_universe"),
+            pytest.param("", id="empty_universe"),
+        ],
+    )
+    def test_get_project_id_skips_default_crm_url_after_with_universe_domain(
+        self, universe_domain
+    ):
+        request = mock.create_autospec(transport.Request)
+        credentials = CredentialsImpl.from_info(
+            {
+                "type": "external_account",
+                "audience": self.AUDIENCE,
+                "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+                "token_url": "https://sts.example.com/v1/token",
+                "credential_source": self.CREDENTIAL_SOURCE,
+            },
+            scopes=self.SCOPES,
+        ).with_universe_domain(universe_domain)
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id is None
+        request.assert_not_called()
+
+    def test_get_project_id_allows_default_universe_token_url_when_universe_omitted(
+        self,
+    ):
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=self.SUCCESS_RESPONSE.copy(),
+            cloud_resource_manager_status=http_client.OK,
+            cloud_resource_manager_data=self.CLOUD_RESOURCE_MANAGER_SUCCESS_RESPONSE,
+        )
+        credentials = CredentialsImpl.from_info(
+            {
+                "type": "external_account",
+                "audience": self.AUDIENCE,
+                "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+                "token_url": self.TOKEN_URL,
+                "credential_source": self.CREDENTIAL_SOURCE,
+            },
+            scopes=self.SCOPES,
+        )
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id == self.PROJECT_ID
+
     def test_refresh_with_existing_impersonated_credentials(self):
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
@@ -2300,8 +2446,12 @@ class TestCredentials(object):
         credentials._impersonated_credentials.refresh.assert_called_once_with(request)
 
     def test_regional_access_boundary_refresh_delegates_to_impersonated_credentials(
-        self,
+        self, monkeypatch
     ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+            "true",
+        )
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
         )

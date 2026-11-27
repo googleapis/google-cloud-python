@@ -28,7 +28,6 @@ from decimal import Decimal
 from typing import Any
 
 import google.api_core.exceptions
-import packaging.version
 import sqlalchemy
 import sqlalchemy.sql.expression
 import sqlalchemy.sql.functions
@@ -46,6 +45,7 @@ from google.cloud.bigquery.table import (
 from sqlalchemy import util
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
+from sqlalchemy.engine.url import URL
 from sqlalchemy.exc import NoSuchColumnError, NoSuchTableError
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql import elements, selectable
@@ -59,13 +59,15 @@ from sqlalchemy.sql.schema import Column, Table
 from sqlalchemy.sql.selectable import CTE
 from sqlalchemy.sql.sqltypes import Integer, NullType, Numeric, String
 
-from . import _helpers, _types
+from . import _helpers, _struct, _types
 from .parse_url import parse_url
 
 # Illegal characters is intended to be all characters that are not explicitly
 # allowed as part of the flexible column names.
 # https://cloud.google.com/bigquery/docs/schemas#flexible-column-names
-FIELD_ILLEGAL_CHARACTERS = re.compile(r'[!"$()*,./;?@[\\\]^{}~\n]+', re.ASCII)
+FIELD_ILLEGAL_CHARACTERS = re.compile(
+    r'[!"$()*,./;?@[\\\]^`{}~\x00-\x1f\x7f]+', re.ASCII
+)
 
 TABLE_VALUED_ALIAS_ALIASES = "bigquery_table_valued_alias_aliases"
 
@@ -81,11 +83,32 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
     https://github.com/dropbox/PyHive/blob/master/pyhive/sqlalchemy_presto.py
     """
 
+    _UNESCAPE_IDENTIFIER_RE = re.compile(r"\\([\\`])")
+    _CONTROL_CHARACTERS_RE = re.compile(r"[\x00-\x1f\x7f]")
+
     def __init__(self, dialect):
         super(BigQueryIdentifierPreparer, self).__init__(
             dialect,
             initial_quote="`",
+            escape_quote="`",
         )
+
+    def _escape_identifier(self, value):
+        # SQLAlchemy's base IdentifierPreparer defaults to escaping quotes by
+        # doubling them (e.g. `""`), whereas BigQuery GoogleSQL escapes
+        # backslashes and backticks inside backtick-quoted identifiers using a
+        # leading backslash (`\\` and ``\` ``) and disallows raw newlines.
+        if self._CONTROL_CHARACTERS_RE.search(value):
+            raise sqlalchemy.exc.CompileError(
+                "Identifier cannot contain control characters"
+            )
+        value = value.replace("\\", "\\\\").replace("`", "\\`")
+        if self._double_percents:
+            value = value.replace("%", "%%")
+        return value
+
+    def _unescape_identifier(self, value):
+        return self._UNESCAPE_IDENTIFIER_RE.sub(r"\1", value)
 
     def quote_column(self, value):
         """
@@ -216,9 +239,114 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
             insert_stmt, asfrom=False, **kw
         )
 
+    @staticmethod
+    def _get_struct_type(type_):
+        # Unwrap TypeDecorator.impl so custom types wrapping STRUCT are still
+        # recognized as STRUCT columns during compilation.
+        while type_ is not None:
+            if isinstance(type_, _struct.STRUCT):
+                return type_
+            type_ = getattr(type_, "impl", None)
+        return None
+
     def visit_json_getitem_op_binary(self, binary, operator_, **kw):
+        # Both `STRUCT` subfield access (see `_struct.py`) and `sqlalchemy.JSON`
+        # subscripting (`json_col[key]`) use `operators.json_getitem_op`, but
+        # they compile to completely different BigQuery constructs:
+        #
+        # 1. For `STRUCT`: subfields are SQL identifiers (`struct_col.`field``),
+        #    which cannot be query parameters in BigQuery. We verify that the
+        #    requested field exists in the static STRUCT schema (in case
+        #    `json_getitem_op` was constructed directly, bypassing
+        #    `STRUCT.Comparator._setup_getitem`) and backtick-quote the
+        #    identifier via `quote_identifier`.
+        struct_type = self._get_struct_type(binary.left.type)
+        if struct_type is not None:
+            field_name = getattr(binary.right, "value", None)
+            if (
+                not isinstance(field_name, str)
+                or field_name.lower() not in struct_type._STRUCT_byname
+            ):
+                raise sqlalchemy.exc.CompileError(
+                    f"Invalid STRUCT field name: {field_name!r}"
+                )
+            left = self.process(binary.left, **kw)
+            return f"{left}.{self.preparer.quote_identifier(field_name)}"
+
+        # 2. For `JSON`: if a sequence (tuple/list) or `JSONPathType` parameter
+        #    was passed to `json_getitem_op`, delegate to
+        #    `visit_json_path_getitem_op_binary` so it compiles as a multi-step
+        #    `JSON_QUERY` path lookup.
+        if isinstance(binary.right, sqlalchemy.sql.elements.BindParameter) and (
+            _is_json_path_sequence(binary.right.value)
+            or isinstance(
+                sqlalchemy.sql.type_api.to_instance(binary.right.type),
+                sqlalchemy.sql.sqltypes.JSON.JSONPathType,
+            )
+        ):
+            return self.visit_json_path_getitem_op_binary(binary, operator_, **kw)
+
+        # Otherwise, compile single-step `JSON` subscripting using BigQuery's
+        # native JSON subscript operator `{left}[{right}]` rather than
+        # `JSON_VALUE` or unquoted dot access:
+        # - Unlike raw dot interpolation (`{left}.{right}`), `{left}[{right}]`
+        #   accepts query parameters (`%(param:STRING)s` / `%(param:INT64)s`),
+        #   preventing SQL injection and supporting integer array indices.
+        # - Unlike `JSON_VALUE` (which extracts a scalar `STRING` and returns
+        #   `NULL` for nested objects/arrays), `{left}[{right}]` returns `JSON`,
+        #   preserving the return type and chained subscripts (`col["a"][0]["b"]`).
         left = self.process(binary.left, **kw)
-        return f"{left}.{binary.right.value}"
+        right = binary.right
+        if isinstance(right, sqlalchemy.sql.elements.BindParameter):
+            if isinstance(right.value, bool):
+                # In Python `isinstance(True, int)` is True, so SQLAlchemy's
+                # `JSON.Comparator` assigns `JSONIntIndexType` to `col[True]`.
+                # BigQuery rejects `BOOL` as a JSON subscript, and JSON object
+                # keys are strings, so coerce boolean subscripts to string keys.
+                right = right._clone(maintain_key=True)
+                right.value = str(right.value)
+                right.type = BQJSONStrIndexType()
+            elif isinstance(right.type, type):
+                # When subscripting with an untyped `sa.bindparam("k")`,
+                # SQLAlchemy's `coercions.expect` sets `bindparam.type` to the
+                # `JSONStrIndexType` class rather than an instance. Instantiate
+                # it on a clone so `type_compiler` can dispatch it.
+                right = right._clone(maintain_key=True)
+                right.type = sqlalchemy.sql.type_api.to_instance(right.type)
+            elif isinstance(right.type, NullType):
+                # When `json_getitem_op` is constructed directly with an untyped
+                # BindParameter, infer the index type so `visit_bindparam` can
+                # emit the required `:INT64` or `:STRING` BigQuery type suffix.
+                right = right._clone(maintain_key=True)
+                right.type = (
+                    BQJSONIntIndexType()
+                    if isinstance(right.value, int)
+                    else BQJSONStrIndexType()
+                )
+        right_text = self.process(right, **kw)
+        return f"{left}[{right_text}]"
+
+    def visit_json_path_getitem_op_binary(self, binary, operator_, **kw):
+        # BigQuery's bracket subscript `json_col[...]` only steps one key or
+        # array offset at a time. Multi-step path tuples (`col[("a", 0, "b")]`)
+        # use `JSON_QUERY(json_col, json_path)`, which also returns a `JSON`
+        # value (consistent with single-step subscripting) and accepts a
+        # parameterized JSONPath string formatted by `BQJSONPathType`.
+        left = self.process(binary.left, **kw)
+        right = binary.right
+        if isinstance(right, sqlalchemy.sql.elements.BindParameter):
+            right_type = sqlalchemy.sql.type_api.to_instance(right.type)
+            if not isinstance(right_type, sqlalchemy.sql.sqltypes.JSON.JSONPathType):
+                right_type = (
+                    BQJSONPathType()
+                    if _is_json_path_sequence(right.value)
+                    else BQString()
+                )
+            if right_type is not right.type:
+                right = right._clone(maintain_key=True)
+                right.type = right_type
+        right_text = self.process(right, **kw)
+        return f"JSON_QUERY({left}, {right_text})"
 
     def visit_table_valued_alias(self, element, **kw):
         # When using table-valued functions, like UNNEST, BigQuery requires a
@@ -368,14 +496,10 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
     # no way to tell sqlalchemy that, so it works harder than
     # necessary and makes us do the same.
 
-    __sqlalchemy_version_info = packaging.version.parse(sqlalchemy.__version__)
-
     __expanding_text = "POSTCOMPILE"
 
     # https://github.com/sqlalchemy/sqlalchemy/commit/f79df12bd6d99b8f6f09d4bf07722638c4b4c159
-    __expanding_conflict = (
-        "" if __sqlalchemy_version_info < packaging.version.parse("1.4.27") else "__"
-    )
+    __expanding_conflict = "__"
 
     __in_expanding_bind = _helpers.substitute_string_re_method(
         rf"""
@@ -416,10 +540,21 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
     @staticmethod
     def _maybe_reescape(binary):
         binary = binary._clone()
+        binary.modifiers = binary.modifiers.copy()
         escape = binary.modifiers.pop("escape", None)
         if escape and escape != "\\":
+            if not (
+                isinstance(binary.right, elements.BindParameter)
+                and binary.right.unique
+                and isinstance(binary.right.value, str)
+            ):
+                raise sqlalchemy.exc.CompileError(
+                    "BigQuery only supports a custom escape character for literal "
+                    "strings"
+                )
+            binary.right = binary.right._clone()
             binary.right.value = escape.join(
-                v.replace(escape, "\\")
+                v.replace("\\", "\\\\").replace(escape, "\\")
                 for v in binary.right.value.split(escape + escape)
             )
         return binary
@@ -533,6 +668,16 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
         if literal_binds or isinstance(type_, NullType):
             return param
 
+        # SQLAlchemy's generic `JSONElementType` subclasses (`JSONIndexType`,
+        # `JSONIntIndexType`, `JSONStrIndexType`, `JSONPathType`) do not define
+        # `__visit_name__`. Because `bindparam.type` is not automatically
+        # adapted to the dialect before `visit_bindparam`, we resolve its
+        # dialect implementation via `BigQueryDialect.colspecs` (`BQJSON*Type`)
+        # so `self.dialect.type_compiler.process(type_)` can emit `:STRING` or
+        # `:INT64`.
+        if isinstance(type_, sqlalchemy.sql.sqltypes.JSON.JSONElementType):
+            type_ = type_.dialect_impl(self.dialect)
+
         if (
             isinstance(type_, Numeric)
             and (type_.precision is None or type_.scale is None)
@@ -553,8 +698,6 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
 
         if bindparam.expanding:  # pragma: NO COVER
             assert_(self.__expanded_param(param), f"Unexpected param: {param}")
-            if self.__sqlalchemy_version_info < packaging.version.parse("1.4.27"):
-                param = param.replace(")", f":{bq_type})")
 
         else:
             m = self.__placeholder(param)
@@ -636,6 +779,15 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
 
     def visit_JSON(self, type_, **kw):
         return "JSON"
+
+    def visit_json_int_index(self, type_, **kw):
+        return "INT64"
+
+    def visit_json_str_index(self, type_, **kw):
+        return "STRING"
+
+    visit_json_index = visit_json_str_index
+    visit_json_path = visit_json_str_index
 
     def visit_NUMERIC(self, type_, **kw):
         if (type_.precision is not None) and isinstance(
@@ -1007,9 +1159,76 @@ def process_string_literal(value):
     return repr(value.replace("%", "%%"))
 
 
+def _escape_json_path_key(key: str) -> str:
+    # Always quote member keys in BigQuery JSONPath (`$."key"`) and escape
+    # backslashes and double quotes so keys containing dots, brackets, quotes,
+    # spaces, or `$` cannot alter the JSONPath structure.
+    escaped = key.replace("\\", "\\\\").replace('"', '\\"')
+    return f'."{escaped}"'
+
+
+def _format_json_path_step(step: Any) -> str:
+    # Check `not isinstance(step, bool)` because `bool` is a subclass of `int`
+    # in Python, and boolean keys in a path tuple should be treated as string
+    # member names rather than `[1]` / `[0]` array offsets.
+    if isinstance(step, int) and not isinstance(step, bool):
+        return f"[{step}]"
+    return _escape_json_path_key(str(step))
+
+
+def _is_json_path_sequence(value: Any) -> bool:
+    return isinstance(value, (tuple, list))
+
+
 class BQString(String):
     def literal_processor(self, dialect):
         return process_string_literal
+
+
+# SQLAlchemy's built-in `JSON.JSONIndexType`, `JSON.JSONIntIndexType`, and
+# `JSON.JSONStrIndexType` do not define `__visit_name__`, which causes
+# `BigQueryTypeCompiler.process()` to fail when `visit_bindparam` formats the
+# `%(name:TYPE)s` parameter placeholder. These dialect subclasses supply
+# `__visit_name__` and `process_string_literal` (to escape `%` as `%%` when
+# `literal_binds=True`) and are registered in `BigQueryDialect.colspecs`.
+class BQJSONIndexType(sqlalchemy.sql.sqltypes.JSON.JSONIndexType):
+    __visit_name__ = "json_index"
+
+    def string_literal_processor(self, dialect):
+        return process_string_literal
+
+
+class BQJSONIntIndexType(sqlalchemy.sql.sqltypes.JSON.JSONIntIndexType):
+    __visit_name__ = "json_int_index"
+
+
+class BQJSONStrIndexType(sqlalchemy.sql.sqltypes.JSON.JSONStrIndexType):
+    __visit_name__ = "json_str_index"
+
+    def string_literal_processor(self, dialect):
+        return process_string_literal
+
+
+class BQJSONPathType(sqlalchemy.sql.sqltypes.JSON.JSONPathType):
+    __visit_name__ = "json_path"
+
+    def _format_value(self, value):
+        # Convert a sequence of path steps like `("a", 0, 'b"c')` into a
+        # BigQuery JSONPath string `'$."a"[0]."b\\"c"'` for `JSON_QUERY`.
+        path = "".join(_format_json_path_step(elem) for elem in value)
+        return f"${path}"
+
+    def bind_processor(self, dialect):
+        def process(value):
+            return self._format_value(value)
+
+        return process
+
+    def literal_processor(self, dialect):
+        def process(value):
+            return process_string_literal(self._format_value(value))
+
+        return process
 
 
 class BQBinary(sqlalchemy.sql.sqltypes._Binary):
@@ -1057,6 +1276,33 @@ class BQArray(sqlalchemy.sql.sqltypes.ARRAY):
         return process_array_literal
 
 
+class _CredentialsHidingURL(URL):
+    """A URL that also hides ``credentials_base64`` when it hides the password."""
+
+    __slots__ = ()
+
+    def render_as_string(self, hide_password=True):
+        url = self
+        if hide_password and "credentials_base64" in self.query:
+            url = self.update_query_dict({"credentials_base64": "***"})
+        return URL.render_as_string(url, hide_password=hide_password)
+
+    def difference_update_query(self, names):
+        # The base method returns a plain URL, which would show the key again.
+        url = URL.difference_update_query(self, names)
+        return url if url is self else type(self).create(*url)
+
+    def __hash__(self):
+        # This URL equals a plain URL with the same fields, so it must hash the
+        # same, and the masked string from render_as_string() would not.
+        return hash(URL.create(*self))
+
+    def __reduce__(self):
+        # SQLAlchemy 1.4 unpickles every URL as a plain URL, which would show
+        # the key again.
+        return (type(self).create, tuple(self))
+
+
 class BigQueryDialect(DefaultDialect):
     name = "bigquery"
     driver = "bigquery"
@@ -1079,6 +1325,10 @@ class BigQueryDialect(DefaultDialect):
     supports_native_decimal = True
     description_encoding = None
     supports_native_boolean = True
+    # google-cloud-bigquery's DB-API cursor already parses JSON fields into
+    # Python objects via CELL_DATA_PARSER.json_to_py, so SQLAlchemy's default
+    # JSON.result_processor must not call json.loads() a second time.
+    supports_native_json_deserialization = True
     supports_simple_order_by_label = True
     postfetch_lastrowid = False
     preexecute_autoincrement_sequences = False
@@ -1092,6 +1342,10 @@ class BigQueryDialect(DefaultDialect):
         sqlalchemy.sql.sqltypes.TIMESTAMP: BQTimestamp,
         sqlalchemy.sql.sqltypes.ARRAY: BQArray,
         sqlalchemy.sql.sqltypes.Enum: sqlalchemy.sql.sqltypes.Enum,
+        sqlalchemy.sql.sqltypes.JSON.JSONIndexType: BQJSONIndexType,
+        sqlalchemy.sql.sqltypes.JSON.JSONIntIndexType: BQJSONIntIndexType,
+        sqlalchemy.sql.sqltypes.JSON.JSONStrIndexType: BQJSONStrIndexType,
+        sqlalchemy.sql.sqltypes.JSON.JSONPathType: BQJSONPathType,
     }
 
     def __init__(
@@ -1197,6 +1451,14 @@ class BigQueryDialect(DefaultDialect):
             self.project_id = self.project_id or client.project
             self.billing_project_id = self.billing_project_id or client.project
             return ([], {"client": client})
+
+    @classmethod
+    def engine_created(cls, engine):
+        super(BigQueryDialect, cls).engine_created(engine)
+        # SQLAlchemy hides only the password when it prints a URL, and this
+        # parameter holds a whole service account key.
+        if "credentials_base64" in engine.url.query:
+            engine.url = _CredentialsHidingURL.create(*engine.url)
 
     def _get_table_or_view_names(self, connection, item_types, schema=None):
         current_schema = schema or self.dataset_id

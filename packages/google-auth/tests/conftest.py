@@ -55,12 +55,15 @@ def clean_cert_config_env(monkeypatch, tmp_path):
         environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
         raising=False,
     )
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_SDK_EXPERIMENTAL_PYTHON_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENABLED,
+        raising=False,
+    )
     monkeypatch.setattr(
         _mtls_helper,
         "_GKE_CREDENTIAL_BUNDLE_PATH",
         str(tmp_path / "gke" / "credential" / "bundle" / "path"),
     )
-    monkeypatch.setattr(_mtls_helper, "_spiffe_poll_timed_out", False)
 
 
 @pytest.fixture

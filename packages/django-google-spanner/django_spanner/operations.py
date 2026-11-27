@@ -136,10 +136,11 @@ class DatabaseOperations(BaseDatabaseOperations):
         backticks, backslashes, or ASCII control characters) are escaped and
         wrapped in backticks as a single identifier.
 
-        Spanner does not allow spaces or hyphens in table or index names, even
-        when quoted. Only when running Django's own backend test suite
-        (``RUNNING_SPANNER_BACKEND_TESTS=1``) are spaces and hyphens replaced
-        with underscores so Django test models that use such names can run.
+        Spanner does not allow spaces, hyphens, or '>' in table, index, or
+        constraint names, even when quoted. Only when running Django's own
+        backend test suite (``RUNNING_SPANNER_BACKEND_TESTS=1``) are those
+        characters replaced with underscores so Django test models that use
+        such names can run.
 
         :type name: str
         :param name: The table, index, or column name to quote.
@@ -154,7 +155,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         if not name:
             return name
         if os.environ.get("RUNNING_SPANNER_BACKEND_TESTS") == "1":
-            name = name.replace(" ", "_").replace("-", "_")
+            name = name.replace(" ", "_").replace("-", "_").replace(">", "_")
         if _QUOTED_IDENTIFIER_RE.match(name):
             return name
         # TODO(https://github.com/googleapis/google-cloud-python/issues/19072):

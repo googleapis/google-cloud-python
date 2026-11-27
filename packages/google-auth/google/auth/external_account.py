@@ -417,6 +417,23 @@ class Credentials(
         # Scopes are required in order to retrieve a valid access token.
         project_number = self.project_number or self._workforce_pool_user_project
         if project_number and scopes:
+            # Avoid sending tokens minted for non-googleapis.com endpoints
+            # (e.g. another universe domain or custom proxy) to
+            # cloudresourcemanager.googleapis.com.
+            if _helpers.has_default_universe_host(self._cloud_resource_manager_url):
+                if not _helpers.has_default_universe_host(self._token_url):
+                    return None
+                # Impersonation is optional; calling
+                # has_default_universe_host(None) returns False and would block
+                # non-impersonated default-universe credentials.
+                if (
+                    self._service_account_impersonation_url
+                    and not _helpers.has_default_universe_host(
+                        self._service_account_impersonation_url
+                    )
+                ):
+                    return None
+
             headers = {}
             url = "{}{}".format(self._cloud_resource_manager_url, project_number)
             self.before_request(request, "GET", url, headers)
@@ -455,6 +472,9 @@ class Credentials(
                 HTTP requests.
             url (str): The URL of the request.
         """
+        if not _regional_access_boundary_utils.is_regional_access_boundary_lookup_enabled():
+            return
+
         if self._should_initialize_impersonated_credentials():
             with self._impersonation_lock:
                 if self._impersonated_credentials is None:

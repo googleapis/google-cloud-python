@@ -625,6 +625,252 @@ class TestClient(unittest.TestCase):
         self.assertIs(new_client._credentials, client._credentials)
         self.assertEqual(new_client.project, client.project)
 
+    def _make_credentials(self):
+        from google.auth import credentials as ga_credentials
+
+        class _TestCredentials(ga_credentials.Credentials):
+            def refresh(self, request):
+                self.token = "token"
+
+            def with_quota_project(self, quota_project_id):
+                return self
+
+        return _TestCredentials()
+
+    def test_copy_preserves_client_options_and_configuration_without_mutating_original(
+        self,
+    ):
+        from google.api_core.client_options import ClientOptions
+        from google.api_core.gapic_v1 import client_info as client_info_lib
+
+        from google.cloud.spanner_v1 import client as MUT
+        from google.cloud.spanner_v1.types import RequestOptions
+
+        credentials = self._make_credentials()
+        custom_info = client_info_lib.ClientInfo(user_agent="custom-agent/1.0")
+        original_options = ClientOptions(
+            universe_domain="custom.example",
+            api_endpoint="spanner.custom.example:443",
+            quota_project_id="quota-proj",
+        )
+        original_observability_options = {"enable_extended_tracing": False}
+        original_directed_read_options = {
+            "include_replicas": {
+                "replica_selections": [{"location": "us-east1"}],
+                "auto_failover_disabled": True,
+            }
+        }
+        client_context = RequestOptions.ClientContext(secure_context={"key": "value"})
+
+        with (
+            mock.patch.dict(
+                os.environ,
+                {"SPANNER_DISABLE_BUILTIN_METRICS": "false"},
+                clear=False,
+            ),
+            mock.patch.object(MUT, "_initialize_metrics") as mock_initialize_metrics,
+        ):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            client = self._make_one(
+                project=self.PROJECT,
+                credentials=credentials,
+                client_info=custom_info,
+                client_options=original_options,
+                query_options={"optimizer_version": "4"},
+                route_to_leader_enabled=False,
+                directed_read_options=original_directed_read_options,
+                observability_options=original_observability_options,
+                default_transaction_options=self.DEFAULT_TRANSACTION_OPTIONS,
+                disable_builtin_metrics=True,
+                client_context=client_context,
+                use_plain_text=True,
+                ca_certificate="/tmp/ca.pem",
+                client_certificate="/tmp/cert.pem",
+                client_key="/tmp/key.pem",
+            )
+            client._instance_admin_api = mock.Mock()
+            client._database_admin_api = mock.Mock()
+            copied = client.copy()
+            mock_initialize_metrics.assert_not_called()
+
+        self.assertIsNot(copied, client)
+        self.assertIsNot(copied._client_options, original_options)
+        self.assertEqual(copied._client_options.universe_domain, "custom.example")
+        self.assertEqual(
+            copied._client_options.api_endpoint, "spanner.custom.example:443"
+        )
+        self.assertEqual(copied._client_options.quota_project_id, "quota-proj")
+        self.assertEqual(copied._host, "spanner.custom.example:443")
+        self.assertIs(copied._client_info, custom_info)
+        self.assertEqual(copied._query_options, client._query_options)
+        self.assertFalse(copied.route_to_leader_enabled)
+        self.assertEqual(copied.directed_read_options, original_directed_read_options)
+        self.assertIsNot(copied.directed_read_options, original_directed_read_options)
+        self.assertEqual(copied._observability_options, original_observability_options)
+        self.assertIsNot(copied._observability_options, original_observability_options)
+        self.assertEqual(
+            copied.default_transaction_options, self.DEFAULT_TRANSACTION_OPTIONS
+        )
+        self.assertTrue(copied._disable_builtin_metrics)
+        self.assertEqual(copied._client_context, client._client_context)
+        self.assertTrue(copied._use_plain_text)
+        self.assertEqual(copied._ca_certificate, "/tmp/ca.pem")
+        self.assertEqual(copied._client_certificate, "/tmp/cert.pem")
+        self.assertEqual(copied._client_key, "/tmp/key.pem")
+        self.assertIsNone(copied._instance_admin_api)
+        self.assertIsNone(copied._database_admin_api)
+
+        # Empty dict client_options copies cleanly without error.
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            empty_options_client = self._make_one(
+                project=self.PROJECT, credentials=credentials, client_options={}
+            )
+            copied_empty = empty_options_client.copy()
+            self.assertIsNone(copied_empty._client_options)
+
+    def test_copy_clears_credential_options_without_mutating_original(self):
+        from google.api_core.client_options import ClientOptions
+
+        credentials = self._make_credentials()
+        with (
+            mock.patch.dict(os.environ, {}, clear=False),
+            mock.patch(
+                "google.auth.load_credentials_from_file",
+                return_value=(credentials, self.PROJECT),
+            ),
+        ):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            file_options = ClientOptions(
+                credentials_file="/tmp/fake-credentials.json",
+                api_endpoint="spanner.custom.example",
+            )
+            client_from_file = self._make_one(
+                project=self.PROJECT, client_options=file_options
+            )
+            copied_file = client_from_file.copy()
+            self.assertIsNone(copied_file._client_options.credentials_file)
+            self.assertEqual(
+                file_options.credentials_file, "/tmp/fake-credentials.json"
+            )
+            self.assertEqual(copied_file._host, "spanner.custom.example")
+
+        # api_key in client_options is cleared on copy to avoid DuplicateCredentialArgs.
+        with (
+            mock.patch.dict(os.environ, {}, clear=False),
+            mock.patch("google.auth.default", return_value=(credentials, self.PROJECT)),
+        ):
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            os.environ.pop("SPANNER_EMULATOR_HOST", None)
+            api_key_options = ClientOptions(
+                api_key="test-api-key",
+                api_endpoint="spanner.custom.example",
+            )
+            client_api_key = self._make_one(
+                project=self.PROJECT, client_options=api_key_options
+            )
+            copied_api_key = client_api_key.copy()
+            self.assertIsNone(copied_api_key._client_options.api_key)
+            self.assertEqual(api_key_options.api_key, "test-api-key")
+
+    def test_copy_preserves_omni_configuration(self):
+        import warnings
+
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_v1.client import InstanceType
+        from google.cloud.spanner_v1.omni.credentials import (
+            SpannerOmniCredentials,
+        )
+
+        # Standard Omni client with api_endpoint, username/password, and TLS certs.
+        standard_omni_client = self._make_one(
+            project=self.PROJECT,
+            instance_type=InstanceType.OMNI,
+            client_options={"api_endpoint": "omni.host:15000"},
+            username="omni_user",
+            password="omni_password",
+            ca_certificate="/tmp/omni-ca.pem",
+            client_certificate="/tmp/omni-cert.pem",
+            client_key="/tmp/omni-key.pem",
+        )
+        copied_standard_omni = standard_omni_client.copy()
+        self.assertEqual(copied_standard_omni.instance_type, InstanceType.OMNI)
+        self.assertEqual(copied_standard_omni._host, "omni.host:15000")
+        self.assertEqual(
+            copied_standard_omni._client_options.api_endpoint, "omni.host:15000"
+        )
+        self.assertIsInstance(copied_standard_omni._credentials, SpannerOmniCredentials)
+        self.assertIs(
+            copied_standard_omni._credentials, standard_omni_client._credentials
+        )
+        self.assertEqual(copied_standard_omni._ca_certificate, "/tmp/omni-ca.pem")
+        self.assertEqual(copied_standard_omni._client_certificate, "/tmp/omni-cert.pem")
+        self.assertEqual(copied_standard_omni._client_key, "/tmp/omni-key.pem")
+
+        # Omni via deprecated experimental_host with client_options=None.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            omni_client = self._make_one(
+                project=self.PROJECT,
+                experimental_host="omni.host:15000",
+                use_plain_text=True,
+            )
+        copied_omni = omni_client.copy()
+        self.assertEqual(copied_omni.instance_type, InstanceType.OMNI)
+        self.assertEqual(copied_omni._host, "omni.host:15000")
+        self.assertEqual(copied_omni._client_options.api_endpoint, "omni.host:15000")
+        self.assertTrue(copied_omni._use_plain_text)
+
+        # Omni via experimental_host with endpoint-less ClientOptions.
+        original_omni_options = ClientOptions()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            omni_client_options = self._make_one(
+                project=self.PROJECT,
+                experimental_host="omni.host:15000",
+                client_options=original_omni_options,
+                use_plain_text=True,
+            )
+        copied_omni_options = omni_client_options.copy()
+        self.assertEqual(copied_omni_options.instance_type, InstanceType.OMNI)
+        self.assertEqual(copied_omni_options._host, "omni.host:15000")
+        self.assertEqual(
+            copied_omni_options._client_options.api_endpoint, "omni.host:15000"
+        )
+        self.assertIsNone(original_omni_options.api_endpoint)
+
+        # experimental_host takes precedence over client_options.api_endpoint on copy.
+        conflicting_omni_options = ClientOptions(api_endpoint="other.host:443")
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            conflicting_omni_client = self._make_one(
+                project=self.PROJECT,
+                experimental_host="omni.host:15000",
+                client_options=conflicting_omni_options,
+                use_plain_text=True,
+            )
+        copied_conflicting_omni = conflicting_omni_client.copy()
+        self.assertEqual(copied_conflicting_omni._host, "omni.host:15000")
+        self.assertEqual(
+            copied_conflicting_omni._client_options.api_endpoint,
+            "omni.host:15000",
+        )
+        self.assertEqual(conflicting_omni_options.api_endpoint, "other.host:443")
+
+    def test_copy_preserves_anonymous_credentials_client(self):
+        anonymous_client = self._make_one(
+            project=self.PROJECT,
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "localhost:9010"},
+        )
+        copied_anonymous = anonymous_client.copy()
+        self.assertEqual(copied_anonymous._emulator_host, "localhost:9010")
+        self.assertEqual(copied_anonymous._host, "localhost:9010")
+
     def test_credentials_property(self):
         credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -1165,3 +1411,206 @@ class TestInitializeMetrics(unittest.TestCase):
                     AnonymousCredentials(),
                 )
                 set_mock.assert_called_once()
+
+    def test_initialize_metrics_custom_api_endpoint_skips_exporter(self):
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_v1 import client as MUT
+
+        custom_endpoints = [
+            {"api_endpoint": "private-spanner.internal:443"},
+            ClientOptions(api_endpoint="spanner.us-central1.rep.googleapis.com"),
+            ClientOptions(
+                api_endpoint="spanner.googleapis.com",
+                universe_domain="my-universe.com",
+            ),
+            ClientOptions(api_endpoint="spanner.googleapis.com@evil.example"),
+        ]
+        for client_options in custom_endpoints:
+            with (
+                mock.patch(
+                    "google.cloud.spanner_v1.client._metrics_monitor_initialized",
+                    False,
+                ),
+                mock.patch(
+                    "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                    return_value=None,
+                ),
+                mock.patch(
+                    "google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter"
+                ) as mock_exporter,
+                mock.patch(
+                    "google.cloud.spanner_v1.client.metrics.set_meter_provider"
+                ) as mock_set_provider,
+                mock.patch(
+                    "google.cloud.spanner_v1.client.SpannerMetricsTracerFactory"
+                ),
+            ):
+                MUT._initialize_metrics(
+                    "project",
+                    mock.Mock(),
+                    client_options=client_options,
+                )
+                mock_exporter.assert_not_called()
+                mock_set_provider.assert_called_once()
+                self.assertIsInstance(
+                    mock_set_provider.call_args[0][0],
+                    MUT.metrics.NoOpMeterProvider,
+                )
+
+    def test_initialize_metrics_universe_propagation_and_option_filtering(self):
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_v1 import client as MUT
+
+        creds = mock.Mock()
+        client_options = ClientOptions(
+            universe_domain="my-universe.com",
+            quota_project_id="quota-proj",
+            scopes=["https://www.googleapis.com/auth/spanner.admin"],
+            api_audience="https://spanner.my-universe.com",
+            credentials_file="/tmp/fake-creds.json",
+        )
+        with (
+            mock.patch(
+                "google.cloud.spanner_v1.client._metrics_monitor_initialized",
+                False,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_emulator_host",
+                return_value=None,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter"
+            ) as mock_exporter,
+            mock.patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader"),
+            mock.patch("google.cloud.spanner_v1.client.MeterProvider"),
+            mock.patch("google.cloud.spanner_v1.client.metrics.set_meter_provider"),
+            mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory"),
+        ):
+            MUT._initialize_metrics(
+                "my-project",
+                creds,
+                client_options=client_options,
+            )
+
+        mock_exporter.assert_called_once()
+        _, kwargs = mock_exporter.call_args
+        self.assertEqual(kwargs["project_id"], "my-project")
+        self.assertIs(kwargs["credentials"], creds)
+        monitoring_opts = kwargs["client_options"]
+        self.assertIsInstance(monitoring_opts, ClientOptions)
+        self.assertEqual(monitoring_opts.universe_domain, "my-universe.com")
+        self.assertIsNone(monitoring_opts.api_endpoint)
+        self.assertIsNone(monitoring_opts.scopes)
+        self.assertIsNone(monitoring_opts.api_audience)
+        self.assertIsNone(monitoring_opts.credentials_file)
+        self.assertIsNone(monitoring_opts.api_key)
+
+    @mock.patch("google.cloud.spanner_v1.client.metrics")
+    @mock.patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter")
+    @mock.patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader")
+    @mock.patch("google.cloud.spanner_v1.client.MeterProvider")
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    @mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "false"})
+    def test_client_passes_resolved_project_credentials_and_options_to_metrics(
+        self,
+        mock_spanner_metrics_factory,
+        mock_meter_provider,
+        mock_periodic_reader,
+        mock_exporter,
+        mock_metrics,
+    ):
+        from google.cloud.spanner_v1 import client as MUT
+
+        creds = build_scoped_credentials()
+        creds.project_id = "resolved-from-creds"
+        MUT._metrics_monitor_initialized = False
+        try:
+            with mock.patch.dict(os.environ, {}, clear=False):
+                os.environ.pop("GOOGLE_CLOUD_PROJECT", None)
+                os.environ.pop("GCLOUD_PROJECT", None)
+                client = MUT.Client(
+                    project=None,
+                    credentials=creds,
+                    client_options={"universe_domain": "custom.universe"},
+                )
+            mock_exporter.assert_called_once()
+            _, kwargs = mock_exporter.call_args
+            self.assertEqual(kwargs["project_id"], "resolved-from-creds")
+            self.assertIs(kwargs["credentials"], client._credentials)
+            self.assertEqual(
+                kwargs["client_options"].universe_domain, "custom.universe"
+            )
+        finally:
+            MUT._metrics_monitor_initialized = False
+
+    @mock.patch("google.cloud.spanner_v1.client.metrics")
+    @mock.patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter")
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    @mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "false"})
+    def test_client_custom_api_endpoint_skips_metrics_exporter(
+        self,
+        mock_spanner_metrics_factory,
+        mock_exporter,
+        mock_metrics,
+    ):
+        from google.cloud.spanner_v1 import client as MUT
+
+        creds = build_scoped_credentials()
+        MUT._metrics_monitor_initialized = False
+        try:
+            MUT.Client(
+                project="my-project",
+                credentials=creds,
+                client_options={"api_endpoint": "private-psc.internal:443"},
+            )
+            mock_exporter.assert_not_called()
+        finally:
+            MUT._metrics_monitor_initialized = False
+
+    @mock.patch("google.cloud.spanner_v1.client.metrics")
+    @mock.patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter")
+    @mock.patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader")
+    @mock.patch("google.cloud.spanner_v1.client.MeterProvider")
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    @mock.patch.dict(
+        os.environ,
+        {
+            "SPANNER_DISABLE_BUILTIN_METRICS": "false",
+            "SPANNER_MONITORING_HOST": "monitoring-psc.internal:443",
+        },
+    )
+    def test_client_custom_api_endpoint_with_monitoring_host_env(
+        self,
+        mock_spanner_metrics_factory,
+        mock_meter_provider,
+        mock_periodic_reader,
+        mock_exporter,
+        mock_metrics,
+    ):
+        from google.cloud.spanner_v1 import client as MUT
+
+        creds = build_scoped_credentials()
+        MUT._metrics_monitor_initialized = False
+        try:
+            MUT.Client(
+                project="my-project",
+                credentials=creds,
+                client_options={
+                    "api_endpoint": "spanner.us-central1.rep.googleapis.com",
+                    "universe_domain": "custom.universe",
+                },
+            )
+            mock_exporter.assert_called_once()
+            _, kwargs = mock_exporter.call_args
+            self.assertEqual(
+                kwargs["client_options"].api_endpoint,
+                "monitoring-psc.internal:443",
+            )
+            self.assertEqual(
+                kwargs["client_options"].universe_domain,
+                "custom.universe",
+            )
+        finally:
+            MUT._metrics_monitor_initialized = False

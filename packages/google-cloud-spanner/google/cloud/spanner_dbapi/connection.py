@@ -14,6 +14,7 @@
 
 """DB-API Connection for the Google Cloud Spanner."""
 
+import copy
 import warnings
 from typing import Optional
 
@@ -836,6 +837,50 @@ class Connection:
         self.close()
 
 
+def _resolve_omni_client_options(client_options, experimental_host):
+    """Resolve the Omni host endpoint and shallow-copy client options.
+
+    Expects ``client_options`` to be ``None``, a :class:`ClientOptions`
+    instance, or a :class:`dict` (validated by :func:`connect`), resolves the
+    target endpoint (preferring ``experimental_host`` over ``client_options``),
+    and returns a shallow copy with ``api_endpoint`` populated so caller-owned
+    inputs are never mutated.
+
+    :type client_options: Optional[Union[:class:`ClientOptions`, dict]]
+    :param client_options: Caller-supplied client options, if any.
+
+    :type experimental_host: Optional[str]
+    :param experimental_host: Deprecated explicit Omni host endpoint override.
+
+    :rtype: Tuple[str, Union[:class:`ClientOptions`, dict]]
+    :returns: ``(host_endpoint, resolved_client_options)`` pair.
+
+    :raises ValueError: If no host endpoint can be determined.
+    """
+    host_endpoint = experimental_host
+    if not host_endpoint and client_options is not None:
+        if isinstance(client_options, ClientOptions):
+            host_endpoint = client_options.api_endpoint
+        else:
+            host_endpoint = client_options.get("api_endpoint")
+
+    if not host_endpoint:
+        raise ValueError("Host must be set for connecting to Spanner Omni instances")
+
+    # Shallow-copy caller options before setting api_endpoint so reusing the
+    # same options object across calls leaves no residue.
+    if client_options is None:
+        resolved_options = ClientOptions(api_endpoint=host_endpoint)
+    elif isinstance(client_options, dict):
+        resolved_options = client_options.copy()
+        resolved_options["api_endpoint"] = host_endpoint
+    else:
+        resolved_options = copy.copy(client_options)
+        resolved_options.api_endpoint = host_endpoint
+
+    return host_endpoint, resolved_options
+
+
 def connect(
     instance_id,
     database_id=None,
@@ -857,6 +902,7 @@ def connect(
     username=None,
     password=None,
     timeout=None,
+    client_options=None,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -919,13 +965,6 @@ def connect(
         or autocommit connections are automatically partitioned and executed in parallel.
         Defaults to False.
 
-    **kwargs: Initial value for connection variables.
-
-
-    :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
-    :returns: Connection object associated with the given Google Cloud Spanner
-              resource.
-
     :type experimental_host: str
     :param experimental_host: (Deprecated) Use `client_options` with `api_endpoint` and `instance_type="omni"` instead.
 
@@ -954,7 +993,54 @@ def connect(
     :param username: (Optional) Username for Spanner Omni authentication.
     :type password: str
     :param password: (Optional) Password for Spanner Omni authentication.
+
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+                          or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+                           on the client, such as ``api_endpoint`` or
+                           ``universe_domain``. Cannot be specified when a
+                           custom ``client`` is provided.
+
+    **kwargs: Initial value for connection variables.
+
+    .. note::
+
+        **Option precedence and interactions:**
+
+        - ``credentials`` as a file path (``str``) takes precedence over
+          ``experimental_host``, ``instance_type``, and the Omni auth/TLS
+          options, connecting via :meth:`Client.from_service_account_json`.
+        - ``SPANNER_EMULATOR_HOST`` (environment variable) overrides
+          ``credentials`` (unless passed as a ``str`` file path, which is
+          still loaded before the override) and ``api_endpoint`` to connect
+          to the Spanner emulator using anonymous credentials. Note that
+          ``instance_type="omni"`` still validates that an endpoint is set
+          and overrides ``project`` to ``"default"`` before
+          ``SPANNER_EMULATOR_HOST`` takes effect.
+        - ``experimental_host`` (deprecated) forces ``instance_type="omni"``
+          (overriding any ``instance_type`` value) and overrides
+          ``client_options.api_endpoint``.
+        - ``instance_type="omni"`` (when ``credentials`` is not a ``str``)
+          overrides ``project`` (to ``"default"``) and ``credentials``
+          (using ``SpannerOmniCredentials`` when both ``username`` and
+          ``password`` are provided, or ``AnonymousCredentials`` otherwise).
+        - ``use_plain_text``, ``ca_certificate``, ``client_certificate``,
+          ``client_key``, ``username``, and ``password`` apply only when
+          ``instance_type="omni"`` (and ``credentials`` is not a ``str``),
+          and are silently ignored otherwise.
+        - Providing both a custom ``client`` and non-``None``
+          ``client_options`` raises :class:`ValueError` (other client-creation
+          options are ignored when a custom ``client`` is provided).
+
+    :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
+    :returns: Connection object associated with the given Google Cloud Spanner
+              resource.
     """
+    if client_options is not None and not isinstance(
+        client_options, (ClientOptions, dict)
+    ):
+        raise TypeError("client_options must be a ClientOptions instance or dict")
+
     if client is None:
         client_info = ClientInfo(
             user_agent=user_agent or DEFAULT_USER_AGENT,
@@ -967,12 +1053,9 @@ def connect(
                 project=project,
                 client_info=client_info,
                 route_to_leader_enabled=route_to_leader_enabled,
+                client_options=client_options,
             )
         else:
-            client_options = None
-            if isinstance(credentials, AnonymousCredentials):
-                client_options = kwargs.get("client_options")
-
             if experimental_host is not None:
                 warnings.warn(
                     "experimental_host is deprecated. Please use client_options with api_endpoint instead, along with instance_type='omni'.",
@@ -987,18 +1070,9 @@ def connect(
                     raise ValueError("instance_type must be one of 'cloud' or 'omni'")
 
             if instance_type == "omni":
-                host_endpoint = experimental_host
-                if not host_endpoint and "client_options" in kwargs:
-                    opts = kwargs["client_options"]
-                    if hasattr(opts, "api_endpoint"):
-                        host_endpoint = opts.api_endpoint
-                    elif isinstance(opts, dict):
-                        host_endpoint = opts.get("api_endpoint")
-
-                if not host_endpoint:
-                    raise ValueError(
-                        "Host must be set for connecting to Spanner Omni instances"
-                    )
+                host_endpoint, client_options = _resolve_omni_client_options(
+                    client_options, experimental_host
+                )
 
                 project = "default"
                 has_username = username is not None
@@ -1023,18 +1097,6 @@ def connect(
                     )
                 else:
                     credentials = AnonymousCredentials()
-
-                client_options = kwargs.get("client_options")
-                if client_options is None:
-                    client_options = ClientOptions(api_endpoint=host_endpoint)
-                elif isinstance(client_options, dict):
-                    client_options = client_options.copy()
-                    client_options["api_endpoint"] = host_endpoint
-                else:
-                    import copy
-
-                    client_options = copy.copy(client_options)
-                    client_options.api_endpoint = host_endpoint
             client = spanner.Client(
                 project=project,
                 credentials=credentials,
@@ -1050,6 +1112,12 @@ def connect(
     else:
         if project is not None and client.project != project:
             raise ValueError("project in url does not match client object project")
+        if client_options is not None:
+            # Fail closed so custom client_options (e.g. universe_domain or
+            # api_endpoint) are never silently ignored when reusing a client.
+            raise ValueError(
+                "client_options cannot be specified when a custom client is provided"
+            )
 
     instance = client.instance(instance_id)
     database = None

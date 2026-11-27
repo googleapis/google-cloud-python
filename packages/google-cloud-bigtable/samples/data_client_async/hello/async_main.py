@@ -31,8 +31,6 @@ import asyncio
 from google.cloud import bigtable
 from google.cloud.bigtable.data import row_filters
 
-from ...utils import wait_for_table
-
 # [END bigtable_async_hw_imports]
 
 # use to ignore warnings
@@ -74,8 +72,18 @@ async def main(project_id, instance_id, table_id):
     # [END bigtable_async_hw_create_table]
 
     try:
-        # let table creation complete
-        wait_for_table(table)
+        # Wait for table creation to propagate to the data plane.
+        from google.api_core.exceptions import FailedPrecondition, NotFound
+
+        await table.read_row(
+            b"greeting0",
+            operation_timeout=120,
+            retryable_errors=(
+                *table.default_read_rows_retryable_errors,
+                FailedPrecondition,
+                NotFound,
+            ),
+        )
         # [START bigtable_async_hw_write_rows]
         print("Writing some greetings to the table.")
         greetings = [b"Hello World!", b"Hello Cloud Bigtable!", b"Hello Python!"]

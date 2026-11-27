@@ -19,16 +19,22 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     ExecuteBatchDmlRequest,
     ExecuteSqlRequest,
+    KeySet,
+    ReadRequest,
     TypeCode,
 )
+from google.cloud.spanner_v1._async.transaction import Transaction as AsyncTransaction
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 from google.cloud.spanner_v1.transaction import Transaction
 from tests.mockserver_tests.mock_server_test_base import (
+    AsyncMockServerTestBase,
     MockServerTestBase,
     aborted_status,
     add_error,
+    add_execute_streaming_sql_error,
     add_single_result,
+    add_streaming_read_error,
     add_update_count,
 )
 
@@ -95,6 +101,74 @@ class TestAbortedTransaction(MockServerTestBase):
             TransactionType.READ_WRITE,
         )
 
+    def test_run_in_transaction_query_mid_stream_aborted(self):
+        # Verify mid-stream Aborted on ExecuteStreamingSql triggers full transaction
+        # retry after yielding partial rows from the first attempt.
+        sql = "select value from my_table where id=1"
+        add_single_result(
+            sql,
+            "value",
+            TypeCode.STRING,
+            [("row1",), ("row2",)],
+        )
+        add_execute_streaming_sql_error(sql, 1, aborted_status())
+
+        observed_attempts = []
+        partial_rows_seen = []
+
+        def _query_tracking_partials(transaction: Transaction):
+            attempt_rows = []
+            for row in transaction.execute_sql(sql):
+                attempt_rows.append(row)
+                partial_rows_seen.append(row)
+            observed_attempts.append(attempt_rows)
+            return attempt_rows
+
+        result = self.database.run_in_transaction(_query_tracking_partials)
+        self.assertEqual([["row1"], ["row2"]], result)
+        self.assertEqual([[["row1"], ["row2"]]], observed_attempts)
+        self.assertEqual([["row1"], ["row1"], ["row2"]], partial_rows_seen)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    def test_run_in_transaction_streaming_read_mid_stream_aborted(self):
+        # Verify mid-stream Aborted on StreamingRead triggers full transaction retry
+        # after yielding partial rows from the first attempt.
+        add_single_result(
+            "SELECT value FROM my_table",
+            "value",
+            TypeCode.STRING,
+            [("row1",), ("row2",)],
+        )
+        add_streaming_read_error("my_table", ["value"], 1, aborted_status())
+
+        partial_rows_seen = []
+
+        def _read_tracking_partials(transaction: Transaction):
+            attempt_rows = []
+            for row in transaction.read(
+                table="my_table",
+                columns=["value"],
+                keyset=KeySet(all_=True),
+            ):
+                attempt_rows.append(row)
+                partial_rows_seen.append(row)
+            return attempt_rows
+
+        result = self.database.run_in_transaction(_read_tracking_partials)
+        self.assertEqual([["row1"], ["row2"]], result)
+        self.assertEqual([["row1"], ["row1"], ["row2"]], partial_rows_seen)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ReadRequest, ReadRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
     def test_run_in_transaction_batch_dml_aborted(self):
         add_update_count("update my_table set my_col=1 where id=1", 1)
         add_update_count("update my_table set my_col=1 where id=2", 1)
@@ -146,6 +220,154 @@ class TestAbortedTransaction(MockServerTestBase):
         do_commit()
 
 
+class TestAbortedTransactionAsync(AsyncMockServerTestBase):
+    async def test_async_run_in_transaction_commit_aborted(self):
+        add_error(SpannerServicer.Commit.__name__, aborted_status())
+        database = await self.get_database()
+        await database.run_in_transaction(_async_insert_mutations)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [
+                BeginTransactionRequest,
+                CommitRequest,
+                BeginTransactionRequest,
+                CommitRequest,
+            ],
+            TransactionType.READ_WRITE,
+        )
+
+    async def test_async_run_in_transaction_update_aborted(self):
+        add_update_count("update my_table set my_col=1 where id=2", 1)
+        add_error(SpannerServicer.ExecuteSql.__name__, aborted_status())
+        database = await self.get_database()
+        await database.run_in_transaction(_async_execute_update)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    async def test_async_run_in_transaction_query_aborted(self):
+        add_single_result(
+            "select value from my_table where id=1",
+            "value",
+            TypeCode.STRING,
+            "my-value",
+        )
+        add_error(SpannerServicer.ExecuteStreamingSql.__name__, aborted_status())
+        database = await self.get_database()
+        await database.run_in_transaction(_async_execute_query)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    async def test_async_run_in_transaction_query_mid_stream_aborted(self):
+        sql = "select value from my_table where id=1"
+        add_single_result(
+            sql,
+            "value",
+            TypeCode.STRING,
+            [("row1",), ("row2",)],
+        )
+        add_execute_streaming_sql_error(sql, 1, aborted_status())
+
+        observed_attempts = []
+        partial_rows_seen = []
+
+        async def _query_tracking_partials(transaction: AsyncTransaction):
+            attempt_rows = []
+            async for row in await transaction.execute_sql(sql):
+                attempt_rows.append(row)
+                partial_rows_seen.append(row)
+            observed_attempts.append(attempt_rows)
+            return attempt_rows
+
+        database = await self.get_database()
+        result = await database.run_in_transaction(_query_tracking_partials)
+        self.assertEqual([["row1"], ["row2"]], result)
+        self.assertEqual([[["row1"], ["row2"]]], observed_attempts)
+        self.assertEqual([["row1"], ["row1"], ["row2"]], partial_rows_seen)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    async def test_async_run_in_transaction_streaming_read_mid_stream_aborted(self):
+        add_single_result(
+            "SELECT value FROM my_table",
+            "value",
+            TypeCode.STRING,
+            [("row1",), ("row2",)],
+        )
+        add_streaming_read_error("my_table", ["value"], 1, aborted_status())
+
+        partial_rows_seen = []
+
+        async def _read_tracking_partials(transaction: AsyncTransaction):
+            attempt_rows = []
+            async for row in await transaction.read(
+                table="my_table",
+                columns=["value"],
+                keyset=KeySet(all_=True),
+            ):
+                attempt_rows.append(row)
+                partial_rows_seen.append(row)
+            return attempt_rows
+
+        database = await self.get_database()
+        result = await database.run_in_transaction(_read_tracking_partials)
+        self.assertEqual([["row1"], ["row2"]], result)
+        self.assertEqual([["row1"], ["row1"], ["row2"]], partial_rows_seen)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ReadRequest, ReadRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    async def test_async_run_in_transaction_batch_dml_aborted(self):
+        add_update_count("update my_table set my_col=1 where id=1", 1)
+        add_update_count("update my_table set my_col=1 where id=2", 1)
+        add_error(SpannerServicer.ExecuteBatchDml.__name__, aborted_status())
+        database = await self.get_database()
+        await database.run_in_transaction(_async_execute_batch_dml)
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteBatchDmlRequest, ExecuteBatchDmlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+    async def test_async_batch_commit_aborted(self):
+        add_error(SpannerServicer.Commit.__name__, aborted_status())
+        database = await self.get_database()
+        async with database.batch() as batch:
+            batch.insert(
+                table="Singers",
+                columns=("SingerId", "FirstName", "LastName"),
+                values=[
+                    (1, "Marc", "Richards"),
+                    (2, "Catalina", "Smith"),
+                    (3, "Alice", "Trentor"),
+                    (4, "Lea", "Martin"),
+                    (5, "David", "Lomond"),
+                ],
+            )
+        requests = self.spanner_service.requests
+        self.assert_requests_sequence(
+            requests,
+            [CommitRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
+
+
 def _insert_mutations(transaction: Transaction):
     transaction.insert("my_table", ["col1", "col2"], ["value1", "value2"])
 
@@ -162,6 +384,29 @@ def _execute_query(transaction: Transaction):
 
 def _execute_batch_dml(transaction: Transaction):
     transaction.batch_update(
+        [
+            "update my_table set my_col=1 where id=1",
+            "update my_table set my_col=1 where id=2",
+        ]
+    )
+
+
+async def _async_insert_mutations(transaction: AsyncTransaction):
+    transaction.insert("my_table", ["col1", "col2"], ["value1", "value2"])
+
+
+async def _async_execute_update(transaction: AsyncTransaction):
+    await transaction.execute_update("update my_table set my_col=1 where id=2")
+
+
+async def _async_execute_query(transaction: AsyncTransaction):
+    rows = await transaction.execute_sql("select value from my_table where id=1")
+    async for _ in rows:
+        pass
+
+
+async def _async_execute_batch_dml(transaction: AsyncTransaction):
+    await transaction.batch_update(
         [
             "update my_table set my_col=1 where id=1",
             "update my_table set my_col=1 where id=2",

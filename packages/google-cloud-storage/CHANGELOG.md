@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.17.1...google-cloud-storage-v3.17.2) (2026-11-23)
+
+
+### Bug Fixes
+
+* **storage:** support universe_domain in gRPC clients ([#19188](https://github.com/googleapis/google-cloud-python/issues/19188)) ([d2d5dee](https://github.com/googleapis/google-cloud-python/commit/d2d5deed7b5058f916237556e88140182b580b29))
+
 ## [3.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.17.0...google-cloud-storage-v3.17.1) (2026-10-15)
 
 

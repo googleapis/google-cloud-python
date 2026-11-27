@@ -17,6 +17,7 @@
 import functools
 
 from google.api_core import page_iterator
+from google.api_core.universe import determine_domain
 
 from google.cloud import _http
 from google.cloud.logging_v2 import __version__
@@ -27,20 +28,29 @@ from google.cloud.logging_v2.sink import Sink
 
 class Connection(_http.JSONConnection):
     DEFAULT_API_ENDPOINT = "https://logging.googleapis.com"
+    DEFAULT_API_ENDPOINT_TEMPLATE = "https://logging.{universe_domain}"
 
-    def __init__(self, client, *, client_info=None, api_endpoint=DEFAULT_API_ENDPOINT):
+    def __init__(self, client, *, client_info=None, api_endpoint=None):
         """A connection to Google Cloud Logging via the JSON REST API.
 
         Args:
-            client (google.cloud.logging_v2.cliet.Client):
+            client (google.cloud.logging_v2.client.Client):
                 The client that owns the current connection.
             client_info (Optional[google.api_core.client_info.ClientInfo]):
                 Instance used to generate user agent.
-            client_options (Optional[google.api_core.client_options.ClientOptions]):
-                Client options used to set user options
-                on the client. API Endpoint should be set through client_options.
+            api_endpoint (Optional[str]):
+                The API endpoint to use. If not passed, derived from the
+                client's ``universe_domain`` (defaulting to
+                ``"https://logging.googleapis.com"``).
         """
         super(Connection, self).__init__(client, client_info)
+        if api_endpoint is None:
+            universe_domain = determine_domain(
+                getattr(client, "universe_domain", None), None
+            )
+            api_endpoint = self.DEFAULT_API_ENDPOINT_TEMPLATE.format(
+                universe_domain=universe_domain
+            )
         self.API_BASE_URL = api_endpoint
         self._client_info.gapic_version = __version__
         self._client_info.client_library_version = __version__

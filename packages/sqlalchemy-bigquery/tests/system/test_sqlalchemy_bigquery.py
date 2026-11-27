@@ -21,7 +21,6 @@
 import datetime
 import decimal
 
-import packaging.version
 import pytest
 import sqlalchemy
 from google.cloud.bigquery import TimePartitioning
@@ -44,8 +43,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import expression
 
 import sqlalchemy_bigquery
-
-SQLALCHEMY_VERSION = packaging.version.parse(sqlalchemy.__version__)
 
 ONE_ROW_CONTENTS = [
     588,
@@ -487,10 +484,7 @@ def test_compiled_query_literal_binds(
     q = query(table)
     compiled = q.compile(engine, compile_kwargs={"literal_binds": True})
     with engine.connect() as conn:
-        if hasattr(conn, "exec_driver_sql"):
-            result = conn.exec_driver_sql(str(compiled)).fetchall()
-        else:
-            result = conn.execute(compiled).fetchall()
+        result = conn.exec_driver_sql(str(compiled)).fetchall()
         assert len(result) > 0
 
     q = query(table_using_test_dataset)
@@ -498,10 +492,7 @@ def test_compiled_query_literal_binds(
         engine_using_test_dataset, compile_kwargs={"literal_binds": True}
     )
     with engine_using_test_dataset.connect() as conn:
-        if hasattr(conn, "exec_driver_sql"):
-            result = conn.exec_driver_sql(str(compiled)).fetchall()
-        else:
-            result = conn.execute(compiled).fetchall()
+        result = conn.exec_driver_sql(str(compiled)).fetchall()
         assert len(result) > 0
 
 
@@ -803,10 +794,6 @@ def test_distinct_188(engine, bigquery_dataset):
     assert sorted(db.query(sqlalchemy.distinct(MyTable.my_column)).all()) == expected
 
 
-@pytest.mark.skipif(
-    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
-    reason="requires sqlalchemy 1.4 or higher",
-)
 def test_huge_in():
     engine = sqlalchemy.create_engine("bigquery://")
     conn = engine.connect()
@@ -824,10 +811,6 @@ def test_huge_in():
     assert not error, "execution failed"
 
 
-@pytest.mark.skipif(
-    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
-    reason="unnest (and other table-valued-function) support required version 1.4",
-)
 def test_unnest(engine, bigquery_dataset):
     from sqlalchemy import String, func, select
 
@@ -855,10 +838,6 @@ def test_unnest(engine, bigquery_dataset):
     assert sorted(r[0] for r in conn.execute(query)) == ["a", "b", "c", "x", "y"]
 
 
-@pytest.mark.skipif(
-    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
-    reason="unnest (and other table-valued-function) support required version 1.4",
-)
 def test_unnest_with_cte(engine, bigquery_dataset):
     from sqlalchemy import String, func, select
 
@@ -902,10 +881,6 @@ def test_unnest_with_cte(engine, bigquery_dataset):
     ]
 
 
-@pytest.mark.skipif(
-    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
-    reason="regexp_match support requires version 1.4 or higher",
-)
 def test_regexp_match(session, table):
     results = (
         session.query(table.c.string)
@@ -917,10 +892,6 @@ def test_regexp_match(session, table):
     assert len(results) == number_of_52st_records
 
 
-@pytest.mark.skipif(
-    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
-    reason="regexp_match support requires version 1.4 or higher",
-)
 def test_not_regexp_match(session, table):
     results = (
         session.query(table.c.string)
@@ -930,3 +901,62 @@ def test_not_regexp_match(session, table):
 
     number_of_non_barrowst_records = 993
     assert len(results) == number_of_non_barrowst_records
+
+
+def test_json_subscripts(engine, bigquery_dataset, metadata):
+    table_name = f"{bigquery_dataset}.test_json_subscripts"
+    table = Table(
+        table_name,
+        metadata,
+        Column("id", sqlalchemy.Integer),
+        Column("payload", sqlalchemy.JSON),
+    )
+    metadata.create_all(engine)
+
+    sample_json = (
+        '{"name": "alice", "items": [{"id": 10}, {"id": 20}], '
+        '"a`b": "tricky", "True": "bool_val"}'
+    )
+    with engine.connect() as conn:
+        conn.execute(
+            table.insert().from_select(
+                ["id", "payload"],
+                select(
+                    sqlalchemy.literal(1),
+                    func.parse_json(sample_json),
+                ),
+            )
+        )
+
+        stmt = select(
+            table.c.payload,
+            table.c.payload["name"],
+            table.c.payload["items"][1],
+            table.c.payload["items"][1]["id"],
+            table.c.payload[("items", 0, "id")],
+            table.c.payload["a`b"],
+            table.c.payload[True],
+            table.c.payload["a` FROM `events`; DROP TABLE `x`; --"],
+        ).where(func.json_value(table.c.payload["name"]) == "alice")
+
+        row = conn.execute(stmt).fetchone()
+        assert row == (
+            {
+                "name": "alice",
+                "items": [{"id": 10}, {"id": 20}],
+                "a`b": "tricky",
+                "True": "bool_val",
+            },
+            "alice",
+            {"id": 20},
+            20,
+            10,
+            "tricky",
+            "bool_val",
+            None,
+        )
+
+        # Also verify literal_binds=True execution against BigQuery
+        compiled_literal = stmt.compile(engine, compile_kwargs={"literal_binds": True})
+        literal_row = conn.exec_driver_sql(str(compiled_literal)).fetchone()
+        assert literal_row == row

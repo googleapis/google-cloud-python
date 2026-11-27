@@ -4,14 +4,12 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 import os
-import uuid
 
 import django
 from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 from django.db.models.fields import NOT_PROVIDED
 
-from django_spanner import USE_EMULATOR
 from django_spanner._opentelemetry_tracing import trace_call
 
 
@@ -57,6 +55,16 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     # sql_create_inline_fk = "CONSTRAINT FK_%(to_table)s_%(to_column)s_%(from_table)s_%(from_column)s FOREIGN KEY (%(from_column_norm)s) REFERENCES %(to_table_norm)s  (%(to_column_norm)s)"  # noqa
     sql_create_inline_fk = None
 
+    def _check_constraint_name(self, model, field):
+        """Build a quoted, deterministic check constraint identifier."""
+        return self.quote_name(
+            self._create_index_name(
+                model._meta.db_table.replace(".", "_"),
+                [field.column.replace(".", "_")],
+                suffix="_check",
+            )
+        )
+
     def create_model(self, model):
         """
         Create a table and any accompanying indexes or unique constraints for
@@ -76,15 +84,11 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             # Check constraints can go on the column SQL here
             db_params = field.db_parameters(connection=self.connection)
             if db_params["check"]:
-                definition += (
-                    ", CONSTRAINT constraint_%s_%s_%s "
-                    % (
-                        model._meta.db_table,
-                        self.quote_name(field.name),
-                        uuid.uuid4().hex[:6].lower(),
-                    )
-                    + self.sql_check_constraint % db_params
-                )
+                constraint_name = self._check_constraint_name(model, field)
+                definition += ", " + self.sql_constraint % {
+                    "name": constraint_name,
+                    "constraint": self.sql_check_constraint % db_params,
+                }
             # Autoincrement SQL (for backends with inline variant)
             col_type_suffix = field.db_type_suffix(connection=self.connection)
             if col_type_suffix:
@@ -169,7 +173,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 sql += " " + tablespace_sql
         # Prevent using [] as params, in the case a literal '%' is used in the
         # definition
-        trace_attributes = {"model_name": self.quote_name(model._meta.db_table)}
+        trace_attributes = {"model_name": model._meta.db_table}
 
         with trace_call(
             "CloudSpannerDjango.create_model",
@@ -200,7 +204,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         index_names = self._constraint_names(model, index=True, primary_key=False)
         for index_name in index_names:
             trace_attributes = {
-                "model_name": self.quote_name(model._meta.db_table),
+                "model_name": model._meta.db_table,
                 "index_name": index_name,
             }
             with trace_call(
@@ -209,7 +213,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 trace_attributes,
             ):
                 self.execute(self._delete_index_sql(model, index_name))
-        trace_attributes = {"model_name": self.quote_name(model._meta.db_table)}
+        trace_attributes = {"model_name": model._meta.db_table}
         with trace_call(
             "CloudSpannerDjango.delete_model",
             self.connection,
@@ -241,18 +245,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # It might not actually have a column behind it
         if definition is None:
             return
-        # Check constraints can go on the column SQL here
         db_params = field.db_parameters(connection=self.connection)
-        if db_params["check"]:
-            definition += (
-                ", CONSTRAINT constraint_%s_%s_%s "
-                % (
-                    model._meta.db_table,
-                    self.quote_name(field.name),
-                    uuid.uuid4().hex[:6].lower(),
-                )
-                + self.sql_check_constraint % db_params
-            )
         # Build the SQL and run it
         sql = self.sql_create_column % {
             "table": self.quote_name(model._meta.db_table),
@@ -284,6 +277,18 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                         "type": db_params["type"],
                     },
                 }
+            )
+        # Spanner does not allow inline constraints in ALTER TABLE ADD COLUMN.
+        if db_params["check"]:
+            constraint_name = self._check_constraint_name(model, field)
+            self.execute(
+                self.sql_create_check
+                % {
+                    "table": self.quote_name(model._meta.db_table),
+                    "name": constraint_name,
+                    "check": db_params["check"],
+                },
+                None,
             )
         # Add an index, if required
         self.deferred_sql.extend(self._field_indexes_sql(model, field))
@@ -320,7 +325,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         index_names = self._constraint_names(model, [field.column], index=True)
         for index_name in index_names:
             trace_attributes = {
-                "model_name": self.quote_name(model._meta.db_table),
+                "model_name": model._meta.db_table,
                 "field": field.column,
                 "index_name": index_name,
             }
@@ -332,7 +337,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 self.execute(self._delete_index_sql(model, index_name))
 
         trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table),
+            "model_name": model._meta.db_table,
             "field": field.column,
         }
         with trace_call(
@@ -444,7 +449,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             for field_name, order in index.fields_orders
         ]
         trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table),
+            "model_name": model._meta.db_table,
             "index": "|".join(index.fields),
         }
         with trace_call(
@@ -493,7 +498,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 )
             for index_name in index_names:
                 trace_attributes = {
-                    "model_name": self.quote_name(model._meta.db_table),
+                    "model_name": model._meta.db_table,
                     "alter_field": old_field.column,
                     "index_name": index_name,
                 }
@@ -504,7 +509,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 ):
                     self.execute(self._delete_index_sql(model, index_name))
         trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table),
+            "model_name": model._meta.db_table,
             "alter_field": old_field.column,
         }
         with trace_call(
@@ -525,7 +530,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # Recreate the index that was dropped earlier.
         if nullability_changed and new_field.db_index:
             trace_attributes = {
-                "model_name": self.quote_name(model._meta.db_table),
+                "model_name": model._meta.db_table,
                 "alter_field": new_field.column,
             }
             with trace_call(
@@ -562,15 +567,6 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             ),
             [],
         )
-
-    def _check_sql(self, name, check):
-        # Emulator does not support check constraints yet.
-        if USE_EMULATOR:
-            return None
-        return self.sql_constraint % {
-            "name": self.quote_name(name),
-            "constraint": self.sql_check_constraint % {"check": check},
-        }
 
     def _unique_sql(
         self,

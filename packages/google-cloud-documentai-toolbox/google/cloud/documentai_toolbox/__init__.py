@@ -14,9 +14,6 @@
 # limitations under the License.
 #
 
-import sys
-import warnings
-
 from google.cloud.documentai_toolbox import version as package_version
 
 __version__ = package_version.__version__
@@ -33,13 +30,3 @@ __all__ = (
     "docai_utilities",
     "gcs_utilities",
 )
-
-
-# Checks if the current runtime is Python < 3.10.
-if sys.version_info < (3, 10):  # pragma: NO COVER
-    message = (
-        "The google-cloud-documentai-toolbox library no longer supports Python 3.7, 3.8, and 3.9. "
-        "We recommend that you update soon to ensure ongoing support. For "
-        "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)"
-    )
-    warnings.warn(message, FutureWarning)

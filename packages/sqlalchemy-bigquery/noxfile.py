@@ -30,12 +30,11 @@ from typing import Dict, List
 import nox
 
 FLAKE8_VERSION = "flake8==6.1.0"
-BLACK_VERSION = "black[jupyter]==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
-ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = [
     "third_party",
     "docs",
+    "scripts",
     "sqlalchemy_bigquery",
     "tests",
     "noxfile.py",
@@ -44,7 +43,7 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+ALL_PYTHON: List[str] = [
     "3.10",
     "3.11",
     "3.12",
@@ -52,7 +51,13 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.14",
     "3.15",
 ]
-ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+    "3.15",
+]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -94,7 +99,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     ],
 }
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = UNIT_TEST_PYTHON_VERSIONS
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -207,19 +212,31 @@ def lint(session):
 
     session.run("python", "-m", "pip", "freeze")
 
-    session.run("flake8", "sqlalchemy_bigquery", "tests")
+    session.run("flake8", "scripts", "sqlalchemy_bigquery", "tests")
+
+    # 3. Check SQLAlchemy compiler safety (no unescaped `.value` interpolation)
+    session.run(
+        "python",
+        "scripts/check_compiler_safety.py",
+        "sqlalchemy_bigquery",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @_calculate_duration
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
 
-    session.run("python", "-m", "pip", "freeze")
-
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -302,16 +319,16 @@ def install_unittest_dependencies(session, *constraints):
 @_calculate_duration
 def unit(session, protobuf_implementation, install_extras=True):
     # Install all test dependencies, then install this package in-place.
+    if session.python not in UNIT_TEST_PYTHON_VERSIONS:
+        session.skip(f"Python {session.python} is not supported.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    if install_extras and session.python in ["3.11", "3.12", "3.13", "3.14", "3.15"]:
+    if install_extras:
         install_target = ".[geography,alembic,tests,bqstorage]"
-    elif install_extras:
-        install_target = ".[all]"
     else:
         install_target = "."
     session.install("-e", install_target, "-c", constraints_path)
@@ -372,6 +389,9 @@ def install_systemtest_dependencies(session, use_extras=True, *constraints):
 
 def _run_system_test_logic(session, test_type):
     """Shared logic for system, system_noextras, and compliance tests."""
+    if session.python not in SYSTEM_TEST_PYTHON_VERSIONS:
+        session.skip(f"Python {session.python} is not supported.")
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -466,7 +486,7 @@ def system(session, test_type):
     _run_system_test_logic(session, test_type)
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS, venv_backend=VENV_BACKEND)
+@nox.session(python=ALL_PYTHON, venv_backend=VENV_BACKEND)
 @_calculate_duration
 def system_noextras(session):
     """Run the system test suite without extras."""
@@ -494,7 +514,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.10", venv_backend=VENV_BACKEND)
+@nox.session(python="3.11")
 @_calculate_duration
 def docs(session):
     """Build the docs for this library."""
@@ -532,7 +552,7 @@ def docs(session):
     )
 
 
-@nox.session(python="3.10", venv_backend=VENV_BACKEND)
+@nox.session(python="3.11")
 @_calculate_duration
 def docfx(session):
     """Build the docfx yaml files for this library."""
@@ -721,10 +741,7 @@ def core_deps_from_source(session, protobuf_implementation):
     install_unittest_dependencies(session, "-c", constraints_path)
 
     # Mimic unit session install target
-    if session.python in ["3.11", "3.12", "3.13", "3.14", "3.15"]:
-        install_target = ".[geography,alembic,tests,bqstorage]"
-    else:
-        install_target = ".[all]"
+    install_target = ".[geography,alembic,tests,bqstorage]"
     session.install("-e", install_target, "-c", constraints_path)
 
     core_dependencies_from_source = [

@@ -19,13 +19,13 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
-    ResultSet,
 )
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of, is_not_none
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_has_table_result,
     add_result,
     add_update_count,
 )
@@ -35,14 +35,7 @@ class TestAutoIncrement(MockServerTestBase):
     def test_create_table(self):
         from tests.mockserver_tests.auto_increment_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
         engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests
@@ -61,14 +54,7 @@ LIMIT 1
     def test_create_auto_increment_table(self):
         from tests.mockserver_tests.auto_increment_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
         engine = self.create_engine()
         engine.dialect.use_auto_increment = True
         Base.metadata.create_all(engine)
@@ -87,14 +73,7 @@ LIMIT 1
     def test_create_table_with_specific_sequence_kind(self):
         from tests.mockserver_tests.auto_increment_model import Base
 
-        add_result(
-            """SELECT true
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA="" AND TABLE_NAME="singers"
-LIMIT 1
-""",
-            ResultSet(),
-        )
+        add_has_table_result("singers")
         engine = self.create_engine()
         engine.dialect.default_sequence_kind = "non_existing_kind"
         Base.metadata.create_all(engine)

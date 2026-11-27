@@ -115,6 +115,7 @@ from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import (
     DEFAULT_GET_JOB_TIMEOUT,
+    DEFAULT_INSERT_ROWS_RETRY,
     DEFAULT_JOB_RETRY,
     DEFAULT_RETRY,
     DEFAULT_TIMEOUT,
@@ -857,7 +858,7 @@ class Client(ClientWithProject):
         except core_exceptions.Conflict:
             if not exists_ok:
                 raise
-            return self.get_dataset(dataset.reference, retry=retry)
+            return self.get_dataset(dataset.reference, retry=retry, timeout=timeout)
 
     def create_routine(
         self,
@@ -912,7 +913,7 @@ class Client(ClientWithProject):
         except core_exceptions.Conflict:
             if not exists_ok:
                 raise
-            return self.get_routine(routine.reference, retry=retry)
+            return self.get_routine(routine.reference, retry=retry, timeout=timeout)
 
     def create_table(
         self,
@@ -973,7 +974,7 @@ class Client(ClientWithProject):
         except core_exceptions.Conflict:
             if not exists_ok:
                 raise
-            return self.get_table(table.reference, retry=retry)
+            return self.get_table(table.reference, retry=retry, timeout=timeout)
 
     def _call_api(
         self,
@@ -4065,7 +4066,7 @@ class Client(ClientWithProject):
         skip_invalid_rows: Optional[bool] = None,
         ignore_unknown_values: Optional[bool] = None,
         template_suffix: Optional[str] = None,
-        retry: retries.Retry = DEFAULT_RETRY,
+        retry: retries.Retry = DEFAULT_INSERT_ROWS_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
     ) -> Sequence[dict]:
         """Insert rows into a table without applying local type conversions.
@@ -4119,7 +4120,12 @@ class Client(ClientWithProject):
                 based on the schema of the template table. See
                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
             retry (Optional[google.api_core.retry.Retry]):
-                How to retry the RPC.
+                How to retry the RPC. Defaults to
+                :data:`~google.cloud.bigquery.retry.DEFAULT_INSERT_ROWS_RETRY`,
+                which, unlike :data:`~google.cloud.bigquery.retry.DEFAULT_RETRY`,
+                does not retry :class:`requests.exceptions.SSLError`, since
+                for streaming inserts that usually indicates an invalid request
+                (e.g. a schema mismatch) rather than a transient failure.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
@@ -4189,6 +4195,7 @@ class Client(ClientWithProject):
         path = "%s/insertAll" % table.path
         # We can always retry, because every row has an insert ID.
         span_attributes = {"path": path}
+
         try:
             response = self._call_api(
                 retry,
@@ -4199,12 +4206,15 @@ class Client(ClientWithProject):
                 data=data,
                 timeout=timeout,
             )
-        except requests.exceptions.SSLError as exc:
-            msg = (
-                "An SSL/Connection error occurred while streaming rows. This "
-                "could be due to an invalid request (e.g., invalid table schema)."
-            )
-            raise requests.exceptions.SSLError(msg) from exc
+        except (requests.exceptions.SSLError, core_exceptions.RetryError) as exc:
+            cause = exc.cause if isinstance(exc, core_exceptions.RetryError) else exc
+            if isinstance(cause, requests.exceptions.SSLError):
+                msg = (
+                    "An SSL/Connection error occurred while streaming rows. This "
+                    "could be due to an invalid request (e.g., invalid table schema)."
+                )
+                raise requests.exceptions.SSLError(msg) from exc
+            raise
         errors = []
 
         for error in response.get("insertErrors", ()):

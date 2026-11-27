@@ -24,7 +24,7 @@ from google.api_core.exceptions import InternalServerError
 from google.cloud._helpers import _datetime_to_pb_timestamp
 
 from google.cloud.spanner_v1._helpers import (
-    _check_rst_stream_error,
+    _is_retryable_internal_error,
     _make_list_value_pb,
     _make_list_value_pbs,
     _make_value_pb,
@@ -410,7 +410,7 @@ class MutationGroups(_SessionWrapper):
 
             response = _retry(
                 wrapped_method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                allowed_exceptions={InternalServerError: _is_retryable_internal_error},
             )
         self.committed = True
         return response

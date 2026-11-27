@@ -1759,12 +1759,15 @@ class Test_retry(unittest.TestCase):
 
         self.assertEqual(test_api.test_fxn.call_count, 2)
 
-    def test_check_rst_stream_error(self):
+    def test_retry_with_retryable_internal_error_predicate(self):
         import functools
 
         from google.api_core.exceptions import InternalServerError
 
-        from google.cloud.spanner_v1._helpers import _check_rst_stream_error, _retry
+        from google.cloud.spanner_v1._helpers import (
+            _is_retryable_internal_error,
+            _retry,
+        )
 
         test_api = mock.create_autospec(self.test_class)
         test_api.test_fxn.side_effect = [
@@ -1775,11 +1778,149 @@ class Test_retry(unittest.TestCase):
 
         _retry(
             functools.partial(test_api.test_fxn),
-            allowed_exceptions={InternalServerError: _check_rst_stream_error},
+            allowed_exceptions={InternalServerError: _is_retryable_internal_error},
             delay=0,
         )
 
         self.assertEqual(test_api.test_fxn.call_count, 3)
+
+    _RETRYABLE_INTERNAL_ERROR_MESSAGES = (
+        "RST_STREAM",
+        "INTERNAL: stream terminated by RST_STREAM.",
+        "Received RST_STREAM with error code 2",
+        "INTERNAL: Received unexpected EOS on DATA frame from server.",
+        "INTERNAL: HTTP/2 error code: INTERNAL_ERROR",
+        "INTERNAL: Connection closed with unknown cause",
+        "Authentication backend internal server error. Please retry",
+        "INTERNAL: Authentication backend internal server error. Please retry.",
+    )
+
+    def test_retry_with_all_retryable_internal_error_messages(self):
+        import functools
+
+        from google.api_core.exceptions import InternalServerError
+
+        from google.cloud.spanner_v1._helpers import (
+            _is_retryable_internal_error,
+            _retry,
+        )
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            InternalServerError(error_message)
+            for error_message in self._RETRYABLE_INTERNAL_ERROR_MESSAGES
+        ] + [True]
+
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
+            result = _retry(
+                functools.partial(test_api.test_fxn),
+                retry_count=len(self._RETRYABLE_INTERNAL_ERROR_MESSAGES),
+                allowed_exceptions={InternalServerError: _is_retryable_internal_error},
+                delay=2,
+            )
+
+        self.assertTrue(result)
+        self.assertEqual(
+            test_api.test_fxn.call_count,
+            len(self._RETRYABLE_INTERNAL_ERROR_MESSAGES) + 1,
+        )
+        self.assertEqual(
+            sleep_mock.call_count, len(self._RETRYABLE_INTERNAL_ERROR_MESSAGES)
+        )
+
+    def test_retry_with_non_retryable_internal_error(self):
+        import functools
+
+        from google.api_core.exceptions import InternalServerError
+
+        from google.cloud.spanner_v1._helpers import (
+            _is_retryable_internal_error,
+            _retry,
+        )
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            InternalServerError("non-retryable internal error"),
+            True,
+        ]
+
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
+            with self.assertRaisesRegex(
+                InternalServerError, "non-retryable internal error"
+            ):
+                _retry(
+                    functools.partial(test_api.test_fxn),
+                    allowed_exceptions={
+                        InternalServerError: _is_retryable_internal_error
+                    },
+                    delay=2,
+                )
+
+        self.assertEqual(test_api.test_fxn.call_count, 1)
+        sleep_mock.assert_not_called()
+
+    def test_retry_internal_error_exhausted(self):
+        import functools
+
+        from google.api_core.exceptions import InternalServerError
+
+        from google.cloud.spanner_v1._helpers import (
+            _is_retryable_internal_error,
+            _retry,
+        )
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = InternalServerError(
+            "HTTP/2 error code: INTERNAL_ERROR"
+        )
+
+        with mock.patch("google.cloud.spanner_v1._helpers.time.sleep") as sleep_mock:
+            with self.assertRaisesRegex(
+                InternalServerError, "HTTP/2 error code: INTERNAL_ERROR"
+            ):
+                _retry(
+                    functools.partial(test_api.test_fxn),
+                    retry_count=2,
+                    allowed_exceptions={
+                        InternalServerError: _is_retryable_internal_error
+                    },
+                    delay=2,
+                )
+
+        self.assertEqual(test_api.test_fxn.call_count, 3)
+        sleep_mock.assert_has_calls([mock.call(2), mock.call(4)])
+
+    def test_is_retryable_internal_error(self):
+        from google.api_core.exceptions import (
+            BadGateway,
+            InternalServerError,
+            InvalidArgument,
+            ServiceUnavailable,
+            Unknown,
+        )
+
+        from google.cloud.spanner_v1._helpers import _is_retryable_internal_error
+
+        for error_message in self._RETRYABLE_INTERNAL_ERROR_MESSAGES:
+            with self.subTest(error_message=error_message):
+                self.assertTrue(
+                    _is_retryable_internal_error(InternalServerError(error_message))
+                )
+
+        non_retryable_errors = [
+            InternalServerError("Internal server error."),
+            InternalServerError(""),
+            InternalServerError(None),
+            mock.Mock(spec=InternalServerError),
+            InvalidArgument("RST_STREAM"),
+            Unknown("Connection closed with unknown cause"),
+            ServiceUnavailable("HTTP/2 error code: INTERNAL_ERROR"),
+            BadGateway("RST_STREAM"),
+            ValueError("RST_STREAM"),
+        ]
+        for exception in non_retryable_errors:
+            with self.subTest(exception=exception):
+                self.assertFalse(_is_retryable_internal_error(exception))
 
     def test_retry_on_aborted_exception_with_success_after_first_aborted_retry(self):
         import functools

@@ -1362,6 +1362,38 @@ class TestClient(unittest.TestCase):
             ]
         )
 
+    def test_create_routine_w_conflict_exists_ok_w_timeout(self):
+        from google.cloud.bigquery.routine import Routine
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        path = "/projects/test-routine-project/datasets/test_routines/routines"
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.AlreadyExists("routine already exists"), resource
+        )
+        routine = Routine("test-routine-project.test_routines.minimal_routine")
+
+        client.create_routine(routine, exists_ok=True, timeout=7.5)
+
+        # The lookup after the conflict must keep the caller's timeout.
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(method="POST", path=path, data=resource, timeout=7.5),
+                mock.call(
+                    method="GET",
+                    path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                    timeout=7.5,
+                ),
+            ]
+        )
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table, TimePartitioning
 
@@ -1812,6 +1844,32 @@ class TestClient(unittest.TestCase):
                     timeout=DEFAULT_TIMEOUT,
                 ),
                 mock.call(method="GET", path=get_path, timeout=DEFAULT_TIMEOUT),
+            ]
+        )
+
+    def test_create_table_alreadyexists_w_exists_ok_true_w_timeout(self):
+        post_path = "/projects/{}/datasets/{}/tables".format(self.PROJECT, self.DS_ID)
+        get_path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        resource = self._make_table_resource()
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.AlreadyExists("table already exists"), resource
+        )
+
+        client.create_table(
+            "{}.{}".format(self.DS_ID, self.TABLE_ID), exists_ok=True, timeout=7.5
+        )
+
+        # The lookup after the conflict must keep the caller's timeout.
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(method="POST", path=post_path, data=mock.ANY, timeout=7.5),
+                mock.call(method="GET", path=get_path, timeout=7.5),
             ]
         )
 
@@ -7102,8 +7160,75 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(requests.exceptions.SSLError) as context:
             client.insert_rows_json(table, ROWS)
 
+        # The default retry for streaming inserts does not retry SSLErrors.
+        self.assertEqual(conn.api_request.call_count, 1)
         self.assertIn("invalid table schema", str(context.exception))
         self.assertIn("SSL/Connection error occurred", str(context.exception))
+
+    def test_insert_rows_json_w_ssl_error_w_default_retry(self):
+        """When a caller opts into DEFAULT_RETRY, SSLErrors are retried until
+        the deadline, and the resulting RetryError is still surfaced as a
+        descriptive SSLError."""
+        import requests.exceptions
+        from google.api_core import exceptions as core_exceptions
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = "PROJECT"
+        DS_ID = "DS_ID"
+        TABLE_ID = "TABLE_ID"
+        ROWS = [{"full_name": "Bhettye Rhubble", "age": "27", "joined": None}]
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=object())
+        conn = client._connection = make_connection({})
+        conn.api_request.side_effect = requests.exceptions.SSLError("EOF occurred")
+
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        table = Table(table_ref)
+
+        # Keep the test fast: negligible backoff and a very short deadline.
+        retry = DEFAULT_RETRY.with_delay(initial=0.001, maximum=0.001).with_deadline(
+            0.05
+        )
+        with self.assertRaises(requests.exceptions.SSLError) as context:
+            client.insert_rows_json(table, ROWS, retry=retry)
+
+        self.assertGreater(conn.api_request.call_count, 1)
+        self.assertIn("invalid table schema", str(context.exception))
+        self.assertIn("SSL/Connection error occurred", str(context.exception))
+        self.assertIsInstance(context.exception.__cause__, core_exceptions.RetryError)
+
+    def test_insert_rows_json_w_retry_error_non_ssl_cause(self):
+        """A RetryError caused by something other than an SSLError is re-raised
+        unchanged."""
+        import requests.exceptions
+        from google.api_core import exceptions as core_exceptions
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = "PROJECT"
+        DS_ID = "DS_ID"
+        TABLE_ID = "TABLE_ID"
+        ROWS = [{"full_name": "Bhettye Rhubble", "age": "27", "joined": None}]
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=object())
+        conn = client._connection = make_connection({})
+        retry_error = core_exceptions.RetryError(
+            "Deadline exceeded",
+            cause=requests.exceptions.ConnectionError("connection reset"),
+        )
+        conn.api_request.side_effect = retry_error
+
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        table = Table(table_ref)
+
+        with self.assertRaises(core_exceptions.RetryError) as context:
+            client.insert_rows_json(table, ROWS)
+
+        self.assertIs(context.exception, retry_error)
 
     def test_list_partitions(self):
         from google.cloud.bigquery.table import Table

@@ -14,6 +14,7 @@
 
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
+import google.auth
 import grpc
 from google.auth import credentials as auth_credentials
 
@@ -21,14 +22,11 @@ from google.cloud import _storage_v2 as storage_v2
 from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
-from google.cloud.storage import __version__, _opentelemetry_metrics
-from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
-from google.cloud.storage._helpers import create_trace_span_helper
-from google.cloud.storage.asyncio import _utils
+from google.cloud.storage import __version__
 from google.cloud.storage.grpc_client import (
-    _DEFAULT_HOST,
-    _resolve_direct_path_interconnect,
-    _rewrite_host_for_interconnect,
+    _resolve_grpc_config,
+    _resolve_universe_domain,
+    _validate_universe_domain,
 )
 
 
@@ -69,26 +67,6 @@ class AsyncGrpcClient:
     :param attempt_direct_path:
         (Optional) Whether to attempt to use DirectPath for gRPC connections.
         Defaults to ``True``.
-
-    :type attempt_direct_path_xds_over_interconnect: bool
-    :param attempt_direct_path_xds_over_interconnect:
-        (Optional) Whether to attempt DirectPath over Cloud Interconnect
-        using xDS and standard TLS. Can also be overridden via the
-        ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT`` environment
-        variable (``"true"`` or ``"false"``). Defaults to ``False``.
-
-    :type enable_metrics: bool or None
-    :param enable_metrics:
-        (Optional, Experimental) Whether to enable OpenTelemetry metrics. If
-        ``None``, falls back to the ``GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS``
-        environment variable, or ``False`` if unset.
-
-    :type enable_debug_metrics: bool or None
-    :param enable_debug_metrics:
-        (Optional, Experimental) Whether to enable debug OpenTelemetry
-        metrics. If ``None``, falls back to the
-        ``GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS`` environment variable,
-        or ``False`` if unset.
     """
 
     def __init__(
@@ -98,26 +76,13 @@ class AsyncGrpcClient:
         client_options=None,
         *,
         attempt_direct_path=True,
-        attempt_direct_path_xds_over_interconnect=False,
-        enable_metrics=None,
-        enable_debug_metrics=None,
     ):
-        self._enable_metrics = enable_metrics
-        self._enable_debug_metrics = enable_debug_metrics
-        self._metrics_enabled = _opentelemetry_metrics.is_metrics_enabled(
-            enable_metrics
-        )
-        self._debug_metrics_enabled = _opentelemetry_metrics.is_debug_metrics_enabled(
-            enable_debug_metrics
-        )
-        self._is_async_grpc_client = True
-        self._bucket_metadata_cache = BucketMetadataCache(self)
-
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
             if client_options is None or client_options.api_endpoint is None:
                 raise ValueError(
                     "Either client_options or `client_option.api_endpoint` is None. Please provide api_endpoint when `AnonymousCredentials` is used "
                 )
+            self._universe_domain = _resolve_universe_domain(client_options)
             self._grpc_client = self._create_anonymous_client(
                 client_options, credentials
             )
@@ -132,27 +97,18 @@ class AsyncGrpcClient:
         if agent_version not in client_info.user_agent:
             client_info.user_agent += f" {agent_version} "
 
-        use_dp_interconnect = _resolve_direct_path_interconnect(
-            attempt_direct_path_xds_over_interconnect
-        )
-
+        self._universe_domain = _resolve_universe_domain(client_options)
         self._grpc_client = self._create_async_grpc_client(
             credentials=credentials,
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
-            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
         )
 
     @property
-    def metrics_enabled(self) -> bool:
-        """(Experimental) Returns ``True`` if OpenTelemetry metrics recording is active for this client."""
-        return self._metrics_enabled
-
-    @property
-    def debug_metrics_enabled(self) -> bool:
-        """(Experimental) Returns ``True`` if debug metrics recording is active for this client."""
-        return self._debug_metrics_enabled
+    def universe_domain(self) -> str:
+        """The universe domain used by the client instance."""
+        return self._universe_domain
 
     def _create_anonymous_client(self, client_options, credentials):
         channel = grpc.aio.insecure_channel(client_options.api_endpoint)
@@ -175,42 +131,32 @@ class AsyncGrpcClient:
         client_info=None,
         client_options=None,
         attempt_direct_path=True,
-        attempt_direct_path_xds_over_interconnect=False,
     ):
+        (
+            universe_domain,
+            host,
+            quota_project_id,
+            attempt_direct_path,
+        ) = _resolve_grpc_config(client_options, attempt_direct_path)
         transport_cls = storage_v2.StorageAsyncClient.get_transport_class(
             "grpc_asyncio"
         )
+        if credentials is None:
+            credentials, _ = google.auth.default(
+                default_scopes=transport_cls.AUTH_SCOPES
+            )
+        _validate_universe_domain(universe_domain, credentials)
 
         primary_user_agent = client_info.to_user_agent()
 
-        host = _DEFAULT_HOST
-        quota_project_id = None
-        if isinstance(client_options, dict):
-            host = client_options.get("api_endpoint") or _DEFAULT_HOST
-            quota_project_id = client_options.get("quota_project_id")
-        elif client_options:
-            host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
-            quota_project_id = getattr(client_options, "quota_project_id", None)
-
-        if attempt_direct_path_xds_over_interconnect:
-            host = _rewrite_host_for_interconnect(host)
-            channel = transport_cls.create_channel(
-                host=host,
-                quota_project_id=quota_project_id,
-                attempt_direct_path=True,
-                attempt_direct_path_xds_over_interconnect=True,
-                credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
-            )
-        else:
-            channel = transport_cls.create_channel(
-                host=host,
-                quota_project_id=quota_project_id,
-                attempt_direct_path=attempt_direct_path,
-                credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
-            )
-        transport = transport_cls(channel=channel)
+        channel = transport_cls.create_channel(
+            host=host,
+            quota_project_id=quota_project_id,
+            attempt_direct_path=attempt_direct_path,
+            credentials=credentials,
+            options=(("grpc.primary_user_agent", primary_user_agent),),
+        )
+        transport = transport_cls(host=host, channel=channel)
 
         return storage_v2.StorageAsyncClient(
             transport=transport,
@@ -282,31 +228,24 @@ class AsyncGrpcClient:
         :param retry: (Optional) Designation of what errors, if any, should be retried.
         """
         _validate_metadata(metadata)
-        async with create_trace_span_helper(
-            self,
-            bucket_name,
-            "Storage.AsyncGrpcClient.deleteObject",
-            rpc_system="grpc",
-        ):
-            # The gRPC API requires the bucket name to be in the format "projects/_/buckets/bucket_name"
-            bucket_path = f"projects/_/buckets/{bucket_name}"
-            request = storage_v2.DeleteObjectRequest(
-                bucket=bucket_path,
-                object=object_name,
-                generation=generation,
-                if_generation_match=if_generation_match,
-                if_generation_not_match=if_generation_not_match,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                **kwargs,
-            )
-            final_metadata = _utils.inject_traceparent_to_metadata(metadata)
-            await self._grpc_client.delete_object(
-                request=request,
-                metadata=final_metadata,
-                timeout=timeout,
-                retry=retry,
-            )
+        # The gRPC API requires the bucket name to be in the format "projects/_/buckets/bucket_name"
+        bucket_path = f"projects/_/buckets/{bucket_name}"
+        request = storage_v2.DeleteObjectRequest(
+            bucket=bucket_path,
+            object=object_name,
+            generation=generation,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            **kwargs,
+        )
+        await self._grpc_client.delete_object(
+            request=request,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
+        )
 
     async def get_object(
         self,
@@ -369,31 +308,24 @@ class AsyncGrpcClient:
         :returns: The object metadata resource.
         """
         _validate_metadata(metadata)
-        async with create_trace_span_helper(
-            self,
-            bucket_name,
-            "Storage.AsyncGrpcClient.getObject",
-            rpc_system="grpc",
-        ):
-            bucket_path = f"projects/_/buckets/{bucket_name}"
+        bucket_path = f"projects/_/buckets/{bucket_name}"
 
-            request = storage_v2.GetObjectRequest(
-                bucket=bucket_path,
-                object=object_name,
-                generation=generation,
-                if_generation_match=if_generation_match,
-                if_generation_not_match=if_generation_not_match,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                soft_deleted=soft_deleted or False,
-                **kwargs,
-            )
+        request = storage_v2.GetObjectRequest(
+            bucket=bucket_path,
+            object=object_name,
+            generation=generation,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            soft_deleted=soft_deleted or False,
+            **kwargs,
+        )
 
-            final_metadata = _utils.inject_traceparent_to_metadata(metadata)
-            # Calls the underlying GAPIC StorageAsyncClient.get_object method
-            return await self._grpc_client.get_object(
-                request=request,
-                metadata=final_metadata,
-                timeout=timeout,
-                retry=retry,
-            )
+        # Calls the underlying GAPIC StorageAsyncClient.get_object method
+        return await self._grpc_client.get_object(
+            request=request,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
+        )
