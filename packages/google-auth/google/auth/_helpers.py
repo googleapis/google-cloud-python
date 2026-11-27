@@ -299,19 +299,21 @@ def validate_universe_domain(universe_domain: Any) -> None:
 
 
 def compare_universe_domains(
-    universe_domain: str, expected_universe_domain: str
+    universe_domain: Any, expected_universe_domain: Any
 ) -> None:
     """Verifies that ``universe_domain`` matches ``expected_universe_domain``.
 
     Args:
-        universe_domain (str): The configured universe domain.
-        expected_universe_domain (str): The expected universe domain (for
+        universe_domain (Any): The configured universe domain.
+        expected_universe_domain (Any): The expected universe domain (for
             example, from wrapped source credentials).
 
     Raises:
-        google.auth.exceptions.InvalidValue: If the two universe domains do
-            not match.
+        google.auth.exceptions.InvalidValue: If either universe domain is
+            invalid or the two universe domains do not match.
     """
+    validate_universe_domain(universe_domain)
+    validate_universe_domain(expected_universe_domain)
     if universe_domain != expected_universe_domain:
         raise exceptions.InvalidValue(
             f"The configured universe domain ({universe_domain}) does not "

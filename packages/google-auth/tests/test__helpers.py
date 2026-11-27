@@ -811,3 +811,33 @@ def test_compare_universe_domains_mismatch():
         r"match the expected universe domain \(googleapis\.com\)\.",
     ):
         _helpers.compare_universe_domains("example.com", "googleapis.com")
+
+
+def test_compare_universe_domains_case_sensitive_mismatch():
+    with pytest.raises(
+        exceptions.InvalidValue,
+        match=r"The configured universe domain \(Googleapis\.com\) does not "
+        r"match the expected universe domain \(googleapis\.com\)\.",
+    ):
+        _helpers.compare_universe_domains("Googleapis.com", "googleapis.com")
+
+
+@pytest.mark.parametrize(
+    "universe_domain,expected_universe_domain",
+    [
+        (None, None),
+        ("", ""),
+        ("   ", "   "),
+        ("example.com", None),
+        (None, "example.com"),
+        ("example.com", " "),
+    ],
+)
+def test_compare_universe_domains_invalid_inputs(
+    universe_domain, expected_universe_domain
+):
+    with pytest.raises(
+        exceptions.InvalidValue,
+        match="Universe domain must be a valid non-empty domain string",
+    ):
+        _helpers.compare_universe_domains(universe_domain, expected_universe_domain)
