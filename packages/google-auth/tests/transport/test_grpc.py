@@ -424,6 +424,50 @@ class TestSecureAuthorizedChannel(object):
             ssl_channel_credentials.return_value, metadata_call_credentials.return_value
         )
 
+    def test_secure_authorized_channel_with_default_host(
+        self,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        """secure_authorized_channel forwards default_host to AuthMetadataPlugin."""
+        credentials = mock.create_autospec(service_account.Credentials)
+        request = mock.create_autospec(transport.Request)
+        target = "pubsub.universe.foo:443"
+        default_host = "pubsub.universe.foo"
+        ssl_credentials = mock.Mock()
+
+        google.auth.transport.grpc.secure_authorized_channel(
+            credentials,
+            request,
+            target,
+            ssl_credentials=ssl_credentials,
+            default_host=default_host,
+            options=mock.sentinel.options,
+        )
+
+        # Verify default_host is consumed by AuthMetadataPlugin and not passed
+        # through to grpc.secure_channel.
+        secure_channel.assert_called_once_with(
+            target,
+            composite_channel_credentials.return_value,
+            options=mock.sentinel.options,
+        )
+        auth_plugin = metadata_call_credentials.call_args[0][0]
+        assert isinstance(auth_plugin, google.auth.transport.grpc.AuthMetadataPlugin)
+        assert auth_plugin._default_host == default_host
+
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = "methodName"
+        context.service_url = "https://pubsub.universe.foo/google.pubsub.v1.Publisher"
+        auth_plugin._get_authorization_headers(context)
+
+        credentials._create_self_signed_jwt.assert_called_once_with(
+            f"https://{default_host}/"
+        )
+
 
 @mock.patch("grpc.ssl_channel_credentials", autospec=True)
 @mock.patch(

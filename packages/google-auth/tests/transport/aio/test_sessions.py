@@ -38,6 +38,7 @@ from google.auth.exceptions import (
     TimeoutError,
     TransportError,
 )
+from google.oauth2 import service_account
 
 
 @pytest.fixture
@@ -282,6 +283,49 @@ class TestAsyncAuthorizedSession(object):
         # The same synchronous transport is reused for every call to the credentials.
         assert refresh_request is sync_credentials.before_request.call_args.args[0]
         await authed_session.close()
+
+    @pytest.mark.asyncio
+    async def test_constructor_with_service_account_and_default_host(self):
+        """AsyncAuthorizedSession forwards default_host to create a self-signed JWT."""
+        default_host = "pubsub.universe.foo"
+        sync_credentials = Mock(spec=service_account.Credentials)
+
+        authed_session = sessions.AsyncAuthorizedSession(
+            sync_credentials,
+            auth_request=MockRequest(),
+            default_host=default_host,
+        )
+
+        sync_credentials._create_self_signed_jwt.assert_called_once_with(
+            f"https://{default_host}/"
+        )
+        await authed_session.close()
+
+    @pytest.mark.asyncio
+    async def test_constructor_with_service_account_without_default_host(self):
+        """AsyncAuthorizedSession initializes service account JWT with None host."""
+        sync_credentials = Mock(spec=service_account.Credentials)
+
+        authed_session = sessions.AsyncAuthorizedSession(
+            sync_credentials,
+            auth_request=MockRequest(),
+        )
+
+        sync_credentials._create_self_signed_jwt.assert_called_once_with(None)
+        await authed_session.close()
+
+    @pytest.mark.asyncio
+    async def test_constructor_no_auth_request_does_not_mutate_service_account(self):
+        """Failed construction does not mutate service account credentials."""
+        sync_credentials = Mock(spec=service_account.Credentials)
+
+        with patch("google.auth.aio.transport.sessions.AIOHTTP_INSTALLED", False):
+            with pytest.raises(TransportError):
+                sessions.AsyncAuthorizedSession(
+                    sync_credentials, default_host="pubsub.universe.foo"
+                )
+
+        sync_credentials._create_self_signed_jwt.assert_not_called()
 
     @pytest.mark.asyncio
     async def test_request_default_auth_request_success(self):

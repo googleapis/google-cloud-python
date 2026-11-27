@@ -20,14 +20,18 @@ import datetime
 import hashlib
 import json
 import logging
+import re
 import sys
-import urllib
+import urllib.parse
 from email.message import Message
 from typing import Any, Dict, Mapping, Optional, Union
 
 from google.auth import exceptions
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+_DEFAULT_UNIVERSE_HOST_PATTERN = re.compile(
+    rf"^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*{re.escape(DEFAULT_UNIVERSE_DOMAIN)}$"
+)
 
 # _BASE_LOGGER_NAME is the base logger for all google-based loggers.
 _BASE_LOGGER_NAME = "google"
@@ -245,6 +249,53 @@ def update_query(url, params, remove=None):
     # Unsplit the url.
     new_parts = parts._replace(query=new_query)
     return urllib.parse.urlunparse(new_parts)
+
+
+def has_default_universe_host(url):
+    """Checks whether a URL's host is in the default universe domain.
+
+    Args:
+        url (Optional[str]): The URL to inspect.
+
+    Returns:
+        bool: True if ``url`` has a valid ``googleapis.com`` or
+            ``*.googleapis.com`` host without userinfo or fragments; False
+            otherwise.
+    """
+    if not isinstance(url, str) or "#" in url:
+        return False
+    try:
+        parsed = urllib.parse.urlparse(url)
+        # Reject userinfo ("@" in netloc) without rejecting "@" in the path
+        # (such as service account emails in service_account_impersonation_url).
+        if "@" in parsed.netloc:
+            return False
+        host = parsed.hostname
+        return bool(host and _DEFAULT_UNIVERSE_HOST_PATTERN.fullmatch(host))
+    except ValueError:
+        return False
+
+
+_UNIVERSE_DOMAIN_RE = re.compile(r"[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+)*")
+
+
+def validate_universe_domain(universe_domain: Any) -> None:
+    """Validates that ``universe_domain`` is a valid non-empty domain string.
+
+    Args:
+        universe_domain (Any): The universe domain to validate.
+
+    Raises:
+        google.auth.exceptions.InvalidValue: If ``universe_domain`` is not a
+            non-empty ASCII domain string (dot-separated labels of letters,
+            digits, hyphens, or underscores).
+    """
+    if not isinstance(universe_domain, str) or not _UNIVERSE_DOMAIN_RE.fullmatch(
+        universe_domain
+    ):
+        raise exceptions.InvalidValue(
+            "Universe domain must be a valid non-empty domain string."
+        )
 
 
 def scopes_to_string(scopes):

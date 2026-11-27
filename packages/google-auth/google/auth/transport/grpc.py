@@ -128,6 +128,7 @@ def secure_authorized_channel(
     target,
     ssl_credentials=None,
     client_cert_callback=None,
+    default_host=None,
     **kwargs,
 ):
     """Creates a secure authorized gRPC channel.
@@ -260,6 +261,9 @@ def secure_authorized_channel(
             ssl_credentials; providing both will raise an exception.
             This argument does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE`
             environment variable is explicitly set to `true`.
+        default_host (Optional[str]): A host like "pubsub.googleapis.com".
+            This is used when a self-signed JWT is created from service
+            account credentials.
         kwargs: Additional arguments to pass to :func:`grpc.secure_channel`.
 
     Returns:
@@ -270,7 +274,11 @@ def secure_authorized_channel(
             creation failed for any reason.
     """
     # Create the metadata plugin for inserting the authorization header.
-    metadata_plugin = AuthMetadataPlugin(credentials, request)
+    # Forward default_host so service account credentials can mint
+    # self-signed JWTs with the intended audience (AIP-4111).
+    metadata_plugin = AuthMetadataPlugin(
+        credentials, request, default_host=default_host
+    )
 
     # Create a set of grpc.CallCredentials using the metadata plugin.
     google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
