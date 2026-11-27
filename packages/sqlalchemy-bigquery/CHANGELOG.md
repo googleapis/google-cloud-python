@@ -8,6 +8,17 @@ Older versions of this project were distributed as [pybigquery][0].
 
 [1]: https://pypi.org/project/sqlalchemy-bigquery/#history
 
+## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.18.0...sqlalchemy-bigquery-v1.18.1) (2026-11-27)
+
+
+### Bug Fixes
+
+* **sqlalchemy-bigquery:** drop support for end-of-life Python 3.10 ([#19057](https://github.com/googleapis/google-cloud-python/issues/19057)) ([69b90e7](https://github.com/googleapis/google-cloud-python/commit/69b90e7acb86b11e5e462350d70d43903b22478d))
+* **sqlalchemy-bigquery:** escape backslashes in LIKE autoescape ([#19191](https://github.com/googleapis/google-cloud-python/issues/19191)) ([0f24474](https://github.com/googleapis/google-cloud-python/commit/0f244742fee58e7280ca354cef8bad7dd6f7206c))
+* **sqlalchemy-bigquery:** escape JSON subfields ([#19049](https://github.com/googleapis/google-cloud-python/issues/19049)) ([0a7171d](https://github.com/googleapis/google-cloud-python/commit/0a7171d4c6a09db27814ed0f2f580692c2dba8d6))
+* **sqlalchemy-bigquery:** harden BigQueryIdentifierPreparer escaping ([#19197](https://github.com/googleapis/google-cloud-python/issues/19197)) ([d81d838](https://github.com/googleapis/google-cloud-python/commit/d81d8381e033dd068184aba5b282e3c3b448cc82))
+* **sqlalchemy-bigquery:** hide credentials_base64 in repr(engine) ([#19198](https://github.com/googleapis/google-cloud-python/issues/19198)) ([19d885d](https://github.com/googleapis/google-cloud-python/commit/19d885d2951940b80da800fc4f230010b5c44be2))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.17.3...sqlalchemy-bigquery-v1.18.0) (2026-11-12)
 
 
