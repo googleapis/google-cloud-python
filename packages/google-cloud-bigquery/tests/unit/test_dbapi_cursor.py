@@ -511,6 +511,7 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(kwargs["job_id"], "foo")
 
     def test_execute_w_default_config(self):
+        from google.cloud.bigquery import job
         from google.cloud.bigquery.dbapi import connect
 
         client = self._mock_client(rows=[], num_dml_affected_rows=0)
@@ -521,7 +522,22 @@ class TestCursor(unittest.TestCase):
 
         _, kwargs = client.query.call_args
         used_config = kwargs["job_config"]
-        self.assertIsNone(used_config)
+        expected_config = job.QueryJobConfig(query_parameters=[])
+        self.assertEqual(used_config._properties, expected_config._properties)
+
+    def test_execute_custom_job_id_sends_query_parameters(self):
+        from google.cloud.bigquery.dbapi import connect
+
+        client = self._mock_client(rows=[], num_dml_affected_rows=0)
+        connection = connect(client)
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT %s;", (1,), job_id="foo")
+
+        _, kwargs = client.query.call_args
+        used_config = kwargs["job_config"]
+        self.assertEqual(len(used_config.query_parameters), 1)
+        self.assertEqual(used_config.query_parameters[0].value, 1)
 
     def test_execute_custom_job_config_wo_default_config(self):
         from google.cloud.bigquery import job

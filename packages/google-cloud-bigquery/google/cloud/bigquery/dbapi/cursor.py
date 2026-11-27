@@ -218,7 +218,7 @@ class Cursor(object):
             if job_id is not None:
                 rows = client.query(
                     formatted_operation,
-                    job_config=job_config,
+                    job_config=config,
                     job_id=job_id,
                     job_retry=None,
                 ).result(
