@@ -798,3 +798,46 @@ def test_validate_universe_domain_invalid(invalid_value):
         match="Universe domain must be a valid non-empty domain string",
     ):
         _helpers.validate_universe_domain(invalid_value)
+
+
+@pytest.mark.parametrize(
+    "universe_domain,expected_universe_domain",
+    [
+        ("example.com", "example.com"),
+        ("Googleapis.com", "googleapis.com"),
+        ("googleapis.com", "GOOGLEAPIS.COM"),
+        ("My-Universe.Example.Com", "my-universe.example.com"),
+    ],
+)
+def test_compare_universe_domains_match(universe_domain, expected_universe_domain):
+    _helpers.compare_universe_domains(universe_domain, expected_universe_domain)
+
+
+def test_compare_universe_domains_mismatch():
+    with pytest.raises(
+        exceptions.InvalidValue,
+        match=r"The configured universe domain \(Example\.com\) does not "
+        r"match the expected universe domain \(googleapis\.com\)\.",
+    ):
+        _helpers.compare_universe_domains("Example.com", "googleapis.com")
+
+
+@pytest.mark.parametrize(
+    "universe_domain,expected_universe_domain",
+    [
+        (None, None),
+        ("", ""),
+        ("   ", "   "),
+        ("example.com", None),
+        (None, "example.com"),
+        ("example.com", " "),
+    ],
+)
+def test_compare_universe_domains_invalid_inputs(
+    universe_domain, expected_universe_domain
+):
+    with pytest.raises(
+        exceptions.InvalidValue,
+        match="Universe domain must be a valid non-empty domain string",
+    ):
+        _helpers.compare_universe_domains(universe_domain, expected_universe_domain)
