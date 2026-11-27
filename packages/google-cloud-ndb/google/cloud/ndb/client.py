@@ -20,7 +20,10 @@ import os
 import google.api_core.client_options
 import grpc
 import requests
+from google.api_core import universe
 from google.api_core.gapic_v1 import client_info
+from google.auth import compute_engine
+from google.auth import credentials as auth_credentials
 from google.cloud.datastore_v1.services.datastore.transports import (
     grpc as datastore_grpc,
 )
@@ -36,6 +39,28 @@ _CLIENT_INFO = client_info.ClientInfo(
 )
 
 DATASTORE_API_HOST = "datastore.googleapis.com"
+
+
+# TODO(universe-domain): Replace with
+# google.api_core.universe.validate_credentials_universe once minimum
+# google-api-core version exceeds 2.44.0.
+def _validate_credentials_universe(client_universe, credentials):
+    """Validate that resolved client credentials match ``client_universe``."""
+    if credentials is None or isinstance(
+        credentials, auth_credentials.AnonymousCredentials
+    ):
+        return
+    # Avoid synchronous GCE metadata server HTTP calls when
+    # compute_engine.Credentials hasn't resolved its universe yet.
+    if (
+        isinstance(credentials, compute_engine.Credentials)
+        and getattr(credentials, "_universe_domain_cached", None) is False
+    ):
+        return
+    cred_universe = getattr(credentials, "universe_domain", universe.DEFAULT_UNIVERSE)
+    if not isinstance(cred_universe, str):
+        return
+    universe.compare_domains(client_universe, credentials)
 
 
 def _get_gcd_project():
@@ -104,7 +129,6 @@ class Client(google_client.ClientWithProject):
         database=None,
     ):
         self.namespace = namespace
-        self.host = os.environ.get(environment_vars.GCD_HOST, DATASTORE_API_HOST)
         self.client_info = _CLIENT_INFO
         self._client_options = client_options
         self.database = database
@@ -114,15 +138,20 @@ class Client(google_client.ClientWithProject):
         emulator = bool(os.environ.get(environment_vars.GCD_HOST))
         self.secure = not emulator
 
-        # Use Datastore API host from client_options if provided, otherwise use default
-        api_endpoint = DATASTORE_API_HOST
-        if client_options is not None:
-            if isinstance(client_options, dict):
-                client_options = google.api_core.client_options.from_dict(
-                    client_options
-                )
-            if client_options.api_endpoint:
-                api_endpoint = client_options.api_endpoint
+        if isinstance(client_options, dict):
+            client_options = google.api_core.client_options.from_dict(client_options)
+
+        universe_domain = universe.determine_domain(
+            client_options.universe_domain if client_options else None,
+            os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        ).strip()
+        self._universe_domain = universe_domain
+
+        # Use Datastore API host from client_options if provided, otherwise
+        # template using the resolved universe_domain.
+        api_endpoint = f"datastore.{universe_domain}"
+        if client_options is not None and client_options.api_endpoint:
+            api_endpoint = client_options.api_endpoint
 
         self.host = os.environ.get(environment_vars.GCD_HOST, api_endpoint)
 
@@ -153,6 +182,7 @@ class Client(google_client.ClientWithProject):
                 ],
             )
         else:
+            _validate_credentials_universe(self._universe_domain, self._credentials)
             user_agent = self.client_info.to_user_agent()
             channel = _helpers.make_secure_channel(
                 self._credentials, user_agent, self.host
@@ -237,6 +267,11 @@ class Client(google_client.ClientWithProject):
 
             # Finish up any work left to do on the event loop
             context.eventloop.run()
+
+    @property
+    def universe_domain(self):
+        """The universe domain used by the client."""
+        return self._universe_domain
 
     @property
     def _http(self):
