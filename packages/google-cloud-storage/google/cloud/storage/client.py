@@ -44,6 +44,7 @@ from google.cloud.storage._helpers import (
     _get_api_endpoint_override,
     _get_environ_project,
     _get_storage_emulator_override,
+    _get_universe_domain_override,
     _virtual_hosted_style_base_url,
     create_trace_span_helper,
 )
@@ -109,6 +110,8 @@ class Client(ClientWithProject):
     :type client_options: :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
     :param client_options: (Optional) Client options used to set user options on the client.
         A non-default universe domain or api endpoint should be set through client_options.
+        If ``universe_domain`` is not set here, the ``GOOGLE_CLOUD_UNIVERSE_DOMAIN``
+        environment variable is used.
 
     :type use_auth_w_custom_endpoint: bool
     :param use_auth_w_custom_endpoint:
@@ -186,7 +189,7 @@ class Client(ClientWithProject):
         if client_options and client_options.universe_domain:
             self._universe_domain = client_options.universe_domain
         else:
-            self._universe_domain = None
+            self._universe_domain = _get_universe_domain_override()
 
         storage_emulator_override = _get_storage_emulator_override()
         api_endpoint_override = _get_api_endpoint_override()
@@ -208,8 +211,9 @@ class Client(ClientWithProject):
         elif api_endpoint_override:
             api_endpoint = api_endpoint_override
 
-        # 4. Elif the `universe_domain` is set in `client_options`,
-        #    create the endpoint using that as the default.
+        # 4. Elif the `universe_domain` is set in `client_options` or in the
+        #    "GOOGLE_CLOUD_UNIVERSE_DOMAIN" env var, create the endpoint using
+        #    that as the default.
         #
         #    Mutual TLS is not compatible with a non-default universe domain
         #    at this time. If such settings are enabled along with the
@@ -272,8 +276,12 @@ class Client(ClientWithProject):
         )
 
         # Validate that the universe domain of the credentials matches the
-        # universe domain of the client.
-        if self._credentials.universe_domain != self.universe_domain:
+        # universe domain of the client. Anonymous credentials carry no token,
+        # so they are valid in every universe.
+        if (
+            not isinstance(self._credentials, AnonymousCredentials)
+            and self._credentials.universe_domain != self.universe_domain
+        ):
             raise ValueError(
                 "The configured universe domain ({client_ud}) does not match "
                 "the universe domain found in the credentials ({cred_ud}). If "

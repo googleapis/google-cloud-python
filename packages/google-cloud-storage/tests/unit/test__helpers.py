@@ -78,6 +78,38 @@ class Test__get_api_endpoint_override(unittest.TestCase):
         self.assertEqual(override, BASE_URL)
 
 
+class Test__get_universe_domain_override(unittest.TestCase):
+    @staticmethod
+    def _call_fut():
+        from google.cloud.storage._helpers import _get_universe_domain_override
+
+        return _get_universe_domain_override()
+
+    def test_wo_env_var(self):
+        with mock.patch("os.environ", {}):
+            self.assertIsNone(self._call_fut())
+
+    def test_w_default_universe(self):
+        environ = {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "googleapis.com"}
+        with mock.patch("os.environ", environ):
+            self.assertIsNone(self._call_fut())
+
+    def test_w_non_default_universe(self):
+        for value in ("example.com", "  example.com  "):
+            with self.subTest(value=value):
+                environ = {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": value}
+                with mock.patch("os.environ", environ):
+                    self.assertEqual(self._call_fut(), "example.com")
+
+    def test_w_empty_value(self):
+        for value in ("", "   "):
+            with self.subTest(value=value):
+                environ = {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": value}
+                with mock.patch("os.environ", environ):
+                    with self.assertRaises(ValueError):
+                        self._call_fut()
+
+
 class Test__get_environ_project(unittest.TestCase):
     @staticmethod
     def _call_fut():

@@ -19,6 +19,12 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
+def _clear_universe_domain_env(monkeypatch):
+    """Keeps the runner's environment from changing the universe clients resolve."""
+    monkeypatch.delenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", raising=False)
+
+
+@pytest.fixture(autouse=True)
 def set_event_loop():
     try:
         asyncio.get_running_loop()

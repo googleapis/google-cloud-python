@@ -29,6 +29,7 @@ from urllib.parse import urlsplit, urlunsplit
 from uuid import uuid4
 
 from google.api_core import exceptions as api_exceptions
+from google.api_core import universe
 from google.auth import environment_vars
 from google.cloud.exceptions import NotFound
 
@@ -56,6 +57,9 @@ _API_VERSION_OVERRIDE_ENV_VAR = "API_VERSION_OVERRIDE"
 """This is an experimental configuration variable used for internal testing."""
 
 _DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+
+_UNIVERSE_DOMAIN_ENV_VAR = "GOOGLE_CLOUD_UNIVERSE_DOMAIN"
+"""Environment variable defining the universe domain."""
 
 _STORAGE_HOST_TEMPLATE = "storage.{universe_domain}"
 
@@ -108,6 +112,25 @@ def _get_api_endpoint_override():
     if _get_default_storage_base_url() != _DEFAULT_SCHEME + _TRUE_DEFAULT_STORAGE_HOST:
         return _get_default_storage_base_url()
     return None
+
+
+def _get_universe_domain_override():
+    """Returns the non-default universe domain set in the environment, if any.
+
+    :rtype: str or None
+    :returns: The value of ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` without surrounding
+        whitespace, or ``None`` if the variable is unset or names the default
+        universe.
+
+    :raises ValueError: If the variable is set to an empty string.
+    """
+    env_universe_domain = os.environ.get(_UNIVERSE_DOMAIN_ENV_VAR)
+    if env_universe_domain is None:
+        return None
+    universe_domain = universe.determine_domain(None, env_universe_domain.strip())
+    if universe_domain == _DEFAULT_UNIVERSE_DOMAIN:
+        return None
+    return universe_domain
 
 
 def _virtual_hosted_style_base_url(url, bucket, trailing_slash=False):
