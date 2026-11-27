@@ -21,7 +21,9 @@ jobs:
             librarian:
               - 'librarian.yaml'
 
-      -  uses: googleapis/librarian@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+      # Version of librarian is pulled from librarian.yaml,
+      # action is pinned to commit SHA to satisfy blanket security policy.
+      - uses: googleapis/librarian@c54791693e09a76a7403f3dc81c7c97782908b3d # v0.53.0
 
       - name: Run librarian tidy
         if: steps.changes.outputs.librarian == 'true'
@@ -31,7 +33,7 @@ jobs:
         if: steps.changes.outputs.librarian == 'true'
         run: |
           if ! git diff --exit-code; then
-            V=$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)
+            V=$(librarian config get version)
             echo "librarian.yaml is not tidy. Please run:"
             echo ""
             echo "  go run github.com/googleapis/librarian/cmd/librarian@${V} tidy"

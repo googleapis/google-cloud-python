@@ -54,7 +54,9 @@ jobs:
           fi
           python3 ci/get_package_shards.py
 
-      - uses: googleapis/librarian@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+      # Version of librarian is pulled from librarian.yaml,
+      # action is pinned to commit SHA to satisfy blanket security policy.
+      - uses: googleapis/librarian@c54791693e09a76a7403f3dc81c7c97782908b3d # v0.53.0
         with:
           protoc-version: "33.5"
           protoc-checksum: "eb842a2259a90a402207cae3a9261dc9501f43a535b3b3d786ecc496e117f499cf373fe41181fd9047035f7ed6c2dee9a55f7f0a7afa1c5d7cb5be3e672bf527"
@@ -102,7 +104,7 @@ jobs:
 
       - name: Create issue if previous step fails
         if: ${{ failure() && github.event_name == 'push' }}
-        uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+        uses: googleapis/librarian/.github/actions/create-issue-on-failure@c54791693e09a76a7403f3dc81c7c97782908b3d # v0.53.0
         with:
           title: "Regeneration failed"
           body: |
