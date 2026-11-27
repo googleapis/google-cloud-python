@@ -24,6 +24,7 @@ from google.cloud._storage_v2.services.storage.transports.base import (
 )
 from google.cloud.storage import __version__
 from google.cloud.storage.grpc_client import (
+    _create_ssl_credentials,
     _resolve_grpc_config,
     _resolve_universe_domain,
     _validate_universe_domain,
@@ -137,6 +138,7 @@ class AsyncGrpcClient:
             host,
             quota_project_id,
             attempt_direct_path,
+            client_cert_source,
         ) = _resolve_grpc_config(client_options, attempt_direct_path)
         transport_cls = storage_v2.StorageAsyncClient.get_transport_class(
             "grpc_asyncio"
@@ -146,16 +148,21 @@ class AsyncGrpcClient:
                 default_scopes=transport_cls.AUTH_SCOPES
             )
         _validate_universe_domain(universe_domain, credentials)
+        ssl_credentials = _create_ssl_credentials(client_cert_source)
 
         primary_user_agent = client_info.to_user_agent()
 
-        channel = transport_cls.create_channel(
-            host=host,
-            quota_project_id=quota_project_id,
-            attempt_direct_path=attempt_direct_path,
-            credentials=credentials,
-            options=(("grpc.primary_user_agent", primary_user_agent),),
-        )
+        channel_kwargs = {
+            "host": host,
+            "quota_project_id": quota_project_id,
+            "attempt_direct_path": attempt_direct_path,
+            "credentials": credentials,
+            "options": (("grpc.primary_user_agent", primary_user_agent),),
+        }
+        if ssl_credentials is not None:
+            channel_kwargs["ssl_credentials"] = ssl_credentials
+
+        channel = transport_cls.create_channel(**channel_kwargs)
         transport = transport_cls(host=host, channel=channel)
 
         return storage_v2.StorageAsyncClient(

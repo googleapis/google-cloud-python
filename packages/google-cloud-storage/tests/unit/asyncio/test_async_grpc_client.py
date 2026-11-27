@@ -19,6 +19,7 @@ from google.api_core import client_info as client_info_lib
 from google.api_core import client_options
 from google.auth import credentials as auth_credentials
 from google.auth.credentials import AnonymousCredentials
+from google.auth.exceptions import MutualTLSChannelError
 
 from google.cloud.storage import __version__
 from google.cloud.storage.asyncio import async_grpc_client
@@ -28,12 +29,18 @@ from google.cloud.storage.asyncio import async_grpc_client
 def _hermetic_env(monkeypatch):
     """Keeps the runner's environment from changing host or DirectPath resolution."""
     monkeypatch.delenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", raising=False)
+    monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+    monkeypatch.setenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
 
 
 def _make_credentials():
     return mock.Mock(
         spec=auth_credentials.Credentials, universe_domain="googleapis.com"
     )
+
+
+def _example_cert_source():
+    return b"example-cert", b"example-key"
 
 
 class TestAsyncGrpcClient:
@@ -626,3 +633,173 @@ class TestAsyncGrpcClient:
         assert client.grpc_client.api_endpoint == "storage.example.com:443"
         assert mock_create_channel.call_args.args[0] == "storage.example.com"
         assert mock_create_channel.call_args.kwargs["attempt_direct_path"] is False
+
+    @pytest.mark.parametrize(
+        "env,opts,has_default_cert,expected_host,expected_direct_path,expect_ssl",
+        [
+            (
+                {
+                    "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+                    "GOOGLE_API_USE_MTLS_ENDPOINT": "auto",
+                },
+                {"client_cert_source": _example_cert_source},
+                False,
+                "storage.mtls.googleapis.com",
+                False,
+                True,
+            ),
+            (
+                {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"},
+                None,
+                False,
+                "storage.mtls.googleapis.com",
+                False,
+                False,
+            ),
+            (
+                {
+                    "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+                    "GOOGLE_API_USE_MTLS_ENDPOINT": "never",
+                },
+                client_options.ClientOptions(client_cert_source=_example_cert_source),
+                False,
+                "storage.googleapis.com",
+                False,
+                True,
+            ),
+            (
+                {
+                    "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+                    "GOOGLE_API_USE_MTLS_ENDPOINT": "always",
+                },
+                client_options.ClientOptions(
+                    api_endpoint="custom.example.com:443",
+                    client_cert_source=_example_cert_source,
+                ),
+                False,
+                "custom.example.com:443",
+                False,
+                True,
+            ),
+            (
+                {
+                    "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+                    "GOOGLE_API_USE_MTLS_ENDPOINT": "auto",
+                },
+                None,
+                True,
+                "storage.mtls.googleapis.com",
+                False,
+                True,
+            ),
+            (
+                {
+                    "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+                    "GOOGLE_API_USE_MTLS_ENDPOINT": "auto",
+                },
+                None,
+                False,
+                "storage.googleapis.com",
+                True,
+                False,
+            ),
+        ],
+    )
+    @mock.patch("grpc.ssl_channel_credentials")
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_mtls_channel_configuration(
+        self,
+        mock_async_storage_client,
+        mock_ssl_channel_credentials,
+        env,
+        opts,
+        has_default_cert,
+        expected_host,
+        expected_direct_path,
+        expect_ssl,
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+        mock_ssl_creds = mock.sentinel.ssl_credentials
+        mock_ssl_channel_credentials.return_value = mock_ssl_creds
+
+        with (
+            mock.patch.dict("os.environ", env),
+            mock.patch(
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=has_default_cert,
+            ),
+            mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=_example_cert_source,
+            ),
+        ):
+            async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                client_options=opts,
+            )
+
+        primary_ua = mock_async_storage_client.call_args.kwargs[
+            "client_info"
+        ].to_user_agent()
+        expected_kwargs = {
+            "host": expected_host,
+            "quota_project_id": None,
+            "attempt_direct_path": expected_direct_path,
+            "credentials": mock_creds,
+            "options": (("grpc.primary_user_agent", primary_ua),),
+        }
+        if expect_ssl:
+            mock_ssl_channel_credentials.assert_called_once_with(
+                certificate_chain=b"example-cert", private_key=b"example-key"
+            )
+            expected_kwargs["ssl_credentials"] = mock_ssl_creds
+        else:
+            mock_ssl_channel_credentials.assert_not_called()
+
+        mock_transport_cls.create_channel.assert_called_once_with(**expected_kwargs)
+        mock_transport_cls.assert_called_once_with(
+            host=expected_host,
+            channel=mock_transport_cls.create_channel.return_value,
+        )
+
+    @pytest.mark.parametrize(
+        "env,use_cert_source",
+        [
+            ({"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}, False),
+            (
+                {
+                    "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+                    "GOOGLE_API_USE_MTLS_ENDPOINT": "auto",
+                },
+                True,
+            ),
+        ],
+    )
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_mtls_non_default_universe_raises(
+        self,
+        mock_async_storage_client,
+        env,
+        use_cert_source,
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+        mock_creds.universe_domain = "example.com"
+        cert_source = mock.Mock(return_value=(b"example-cert", b"example-key"))
+
+        opts = client_options.ClientOptions(
+            universe_domain="example.com",
+            client_cert_source=cert_source if use_cert_source else None,
+        )
+
+        with mock.patch.dict("os.environ", env):
+            with pytest.raises(MutualTLSChannelError):
+                async_grpc_client.AsyncGrpcClient(
+                    credentials=mock_creds,
+                    client_options=opts,
+                )
+        cert_source.assert_not_called()
+        mock_transport_cls.create_channel.assert_not_called()

@@ -15,13 +15,22 @@
 """A client for interacting with Google Cloud Storage using the gRPC API."""
 
 import os
+from typing import Callable, Optional, Tuple
 
+import grpc
 from google.api_core import universe
 from google.auth import credentials as auth_credentials
 from google.cloud.client import ClientWithProject
 
 from google.cloud import _storage_v2 as storage_v2
-from google.cloud._storage_v2._compat import get_universe_domain
+from google.cloud._storage_v2._compat import (
+    get_api_endpoint,
+    get_universe_domain,
+    read_environment_variables,
+)
+from google.cloud._storage_v2.services.storage.client import (
+    StorageClient as _GapicStorageClient,
+)
 
 _marker = object()
 _DEFAULT_UNIVERSE_DOMAIN = universe.DEFAULT_UNIVERSE
@@ -43,21 +52,51 @@ def _resolve_universe_domain(client_options) -> str:
     )
 
 
-def _resolve_grpc_config(client_options, attempt_direct_path):
-    """Resolves universe domain, target host, quota project, and DirectPath flag.
+def _create_ssl_credentials(
+    client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
+) -> Optional[grpc.ChannelCredentials]:
+    """Creates gRPC SSL channel credentials from a client cert source."""
+    if client_cert_source is None:
+        return None
+    cert, key = client_cert_source()
+    return grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
-    DirectPath is only attempted in the default universe.
+
+def _resolve_grpc_config(client_options, attempt_direct_path):
+    """Resolves gRPC host, universe domain, quota project, and mTLS config.
+
+    DirectPath is only attempted in the default universe when mTLS is inactive.
     """
+    use_client_cert, use_mtls_endpoint, _ = read_environment_variables()
     universe_domain = _resolve_universe_domain(client_options)
-    if universe_domain.lower() != _DEFAULT_UNIVERSE_DOMAIN.lower():
+    client_cert_source = _GapicStorageClient._get_client_cert_source(
+        _get_option(client_options, "client_cert_source"),
+        use_client_cert,
+    )
+    use_mtls = use_mtls_endpoint == "always" or (
+        use_mtls_endpoint == "auto" and bool(client_cert_source)
+    )
+    host = get_api_endpoint(
+        api_override=_get_option(client_options, "api_endpoint") or None,
+        universe_domain=universe_domain,
+        default_universe=_GapicStorageClient._DEFAULT_UNIVERSE,
+        default_mtls_endpoint=_GapicStorageClient.DEFAULT_MTLS_ENDPOINT,
+        default_endpoint_template=_GapicStorageClient._DEFAULT_ENDPOINT_TEMPLATE,
+        use_mtls=use_mtls,
+    )
+    if (
+        universe_domain.lower() != _DEFAULT_UNIVERSE_DOMAIN.lower()
+        or use_mtls
+        or client_cert_source is not None
+    ):
         attempt_direct_path = False
 
-    host = _get_option(client_options, "api_endpoint") or f"storage.{universe_domain}"
     return (
         universe_domain,
         host,
         _get_option(client_options, "quota_project_id"),
         attempt_direct_path,
+        client_cert_source,
     )
 
 
@@ -173,8 +212,10 @@ class GrpcClient(ClientWithProject):
             host,
             quota_project_id,
             attempt_direct_path,
+            client_cert_source,
         ) = _resolve_grpc_config(client_options, attempt_direct_path)
         _validate_universe_domain(universe_domain, credentials)
+        ssl_credentials = _create_ssl_credentials(client_cert_source)
 
         transport_cls = storage_v2.StorageClient.get_transport_class("grpc")
         channel_kwargs = {
@@ -184,6 +225,8 @@ class GrpcClient(ClientWithProject):
         }
         if quota_project_id is not None:
             channel_kwargs["quota_project_id"] = quota_project_id
+        if ssl_credentials is not None:
+            channel_kwargs["ssl_credentials"] = ssl_credentials
 
         channel = transport_cls.create_channel(**channel_kwargs)
         transport = transport_cls(host=host, channel=channel)
