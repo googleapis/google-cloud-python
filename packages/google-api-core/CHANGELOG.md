@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.45.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.44.0...google-api-core-v2.45.0) (2026-11-27)
+
+
+### Features
+
+* **api_core:** add error logging feature gate and shared transport attempt logging helpers ([#19009](https://github.com/googleapis/google-cloud-python/issues/19009)) ([fa90cb6](https://github.com/googleapis/google-cloud-python/commit/fa90cb67c17150be63ddf4a86e4f9018d1df314e))
+* **api_core:** add HTTP transport attempt logging in _TraceContext ([#19011](https://github.com/googleapis/google-cloud-python/issues/19011)) ([64b8e0e](https://github.com/googleapis/google-cloud-python/commit/64b8e0e473b6a0afaecac65253faca8ab59f5373))
+* **api_core:** add sync and async gRPC transport attempt logging interceptors ([#19010](https://github.com/googleapis/google-cloud-python/issues/19010)) ([9394dc5](https://github.com/googleapis/google-cloud-python/commit/9394dc5e76729890dcb85a728246f4046afa1c99))
+* **api_core:** restrict DirectPath to default universe ([#19163](https://github.com/googleapis/google-cloud-python/issues/19163)) ([ab6f215](https://github.com/googleapis/google-cloud-python/commit/ab6f2157dc00a1aadefd70e5854312e577f8c151))
+* **google-api-core:** centralize telemetry error attribute and trace context builders in _observability ([#18893](https://github.com/googleapis/google-cloud-python/issues/18893)) ([e0fb81e](https://github.com/googleapis/google-cloud-python/commit/e0fb81e2099f6d3171065ad6eb71f9172e605ff9))
+
 ## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.43.2...google-api-core-v2.44.0) (2026-11-05)
 
 

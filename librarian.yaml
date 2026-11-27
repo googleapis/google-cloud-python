@@ -92,7 +92,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.44.2
+    version: 1.44.3
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.44.0
+    version: 2.45.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -1096,7 +1096,7 @@ libraries:
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
-    version: 0.17.5
+    version: 0.17.6
     python:
       library_type: OTHER
       metadata_name_override: documentai-toolbox
