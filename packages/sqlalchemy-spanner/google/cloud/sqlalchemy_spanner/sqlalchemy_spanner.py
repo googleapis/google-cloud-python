@@ -1200,7 +1200,7 @@ class SpannerDDLCompiler(DDLCompiler):
             text += " NOT ENFORCED"
         return text
 
-    def post_create_table(self, table):
+    def post_create_table(self, table: sqlalchemy.Table) -> str:
         """Build statements to be executed after CREATE TABLE.
 
         Includes "primary key" and "interleaved table" statements generation.
@@ -1211,16 +1211,29 @@ class SpannerDDLCompiler(DDLCompiler):
         Returns:
             str: primary key difinition to add to the table CREATE request.
         """
-        cols = [col.name for col in table.primary_key.columns]
-        post_cmds = " PRIMARY KEY ({})".format(", ".join(cols))
+        primary_key_columns = [
+            self.preparer.quote(column.name) for column in table.primary_key.columns
+        ]
+        post_cmds = f" PRIMARY KEY ({', '.join(primary_key_columns)})"
 
         if "TEMPORARY" in table._prefixes:
             raise NotImplementedError("Temporary tables are not supported.")
 
-        if table.kwargs.get("spanner_interleave_in"):
-            post_cmds += ",\nINTERLEAVE IN PARENT {}".format(
-                table.kwargs["spanner_interleave_in"]
+        interleave_in = table.kwargs.get("spanner_interleave_in")
+        if interleave_in is None:
+            parent_table = None
+        elif isinstance(interleave_in, sqlalchemy.Table):
+            parent_table = self.preparer.format_table(interleave_in)
+        elif isinstance(interleave_in, str):
+            parent_table = self.preparer.quote(interleave_in) if interleave_in else None
+        else:
+            raise TypeError(
+                "spanner_interleave_in must be a string or Table, "
+                f"got {type(interleave_in).__name__}"
             )
+
+        if parent_table is not None:
+            post_cmds += f",\nINTERLEAVE IN PARENT {parent_table}"
 
             if table.kwargs.get("spanner_interleave_on_delete_cascade"):
                 post_cmds += " ON DELETE CASCADE"
