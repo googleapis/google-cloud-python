@@ -423,6 +423,7 @@ class Test_IAMConfiguration(unittest.TestCase):
 
         config = self._make_one(bucket)
 
+        self.assertEqual(dict(config), {})
         self.assertIs(config.bucket, bucket)
         self.assertFalse(config.uniform_bucket_level_access_enabled)
         self.assertIsNone(config.uniform_bucket_level_access_locked_time)
@@ -462,6 +463,10 @@ class Test_IAMConfiguration(unittest.TestCase):
         self.assertFalse(config.uniform_bucket_level_access_enabled)
         self.assertEqual(
             config.public_access_prevention, PUBLIC_ACCESS_PREVENTION_ENFORCED
+        )
+        self.assertEqual(
+            dict(config),
+            {"publicAccessPrevention": PUBLIC_ACCESS_PREVENTION_ENFORCED},
         )
 
         config.public_access_prevention = PUBLIC_ACCESS_PREVENTION_INHERITED
