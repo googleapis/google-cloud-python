@@ -44,6 +44,25 @@ def frozen_time():
 
 
 @pytest.fixture
+def es256_cert_and_key():
+    with open(os.path.join(pytest.data_dir, "es256_public_cert.pem"), "rb") as fh:
+        cert = fh.read()
+    with open(os.path.join(pytest.data_dir, "es256_privatekey.pem"), "rb") as fh:
+        key = fh.read()
+    return cert, key
+
+
+@pytest.fixture
+def rotating_cert_manager():
+    """Returns a cold _MtlsCertManager and the mutable (cert, key) pair it serves."""
+    active_pair = [pytest.public_cert_bytes, pytest.private_key_bytes]
+    cert_manager = google.auth.transport._mtls_helper._MtlsCertManager(
+        client_cert_source=lambda: tuple(active_pair)
+    )
+    return cert_manager, active_pair
+
+
+@pytest.fixture
 def workload_cert_config(tmpdir, monkeypatch):
     cert_file = tmpdir.join("public_cert.pem")
     cert_file.write_binary(pytest.public_cert_bytes)
@@ -393,6 +412,574 @@ class TestRequestResponse(compliance.RequestResponseTests):
             google.auth.transport.requests._MutualTlsAdapter,
         )
         assert mock_send.call_args.kwargs["verify"] is False
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_single_origin_rotation(
+        self, mock_send, rotating_cert_manager, es256_cert_and_key
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        session = requests.Session()
+        base_adapter = requests.adapters.HTTPAdapter(
+            max_retries=3, pool_connections=4, pool_maxsize=8, pool_block=True
+        )
+        session.mount("https://", base_adapter)
+        request = google.auth.transport.requests.Request(
+            session, cert_manager=cert_manager
+        )
+        assert request._cert_manager is cert_manager
+
+        request("https://oauth2.googleapis.com/token")
+        assert cert_manager.generation_id == 0
+
+        url = "https://iamcredentials.mtls.googleapis.com/v1/token"
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "secure_cert_key_paths",
+            wraps=google.auth.transport._mtls_helper.secure_cert_key_paths,
+        ) as cert_key_spy:
+            with mock.patch.object(
+                cert_manager, "refresh", wraps=cert_manager.refresh
+            ) as refresh_spy:
+                request(url)
+            # Passing expected_generation=0 lets concurrent cold starts on a
+            # shared manager reuse a single certificate load.
+            refresh_spy.assert_called_once_with(expected_generation=0)
+            assert cert_manager.generation_id == 1
+            adapter_gen1 = request._mtls_adapter
+            assert isinstance(
+                adapter_gen1, google.auth.transport.requests._MutualTlsAdapter
+            )
+            assert session.adapters[prefix] is adapter_gen1
+            assert adapter_gen1.max_retries.total == 3
+            assert adapter_gen1._pool_connections == 4
+            assert adapter_gen1._pool_maxsize == 8
+            assert adapter_gen1._pool_block is True
+
+            adapters_after_gen1 = session.adapters
+            request(url)
+            assert session.adapters is adapters_after_gen1
+            assert request._mtls_adapter is adapter_gen1
+
+            active_pair[:] = es256_cert_and_key
+            assert cert_manager.refresh() is True
+
+            # Verify rotation swaps session.adapters atomically rather than in place.
+            adapters_iter = iter(session.adapters.items())
+            next(adapters_iter)
+            request(url)
+            list(adapters_iter)
+
+        assert cert_key_spy.call_args_list == [
+            mock.call(pytest.public_cert_bytes, pytest.private_key_bytes),
+            mock.call(*es256_cert_and_key),
+        ]
+        adapter_gen2 = request._mtls_adapter
+        assert adapter_gen2 is not adapter_gen1
+        assert session.adapters[prefix] is adapter_gen2
+        assert adapter_gen2.max_retries.total == 3
+        assert adapter_gen2._pool_connections == 4
+        assert adapter_gen2._pool_maxsize == 8
+        assert adapter_gen2._pool_block is True
+        assert request._adapter_generation_id == 2
+        assert [call.args[0] for call in mock_send.call_args_list] == [
+            base_adapter,
+            adapter_gen1,
+            adapter_gen1,
+            adapter_gen2,
+        ]
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_multi_origin_rotation(
+        self, mock_send, rotating_cert_manager, es256_cert_and_key
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        assert cert_manager.refresh() is True
+
+        iam_prefix = "https://iamcredentials.mtls.googleapis.com/"
+        sts_prefix = "https://sts.mtls.googleapis.com/"
+        oauth_prefix = "https://oauth2.mtls.googleapis.com/"
+        caller_prefix = "https://pubsub.mtls.googleapis.com/"
+        iam_url = iam_prefix + "v1/token"
+        sts_url = sts_prefix + "v1/token"
+
+        session = requests.Session()
+        session.mount(
+            iam_prefix,
+            requests.adapters.HTTPAdapter(
+                max_retries=2, pool_connections=5, pool_maxsize=6, pool_block=True
+            ),
+        )
+        caller_adapter = google.auth.transport.requests._MutualTlsAdapter(
+            pytest.public_cert_bytes, pytest.private_key_bytes
+        )
+        session.mount(caller_prefix, caller_adapter)
+        request = google.auth.transport.requests.Request(
+            session, cert_manager=cert_manager
+        )
+
+        request(iam_url)
+        adapter_gen1 = request._mtls_adapter
+        request(sts_url)
+        assert session.adapters[iam_prefix] is adapter_gen1
+        assert session.adapters[sts_prefix] is adapter_gen1
+
+        active_pair[:] = es256_cert_and_key
+        assert cert_manager.refresh() is True
+
+        request(iam_url)
+        adapter_gen2 = request._mtls_adapter
+        assert adapter_gen2 is not adapter_gen1
+        assert session.adapters[iam_prefix] is adapter_gen2
+        assert session.adapters[sts_prefix] is adapter_gen2
+
+        adapters_after_gen2 = session.adapters
+        request(sts_url)
+        assert session.adapters is adapters_after_gen2
+
+        # Rotate again from a new third origin. The new adapter keeps the pool
+        # settings of the adapter it replaces, not the session's default adapter.
+        active_pair[:] = [pytest.public_cert_bytes, pytest.private_key_bytes]
+        assert cert_manager.refresh() is True
+
+        request(oauth_prefix + "token")
+        adapter_gen3 = request._mtls_adapter
+        assert adapter_gen3 is not adapter_gen2
+        assert adapter_gen3.max_retries.total == 2
+        assert adapter_gen3._pool_connections == 5
+        assert adapter_gen3._pool_maxsize == 6
+        assert adapter_gen3._pool_block is True
+        assert session.adapters[iam_prefix] is adapter_gen3
+        assert session.adapters[sts_prefix] is adapter_gen3
+        assert session.adapters[oauth_prefix] is adapter_gen3
+        assert session.adapters[caller_prefix] is caller_adapter
+
+        request(iam_url)
+        request(sts_url)
+        assert [call.args[0] for call in mock_send.call_args_list] == [
+            adapter_gen1,
+            adapter_gen1,
+            adapter_gen2,
+            adapter_gen2,
+            adapter_gen3,
+            adapter_gen3,
+            adapter_gen3,
+        ]
+
+    @pytest.mark.parametrize(
+        "mount_prefix,custom_adapter_factory",
+        [
+            ("https://", lambda: AdapterStub([make_response(), make_response()])),
+            (
+                "https://iamcredentials.mtls.googleapis.com/",
+                lambda: google.auth.transport.requests._MutualTlsAdapter(
+                    pytest.public_cert_bytes, pytest.private_key_bytes
+                ),
+            ),
+            (
+                "https://iamcredentials.mtls.googleapis.com/v1/",
+                lambda: requests.adapters.HTTPAdapter(),
+            ),
+        ],
+    )
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_preserves_custom_and_subpath_adapters(
+        self,
+        mock_send,
+        mount_prefix,
+        custom_adapter_factory,
+        rotating_cert_manager,
+        es256_cert_and_key,
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        assert cert_manager.refresh() is True
+
+        session = requests.Session()
+        custom_adapter = custom_adapter_factory()
+        session.mount(mount_prefix, custom_adapter)
+        adapters_before = session.adapters
+        adapters_snapshot = session.adapters.copy()
+
+        request = google.auth.transport.requests.Request(
+            session, cert_manager=cert_manager
+        )
+        url = "https://iamcredentials.mtls.googleapis.com/v1/token"
+        request(url)
+
+        active_pair[:] = es256_cert_and_key
+        assert cert_manager.refresh() is True
+        request(url)
+
+        assert session.adapters is adapters_before
+        assert session.adapters == adapters_snapshot
+        assert session.get_adapter(url) is custom_adapter
+        assert request._mtls_adapter is None
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    @mock.patch.object(
+        google.auth.transport._mtls_helper,
+        "get_client_ssl_credentials",
+        return_value=(False, None, None, None),
+    )
+    def test_mtls_cert_manager_no_default_cert_skips_mount(
+        self, mock_get_ssl, mock_send
+    ):
+        mock_send.return_value = make_response()
+        cert_manager = google.auth.transport._mtls_helper._MtlsCertManager()
+        session = requests.Session()
+        request = google.auth.transport.requests.Request(
+            session, cert_manager=cert_manager
+        )
+
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+
+        assert "https://iamcredentials.mtls.googleapis.com/" not in session.adapters
+        assert request._mtls_adapter is None
+        assert request._mtls_unavailable is False
+        mock_get_ssl.assert_called_once_with(generate_encrypted_key=False)
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_initial_load_error_raises_and_recovers(
+        self, mock_send, rotating_cert_manager
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        active_pair[:] = [b"invalid", b"invalid"]
+        request = google.auth.transport.requests.Request(
+            requests.Session(), cert_manager=cert_manager
+        )
+        url = "https://iamcredentials.mtls.googleapis.com/v1/token"
+
+        with pytest.raises(exceptions.TransportError) as exc_info:
+            request(url)
+        assert isinstance(exc_info.value.__cause__, exceptions.ClientCertError)
+        assert request._mtls_adapter is None
+
+        active_pair[:] = [pytest.public_cert_bytes, pytest.private_key_bytes]
+        request(url)
+        assert isinstance(
+            request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert mock_send.call_args.args[0] is request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_ignores_use_client_cert_env(
+        self, mock_send, rotating_cert_manager, monkeypatch
+    ):
+        mock_send.return_value = make_response()
+        monkeypatch.setenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "false")
+        cert_manager, _ = rotating_cert_manager
+        request = google.auth.transport.requests.Request(
+            requests.Session(), cert_manager=cert_manager
+        )
+
+        # Whoever created the manager has already decided to use mTLS.
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+
+        assert isinstance(
+            request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert mock_send.call_args.args[0] is request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_deepcopy_and_copy_rotate(
+        self, mock_send, rotating_cert_manager, es256_cert_and_key
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        assert cert_manager.refresh() is True
+
+        url = "https://iamcredentials.mtls.googleapis.com/v1/token"
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        request = google.auth.transport.requests.Request(
+            requests.Session(), cert_manager=cert_manager
+        )
+        request(url)
+        orig_gen1 = request._mtls_adapter
+
+        copied_request = copy.deepcopy(request)
+        assert copied_request._cert_manager is cert_manager
+        assert copied_request.session is not request.session
+        assert copied_request._mtls_lock is not request._mtls_lock
+        assert copied_request._mtls_adapter is not orig_gen1
+        assert copied_request.session.adapters[prefix] is copied_request._mtls_adapter
+        assert copied_request._adapter_generation_id == 1
+
+        copied_gen1 = copied_request._mtls_adapter
+        copied_request(url)
+        assert copied_request._mtls_adapter is copied_gen1
+
+        active_pair[:] = es256_cert_and_key
+        assert cert_manager.refresh() is True
+
+        copied_request(url)
+        copied_gen2 = copied_request._mtls_adapter
+        assert copied_gen2 is not copied_gen1
+        assert copied_request.session.adapters[prefix] is copied_gen2
+        assert copied_request._adapter_generation_id == 2
+        # Original request has its own session and still holds gen 1 until called.
+        assert request._mtls_adapter is orig_gen1
+
+        request(url)
+        orig_gen2 = request._mtls_adapter
+        assert orig_gen2 is not orig_gen1
+        assert orig_gen2 is not copied_gen2
+        assert request.session.adapters[prefix] is orig_gen2
+        assert request._adapter_generation_id == 2
+
+        shallow_request = copy.copy(request)
+        assert shallow_request._cert_manager is cert_manager
+        assert shallow_request.session is request.session
+        assert shallow_request._mtls_lock is request._mtls_lock
+
+        active_pair[:] = [pytest.public_cert_bytes, pytest.private_key_bytes]
+        assert cert_manager.refresh() is True
+        shallow_request(url)
+        gen3_adapter = shallow_request._mtls_adapter
+        assert gen3_adapter is not orig_gen2
+        assert request._mtls_adapter is gen3_adapter
+        assert shallow_request.session.adapters[prefix] is gen3_adapter
+        assert shallow_request._adapter_generation_id == 3
+
+        # Alternating back to the original Request on the next rotation stays in sync.
+        active_pair[:] = es256_cert_and_key
+        assert cert_manager.refresh() is True
+        request(url)
+        gen4_adapter = request._mtls_adapter
+        assert gen4_adapter is not gen3_adapter
+        assert shallow_request._mtls_adapter is gen4_adapter
+        assert request.session.adapters[prefix] is gen4_adapter
+        assert request._adapter_generation_id == 4
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_deepcopy_serializes_with_rotation(
+        self, mock_send, rotating_cert_manager, es256_cert_and_key
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        assert cert_manager.refresh() is True
+
+        url = "https://iamcredentials.mtls.googleapis.com/v1/token"
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        request = google.auth.transport.requests.Request(
+            requests.Session(), cert_manager=cert_manager
+        )
+        request(url)
+
+        active_pair[:] = es256_cert_and_key
+        assert cert_manager.refresh() is True
+
+        in_rotation = threading.Event()
+        allow_finish = threading.Event()
+        orig_secure = google.auth.transport._mtls_helper.secure_cert_key_paths
+
+        def blocking_secure(cert, key, passphrase=None):
+            in_rotation.set()
+            allow_finish.wait(timeout=5)
+            return orig_secure(cert, key, passphrase)
+
+        copied_holder = []
+        copy_done = threading.Event()
+
+        def do_deepcopy():
+            copied_holder.append(copy.deepcopy(request))
+            copy_done.set()
+
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "secure_cert_key_paths",
+            side_effect=blocking_secure,
+        ):
+            rotate_thread = threading.Thread(target=request, args=(url,))
+            rotate_thread.start()
+            assert in_rotation.wait(timeout=5)
+
+            copy_thread = threading.Thread(target=do_deepcopy)
+            copy_thread.start()
+            # Deepcopy must block on _mtls_lock until the rotation finishes.
+            assert not copy_done.wait(timeout=0.05)
+
+            allow_finish.set()
+            rotate_thread.join()
+            copy_thread.join()
+
+        copied_request = copied_holder[0]
+        assert copied_request._adapter_generation_id == 2
+        assert copied_request.session.adapters[prefix] is copied_request._mtls_adapter
+
+        # Copied request continues rotating cleanly on future generations.
+        active_pair[:] = [pytest.public_cert_bytes, pytest.private_key_bytes]
+        assert cert_manager.refresh() is True
+        copied_gen2 = copied_request._mtls_adapter
+        copied_request(url)
+        assert copied_request._mtls_adapter is not copied_gen2
+        assert copied_request._adapter_generation_id == 3
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_rotation_adapter_error_keeps_previous_adapter(
+        self, mock_send, rotating_cert_manager, es256_cert_and_key
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        url = "https://iamcredentials.mtls.googleapis.com/v1/token"
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        request = google.auth.transport.requests.Request(
+            requests.Session(), cert_manager=cert_manager
+        )
+        request(url)
+        adapter_gen1 = request._mtls_adapter
+
+        # Rotate to a valid cert paired with a mismatched key so refresh() advances
+        # generation_id, but _MutualTlsAdapter raises MutualTLSChannelError.
+        active_pair[:] = [es256_cert_and_key[0], pytest.private_key_bytes]
+        assert cert_manager.refresh() is True
+
+        with pytest.raises(exceptions.TransportError) as exc_info:
+            request(url)
+        assert isinstance(exc_info.value.__cause__, exceptions.MutualTLSChannelError)
+        assert request._mtls_adapter is adapter_gen1
+        assert request._adapter_generation_id == 1
+        assert request.session.adapters[prefix] is adapter_gen1
+
+        # Recover cleanly on the next valid rotation.
+        active_pair[:] = [pytest.public_cert_bytes, pytest.private_key_bytes]
+        assert cert_manager.refresh() is True
+        request(url)
+        assert request._mtls_adapter is not adapter_gen1
+        assert request._adapter_generation_id == 3
+        assert request.session.adapters[prefix] is request._mtls_adapter
+        assert mock_send.call_args.args[0] is request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_released_pickle_resets_adapter(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        url = "https://iamcredentials.mtls.googleapis.com/v1/token"
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        request = google.auth.transport.requests.Request(requests.Session())
+        request(url)
+        assert isinstance(
+            request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+
+        # Simulate a pickle produced by released google-auth where __getstate__
+        # preserved _mtls_adapter (which reduces to plain HTTPAdapter on unpickle).
+        released_state = {
+            "session": request.session,
+            "_mtls_adapter": request._mtls_adapter,
+            "_mtls_unavailable": False,
+            "_mtls_lock": None,
+        }
+        with mock.patch.object(
+            google.auth.transport.requests.Request,
+            "__getstate__",
+            return_value=released_state,
+        ):
+            released_pickled = pickle.dumps(request)
+
+        unpickled = pickle.loads(released_pickled)
+        assert unpickled._cert_manager is None
+        assert unpickled._mtls_adapter is None
+        assert unpickled._adapter_generation_id is None
+        assert unpickled._mtls_unavailable is False
+        assert type(unpickled.session.adapters[prefix]) is requests.adapters.HTTPAdapter
+
+        unpickled(url)
+        assert isinstance(
+            unpickled._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert unpickled.session.adapters[prefix] is unpickled._mtls_adapter
+        assert mock_send.call_args.args[0] is unpickled._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_pickle_with_closure(
+        self, mock_send, rotating_cert_manager
+    ):
+        mock_send.return_value = make_response()
+        # The fixture's cert source is a closure, which pickle cannot serialize.
+        cert_manager, _ = rotating_cert_manager
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        request = google.auth.transport.requests.Request(
+            requests.Session(), cert_manager=cert_manager
+        )
+        request(prefix + "v1/token")
+        assert isinstance(
+            request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+
+        unpickled_request = pickle.loads(pickle.dumps(request))
+
+        assert unpickled_request._cert_manager is None
+        assert unpickled_request._mtls_adapter is None
+        assert unpickled_request._adapter_generation_id is None
+        assert unpickled_request._mtls_lock is not request._mtls_lock
+        assert (
+            type(unpickled_request.session.adapters[prefix])
+            is requests.adapters.HTTPAdapter
+        )
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_manager_concurrent_rotation(
+        self, mock_send, rotating_cert_manager, es256_cert_and_key
+    ):
+        mock_send.return_value = make_response()
+        cert_manager, active_pair = rotating_cert_manager
+        assert cert_manager.refresh() is True
+
+        request = google.auth.transport.requests.Request(
+            requests.Session(), cert_manager=cert_manager
+        )
+        urls = [
+            "https://iamcredentials.mtls.googleapis.com/v1/token",
+            "https://sts.mtls.googleapis.com/v1/token",
+        ]
+        for url in urls:
+            request(url)
+        adapter_gen1 = request._mtls_adapter
+
+        active_pair[:] = es256_cert_and_key
+        assert cert_manager.refresh() is True
+
+        num_threads = 6
+        barrier = threading.Barrier(num_threads)
+        errors = []
+
+        def worker(index):
+            try:
+                barrier.wait(timeout=5)
+                request(urls[index % len(urls)])
+            except Exception as exc:  # pragma: NO COVER
+                errors.append(exc)
+
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "secure_cert_key_paths",
+            wraps=google.auth.transport._mtls_helper.secure_cert_key_paths,
+        ) as cert_key_spy:
+            threads = [
+                threading.Thread(target=worker, args=(i,)) for i in range(num_threads)
+            ]
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join()
+
+        assert not errors
+        cert_key_spy.assert_called_once_with(*es256_cert_and_key)
+        adapter_gen2 = request._mtls_adapter
+        assert adapter_gen2 is not adapter_gen1
+        sent_after_rotation = [
+            call.args[0] for call in mock_send.call_args_list[len(urls) :]
+        ]
+        assert len(sent_after_rotation) == num_threads
+        assert all(adapter is adapter_gen2 for adapter in sent_after_rotation)
 
 
 class TestTimeoutGuard(object):
