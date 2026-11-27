@@ -73,9 +73,12 @@ specific subject using :meth:`~Credentials.with_subject`.
 import copy
 import datetime
 import logging
+import threading
+import urllib.parse
 from typing import TYPE_CHECKING, Optional
 
 from google.auth import (
+    _cache,
     _helpers,
     _regional_access_boundary_utils,
     _service_account_info,
@@ -93,6 +96,10 @@ if TYPE_CHECKING:  # pragma: NO COVER
 _LOGGER = logging.getLogger(__name__)
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
+# Bound the per-audience URL-derived JWT cache so long-lived processes targeting
+# many distinct hosts do not grow memory unboundedly while still avoiding
+# repeated RSA signing when alternating across a handful of service hosts.
+_DEFAULT_URL_JWT_CACHE_SIZE = 100
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
@@ -200,6 +207,14 @@ class Credentials(
             self._always_use_jwt_access = True
 
         self._jwt_credentials = None
+        # Keep URL-derived self-signed JWTs in a dedicated per-audience LRU
+        # cache (instead of mutating self._jwt_credentials / self.token) so
+        # shared Credentials instances remain thread- and async-safe when
+        # requests target multiple hosts.
+        self._url_jwt_credentials_cache = _cache.LRUCache(
+            maxsize=_DEFAULT_URL_JWT_CACHE_SIZE
+        )
+        self._url_jwt_credentials_lock = threading.Lock()
 
         if additional_claims is not None:
             self._additional_claims = additional_claims
@@ -207,6 +222,23 @@ class Credentials(
             self._additional_claims = {}
 
         self._trust_boundary = trust_boundary
+
+    def __getstate__(self):
+        # threading.Lock is not picklable, and cached URL-derived JWTs are
+        # short-lived and cheap to re-mint locally on demand after unpickling.
+        state = self.__dict__.copy()
+        state.pop("_url_jwt_credentials_lock", None)
+        state.pop("_url_jwt_credentials_cache", None)
+        return state
+
+    def __setstate__(self, state):
+        # Reconstruct lock and empty cache on unpickle (also keeps instances
+        # pickled by older versions of google-auth forward-compatible).
+        super().__setstate__(state)
+        self._url_jwt_credentials_lock = threading.Lock()
+        self._url_jwt_credentials_cache = _cache.LRUCache(
+            maxsize=_DEFAULT_URL_JWT_CACHE_SIZE
+        )
 
     @classmethod
     def _from_signer_and_info(cls, signer, info, **kwargs):
@@ -438,32 +470,131 @@ class Credentials(
             return metrics.CRED_TYPE_SA_JWT
         return metrics.CRED_TYPE_SA_ASSERTION
 
-    @_helpers.copy_docstring(credentials.CredentialsWithRegionalAccessBoundary)
-    def _perform_refresh_token(self, request):
+    def _derive_self_signed_jwt_audience(self, url):
+        """Derives an AIP-4111 self-signed JWT audience from the request URL.
+
+        When self-signed JWT access is enabled without scopes, default scopes,
+        a domain-wide delegation subject, or explicitly configured JWT
+        credentials (e.g., ``default_host``), derive ``https://{hostname}/``
+        from the outbound request URL.
+
+        Args:
+            url (Optional[str]): The request's URI or the RPC service's URI.
+
+        Returns:
+            Optional[str]: The derived audience URI, or ``None`` if URL-based
+                audience derivation does not apply.
+        """
+        # Only fall back to deriving an audience from the request URL when:
+        # - self-signed JWT access is enabled (always_use_jwt_access=True),
+        # - no scopes, default_scopes, or explicit _jwt_credentials (e.g.,
+        #   default_host) are configured — those take precedence as in
+        #   _create_self_signed_jwt(), since scope-based JWTs and canonical
+        #   service hosts work across regional/custom endpoints whereas raw
+        #   request URLs may not, and
+        # - no domain-wide delegation subject is set (AIP-4111 self-signed JWTs
+        #   require sub == client_email).
+        if (
+            not self._always_use_jwt_access
+            or self._scopes
+            or self._default_scopes
+            or self._subject
+            or self._jwt_credentials is not None
+            or not isinstance(url, str)
+        ):
+            return None
+
+        parsed = urllib.parse.urlsplit(url)
+        if not parsed.hostname:
+            # Return None for relative or malformed URLs so before_request falls
+            # through to _perform_refresh_token() rather than guessing an
+            # audience.
+            return None
+
+        return "https://{}/".format(parsed.hostname)
+
+    def _get_self_signed_jwt_for_audience(self, request, audience):
+        """Returns a valid self-signed JWT for ``audience`` from the LRU cache."""
+        # Hold the lock across lookup, validity check, and refresh because
+        # _cache.LRUCache mutates ordering on reads and jwt.Credentials.refresh()
+        # mutates token/expiry. Signing is purely local (no network I/O), so
+        # lock contention is minimal while preventing cross-thread races.
+        with self._url_jwt_credentials_lock:
+            jwt_credentials = self._url_jwt_credentials_cache.get(audience)
+            if jwt_credentials is None:
+                jwt_credentials = jwt.Credentials.from_signing_credentials(
+                    self, audience
+                )
+                self._url_jwt_credentials_cache[audience] = jwt_credentials
+            if not jwt_credentials.valid:
+                jwt_credentials.refresh(request)
+            return _helpers.from_bytes(jwt_credentials.token)
+
+    @_helpers.copy_docstring(credentials.Credentials)
+    def before_request(self, request, method, url, headers):
+        audience = self._derive_self_signed_jwt_audience(url)
+        if audience is None:
+            super(Credentials, self).before_request(request, method, url, headers)
+            return
+
+        # Apply the per-audience JWT directly without mutating self.token or
+        # self._jwt_credentials so concurrent requests to different hosts never
+        # overwrite each other's credentials. Skip _after_refresh() because
+        # RAB lookup authenticates with self.token (which stays None on the
+        # URL-derived path); any pre-seeded RAB header is still applied by
+        # self.apply().
+        token = self._get_self_signed_jwt_for_audience(request, audience)
+        # Pass CRED_TYPE_SA_JWT explicitly because self._jwt_credentials stays
+        # None on the URL-derived path (so _metric_header_for_usage() would
+        # otherwise report CRED_TYPE_SA_ASSERTION).
+        metrics.add_metric_header(headers, metrics.CRED_TYPE_SA_JWT)
+        self.apply(headers, token=token)
+
+    def _try_refresh_self_signed_jwt(self, request):
+        """Refreshes self-signed JWT credentials if applicable.
+
+        Returns:
+            bool: ``True`` if a self-signed JWT was refreshed and stored on
+                ``self.token`` and ``self.expiry``; ``False`` if the caller
+                should fall back to the OAuth 2.0 assertion grant.
+
+        Raises:
+            google.auth.exceptions.RefreshError: If a non-default universe
+                domain cannot use a self-signed JWT.
+        """
         if self._always_use_jwt_access and not self._jwt_credentials:
             # If self signed jwt should be used but jwt credential is not
             # created, try to create one with scopes
             self._create_self_signed_jwt(None)
 
-        if (
-            self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN
-            and self._subject
-        ):
-            raise exceptions.RefreshError(
-                "domain wide delegation is not supported for non-default universe domain"
-            )
+        if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
+            if self._subject:
+                raise exceptions.RefreshError(
+                    "domain wide delegation is not supported for non-default universe domain"
+                )
+            if not self._use_self_signed_jwt():
+                raise exceptions.RefreshError(
+                    "self-signed JWT credentials could not be created for "
+                    "non-default universe domain without scopes or audience"
+                )
 
         if self._use_self_signed_jwt():
             self._jwt_credentials.refresh(request)
             self.token = self._jwt_credentials.token.decode()
             self.expiry = self._jwt_credentials.expiry
-        else:
-            assertion = self._make_authorization_grant_assertion()
-            access_token, expiry, _ = _client.jwt_grant(
-                request, self._token_uri, assertion
-            )
-            self.token = access_token
-            self.expiry = expiry
+            return True
+
+        return False
+
+    @_helpers.copy_docstring(credentials.CredentialsWithRegionalAccessBoundary)
+    def _perform_refresh_token(self, request):
+        if self._try_refresh_self_signed_jwt(request):
+            return
+
+        assertion = self._make_authorization_grant_assertion()
+        access_token, expiry, _ = _client.jwt_grant(request, self._token_uri, assertion)
+        self.token = access_token
+        self.expiry = expiry
 
     def _create_self_signed_jwt(self, audience):
         """Create a self-signed JWT from the credentials if requirements are met.

@@ -14,6 +14,7 @@
 
 import asyncio
 import http.client as http_client
+import json
 import threading
 from typing import AsyncGenerator
 from unittest.mock import AsyncMock, Mock, patch
@@ -23,6 +24,7 @@ from aioresponses import aioresponses  # type: ignore
 
 import google.auth.credentials
 import google.auth.transport.requests
+from google.auth import crypt, jwt
 from google.auth.aio.credentials import AnonymousCredentials, Credentials
 from google.auth.aio.transport import (
     _DEFAULT_TIMEOUT_SECONDS,
@@ -326,6 +328,81 @@ class TestAsyncAuthorizedSession(object):
                 )
 
         sync_credentials._create_self_signed_jwt.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_request_non_default_universe_domain_service_account(self):
+        """AsyncAuthorizedSession mints a URL-audience JWT for unscoped service account."""
+        signer = crypt.RSASigner.from_string(pytest.private_key_bytes, "1")
+        sync_credentials = service_account.Credentials(
+            signer,
+            "service-account@example.com",
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain="universe.foo",
+        )
+        ok_response = MockResponse(status_code=http_client.OK)
+        auth_request = AsyncMock(return_value=ok_response)
+
+        mock_sync_request = Mock()
+        mock_token_response = Mock()
+        mock_token_response.status = http_client.OK
+        mock_token_response.data = json.dumps(
+            {"access_token": "token", "expires_in": 3600}
+        ).encode("utf-8")
+        mock_sync_request.return_value = mock_token_response
+        mock_sync_request.session = Mock()
+
+        target_url = "https://storage.universe.foo/storage/v1/b"
+        other_url = "https://pubsub.universe.foo/v1/projects/p/topics"
+        with patch(
+            "google.auth.transport.requests.Request", return_value=mock_sync_request
+        ):
+            authed_session = sessions.AsyncAuthorizedSession(
+                sync_credentials, auth_request=auth_request
+            )
+            responses = await asyncio.gather(
+                authed_session.request("GET", target_url),
+                authed_session.request("GET", other_url),
+                authed_session.request("GET", target_url),
+            )
+            await authed_session.close()
+
+        assert all(r is ok_response for r in responses)
+        mock_sync_request.assert_not_called()
+        assert auth_request.call_count == 3
+        tokens_by_url = {}
+        for call in auth_request.call_args_list:
+            req_url = call.args[0]
+            sent_headers = call.args[3]
+            assert sent_headers["authorization"].startswith("Bearer ")
+            token = sent_headers["authorization"].split(" ", 1)[1]
+            payload = jwt.decode(token, pytest.public_cert_bytes)
+            expected_aud = (
+                "https://storage.universe.foo/"
+                if req_url == target_url
+                else "https://pubsub.universe.foo/"
+            )
+            assert payload["aud"] == expected_aud
+            tokens_by_url.setdefault(req_url, set()).add(token)
+        # Concurrent requests to the same host share the cached token.
+        assert len(tokens_by_url[target_url]) == 1
+
+    @pytest.mark.asyncio
+    async def test_request_with_mock_service_account_credentials_still_refreshes(self):
+        """Mocked service_account.Credentials still refreshes when invalid."""
+        sync_credentials = Mock(spec=service_account.Credentials)
+        sync_credentials.valid = False
+        ok_response = MockResponse(status_code=http_client.OK)
+        auth_request = AsyncMock(return_value=ok_response)
+
+        authed_session = sessions.AsyncAuthorizedSession(
+            sync_credentials, auth_request=auth_request
+        )
+        response = await authed_session.request("GET", self.TEST_URL)
+        await authed_session.close()
+
+        assert response is ok_response
+        sync_credentials.refresh.assert_called_once()
+        sync_credentials.before_request.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_request_default_auth_request_success(self):

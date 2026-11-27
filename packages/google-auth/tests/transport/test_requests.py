@@ -32,7 +32,7 @@ import google.auth.credentials
 import google.auth.transport._custom_tls_signer
 import google.auth.transport._mtls_helper
 import google.auth.transport.requests
-from google.auth import environment_vars, exceptions
+from google.auth import crypt, environment_vars, exceptions, jwt
 from google.oauth2 import service_account
 from tests.transport import compliance
 
@@ -749,6 +749,46 @@ class TestAuthorizedSession(object):
         authed_session.credentials._create_self_signed_jwt.assert_called_once_with(
             "https://{}/".format(default_host)
         )
+
+    def test_authorized_session_non_default_universe_domain_without_default_host(self):
+        """AuthorizedSession derives JWT audience from URL if default_host is unset."""
+        signer = crypt.RSASigner.from_string(pytest.private_key_bytes, "1")
+        credentials = service_account.Credentials(
+            signer,
+            "service-account@example.com",
+            service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            universe_domain="universe.foo",
+        )
+        auth_request = mock.create_autospec(
+            google.auth.transport.Request, instance=True
+        )
+        token_response = mock.create_autospec(
+            google.auth.transport.Response, instance=True
+        )
+        token_response.status = http_client.OK
+        token_response.data = json.dumps(
+            {"access_token": "token", "expires_in": 3600}
+        ).encode("utf-8")
+        auth_request.return_value = token_response
+
+        target_url = "https://storage.universe.foo/storage/v1/b"
+        response = make_response()
+        adapter = AdapterStub([response])
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, auth_request=auth_request
+        )
+        authed_session.mount("https://", adapter)
+
+        result = authed_session.request("GET", target_url)
+
+        assert result == response
+        auth_request.assert_not_called()
+        assert len(adapter.requests) == 1
+        auth_header = adapter.requests[0].headers["authorization"]
+        assert auth_header.startswith("Bearer ")
+        payload = jwt.decode(auth_header.split(" ", 1)[1], pytest.public_cert_bytes)
+        assert payload["aud"] == "https://storage.universe.foo/"
 
     def test_configure_mtls_channel_with_callback(self):
         mock_callback = mock.Mock()

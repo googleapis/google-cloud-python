@@ -189,7 +189,23 @@ class _SyncCredentialsAdapter(Credentials):
 
     @_helpers.copy_docstring(Credentials)
     async def before_request(self, request, method, url, headers):
-        if not self._credentials.valid:
+        # _refresh_shared() calls self._credentials.refresh(), which does not
+        # receive the outbound request URL. For unscoped credentials that
+        # derive an AIP-4111 self-signed JWT audience from the URL (e.g.,
+        # non-default universe service_account.Credentials without
+        # default_host), calling refresh() without a URL would raise
+        # RefreshError. Probe via getattr to avoid coupling this adapter to
+        # service_account; signing and per-audience caching are pure local CPU
+        # operations protected by a lock inside before_request(), so concurrent
+        # coroutines targeting different hosts can safely skip _refresh_shared()
+        # without racing on shared credential token state.
+        derive_audience = getattr(
+            self._credentials, "_derive_self_signed_jwt_audience", None
+        )
+        uses_url_jwt = callable(derive_audience) and isinstance(
+            derive_audience(url), str
+        )
+        if not uses_url_jwt and not self._credentials.valid:
             await self._refresh_shared()
         await asyncio.to_thread(
             self._credentials.before_request,

@@ -76,7 +76,28 @@ class Credentials(
         )
 
     @_helpers.copy_docstring(credentials_async.Credentials)
+    async def before_request(self, request, method, url, headers):
+        # Override the synchronous service_account.Credentials.before_request
+        # so callers can still await before_request().
+        audience = self._derive_self_signed_jwt_audience(url)
+        if audience is None:
+            await credentials_async.Credentials.before_request(
+                self, request, method, url, headers
+            )
+            return
+
+        token = self._get_self_signed_jwt_for_audience(request, audience)
+        self.apply(headers, token=token)
+
+    @_helpers.copy_docstring(credentials_async.Credentials)
     async def refresh(self, request):
+        # Enforce the same self-signed JWT and non-default universe rules as
+        # the sync path before falling back to jwt_grant (which targets
+        # oauth2.googleapis.com). This is synchronous because
+        # jwt.Credentials.refresh() only signs locally and performs no I/O.
+        if self._try_refresh_self_signed_jwt(request):
+            return
+
         assertion = self._make_authorization_grant_assertion()
         access_token, expiry, _ = await _client_async.jwt_grant(
             request, self._token_uri, assertion
