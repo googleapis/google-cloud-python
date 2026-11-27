@@ -22,6 +22,7 @@ from __future__ import absolute_import
 import calendar
 import datetime
 import http.client
+import inspect
 import os
 import re
 from threading import local as Local
@@ -545,8 +546,16 @@ def make_secure_channel(credentials, user_agent, host, extra_options=()):
 
     user_agent_option = ("grpc.primary_user_agent", user_agent)
     options = (user_agent_option,) + extra_options
+    channel_kwargs = {"options": options}
+    if (
+        "default_host"
+        in inspect.signature(
+            google.auth.transport.grpc.secure_authorized_channel
+        ).parameters
+    ):
+        channel_kwargs["default_host"] = host
     return google.auth.transport.grpc.secure_authorized_channel(
-        credentials, http_request, target, options=options
+        credentials, http_request, target, **channel_kwargs
     )
 
 

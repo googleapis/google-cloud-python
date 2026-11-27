@@ -720,6 +720,22 @@ class Test_make_secure_channel(unittest.TestCase):
 
         return make_secure_channel(*args, **kwargs)
 
+    @staticmethod
+    def _expected_channel_kwargs(host, options):
+        import inspect
+
+        import google.auth.transport.grpc
+
+        kwargs = {"options": options}
+        if (
+            "default_host"
+            in inspect.signature(
+                google.auth.transport.grpc.secure_authorized_channel
+            ).parameters
+        ):  # pragma: NO COVER
+            kwargs["default_host"] = host
+        return kwargs
+
     def test_it(self):
         import http.client
 
@@ -740,7 +756,10 @@ class Test_make_secure_channel(unittest.TestCase):
         expected_options = (("grpc.primary_user_agent", user_agent),)
 
         secure_authorized_channel.assert_called_once_with(
-            credentials, mock.ANY, expected_target, options=expected_options
+            credentials,
+            mock.ANY,
+            expected_target,
+            **self._expected_channel_kwargs(host, expected_options),
         )
 
     def test_extra_options(self):
@@ -764,7 +783,10 @@ class Test_make_secure_channel(unittest.TestCase):
         expected_options = (("grpc.primary_user_agent", user_agent), extra_options[0])
 
         secure_authorized_channel.assert_called_once_with(
-            credentials, mock.ANY, expected_target, options=expected_options
+            credentials,
+            mock.ANY,
+            expected_target,
+            **self._expected_channel_kwargs(host, expected_options),
         )
 
 
