@@ -45,6 +45,7 @@ from google.auth import (
     exceptions,
     metrics,
 )
+from google.auth._refresh_worker import RefreshThreadManager
 from google.oauth2 import reauth
 
 _LOGGER = logging.getLogger(__name__)
@@ -206,7 +207,9 @@ class Credentials(
         self._cred_file_path = d.get("_cred_file_path")
         # The refresh_handler setter should be used to repopulate this.
         self._refresh_handler = None
-        self._refresh_worker = None
+        # The refresh worker holds a lock and a thread, so it is not pickled.
+        # Start a new one so that non-blocking refresh keeps working.
+        self._refresh_worker = RefreshThreadManager()
         self._use_non_blocking_refresh = d.get("_use_non_blocking_refresh", False)
         self._account = d.get("_account", "")
         self._rab_manager = d.get("_rab_manager") or (

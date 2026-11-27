@@ -22,6 +22,7 @@ from unittest import mock
 import pytest  # type: ignore
 
 from google.auth import _helpers, exceptions, transport
+from google.auth._refresh_worker import RefreshThreadManager
 from google.auth.credentials import TokenState
 from google.oauth2 import credentials
 
@@ -979,9 +980,9 @@ class TestCredentials(object):
         assert list(creds.__dict__).sort() == list(unpickled.__dict__).sort()
 
         for attr in list(creds.__dict__):
-            # Worker should always be None
+            # The worker is not pickled; a new one is created.
             if attr == "_refresh_worker":
-                assert getattr(unpickled, attr) is None
+                assert isinstance(getattr(unpickled, attr), RefreshThreadManager)
             else:
                 assert getattr(creds, attr) == getattr(unpickled, attr)
 
@@ -1017,10 +1018,28 @@ class TestCredentials(object):
         for attr in list(creds.__dict__):
             # For the _refresh_handler property, the unpickled creds should be
             # set to None.
-            if attr == "_refresh_handler" or attr == "_refresh_worker":
+            if attr == "_refresh_handler":
                 assert getattr(unpickled, attr) is None
+            # The worker is not pickled; a new one is created.
+            elif attr == "_refresh_worker":
+                assert isinstance(getattr(unpickled, attr), RefreshThreadManager)
             else:
                 assert getattr(creds, attr) == getattr(unpickled, attr)
+
+    def test_pickle_and_unpickle_non_blocking_refresh(self):
+        creds = self.make_credentials()
+        creds.with_non_blocking_refresh()
+        unpickled = pickle.loads(pickle.dumps(creds))
+        request = mock.Mock()
+
+        with mock.patch.object(
+            credentials.Credentials, "refresh", autospec=True
+        ) as refresh:
+            # The token is invalid, so this does a blocking refresh and then
+            # clears the error on the refresh worker.
+            unpickled._non_blocking_refresh(request)
+
+        refresh.assert_called_once_with(unpickled, request)
 
     def test_pickle_with_missing_attribute(self):
         creds = self.make_credentials()
