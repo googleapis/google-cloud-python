@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.47.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.47.0...google-cloud-bigquery-v3.47.1) (2026-11-27)
+
+
+### Bug Fixes
+
+* **bigquery:** allow python-dateutil 3.x and 4.x ([#19020](https://github.com/googleapis/google-cloud-python/issues/19020)) ([2a76aa7](https://github.com/googleapis/google-cloud-python/commit/2a76aa7486bcfabaaf0f4de3e78b3f186df757de))
+* **bigquery:** drop support for end-of-life Python 3.10 ([#19058](https://github.com/googleapis/google-cloud-python/issues/19058)) ([cf74e22](https://github.com/googleapis/google-cloud-python/commit/cf74e22f72cccb64270ac739285a9990b19bd0a3))
+* **bigquery:** limit ssl error workaround to insert_rows ([#18295](https://github.com/googleapis/google-cloud-python/issues/18295)) ([79d9cc9](https://github.com/googleapis/google-cloud-python/commit/79d9cc9bb19f34c44691b63b24c058b889af3d93))
+* **bigquery:** pass timeout to the lookup after an exists_ok conflict ([#18767](https://github.com/googleapis/google-cloud-python/issues/18767)) ([35e53ad](https://github.com/googleapis/google-cloud-python/commit/35e53adca6fe3f4d6b7917baaa15c0a9f981472f))
+* **bigquery:** read cached ARROW results that are too large to return inline ([#18958](https://github.com/googleapis/google-cloud-python/issues/18958)) ([4c0d256](https://github.com/googleapis/google-cloud-python/commit/4c0d25656c509409f6ee65d908eaa6fe593ca789))
+
 ## [3.47.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.2...google-cloud-bigquery-v3.47.0) (2026-10-29)
 
 
