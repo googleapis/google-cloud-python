@@ -1247,3 +1247,310 @@ class TestImpersonatedCredentials(object):
                 target_scopes=self.TARGET_SCOPES,
                 universe_domain="   ",
             )
+
+    def _refresh_impersonated_and_get_url(self, creds):
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        request = self.make_request(
+            data=json.dumps({"accessToken": "token", "expireTime": expire_time}),
+            status=http_client.OK,
+        )
+        with mock.patch.object(creds._source_credentials, "refresh"):
+            creds._source_credentials.token = "source-token"
+            creds._source_credentials.expiry = _helpers.utcnow() + datetime.timedelta(
+                seconds=500
+            )
+            creds.refresh(request)
+        return request.call_args[1]["url"]
+
+    def test_from_impersonated_service_account_info_default_url_preserves_mtls_path(
+        self,
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        )
+        assert creds.universe_domain == "googleapis.com"
+        assert creds._iam_endpoint_override is None
+        assert (
+            self._refresh_impersonated_and_get_url(creds)
+            == info["service_account_impersonation_url"]
+        )
+
+    @pytest.mark.parametrize(
+        "impersonation_url,expected_universe",
+        [
+            pytest.param(
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="global_custom_universe",
+            ),
+            pytest.param(
+                "https://iamcredentials.example.com./v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="trailing_dot_custom_universe",
+            ),
+            pytest.param(
+                "https://us-east1-iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="dash_regional_custom_universe",
+            ),
+            pytest.param(
+                "https://us-east1.iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="dot_regional_custom_universe",
+            ),
+            pytest.param(
+                "https://iamcredentials.us-east1.rep.example.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="rep_custom_universe",
+            ),
+            pytest.param(
+                "https://iamcredentials-ep1.p.example.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="psc_custom_universe",
+            ),
+            pytest.param(
+                "https://iamcredentials.mtls.example.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="mtls_custom_universe",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_infers_universe_from_url(
+        self, impersonation_url, expected_universe
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["service_account_impersonation_url"] = impersonation_url
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        )
+        assert creds.universe_domain == expected_universe
+        assert creds._source_credentials.universe_domain == expected_universe
+        assert creds._iam_endpoint_override == impersonation_url
+        assert self._refresh_impersonated_and_get_url(creds) == impersonation_url
+
+    @pytest.mark.parametrize(
+        "top_level_universe,impersonation_url,expected_universe",
+        [
+            pytest.param(
+                None,
+                "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "googleapis.com",
+                id="regional_default_universe",
+            ),
+            pytest.param(
+                "googleapis.com",
+                "https://iamcredentials.us-east1.rep.mtls.googleapis.com/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "googleapis.com",
+                id="rep_mtls_default_universe",
+            ),
+            pytest.param(
+                None,
+                "https://proxy.internal.corp/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "googleapis.com",
+                id="custom_proxy_with_omitted_universe",
+            ),
+            pytest.param(
+                "googleapis.com",
+                "https://proxy.internal.corp/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "googleapis.com",
+                id="custom_proxy_with_default_universe",
+            ),
+            pytest.param(
+                "example.com",
+                "https://proxy.internal.corp/v1/projects/-"
+                "/serviceAccounts/some@email.com:generateAccessToken",
+                "example.com",
+                id="custom_proxy_with_non_default_universe",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_preserves_custom_origin(
+        self, top_level_universe, impersonation_url, expected_universe
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        if top_level_universe is not None:
+            info["universe_domain"] = top_level_universe
+        info["service_account_impersonation_url"] = impersonation_url
+
+        creds = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        )
+        assert creds.universe_domain == expected_universe
+        assert creds._iam_endpoint_override == impersonation_url
+        assert self._refresh_impersonated_and_get_url(creds) == impersonation_url
+
+    @pytest.mark.parametrize(
+        "top_level_universe,source_universe,impersonation_url,expected_match",
+        [
+            pytest.param(
+                "example.com",
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "does not match the expected universe domain",
+                id="non_default_universe_with_default_iam_url",
+            ),
+            pytest.param(
+                "example.com",
+                None,
+                "https://iamcredentials.googleapis.com./v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "does not match the expected universe domain",
+                id="non_default_universe_with_trailing_dot_default_iam_url",
+            ),
+            pytest.param(
+                "example.com",
+                None,
+                "https://proxy.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "cannot use default-universe impersonation URL host",
+                id="non_default_universe_with_googleapis_proxy_url",
+            ),
+            pytest.param(
+                "example.com",
+                None,
+                "https://proxy.googleapis.com./v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "cannot use default-universe impersonation URL host",
+                id="non_default_universe_with_trailing_dot_googleapis_proxy",
+            ),
+            pytest.param(
+                None,
+                "googleapis.com",
+                "https://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "does not match the expected universe domain",
+                id="source_universe_conflicts_with_url_universe",
+            ),
+            pytest.param(
+                None,
+                None,
+                None,
+                "Cannot extract target principal",
+                id="missing_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://[invalid/v1/projects/-/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="malformed_ipv6_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com:notaport/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="invalid_port_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "http://iamcredentials.example.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="plaintext_http_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://evil.com@iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="userinfo_in_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken#frag",
+                "Cannot extract target principal",
+                id="fragment_in_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken\t",
+                "Cannot extract target principal",
+                id="whitespace_in_impersonation_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/sa@example.com:generateAccessToken:extra",
+                "Cannot extract target principal",
+                id="trailing_junk_after_action",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://iamcredentials.googleapis.com/v1/projects/-"
+                "/serviceAccounts/:generateAccessToken",
+                "Cannot extract target principal",
+                id="empty_target_principal_in_url",
+            ),
+            pytest.param(
+                None,
+                None,
+                "https://./v1/projects/-/serviceAccounts/sa@example.com:generateAccessToken",
+                "Cannot extract target principal",
+                id="dot_only_host_in_url",
+            ),
+        ],
+    )
+    def test_from_impersonated_service_account_info_url_validation_errors(
+        self, top_level_universe, source_universe, impersonation_url, expected_match
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        if top_level_universe is not None:
+            info["universe_domain"] = top_level_universe
+        if source_universe is not None:
+            info["source_credentials"]["universe_domain"] = source_universe
+        info["service_account_impersonation_url"] = impersonation_url
+
+        with pytest.raises(exceptions.InvalidValue, match=expected_match):
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+
+    @pytest.mark.parametrize("source_credentials_value", [None, "invalid"])
+    def test_from_impersonated_service_account_info_missing_source_credentials(
+        self, source_credentials_value
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        if source_credentials_value is None:
+            info.pop("source_credentials", None)
+        else:
+            info["source_credentials"] = source_credentials_value
+
+        with pytest.raises(
+            exceptions.InvalidValue,
+            match="The 'source_credentials' field is required",
+        ):
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
