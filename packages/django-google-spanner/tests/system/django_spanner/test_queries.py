@@ -108,3 +108,355 @@ class TestQueries(TransactionTestCase):
             )
         finally:
             Author.objects.all().delete()
+
+    def test_pattern_lookups_literal_metacharacters(self):
+        """Verify contains/startswith/endswith treat regex metacharacters literally."""
+        from django.db import models
+
+        class _UpperCaseTransform(models.Transform):
+            lookup_name = "upper"
+            function = "UPPER"
+            bilateral = True
+
+        Author.objects.bulk_create(
+            [
+                Author(first_name=".*", last_name=".*", rating=Decimal("1.0")),
+                Author(
+                    first_name="Hello.*",
+                    last_name="hello.*",
+                    rating=Decimal("2.0"),
+                ),
+                Author(
+                    first_name="50%_off",
+                    last_name="50%_",
+                    rating=Decimal("5.0"),
+                ),
+                Author(
+                    first_name="[unclosed",
+                    last_name="[",
+                    rating=Decimal("4.0"),
+                ),
+                Author(
+                    first_name="line1\nline2",
+                    last_name="multiline",
+                    rating=Decimal("6.0"),
+                ),
+            ]
+        )
+        models.CharField.register_lookup(_UpperCaseTransform)
+        try:
+
+            def first_names(queryset):
+                return set(queryset.values_list("first_name", flat=True))
+
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__contains=".*")),
+                {".*", "Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__contains=models.Value(".*"))
+                ),
+                {".*", "Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(
+                        first_name__contains=models.Value("[unclosed")
+                    )
+                ),
+                {"[unclosed"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__icontains=models.Value("HELLO.*"))
+                ),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__startswith=models.Value("50%_"))
+                ),
+                {"50%_off"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__startswith=models.F("last_name"))
+                ),
+                {".*", "50%_off", "[unclosed"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(
+                        first_name__istartswith=models.Value("HELLO.*")
+                    )
+                ),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__endswith=models.Value(".*"))
+                ),
+                {".*", "Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__iendswith=models.F("last_name"))
+                ),
+                {".*", "Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__startswith=models.F("rating"))
+                ),
+                {"50%_off"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__upper__contains=".*")),
+                {".*", "Hello.*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__icontains="hello.*")),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__startswith="50%_")),
+                {"50%_off"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__endswith=".*")),
+                {".*", "Hello.*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__contains="\n")),
+                {"line1\nline2"},
+            )
+            all_names = {".*", "Hello.*", "50%_off", "[unclosed", "line1\nline2"}
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__contains="")),
+                all_names,
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__startswith="")),
+                all_names,
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__endswith="")),
+                all_names,
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(
+                        first_name__contains=models.Subquery(
+                            Author.objects.filter(last_name="[").values("last_name")[:1]
+                        )
+                    )
+                ),
+                {"[unclosed"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(
+                        first_name__contains=models.Subquery(
+                            Author.objects.none().values("last_name")[:1]
+                        )
+                    )
+                ),
+                set(),
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__contains=models.Value(None))
+                ),
+                set(),
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__startswith=models.Value(None))
+                ),
+                set(),
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__endswith=models.Value(None))
+                ),
+                set(),
+            )
+        finally:
+            models.CharField._unregister_lookup(_UpperCaseTransform)
+            Author.objects.all().delete()
+
+    def test_iexact_and_regex_lookups(self):
+        """Verify iexact matches literally while regex and iregex evaluate patterns."""
+        from django.db import models
+
+        class _UpperCaseTransform(models.Transform):
+            lookup_name = "upper"
+            function = "UPPER"
+            bilateral = True
+
+        Author.objects.bulk_create(
+            [
+                Author(first_name=".*", last_name="other", rating=Decimal("1.0")),
+                Author(
+                    first_name="Hello.*",
+                    last_name="hello.*",
+                    rating=Decimal("2.0"),
+                ),
+                Author(
+                    first_name="HelloWorld",
+                    last_name="world",
+                    rating=Decimal("3.0"),
+                ),
+                Author(
+                    first_name="[unclosed",
+                    last_name="other",
+                    rating=Decimal("4.0"),
+                ),
+                Author(
+                    first_name="1.5",
+                    last_name="float",
+                    rating=Decimal("5.0"),
+                ),
+                Author(
+                    first_name="1.50",
+                    last_name="decimal",
+                    rating=Decimal("6.0"),
+                ),
+                Author(
+                    first_name=r"a\b",
+                    last_name="backslash",
+                    rating=Decimal("7.0"),
+                ),
+                Author(
+                    first_name="Café",
+                    last_name="unicode",
+                    rating=Decimal("8.0"),
+                ),
+                Author(
+                    first_name="line1\nline2",
+                    last_name="multiline",
+                    rating=Decimal("9.0"),
+                ),
+                Author(
+                    first_name="Straße",
+                    last_name="german",
+                    rating=Decimal("10.0"),
+                ),
+            ]
+        )
+        models.CharField.register_lookup(_UpperCaseTransform)
+        try:
+
+            def first_names(queryset):
+                return set(queryset.values_list("first_name", flat=True))
+
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact=".*")),
+                {".*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact="[UNCLOSED")),
+                {"[unclosed"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact=1.5)),
+                {"1.5"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact=Decimal("1.50"))),
+                {"1.50"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__iexact=models.Value(1.5))
+                ),
+                {"1.5"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact=r"a\b")),
+                {r"a\b"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact="CAFÉ")),
+                {"Café"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact="LINE1\nLINE2")),
+                {"line1\nline2"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact="")),
+                set(),
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__iexact=models.Value(None))
+                ),
+                set(),
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(
+                        first_name__iexact=models.Subquery(
+                            Author.objects.filter(last_name="hello.*").values(
+                                "last_name"
+                            )[:1]
+                        )
+                    )
+                ),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iexact="STRASSE")),
+                {"Straße"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(
+                        first_name__iexact=models.Subquery(
+                            Author.objects.none().values("last_name")[:1]
+                        )
+                    )
+                ),
+                set(),
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__in=[".*", "Hello.*"]).exclude(
+                        first_name__iexact=".*"
+                    )
+                ),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__iexact=models.Value("HELLO.*"))
+                ),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(
+                    Author.objects.filter(first_name__iexact=models.F("last_name"))
+                ),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__upper__iexact="HELLO")),
+                set(),
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__upper__iexact="HELLO.*")),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__regex=r"^Hello\.\*$")),
+                {"Hello.*"},
+            )
+            self.assertEqual(
+                first_names(Author.objects.filter(first_name__iregex=r"^hello")),
+                {"Hello.*", "HelloWorld"},
+            )
+        finally:
+            models.CharField._unregister_lookup(_UpperCaseTransform)
+            Author.objects.all().delete()

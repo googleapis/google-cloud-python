@@ -235,6 +235,23 @@ class TestCheckConstraintValidation(TransactionTestCase):
             with self.assertRaisesRegex(ValidationError, "name_contains_ok"):
                 name_constraint.validate(ValidationSample, ValidationSample(name="bad"))
 
+            literal_pattern_constraint = models.CheckConstraint(
+                condition=models.Q(name__startswith=models.Value(".*"))
+                & ~models.Q(name__iexact=".*forbidden"),
+                name="literal_pattern_name",
+            )
+            literal_pattern_constraint.validate(
+                ValidationSample, ValidationSample(name=".*ok")
+            )
+            with self.assertRaisesRegex(ValidationError, "literal_pattern_name"):
+                literal_pattern_constraint.validate(
+                    ValidationSample, ValidationSample(name="ok")
+                )
+            with self.assertRaisesRegex(ValidationError, "literal_pattern_name"):
+                literal_pattern_constraint.validate(
+                    ValidationSample, ValidationSample(name=".*FORBIDDEN")
+                )
+
             # Date, DateTime, Time, Decimal, Duration, and UUID fields.
             date_val = datetime.date(2025, 1, 15)
             date_constraint = models.CheckConstraint(
@@ -324,6 +341,22 @@ class TestCheckConstraintValidation(TransactionTestCase):
             with self.assertRaisesRegex(ValidationError, "uid_eq"):
                 uid_constraint.validate(
                     ValidationSample, ValidationSample(uid=uuid.uuid4())
+                )
+
+            uid_lookup_constraint = models.CheckConstraint(
+                condition=models.Q(uid__iexact="12345678-1234-5678-1234-567812345678")
+                & models.Q(uid__contains="1234-5678"),
+                name="uid_lookup",
+            )
+            uid_lookup_constraint.validate(
+                ValidationSample, ValidationSample(uid=uid_val)
+            )
+            with self.assertRaisesRegex(ValidationError, "uid_lookup"):
+                uid_lookup_constraint.validate(
+                    ValidationSample,
+                    ValidationSample(
+                        uid=uuid.UUID("fedcba98-7654-3210-fedc-ba9876543210")
+                    ),
                 )
 
             # Boolean expressions, GeneratedField, PK field, and validate_constraints().

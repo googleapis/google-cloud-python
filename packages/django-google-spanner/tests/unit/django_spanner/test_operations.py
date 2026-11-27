@@ -665,12 +665,18 @@ class TestOperations(SpannerSimpleTestClass):
             )
 
     def test_lookup_cast_match_lookup_type(self):
-        self.assertEqual(
-            self.db_operations.lookup_cast(
-                "contains",
-            ),
-            "CAST(%s AS STRING)",
-        )
+        for lookup_type in ("contains", "startswith", "endswith", "regex", "iregex"):
+            with self.subTest(lookup_type=lookup_type):
+                self.assertEqual(
+                    self.db_operations.lookup_cast(lookup_type),
+                    "CAST(%s AS STRING)",
+                )
+        for lookup_type in ("iexact", "icontains", "istartswith", "iendswith"):
+            with self.subTest(lookup_type=lookup_type):
+                self.assertEqual(
+                    self.db_operations.lookup_cast(lookup_type),
+                    "UPPER(CAST(%s AS STRING))",
+                )
 
     def test_lookup_cast_unmatched_lookup_type(self):
         self.assertEqual(
@@ -721,12 +727,10 @@ class TestOperations(SpannerSimpleTestClass):
         self.assertEqual(offset, 0)
 
     def test_prep_for_like_and_iexact_query(self):
-        self.assertEqual(
-            self.db_operations.prep_for_like_query("test.val*"), r"test\.val\*"
-        )
-        self.assertEqual(
-            self.db_operations.prep_for_iexact_query("test.val*"), r"test\.val\*"
-        )
+        for value in ("test.val*", r".*+?()[]{}\|^$%_", 4, None):
+            with self.subTest(value=value):
+                self.assertEqual(self.db_operations.prep_for_like_query(value), value)
+                self.assertEqual(self.db_operations.prep_for_iexact_query(value), value)
 
     def test_bulk_insert_sql(self):
         fields = [mock.MagicMock(column="col1"), mock.MagicMock(column="col2")]

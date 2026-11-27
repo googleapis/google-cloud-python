@@ -62,46 +62,15 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     }
     operators = {
         "exact": "= %s",
-        "iexact": "REGEXP_CONTAINS(%s, %%%%s)",
-        # contains uses REGEXP_CONTAINS instead of LIKE to allow
-        # DatabaseOperations.prep_for_like_query() to do regular expression
-        # escaping. prep_for_like_query() is called for all the lookups that
-        # use REGEXP_CONTAINS except regex/iregex (see
-        # django.db.models.lookups.PatternLookup).
-        "contains": "REGEXP_CONTAINS(%s, %%%%s)",
-        "icontains": "REGEXP_CONTAINS(%s, %%%%s)",
+        "iexact": "= UPPER(CAST(%s AS STRING))",
+        # Pattern lookups (contains, startswith, endswith, and case-insensitive
+        # variants) use function-based expressions in django_spanner.lookups.
         "gt": "> %s",
         "gte": ">= %s",
         "lt": "< %s",
         "lte": "<= %s",
-        # Using REGEXP_CONTAINS instead of STARTS_WITH and ENDS_WITH for the
-        # same reasoning as described above for 'contains'.
-        "startswith": "REGEXP_CONTAINS(%s, %%%%s)",
-        "endswith": "REGEXP_CONTAINS(%s, %%%%s)",
-        "istartswith": "REGEXP_CONTAINS(%s, %%%%s)",
-        "iendswith": "REGEXP_CONTAINS(%s, %%%%s)",
         "regex": "REGEXP_CONTAINS(%s, %%%%s)",
         "iregex": "REGEXP_CONTAINS(%s, %%%%s)",
-    }
-
-    # pattern_esc is used to generate SQL pattern lookup clauses when the
-    # right-hand side of the lookup isn't a raw string (it might be an
-    # expression or the result of a bilateral transformation). In those cases,
-    # special characters for REGEXP_CONTAINS operators (e.g. \, *, _) must be
-    # escaped on database side.
-    pattern_esc = (
-        r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
-    )
-
-    # These are all no-ops in favor of using REGEXP_CONTAINS in the customized
-    # lookups.
-    pattern_ops = {
-        "contains": "",
-        "icontains": "",
-        "startswith": "",
-        "istartswith": "",
-        "endswith": "",
-        "iendswith": "",
     }
 
     data_type_check_constraints = {
