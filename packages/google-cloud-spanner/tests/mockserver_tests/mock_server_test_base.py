@@ -90,6 +90,19 @@ def internal_server_error_status(
     return _make_status(code_pb2.INTERNAL, message)
 
 
+def deadline_exceeded_status() -> _Status:
+    error = status_pb2.Status(
+        code=code_pb2.DEADLINE_EXCEEDED,
+        message="Deadline exceeded.",
+    )
+    status = _Status(
+        code=code_to_grpc_status_code(error.code),
+        details=error.message,
+        trailing_metadata=(("grpc-status-details-bin", error.SerializeToString()),),
+    )
+    return status
+
+
 def _make_partial_result_sets(
     fields: list[tuple[str, TypeCode]], results: list[dict]
 ) -> list[result_set.PartialResultSet]:
