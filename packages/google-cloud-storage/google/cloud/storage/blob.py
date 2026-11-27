@@ -523,17 +523,18 @@ class Blob(_PropertyMixin):
             (Optional) Content disposition of responses to requests for the
             signed URL.  For example, to enable the signed URL to initiate a
             file of ``blog.png``, use the value ``'attachment;
-            filename=blob.png'``.
+            filename=blob.png'``. Requires ``version="v4"``.
 
         :type response_type: str
         :param response_type:
             (Optional) Content type of responses to requests for the signed
             URL. Ignored if content_type is set on object/blob metadata.
+            Requires ``version="v4"``.
 
         :type generation: str
         :param generation:
             (Optional) A value that indicates which generation of the resource
-            to fetch.
+            to fetch. Requires ``version="v4"``.
 
         :type headers: dict
         :param headers:
@@ -592,7 +593,10 @@ class Blob(_PropertyMixin):
             hostname, use this value as the scheme.  ``https`` will work only
             when using a CDN.  Defaults to ``"http"``.
 
-        :raises: :exc:`ValueError` when version is invalid or mutually exclusive arguments are used.
+        :raises: :exc:`ValueError` when version is invalid, mutually exclusive
+            arguments are used, or ``response_type``,
+            ``response_disposition``, or ``generation`` is provided without
+            ``version="v4"``.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
                 of :class:`google.auth.credentials.Signing`.
