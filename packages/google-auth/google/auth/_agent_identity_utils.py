@@ -253,6 +253,55 @@ def _is_bound_token_opted_out():
     return val.lower() == "false"
 
 
+def _is_bound_token_disabled():
+    """Returns True if bound tokens or client certificates are disabled via env vars."""
+    from google.auth.transport import _mtls_helper
+
+    return (
+        _is_bound_token_opted_out()
+        or _mtls_helper._check_use_client_cert_env() is False
+    )
+
+
+def _parse_and_normalize_certificate_bytes(
+    raw_bytes, cert_source="the client certificate"
+):
+    """Extracts PEM certificate blocks, normalizes them, and parses the leaf cert.
+
+    Callers are responsible for checking :func:`_is_bound_token_disabled` first.
+
+    Args:
+        raw_bytes (bytes): Raw bytes containing one or more PEM-encoded
+            certificates (and optionally a private key or PEM metadata).
+        cert_source (str): Human-readable source label for warning messages.
+
+    Returns:
+        Tuple[Optional[cryptography.x509.Certificate], Optional[bytes]]: A tuple
+            of (parsed leaf certificate object, normalized PEM certificate bytes),
+            or ``(None, None)`` if ``raw_bytes`` contains no valid PEM
+            certificate.
+    """
+    from google.auth.transport import _mtls_helper
+
+    cert_blocks = _mtls_helper._CERT_REGEX.findall(raw_bytes)
+    if not cert_blocks:
+        warnings.warn(
+            f"No PEM certificate blocks found in {cert_source}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None, None
+
+    cert_bytes = b"\n".join(block.strip() for block in cert_blocks) + b"\n"
+    try:
+        return parse_certificate(raw_bytes), cert_bytes
+    except (ValueError, ImportError) as e:
+        warnings.warn(
+            f"Failed to parse agent identity certificate from {cert_source}: {e}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None, None
+
+
 def get_agent_identity_certificate_and_bytes():
     """Gets and parses the agent identity certificate if not opted out.
 
@@ -264,16 +313,9 @@ def get_agent_identity_certificate_and_bytes():
             of (parsed certificate object, certificate bytes) if found and not
             opted out, otherwise (None, None).
     """
-    from google.auth.transport import _mtls_helper
-
-    # If the user has opted out of cert bound tokens, there is no need to
-    # look up the certificate.
-    if _is_bound_token_opted_out():
-        return None, None
-
-    # Respect explicit opt-out of mTLS / client certs
-    env_override = _mtls_helper._check_use_client_cert_env()
-    if env_override is False:
+    # If the user has opted out of cert bound tokens or client certs, there is
+    # no need to look up the certificate on disk.
+    if _is_bound_token_disabled():
         return None, None
 
     cert_path = get_agent_identity_certificate_path()
@@ -290,23 +332,7 @@ def get_agent_identity_certificate_and_bytes():
         )
         return None, None
 
-    cert_blocks = _mtls_helper._CERT_REGEX.findall(raw_bytes)
-    if not cert_blocks:
-        warnings.warn(
-            f"No PEM certificate blocks found in {cert_path}. "
-            "Token binding protection cannot be enabled. Falling back to unbound tokens."
-        )
-        return None, None
-
-    cert_bytes = b"\n".join(block.strip() for block in cert_blocks) + b"\n"
-    try:
-        return parse_certificate(raw_bytes), cert_bytes
-    except (ValueError, ImportError) as e:
-        warnings.warn(
-            f"Failed to parse agent identity certificate at {cert_path}: {e}. "
-            "Token binding protection cannot be enabled. Falling back to unbound tokens."
-        )
-        return None, None
+    return _parse_and_normalize_certificate_bytes(raw_bytes, cert_source=cert_path)
 
 
 def parse_certificate(cert_bytes):
@@ -419,14 +445,7 @@ def should_request_bound_token(cert):
     Returns:
         bool: True if a bound token should be requested, False otherwise.
     """
-    from google.auth.transport import _mtls_helper
-
-    if _is_bound_token_opted_out():
-        return False
-
-    # Respect explicit opt-out of mTLS / client certs
-    env_override = _mtls_helper._check_use_client_cert_env()
-    if env_override is False:
+    if _is_bound_token_disabled():
         return False
 
     return _is_agent_identity_certificate(cert)
