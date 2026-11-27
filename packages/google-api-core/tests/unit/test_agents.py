@@ -40,6 +40,7 @@ def test_detect_ai_agent_none():
         ("GEMINI_CLI", "1", "gemini_cli"),
         ("CODEX_SANDBOX", "seatbelt", "codex_cli"),
         ("CODEX_CI", "1", "codex_cli"),
+        ("CODEX_THREAD_ID", "thread-abc", "codex_cli"),
         ("CLINE_ACTIVE", "true", "cline"),
         ("OPENCODE", "1", "open_code"),
         ("OPENCODE_CLIENT", "cli", "open_code"),
@@ -47,6 +48,7 @@ def test_detect_ai_agent_none():
         ("KIRO_AGENT_PATH", "/usr/local/bin/kiro", "kiro"),
         ("COPILOT_MODEL", "gpt-4o", "github_copilot"),
         ("COPILOT_ALLOW_ALL", "true", "github_copilot"),
+        ("COPILOT_GITHUB_TOKEN", "ghu_token123", "github_copilot"),
         ("REPL_ID", "repl-123", "replit"),
         ("AUGMENT_AGENT", "1", "augment"),
     ],
@@ -64,18 +66,44 @@ def test_detect_ai_agent_known_variables(monkeypatch, env_var, env_value, expect
         ("AI_AGENT", ""),
         ("AI_AGENT", "   "),
         ("AI_AGENT", "!@#$%^&*()"),
+        ("AI_AGENT", "0"),
+        ("AI_AGENT", "false"),
+        ("AI_AGENT", "FALSE"),
+        ("AI_AGENT", "off"),
+        ("ANTIGRAVITY_AGENT", "0"),
+        ("ANTIGRAVITY_AGENT", "false"),
         ("CLAUDECODE", ""),
         ("CLAUDECODE", "   "),
+        ("CLAUDECODE", "0"),
+        ("CLAUDECODE", "false"),
+        ("CURSOR_AGENT", "0"),
+        ("CURSOR_AGENT", "false"),
+        ("CURSOR_AGENT", "off"),
+        ("CURSOR_AGENT", "no"),
         ("CURSOR_EXTENSION_HOST_ROLE", ""),
         ("CURSOR_EXTENSION_HOST_ROLE", "   "),
         ("CURSOR_EXTENSION_HOST_ROLE", "extension-host"),
+        ("GEMINI_CLI", "0"),
+        ("GEMINI_CLI", "false"),
+        ("CODEX_CI", "0"),
+        ("CODEX_CI", "false"),
+        ("CLINE_ACTIVE", "false"),
+        ("CLINE_ACTIVE", "0"),
+        ("COPILOT_ALLOW_ALL", "false"),
+        ("COPILOT_ALLOW_ALL", "0"),
     ],
 )
-def test_detect_ai_agent_ignores_empty_or_non_matching_values(
+def test_detect_ai_agent_ignores_empty_falsy_or_non_matching_values(
     monkeypatch, env_var, env_value
 ):
     monkeypatch.setenv(env_var, env_value)
     assert agents.detect_ai_agent() is None
+
+
+def test_detect_ai_agent_falsy_higher_priority_falls_through(monkeypatch):
+    monkeypatch.setenv("CURSOR_AGENT", "0")
+    monkeypatch.setenv("GEMINI_CLI", "1")
+    assert agents.detect_ai_agent() == "gemini_cli"
 
 
 def test_detect_ai_agent_priority_order(monkeypatch):

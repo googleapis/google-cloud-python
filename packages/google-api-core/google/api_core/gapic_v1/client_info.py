@@ -18,7 +18,7 @@ Client information is used to send information about the calling client,
 such as the library and Python version, to API services.
 """
 
-from google.api_core import client_info
+from google.api_core import agents, client_info
 
 METRICS_METADATA_KEY = "x-goog-api-client"
 
@@ -50,11 +50,17 @@ class ClientInfo(client_info.ClientInfo):
         agent (Optional[str]): The AI agent identifier, if running inside an
             agentic environment. When ``None``, automatically detects ambient
             AI agent environment variables via
-            :func:`google.api_core.agents.detect_ai_agent`.
+            :func:`google.api_core.agents.detect_ai_agent`. Pass ``""`` to
+            explicitly suppress ambient AI agent detection.
     """
 
     def to_grpc_metadata(self):
         """Returns the gRPC metadata for this client info."""
+        if not self._agent_explicit and self.agent == self._initial_agent:
+            return (
+                METRICS_METADATA_KEY,
+                self._format_user_agent(agents.detect_ai_agent()),
+            )
         return (METRICS_METADATA_KEY, self.to_user_agent())
 
 

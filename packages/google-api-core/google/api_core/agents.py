@@ -13,7 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Helpers for detecting AI agents from ambient environment variables."""
+"""Helpers for detecting AI agents from ambient environment variables.
+
+Environment-variable detection identifies agent-originated execution contexts
+at client initialization time. Users and long-lived daemons can suppress
+detection by setting ``GOOGLE_CLOUD_DISABLE_METRICS=true`` or
+``CLOUDSDK_CORE_DISABLE_USAGE_REPORTING=true``, unsetting or setting the
+inherited marker variable to an empty/falsy value (``""``, ``"0"``,
+``"false"``), or passing ``ClientInfo(agent="")``.
+"""
 
 import os
 import re
@@ -23,6 +31,7 @@ MAX_AGENT_TOKEN_LENGTH = 64
 _INVALID_AGENT_CHARS_RE = re.compile(r"[^a-zA-Z0-9_-]")
 
 _TRUTHY_ENV_VALUES = frozenset({"1", "true", "t", "yes", "y", "on"})
+_FALSY_ENV_VALUES = frozenset({"0", "false", "f", "no", "n", "off"})
 _METRICS_OPT_OUT_ENV_VARS = (
     "GOOGLE_CLOUD_DISABLE_METRICS",
     "CLOUDSDK_CORE_DISABLE_USAGE_REPORTING",
@@ -30,7 +39,7 @@ _METRICS_OPT_OUT_ENV_VARS = (
 
 # Evaluated in fixed priority order during client construction.
 # Tuple structure: (ENV_VAR, OPTIONAL_ASSERTED_VALUE, OPTIONAL_CANONICAL_TOKEN)
-# - If OPTIONAL_ASSERTED_VALUE is None, any non-empty string matches.
+# - If OPTIONAL_ASSERTED_VALUE is None, any non-empty, non-falsy string matches.
 # - If OPTIONAL_CANONICAL_TOKEN is None, the sanitized env var value is used.
 AI_AGENTS: tuple[tuple[str, Optional[str], Optional[str]], ...] = (
     ("AI_AGENT", None, None),
@@ -43,6 +52,7 @@ AI_AGENTS: tuple[tuple[str, Optional[str], Optional[str]], ...] = (
     ("GEMINI_CLI", None, "gemini_cli"),
     ("CODEX_SANDBOX", None, "codex_cli"),
     ("CODEX_CI", None, "codex_cli"),
+    ("CODEX_THREAD_ID", None, "codex_cli"),
     ("CLINE_ACTIVE", None, "cline"),
     ("OPENCODE", None, "open_code"),
     ("OPENCODE_CLIENT", None, "open_code"),
@@ -50,6 +60,7 @@ AI_AGENTS: tuple[tuple[str, Optional[str], Optional[str]], ...] = (
     ("KIRO_AGENT_PATH", None, "kiro"),
     ("COPILOT_MODEL", None, "github_copilot"),
     ("COPILOT_ALLOW_ALL", None, "github_copilot"),
+    ("COPILOT_GITHUB_TOKEN", None, "github_copilot"),
     ("REPL_ID", None, "replit"),
     ("AUGMENT_AGENT", None, "augment"),
 )
@@ -85,9 +96,9 @@ def detect_ai_agent() -> Optional[str]:
     """Detects an active AI agent from ambient process environment variables.
 
     Evaluates known AI agent environment variables in priority order and returns
-    the canonical agent token for the first matching non-empty variable. Returns
-    ``None`` if metrics/usage reporting is disabled or no agent environment
-    variable matches.
+    the canonical agent token for the first matching non-empty, non-falsy
+    variable. Returns ``None`` if metrics/usage reporting is disabled or no
+    agent environment variable matches.
 
     Returns:
         Optional[str]: The canonical or sanitized AI agent token, or ``None``.
@@ -100,7 +111,7 @@ def detect_ai_agent() -> Optional[str]:
         if raw_val is None:
             continue
         val = raw_val.strip()
-        if not val:
+        if not val or val.lower() in _FALSY_ENV_VALUES:
             continue
         if asserted_value is not None and val != asserted_value:
             continue

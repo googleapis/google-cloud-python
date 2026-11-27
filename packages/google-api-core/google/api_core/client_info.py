@@ -64,7 +64,8 @@ class ClientInfo(object):
         agent (Optional[str]): The AI agent identifier, if running inside an
             agentic environment. When ``None``, automatically detects ambient
             AI agent environment variables via
-            :func:`google.api_core.agents.detect_ai_agent`.
+            :func:`google.api_core.agents.detect_ai_agent`. Pass ``""`` to
+            explicitly suppress ambient AI agent detection.
     """
 
     def __init__(
@@ -87,15 +88,16 @@ class ClientInfo(object):
         self.user_agent = user_agent
         self.rest_version = rest_version
         self.protobuf_runtime_version = protobuf_runtime_version
+        self._agent_explicit = agent is not None
         self.agent = (
             agents.sanitize_agent_name(agent)
-            if agent is not None
+            if self._agent_explicit
             else agents.detect_ai_agent()
         )
+        self._initial_agent = self.agent
 
-    def to_user_agent(self):
-        """Returns the user-agent string for this client info."""
-
+    def _format_user_agent(self, agent: Optional[str]) -> str:
+        """Formats the user-agent string using the provided agent token."""
         # Note: the order here is important as the internal metrics system
         # expects these items to be in specific locations.
         ua = ""
@@ -122,7 +124,11 @@ class ClientInfo(object):
         if self.protobuf_runtime_version is not None:
             ua += "pb/{protobuf_runtime_version} "
 
-        if self.agent:
-            ua += "agent/{agent} "
+        if agent:
+            ua += "agent/{resolved_agent} "
 
-        return ua.format(**self.__dict__).strip()
+        return ua.format(**self.__dict__, resolved_agent=agent).strip()
+
+    def to_user_agent(self):
+        """Returns the user-agent string for this client info."""
+        return self._format_user_agent(self.agent)
