@@ -26,6 +26,8 @@ from google.cloud.storage import grpc_client
 def _hermetic_env(monkeypatch):
     """Keeps the runner's environment from changing host or DirectPath resolution."""
     monkeypatch.delenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", raising=False)
+    monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+    monkeypatch.setenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
 
 
 def _make_credentials(spec=None):
@@ -34,6 +36,10 @@ def _make_credentials(spec=None):
             spec=auth_credentials.Credentials, universe_domain="googleapis.com"
         )
     return mock.Mock(spec=spec)
+
+
+def _example_cert_source():
+    return b"example-cert", b"example-key"
 
 
 class TestGrpcClient(unittest.TestCase):
@@ -322,6 +328,43 @@ class TestGrpcClient(unittest.TestCase):
         self.assertEqual(client.grpc_client.api_endpoint, "storage.example.com:443")
         self.assertEqual(mock_create_channel.call_args.args[0], "storage.example.com")
         self.assertFalse(mock_create_channel.call_args.kwargs["attempt_direct_path"])
+
+    @mock.patch("grpc.ssl_channel_credentials")
+    @mock.patch("google.cloud._storage_v2.StorageClient")
+    def test_mtls_endpoint_and_ssl_credentials(
+        self, mock_storage_client, mock_ssl_channel_credentials
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+        mock_ssl_creds = mock.sentinel.ssl_credentials
+        mock_ssl_channel_credentials.return_value = mock_ssl_creds
+        with mock.patch.dict(
+            "os.environ",
+            {
+                "GOOGLE_API_USE_CLIENT_CERTIFICATE": "true",
+                "GOOGLE_API_USE_MTLS_ENDPOINT": "auto",
+            },
+        ):
+            grpc_client.GrpcClient(
+                project="test-project",
+                credentials=mock_creds,
+                client_options={"client_cert_source": _example_cert_source},
+            )
+
+        mock_ssl_channel_credentials.assert_called_once_with(
+            certificate_chain=b"example-cert", private_key=b"example-key"
+        )
+        mock_transport_cls.create_channel.assert_called_once_with(
+            host="storage.mtls.googleapis.com",
+            credentials=mock_creds,
+            attempt_direct_path=False,
+            ssl_credentials=mock_ssl_creds,
+        )
+        mock_transport_cls.assert_called_once_with(
+            host="storage.mtls.googleapis.com",
+            channel=mock_transport_cls.create_channel.return_value,
+        )
 
 
 @pytest.mark.parametrize("creds_universe", ["__missing__", None, 123])
