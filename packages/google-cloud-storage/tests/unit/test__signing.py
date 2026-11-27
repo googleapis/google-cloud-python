@@ -337,9 +337,6 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         method="GET",
         content_md5=None,
         content_type=None,
-        response_type=None,
-        response_disposition=None,
-        generation=None,
         headers=None,
         query_parameters=None,
     ):
@@ -361,9 +358,6 @@ class Test_generate_signed_url_v2(unittest.TestCase):
             method=method,
             content_md5=content_md5,
             content_type=content_type,
-            response_type=response_type,
-            response_disposition=response_disposition,
-            generation=generation,
             headers=headers,
             query_parameters=query_parameters,
             service_account_email=None,
@@ -420,17 +414,6 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         self.assertEqual(params["Expires"], str(expiration))
         self.assertEqual(params["Signature"], signed)
 
-        if response_type is not None:
-            self.assertEqual(params["response-content-type"], response_type)
-
-        if response_disposition is not None:
-            self.assertEqual(
-                params["response-content-disposition"], response_disposition
-            )
-
-        if generation is not None:
-            self.assertEqual(params["generation"], str(generation))
-
         if query_parameters is not None:
             for key, value in query_parameters.items():
                 value = value.strip() if value else ""
@@ -451,17 +434,26 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         method = "RESUMABLE"
         self._generate_helper(method=method)
 
+    def _assert_v4_required(self, **kwargs):
+        credentials = _make_credentials(signer_email="service@example.com")
+        credentials.sign_bytes.return_value = b"DEADBEEF"
+        with self.assertRaisesRegex(ValueError, r"version='v4'"):
+            self._call_fut(
+                credentials,
+                resource="/name/path",
+                expiration=1000,
+                **kwargs,
+            )
+        credentials.sign_bytes.assert_not_called()
+
     def test_w_response_type(self):
-        response_type = "text/plain"
-        self._generate_helper(response_type=response_type)
+        self._assert_v4_required(response_type="text/plain")
 
     def test_w_response_disposition(self):
-        response_disposition = "attachment; filename=blob.png"
-        self._generate_helper(response_disposition=response_disposition)
+        self._assert_v4_required(response_disposition="attachment; filename=blob.png")
 
     def test_w_generation(self):
-        generation = "123"
-        self._generate_helper(generation=generation)
+        self._assert_v4_required(generation="123")
 
     def test_w_custom_headers_dict(self):
         self._generate_helper(headers={"x-goog-foo": "bar"})

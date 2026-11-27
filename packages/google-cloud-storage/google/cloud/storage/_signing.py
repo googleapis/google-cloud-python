@@ -324,17 +324,19 @@ def generate_signed_url_v2(
                          by ``resource``.
 
     :type response_type: str
-    :param response_type: (Optional) Content type of responses to requests for
-                          the signed URL. Ignored if content_type is set on
-                          object/blob metadata.
+    :param response_type: (Optional) Only supported with V4 signed URLs
+                          (``version="v4"``). Passing a non-``None`` value
+                          raises :exc:`ValueError`.
 
     :type response_disposition: str
-    :param response_disposition: (Optional) Content disposition of responses to
-                                 requests for the signed URL.
+    :param response_disposition: (Optional) Only supported with V4 signed URLs
+                                 (``version="v4"``). Passing a non-``None``
+                                 value raises :exc:`ValueError`.
 
     :type generation: str
-    :param generation: (Optional) A value that indicates which generation of
-                       the resource to fetch.
+    :param generation: (Optional) Only supported with V4 signed URLs
+                       (``version="v4"``). Passing a non-``None`` value raises
+                       :exc:`ValueError`.
 
     :type headers: Union[dict|List(Tuple(str,str))]
     :param headers:
@@ -356,6 +358,8 @@ def generate_signed_url_v2(
         signed URLs.  See:
         https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
+    :raises: :exc:`ValueError` when ``response_type``,
+            ``response_disposition``, or ``generation`` is provided.
     :raises: :exc:`TypeError` when expiration is not a valid type.
     :raises: :exc:`AttributeError` if credentials is not an instance
             of :class:`google.auth.credentials.Signing`.
@@ -364,6 +368,17 @@ def generate_signed_url_v2(
     :returns: A signed URL you can use to access the resource
               until expiration.
     """
+    if (
+        response_type is not None
+        or response_disposition is not None
+        or generation is not None
+    ):
+        raise ValueError(
+            "The 'response_type', 'response_disposition', and 'generation' "
+            "parameters are only supported with V4 signed URLs. "
+            "Use version='v4' instead."
+        )
+
     expiration_stamp = get_expiration_seconds_v2(expiration)
 
     canonical = canonicalize_v2(method, resource, query_parameters, headers)
@@ -395,13 +410,6 @@ def generate_signed_url_v2(
         signed_query_params = get_signed_query_params_v2(
             credentials, expiration_stamp, string_to_sign
         )
-
-    if response_type is not None:
-        signed_query_params["response-content-type"] = response_type
-    if response_disposition is not None:
-        signed_query_params["response-content-disposition"] = response_disposition
-    if generation is not None:
-        signed_query_params["generation"] = generation
 
     signed_query_params.update(canonical.query_parameters)
     sorted_signed_query_params = sorted(signed_query_params.items())
