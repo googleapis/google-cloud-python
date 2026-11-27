@@ -3221,6 +3221,53 @@ class TestClient(unittest.TestCase):
         self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
         self.assertEqual(fields["policy"], EXPECTED_POLICY)
 
+    def test_get_signed_policy_v4_with_access_token_and_universe_domain(self):
+        import datetime
+
+        from google.cloud.storage import client as client_module
+
+        BUCKET_NAME = "bucket-name"
+        BLOB_NAME = "object-name"
+        UNIVERSE_DOMAIN = "example.com"
+
+        project = "PROJECT"
+        credentials = _make_credentials(
+            project=project, universe_domain=UNIVERSE_DOMAIN
+        )
+        with mock.patch.dict(
+            "os.environ", {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}, clear=True
+        ):
+            client = self._make_one(
+                credentials=credentials,
+                client_options={"universe_domain": UNIVERSE_DOMAIN},
+            )
+
+        dtstamps_patch, now_patch, expire_secs_patch = _time_functions_patches()
+        with dtstamps_patch, now_patch, expire_secs_patch:
+            with mock.patch.object(
+                client_module,
+                "_sign_message",
+                autospec=True,
+                return_value=b"DEADBEEF",
+            ) as mock_sign_message:
+                policy = client.generate_signed_post_policy_v4(
+                    BUCKET_NAME,
+                    BLOB_NAME,
+                    expiration=datetime.datetime(2020, 3, 12),
+                    service_account_email="test@example.com",
+                    access_token="example-token",
+                )
+
+        mock_sign_message.assert_called_once_with(
+            mock.ANY,
+            "example-token",
+            "test@example.com",
+            universe_domain=UNIVERSE_DOMAIN,
+        )
+        self.assertEqual(
+            policy["url"], f"https://storage.{UNIVERSE_DOMAIN}/{BUCKET_NAME}/"
+        )
+
     def test_list_buckets_w_partial_success(self):
         from google.cloud.storage.client import _buckets_page_start, _item_to_bucket
 

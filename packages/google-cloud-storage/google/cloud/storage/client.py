@@ -2054,7 +2054,12 @@ class Client(ClientWithProject):
 
         # sign the policy and get its cryptographic signature
         if access_token and service_account_email:
-            signature = _sign_message(str_to_sign, access_token, service_account_email)
+            signature = _sign_message(
+                str_to_sign,
+                access_token,
+                service_account_email,
+                universe_domain=self.universe_domain,
+            )
             signature_bytes = base64.b64decode(signature)
         else:
             signature_bytes = credentials.sign_bytes(str_to_sign)
