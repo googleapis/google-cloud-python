@@ -806,7 +806,8 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def lookup_cast(self, lookup_type, internal_type=None):
         """
-        Cast text lookups to string to allow things like  filter(x__contains=4).
+        Cast text lookups to string (and wrap case-insensitive non-regex
+        lookups in UPPER) to allow things like filter(x__contains=4).
 
         :type lookup_type: str
         :param lookup_type: A type of the lookup.
@@ -821,28 +822,42 @@ class DatabaseOperations(BaseDatabaseOperations):
         # filter(x__contains=4)
         if lookup_type in (
             "contains",
-            "icontains",
             "startswith",
-            "istartswith",
             "endswith",
-            "iendswith",
             "regex",
             "iregex",
-            "iexact",
         ):
             return "CAST(%s AS STRING)"
+        # Wrap case-insensitive non-regex lookups in UPPER() here so BuiltinLookup
+        # and django_spanner.lookups emit:
+        #   - iexact:      UPPER(CAST(lhs AS STRING)) = UPPER(CAST(rhs AS STRING))
+        #   - icontains:   STRPOS(UPPER(CAST(lhs AS STRING)), UPPER(CAST(rhs AS STRING))) > 0
+        #   - istartswith: STARTS_WITH(UPPER(CAST(lhs AS STRING)), UPPER(CAST(rhs AS STRING)))
+        #   - iendswith:   ENDS_WITH(UPPER(CAST(lhs AS STRING)), UPPER(CAST(rhs AS STRING)))
+        if lookup_type in (
+            "iexact",
+            "icontains",
+            "istartswith",
+            "iendswith",
+        ):
+            return "UPPER(CAST(%s AS STRING))"
         return "%s"
 
     def prep_for_like_query(self, x):
-        """Lookups that use this method use REGEXP_CONTAINS instead of LIKE.
+        """Return the lookup value unchanged.
 
-        :type x: str
-        :param x: A query to prepare.
+        Django's PatternLookup and IExact pass direct parameter values through
+        this hook to escape LIKE wildcards. Because Spanner implements these
+        lookups using equality, STRPOS, STARTS_WITH, and ENDS_WITH (all of
+        which match strings literally), the value must be returned unmodified.
 
-        :rtype: str
-        :returns: A prepared query.
+        :type x: Any
+        :param x: A lookup value to prepare.
+
+        :rtype: Any
+        :returns: The unmodified lookup value.
         """
-        return re.escape(str(x))
+        return x
 
     prep_for_iexact_query = prep_for_like_query
 

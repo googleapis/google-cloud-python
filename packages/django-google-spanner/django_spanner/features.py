@@ -35,7 +35,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # TIMESTAMP.
     can_introspect_time_field = False
     closed_cursor_error_class = InterfaceError
-    # Spanner uses REGEXP_CONTAINS which is case-sensitive.
     has_case_insensitive_like = False
     # https://cloud.google.com/spanner/quotas#query_limits
     max_query_params = 900

@@ -4,10 +4,13 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import uuid
 from decimal import Decimal
 
-from django.db.models import F, Value
+from django.db import models
+from django.db.models import F, Subquery, Value
 from django.db.models.functions import Concat
+from django.test.utils import isolate_apps
 
 from django_spanner.compiler import SQLCompiler
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
@@ -70,9 +73,9 @@ class TestLookups(SpannerSimpleTestClass):
         self.assertEqual(
             sql_compiled,
             "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "STARTS_WITH(CAST(tests_author.name AS STRING), CAST(%s AS STRING))",
         )
-        self.assertEqual(params, ("^abc",))
+        self.assertEqual(params, ("abc",))
 
     def test_startswith_endswith_sql_query_with_endswith(self):
         qs1 = Author.objects.filter(name__endswith="abc").values("num")
@@ -81,9 +84,9 @@ class TestLookups(SpannerSimpleTestClass):
         self.assertEqual(
             sql_compiled,
             "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "ENDS_WITH(CAST(tests_author.name AS STRING), CAST(%s AS STRING))",
         )
-        self.assertEqual(params, ("abc$",))
+        self.assertEqual(params, ("abc",))
 
     def test_startswith_endswith_sql_query_case_insensitive(self):
         qs1 = Author.objects.filter(name__istartswith="abc").values("num")
@@ -92,9 +95,10 @@ class TestLookups(SpannerSimpleTestClass):
         self.assertEqual(
             sql_compiled,
             "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "STARTS_WITH(UPPER(CAST(tests_author.name AS STRING)), "
+            "UPPER(CAST(%s AS STRING)))",
         )
-        self.assertEqual(params, ("(?i)^abc",))
+        self.assertEqual(params, ("abc",))
 
     def test_startswith_endswith_sql_query_with_bileteral_transform(self):
         qs1 = Author.objects.filter(name__upper__startswith="abc").values("name")
@@ -103,9 +107,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
             "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('^', (UPPER(%s))), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            "STARTS_WITH(CAST(UPPER(tests_author.name) AS STRING), "
+            "CAST((UPPER(%s)) AS STRING))"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
@@ -117,9 +120,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
             "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('^(?i)', (UPPER(%s))), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            "STARTS_WITH(UPPER(CAST(UPPER(tests_author.name) AS STRING)), "
+            "UPPER(CAST((UPPER(%s)) AS STRING)))"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
@@ -132,9 +134,8 @@ class TestLookups(SpannerSimpleTestClass):
 
         expected_sql = (
             "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('', (UPPER(%s)), '$'), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            "ENDS_WITH(CAST(UPPER(tests_author.name) AS STRING), "
+            "CAST((UPPER(%s)) AS STRING))"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
@@ -194,9 +195,10 @@ class TestLookups(SpannerSimpleTestClass):
         self.assertEqual(
             sql_compiled,
             "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "STRPOS(UPPER(CAST(tests_author.name AS STRING)), "
+            "UPPER(CAST(%s AS STRING))) > 0",
         )
-        self.assertEqual(params, ("(?i)abc",))
+        self.assertEqual(params, ("abc",))
 
     def test_contains_sql_query_case_sensitive(self):
         qs1 = Author.objects.filter(name__contains="abc").values("num")
@@ -205,7 +207,7 @@ class TestLookups(SpannerSimpleTestClass):
         self.assertEqual(
             sql_compiled,
             "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "STRPOS(CAST(tests_author.name AS STRING), CAST(%s AS STRING)) > 0",
         )
         self.assertEqual(params, ("abc",))
 
@@ -215,9 +217,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
             "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('(?i)', (UPPER(%s))), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            "STRPOS(UPPER(CAST(UPPER(tests_author.name) AS STRING)), "
+            "UPPER(CAST((UPPER(%s)) AS STRING))) > 0"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
@@ -228,9 +229,8 @@ class TestLookups(SpannerSimpleTestClass):
         sql_compiled, params = compiler.as_sql()
         expected_sql = (
             "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + 'REPLACE(REPLACE(REPLACE((UPPER(%s)), "\\\\", "\\\\\\\\"), '
-            + '"%%", r"\\%%"), "_", r"\\_"))'
+            "STRPOS(CAST(UPPER(tests_author.name) AS STRING), "
+            "CAST((UPPER(%s)) AS STRING)) > 0"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
@@ -243,9 +243,9 @@ class TestLookups(SpannerSimpleTestClass):
         self.assertEqual(
             sql_compiled,
             "SELECT tests_author.num AS num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(tests_author.name AS STRING), %s)",
+            "UPPER(CAST(tests_author.name AS STRING)) = UPPER(CAST(%s AS STRING))",
         )
-        self.assertEqual(params, ("^(?i)abc$",))
+        self.assertEqual(params, ("abc",))
 
     def test_iexact_sql_query_case_insensitive_function_transform(self):
         qs1 = Author.objects.filter(name__upper__iexact=F("last_name")).values("name")
@@ -254,8 +254,8 @@ class TestLookups(SpannerSimpleTestClass):
 
         expected_sql = (
             "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS((UPPER(tests_author.last_name)), "
-            + "CONCAT('^(?i)', CAST(UPPER(tests_author.name) AS STRING), '$'))"
+            "UPPER(CAST(UPPER(tests_author.name) AS STRING)) = "
+            "UPPER(CAST((UPPER(tests_author.last_name)) AS STRING))"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ())
@@ -267,8 +267,8 @@ class TestLookups(SpannerSimpleTestClass):
 
         expected_sql = (
             "SELECT tests_author.name AS name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS((UPPER(CONCAT('^(?i)', "
-            + "CAST(UPPER(tests_author.name) AS STRING), '$'))), %s)"
+            "UPPER(CAST(UPPER(tests_author.name) AS STRING)) = "
+            "UPPER(CAST((UPPER(%s)) AS STRING))"
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
@@ -281,7 +281,8 @@ class TestLookups(SpannerSimpleTestClass):
         )
         compiler = SQLCompiler(qs.query, self.connection, "default")
         sql, params = compiler.as_sql()
-        self.assertEqual(params, ("User: ", "", "", "(?i)john"))
+        self.assertIn("STRPOS(", sql)
+        self.assertEqual(params, ("User: ", "", "", "john"))
 
     def test_iexact_with_lhs_params(self):
         qs = (
@@ -291,7 +292,8 @@ class TestLookups(SpannerSimpleTestClass):
         )
         compiler = SQLCompiler(qs.query, self.connection, "default")
         sql, params = compiler.as_sql()
-        self.assertEqual(params, ("User: ", "", "", "^(?i)john$"))
+        self.assertIn(" = UPPER(", sql)
+        self.assertEqual(params, ("User: ", "", "", "john"))
 
     def test_istartswith_with_lhs_params(self):
         qs = (
@@ -301,7 +303,8 @@ class TestLookups(SpannerSimpleTestClass):
         )
         compiler = SQLCompiler(qs.query, self.connection, "default")
         sql, params = compiler.as_sql()
-        self.assertEqual(params, ("User: ", "", "", "(?i)^john"))
+        self.assertIn("STARTS_WITH(", sql)
+        self.assertEqual(params, ("User: ", "", "", "john"))
 
     def test_iendswith_with_lhs_params(self):
         qs = (
@@ -311,7 +314,8 @@ class TestLookups(SpannerSimpleTestClass):
         )
         compiler = SQLCompiler(qs.query, self.connection, "default")
         sql, params = compiler.as_sql()
-        self.assertEqual(params, ("User: ", "", "", "(?i)john$"))
+        self.assertIn("ENDS_WITH(", sql)
+        self.assertEqual(params, ("User: ", "", "", "john"))
 
     def test_iregex_with_lhs_params(self):
         qs = (
@@ -322,6 +326,272 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs.query, self.connection, "default")
         sql, params = compiler.as_sql()
         self.assertEqual(params, ("User: ", "", "", "(?i)^john"))
+
+    def _assert_where_clauses(self, cases, table="tests_author", column="num"):
+        for queryset, expected_where, expected_params in cases:
+            with self.subTest(expected_where=expected_where, params=expected_params):
+                compiler = SQLCompiler(
+                    queryset.values(column).query, self.connection, "default"
+                )
+                sql_compiled, params = compiler.as_sql()
+                self.assertEqual(
+                    sql_compiled,
+                    f"SELECT {table}.{column} AS {column} FROM {table} "
+                    f"WHERE {expected_where}",
+                )
+                self.assertEqual(params, expected_params)
+
+    def test_pattern_lookups_with_expression_rhs_and_metacharacters(self):
+        metacharacters = r".*+?()[]{}\|^$%_"
+        self._assert_where_clauses(
+            [
+                (
+                    Author.objects.filter(name__contains=Value(metacharacters)),
+                    "STRPOS(CAST(tests_author.name AS STRING), CAST(%s AS STRING)) > 0",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__icontains=Value(metacharacters)),
+                    "STRPOS(UPPER(CAST(tests_author.name AS STRING)), "
+                    "UPPER(CAST(%s AS STRING))) > 0",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__startswith=Value(metacharacters)),
+                    "STARTS_WITH(CAST(tests_author.name AS STRING), "
+                    "CAST(%s AS STRING))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__istartswith=Value(metacharacters)),
+                    "STARTS_WITH(UPPER(CAST(tests_author.name AS STRING)), "
+                    "UPPER(CAST(%s AS STRING)))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__endswith=Value(metacharacters)),
+                    "ENDS_WITH(CAST(tests_author.name AS STRING), CAST(%s AS STRING))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__iendswith=Value(metacharacters)),
+                    "ENDS_WITH(UPPER(CAST(tests_author.name AS STRING)), "
+                    "UPPER(CAST(%s AS STRING)))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__contains=F("last_name")),
+                    "STRPOS(CAST(tests_author.name AS STRING), "
+                    "CAST((tests_author.last_name) AS STRING)) > 0",
+                    (),
+                ),
+                (
+                    Author.objects.filter(name__startswith=F("num")),
+                    "STARTS_WITH(CAST(tests_author.name AS STRING), "
+                    "CAST((tests_author.num) AS STRING))",
+                    (),
+                ),
+                (
+                    Author.objects.filter(name__upper__contains=metacharacters),
+                    "STRPOS(CAST(UPPER(tests_author.name) AS STRING), "
+                    "CAST((UPPER(%s)) AS STRING)) > 0",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__upper__iendswith=metacharacters),
+                    "ENDS_WITH(UPPER(CAST(UPPER(tests_author.name) AS STRING)), "
+                    "UPPER(CAST((UPPER(%s)) AS STRING)))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__contains=""),
+                    "STRPOS(CAST(tests_author.name AS STRING), CAST(%s AS STRING)) > 0",
+                    ("",),
+                ),
+                (
+                    Author.objects.filter(name__startswith="%"),
+                    "STARTS_WITH(CAST(tests_author.name AS STRING), "
+                    "CAST(%s AS STRING))",
+                    ("%",),
+                ),
+                (
+                    Author.objects.filter(name__endswith="%"),
+                    "ENDS_WITH(CAST(tests_author.name AS STRING), CAST(%s AS STRING))",
+                    ("%",),
+                ),
+                (
+                    Author.objects.filter(name__contains=Value(None)),
+                    "STRPOS(CAST(tests_author.name AS STRING), "
+                    "CAST(NULL AS STRING)) > 0",
+                    (),
+                ),
+                (
+                    Author.objects.filter(name__contains=4),
+                    "STRPOS(CAST(tests_author.name AS STRING), CAST(%s AS STRING)) > 0",
+                    ("4",),
+                ),
+            ]
+        )
+
+    def test_iexact_with_expression_rhs_and_metacharacters(self):
+        metacharacters = r".*+?()[]{}\|^$%_"
+        self._assert_where_clauses(
+            [
+                (
+                    Author.objects.filter(name__iexact=metacharacters),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST(%s AS STRING))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__iexact=Value(metacharacters)),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST(%s AS STRING))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__iexact=F("last_name")),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST((tests_author.last_name) AS STRING))",
+                    (),
+                ),
+                (
+                    Author.objects.filter(name__upper__iexact=metacharacters),
+                    "UPPER(CAST(UPPER(tests_author.name) AS STRING)) = "
+                    "UPPER(CAST((UPPER(%s)) AS STRING))",
+                    (metacharacters,),
+                ),
+                (
+                    Author.objects.filter(name__iexact=Value(None)),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST(NULL AS STRING))",
+                    (),
+                ),
+                (
+                    Author.objects.filter(name__iexact=4),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST(%s AS STRING))",
+                    ("4",),
+                ),
+                (
+                    Author.objects.filter(name__iexact=1.5),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST(%s AS STRING))",
+                    ("1.5",),
+                ),
+                (
+                    Author.objects.filter(name__iexact=Decimal("1.50")),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST(%s AS STRING))",
+                    ("1.50",),
+                ),
+                (
+                    Author.objects.filter(name__iexact=Value(1.5)),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST(CAST(%s AS FLOAT64) AS STRING))",
+                    (1.5,),
+                ),
+                (
+                    Author.objects.filter(
+                        name__iexact=Subquery(
+                            Author.objects.filter(last_name=".*").values("last_name")[
+                                :1
+                            ]
+                        )
+                    ),
+                    "UPPER(CAST(tests_author.name AS STRING)) = "
+                    "UPPER(CAST((SELECT U0.last_name AS last_name "
+                    "FROM tests_author U0 WHERE U0.last_name = %s LIMIT 1) AS STRING))",
+                    (".*",),
+                ),
+            ]
+        )
+
+    @isolate_apps("tests")
+    def test_uuid_field_pattern_and_iexact_lookups(self):
+        class UuidLookupModel(models.Model):
+            token = models.UUIDField()
+
+            class Meta:
+                app_label = "tests"
+
+        uuid_string = "12345678-1234-5678-1234-567812345678"
+        uuid_value = uuid.UUID(uuid_string)
+        self._assert_where_clauses(
+            [
+                (
+                    UuidLookupModel.objects.filter(token__iexact=uuid_value),
+                    "UPPER(CAST(tests_uuidlookupmodel.token AS STRING)) = "
+                    "UPPER(CAST((REPLACE(%s, %s, %s)) AS STRING))",
+                    ("12345678123456781234567812345678", "-", ""),
+                ),
+                (
+                    UuidLookupModel.objects.filter(token__iexact=uuid_string),
+                    "UPPER(CAST(tests_uuidlookupmodel.token AS STRING)) = "
+                    "UPPER(CAST((REPLACE(%s, %s, %s)) AS STRING))",
+                    (uuid_string, "-", ""),
+                ),
+                (
+                    UuidLookupModel.objects.filter(token__iexact=Value(None)),
+                    "UPPER(CAST(tests_uuidlookupmodel.token AS STRING)) = "
+                    "UPPER(CAST((REPLACE(NULL, %s, %s)) AS STRING))",
+                    ("-", ""),
+                ),
+                (
+                    UuidLookupModel.objects.filter(token__contains=".*"),
+                    "STRPOS(CAST(tests_uuidlookupmodel.token AS STRING), "
+                    "CAST((REPLACE(%s, %s, %s)) AS STRING)) > 0",
+                    (".*", "-", ""),
+                ),
+                (
+                    UuidLookupModel.objects.filter(token__istartswith="1234-56"),
+                    "STARTS_WITH(UPPER(CAST(tests_uuidlookupmodel.token AS STRING)), "
+                    "UPPER(CAST((REPLACE(%s, %s, %s)) AS STRING)))",
+                    ("1234-56", "-", ""),
+                ),
+            ],
+            table="tests_uuidlookupmodel",
+            column="token",
+        )
+
+    @isolate_apps("tests")
+    def test_json_key_transform_pattern_and_iexact_lookups(self):
+        class JsonLookupModel(models.Model):
+            data = models.JSONField()
+
+            class Meta:
+                app_label = "tests"
+
+        self._assert_where_clauses(
+            [
+                (
+                    JsonLookupModel.objects.filter(data__foo__iexact="Bar.*"),
+                    "UPPER(CAST(JSON_VALUE(tests_jsonlookupmodel.data, '$.\"foo\"') AS STRING)) = "
+                    "UPPER(CAST(%s AS STRING))",
+                    ("Bar.*",),
+                ),
+                (
+                    JsonLookupModel.objects.filter(data__foo__icontains="Bar.*"),
+                    "STRPOS(UPPER(CAST(JSON_VALUE(tests_jsonlookupmodel.data, '$.\"foo\"') AS STRING)), "
+                    "UPPER(CAST(%s AS STRING))) > 0",
+                    ("Bar.*",),
+                ),
+                (
+                    JsonLookupModel.objects.filter(data__foo__startswith="Bar.*"),
+                    "STARTS_WITH(CAST(JSON_VALUE(tests_jsonlookupmodel.data, '$.\"foo\"') AS STRING), "
+                    "CAST(%s AS STRING))",
+                    ("Bar.*",),
+                ),
+                (
+                    JsonLookupModel.objects.filter(data__foo__endswith="Bar.*"),
+                    "ENDS_WITH(CAST(JSON_VALUE(tests_jsonlookupmodel.data, '$.\"foo\"') AS STRING), "
+                    "CAST(%s AS STRING))",
+                    ("Bar.*",),
+                ),
+            ],
+            table="tests_jsonlookupmodel",
+            column="data",
+        )
 
     def test_json_key_transforms_and_has_key(self):
         from unittest.mock import MagicMock

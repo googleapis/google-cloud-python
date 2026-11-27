@@ -4,10 +4,13 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+from typing import TYPE_CHECKING, Any, Tuple
+
 from django.db.models.fields.json import (
     HasKeyLookup,
     KeyTextTransform,
     KeyTransform,
+    KeyTransformIExact,
 )
 from django.db.models.lookups import (
     Contains,
@@ -22,9 +25,81 @@ from django.db.models.lookups import (
     IStartsWith,
     LessThan,
     LessThanOrEqual,
+    Lookup,
     Regex,
     StartsWith,
 )
+
+if TYPE_CHECKING:
+    from django.db.backends.base.base import BaseDatabaseWrapper
+    from django.db.models.sql.compiler import SQLCompiler
+
+
+def _pattern_lookup_sql(
+    lookup: "Lookup",
+    compiler: "SQLCompiler",
+    connection: "BaseDatabaseWrapper",
+    *,
+    strip_left: int,
+    strip_right: int,
+) -> Tuple[str, str, Tuple[Any, ...]]:
+    """Compile a string pattern lookup using literal Spanner string functions.
+
+    Django's PatternLookup.process_rhs wraps direct scalar values with leading
+    or trailing '%' wildcards. Strip those added wildcards when present and
+    cast the RHS expression to STRING (wrapped in UPPER for case-insensitive
+    lookups) so equality, STRPOS, STARTS_WITH, and ENDS_WITH treat all
+    characters literally.
+    """
+    lhs_sql, lhs_params = lookup.process_lhs(compiler, connection)
+    # For plain and JSON iexact lookups, call Lookup.process_rhs directly:
+    # Spanner needs neither prep_for_iexact_query nor KeyTransformIExact's
+    # MySQL-only logic, and IExact.process_rhs crashes when a subquery returns
+    # tuple params and tries to assign params[0] in place.
+    if isinstance(lookup, IExact) and type(lookup).process_rhs in (
+        IExact.process_rhs,
+        KeyTransformIExact.process_rhs,
+    ):
+        rhs_sql, rhs_params = Lookup.process_rhs(lookup, compiler, connection)
+    else:
+        rhs_sql, rhs_params = lookup.process_rhs(compiler, connection)
+    params = list(lhs_params)
+    params.extend(rhs_params)
+    # For direct Python values (e.g. float or Decimal), send str(val) so
+    # CAST(%s AS STRING) preserves formatting and works across parameter types,
+    # after stripping any '%' wildcards Django added. SQL expressions handle
+    # their own casts.
+    if lookup.rhs_is_direct_value() and rhs_params and not lookup.bilateral_transforms:
+        rhs_index = len(lhs_params)
+        value = str(params[rhs_index])
+        end = -strip_right if strip_right else None
+        params[rhs_index] = value[strip_left:end]
+    rhs_cast = f"CAST({rhs_sql} AS STRING)"
+    if lookup.lookup_name.startswith("i"):
+        rhs_cast = f"UPPER({rhs_cast})"
+    return lhs_sql, rhs_cast, tuple(params)
+
+
+def iexact(self, compiler, connection):
+    """A method to extend Django IExact class.
+
+    :type self: :class:`~django.db.models.lookups.IExact`
+    :param self: the instance of the class that owns this method.
+
+    :type compiler: :class:`~django_spanner.compiler.SQLCompiler`
+    :param compiler: The query compiler responsible for generating the query.
+
+    :type connection: :class:`~google.cloud.spanner_dbapi.connection.Connection`
+    :param connection: The Spanner database connection used for the current
+                       query.
+
+    :rtype: tuple[str, tuple]
+    :returns: A tuple of the SQL request and parameters.
+    """
+    lhs_sql, rhs_cast, params = _pattern_lookup_sql(
+        self, compiler, connection, strip_left=0, strip_right=0
+    )
+    return f"{lhs_sql} = {rhs_cast}", params
 
 
 def contains(self, compiler, connection):
@@ -34,95 +109,20 @@ def contains(self, compiler, connection):
                 :class:`~django.db.models.lookups.IContains`
     :param self: the instance of the class that owns this method.
 
-    :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
+    :type compiler: :class:`~django_spanner.compiler.SQLCompiler`
     :param compiler: The query compiler responsible for generating the query.
-                     Must have a compile method, returning a (sql, [params])
-                     tuple. Calling compiler(value) will return a quoted
-                     `value`.
 
     :type connection: :class:`~google.cloud.spanner_dbapi.connection.Connection`
     :param connection: The Spanner database connection used for the current
                        query.
 
-    :rtype: tuple[str, str]
+    :rtype: tuple[str, tuple]
     :returns: A tuple of the SQL request and parameters.
     """
-    lhs_sql, lhs_params = self.process_lhs(compiler, connection)
-    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
-    params = list(lhs_params)
-    params.extend(rhs_params)
-    is_icontains = self.lookup_name.startswith("i")
-    if self.rhs_is_direct_value() and rhs_params and not self.bilateral_transforms:
-        rhs_sql = self.get_rhs_op(connection, rhs_sql)
-        rhs_idx = len(lhs_params)
-        # Chop the leading and trailing percent signs that Django adds to the
-        # param since this isn't a LIKE query as Django expects.
-        params[rhs_idx] = params[rhs_idx][1:-1]
-        # Add the case insensitive flag for icontains.
-        if is_icontains:
-            params[rhs_idx] = "(?i)" + params[rhs_idx]
-        # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-        return rhs_sql % lhs_sql, tuple(params)
-    else:
-        # rhs_sql is the expression/column to use as the base of the regular
-        # expression.
-        if is_icontains:
-            rhs_sql = "CONCAT('(?i)', " + rhs_sql + ")"
-        return (
-            "REGEXP_CONTAINS(%s, %s)"
-            % (lhs_sql, connection.pattern_esc.format(rhs_sql)),
-            tuple(params),
-        )
-
-
-def iexact(self, compiler, connection):
-    """A method to extend Django IExact class. Case-insensitive exact match.
-    If the value provided for comparison is None, it will be interpreted as
-    an SQL NULL.
-
-    :type self: :class:`~django.db.models.lookups.IExact`
-    :param self: the instance of the class that owns this method.
-
-    :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
-    :param compiler: The query compiler responsible for generating the query.
-                     Must have a compile method, returning a (sql, [params])
-                     tuple. Calling compiler(value) will return a quoted
-                     `value`.
-
-    :type connection: :class:`~google.cloud.spanner_dbapi.connection.Connection`
-    :param connection: The Spanner database connection used for the current
-                       query.
-
-    :rtype: tuple[str, str]
-    :returns: A tuple of the SQL request and parameters.
-    """
-    lhs_sql, lhs_params = self.process_lhs(compiler, connection)
-    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
-    params = list(lhs_params)
-    params.extend(rhs_params)
-    rhs_sql = self.get_rhs_op(connection, rhs_sql)
-    # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
-    if self.rhs_is_direct_value() and rhs_params and not self.bilateral_transforms:
-        rhs_idx = len(lhs_params)
-        params[rhs_idx] = "^(?i)%s$" % params[rhs_idx]
-    else:
-        # lhs_sql is the expression/column to use as the regular expression.
-        # Use concat to make the value case-insensitive.
-        lhs_sql = "CONCAT('^(?i)', " + lhs_sql + ", '$')"
-        if not self.rhs_is_direct_value():
-            # If rhs is not a direct value
-            if not params:
-                # if params is not present, then we have only 1 formatable
-                # argument in rhs_sql.
-                rhs_sql = rhs_sql.replace("%%s", "%s")
-            else:
-                # If params is present and rhs_sql is to be replaced as well.
-                # Example: model_fields.test_uuid.TestQuerying.test_iexact.
-                rhs_sql = rhs_sql.replace("%%s", "__PLACEHOLDER_FOR_LHS_SQL__")
-                rhs_sql = rhs_sql.replace("%s", "%%s")
-                rhs_sql = rhs_sql.replace("__PLACEHOLDER_FOR_LHS_SQL__", "%s")
-    # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-    return rhs_sql % lhs_sql, tuple(params)
+    lhs_sql, rhs_cast, params = _pattern_lookup_sql(
+        self, compiler, connection, strip_left=1, strip_right=1
+    )
+    return f"STRPOS({lhs_sql}, {rhs_cast}) > 0", params
 
 
 def regex(self, compiler, connection):
@@ -132,17 +132,14 @@ def regex(self, compiler, connection):
                 :class:`~django.db.models.lookups.IRegex`
     :param self: the instance of the class that owns this method.
 
-    :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
+    :type compiler: :class:`~django_spanner.compiler.SQLCompiler`
     :param compiler: The query compiler responsible for generating the query.
-                     Must have a compile method, returning a (sql, [params])
-                     tuple. Calling compiler(value) will return a quoted
-                     `value`.
 
     :type connection: :class:`~google.cloud.spanner_dbapi.connection.Connection`
     :param connection: The Spanner database connection used for the current
                        query.
 
-    :rtype: tuple[str, str]
+    :rtype: tuple[str, tuple]
     :returns: A tuple of the SQL request and parameters.
     """
     lhs_sql, lhs_params = self.process_lhs(compiler, connection)
@@ -177,56 +174,26 @@ def startswith_endswith(self, compiler, connection):
                 :class:`~django.db.models.lookups.IEndsWith`
     :param self: the instance of the class that owns this method.
 
-    :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
+    :type compiler: :class:`~django_spanner.compiler.SQLCompiler`
     :param compiler: The query compiler responsible for generating the query.
-                     Must have a compile method, returning a (sql, [params])
-                     tuple. Calling compiler(value) will return a quoted
-                     `value`.
 
     :type connection: :class:`~google.cloud.spanner_dbapi.connection.Connection`
     :param connection: The Spanner database connection used for the current
                        query.
 
-    :rtype: tuple[str, str]
+    :rtype: tuple[str, tuple]
     :returns: A tuple of the SQL request and parameters.
     """
-    lhs_sql, lhs_params = self.process_lhs(compiler, connection)
-    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
-    params = list(lhs_params)
-    params.extend(rhs_params)
-    is_startswith = "startswith" in self.lookup_name
     is_endswith = "endswith" in self.lookup_name
-    is_insensitive = self.lookup_name.startswith("i")
-    # Chop the leading (endswith) or trailing (startswith) percent sign that
-    # Django adds to the param since this isn't a LIKE query as Django expects.
-    if self.rhs_is_direct_value() and rhs_params and not self.bilateral_transforms:
-        rhs_sql = self.get_rhs_op(connection, rhs_sql)
-        rhs_idx = len(lhs_params)
-        if is_endswith:
-            params[rhs_idx] = str(params[rhs_idx][1:]) + "$"
-        else:
-            params[rhs_idx] = "^" + str(params[rhs_idx][:-1])
-        # Add the case insensitive flag for istartswith or iendswith.
-        if is_insensitive:
-            params[rhs_idx] = "(?i)" + params[rhs_idx]
-        # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-        return rhs_sql % lhs_sql, tuple(params)
-    else:
-        # rhs_sql is the expression/column to use as the base of the regular
-        # expression.
-        sql = "CONCAT('"
-        if is_startswith:
-            sql += "^"
-        if is_insensitive:
-            sql += "(?i)"
-        sql += "', " + rhs_sql
-        if is_endswith:
-            sql += ", '$'"
-        sql += ")"
-        return (
-            "REGEXP_CONTAINS(%s, %s)" % (lhs_sql, connection.pattern_esc.format(sql)),
-            tuple(params),
-        )
+    lhs_sql, rhs_cast, params = _pattern_lookup_sql(
+        self,
+        compiler,
+        connection,
+        strip_left=1 if is_endswith else 0,
+        strip_right=0 if is_endswith else 1,
+    )
+    function = "ENDS_WITH" if is_endswith else "STARTS_WITH"
+    return f"{function}({lhs_sql}, {rhs_cast})", params
 
 
 def cast_param_to_float(self, compiler, connection):
