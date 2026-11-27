@@ -32,7 +32,10 @@ from typing import (
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
+from google.api_core import universe
 from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
+from google.auth import compute_engine  # type: ignore
+from google.auth import credentials as auth_credentials  # type: ignore
 from google.protobuf import any_pb2, message
 from google.rpc import code_pb2, status_pb2
 
@@ -476,3 +479,27 @@ class TrackedBackoffGenerator:
         if attempt_idx < 0:
             raise IndexError("received negative attempt number")
         return self.history[attempt_idx]
+
+
+# TODO(universe-domain): Replace with
+# google.api_core.universe.validate_credentials_universe once minimum
+# google-api-core version exceeds 2.44.0.
+def _validate_credentials_universe(
+    client_universe: str,
+    credentials: auth_credentials.Credentials | None,
+) -> None:
+    """Validate that resolved client credentials match ``client_universe``."""
+    if credentials is None or isinstance(
+        credentials, auth_credentials.AnonymousCredentials
+    ):
+        return
+    # Avoid synchronous GCE metadata server HTTP calls when
+    # compute_engine.Credentials hasn't resolved its universe yet.
+    if isinstance(credentials, compute_engine.Credentials) and not getattr(
+        credentials, "_universe_domain_cached", False
+    ):
+        return
+    cred_universe = getattr(credentials, "universe_domain", universe.DEFAULT_UNIVERSE)
+    if not isinstance(cred_universe, str):
+        return
+    universe.compare_domains(client_universe, credentials)

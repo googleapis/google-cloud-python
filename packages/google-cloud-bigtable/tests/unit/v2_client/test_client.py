@@ -15,6 +15,7 @@
 
 import mock
 import pytest
+from google.api_core.client_options import ClientOptions
 
 from ._testing import _make_credentials
 
@@ -321,7 +322,7 @@ def _create_gapic_client_channel_helper(endpoint=None, emulator_host=None):
     client = _make_client(project=PROJECT, credentials=credentials)
 
     if endpoint is not None:
-        client._client_options = mock.Mock(
+        client._admin_client_options = mock.Mock(
             spec=["api_endpoint"],
             api_endpoint=endpoint,
         )
@@ -379,6 +380,326 @@ def test_client__create_gapic_client_channel_w_endpoint_w_emulator_host():
     endpoint = "api.example.com"
     host = "other.example.com:1234"
     _create_gapic_client_channel_helper(endpoint=endpoint, emulator_host=host)
+
+
+@pytest.mark.parametrize(
+    "client_options,admin_client_options,env_universe,expected_host,expected_universe",
+    [
+        (None, None, None, "bigtableadmin.googleapis.com:443", "googleapis.com"),
+        # universe_domain via client_options or admin_client_options (dict or ClientOptions)
+        (
+            {"universe_domain": "tpc.test"},
+            None,
+            None,
+            "bigtableadmin.tpc.test:443",
+            "tpc.test",
+        ),
+        (
+            None,
+            {"universe_domain": "tpc.test"},
+            None,
+            "bigtableadmin.tpc.test:443",
+            "tpc.test",
+        ),
+        (
+            {"universe_domain": "tpc.test"},
+            {"universe_domain": "other.test"},
+            None,
+            "bigtableadmin.other.test:443",
+            "other.test",
+        ),
+        # GOOGLE_CLOUD_UNIVERSE_DOMAIN used when no option sets universe_domain
+        (None, None, "tpc.test", "bigtableadmin.tpc.test:443", "tpc.test"),
+        (
+            {"universe_domain": "tpc.test"},
+            None,
+            "other.test",
+            "bigtableadmin.tpc.test:443",
+            "tpc.test",
+        ),
+        (
+            None,
+            {"universe_domain": "tpc.test"},
+            "other.test",
+            "bigtableadmin.tpc.test:443",
+            "tpc.test",
+        ),
+        (
+            {"universe_domain": "googleapis.com"},
+            None,
+            "tpc.test",
+            "bigtableadmin.googleapis.com:443",
+            "googleapis.com",
+        ),
+        (
+            None,
+            {"universe_domain": "googleapis.com"},
+            "tpc.test",
+            "bigtableadmin.googleapis.com:443",
+            "googleapis.com",
+        ),
+        # explicit api_endpoint takes precedence over universe_domain within the same tier,
+        # while admin_client_options takes precedence over client_options
+        (
+            {"api_endpoint": "custom.test:443"},
+            None,
+            None,
+            "custom.test:443",
+            "googleapis.com",
+        ),
+        (
+            {"api_endpoint": "custom.test:443", "universe_domain": "tpc.test"},
+            None,
+            None,
+            "custom.test:443",
+            "tpc.test",
+        ),
+        (
+            {"api_endpoint": "custom.test:443"},
+            None,
+            "tpc.test",
+            "custom.test:443",
+            "tpc.test",
+        ),
+        (
+            {"api_endpoint": "custom.test:443"},
+            {"api_endpoint": "admin.custom.test:443"},
+            None,
+            "admin.custom.test:443",
+            "googleapis.com",
+        ),
+        (
+            {"universe_domain": "tpc.test"},
+            {"api_endpoint": "admin.custom.test:443"},
+            None,
+            "admin.custom.test:443",
+            "tpc.test",
+        ),
+        (
+            {"api_endpoint": "data.custom.test:443"},
+            {"universe_domain": "tpc.test"},
+            None,
+            "bigtableadmin.tpc.test:443",
+            "tpc.test",
+        ),
+        (
+            {"api_endpoint": "data.custom.test:443"},
+            {"universe_domain": "googleapis.com"},
+            None,
+            "bigtableadmin.googleapis.com:443",
+            "googleapis.com",
+        ),
+    ],
+)
+def test_client_admin_clients_endpoint(
+    client_options, admin_client_options, env_universe, expected_host, expected_universe
+):
+    import os
+
+    from google.api_core.client_options import from_dict
+
+    for as_client_options in (False, True):
+        co = (
+            from_dict(client_options)
+            if (as_client_options and client_options)
+            else client_options
+        )
+        aco = (
+            from_dict(admin_client_options)
+            if (as_client_options and admin_client_options)
+            else admin_client_options
+        )
+        with mock.patch.dict(os.environ, {}, clear=False):
+            if env_universe is None:
+                os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+            else:
+                os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = env_universe
+            client = _make_client(
+                project=PROJECT,
+                credentials=_make_credentials(universe_domain=expected_universe),
+                admin=True,
+                client_options=co,
+                admin_client_options=aco,
+            )
+            for admin_client in (
+                client.table_admin_client,
+                client.instance_admin_client,
+            ):
+                assert admin_client.transport.host == expected_host
+                assert admin_client.api_endpoint == expected_host
+                assert admin_client.universe_domain == expected_universe
+
+
+@pytest.mark.parametrize(
+    "admin_client_options",
+    [
+        {"api_endpoint": "admin.custom.test:443"},
+        ClientOptions(api_endpoint="admin.custom.test:443"),
+    ],
+)
+def test_client_admin_clients_inherit_universe_wo_mutating_options(
+    admin_client_options,
+):
+    client = _make_client(
+        project=PROJECT,
+        credentials=_make_credentials(universe_domain="tpc.test"),
+        admin=True,
+        client_options={"universe_domain": "tpc.test"},
+        admin_client_options=admin_client_options,
+    )
+    assert client.table_admin_client.universe_domain == "tpc.test"
+    assert client.instance_admin_client.universe_domain == "tpc.test"
+    # the options object passed in by the caller is left untouched
+    if isinstance(admin_client_options, dict):
+        assert admin_client_options == {"api_endpoint": "admin.custom.test:443"}
+    else:
+        assert admin_client_options.universe_domain is None
+
+
+@pytest.mark.parametrize(
+    "admin_client_options",
+    [
+        None,
+        {"quota_project_id": "QUOTA-PROJECT"},
+        ClientOptions(quota_project_id="QUOTA-PROJECT"),
+    ],
+)
+def test_client_admin_client_options_unchanged_wo_inherited_settings(
+    admin_client_options,
+):
+    import os
+
+    with mock.patch.dict(os.environ, {}, clear=False):
+        os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+        client = _make_client(
+            project=PROJECT,
+            credentials=_make_credentials(),
+            admin=True,
+            admin_client_options=admin_client_options,
+        )
+
+    # no universe or endpoint is configured anywhere, so the admin clients get
+    # the options as given and apply their own defaults
+    assert client._admin_client_options is admin_client_options
+
+
+@pytest.mark.parametrize(
+    "env_at_construction,env_at_first_use,expected_universe",
+    [
+        # set after the client is constructed: not used
+        (None, "tpc.test", "googleapis.com"),
+        # removed after the client is constructed: still used
+        ("tpc.test", None, "tpc.test"),
+        # changed after the client is constructed: the original value is used
+        ("tpc.test", "other.test", "tpc.test"),
+    ],
+)
+def test_client_admin_clients_universe_env_read_at_construction(
+    env_at_construction, env_at_first_use, expected_universe
+):
+    import os
+
+    def set_env(value):
+        if value is None:
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+        else:
+            os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = value
+
+    with mock.patch.dict(os.environ, {}, clear=False):
+        set_env(env_at_construction)
+        client = _make_client(
+            project=PROJECT,
+            credentials=_make_credentials(universe_domain=expected_universe),
+            admin=True,
+        )
+        set_env(env_at_first_use)
+
+        expected_host = f"bigtableadmin.{expected_universe}:443"
+        assert client.table_admin_client.transport.host == expected_host
+        assert client.instance_admin_client.transport.host == expected_host
+
+
+@pytest.mark.parametrize(
+    "client_options,admin_client_options,env_universe",
+    [
+        ({"universe_domain": ""}, None, None),
+        (None, {"universe_domain": ""}, None),
+        (None, None, ""),
+        ({"universe_domain": "", "api_endpoint": "custom.test:443"}, None, None),
+        (None, {"universe_domain": "", "api_endpoint": "admin.custom.test:443"}, None),
+        ({"api_endpoint": "custom.test:443"}, None, ""),
+    ],
+)
+def test_client_admin_clients_w_empty_universe_domain(
+    client_options, admin_client_options, env_universe
+):
+    import os
+
+    from google.api_core.universe import EmptyUniverseError
+
+    with mock.patch.dict(os.environ, {}, clear=False):
+        if env_universe is None:
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+        else:
+            os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = env_universe
+        client = _make_client(
+            project=PROJECT,
+            credentials=_make_credentials(),
+            admin=True,
+            client_options=client_options,
+            admin_client_options=admin_client_options,
+        )
+        with pytest.raises(EmptyUniverseError):
+            _ = client.table_admin_client
+        with pytest.raises(EmptyUniverseError):
+            _ = client.instance_admin_client
+
+
+@pytest.mark.parametrize(
+    "cred_universe,client_options,admin_client_options,env_universe",
+    [
+        ("tpc.test", None, None, None),
+        ("googleapis.com", {"universe_domain": "tpc.test"}, None, None),
+        ("googleapis.com", None, {"universe_domain": "tpc.test"}, None),
+        ("googleapis.com", None, None, "tpc.test"),
+    ],
+)
+def test_client_admin_clients_mismatched_credentials_universe(
+    cred_universe, client_options, admin_client_options, env_universe
+):
+    import os
+
+    from google.api_core.universe import UniverseMismatchError
+
+    with mock.patch.dict(os.environ, {}, clear=False):
+        if env_universe is None:
+            os.environ.pop("GOOGLE_CLOUD_UNIVERSE_DOMAIN", None)
+        else:
+            os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = env_universe
+        client = _make_client(
+            project=PROJECT,
+            credentials=_make_credentials(universe_domain=cred_universe),
+            admin=True,
+            client_options=client_options,
+            admin_client_options=admin_client_options,
+        )
+        with pytest.raises(UniverseMismatchError):
+            _ = client.table_admin_client
+        with pytest.raises(UniverseMismatchError):
+            _ = client.instance_admin_client
+
+
+def test_client_admin_clients_anonymous_credentials_in_custom_universe():
+    from google.auth.credentials import AnonymousCredentials
+
+    client = _make_client(
+        project=PROJECT,
+        credentials=AnonymousCredentials(),
+        admin=True,
+        client_options={"universe_domain": "tpc.test"},
+    )
+    assert client.table_admin_client.transport.host == "bigtableadmin.tpc.test:443"
+    assert client.instance_admin_client.transport.host == "bigtableadmin.tpc.test:443"
 
 
 def test_client_project_path():

@@ -33,6 +33,7 @@ import os
 import warnings
 
 import grpc  # type: ignore
+from google.api_core import universe
 from google.api_core.gapic_v1 import client_info as client_info_lib
 from google.auth.credentials import AnonymousCredentials  # type: ignore
 from google.cloud.client import ClientWithProject  # type: ignore
@@ -40,6 +41,7 @@ from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
 
 from google.cloud import bigtable, bigtable_admin_v2
 from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE, Cluster
+from google.cloud.bigtable.data._helpers import _validate_credentials_universe
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.transports import (
     BigtableInstanceAdminGrpcTransport,
@@ -82,6 +84,57 @@ def _create_gapic_client(client_class, client_options=None, transport=None):
     return inner
 
 
+def _get_client_option(options, name):
+    """Read an attribute or dict key from ``options`` if present."""
+    if isinstance(options, dict):
+        return options.get(name)
+    return getattr(options, name, None)
+
+
+def _inherit_admin_client_options(
+    client_options, admin_client_options, universe_domain_env
+):
+    """Return ``admin_client_options``, with the endpoint settings it does not
+    set filled in. Neither options argument is modified.
+
+    - ``universe_domain`` falls back to ``client_options``, then to
+      ``universe_domain_env`` (the ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` environment
+      variable). If neither sets one, it is left unset.
+    - ``api_endpoint`` falls back to ``client_options`` only when
+      ``admin_client_options`` sets neither ``api_endpoint`` nor
+      ``universe_domain``, so a ``client_options`` endpoint never overrides a
+      universe chosen for admin operations.
+    """
+    inherited = {}
+    # A universe set in admin_client_options stands on its own. Inheriting an
+    # api_endpoint from client_options would override it.
+    if _get_client_option(admin_client_options, "universe_domain") is None:
+        # Universe: client_options, then the environment variable. With
+        # neither, it stays unset and the admin clients apply their default.
+        universe_domain = _get_client_option(client_options, "universe_domain")
+        if universe_domain is None:
+            universe_domain = universe_domain_env
+        if universe_domain is not None:
+            inherited["universe_domain"] = universe_domain
+        # Endpoint: client_options, unless admin_client_options sets its own.
+        client_endpoint = _get_client_option(client_options, "api_endpoint")
+        if client_endpoint and not _get_client_option(
+            admin_client_options, "api_endpoint"
+        ):
+            inherited["api_endpoint"] = client_endpoint
+    if not inherited:
+        # Nothing to add: use the options exactly as they were passed in.
+        return admin_client_options
+    # Add the inherited settings to a copy, so the caller's object is not
+    # modified. A dict stays a dict.
+    if admin_client_options is None or isinstance(admin_client_options, dict):
+        return {**(admin_client_options or {}), **inherited}
+    admin_client_options = copy.copy(admin_client_options)
+    for name, value in inherited.items():
+        setattr(admin_client_options, name, value)
+    return admin_client_options
+
+
 class Client(ClientWithProject):
     """Client for interacting with Google Cloud Bigtable API.
 
@@ -120,13 +173,19 @@ class Client(ClientWithProject):
     :type client_options: :class:`~google.api_core.client_options.ClientOptions`
         or :class:`dict`
     :param client_options: (Optional) Client options used to set user options
-        on the client. API Endpoint should be set through client_options.
+        on the client. The credential settings, ``api_endpoint`` and
+        ``universe_domain`` set here are used for both data and admin
+        operations, unless ``admin_client_options`` overrides the last two
+        for admin operations.
 
     :type admin_client_options:
         :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
-    :param admin_client_options: (Optional) Client options used to set user
-        options on the client. API Endpoint for admin operations should be set
-        through admin_client_options.
+    :param admin_client_options: (Optional) Overrides the ``api_endpoint``
+        and ``universe_domain`` from ``client_options`` for admin operations
+        only. Data and admin operations are served by separate APIs, so use
+        this when admin operations need a different endpoint than data
+        operations. If neither is set here, the values from
+        ``client_options`` are used.
 
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
@@ -183,7 +242,11 @@ class Client(ClientWithProject):
             )
 
         self._client_options = client_options
-        self._admin_client_options = admin_client_options
+        self._admin_client_options = _inherit_admin_client_options(
+            client_options,
+            admin_client_options,
+            os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        )
         self._channel = channel
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__(
@@ -225,13 +288,38 @@ class Client(ClientWithProject):
             channel_fn = grpc.insecure_channel
         return channel_fn(self._emulator_host, options=options)
 
+    def _resolve_admin_endpoint(self, client_class):
+        """Resolve the target host for GAPIC admin channels.
+
+        Uses ``admin_client_options`` as resolved when the client was
+        constructed (see ``_inherit_admin_client_options``), so the
+        ``GOOGLE_CLOUD_UNIVERSE_DOMAIN`` environment variable is not read
+        again here. If no ``universe_domain`` is set there, the default
+        ``googleapis.com`` is used.
+
+        An explicit ``api_endpoint`` overrides ``universe_domain`` without
+        comparing hostnames, matching GAPIC behavior for regional, proxy, or
+        PSC endpoints. ``universe_domain`` is still validated first so an empty
+        string raises ``EmptyUniverseError`` even when ``api_endpoint`` is set.
+        """
+        universe_domain = universe.determine_domain(
+            _get_client_option(self._admin_client_options, "universe_domain"), None
+        )
+        _validate_credentials_universe(universe_domain, self._credentials)
+        api_endpoint = _get_client_option(self._admin_client_options, "api_endpoint")
+        if api_endpoint:
+            return api_endpoint
+        if universe_domain == universe.DEFAULT_UNIVERSE:
+            return client_class.DEFAULT_ENDPOINT
+        return client_class._DEFAULT_ENDPOINT_TEMPLATE.format(
+            UNIVERSE_DOMAIN=universe_domain
+        )
+
     def _create_gapic_client_channel(self, client_class, grpc_transport):
         if self._emulator_host is not None:
             api_endpoint = self._emulator_host
-        elif self._client_options and self._client_options.api_endpoint:
-            api_endpoint = self._client_options.api_endpoint
         else:
-            api_endpoint = client_class.DEFAULT_ENDPOINT
+            api_endpoint = self._resolve_admin_endpoint(client_class)
 
         if self._emulator_host is not None:
             channel = self._emulator_channel(

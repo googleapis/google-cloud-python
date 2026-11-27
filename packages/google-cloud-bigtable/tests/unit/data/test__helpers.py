@@ -576,3 +576,41 @@ class TestTrackedBackoffGenerator:
         generator.set_next(88)
         assert next(generator) == 88
         assert next(generator) == 1
+
+
+class TestValidateCredentialsUniverse:
+    def test_exempts_none_and_anonymous(self):
+        from google.auth.credentials import AnonymousCredentials
+
+        assert _helpers._validate_credentials_universe("googleapis.com", None) is None
+        assert _helpers._validate_credentials_universe("tpc.test", None) is None
+        assert (
+            _helpers._validate_credentials_universe("tpc.test", AnonymousCredentials())
+            is None
+        )
+
+    def test_exempts_uncached_compute_engine_credentials(self):
+        from google.auth import compute_engine
+
+        creds = compute_engine.Credentials()
+        assert _helpers._validate_credentials_universe("tpc.test", creds) is None
+        assert not getattr(creds, "_universe_domain_cached", False)
+
+    def test_validates_cached_compute_engine_credentials(self):
+        from google.api_core.universe import UniverseMismatchError
+        from google.auth import compute_engine
+
+        class _CachedGCECredentials(compute_engine.Credentials):
+            @property
+            def universe_domain(self):
+                return "tpc.test"
+
+        creds = _CachedGCECredentials()
+        creds._universe_domain_cached = True
+        assert _helpers._validate_credentials_universe("tpc.test", creds) is None
+        with pytest.raises(UniverseMismatchError):
+            _helpers._validate_credentials_universe("googleapis.com", creds)
+
+    def test_exempts_non_string_universe_attribute(self):
+        creds = mock.Mock()
+        assert _helpers._validate_credentials_universe("tpc.test", creds) is None

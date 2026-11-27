@@ -22,6 +22,7 @@ import pytest
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.auth.credentials import AnonymousCredentials
+from google.oauth2 import credentials as oauth2_credentials
 
 from google.cloud.bigtable.data import TABLE_DEFAULT, mutations
 from google.cloud.bigtable.data._cross_sync import CrossSync
@@ -102,6 +103,19 @@ def mock_metrics_batch_write():
         yield
 
 
+class _StubCredentials(oauth2_credentials.Credentials):
+    """Non-anonymous credential stub with a read-only ``universe_domain``
+    property across all supported ``google-auth`` versions."""
+
+    def __init__(self, universe_domain: str = "googleapis.com"):
+        super().__init__("token")
+        self._test_universe_domain = universe_domain
+
+    @property
+    def universe_domain(self) -> str:
+        return self._test_universe_domain
+
+
 @CrossSync.convert_class(
     sync_name="TestBigtableDataClient",
     add_mapping_for_name="TestBigtableDataClient",
@@ -126,7 +140,7 @@ class TestBigtableDataClientAsync:
             warnings.filterwarnings("ignore", category=RuntimeWarning)
         else:
             # set some default values
-            kwargs["credentials"] = kwargs.get("credentials", AnonymousCredentials())
+            kwargs["credentials"] = kwargs.get("credentials", _StubCredentials())
             kwargs["project"] = kwargs.get("project", "project-id")
         if use_mtls is not None:
             env_mask["GOOGLE_API_USE_MTLS_ENDPOINT"] = use_mtls
@@ -142,7 +156,7 @@ class TestBigtableDataClientAsync:
         )
 
         expected_project = "project-id"
-        expected_credentials = AnonymousCredentials()
+        expected_credentials = _StubCredentials()
         client = self._make_client(
             project="project-id",
             credentials=expected_credentials,
@@ -289,22 +303,35 @@ class TestBigtableDataClientAsync:
     async def test_metrics_exporter_init_shares_arguments(
         self, exporter_mock_sync, exporter_mock_async
     ):
-        expected_credentials = AnonymousCredentials()
+        import os
+
+        expected_credentials = _StubCredentials()
         expected_project = "custom_project"
-        expected_options = client_options.ClientOptions()
-        expected_options.credentials_file = None
-        expected_options.quota_project_id = None
+        cert_source = mock.Mock()
+        input_options = client_options.ClientOptions(
+            client_cert_source=cert_source,
+            api_audience="https://bigtable.googleapis.com/",
+        )
         mock_called = exporter_mock_async if CrossSync.is_async else exporter_mock_sync
-        async with self._make_client(
-            project=expected_project,
-            credentials=expected_credentials,
-            client_options=expected_options,
-            use_emulator=False,
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
         ):
-            mock_called.assert_called_once_with(
+            async with self._make_client(
+                project=expected_project,
                 credentials=expected_credentials,
-                client_options=expected_options,
-            )
+                client_options=input_options,
+                use_emulator=False,
+            ) as client:
+                mock_called.assert_called_once()
+                call_kwargs = mock_called.call_args.kwargs
+                assert call_kwargs["credentials"] == client._credentials
+                exporter_options = call_kwargs["client_options"]
+                assert isinstance(exporter_options, client_options.ClientOptions)
+                assert exporter_options is not input_options
+                assert exporter_options.universe_domain == "googleapis.com"
+                assert exporter_options.client_cert_source is cert_source
+                assert exporter_options.api_endpoint is None
+                assert exporter_options.api_audience is None
 
     @CrossSync.pytest
     @mock.patch(
@@ -1298,8 +1325,7 @@ class TestBigtableDataClientAsync:
     @CrossSync.pytest
     async def test_credential_universe_domain_matches_GDU(self):
         """Test with credentials"""
-        creds = AnonymousCredentials()
-        creds._universe_domain = "googleapis.com"
+        creds = _StubCredentials("googleapis.com")
         async with self._make_client(project="project_id", credentials=creds) as client:
             assert client.universe_domain == "googleapis.com"
 
@@ -1318,13 +1344,9 @@ class TestBigtableDataClientAsync:
         """Test that configured universe domain errors with mismatched universe
         domain credentials.
         """
-        creds = AnonymousCredentials()
-        universe_exists = hasattr(creds, "universe_domain")
-        if not universe_exists:
-            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds._universe_domain = "different-universe"
+        creds = _StubCredentials("different-universe")
         with pytest.raises(ValueError) as exc:
             self._make_client(
                 project="project_id",
@@ -1343,14 +1365,110 @@ class TestBigtableDataClientAsync:
         assert exc.value.args[0] == err_msg
 
     @CrossSync.pytest
+    async def test_metrics_exporter_uses_universe_domain(self):
+        """BigtableMetricsExporter should stay enabled in custom universes and target monitoring.{universe_domain}."""
+        import os
+
+        universe_domain = "custom-universe.test"
+        creds = _StubCredentials(universe_domain)
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        async with self._make_client(
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_emulator=False,
+            use_mtls="never",
+        ) as client:
+            assert client.universe_domain == universe_domain
+            assert client.api_endpoint == f"bigtable.{universe_domain}"
+            assert len(client._metrics.handlers) == 1
+            exporter = client._metrics.handlers[0]._exporter
+            assert exporter.client.universe_domain == universe_domain
+            assert exporter.client.api_endpoint == f"monitoring.{universe_domain}"
+
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": universe_domain}
+        ):
+            async with self._make_client(
+                project="project_id",
+                credentials=creds,
+                use_emulator=False,
+                use_mtls="never",
+            ) as client:
+                assert client.universe_domain == universe_domain
+                assert client.api_endpoint == f"bigtable.{universe_domain}"
+                assert len(client._metrics.handlers) == 1
+                exporter = client._metrics.handlers[0]._exporter
+                assert exporter.client.universe_domain == universe_domain
+                assert exporter.client.api_endpoint == f"monitoring.{universe_domain}"
+
+    @CrossSync.pytest
+    async def test_metrics_exporter_disabled_with_anonymous_credentials(self):
+        """BigtableMetricsExporter should be disabled when AnonymousCredentials are used."""
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.BigtableMetricsExporter"
+            ) as exporter_mock_async,
+            mock.patch(
+                "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+            ) as exporter_mock_sync,
+        ):
+            async with self._make_client(
+                project="project_id",
+                credentials=AnonymousCredentials(),
+                use_emulator=False,
+                use_mtls="never",
+            ) as client:
+                assert len(client._metrics.handlers) == 0
+                exporter_mock_async.assert_not_called()
+                exporter_mock_sync.assert_not_called()
+
+    @CrossSync.pytest
+    async def test_metrics_exporter_disabled_with_custom_api_endpoint(self):
+        """BigtableMetricsExporter should be disabled when a custom api_endpoint is set."""
+        universe_domain = "custom-universe.test"
+        cases = [
+            (
+                _StubCredentials(),
+                client_options.ClientOptions(api_endpoint="bigtable.custom.local:443"),
+            ),
+            (
+                _StubCredentials(universe_domain),
+                client_options.ClientOptions(
+                    api_endpoint="bigtable.custom.local:443",
+                    universe_domain=universe_domain,
+                ),
+            ),
+        ]
+        with (
+            mock.patch(
+                "google.cloud.bigtable.data._async.client.BigtableMetricsExporter"
+            ) as exporter_mock_async,
+            mock.patch(
+                "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+            ) as exporter_mock_sync,
+        ):
+            for creds, options in cases:
+                async with self._make_client(
+                    project="project_id",
+                    credentials=creds,
+                    client_options=options,
+                    use_emulator=False,
+                    use_mtls="never",
+                ) as client:
+                    assert client.api_endpoint == "bigtable.custom.local:443"
+                    assert len(client._metrics.handlers) == 0
+                    exporter_mock_async.assert_not_called()
+                    exporter_mock_sync.assert_not_called()
+
+    @CrossSync.pytest
     async def test_configured_universe_domain_matches_credentials(self):
         """Test that configured universe domain succeeds with matching universe
         domain credentials.
         """
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
-        creds._universe_domain = universe_domain
+        creds = _StubCredentials(universe_domain)
         async with self._make_client(
             project="project_id",
             credentials=creds,
@@ -1359,6 +1477,80 @@ class TestBigtableDataClientAsync:
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
+
+    @CrossSync.pytest
+    async def test_adc_credentials_universe_mismatch(self):
+        """Resolved ADC credentials must be validated against client universe_domain before opening a channel."""
+        import os
+
+        from google.api_core.universe import UniverseMismatchError
+
+        # Case 1: TPC ADC credentials with default (GDU) client
+        with (
+            mock.patch(
+                "google.auth.default",
+                return_value=(_StubCredentials("tpc.test"), "project_id"),
+            ),
+            mock.patch.object(CrossSync.GapicClient, "__init__") as gapic_init,
+        ):
+            with pytest.raises(UniverseMismatchError):
+                self._make_client(
+                    project="project_id",
+                    credentials=None,
+                    use_emulator=False,
+                    use_mtls="never",
+                )
+            gapic_init.assert_not_called()
+
+        # Case 2: GDU ADC credentials with GOOGLE_CLOUD_UNIVERSE_DOMAIN="tpc.test"
+        with (
+            mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "tpc.test"}),
+            mock.patch(
+                "google.auth.default",
+                return_value=(_StubCredentials("googleapis.com"), "project_id"),
+            ),
+            mock.patch.object(CrossSync.GapicClient, "__init__") as gapic_init,
+        ):
+            with pytest.raises(UniverseMismatchError):
+                self._make_client(
+                    project="project_id",
+                    credentials=None,
+                    use_emulator=False,
+                    use_mtls="never",
+                )
+            gapic_init.assert_not_called()
+
+    @CrossSync.pytest
+    async def test_anonymous_credentials_allowed_in_custom_universe(self):
+        """AnonymousCredentials should be exempted from universe validation in custom universes."""
+        universe_domain = "tpc.test"
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        async with self._make_client(
+            project="project_id",
+            credentials=AnonymousCredentials(),
+            client_options=options,
+            use_emulator=False,
+            use_mtls="never",
+        ) as client:
+            assert client.universe_domain == universe_domain
+            assert len(client._metrics.handlers) == 0
+
+    @CrossSync.pytest
+    async def test_uncached_compute_engine_credentials_skip_validation(self):
+        """Uncached compute_engine.Credentials should not trigger synchronous MDS requests."""
+        from google.auth import compute_engine
+
+        creds = compute_engine.Credentials()
+        options = client_options.ClientOptions(universe_domain="tpc.test")
+        async with self._make_client(
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_emulator=False,
+            use_mtls="never",
+        ) as client:
+            assert client.universe_domain == "tpc.test"
+            assert not getattr(creds, "_universe_domain_cached", False)
 
 
 @CrossSync.convert_class("TestTable", add_mapping_for_name="TestTable")

@@ -38,6 +38,7 @@ import google.auth._default
 import google.auth.credentials
 from google.api_core import client_options as client_options_lib
 from google.api_core import retry as retries
+from google.api_core import universe
 from google.api_core.exceptions import (
     Aborted,
     Cancelled,
@@ -61,6 +62,7 @@ from google.cloud.bigtable.data._helpers import (
     _get_retryable_errors,
     _get_timeouts,
     _retry_exception_factory,
+    _validate_credentials_universe,
     _validate_timeouts,
     _WarmedInstanceKey,
 )
@@ -253,6 +255,14 @@ class BigtableDataClientAsync(ClientWithProject):
             project=project,
             client_options=client_options,
         )
+        if self._emulator_host is None:
+            client_universe = universe.determine_domain(
+                client_options.universe_domain if client_options else None,
+                os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+            )
+            _validate_credentials_universe(
+                client_universe, getattr(self, "_credentials", None)
+            )
         self._gapic_client = GapicClient(
             credentials=credentials,
             client_options=client_options,
@@ -261,33 +271,34 @@ class BigtableDataClientAsync(ClientWithProject):
                 *args, **kwargs, channel=self._build_grpc_channel
             ),
         )
-        if (
-            credentials
-            and hasattr(credentials, "universe_domain")
-            and credentials.universe_domain != self.universe_domain
-            and self._emulator_host is None
-        ):
-            # validate that the universe domain of the credentials matches the
-            # universe domain configured in client_options
-            raise ValueError(
-                f"The configured universe domain ({self.universe_domain}) does "
-                "not match the universe domain found in the credentials "
-                f"({self._credentials.universe_domain}). If you haven't "
-                "configured the universe domain explicitly, `googleapis.com` "
-                "is the default."
-            )
         self._is_closed = CrossSync.Event()
         # Private argument, for internal use only
         self._disable_background_refresh = bool(
             kwargs.get("_disable_background_refresh", False)
         )
         handlers: list[MetricsHandler] = []
-        if self._emulator_host is None:
+        has_custom_endpoint = bool(client_options and client_options.api_endpoint)
+        if (
+            self._emulator_host is None
+            and not isinstance(
+                self._credentials, google.auth.credentials.AnonymousCredentials
+            )
+            and not has_custom_endpoint
+        ):
             try:
-                # create a metrics exporter using the same client configuration
+                # Pass only universe_domain and client_cert_source so
+                # Bigtable-specific options (such as scopes or api_audience) are
+                # not sent to Cloud Monitoring.
                 exporter = BigtableMetricsExporter(
                     credentials=self._credentials,
-                    client_options=client_options,
+                    client_options=client_options_lib.ClientOptions(
+                        universe_domain=self.universe_domain,
+                        client_cert_source=(
+                            client_options.client_cert_source
+                            if client_options
+                            else None
+                        ),
+                    ),
                 )
                 handlers.append(
                     GoogleCloudMetricsHandler(
