@@ -151,6 +151,7 @@ def prerelease_deps(session, protobuf_implementation):
         "grpcio-status",
         "google-api-core",
         "google-auth",
+        "google-cloud-core",
         "proto-plus",
         "google-cloud-testutils",
         # dependencies of google-cloud-testutils"
@@ -518,6 +519,7 @@ def core_deps_from_source(session, protobuf_implementation):
         "googleapis-common-protos",
         "google-api-core",
         "google-auth",
+        "google-cloud-core",
         "grpc-google-iam-v1",
         "proto-plus",
     ]

@@ -508,6 +508,7 @@ def prerelease_deps(session, protobuf_implementation):
         "googleapis-common-protos",
         "google-api-core",
         "google-auth",
+        "google-cloud-core",
         "grpc-google-iam-v1",
         "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
         "grpcio-status",
@@ -631,6 +632,7 @@ def core_deps_from_source(session, protobuf_implementation):
         "googleapis-common-protos",
         "google-api-core",
         "google-auth",
+        "google-cloud-core",
         "grpc-google-iam-v1",
         "proto-plus",
     ]
