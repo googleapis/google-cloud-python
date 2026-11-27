@@ -514,41 +514,6 @@ libraries:
     python:
       metadata_name_override: batch
       default_version: v1
-  - name: google-cloud-beyondcorp-appconnections
-    version: 0.8.2
-    apis:
-      - path: google/cloud/beyondcorp/appconnections/v1
-    python:
-      metadata_name_override: beyondcorpappconnections
-      default_version: v1
-  - name: google-cloud-beyondcorp-appconnectors
-    version: 0.8.2
-    apis:
-      - path: google/cloud/beyondcorp/appconnectors/v1
-    python:
-      metadata_name_override: beyondcorpappconnectors
-      default_version: v1
-  - name: google-cloud-beyondcorp-appgateways
-    version: 0.8.2
-    apis:
-      - path: google/cloud/beyondcorp/appgateways/v1
-    python:
-      metadata_name_override: beyondcorpappgateways
-      default_version: v1
-  - name: google-cloud-beyondcorp-clientconnectorservices
-    version: 0.8.1
-    apis:
-      - path: google/cloud/beyondcorp/clientconnectorservices/v1
-    python:
-      metadata_name_override: beyondcorpclientconnectorservices
-      default_version: v1
-  - name: google-cloud-beyondcorp-clientgateways
-    version: 0.8.1
-    apis:
-      - path: google/cloud/beyondcorp/clientgateways/v1
-    python:
-      metadata_name_override: beyondcorpclientgateways
-      default_version: v1
   - name: google-cloud-biglake
     version: 0.5.2
     apis:
