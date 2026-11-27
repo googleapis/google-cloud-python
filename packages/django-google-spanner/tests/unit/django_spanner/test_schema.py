@@ -5,10 +5,18 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 
+import datetime
+import json
+from decimal import Decimal
+from enum import IntEnum
+from typing import Any, Iterable
 from unittest import mock
+from uuid import UUID
 
+import sqlparse
 from django.db import NotSupportedError, connection, connections, models
-from django.db.models import CheckConstraint, Index, Q
+from django.db.models import CheckConstraint, F, Index, Q, Value
+from django.db.models.expressions import RawSQL
 from django.db.models.fields import (
     AutoField,
     IntegerField,
@@ -16,10 +24,17 @@ from django.db.models.fields import (
     PositiveIntegerField,
     PositiveSmallIntegerField,
 )
+from django.db.models.functions import Concat
 from django.test.utils import isolate_apps
+from django.utils.safestring import mark_safe
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.api_core.exceptions import InvalidArgument
+from google.cloud.spanner_dbapi.parse_utils import classify_statement
+from google.cloud.spanner_dbapi.types import DateStr, TimestampStr
+from google.cloud.spanner_v1 import JsonObject
 
 from django_spanner import gen_rand_int64
+from django_spanner.operations import _JsonString
 from django_spanner.schema import DatabaseSchemaEditor
 from tests._helpers import HAS_OPENTELEMETRY_INSTALLED, StatusCode
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
@@ -1316,3 +1331,476 @@ class TestUtils(SpannerSimpleTestClass):
                     new_field.model = Author
                     schema_editor.alter_field(Author, old_field, new_field)
             self._assert_recorded_spans([])
+
+    def _assert_quote_value_cases(
+        self,
+        cases: Iterable[tuple[Any, str]],
+        check_prepare_default: bool = True,
+    ) -> None:
+        """Assert quote_value (and optionally prepare_default) across (input, expected) pairs."""
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        for raw_value, expected in cases:
+            with self.subTest(raw_value=raw_value):
+                self.assertEqual(schema_editor.quote_value(raw_value), expected)
+                if check_prepare_default:
+                    self.assertEqual(schema_editor.prepare_default(raw_value), expected)
+
+    def test_quote_value_strings_and_escapes(self) -> None:
+        """String literals use GoogleSQL backslash escaping and resist subclass overrides."""
+
+        class CustomStr(str):
+            def translate(self, table: Any) -> str:
+                return "') OR (TRUE) --"
+
+            def __str__(self) -> str:
+                return "') OR (TRUE) --"
+
+        self._assert_quote_value_cases(
+            (
+                ("", "''"),
+                ("plain", "'plain'"),
+                ("it's", r"'it\'s'"),
+                (r"x\') OR (TRUE) --", r"'x\\\') OR (TRUE) --'"),
+                ("trailing\\", r"'trailing\\'"),
+                ("50% off", "'50% off'"),
+                ("café 🚀", "'café 🚀'"),
+                (mark_safe(r"x\') OR (TRUE) --"), r"'x\\\') OR (TRUE) --'"),
+                (CustomStr("safe'val\\"), r"'safe\'val\\'"),
+                (
+                    "\a\b\f\n\r\t\v\x00\x1f\x7f",
+                    r"'\a\b\f\n\r\t\v\x00\x1f\x7f'",
+                ),
+            )
+        )
+
+    def test_quote_value_control_characters(self) -> None:
+        """All ASCII control characters (0x00-0x1F and 0x7F) are escaped."""
+        named_escapes = {
+            "\a": r"\a",
+            "\b": r"\b",
+            "\f": r"\f",
+            "\n": r"\n",
+            "\r": r"\r",
+            "\t": r"\t",
+            "\v": r"\v",
+        }
+        cases = []
+        for code in (*range(0x20), 0x7F):
+            character = chr(code)
+            expected_escape = named_escapes.get(character, f"\\x{code:02x}")
+            cases.append((f"a{character}b", f"'a{expected_escape}b'"))
+        self._assert_quote_value_cases(cases)
+
+    def test_quote_value_primitives_and_numeric_types(self) -> None:
+        """Primitives, floats (including non-finite), and Decimals quote cleanly."""
+
+        class SampleIntEnum(IntEnum):
+            FIRST = 7
+
+        class CustomInt(int):
+            def __int__(self) -> int:
+                return self
+
+            def __repr__(self) -> str:
+                return "0 OR 1=1"
+
+            def __str__(self) -> str:
+                return "0 OR 1=1"
+
+        class CustomFloat(float):
+            def __float__(self) -> float:
+                return self
+
+            def __repr__(self) -> str:
+                return "0 OR 1=1"
+
+            def __str__(self) -> str:
+                return "0 OR 1=1"
+
+        class CustomDecimal(Decimal):
+            def is_finite(self) -> bool:
+                return True
+
+            def __str__(self) -> str:
+                return "0 OR 1=1"
+
+        self._assert_quote_value_cases(
+            (
+                (None, "NULL"),
+                (True, "TRUE"),
+                (False, "FALSE"),
+                (0, "0"),
+                (-42, "-42"),
+                (SampleIntEnum.FIRST, "7"),
+                (CustomInt(9), "9"),
+                (1.1, "1.1"),
+                (float("-0.0"), "-0.0"),
+                (CustomFloat(2.5), "2.5"),
+                (float("nan"), "CAST('NaN' AS FLOAT64)"),
+                (float("inf"), "CAST('Infinity' AS FLOAT64)"),
+                (float("-inf"), "CAST('-Infinity' AS FLOAT64)"),
+                (Decimal("12.34"), "NUMERIC '12.34'"),
+                (Decimal("-0.50"), "NUMERIC '-0.50'"),
+                (Decimal("-0"), "NUMERIC '-0'"),
+                (Decimal("1E+10"), "NUMERIC '1E+10'"),
+                (CustomDecimal("3.14"), "NUMERIC '3.14'"),
+            )
+        )
+
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        for bad_decimal in (
+            Decimal("NaN"),
+            Decimal("sNaN"),
+            Decimal("Infinity"),
+            Decimal("-Infinity"),
+            CustomDecimal("NaN"),
+        ):
+            with self.subTest(bad_decimal=bad_decimal):
+                with self.assertRaisesRegex(ValueError, "non-finite Decimal"):
+                    schema_editor.quote_value(bad_decimal)
+
+    def test_quote_value_temporal_types(self) -> None:
+        """DateStr, TimestampStr, date, datetime, time, and timedelta quote cleanly."""
+
+        class NaiveTzInfo(datetime.tzinfo):
+            def utcoffset(self, dt: datetime.datetime | None) -> None:
+                return None
+
+            def dst(self, dt: datetime.datetime | None) -> None:
+                return None
+
+            def tzname(self, dt: datetime.datetime | None) -> str:
+                return "NAIVE"
+
+        class CustomDateTime(datetime.datetime):
+            @property
+            def tzinfo(self) -> None:
+                return None
+
+            def utcoffset(self) -> datetime.timedelta:
+                return datetime.timedelta(hours=5)
+
+            def replace(self, *args: Any, **kwargs: Any) -> "CustomDateTime":
+                return self
+
+            def isoformat(self, sep: str = "T", timespec: str = "auto") -> str:
+                return "') OR (TRUE) --"
+
+        class CustomDate(datetime.date):
+            def isoformat(self) -> str:
+                return "') OR (TRUE) --"
+
+        class CustomTime(datetime.time):
+            @property
+            def tzinfo(self) -> None:
+                return None
+
+            def utcoffset(self) -> datetime.timedelta:
+                return datetime.timedelta(hours=5)
+
+            def isoformat(self, timespec: str = "auto") -> str:
+                return "') OR (TRUE) --"
+
+        offset_timezone = datetime.timezone(datetime.timedelta(hours=2))
+        self._assert_quote_value_cases(
+            (
+                (DateStr("2025-01-15"), "DATE '2025-01-15'"),
+                (DateStr(r"x\') OR (TRUE) --"), r"DATE 'x\\\') OR (TRUE) --'"),
+                (
+                    TimestampStr("2025-01-15T12:30:00.000000Z"),
+                    "TIMESTAMP '2025-01-15T12:30:00.000000Z'",
+                ),
+                (
+                    TimestampStr(r"x\') OR (TRUE) --"),
+                    r"TIMESTAMP 'x\\\') OR (TRUE) --'",
+                ),
+                (datetime.date(2025, 1, 15), "DATE '2025-01-15'"),
+                (CustomDate(2025, 1, 15), "DATE '2025-01-15'"),
+                (
+                    datetime.datetime(2025, 1, 15, 12, 30, 0),
+                    "TIMESTAMP '2025-01-15T12:30:00.000000Z'",
+                ),
+                (
+                    CustomDateTime(2025, 1, 15, 12, 30, 0, tzinfo=NaiveTzInfo()),
+                    "TIMESTAMP '2025-01-15T12:30:00.000000Z'",
+                ),
+                (
+                    CustomDateTime(2025, 1, 15, 14, 30, 0, tzinfo=offset_timezone),
+                    "TIMESTAMP '2025-01-15T12:30:00.000000Z'",
+                ),
+                (
+                    datetime.datetime(2025, 1, 15, 14, 30, 0, tzinfo=offset_timezone),
+                    "TIMESTAMP '2025-01-15T12:30:00.000000Z'",
+                ),
+                (
+                    DatetimeWithNanoseconds(
+                        2025, 1, 15, 12, 30, 0, nanosecond=123456789
+                    ),
+                    "TIMESTAMP '2025-01-15T12:30:00.123456Z'",
+                ),
+                (
+                    DatetimeWithNanoseconds(
+                        2025,
+                        1,
+                        15,
+                        12,
+                        30,
+                        0,
+                        nanosecond=123456789,
+                        tzinfo=datetime.timezone.utc,
+                    ),
+                    "TIMESTAMP '2025-01-15T12:30:00.123456Z'",
+                ),
+                (
+                    datetime.time(3, 4, 5),
+                    "TIMESTAMP '0001-01-01T03:04:05.000000Z'",
+                ),
+                (
+                    CustomTime(3, 4, 5, tzinfo=NaiveTzInfo()),
+                    "TIMESTAMP '0001-01-01T03:04:05.000000Z'",
+                ),
+                (datetime.timedelta(seconds=5), "5000000"),
+                (datetime.timedelta(seconds=-5), "-5000000"),
+            )
+        )
+
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        for aware_time in (
+            datetime.time(3, 4, 5, tzinfo=datetime.timezone.utc),
+            CustomTime(3, 4, 5, tzinfo=datetime.timezone.utc),
+        ):
+            with self.subTest(aware_time=aware_time):
+                with self.assertRaisesRegex(ValueError, "timezone-aware time"):
+                    schema_editor.quote_value(aware_time)
+
+    def test_quote_value_bytes_and_memoryview(self) -> None:
+        """Bytes-like values hex-escape all bytes into GoogleSQL b'...' literals."""
+        self._assert_quote_value_cases(
+            (
+                (b"", "b''"),
+                (b"\x00'\\", r"b'\x00\x27\x5c'"),
+                (b"\xff\x00", r"b'\xff\x00'"),
+                (b"%s", r"b'\x25\x73'"),
+                (
+                    b'"; DROP TABLE users; --',
+                    r"b'\x22\x3b\x20\x44\x52\x4f\x50\x20\x54\x41\x42\x4c\x45\x20"
+                    r"\x75\x73\x65\x72\x73\x3b\x20\x2d\x2d'",
+                ),
+                (bytearray(b"\xde\xad"), r"b'\xde\xad'"),
+                (memoryview(b"\xbe\xef"), r"b'\xbe\xef'"),
+                (memoryview(b"abcd").cast("I"), r"b'\x61\x62\x63\x64'"),
+                (memoryview(b"abcd").cast("B", (2, 2)), r"b'\x61\x62\x63\x64'"),
+            )
+        )
+
+    def test_quote_value_json_and_uuid(self) -> None:
+        """UUID and JsonObject/_JsonString values quote into GoogleSQL literals."""
+
+        class CustomUUID(UUID):
+            @property
+            def hex(self) -> str:
+                return "') OR (TRUE) --"
+
+        class InvalidJsonObject(JsonObject):
+            def serialize(self) -> int:
+                return 123
+
+        self._assert_quote_value_cases(
+            (
+                (
+                    UUID("12345678-1234-5678-1234-567812345678"),
+                    "'12345678123456781234567812345678'",
+                ),
+                (
+                    CustomUUID("12345678-1234-5678-1234-567812345678"),
+                    "'12345678123456781234567812345678'",
+                ),
+                (
+                    _JsonString('{"a": "x\'y\\\\z"}'),
+                    'JSON \'{"a": "x\\\'y\\\\\\\\z"}\'',
+                ),
+                (_JsonString("null"), "JSON 'null'"),
+                (_JsonString(None), "NULL"),
+                (JsonObject(None), "NULL"),
+                (JsonObject({"k": "v"}), 'JSON \'{"k":"v"}\''),
+                (JsonObject([1, "a'b\\"]), "JSON '[1,\"a\\'b\\\\\\\\\"]'"),
+                (JsonObject("scalar'\\"), "JSON '\"scalar\\'\\\\\\\\\"'"),
+            )
+        )
+
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        with self.assertRaisesRegex(
+            ValueError, "JsonObject with non-string serialization"
+        ):
+            schema_editor.quote_value(InvalidJsonObject())
+
+    def test_quote_value_rejects_unknown_types(self) -> None:
+        """Unsupported types raise ValueError instead of falling back to str()."""
+
+        class CustomObject:
+            def __str__(self) -> str:
+                return "') OR (TRUE) --"
+
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        for unknown_value in (CustomObject(), {"a": 1}, [1, 2], {1, 2}, complex(1, 2)):
+            with self.subTest(unknown_value=unknown_value):
+                with self.assertRaisesRegex(ValueError, "Cannot quote parameter value"):
+                    schema_editor.quote_value(unknown_value)
+
+    def test_quote_value_sqlparse_safety(self) -> None:
+        """Quoted DDL literals are never split or stripped by sqlparse or dbapi."""
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        payloads = (
+            "'",
+            "''",
+            "'''",
+            '"""',
+            "\\",
+            r"\'",
+            r"\\'",
+            "trailing\\",
+            "val\r\n-- comment\n; DROP TABLE users",
+            "val\x00/* comment */",
+            "val'; DROP TABLE users; --",
+            "val'; DROP TABLE users; /*",
+            "val'; DROP TABLE users; #",
+            r"x\') OR (TRUE) --",
+            r"x\\') OR (TRUE) --",
+            '"; DROP TABLE users; --',
+            "%s",
+        )
+        for payload in payloads:
+            literals = (
+                schema_editor.quote_value(payload),
+                schema_editor.quote_value(payload.encode("utf-8")),
+                schema_editor.quote_value(_JsonString(json.dumps({"k": payload}))),
+            )
+            for literal in literals:
+                sql = (
+                    f"CREATE TABLE t (c STRING(MAX) DEFAULT ({literal})) PRIMARY KEY(c)"
+                )
+                with self.subTest(payload=payload, literal=literal):
+                    self.assertEqual(sqlparse.split(sql), [sql])
+                    self.assertEqual(sqlparse.format(sql, strip_comments=True), sql)
+                    self.assertEqual(classify_statement(sql).statement.sql, sql)
+
+    @isolate_apps("tests")
+    def test_create_model_ddl_literal_escaping(self) -> None:
+        """create_model escapes CheckConstraint, db_default, and GeneratedField."""
+
+        class EscapedLiteralModel(models.Model):
+            text = models.CharField(
+                max_length=100,
+                db_default="50% off\n'test'\\",
+            )
+            created_date = models.DateField(db_default=datetime.date(2025, 1, 2))
+            amount = models.DecimalField(
+                max_digits=8,
+                decimal_places=2,
+                db_default=Decimal("12.34"),
+            )
+            payload = models.JSONField(db_default={"key": "val'ue\\"})
+            computed = models.GeneratedField(
+                expression=Concat(F("text"), Value("a'b\\c\nd%e")),
+                output_field=models.CharField(max_length=200),
+                db_persist=True,
+            )
+            raw_computed = models.GeneratedField(
+                expression=RawSQL("CASE WHEN text LIKE '50%' THEN 1 ELSE 0 END", ()),
+                output_field=models.IntegerField(),
+                db_persist=True,
+            )
+
+            class Meta:
+                app_label = "tests"
+                db_table = "tests_escaped_literal"
+                constraints = [
+                    CheckConstraint(
+                        condition=Q(text=r"x\') OR (TRUE) --")
+                        & Q(text__contains="50%'\\")
+                        & Q(created_date__gte=datetime.date(2020, 1, 1)),
+                        name="safe_text_check",
+                    ),
+                ]
+
+        with DatabaseSchemaEditor(self.connection, collect_sql=True) as schema_editor:
+            schema_editor.create_model(EscapedLiteralModel)
+
+        self.assertEqual(
+            schema_editor.collected_sql,
+            [
+                "CREATE TABLE tests_escaped_literal ("
+                "id INT64 NOT NULL, "
+                r"text STRING(100) NOT NULL DEFAULT ('50% off\n\'test\'\\'), "
+                "created_date DATE NOT NULL DEFAULT (DATE '2025-01-02'), "
+                "amount NUMERIC NOT NULL DEFAULT (NUMERIC '12.34'), "
+                'payload JSON NOT NULL DEFAULT (JSON \'{"key": "val\\\'ue\\\\\\\\"}\'), '
+                "computed STRING(200) NOT NULL AS "
+                r"(CONCAT(IFNULL(text, ''), IFNULL('a\'b\\c\nd%e', ''))) STORED, "
+                "raw_computed INT64 NOT NULL AS "
+                "((CASE WHEN text LIKE '50%' THEN 1 ELSE 0 END)) STORED, "
+                "CONSTRAINT safe_text_check CHECK ("
+                r"(text = 'x\\\') OR (TRUE) --' AND "
+                r"REGEXP_CONTAINS(CAST(text AS STRING), '50%\'\\\\') AND "
+                "created_date >= DATE '2020-01-01')"
+                ")) PRIMARY KEY(id);"
+            ],
+        )
+        self.assertEqual(
+            sqlparse.split(schema_editor.collected_sql[0]),
+            schema_editor.collected_sql,
+        )
+
+    @isolate_apps("tests")
+    def test_column_sql_formats_remaining_db_default_params(self) -> None:
+        """column_sql quotes remaining db_default_sql params and skips empty SQL."""
+
+        class DefaultParamModel(models.Model):
+            text = models.CharField(max_length=100, db_default="50% 'off'\\")
+
+            class Meta:
+                app_label = "tests"
+                db_table = "tests_default_param"
+
+        schema_editor = DatabaseSchemaEditor(self.connection)
+        field = DefaultParamModel._meta.get_field("text")
+        with mock.patch.object(
+            schema_editor, "db_default_sql", return_value=("%s", ["50% 'off'\\"])
+        ):
+            sql, params = schema_editor.column_sql(DefaultParamModel, field)
+
+        self.assertEqual(sql, r"STRING(100) NOT NULL DEFAULT ('50% \'off\'\\')")
+        self.assertEqual(params, [])
+
+        with mock.patch.object(schema_editor, "db_default_sql", return_value=("", [])):
+            sql, params = schema_editor.column_sql(DefaultParamModel, field)
+
+        self.assertEqual(sql, "STRING(100) NOT NULL")
+        self.assertEqual(params, [])
+
+    @isolate_apps("tests")
+    def test_add_field_collect_sql_literal_escaping(self) -> None:
+        """add_field with collect_sql escapes backfill UPDATE literals."""
+
+        class BackfillModel(models.Model):
+            class Meta:
+                app_label = "tests"
+                db_table = "tests_backfill_literal"
+
+        new_field = models.CharField(max_length=100, default=r"x\') OR (TRUE) --")
+        new_field.set_attributes_from_name("extra_text")
+        new_field.model = BackfillModel
+
+        with DatabaseSchemaEditor(self.connection, collect_sql=True) as schema_editor:
+            schema_editor.add_field(BackfillModel, new_field)
+
+        self.assertEqual(
+            schema_editor.collected_sql,
+            [
+                "ALTER TABLE tests_backfill_literal ADD COLUMN extra_text STRING(100);",
+                "UPDATE tests_backfill_literal SET extra_text="
+                r"'x\\\') OR (TRUE) --' WHERE 1=1;",
+                "ALTER TABLE tests_backfill_literal ALTER COLUMN "
+                "extra_text STRING(100) NOT NULL;",
+            ],
+        )

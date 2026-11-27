@@ -3,14 +3,62 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
+import datetime
+import math
 import os
+from decimal import Decimal
+from typing import Any
+from uuid import UUID
 
 import django
 from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 from django.db.models.fields import NOT_PROVIDED
+from django.utils.duration import duration_microseconds
+from google.cloud.spanner_dbapi.types import DateStr, TimestampStr
+from google.cloud.spanner_v1 import JsonObject
 
 from django_spanner._opentelemetry_tracing import trace_call
+
+# GoogleSQL uses backslash escapes inside single-quoted string literals ('...')
+# and rejects raw newlines and unescaped ASCII control characters (0x00-0x1F and
+# 0x7F). Unlike ANSI SQL, doubling quotes ('') does not escape a quote in
+# GoogleSQL; instead, values like r"x\') OR (TRUE) --" would treat \' as an
+# escaped quote and close the literal early if backslashes are left unescaped.
+#
+# This translation table is used by _quote_string_literal() and
+# DatabaseSchemaEditor.quote_value() (and by extension prepare_default(),
+# CheckConstraint DDL, GeneratedField AS (...) expressions, db_default
+# DEFAULT (...) expressions, and collect_sql / sqlmigrate output) to escape \, ',
+# and ASCII control characters in one pass.
+_STRING_ESCAPE_TABLE = str.maketrans(
+    {
+        **{chr(code): f"\\x{code:02x}" for code in (*range(0x20), 0x7F)},
+        "\\": r"\\",
+        "'": r"\'",
+        "\a": r"\a",
+        "\b": r"\b",
+        "\f": r"\f",
+        "\n": r"\n",
+        "\r": r"\r",
+        "\t": r"\t",
+        "\v": r"\v",
+    }
+)
+
+
+def _quote_string_literal(value: str) -> str:
+    r"""Escape and wrap ``value`` as a single-quoted GoogleSQL string literal.
+
+    Uses ``str.translate`` directly so ``str`` subclasses (such as Django's
+    ``SafeString``) cannot override translation behavior.
+
+    Example:
+        ``_quote_string_literal(r"x\') OR (TRUE) --")`` returns
+        ``r"'x\\\') OR (TRUE) --'"``; ``_quote_string_literal("a\nb")`` returns
+        ``r"'a\nb'"``.
+    """
+    return f"'{str.translate(value, _STRING_ESCAPE_TABLE)}'"
 
 
 class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
@@ -395,39 +443,24 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # Handle GeneratedField
         if getattr(field, "generated", False):
             generated_sql, generated_params = field.generated_sql(self.connection)
-            quoted_params = []
-            for p in generated_params:
-                if isinstance(p, str):
-                    quoted_params.append(
-                        "'%s'" % p.replace("\\", "\\\\").replace("'", "\\'")
-                    )
-                elif isinstance(p, bool):
-                    quoted_params.append("TRUE" if p else "FALSE")
-                elif p is None:
-                    quoted_params.append("NULL")
-                else:
-                    quoted_params.append(str(p))
-            sql += " AS (%s) STORED" % (generated_sql % tuple(quoted_params))
+            if generated_params:
+                generated_sql = generated_sql % tuple(
+                    self.quote_value(parameter) for parameter in generated_params
+                )
+            sql += " AS (%s) STORED" % generated_sql
 
         # Handle db_default
         db_default = getattr(field, "db_default", None)
         if db_default is not None and db_default is not NOT_PROVIDED:
             default_sql, default_params = self.db_default_sql(field)
             if default_sql:
-                # Spanner DDL doesn't support parameters, so we must inline them.
-                quoted_params = []
-                for p in default_params:
-                    if isinstance(p, str):
-                        quoted_params.append(
-                            "'%s'" % p.replace("\\", "\\\\").replace("'", "\\'")
-                        )
-                    elif isinstance(p, bool):
-                        quoted_params.append("TRUE" if p else "FALSE")
-                    elif p is None:
-                        quoted_params.append("NULL")
-                    else:
-                        quoted_params.append(str(p))
-                sql += " DEFAULT (%s)" % (default_sql % tuple(quoted_params))
+                # db_default_sql() already substitutes params when
+                # requires_literal_defaults is True; only format remaining params.
+                if default_params:
+                    default_sql = default_sql % tuple(
+                        self.quote_value(parameter) for parameter in default_params
+                    )
+                sql += " DEFAULT (%s)" % default_sql
 
         # Return the sql
         return sql, params
@@ -459,15 +492,98 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         ):
             super().add_index(model, index)
 
-    def quote_value(self, value):
-        # A more complete implementation isn't currently required.
-        if isinstance(value, str):
-            return "'%s'" % value.replace("'", "''")
+    def quote_value(self, value: Any) -> str:
+        r"""Return a GoogleSQL-escaped literal representation of ``value``.
+
+        Used by Django when inlining literal values into DDL or collected SQL
+        (for example ``CheckConstraint`` expressions, ``db_default`` and
+        ``GeneratedField`` definitions, and ``collect_sql`` / ``sqlmigrate``).
+        Percent signs (``%``) are intentionally not doubled to ``%%`` because
+        callers emit the returned literal directly without another ``%`` pass.
+
+        Example:
+            ``quote_value("it's")`` -> ``r"'it\'s'"``;
+            ``quote_value(Decimal("12.34"))`` -> ``"NUMERIC '12.34'"``;
+            ``quote_value(b"\x00'")`` -> ``r"b'\x00\x27'"``.
+        """
+        if value is None:
+            return "NULL"
+        # Check bool before int because bool is a subclass of int in Python.
         if isinstance(value, bool):
             return "TRUE" if value else "FALSE"
-        return str(value)
+        # Use base-type methods/descriptors (int.__repr__, float.__repr__,
+        # Decimal.*, datetime.*.*, UUID.hex.fget) so subclasses overriding
+        # __str__/__repr__/isoformat/hex/etc. cannot inject arbitrary SQL.
+        if isinstance(value, int):
+            return int.__repr__(value)
+        if isinstance(value, float):
+            if math.isnan(value):
+                return "CAST('NaN' AS FLOAT64)"
+            if math.isinf(value):
+                return (
+                    "CAST('-Infinity' AS FLOAT64)"
+                    if value < 0
+                    else "CAST('Infinity' AS FLOAT64)"
+                )
+            return float.__repr__(value)
+        if isinstance(value, Decimal):
+            if not Decimal.is_finite(value):
+                raise ValueError(f"Cannot quote non-finite Decimal value: {value!r}")
+            # Emit typed NUMERIC literals to avoid FLOAT64 precision loss/coercion.
+            return f"NUMERIC '{Decimal.__str__(value)}'"
+        # DateStr and TimestampStr subclass str, so check them before str.
+        if isinstance(value, DateStr):
+            return f"DATE {_quote_string_literal(value)}"
+        if isinstance(value, TimestampStr):
+            return f"TIMESTAMP {_quote_string_literal(value)}"
+        # Check datetime.datetime before datetime.date (datetime subclasses date).
+        if isinstance(value, datetime.datetime):
+            if datetime.datetime.utcoffset(value) is not None:
+                value = datetime.datetime.replace(
+                    datetime.datetime.astimezone(value, datetime.timezone.utc),
+                    tzinfo=None,
+                )
+            formatted = datetime.datetime.isoformat(value, timespec="microseconds")
+            return f"TIMESTAMP '{formatted}Z'"
+        if isinstance(value, datetime.date):
+            return f"DATE '{datetime.date.isoformat(value)}'"
+        if isinstance(value, datetime.time):
+            if datetime.time.utcoffset(value) is not None:
+                raise ValueError(f"Cannot quote timezone-aware time value: {value!r}")
+            # Spanner has no TIME type; TimeField stores TIMESTAMP on 0001-01-01 UTC.
+            formatted = datetime.time.isoformat(value, timespec="microseconds")
+            return f"TIMESTAMP '0001-01-01T{formatted}Z'"
+        if isinstance(value, datetime.timedelta):
+            # DurationField maps to INT64 microseconds in django-spanner.
+            return str(int(duration_microseconds(value)))
+        if isinstance(value, UUID):
+            # UUIDField maps to STRING(32) storing 32-char lowercase hex.
+            return f"'{UUID.hex.fget(value)}'"
+        # JSONField adapts values via DatabaseOperations.adapt_json_value() into
+        # _JsonString (a JsonObject subclass); plain dicts raise below.
+        if isinstance(value, JsonObject):
+            serialized = value.serialize()
+            if serialized is None:
+                return "NULL"
+            if not isinstance(serialized, str):
+                raise ValueError(
+                    "Cannot quote JsonObject with non-string serialization: "
+                    f"{serialized!r}"
+                )
+            return f"JSON {_quote_string_literal(serialized)}"
+        if isinstance(value, str):
+            return _quote_string_literal(value)
+        if isinstance(value, (bytes, bytearray, memoryview)):
+            # Hex-escape every byte inside b'...' so embedded quotes, %, ;,
+            # comments, control bytes, and non-UTF-8 bytes are always safe.
+            hex_escaped = "".join(f"\\x{byte:02x}" for byte in bytes(value))
+            return f"b'{hex_escaped}'"
+        raise ValueError(
+            f"Cannot quote parameter value {value!r} of type {type(value).__name__}"
+        )
 
-    def prepare_default(self, value):
+    def prepare_default(self, value: Any) -> str:
+        """Return a GoogleSQL literal suitable for a column DEFAULT clause."""
         return self.quote_value(value)
 
     def _alter_field(
