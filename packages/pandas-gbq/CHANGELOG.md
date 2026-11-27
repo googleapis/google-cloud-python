@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.35.5](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.4...pandas-gbq-v0.35.5) (2026-11-27)
+
+
+### Bug Fixes
+
+* update various dependencies and remove dead code ([#19026](https://github.com/googleapis/google-cloud-python/issues/19026)) ([015fbaf](https://github.com/googleapis/google-cloud-python/commit/015fbafa82e0e5cc039f4bb139a81cf6d9c9a86c))
+
+
+### Documentation
+
+* fix the credentials_cache argument name ([#19126](https://github.com/googleapis/google-cloud-python/issues/19126)) ([d1a75f4](https://github.com/googleapis/google-cloud-python/commit/d1a75f4dc5d959eff0f6d2cbe7c41b2ef949e230))
+
 ## [0.35.4](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.3...pandas-gbq-v0.35.4) (2026-11-12)
 
 
