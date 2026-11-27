@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.63.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.63.1...google-auth-v2.63.2) (2026-11-27)
+
+
+### Bug Fixes
+
+* **auth:** centralize validate_universe_domain in _helpers ([#19216](https://github.com/googleapis/google-cloud-python/issues/19216)) ([17a86d1](https://github.com/googleapis/google-cloud-python/commit/17a86d1536684a821bd5491962d37a9239b43161))
+* **auth:** guard default-universe get_project_id by endpoint host ([#19200](https://github.com/googleapis/google-cloud-python/issues/19200)) ([3b9d759](https://github.com/googleapis/google-cloud-python/commit/3b9d759b0f4d8029fadd1589ed54a39840ac40b8))
+
 ## [2.63.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.63.0...google-auth-v2.63.1) (2026-11-21)
 
 
