@@ -499,22 +499,18 @@ class IAMConfiguration(dict):
             warnings.warn(_BPO_LOCK_TIME_MESSAGE, DeprecationWarning, stacklevel=2)
             uniform_bucket_level_access_locked_time = bucket_policy_only_locked_time
 
-        if uniform_bucket_level_access_enabled is _default:
-            uniform_bucket_level_access_enabled = False
-
-        if public_access_prevention is _default:
-            public_access_prevention = PUBLIC_ACCESS_PREVENTION_INHERITED
-
-        data = {
-            "uniformBucketLevelAccess": {
+        data = {}
+        if uniform_bucket_level_access_enabled is not _default:
+            data["uniformBucketLevelAccess"] = {
                 "enabled": uniform_bucket_level_access_enabled
-            },
-            "publicAccessPrevention": public_access_prevention,
-        }
+            }
         if uniform_bucket_level_access_locked_time is not _default:
-            data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
+            ubla = data.setdefault("uniformBucketLevelAccess", {})
+            ubla["lockedTime"] = _datetime_to_rfc3339(
                 uniform_bucket_level_access_locked_time
             )
+        if public_access_prevention is not _default:
+            data["publicAccessPrevention"] = public_access_prevention
         super(IAMConfiguration, self).__init__(data)
         self._bucket = bucket
 
@@ -553,7 +549,7 @@ class IAMConfiguration(dict):
         :rtype: string
         :returns: the public access prevention status, either 'enforced' or 'inherited'.
         """
-        return self["publicAccessPrevention"]
+        return self.get("publicAccessPrevention", PUBLIC_ACCESS_PREVENTION_INHERITED)
 
     @public_access_prevention.setter
     def public_access_prevention(self, value):
