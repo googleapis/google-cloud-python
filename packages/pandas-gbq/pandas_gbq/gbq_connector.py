@@ -69,6 +69,7 @@ class GbqConnector:
         self.user_agent = user_agent
         self.rfc9110_delimiter = rfc9110_delimiter
         self.use_bqstorage_api = use_bqstorage_api
+        self._bigquery_client = bigquery_client
 
         if bigquery_client is not None:
             # If a bq client is already provided, use it to populate auth fields.
@@ -255,7 +256,7 @@ class GbqConnector:
     ):
         return pandas_gbq.core.read.download_results(
             rows_iter,
-            bqclient=self.get_client(),
+            bqclient=self.client,
             progress_bar_type=progress_bar_type,
             warn_on_large_results=True,
             max_results=max_results,
