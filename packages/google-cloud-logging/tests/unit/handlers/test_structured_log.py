@@ -260,6 +260,23 @@ class TestStructuredLogHandler(unittest.TestCase):
         self.assertEqual(set(expected_payload.keys()), set(result.keys()))
         self.assertEqual(result["path"], "/path")
 
+    def test_format_dict_message_does_not_mutate_input(self):
+        import json
+        import logging
+
+        handler = self._make_one()
+        message = {"severity": "error", "time": "none", "extra": "still here"}
+        original = dict(message)
+        record = logging.LogRecord(None, logging.INFO, None, None, message, None, None)
+        record.created = None
+        handler.filter(record)
+
+        result = json.loads(handler.format(record))
+
+        self.assertEqual(result["severity"], "INFO")
+        self.assertEqual(result["extra"], "still here")
+        self.assertEqual(message, original)
+
     def test_format_with_reserved_json_field(self):
         # drop json_field data with reserved names
         # related issue: https://github.com/googleapis/python-logging/issues/543

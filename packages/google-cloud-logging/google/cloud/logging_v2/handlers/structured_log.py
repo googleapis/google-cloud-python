@@ -113,10 +113,12 @@ class StructuredLogHandler(logging.StreamHandler):
         message = _format_and_parse_message(record, super(StructuredLogHandler, self))
 
         if isinstance(message, collections.abc.Mapping):
-            # remove any special fields
-            for key in list(message.keys()):
-                if key in GCP_STRUCTURED_LOGGING_FIELDS:
-                    del message[key]
+            # remove any special fields, without modifying the caller's dict
+            message = {
+                key: value
+                for key, value in message.items()
+                if key not in GCP_STRUCTURED_LOGGING_FIELDS
+            }
             # if input is a dictionary, encode it as a json string
             encoded_msg = json.dumps(
                 message, ensure_ascii=False, cls=self._json_encoder_cls
