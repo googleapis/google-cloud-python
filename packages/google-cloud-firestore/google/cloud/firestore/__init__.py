@@ -80,6 +80,7 @@ from google.cloud.firestore_v1 import (
     Transaction,
     UnnestOptions,
     Watch,
+    WindowSpec,
     WriteBatch,
     WriteOption,
     async_transactional,
@@ -150,6 +151,7 @@ __all__: List[str] = [
     "types",
     "UnnestOptions",
     "Watch",
+    "WindowSpec",
     "WriteBatch",
     "WriteOption",
 ]

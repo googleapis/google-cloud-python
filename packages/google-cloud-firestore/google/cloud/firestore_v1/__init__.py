@@ -78,6 +78,7 @@ from google.cloud.firestore_v1.pipeline_types import (
     TimePart,
     TimeUnit,
     UnnestOptions,
+    WindowSpec,
 )
 from google.cloud.firestore_v1.query import CollectionGroup, Query
 from google.cloud.firestore_v1.query_profile import (
@@ -207,6 +208,7 @@ __all__: List[str] = [
     "types",
     "UnnestOptions",
     "Watch",
+    "WindowSpec",
     "WriteBatch",
     "WriteOption",
 ]
