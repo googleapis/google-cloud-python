@@ -29,6 +29,24 @@ from google.cloud.storage.grpc_client import (
     _validate_universe_domain,
 )
 
+# Detect a dead connection while an RPC or bidi stream is open. Without HTTP/2
+# keepalive, a pending recv() on a bidi stream can block indefinitely when the
+# path to the server silently drops traffic or the peer stops responding while
+# its kernel still ACKs TCP keepalives. While an RPC is open, send a ping after
+# 30 s without activity and drop the connection if it is not ACKed within 20 s,
+# so the stream fails with a retryable error instead of hanging. On a stream
+# with no outgoing data, gRPC limits these pings to one per minute.
+# grpc.http2.ping_timeout_ms is set alongside keepalive_timeout_ms because
+# grpc-python otherwise waits its 60 s default for the ping ACK.
+# keepalive_permit_without_calls is intentionally left unset so channels with no
+# open RPC send no pings (more frequent or idle pings can trigger GOAWAY
+# too_many_pings from GCS frontends).
+_KEEPALIVE_CHANNEL_OPTIONS: tuple[tuple[str, int], ...] = (
+    ("grpc.keepalive_time_ms", 30000),
+    ("grpc.keepalive_timeout_ms", 20000),
+    ("grpc.http2.ping_timeout_ms", 20000),
+)
+
 
 def _validate_metadata(metadata):
     """Validates that metadata is a sequence of (key, value) pairs."""
@@ -149,12 +167,16 @@ class AsyncGrpcClient:
 
         primary_user_agent = client_info.to_user_agent()
 
+        channel_options = (
+            ("grpc.primary_user_agent", primary_user_agent),
+        ) + _KEEPALIVE_CHANNEL_OPTIONS
+
         channel = transport_cls.create_channel(
             host=host,
             quota_project_id=quota_project_id,
             attempt_direct_path=attempt_direct_path,
             credentials=credentials,
-            options=(("grpc.primary_user_agent", primary_user_agent),),
+            options=channel_options,
         )
         transport = transport_cls(host=host, channel=channel)
 
