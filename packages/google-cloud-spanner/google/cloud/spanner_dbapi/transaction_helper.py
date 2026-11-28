@@ -11,28 +11,37 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
+
+import sys
 import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from google.api_core.exceptions import Aborted
 
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
+from google.cloud.spanner_dbapi.checksum import (
+    RETRY_ABORTED_ERROR,
+    ChecksumIterator,
+    ResultsChecksum,
+    _compare_checksums,
+    _errors_equal_for_retry,
+)
 from google.cloud.spanner_dbapi.exceptions import RetryAborted
 from google.cloud.spanner_v1._helpers import _get_retry_delay
 
+# TODO(#19143): Decouple TransactionRetryHelper from Cursor internals to remove
+# the circular TYPE_CHECKING dependency.
 if TYPE_CHECKING:
     from google.cloud.spanner_dbapi import Connection, Cursor
 
-from google.cloud.spanner_dbapi.checksum import ResultsChecksum, _compare_checksums
-
 MAX_INTERNAL_RETRIES = 50
-RETRY_ABORTED_ERROR = "The transaction was aborted and could not be retried due to a concurrent modification."
 
 
 class TransactionRetryHelper:
-    def __init__(self, connection: "Connection"):
+    def __init__(self, connection: Connection):
         """Helper class used in retrying the transaction when aborted This will
         maintain all the statements executed on original transaction and replay
         them again in the retried transaction.
@@ -50,6 +59,7 @@ class TransactionRetryHelper:
         # 1-1 map from original cursor object on which transaction ran to the
         # new cursor object used in the retry
         self._cursor_map: Dict[Cursor, Cursor] = {}
+        self._retry_attempts: int = 0
 
     def _set_connection_for_retry(self):
         self._connection._spanner_transaction_started = False
@@ -64,6 +74,7 @@ class TransactionRetryHelper:
         self._statement_result_details_list = []
         self._last_statement_details_per_cursor = {}
         self._cursor_map = {}
+        self._retry_attempts = 0
 
     def add_fetch_statement_for_retry(
         self, cursor, result_rows, exception, is_fetch_all
@@ -163,7 +174,28 @@ class TransactionRetryHelper:
         self._last_statement_details_per_cursor[cursor] = last_statement_result_details
         self._statement_result_details_list.append(last_statement_result_details)
 
-    def retry_transaction(self, default_retry_delay=None):
+    def add_checksum_iterator_for_retry(
+        self, cursor: Cursor, checksum_iterator: ChecksumIterator
+    ) -> None:
+        """Register a ChecksumIterator for replay verification on abort.
+
+        Args:
+            cursor (Cursor): Original Cursor object on which the query executed.
+            checksum_iterator (ChecksumIterator): ChecksumIterator wrapping the
+                query result iterator.
+        """
+        if not self._connection._client_transaction_started:
+            return
+        statement_details = ChecksumStatement(
+            statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+            cursor=cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=checksum_iterator,
+        )
+        self._last_statement_details_per_cursor[cursor] = statement_details
+        self._statement_result_details_list.append(statement_details)
+
+    def retry_transaction(self, default_retry_delay: Optional[float] = None) -> None:
         """Retry the aborted transaction.
 
         All the statements executed in the original transaction
@@ -174,46 +206,74 @@ class TransactionRetryHelper:
             If results checksum of the retried statement is
             not equal to the checksum of the original one.
         """
-        attempt = 0
         while True:
-            attempt += 1
-            if attempt > MAX_INTERNAL_RETRIES:
-                raise
+            self._check_retry_limit()
+            self._retry_attempts += 1
             self._set_connection_for_retry()
             try:
-                for statement_result_details in self._statement_result_details_list:
-                    if statement_result_details.cursor in self._cursor_map:
-                        cursor = self._cursor_map.get(statement_result_details.cursor)
-                    else:
-                        cursor = self._connection.cursor()
-                        cursor._in_retry_mode = True
-                        cursor._timeout = getattr(
-                            statement_result_details.cursor, "_timeout", None
-                        )
-                        self._cursor_map[statement_result_details.cursor] = cursor
-                    try:
-                        _handle_statement(statement_result_details, cursor)
-                    except Aborted:
-                        raise
-                    except RetryAborted:
-                        raise
-                    except Exception as ex:
-                        if (
-                            type(statement_result_details.result_details)
-                            is not type(ex)
-                            or ex.args != statement_result_details.result_details.args
-                        ):
-                            raise RetryAborted(RETRY_ABORTED_ERROR, ex)
+                self._replay_statements()
                 return
-            except Aborted as ex:
-                delay = _get_retry_delay(
-                    ex.errors[0], attempt, default_retry_delay=default_retry_delay
-                )
-                if delay:
-                    time.sleep(delay)
+            except Aborted as exception:
+                if self._retry_attempts >= MAX_INTERNAL_RETRIES:
+                    raise
+                self._sleep_before_retry(exception, default_retry_delay)
+
+    def _check_retry_limit(self) -> None:
+        if self._retry_attempts < MAX_INTERNAL_RETRIES:
+            return
+        active_exception = sys.exc_info()[1]
+        if isinstance(active_exception, Aborted):
+            raise active_exception
+        raise Aborted("Internal transaction retry maximum exceeded.")
+
+    def _sleep_before_retry(
+        self, exception: Aborted, default_retry_delay: Optional[float]
+    ) -> None:
+        cause = exception.errors[0] if exception.errors else exception
+        delay = _get_retry_delay(
+            cause,
+            self._retry_attempts,
+            default_retry_delay=default_retry_delay,
+        )
+        if delay:
+            time.sleep(delay)
+
+    def _replay_statements(self) -> None:
+        for statement_result_details in self._statement_result_details_list:
+            cursor = self._get_or_create_retry_cursor(statement_result_details.cursor)
+            _replay_statement(statement_result_details, cursor)
+
+    def _get_or_create_retry_cursor(self, original_cursor: Cursor) -> Cursor:
+        cursor = self._cursor_map.get(original_cursor)
+        if cursor is not None:
+            return cursor
+        cursor = self._connection.cursor()
+        cursor._in_retry_mode = True
+        cursor._timeout = getattr(original_cursor, "_timeout", None)
+        self._cursor_map[original_cursor] = cursor
+        return cursor
 
 
-def _handle_statement(statement_result_details, cursor):
+def _replay_statement(
+    statement_result_details: StatementDetails, cursor: Cursor
+) -> None:
+    try:
+        _handle_statement(statement_result_details, cursor)
+    except (Aborted, RetryAborted):
+        raise
+    except Exception as exception:
+        if (
+            statement_result_details.result_type != ResultType.EXCEPTION
+            or not _errors_equal_for_retry(
+                statement_result_details.result_details, exception
+            )
+        ):
+            raise RetryAborted(RETRY_ABORTED_ERROR, exception) from exception
+
+
+def _handle_statement(
+    statement_result_details: StatementDetails, cursor: Cursor
+) -> None:
     statement_type = statement_result_details.statement_type
     if _is_execute_type_statement(statement_type):
         if statement_type == CursorStatementType.EXECUTE:
@@ -232,7 +292,22 @@ def _handle_statement(statement_result_details, cursor):
             and statement_result_details.result_details != cursor._batch_dml_rows_count
         ):
             raise RetryAborted(RETRY_ABORTED_ERROR)
+    elif statement_type == CursorStatementType.CHECKSUM_ITERATOR:
+        checksum_iterator = statement_result_details.result_details
+        checksum_iterator.retry(cursor._itr)
+        original_cursor = statement_result_details.cursor
+        if (
+            original_cursor is not None
+            and not checksum_iterator.is_closed
+            and getattr(original_cursor, "_itr", None) is checksum_iterator
+            and hasattr(cursor, "_result_set")
+        ):
+            original_cursor._result_set = cursor._result_set
+        return
     else:
+        # Legacy FetchStatement path (FETCH_ALL / FETCH_MANY), kept until
+        # Cursor switches all fetch operations over to ChecksumIterator in
+        # a follow-up pull request.
         if statement_type == CursorStatementType.FETCH_ALL:
             res = cursor.fetchall()
         else:
@@ -263,6 +338,7 @@ class CursorStatementType(Enum):
     FETCH_ONE = 3
     FETCH_ALL = 4
     FETCH_MANY = 5
+    CHECKSUM_ITERATOR = 6
 
 
 class ResultType(Enum):
@@ -282,7 +358,7 @@ class ResultType(Enum):
 class StatementDetails:
     statement_type: CursorStatementType
     # The cursor object on which this statement was executed
-    cursor: "Cursor"
+    cursor: Cursor
     result_type: ResultType
     result_details: Any
 
@@ -296,3 +372,8 @@ class ExecuteStatement(StatementDetails):
 @dataclass
 class FetchStatement(StatementDetails):
     size: int = None
+
+
+@dataclass
+class ChecksumStatement(StatementDetails):
+    pass

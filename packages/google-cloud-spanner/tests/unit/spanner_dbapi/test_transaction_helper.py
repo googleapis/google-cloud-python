@@ -14,18 +14,44 @@
 import unittest
 from unittest import mock
 
-from google.api_core.exceptions import Aborted
+import grpc
+from google.api_core.exceptions import (
+    Aborted,
+    InternalServerError,
+    Unknown,
+    from_grpc_error,
+)
 
-from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-from google.cloud.spanner_dbapi.exceptions import RetryAborted
+from google.cloud.spanner_dbapi.checksum import (
+    RETRY_ABORTED_ERROR,
+    ChecksumIterator,
+    ResultsChecksum,
+)
+from google.cloud.spanner_dbapi.exceptions import (
+    OperationalError,
+    ProgrammingError,
+    RetryAborted,
+)
 from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, StatementType
 from google.cloud.spanner_dbapi.transaction_helper import (
+    ChecksumStatement,
     CursorStatementType,
     ExecuteStatement,
     FetchStatement,
     ResultType,
     TransactionRetryHelper,
 )
+from google.cloud.spanner_dbapi.utils import PeekIterator
+from google.cloud.spanner_v1 import (
+    PartialResultSet,
+    ResultSetMetadata,
+    StructType,
+    Type,
+    TypeCode,
+)
+from google.cloud.spanner_v1._helpers import _make_value_pb
+from google.cloud.spanner_v1.exceptions import wrap_with_request_id
+from google.cloud.spanner_v1.streamed import StreamedResultSet
 
 
 def _get_checksum(row):
@@ -617,3 +643,714 @@ class TestTransactionHelper(unittest.TestCase):
             self._under_test._statement_result_details_list,
             [execute_statement, expected_fetch_statement],
         )
+
+    def test_add_checksum_iterator_for_retry_when_not_in_transaction(self):
+        self._under_test._connection._client_transaction_started = False
+        checksum_iterator = ChecksumIterator(iter([(1,)]))
+
+        self._under_test.add_checksum_iterator_for_retry(
+            self._mock_cursor, checksum_iterator
+        )
+
+        self.assertEqual(self._under_test._statement_result_details_list, [])
+        self.assertEqual(self._under_test._last_statement_details_per_cursor, {})
+
+    def test_add_checksum_iterator_for_retry_registers_statement(self):
+        self._under_test._connection._client_transaction_started = True
+        checksum_iterator = ChecksumIterator(iter([(1,)]))
+
+        self._under_test.add_checksum_iterator_for_retry(
+            self._mock_cursor, checksum_iterator
+        )
+
+        expected_statement = ChecksumStatement(
+            statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+            cursor=self._mock_cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=checksum_iterator,
+        )
+        self.assertEqual(
+            self._under_test._last_statement_details_per_cursor,
+            {self._mock_cursor: expected_statement},
+        )
+        self.assertEqual(
+            self._under_test._statement_result_details_list,
+            [expected_statement],
+        )
+
+    def test_retry_transaction_checksum_iterator_success_and_result_set_swap(self):
+        checksum_iterator = ChecksumIterator(iter([(1,), (2,), (3,)]))
+        self.assertEqual(next(checksum_iterator), (1,))
+
+        original_result_set = mock.Mock()
+        retried_result_set = mock.Mock()
+        self._mock_cursor._itr = checksum_iterator
+        self._mock_cursor._result_set = original_result_set
+
+        retried_cursor = mock.Mock()
+        retried_cursor._itr = iter([(1,), (2,), (3,)])
+        retried_cursor._result_set = retried_result_set
+        self._under_test._connection.cursor.return_value = retried_cursor
+
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.NONE,
+            result_details=None,
+        )
+        checksum_statement = ChecksumStatement(
+            statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+            cursor=self._mock_cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=checksum_iterator,
+        )
+        self._under_test._statement_result_details_list.extend(
+            [execute_statement, checksum_statement]
+        )
+
+        self._under_test.retry_transaction()
+
+        retried_cursor.execute.assert_called_once_with(SQL, ARGS)
+        self.assertIs(self._mock_cursor._result_set, retried_result_set)
+        self.assertEqual(list(checksum_iterator), [(2,), (3,)])
+
+    def test_retry_transaction_stale_checksum_iterator_does_not_clobber_result_set(
+        self,
+    ):
+        checksum_iterator = ChecksumIterator(iter([(1,)]))
+        self.assertEqual(list(checksum_iterator), [(1,)])
+
+        current_result_set = mock.Mock()
+        self._mock_cursor._itr = mock.Mock()  # Moved on to a newer statement.
+        self._mock_cursor._result_set = current_result_set
+
+        retried_cursor = mock.Mock()
+        retried_cursor._itr = iter([(1,)])
+        retried_cursor._result_set = mock.Mock()
+        self._under_test._connection.cursor.return_value = retried_cursor
+
+        checksum_statement = ChecksumStatement(
+            statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+            cursor=self._mock_cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=checksum_iterator,
+        )
+        self._under_test._statement_result_details_list.append(checksum_statement)
+
+        self._under_test.retry_transaction()
+
+        self.assertIs(self._mock_cursor._result_set, current_result_set)
+
+    def test_retry_transaction_checksum_iterator_mismatch_raises_retry_aborted(self):
+        checksum_iterator = ChecksumIterator(iter([(1,)]))
+        self.assertEqual(list(checksum_iterator), [(1,)])
+
+        retried_cursor = mock.Mock()
+        retried_cursor._itr = iter([(1,), (2,)])  # Concurrent insert past EOF.
+        self._under_test._connection.cursor.return_value = retried_cursor
+
+        checksum_statement = ChecksumStatement(
+            statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+            cursor=self._mock_cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=checksum_iterator,
+        )
+        self._under_test._statement_result_details_list.append(checksum_statement)
+
+        with self.assertRaisesRegex(RetryAborted, RETRY_ABORTED_ERROR):
+            self._under_test.retry_transaction()
+
+    def test_retry_transaction_checksum_iterator_aborted_retries_again(self):
+        checksum_iterator = ChecksumIterator(iter([(1,), (2,)]))
+        self.assertEqual(next(checksum_iterator), (1,))
+
+        def failing_then_succeeding():
+            if retried_cursor.execute.call_count == 1:
+                raise Aborted("mid-stream abort")
+            yield (1,)
+            yield (2,)
+
+        retried_cursor = mock.Mock()
+        retried_cursor._itr = None
+
+        def assign_itr(*_args, **_kwargs):
+            retried_cursor._itr = failing_then_succeeding()
+
+        retried_cursor.execute.side_effect = assign_itr
+        self._under_test._connection.cursor.return_value = retried_cursor
+
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.NONE,
+            result_details=None,
+        )
+        checksum_statement = ChecksumStatement(
+            statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+            cursor=self._mock_cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=checksum_iterator,
+        )
+        self._under_test._statement_result_details_list.extend(
+            [execute_statement, checksum_statement]
+        )
+
+        self._under_test.retry_transaction(default_retry_delay=0)
+
+        self.assertEqual(retried_cursor.execute.call_count, 2)
+        self.assertEqual(list(checksum_iterator), [(2,)])
+
+    def test_retry_transaction_unexpected_exception_on_non_exception_statement(self):
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.NONE,
+            result_details=None,
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        unexpected_error = InternalServerError("unexpected failure")
+        run_mock.side_effect = unexpected_error
+
+        with self.assertRaisesRegex(RetryAborted, RETRY_ABORTED_ERROR) as context:
+            self._under_test.retry_transaction()
+
+        self.assertIs(context.exception.__cause__, unexpected_error)
+
+    def test_retry_transaction_unexpected_exception_on_fetch_checksum_statement(self):
+        fetch_statement = FetchStatement(
+            statement_type=CursorStatementType.FETCH_ALL,
+            cursor=self._mock_cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=_get_checksum(("a",)),
+        )
+        self._under_test._statement_result_details_list.append(fetch_statement)
+        run_mock = self._under_test._connection.cursor().fetchall = mock.Mock()
+        unexpected_error = InternalServerError("unexpected mid-stream failure")
+        run_mock.side_effect = unexpected_error
+
+        with self.assertRaisesRegex(RetryAborted, RETRY_ABORTED_ERROR) as context:
+            self._under_test.retry_transaction()
+
+        self.assertIs(context.exception.__cause__, unexpected_error)
+
+    def test_retry_transaction_same_grpc_error_different_wrapper_details(self):
+        original_cause = InternalServerError("same error")
+        original_error = OperationalError(["detail-1"])
+        original_error.__cause__ = original_cause
+
+        retried_cause = InternalServerError("same error")
+        retried_error = OperationalError(["detail-2"])
+        retried_error.__cause__ = retried_cause
+
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.EXCEPTION,
+            result_details=original_error,
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        run_mock.side_effect = retried_error
+
+        self._under_test.retry_transaction()
+
+        run_mock.assert_called_once_with(SQL, ARGS)
+
+    def test_retry_transaction_same_grpc_code_different_message_raises(self):
+        original_cause = InternalServerError("first message")
+        original_error = OperationalError([])
+        original_error.__cause__ = original_cause
+
+        retried_cause = InternalServerError("second message")
+        retried_error = OperationalError([])
+        retried_error.__cause__ = retried_cause
+
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.EXCEPTION,
+            result_details=original_error,
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        run_mock.side_effect = retried_error
+
+        with self.assertRaisesRegex(RetryAborted, RETRY_ABORTED_ERROR):
+            self._under_test.retry_transaction()
+
+    def test_retry_transaction_unknown_grpc_error_different_args_raises(self):
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.EXCEPTION,
+            result_details=Unknown("first"),
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        run_mock.side_effect = Unknown("second")
+
+        with self.assertRaisesRegex(RetryAborted, RETRY_ABORTED_ERROR):
+            self._under_test.retry_transaction()
+
+    def test_retry_transaction_aborted_without_errors_list_and_max_retries(self):
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.NONE,
+            result_details=None,
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        run_mock.side_effect = Aborted("no errors list")
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.transaction_helper.MAX_INTERNAL_RETRIES", 2
+        ):
+            with self.assertRaisesRegex(Aborted, "no errors list"):
+                self._under_test.retry_transaction(default_retry_delay=0)
+
+        self.assertEqual(run_mock.call_count, 2)
+
+    def test_retry_transaction_exception_statement_succeeds_raises_retry_aborted(self):
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.EXCEPTION,
+            result_details=InternalServerError("initial failure"),
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        run_mock.return_value = None
+
+        with self.assertRaisesRegex(RetryAborted, RETRY_ABORTED_ERROR):
+            self._under_test.retry_transaction()
+
+        run_mock.assert_called_once_with(SQL, ARGS)
+
+    def test_retry_transaction_sleeps_with_retry_delay_on_aborted(self):
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.NONE,
+            result_details=None,
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        run_mock.side_effect = [Aborted("transient"), None]
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.transaction_helper.time.sleep"
+        ) as sleep_mock:
+            self._under_test.retry_transaction(default_retry_delay=0.25)
+
+        sleep_mock.assert_called_once_with(0.25)
+        self.assertEqual(run_mock.call_count, 2)
+
+    def test_retry_transaction_multi_cursor_streamed_result_set_and_peek_iterator(
+        self,
+    ):
+        metadata = ResultSetMetadata(
+            row_type=StructType(
+                fields=[StructType.Field(name="id", type_=Type(code=TypeCode.INT64))]
+            )
+        )
+
+        def make_streamed_peek_iterator(chunks, trailing_error=None):
+            def response_stream():
+                for values in chunks:
+                    partial_result_set = PartialResultSet(metadata=metadata)
+                    for value in values:
+                        partial_result_set.values.append(_make_value_pb(value))
+                    yield partial_result_set
+                if trailing_error is not None:
+                    raise trailing_error
+
+            result_set = StreamedResultSet(response_stream())
+            return result_set, PeekIterator(result_set)
+
+        # Cursor 1: DML statement + query consumed to EOF.
+        cursor1 = mock.Mock()
+        result_set_1, peek_iterator_1 = make_streamed_peek_iterator([[1], [2]])
+        cursor1._result_set = result_set_1
+        first_checksum_iterator = ChecksumIterator(peek_iterator_1)
+        cursor1._itr = first_checksum_iterator
+        self.assertEqual(list(first_checksum_iterator), [(1,), (2,)])
+
+        # Cursor 2: partially consumed query (1 of 3 rows consumed).
+        cursor2 = mock.Mock()
+        result_set_2, peek_iterator_2 = make_streamed_peek_iterator([[10], [20, 30]])
+        cursor2._result_set = result_set_2
+        second_checksum_iterator = ChecksumIterator(peek_iterator_2)
+        cursor2._itr = second_checksum_iterator
+        self.assertEqual(next(second_checksum_iterator), (10,))
+
+        # Cursor 3: query hitting mid-stream error on row 2.
+        cursor3 = mock.Mock()
+        result_set_3, peek_iterator_3 = make_streamed_peek_iterator(
+            [[100]], trailing_error=InternalServerError("mid-stream boom")
+        )
+        cursor3._result_set = result_set_3
+        third_checksum_iterator = ChecksumIterator(peek_iterator_3)
+        cursor3._itr = third_checksum_iterator
+        self.assertEqual(next(third_checksum_iterator), (100,))
+        with self.assertRaisesRegex(InternalServerError, "mid-stream boom"):
+            next(third_checksum_iterator)
+
+        # Prepare retried cursors corresponding 1-to-1 with original cursors.
+        retried_cursor1 = mock.Mock()
+        retried_cursor2 = mock.Mock()
+        retried_cursor3 = mock.Mock()
+        self._under_test._connection.cursor.side_effect = [
+            retried_cursor1,
+            retried_cursor2,
+            retried_cursor3,
+        ]
+
+        retried_result_set_1, first_retried_peek = make_streamed_peek_iterator(
+            [[1], [2]]
+        )
+        retried_result_set_2, second_retried_peek = make_streamed_peek_iterator(
+            [[10], [20, 30]]
+        )
+        retried_result_set_3, third_retried_peek = make_streamed_peek_iterator(
+            [[100]], trailing_error=InternalServerError("mid-stream boom")
+        )
+
+        def exec_cursor1(sql, _args):
+            if sql.startswith("UPDATE"):
+                retried_cursor1.rowcount = 4
+                retried_cursor1._batch_dml_rows_count = None
+            else:
+                retried_cursor1._result_set = retried_result_set_1
+                retried_cursor1._itr = first_retried_peek
+
+        def exec_cursor2(_sql, _args):
+            retried_cursor2._result_set = retried_result_set_2
+            retried_cursor2._itr = second_retried_peek
+
+        def exec_cursor3(_sql, _args):
+            retried_cursor3._result_set = retried_result_set_3
+            retried_cursor3._itr = third_retried_peek
+
+        retried_cursor1.execute.side_effect = exec_cursor1
+        retried_cursor2.execute.side_effect = exec_cursor2
+        retried_cursor3.execute.side_effect = exec_cursor3
+
+        self._under_test._statement_result_details_list.extend(
+            [
+                ExecuteStatement(
+                    statement_type=CursorStatementType.EXECUTE,
+                    cursor=cursor1,
+                    sql="UPDATE T SET X = 1",
+                    args=None,
+                    result_type=ResultType.ROW_COUNT,
+                    result_details=4,
+                ),
+                ExecuteStatement(
+                    statement_type=CursorStatementType.EXECUTE,
+                    cursor=cursor1,
+                    sql="SELECT id FROM T1",
+                    args=None,
+                    result_type=ResultType.NONE,
+                    result_details=None,
+                ),
+                ChecksumStatement(
+                    statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+                    cursor=cursor1,
+                    result_type=ResultType.CHECKSUM,
+                    result_details=first_checksum_iterator,
+                ),
+                ExecuteStatement(
+                    statement_type=CursorStatementType.EXECUTE,
+                    cursor=cursor2,
+                    sql="SELECT id FROM T2",
+                    args=None,
+                    result_type=ResultType.NONE,
+                    result_details=None,
+                ),
+                ChecksumStatement(
+                    statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+                    cursor=cursor2,
+                    result_type=ResultType.CHECKSUM,
+                    result_details=second_checksum_iterator,
+                ),
+                ExecuteStatement(
+                    statement_type=CursorStatementType.EXECUTE,
+                    cursor=cursor3,
+                    sql="SELECT id FROM T3",
+                    args=None,
+                    result_type=ResultType.NONE,
+                    result_details=None,
+                ),
+                ChecksumStatement(
+                    statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+                    cursor=cursor3,
+                    result_type=ResultType.CHECKSUM,
+                    result_details=third_checksum_iterator,
+                ),
+            ]
+        )
+
+        self._under_test.retry_transaction()
+
+        self.assertIs(cursor1._result_set, retried_result_set_1)
+        self.assertIs(cursor2._result_set, retried_result_set_2)
+        self.assertIs(cursor3._result_set, retried_result_set_3)
+        # Cursor 2 seamlessly yields remaining rows from the retried StreamedResultSet.
+        self.assertEqual(list(second_checksum_iterator), [(20,), (30,)])
+
+    def test_retry_transaction_closed_checksum_iterator_does_not_overwrite_result_set(
+        self,
+    ):
+        checksum_iterator = ChecksumIterator(iter([(1,), (2,)]))
+        self.assertEqual(next(checksum_iterator), (1,))
+        checksum_iterator.close()
+
+        original_result_set = mock.Mock()
+        self._mock_cursor._itr = checksum_iterator
+        self._mock_cursor._result_set = original_result_set
+
+        retried_cursor = mock.Mock()
+        retried_cursor._itr = iter([(1,), (2,)])
+        retried_cursor._result_set = mock.Mock()
+        self._under_test._connection.cursor.return_value = retried_cursor
+
+        checksum_statement = ChecksumStatement(
+            statement_type=CursorStatementType.CHECKSUM_ITERATOR,
+            cursor=self._mock_cursor,
+            result_type=ResultType.CHECKSUM,
+            result_details=checksum_iterator,
+        )
+        self._under_test._statement_result_details_list.append(checksum_statement)
+
+        self._under_test.retry_transaction()
+
+        self.assertIs(self._mock_cursor._result_set, original_result_set)
+
+    def test_checksum_iterator_retry_callback_invokes_retry_transaction_and_resumes(
+        self,
+    ):
+        self._under_test._connection._client_transaction_started = True
+
+        def failing_stream():
+            yield (1,)
+            raise Aborted("mid-stream abort")
+
+        checksum_iterator = ChecksumIterator(
+            failing_stream(),
+            retry_callback=lambda: self._under_test.retry_transaction(
+                default_retry_delay=0
+            ),
+        )
+        self._mock_cursor._itr = checksum_iterator
+        self._mock_cursor._result_set = mock.Mock()
+        self._mock_cursor._batch_dml_rows_count = None
+        self._mock_cursor._row_count = None
+
+        retried_result_set = mock.Mock()
+        retried_cursor = mock.Mock()
+        retried_cursor.execute.side_effect = lambda _sql, _args: setattr(
+            retried_cursor, "_itr", iter([(1,), (2,), (3,)])
+        )
+        retried_cursor._result_set = retried_result_set
+        self._under_test._connection.cursor.return_value = retried_cursor
+
+        self._under_test.add_execute_statement_for_retry(
+            self._mock_cursor, SQL, ARGS, None, False
+        )
+        self._under_test.add_checksum_iterator_for_retry(
+            self._mock_cursor, checksum_iterator
+        )
+
+        self.assertEqual(list(checksum_iterator), [(1,), (2,), (3,)])
+        retried_cursor.execute.assert_called_once_with(SQL, ARGS)
+        self.assertIs(self._mock_cursor._result_set, retried_result_set)
+
+    def test_retry_transaction_with_request_id_augmented_grpc_errors(self):
+        class StubRpcError(grpc.RpcError):
+            def __init__(self, status_code, details_message):
+                super().__init__()
+                self._status_code = status_code
+                self._details_message = details_message
+
+            def code(self):
+                return self._status_code
+
+            def details(self):
+                return self._details_message
+
+            def trailing_metadata(self):
+                return ()
+
+        original_cause = wrap_with_request_id(
+            from_grpc_error(
+                StubRpcError(grpc.StatusCode.INVALID_ARGUMENT, "Division by zero")
+            ),
+            "1.1.1.1.1",
+        )
+        original_error = ProgrammingError(original_cause.details)
+        original_error.__cause__ = original_cause
+
+        retried_cause = wrap_with_request_id(
+            from_grpc_error(
+                StubRpcError(grpc.StatusCode.INVALID_ARGUMENT, "Division by zero")
+            ),
+            "1.1.1.1.2",
+        )
+        retried_error = ProgrammingError(retried_cause.details)
+        retried_error.__cause__ = retried_cause
+
+        execute_statement = ExecuteStatement(
+            statement_type=CursorStatementType.EXECUTE,
+            cursor=self._mock_cursor,
+            sql=SQL,
+            args=ARGS,
+            result_type=ResultType.EXCEPTION,
+            result_details=original_error,
+        )
+        self._under_test._statement_result_details_list.append(execute_statement)
+        run_mock = self._under_test._connection.cursor().execute = mock.Mock()
+        run_mock.side_effect = retried_error
+
+        self._under_test.retry_transaction()
+
+        run_mock.assert_called_once_with(SQL, ARGS)
+
+    def test_checksum_iterator_repeated_abort_on_row_k_respects_max_retries(self):
+        self._under_test._connection._client_transaction_started = True
+
+        def stream_aborting_on_row_2():
+            yield (1,)
+            raise Aborted("row 2 aborted")
+
+        checksum_iterator = ChecksumIterator(
+            stream_aborting_on_row_2(),
+            retry_callback=lambda: self._under_test.retry_transaction(
+                default_retry_delay=0
+            ),
+        )
+        self._mock_cursor._itr = checksum_iterator
+        self._mock_cursor._result_set = mock.Mock()
+        self._mock_cursor._batch_dml_rows_count = None
+        self._mock_cursor._row_count = None
+
+        retried_cursor = mock.Mock()
+        retried_cursor.execute.side_effect = lambda _sql, _args: setattr(
+            retried_cursor, "_itr", stream_aborting_on_row_2()
+        )
+        self._under_test._connection.cursor.return_value = retried_cursor
+
+        self._under_test.add_execute_statement_for_retry(
+            self._mock_cursor, SQL, ARGS, None, False
+        )
+        self._under_test.add_checksum_iterator_for_retry(
+            self._mock_cursor, checksum_iterator
+        )
+
+        self.assertEqual(next(checksum_iterator), (1,))
+        with mock.patch(
+            "google.cloud.spanner_dbapi.transaction_helper.MAX_INTERNAL_RETRIES", 2
+        ):
+            with self.assertRaisesRegex(Aborted, "row 2 aborted"):
+                next(checksum_iterator)
+
+        self.assertEqual(retried_cursor.execute.call_count, 2)
+
+        # Calling retry_transaction directly after exhaustion also raises without replaying.
+        with mock.patch(
+            "google.cloud.spanner_dbapi.transaction_helper.MAX_INTERNAL_RETRIES", 2
+        ):
+            with self.assertRaisesRegex(
+                Aborted, "Internal transaction retry maximum exceeded."
+            ):
+                self._under_test.retry_transaction(default_retry_delay=0)
+
+        self.assertEqual(retried_cursor.execute.call_count, 2)
+
+        # reset() clears _retry_attempts for the next transaction.
+        self._under_test.reset()
+        self.assertEqual(self._under_test._retry_attempts, 0)
+
+    def test_retry_transaction_closes_attempt_1_swapped_iterator_on_second_attempt(
+        self,
+    ):
+        class CloseableRowIterator:
+            def __init__(self, rows):
+                self._iterator = iter(rows)
+                self.close_count = 0
+
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                return next(self._iterator)
+
+            def close(self):
+                self.close_count += 1
+
+        self._under_test._connection._client_transaction_started = True
+        original_iterator = CloseableRowIterator([(1,), (2,)])
+        attempt_1_iterator = CloseableRowIterator([(1,), (2,)])
+        attempt_2_iterator = CloseableRowIterator([(1,), (2,)])
+
+        checksum_iterator = ChecksumIterator(original_iterator)
+        self._mock_cursor._itr = checksum_iterator
+        self._mock_cursor._batch_dml_rows_count = None
+        self._mock_cursor._row_count = None
+        self.assertEqual(next(checksum_iterator), (1,))
+
+        retried_cursor = mock.Mock()
+        self._under_test._connection.cursor.return_value = retried_cursor
+        replay_iterators = iter([attempt_1_iterator, attempt_2_iterator])
+        dml_attempt = [0]
+
+        def execute_side_effect(sql, _args):
+            if sql.startswith("SELECT"):
+                retried_cursor._itr = next(replay_iterators)
+            else:
+                dml_attempt[0] += 1
+                if dml_attempt[0] == 1:
+                    raise Aborted("abort on second statement")
+                retried_cursor.rowcount = 1
+                retried_cursor._batch_dml_rows_count = None
+
+        retried_cursor.execute.side_effect = execute_side_effect
+
+        self._under_test.add_execute_statement_for_retry(
+            self._mock_cursor, "SELECT id FROM T", None, None, False
+        )
+        self._under_test.add_checksum_iterator_for_retry(
+            self._mock_cursor, checksum_iterator
+        )
+        self._mock_cursor._row_count = 1
+        self._mock_cursor.rowcount = 1
+        self._under_test.add_execute_statement_for_retry(
+            self._mock_cursor, "UPDATE T SET x = 1", None, None, False
+        )
+
+        self._under_test.retry_transaction(default_retry_delay=0)
+
+        self.assertEqual(original_iterator.close_count, 1)
+        self.assertEqual(attempt_1_iterator.close_count, 1)
+        self.assertEqual(attempt_2_iterator.close_count, 0)
+        self.assertIs(checksum_iterator.iterator, attempt_2_iterator)
+        self.assertEqual(list(checksum_iterator), [(2,)])
