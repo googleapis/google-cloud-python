@@ -227,12 +227,23 @@ class AsyncMultiRangeDownloader:
             await self.close()
 
     def _on_open_error(self, exc):
-        """Extracts routing token and read handle on redirect error during open."""
+        """Records redirect details from a failed open for the next attempt.
+
+        The routing token is always kept. The redirect's read handle is used
+        only if the downloader already has a read handle or the redirect has no
+        routing token; otherwise the next attempt opens without a read handle
+        so that its first response carries the object metadata.
+        """
         logger.warning(f"Error occurred while opening MRD: {exc}")
         routing_token, read_handle = _handle_redirect(exc)
         if routing_token:
             self._routing_token = routing_token
-        if read_handle:
+        # A stream opened with a read handle gets no object metadata in its
+        # first response, which would leave persisted_size, is_finalized and
+        # full_obj_server_crc32c unset. Unless a read handle is already in use,
+        # retry with the routing token alone. Without a routing token the
+        # handle is all that changes the retry, so it is still used.
+        if read_handle and (self.read_handle or not routing_token):
             self.read_handle = read_handle
 
     async def open(
@@ -298,7 +309,6 @@ class AsyncMultiRangeDownloader:
                 current_metadata.append(
                     ("x-goog-request-params", f"routing_token={self._routing_token}")
                 )
-                self._routing_token = None
 
             await self.read_obj_str.open(
                 metadata=current_metadata if current_metadata else None
@@ -315,7 +325,12 @@ class AsyncMultiRangeDownloader:
 
             self._is_stream_open = True
 
-        await retry_policy(_do_open)()
+        try:
+            await retry_policy(_do_open)()
+        finally:
+            # The routing token is kept across the attempts of this open
+            # and never carried into a later one.
+            self._routing_token = None
         self._multiplexer = _StreamMultiplexer(self.read_obj_str)
 
     def _create_stream_factory(self, state, metadata):
