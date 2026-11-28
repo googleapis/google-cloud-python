@@ -1,2 +1,2 @@
-apache-beam==2.77.0
+apache-beam==2.78.0
 google-cloud-bigtable
