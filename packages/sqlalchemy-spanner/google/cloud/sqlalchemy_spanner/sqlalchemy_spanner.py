@@ -2389,12 +2389,7 @@ LIMIT 1
         """Set the connection isolation level.
 
         Args:
-            conn_proxy (
-                Union[
-                    sqlalchemy.pool._ConnectionFairy,
-                    spanner_dbapi.connection.Connection,
-                ]
-            ):
+            conn_proxy (sqlalchemy.pool._ConnectionFairy | spanner_dbapi.Connection):
                 Database connection proxy object or the connection itself.
             level (string): Isolation level.
         """
@@ -2415,12 +2410,7 @@ LIMIT 1
         """Get the connection isolation level.
 
         Args:
-            conn_proxy (
-                Union[
-                    sqlalchemy.pool._ConnectionFairy,
-                    spanner_dbapi.connection.Connection,
-                ]
-            ):
+            conn_proxy (sqlalchemy.pool._ConnectionFairy | spanner_dbapi.Connection):
                 Database connection proxy object or the connection itself.
 
         Returns:
