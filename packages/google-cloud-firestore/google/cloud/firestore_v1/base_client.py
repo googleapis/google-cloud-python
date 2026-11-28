@@ -45,6 +45,7 @@ import google.api_core.client_options
 import google.api_core.path_template
 import grpc  # type: ignore
 from google.api_core import retry as retries
+from google.api_core import universe
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.client import ClientWithProject  # type: ignore
@@ -164,6 +165,18 @@ class BaseClient(ClientWithProject):
                 )
         self._client_options = client_options
 
+        universe_domain = universe.determine_domain(
+            self._client_options.universe_domain if self._client_options else None,
+            os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
+        ).strip()
+        if not universe_domain:  # pragma: NO COVER
+            raise universe.EmptyUniverseError()
+        self._universe_domain = universe_domain
+        if self._emulator_host is None:
+            _helpers._validate_credentials_universe(
+                self._universe_domain, self._credentials
+            )
+
         self._database = database
 
     def _firestore_api_helper(self, transport, client_class, client_module) -> Any:
@@ -178,6 +191,9 @@ class BaseClient(ClientWithProject):
             if self._emulator_host is not None:
                 channel = self._emulator_channel(transport)
             else:
+                _helpers._validate_credentials_universe(
+                    self._universe_domain, self._credentials
+                )
                 channel = transport.create_channel(
                     self._target,
                     credentials=self._credentials,
@@ -233,8 +249,17 @@ class BaseClient(ClientWithProject):
             return self._emulator_host
         elif self._client_options and self._client_options.api_endpoint:
             return self._client_options.api_endpoint
+        elif self._universe_domain != universe.DEFAULT_UNIVERSE:
+            return client_class._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=self._universe_domain
+            )
         else:
             return client_class.DEFAULT_ENDPOINT
+
+    @property
+    def universe_domain(self) -> str:
+        """The universe domain used by the client."""
+        return self._universe_domain
 
     @property
     def _target(self):

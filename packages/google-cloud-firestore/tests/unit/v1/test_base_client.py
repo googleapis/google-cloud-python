@@ -348,6 +348,241 @@ def test_baseclient__target_helper_wo_client_options():
     assert client._target_helper(client_class) == endpoint
 
 
+@pytest.mark.parametrize(
+    "client_options,env_universe,expected_universe,expected_target",
+    [
+        (None, None, "googleapis.com", "firestore.googleapis.com"),
+        (
+            {"universe_domain": "my-universe.com"},
+            None,
+            "my-universe.com",
+            "firestore.my-universe.com",
+        ),
+        (
+            None,
+            "env-universe.com",
+            "env-universe.com",
+            "firestore.env-universe.com",
+        ),
+        (
+            {"universe_domain": "opts-universe.com"},
+            "env-universe.com",
+            "opts-universe.com",
+            "firestore.opts-universe.com",
+        ),
+        (
+            {
+                "universe_domain": "my-universe.com",
+                "api_endpoint": "custom.endpoint.test:443",
+            },
+            None,
+            "my-universe.com",
+            "custom.endpoint.test:443",
+        ),
+    ],
+)
+def test_client_and_async_client_universe_domain_and_target(
+    client_options, env_universe, expected_universe, expected_target
+):
+    from google.cloud.firestore_v1.async_client import AsyncClient
+    from google.cloud.firestore_v1.client import Client
+
+    credentials = _make_credentials()
+    credentials.universe_domain = expected_universe
+    env = {} if env_universe is None else {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": env_universe}
+
+    with mock.patch.dict("os.environ", env, clear=True):
+        sync_client = Client(
+            project=PROJECT,
+            credentials=credentials,
+            client_options=client_options,
+        )
+        async_client = AsyncClient(
+            project=PROJECT,
+            credentials=credentials,
+            client_options=client_options,
+        )
+
+    assert sync_client.universe_domain == expected_universe
+    assert sync_client._target == expected_target
+    assert async_client.universe_domain == expected_universe
+    assert async_client._target == expected_target
+
+
+def test_baseclient_universe_domain_from_client_options_object():
+    from google.api_core.client_options import ClientOptions
+
+    credentials = _make_credentials()
+    credentials.universe_domain = "tpc.test"
+    with mock.patch.dict("os.environ", {}, clear=True):
+        client = _make_base_client(
+            project=PROJECT,
+            credentials=credentials,
+            client_options=ClientOptions(universe_domain="tpc.test"),
+        )
+
+    assert client.universe_domain == "tpc.test"
+    assert client._target == "firestore.tpc.test"
+
+
+def test_baseclient__firestore_api_helper_uses_universe_domain_target():
+    credentials = _make_credentials()
+    credentials.universe_domain = "tpc.test"
+    with mock.patch.dict("os.environ", {}, clear=True):
+        client = _make_base_client(
+            project=PROJECT,
+            credentials=credentials,
+            client_options={"universe_domain": "tpc.test"},
+        )
+
+    transport_class = mock.Mock()
+    client_class = mock.Mock()
+    client_module = mock.Mock()
+
+    client._firestore_api_helper(transport_class, client_class, client_module)
+
+    transport_class.create_channel.assert_called_once_with(
+        "firestore.tpc.test",
+        credentials=credentials,
+        options=[
+            ("grpc.keepalive_time_ms", 30000),
+            ("grpc.max_send_message_length", -1),
+            ("grpc.max_receive_message_length", -1),
+        ],
+    )
+    transport_class.assert_called_once_with(
+        host="firestore.tpc.test",
+        channel=transport_class.create_channel.return_value,
+    )
+
+
+@pytest.mark.parametrize(
+    "client_options,env_universe",
+    [
+        ({"universe_domain": ""}, None),
+        ({"universe_domain": "   "}, None),
+        (None, ""),
+        (None, "   "),
+    ],
+)
+def test_baseclient_empty_universe_domain_raises(client_options, env_universe):
+    from google.api_core import universe
+
+    credentials = _make_credentials()
+    env = {} if env_universe is None else {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": env_universe}
+    with mock.patch.dict("os.environ", env, clear=True):
+        with pytest.raises(universe.EmptyUniverseError):
+            _make_base_client(
+                project=PROJECT,
+                credentials=credentials,
+                client_options=client_options,
+            )
+
+
+@pytest.mark.parametrize(
+    "client_options,env_universe,cred_universe",
+    [
+        (None, None, "tpc.test"),
+        ({"universe_domain": "tpc.test"}, None, "googleapis.com"),
+        (None, "tpc.test", "googleapis.com"),
+    ],
+)
+def test_baseclient_universe_mismatch_raises_before_channel(
+    client_options, env_universe, cred_universe
+):
+    from google.api_core import universe
+
+    from google.cloud.firestore_v1.async_client import AsyncClient
+    from google.cloud.firestore_v1.client import Client
+
+    credentials = _make_credentials()
+    credentials.universe_domain = cred_universe
+    env = {} if env_universe is None else {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": env_universe}
+
+    with mock.patch.dict("os.environ", env, clear=True):
+        with pytest.raises(universe.UniverseMismatchError):
+            Client(
+                project=PROJECT,
+                credentials=credentials,
+                client_options=client_options,
+            )
+        with pytest.raises(universe.UniverseMismatchError):
+            AsyncClient(
+                project=PROJECT,
+                credentials=credentials,
+                client_options=client_options,
+            )
+
+
+def test_baseclient__firestore_api_helper_validates_mutated_credentials():
+    from google.api_core import universe
+
+    credentials = _make_credentials()
+    credentials.universe_domain = "googleapis.com"
+    with mock.patch.dict("os.environ", {}, clear=True):
+        client = _make_base_client(project=PROJECT, credentials=credentials)
+
+    credentials.universe_domain = "tpc.test"
+    transport_class = mock.Mock()
+    with pytest.raises(universe.UniverseMismatchError):
+        client._firestore_api_helper(transport_class, mock.Mock(), mock.Mock())
+    transport_class.create_channel.assert_not_called()
+
+
+def test_baseclient_emulator_exempt_from_universe_mismatch():
+    credentials = _make_credentials()
+    credentials.universe_domain = "tpc.test"
+    with mock.patch.dict(
+        "os.environ", {"FIRESTORE_EMULATOR_HOST": "localhost:8081"}, clear=True
+    ):
+        client = _make_base_client(project=PROJECT, credentials=credentials)
+
+    assert client._target == "localhost:8081"
+
+
+def test_baseclient_anonymous_credentials_exempt_from_universe_mismatch():
+    from google.auth.credentials import AnonymousCredentials
+
+    with mock.patch.dict("os.environ", {}, clear=True):
+        client = _make_base_client(
+            project=PROJECT,
+            credentials=AnonymousCredentials(),
+            client_options={"universe_domain": "tpc.test"},
+        )
+
+    assert client.universe_domain == "tpc.test"
+    assert client._target == "firestore.tpc.test"
+
+
+def test_baseclient_compute_engine_credentials_universe_validation():
+    from google.api_core import universe
+    from google.auth import compute_engine
+
+    uncached_creds = compute_engine.Credentials()
+    assert not getattr(uncached_creds, "_universe_domain_cached", False)
+    with mock.patch.dict("os.environ", {}, clear=True):
+        client = _make_base_client(
+            project=PROJECT,
+            credentials=uncached_creds,
+            client_options={"universe_domain": "tpc.test"},
+        )
+    assert client.universe_domain == "tpc.test"
+    assert client._target == "firestore.tpc.test"
+
+    cached_creds = compute_engine.Credentials(
+        scopes=["https://www.googleapis.com/auth/cloud-platform"]
+    )
+    cached_creds._universe_domain = "googleapis.com"
+    cached_creds._universe_domain_cached = True
+    with mock.patch.dict("os.environ", {}, clear=True):
+        with pytest.raises(universe.UniverseMismatchError):
+            _make_base_client(
+                project=PROJECT,
+                credentials=cached_creds,
+                client_options={"universe_domain": "tpc.test"},
+            )
+
+
 def test_baseclient_field_path():
     from google.cloud.firestore_v1.base_client import BaseClient
 

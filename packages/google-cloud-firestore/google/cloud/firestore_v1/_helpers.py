@@ -34,9 +34,11 @@ from typing import (
 )
 
 import grpc  # type: ignore
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, universe
 from google.api_core import retry as retries
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.auth import compute_engine
+from google.auth.credentials import AnonymousCredentials
 from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
 from google.protobuf import struct_pb2
 from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
@@ -1426,3 +1428,22 @@ def _get_document_from_bundle(
         return bundled_doc.snapshot
     else:
         return None
+
+
+# TODO(universe-domain): Replace with
+# google.api_core.universe.validate_credentials_universe once minimum
+# google-api-core version exceeds 2.44.0.
+def _validate_credentials_universe(client_universe: str, credentials: Any) -> None:
+    """Validate that resolved client credentials match ``client_universe``."""
+    if credentials is None or isinstance(credentials, AnonymousCredentials):
+        return
+    # Avoid synchronous GCE metadata server HTTP calls when
+    # compute_engine.Credentials hasn't resolved its universe yet.
+    if isinstance(credentials, compute_engine.Credentials) and not getattr(
+        credentials, "_universe_domain_cached", False
+    ):
+        return
+    cred_universe = getattr(credentials, "universe_domain", universe.DEFAULT_UNIVERSE)
+    if not isinstance(cred_universe, str):
+        return
+    universe.compare_domains(client_universe, credentials)
