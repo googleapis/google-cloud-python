@@ -146,6 +146,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         session=None,
         attributes=None,
         metadata=None,
+        max_buffer_size=None,
     ):
         from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 
@@ -158,6 +159,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             attributes,
             transaction=derived,
             request_id_manager=None if not session else session._database,
+            max_buffer_size=max_buffer_size,
         )
 
     def _make_item(self, value, resume_token=b"", metadata=None, last=False):
@@ -433,6 +435,439 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             self.assertEqual(request.resume_token, RESUME_TOKEN)
             mock_drain.assert_called_once_with(stream_two)
             stream_two.cancel.assert_not_called()
+
+    def test_restart_on_unavailable_negative_max_buffer_size(self):
+        restart = mock.Mock()
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=-1
+        )
+        with self.assertRaisesRegex(ValueError, "max_buffer_size must be non-negative"):
+            list(resumable)
+        restart.assert_not_called()
+
+    def test_restart_on_unavailable_buffer_limit_within_threshold_retries(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        discarded_chunk_one = PartialResultSet(last=False)
+        discarded_chunk_two = PartialResultSet(last=False)
+        recovered_chunk = PartialResultSet(last=True)
+
+        stream_one = _MockIterator(
+            discarded_chunk_one,
+            discarded_chunk_two,
+            fail_after=True,
+            error=ServiceUnavailable("transient"),
+        )
+        stream_two = _MockIterator(recovered_chunk)
+        restart = mock.Mock(side_effect=[stream_one, stream_two])
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=2
+        )
+        received_items = list(resumable)
+
+        self.assertEqual(received_items, [recovered_chunk])
+        self.assertEqual(len(restart.mock_calls), 2)
+        self.assertEqual(request.resume_token, b"")
+
+    def test_restart_on_unavailable_buffer_limit_exceeded_flushes_and_disables_retry(
+        self,
+    ):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        chunks = [PartialResultSet(last=False) for _ in range(4)]
+        pulled_indices = []
+
+        def _stream_generator():
+            for index, chunk in enumerate(chunks):
+                pulled_indices.append(index)
+                yield chunk
+            raise ServiceUnavailable("transient")
+
+        restart = mock.Mock(side_effect=[_stream_generator()])
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=2
+        )
+
+        # Pulling the first item buffers 3 chunks (> max_buffer_size=2) and
+        # flushes them without waiting for chunk 3 or stream completion.
+        self.assertEqual(next(resumable), chunks[0])
+        self.assertEqual(pulled_indices, [0, 1, 2])
+        self.assertEqual(next(resumable), chunks[1])
+        self.assertEqual(next(resumable), chunks[2])
+
+        # Once safe_to_retry is False, subsequent tokenless chunks flush immediately.
+        self.assertEqual(next(resumable), chunks[3])
+        self.assertEqual(pulled_indices, [0, 1, 2, 3])
+
+        with self.assertRaisesRegex(ServiceUnavailable, "transient") as context:
+            next(resumable)
+        self.assertTrue(hasattr(context.exception, "request_id"))
+        self.assertEqual(len(restart.mock_calls), 1)
+
+    def test_restart_on_unavailable_buffer_limit_exceeded_disables_resumable_internal_error(
+        self,
+    ):
+        from google.api_core.exceptions import InternalServerError
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        chunk_one = PartialResultSet(last=False)
+        chunk_two = PartialResultSet(last=False)
+        stream_one = _MockIterator(
+            chunk_one,
+            chunk_two,
+            fail_after=True,
+            error=InternalServerError("RST_STREAM"),
+        )
+        restart = mock.Mock(side_effect=[stream_one])
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=1
+        )
+
+        self.assertEqual(next(resumable), chunk_one)
+        self.assertEqual(next(resumable), chunk_two)
+        with self.assertRaisesRegex(InternalServerError, "RST_STREAM") as context:
+            next(resumable)
+        self.assertTrue(hasattr(context.exception, "request_id"))
+        self.assertEqual(len(restart.mock_calls), 1)
+
+    def test_restart_on_unavailable_buffer_limit_recovered_by_newer_resume_token(
+        self,
+    ):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        chunk_zero = PartialResultSet(resume_token=b"r1")
+        chunk_one = PartialResultSet()
+        chunk_two = PartialResultSet()
+        chunk_three = PartialResultSet()
+        chunk_four = PartialResultSet(resume_token=b"r2")
+        chunk_five_discarded = PartialResultSet()
+        chunk_five_recovered = PartialResultSet()
+        chunk_six_last = PartialResultSet(last=True)
+
+        stream_one = _MockIterator(
+            chunk_zero,
+            chunk_one,
+            chunk_two,
+            chunk_three,
+            chunk_four,
+            chunk_five_discarded,
+            fail_after=True,
+            error=ServiceUnavailable("transient"),
+        )
+        stream_two = _MockIterator(chunk_five_recovered, chunk_six_last)
+        restart = mock.Mock(side_effect=[stream_one, stream_two])
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=1
+        )
+        received_items = list(resumable)
+
+        self.assertEqual(
+            received_items,
+            [
+                chunk_zero,
+                chunk_one,
+                chunk_two,
+                chunk_three,
+                chunk_four,
+                chunk_five_recovered,
+                chunk_six_last,
+            ],
+        )
+        self.assertEqual(len(restart.mock_calls), 2)
+        self.assertEqual(request.resume_token, b"r2")
+
+    def test_restart_on_unavailable_stale_resume_token_does_not_reenable_retry(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        chunk_zero = PartialResultSet(resume_token=b"r1")
+        chunk_one = PartialResultSet()
+        chunk_two = PartialResultSet()
+        chunk_three_stale = PartialResultSet(resume_token=b"r1")
+
+        stream_one = _MockIterator(
+            chunk_zero,
+            chunk_one,
+            chunk_two,
+            chunk_three_stale,
+            fail_after=True,
+            error=ServiceUnavailable("transient"),
+        )
+        restart = mock.Mock(side_effect=[stream_one])
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=1
+        )
+
+        self.assertEqual(next(resumable), chunk_zero)
+        self.assertEqual(next(resumable), chunk_one)
+        self.assertEqual(next(resumable), chunk_two)
+        self.assertEqual(next(resumable), chunk_three_stale)
+        with self.assertRaisesRegex(ServiceUnavailable, "transient") as context:
+            next(resumable)
+        self.assertTrue(hasattr(context.exception, "request_id"))
+        self.assertEqual(len(restart.mock_calls), 1)
+
+    def test_restart_on_unavailable_zero_max_buffer_size(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        # Tokenless chunk with max_buffer_size=0 flushes immediately and disables retry.
+        tokenless_chunk = PartialResultSet()
+        stream_no_token = _MockIterator(
+            tokenless_chunk,
+            fail_after=True,
+            error=ServiceUnavailable("transient"),
+        )
+        restart_no_token = mock.Mock(side_effect=[stream_no_token])
+        request_no_token = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable_no_token = self._call_fut(
+            derived,
+            restart_no_token,
+            request_no_token,
+            session=session,
+            max_buffer_size=0,
+        )
+        self.assertEqual(next(resumable_no_token), tokenless_chunk)
+        with self.assertRaisesRegex(ServiceUnavailable, "transient"):
+            next(resumable_no_token)
+        self.assertEqual(len(restart_no_token.mock_calls), 1)
+
+        # Chunk with a new resume_token with max_buffer_size=0 keeps safe_to_retry=True.
+        token_chunk = PartialResultSet(resume_token=b"r1")
+        final_chunk = PartialResultSet(last=True)
+        stream_first = _MockIterator(
+            token_chunk,
+            fail_after=True,
+            error=ServiceUnavailable("transient"),
+        )
+        stream_second = _MockIterator(final_chunk)
+        restart_with_token = mock.Mock(side_effect=[stream_first, stream_second])
+        request_with_token = mock.Mock(test="test", spec=["test", "resume_token"])
+
+        resumable_with_token = self._call_fut(
+            derived,
+            restart_with_token,
+            request_with_token,
+            session=session,
+            max_buffer_size=0,
+        )
+        received_items = list(resumable_with_token)
+        self.assertEqual(received_items, [token_chunk, final_chunk])
+        self.assertEqual(len(restart_with_token.mock_calls), 2)
+        self.assertEqual(request_with_token.resume_token, b"r1")
+
+    def test_restart_on_unavailable_buffer_limit_exceeded_completes_cleanly(self):
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        chunks = [PartialResultSet(last=False) for _ in range(4)]
+        raw = _MockIterator(*chunks)
+        raw.cancel = mock.Mock()
+        restart = mock.Mock(return_value=raw)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=2
+        )
+        received_items = list(resumable)
+
+        self.assertEqual(received_items, chunks)
+        self.assertEqual(len(restart.mock_calls), 1)
+        raw.cancel.assert_not_called()
+
+    def test_restart_on_unavailable_new_token_at_limit_and_re_exceed(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        # Part A: New resume_token arriving on chunk max_buffer_size + 1 takes
+        # precedence over buffer-limit flush and keeps safe_to_retry=True.
+        chunk_zero = PartialResultSet()
+        chunk_one = PartialResultSet(resume_token=b"r1")
+        chunk_two = PartialResultSet(last=True)
+
+        stream_one = _MockIterator(
+            chunk_zero,
+            chunk_one,
+            fail_after=True,
+            error=ServiceUnavailable("transient"),
+        )
+        stream_two = _MockIterator(chunk_two)
+        restart = mock.Mock(side_effect=[stream_one, stream_two])
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable = self._call_fut(
+            derived, restart, request, session=session, max_buffer_size=1
+        )
+        received_items = list(resumable)
+        self.assertEqual(received_items, [chunk_zero, chunk_one, chunk_two])
+        self.assertEqual(len(restart.mock_calls), 2)
+        self.assertEqual(request.resume_token, b"r1")
+
+        # Part B: Transition True -> False -> True (newer token) -> False (re-exceed).
+        re_exceed_chunks = [
+            PartialResultSet(),
+            PartialResultSet(),
+            PartialResultSet(resume_token=b"r2"),
+            PartialResultSet(),
+            PartialResultSet(),
+        ]
+        stream_re_exceed = _MockIterator(
+            *re_exceed_chunks,
+            fail_after=True,
+            error=ServiceUnavailable("second_failure"),
+        )
+        restart_re_exceed = mock.Mock(side_effect=[stream_re_exceed])
+        request_re_exceed = mock.Mock(test="test", spec=["test", "resume_token"])
+
+        resumable_re_exceed = self._call_fut(
+            derived,
+            restart_re_exceed,
+            request_re_exceed,
+            session=session,
+            max_buffer_size=1,
+        )
+        collected_items = []
+        with self.assertRaisesRegex(ServiceUnavailable, "second_failure"):
+            for received in resumable_re_exceed:
+                collected_items.append(received)
+        self.assertEqual(collected_items, re_exceed_chunks)
+        self.assertEqual(len(restart_re_exceed.mock_calls), 1)
+
+    def test_restart_on_unavailable_default_max_buffer_size_streamed_result_set(self):
+        from google.api_core.exceptions import ServiceUnavailable
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.snapshot import _MAX_BUFFERED_CHUNKS
+        from google.cloud.spanner_v1.streamed import StreamedResultSet
+        from google.cloud.spanner_v1.types.result_set import (
+            PartialResultSet,
+            ResultSetMetadata,
+        )
+        from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
+
+        self.assertEqual(_MAX_BUFFERED_CHUNKS, 512)
+        fields = [StructType.Field(name="id", type_=Type(code=TypeCode.INT64))]
+        metadata_pb = ResultSetMetadata(row_type=StructType(fields=fields))
+
+        def _make_chunk(index: int, include_metadata: bool = False) -> PartialResultSet:
+            chunk = PartialResultSet(
+                metadata=metadata_pb if include_metadata else None,
+            )
+            chunk.values.append(Value(string_value=str(index)))
+            return chunk
+
+        # Exactly 512 tokenless chunks remain within the threshold and retry cleanly.
+        within_limit_chunks = [
+            _make_chunk(index, include_metadata=(index == 0))
+            for index in range(_MAX_BUFFERED_CHUNKS)
+        ]
+        recovered_chunk = _make_chunk(_MAX_BUFFERED_CHUNKS, include_metadata=True)
+        recovered_chunk.last = True
+        stream_within_one = _MockIterator(
+            *within_limit_chunks,
+            fail_after=True,
+            error=ServiceUnavailable("transient"),
+        )
+        stream_within_two = _MockIterator(recovered_chunk)
+        restart_within = mock.Mock(side_effect=[stream_within_one, stream_within_two])
+        request_within = mock.Mock(test="test", spec=["test", "resume_token"])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+
+        resumable_within = self._call_fut(
+            derived, restart_within, request_within, session=session
+        )
+        result_set_within = StreamedResultSet(resumable_within)
+        rows_within = list(result_set_within)
+        self.assertEqual(rows_within, [[_MAX_BUFFERED_CHUNKS]])
+        self.assertEqual(len(restart_within.mock_calls), 2)
+
+        # 513 tokenless chunks exceed the default 512 threshold, flush downstream,
+        # and propagate the subsequent ServiceUnavailable without retrying.
+        over_limit_chunks = [
+            _make_chunk(index, include_metadata=(index == 0))
+            for index in range(_MAX_BUFFERED_CHUNKS + 1)
+        ]
+        stream_over = _MockIterator(
+            *over_limit_chunks,
+            fail_after=True,
+            error=ServiceUnavailable("exceeded"),
+        )
+        restart_over = mock.Mock(side_effect=[stream_over])
+        request_over = mock.Mock(test="test", spec=["test", "resume_token"])
+
+        resumable_over = self._call_fut(
+            derived, restart_over, request_over, session=session
+        )
+        result_set_over = StreamedResultSet(resumable_over)
+        collected_rows = []
+        with self.assertRaisesRegex(ServiceUnavailable, "exceeded"):
+            for row in result_set_over:
+                collected_rows.append(row)
+        self.assertEqual(
+            collected_rows, [[index] for index in range(_MAX_BUFFERED_CHUNKS + 1)]
+        )
+        self.assertEqual(len(restart_over.mock_calls), 1)
 
     def test_iteration_w_raw_w_resume_token(self):
         ITEMS = (
