@@ -31,7 +31,7 @@ except ImportError:  # pragma: NO COVER
 from google.protobuf import any_pb2, json_format
 from google.rpc import error_details_pb2, status_pb2
 
-from google.api_core import exceptions
+from google.api_core import exceptions, retry
 
 
 def test_create_google_cloud_error():
@@ -202,6 +202,61 @@ def test_from_http_response_json_list_content_without_error_dict():
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: unknown error"
+
+
+@pytest.mark.parametrize("converter", ["response", "payload"])
+@pytest.mark.parametrize(
+    "payload",
+    [
+        pytest.param(None, id="json-null"),
+        pytest.param(False, id="json-false"),
+        pytest.param(0, id="json-zero"),
+        pytest.param(True, id="json-true"),
+        pytest.param(1, id="json-number"),
+        pytest.param("unavailable", id="json-string"),
+        pytest.param({}, id="empty-object"),
+        pytest.param([], id="empty-list"),
+        pytest.param({"error": {}}, id="empty-error-object"),
+        pytest.param({"error": None}, id="null-error"),
+        pytest.param({"error": False}, id="boolean-error"),
+        pytest.param({"error": 0}, id="zero-error"),
+        pytest.param({"error": 1}, id="number-error"),
+        pytest.param({"error": "unavailable"}, id="string-error"),
+        pytest.param({"error": []}, id="list-error"),
+        pytest.param([{"error": None}], id="list-wrapped-null-error"),
+        pytest.param([None, {"error": "unavailable"}], id="mixed-list-error"),
+    ],
+)
+def test_http_error_non_object_payload(converter, payload):
+    response = make_response(json.dumps(payload).encode("utf-8"))
+    response.status_code = http.client.SERVICE_UNAVAILABLE
+
+    if converter == "response":
+        exception = exceptions.from_http_response(response)
+    else:
+        exception = exceptions.format_http_response_error(
+            response, response.request.method, response.request.url, payload
+        )
+
+    assert isinstance(exception, exceptions.ServiceUnavailable)
+    assert exception.code == http.client.SERVICE_UNAVAILABLE
+    assert exception.message == "POST https://example.com/: unknown error"
+    assert exception.errors == []
+    assert exception.details == []
+    assert exception.response is response
+
+
+@pytest.mark.parametrize(
+    "status_code", [http.client.TOO_MANY_REQUESTS, http.client.SERVICE_UNAVAILABLE]
+)
+def test_non_object_error_preserves_transient_http_failure(status_code):
+    response = make_response(b'{"error": null}')
+    response.status_code = status_code
+
+    exception = exceptions.from_http_response(response)
+
+    assert exception.code == status_code
+    assert retry.if_transient_error(exception)
 
 
 def test_from_http_response_bad_json_content():

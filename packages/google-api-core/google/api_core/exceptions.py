@@ -566,11 +566,12 @@ def format_http_response_error(
     """
     if isinstance(payload, list):
         payload = next((item for item in payload if isinstance(item, dict)), {})
-    payload = {} if not payload else payload
-    error_message = payload.get("error", {}).get("message", "unknown error")
-    errors = payload.get("error", {}).get("errors", ())
+    error = payload.get("error", {}) if isinstance(payload, dict) else {}
+    error = error if isinstance(error, dict) else {}
+    error_message = error.get("message", "unknown error")
+    errors = error.get("errors", ())
     # In JSON, details are already formatted in developer-friendly way.
-    details = payload.get("error", {}).get("details", ())
+    details = error.get("details", ())
     error_info_list = list(
         filter(
             lambda detail: detail.get("@type", "")
