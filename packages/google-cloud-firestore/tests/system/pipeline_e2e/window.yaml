@@ -124,6 +124,114 @@ tests:
                 title:
                   fieldReferenceValue: title
           name: select
+  - description: "testAddWindowFields - documents frame with numeric offsets"
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.less_than:
+              - Field: published
+              - 1950
+      - AddWindowFields:
+          window:
+            WindowSpec:
+              sort:
+                - Ordering:
+                    - Field: published
+                    - ASCENDING
+              frame:
+                DocumentWindowFrame:
+                  preceding: 1
+                  following: 1
+          fields:
+            - AliasedExpression:
+                - Count
+                - "window_count"
+            - AliasedExpression:
+                - FunctionExpression.maximum:
+                    - Field: published
+                - "max_published"
+      - Sort:
+          - Ordering:
+              - Field: published
+              - ASCENDING
+      - Select:
+          - title
+          - window_count
+          - max_published
+    assert_results:
+      - title: "Pride and Prejudice"
+        window_count: 2
+        max_published: 1866
+      - title: "Crime and Punishment"
+        window_count: 3
+        max_published: 1925
+      - title: "The Great Gatsby"
+        window_count: 3
+        max_published: 1949
+      - title: "1984"
+        window_count: 2
+        max_published: 1949
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: published
+              - integerValue: '1950'
+              name: less_than
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                documents:
+                  mapValue:
+                    fields:
+                      following:
+                        integerValue: '1'
+                      preceding:
+                        integerValue: '1'
+                sort:
+                  arrayValue:
+                    values:
+                    - mapValue:
+                        fields:
+                          direction:
+                            stringValue: ascending
+                          expression:
+                            fieldReferenceValue: published
+          - mapValue:
+              fields:
+                max_published:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: published
+                    name: maximum
+                window_count:
+                  functionValue:
+                    name: count
+          name: add_window_fields
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: published
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                max_published:
+                  fieldReferenceValue: max_published
+                title:
+                  fieldReferenceValue: title
+                window_count:
+                  fieldReferenceValue: window_count
+          name: select
   - description: "testAddWindowFields - rank with ties"
     pipeline:
       - Collection: books

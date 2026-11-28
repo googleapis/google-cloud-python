@@ -331,10 +331,18 @@ class UnnestOptions:
 
 
 class WindowBound(str, Enum):
-    """Enumeration of symbolic window frame boundary keywords."""
+    """Enumeration of symbolic window frame boundary keywords.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+    """
 
     CURRENT = "current"
     UNBOUNDED = "unbounded"
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}.{self.name}"
 
 
 @dataclass
@@ -356,6 +364,17 @@ class _WindowFrame:
 class DocumentWindowFrame(_WindowFrame):
     """Defines a document-count based window frame relative to the current document.
 
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+
+    Bounds count documents, not values. `WindowBound.CURRENT` refers only to the
+    current document's position, so documents with the same sort value are not
+    automatically included in the frame.
+
+    `sort` on the enclosing `WindowSpec` is optional for a document frame. If it
+    is omitted, documents are processed in the order they reach the stage.
+
     Example:
         >>> from google.cloud.firestore_v1.pipeline_expressions import Field
         >>> from google.cloud.firestore_v1.pipeline_types import (
@@ -366,7 +385,8 @@ class DocumentWindowFrame(_WindowFrame):
         >>> window = WindowSpec(
         ...     sort=Field.of("published").ascending(),
         ...     frame=DocumentWindowFrame(
-        ...         WindowBound.UNBOUNDED, WindowBound.CURRENT
+        ...         preceding=WindowBound.UNBOUNDED,
+        ...         following=WindowBound.CURRENT,
         ...     ),
         ... )
 
@@ -392,7 +412,10 @@ class WindowSpec:
     Args:
         partition: Field paths or expressions used to partition documents into independent windows.
         sort: Orderings specifying how documents are sorted within each partition.
-        frame: A `DocumentWindowFrame` defining a document-count window frame.
+        frame: Optional `DocumentWindowFrame` defining a document-count window frame.
+            If `None`, the backend applies its default frame: all documents in the
+            partition when `sort` is omitted, or a range frame from unbounded preceding
+            through the current sort value when `sort` is specified.
     """
 
     def __init__(

@@ -1109,19 +1109,19 @@ class TestWindowTypes:
         spec = WindowSpec(
             partition="genre",
             sort=Field.of("rating").descending(),
-            frame=DocumentWindowFrame(-1, WindowBound.CURRENT),
+            frame=DocumentWindowFrame(1, WindowBound.CURRENT),
         )
         assert repr(spec) == (
             "WindowSpec("
             "partition=[Field.of('genre')], "
             "sort=[Field.of('rating').descending()], "
-            "frame=DocumentWindowFrame(preceding=-1, following=<WindowBound.CURRENT: 'current'>)"
+            "frame=DocumentWindowFrame(preceding=1, following=WindowBound.CURRENT)"
             ")"
         )
         assert spec == WindowSpec(
             partition=[Field.of("genre")],
             sort=[Field.of("rating").descending()],
-            frame=DocumentWindowFrame(-1, "current"),
+            frame=DocumentWindowFrame(1, "current"),
         )
         assert spec != WindowSpec(
             partition="genre",
@@ -1134,7 +1134,7 @@ class TestWindowTypes:
     def test_window_spec_to_pb(self):
         assert WindowSpec()._to_pb().map_value.fields == {}
         order = Field.of("rating").descending()
-        doc_frame = DocumentWindowFrame(-1, WindowBound.CURRENT)
+        doc_frame = DocumentWindowFrame(1, WindowBound.CURRENT)
         spec = WindowSpec(partition="genre", sort=order, frame=doc_frame)
         assert spec._to_pb().map_value.fields == {
             "partition": Value(
