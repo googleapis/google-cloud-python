@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import ast
+import re
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
@@ -380,9 +382,321 @@ class TestSpannerDialect(fixtures.TestBase):
             '"has\\u0000null"',
         )
         eq_(
+            compiler.render_literal_value("has\x7fdel", sa.String()),
+            '"has\\u007fdel"',
+        )
+        eq_(
+            compiler.render_literal_value("has\nnewline\tand\ttab", sa.String()),
+            'r"""has\nnewline\tand\ttab"""',
+        )
+        eq_(
             compiler.render_literal_value('100% "quoted" mid', sa.String()),
             'r"""100%% "quoted" mid"""',
         )
+
+    @pytest.mark.parametrize("paramstyle", ["format", "named"])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            (b"", 'b""'),
+            (b"hello world", 'b"hello world"'),
+            (rb"\' OR 1=1 --", 'b"\\x5c\\x27 OR 1=1 --"'),
+            (
+                b"a\"b'c\\d%s\x00\n\r\t\x7f\xff\xfe",
+                'b"a\\x22b\\x27c\\x5cd\\x25s\\x00\\x0a\\x0d\\x09\\x7f\\xff\\xfe"',
+            ),
+            (bytearray(b"a\x00\xff"), 'b"a\\x00\\xff"'),
+            (memoryview(b"a\x00\xff"), 'b"a\\x00\\xff"'),
+            # Non-byte-format and multi-dimensional memoryviews must flatten to bytes
+            (memoryview(b"abcd").cast("I"), 'b"abcd"'),
+            (memoryview(b"abcd").cast("B", (2, 2)), 'b"abcd"'),
+            (None, "NULL"),
+        ],
+    )
+    def test_render_literal_value_binary_escaping(self, paramstyle, value, expected):
+        """Bytes literals use b"..." with special bytes hex-escaped."""
+        dialect = SpannerDialect(paramstyle=paramstyle)
+        compiler = dialect.statement_compiler(dialect, sa.select(sa.literal(b"x")))
+        eq_(compiler.render_literal_value(value, sa.LargeBinary()), expected)
+
+    def test_render_literal_value_all_256_bytes(self):
+        """Every byte value 0x00..0xFF renders as valid b"..." output."""
+        dialect = SpannerDialect(paramstyle="format")
+        compiler = dialect.statement_compiler(dialect, sa.select(sa.literal(b"x")))
+        all_bytes = bytes(range(256))
+        rendered = compiler.render_literal_value(all_bytes, sa.LargeBinary())
+
+        assert rendered.startswith('b"') and rendered.endswith('"')
+        inner = rendered[2:-1]
+        assert all(0x20 <= ord(ch) <= 0x7E for ch in inner)
+        assert not any(ch in inner for ch in ('"', "'", "%"))
+        # Every backslash must introduce an exact \xHH hex escape
+        assert re.sub(r"\\x[0-9a-f]{2}", "", inner).find("\\") == -1
+        eq_(ast.literal_eval(rendered), all_bytes)
+
+    @pytest.mark.parametrize(
+        "binary_type",
+        [sa.LargeBinary(20), sa.BINARY(16), sa.VARBINARY(32), sa.BLOB(64)],
+    )
+    def test_render_literal_value_binary_types(self, binary_type):
+        """LargeBinary, BINARY, VARBINARY, and BLOB keep length and escape."""
+        dialect = SpannerDialect(paramstyle="format")
+        compiler = dialect.statement_compiler(dialect, sa.select(sa.literal(b"x")))
+        eq_(
+            compiler.render_literal_value(rb"\' OR 1=1 --", binary_type),
+            'b"\\x5c\\x27 OR 1=1 --"',
+        )
+        adapted = binary_type.dialect_impl(dialect)
+        eq_(adapted.length, binary_type.length)
+        processor = adapted.literal_processor(dialect)
+        eq_(processor(None), "NULL")
+        eq_(processor(rb"\' OR 1=1 --"), 'b"\\x5c\\x27 OR 1=1 --"')
+
+    @pytest.mark.parametrize("bad_value", ["not bytes", 123, object()])
+    def test_binary_literal_processor_rejects_non_bytes(self, bad_value):
+        """Binary literal processor rejects non-bytes inputs with TypeError."""
+        dialect = SpannerDialect(paramstyle="format")
+        processor = sa.LargeBinary().dialect_impl(dialect).literal_processor(dialect)
+        with pytest.raises(TypeError, match="Expected bytes-like object"):
+            processor(bad_value)
+
+    def test_binary_literal_unhappy_paths_and_mismatched_types(self):
+        """Check NullType and str values passed alongside LargeBinary."""
+        dialect = SpannerDialect(paramstyle="format")
+        compiler = dialect.statement_compiler(dialect, sa.select(sa.literal(b"x")))
+
+        # Untyped bytearray/memoryview default to NullType in SQLAlchemy
+        with pytest.raises(
+            NotImplementedError, match="Don't know how to literal-quote"
+        ):
+            compiler.render_literal_value(bytearray(b"a"), sa.types.NullType())
+
+        # Any str passed directly with LargeBinary fails closed inside literal_processor
+        for bad_str in ("plain", r"\' OR 1=1 --"):
+            with pytest.raises(TypeError, match="Expected bytes-like object"):
+                compiler.render_literal_value(bad_str, sa.LargeBinary())
+
+    def test_binary_literal_binds_and_literal_execute(self):
+        """Check literal_binds, literal_execute, IN, and mixed %s params."""
+        dialect = SpannerDialect(paramstyle="format")
+        items = sa.Table(
+            "items",
+            sa.MetaData(),
+            sa.Column("id", sa.Integer, primary_key=True),
+            sa.Column("payload", sa.LargeBinary(20)),
+            sa.Column("fixed", sa.BINARY(16)),
+        )
+
+        stmt = sa.select(items.c.id).where(
+            items.c.payload == rb"\' OR 1=1 --",
+            items.c.fixed == b"\xff\x00%s",
+        )
+        eq_(
+            str(stmt.compile(dialect=dialect, compile_kwargs={"literal_binds": True})),
+            "SELECT items.id \n"
+            "FROM items \n"
+            'WHERE items.payload = b"\\x5c\\x27 OR 1=1 --" '
+            'AND items.fixed = b"\\xff\\x00\\x25s"',
+        )
+
+        # Mixed bound param + %s binary literal must not confuse spanner_dbapi pyformat
+        mixed_stmt = sa.select(items.c.id).where(
+            items.c.id == 1,
+            items.c.payload == sa.literal(b"%s", literal_execute=True),
+        )
+        compiled_mixed = mixed_stmt.compile(dialect=dialect)
+        expanded_mixed = compiled_mixed._process_parameters_for_postcompile(
+            compiled_mixed.construct_params()
+        )
+        parsed_sql, parsed_params = parse_utils.sql_pyformat_args_to_spanner(
+            expanded_mixed.statement, [compiled_mixed.construct_params()["id_1"]]
+        )
+        eq_(
+            parsed_sql,
+            "SELECT items.id \n"
+            "FROM items \n"
+            'WHERE items.id = @a0 AND items.payload = b"\\x25s"',
+        )
+        eq_(parsed_params, {"a0": 1})
+
+        literal_exec_stmt = sa.select(
+            sa.literal(rb"\' OR 1=1 --", literal_execute=True)
+        )
+        compiled_literal_exec = literal_exec_stmt.compile(dialect=dialect)
+        expanded = compiled_literal_exec._process_parameters_for_postcompile(
+            compiled_literal_exec.construct_params()
+        )
+        eq_(expanded.statement, 'SELECT b"\\x5c\\x27 OR 1=1 --" AS anon_1')
+
+        expanding_stmt = sa.select(items.c.id).where(
+            items.c.payload.in_(
+                sa.bindparam(
+                    "payloads",
+                    [rb"\' OR 1=1 --", b"\xff\x00"],
+                    expanding=True,
+                    literal_execute=True,
+                )
+            )
+        )
+        compiled_expanding = expanding_stmt.compile(dialect=dialect)
+        expanded_in = compiled_expanding._process_parameters_for_postcompile(
+            compiled_expanding.construct_params()
+        )
+        eq_(
+            expanded_in.statement,
+            "SELECT items.id \n"
+            "FROM items \n"
+            'WHERE items.payload IN (b"\\x5c\\x27 OR 1=1 --", b"\\xff\\x00")',
+        )
+
+    def test_binary_literal_type_decorator_and_array(self):
+        """TypeDecorator and ARRAY(LargeBinary) use Spanner bytes escaping."""
+
+        class CustomBytesWrapper(sa.TypeDecorator):
+            impl = sa.LargeBinary
+            cache_ok = True
+
+            def process_bind_param(self, value, dialect):
+                return value.encode("utf-8") if isinstance(value, str) else value
+
+        dialect = SpannerDialect(paramstyle="format")
+        wrapped_literal_processor = CustomBytesWrapper()._cached_literal_processor(
+            dialect
+        )
+        eq_(wrapped_literal_processor(r"\' OR 1=1 --"), 'b"\\x5c\\x27 OR 1=1 --"')
+
+        array_literal_processor = sa.ARRAY(sa.LargeBinary).literal_processor(dialect)
+        eq_(
+            array_literal_processor([rb"\' OR 1=1 --", b"\xff"]),
+            '[b"\\x5c\\x27 OR 1=1 --", b"\\xff"]',
+        )
+        eq_(array_literal_processor([b"a", None]), '[b"a", NULL]')
+        with pytest.raises(TypeError, match="Expected bytes-like object"):
+            array_literal_processor(["not_bytes"])
+
+        items = sa.Table(
+            "items",
+            sa.MetaData(),
+            sa.Column("id", sa.Integer, primary_key=True),
+            sa.Column("wrapped", CustomBytesWrapper()),
+            sa.Column("tags", sa.ARRAY(sa.LargeBinary)),
+        )
+        wrapped_stmt = sa.select(items.c.id).where(items.c.wrapped == r"\' OR 1=1 --")
+        eq_(
+            str(
+                wrapped_stmt.compile(
+                    dialect=dialect, compile_kwargs={"literal_binds": True}
+                )
+            ),
+            "SELECT items.id \n"
+            "FROM items \n"
+            'WHERE items.wrapped = b"\\x5c\\x27 OR 1=1 --"',
+        )
+        array_stmt = sa.select(items.c.id).where(items.c.tags == [rb"\' OR 1=1 --"])
+        eq_(
+            str(
+                array_stmt.compile(
+                    dialect=dialect, compile_kwargs={"literal_binds": True}
+                )
+            ),
+            "SELECT items.id \n"
+            "FROM items \n"
+            'WHERE items.tags = [b"\\x5c\\x27 OR 1=1 --"]',
+        )
+
+    def test_binary_literal_with_variant(self):
+        """Variant types targeting Spanner binary handle bytes and reject str."""
+        dialect = SpannerDialect(paramstyle="format")
+        binary_variant = sa.String().with_variant(sa.LargeBinary(), "spanner+spanner")
+        stmt = sa.select(sa.literal(rb"\' OR 1=1 --", binary_variant))
+        eq_(
+            str(stmt.compile(dialect=dialect, compile_kwargs={"literal_binds": True})),
+            'SELECT b"\\x5c\\x27 OR 1=1 --" AS anon_1',
+        )
+
+        str_stmt = sa.select(sa.literal(r"\' OR 1=1 --", binary_variant))
+        with pytest.raises(TypeError, match="Expected bytes-like object"):
+            str_stmt.compile(dialect=dialect, compile_kwargs={"literal_binds": True})
+
+        class VariantWrapper(sa.TypeDecorator):
+            impl = binary_variant
+            cache_ok = True
+
+            def process_bind_param(self, value, dialect):
+                return value.encode("utf-8") if isinstance(value, str) else value
+
+        wrapped_variant_stmt = sa.select(sa.literal(r"\' OR 1=1 --", VariantWrapper()))
+        eq_(
+            str(
+                wrapped_variant_stmt.compile(
+                    dialect=dialect, compile_kwargs={"literal_binds": True}
+                )
+            ),
+            'SELECT b"\\x5c\\x27 OR 1=1 --" AS anon_1',
+        )
+
+    def test_render_literal_value_string_wrapper_and_uuid(self):
+        """String TypeDecorators and non-native Uuid still escape string literals."""
+
+        class CustomStringWrapper(sa.TypeDecorator):
+            impl = sa.String
+            cache_ok = True
+
+            def process_bind_param(self, value, dialect):
+                return value
+
+        dialect = SpannerDialect(paramstyle="format")
+        for string_like_type in (
+            CustomStringWrapper(),
+            sa.Uuid(as_uuid=False),
+            sa.UUID(as_uuid=False),
+        ):
+            stmt = sa.select(sa.literal(r"\' OR 1=1 --", string_like_type))
+            eq_(
+                str(
+                    stmt.compile(
+                        dialect=dialect, compile_kwargs={"literal_binds": True}
+                    )
+                ),
+                'SELECT r"""\\\' OR 1=1 --""" AS anon_1',
+            )
+
+    def test_binary_literal_in_computed_and_default_ddl(self):
+        """CREATE TABLE preserves BYTES types and escapes DEFAULT/Computed."""
+        dialect = SpannerDialect(paramstyle="format")
+        semicolon_payload = b'"; DROP TABLE users; --'
+        items = sa.Table(
+            "items",
+            sa.MetaData(),
+            sa.Column("id", sa.Integer, primary_key=True),
+            sa.Column("payload", sa.LargeBinary(20)),
+            sa.Column("fixed", sa.BINARY(16)),
+            sa.Column(
+                "default_blob",
+                sa.LargeBinary,
+                server_default=sa.DefaultClause(sa.literal(rb"\' OR 1=1 --")),
+            ),
+            sa.Column(
+                "fallback",
+                sa.LargeBinary,
+                sa.Computed(sa.func.coalesce(sa.column("payload"), rb"\' OR 1=1 --")),
+            ),
+            sa.Column(
+                "semicolon_blob",
+                sa.LargeBinary,
+                server_default=sa.DefaultClause(sa.literal(semicolon_payload)),
+            ),
+        )
+        ddl = str(sa.schema.CreateTable(items).compile(dialect=dialect))
+        assert "payload BYTES(20)" in ddl
+        assert "fixed BYTES(16)" in ddl
+        assert 'default_blob BYTES(MAX) DEFAULT (b"\\x5c\\x27 OR 1=1 --")' in ddl
+        assert 'AS (coalesce(payload, b"\\x5c\\x27 OR 1=1 --")) STORED' in ddl
+        assert (
+            'semicolon_blob BYTES(MAX) DEFAULT (b"\\x22; DROP TABLE users; --")' in ddl
+        )
+        # Escaping '"' as \x22 keeps sqlparse from splitting DDL on ';'
+        eq_(sqlparse.split(ddl), [ddl.strip()])
 
     def test_unqualified_delete_compiles_with_dummy_where(self):
         """Test that unqualified DELETE statements automatically append WHERE 1=1."""
