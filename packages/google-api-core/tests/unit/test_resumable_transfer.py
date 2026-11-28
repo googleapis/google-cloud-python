@@ -511,6 +511,43 @@ def test_sync_resume():
     assert session.finished is True
 
 
+def test_sync_resume_already_final_returns_final_response():
+    """A query that reports the upload as final returns its resource (#19114)."""
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+    query_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"name": "committed.txt", "size": 10}',
+    )
+    session_transport.request.side_effect = [query_resp]
+
+    session = ResumableUploadSession(response_type=DummyResponse)
+    progress_list = list(
+        session.iter_resume(
+            upload_url="https://upload.example.com/resumable-123",
+            stream=io.BytesIO(b"0123456789"),
+            transport=session_transport,
+        )
+    )
+
+    assert session.response.name == "committed.txt"
+    assert session.finished is True
+    assert session_transport.request.call_count == 1
+    assert [p.state for p in progress_list] == [
+        ProgressState.OFFSET_RECEIVED,
+        ProgressState.FINALIZED,
+    ]
+
+    session_transport.request.side_effect = [query_resp]
+    resp = ResumableUploadSession(response_type=DummyResponse).resume(
+        upload_url="https://upload.example.com/resumable-123",
+        stream=io.BytesIO(b"0123456789"),
+        transport=session_transport,
+    )
+    assert resp.name == "committed.txt"
+
+
 def test_sync_iter_resume():
     """Verifies streaming progress during upload resumption."""
     session_transport = mock.create_autospec(requests.Session, instance=True)

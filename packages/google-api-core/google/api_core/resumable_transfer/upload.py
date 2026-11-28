@@ -1040,7 +1040,21 @@ class ResumableUploadSession:
         progress_queue: List[UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
-            self._recover(sess, stream_obj, progress_queue=progress_queue)
+            recover_resp = self._recover(
+                sess, stream_obj, progress_queue=progress_queue
+            )
+            if self._state.finished:
+                # The server already committed the whole upload, so the query
+                # response carries the final resource.
+                self._notify_progress(
+                    common.ProgressState.FINALIZED, progress_queue=progress_queue
+                )
+                while progress_queue:
+                    yield progress_queue.pop(0)
+                self._response = _format_response_payload(
+                    recover_resp, self._response_type
+                )
+                return
             yield from self._transmit_all_chunks(
                 sess,
                 stream_obj,

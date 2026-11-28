@@ -1119,9 +1119,23 @@ class AsyncResumableUploadSession:
 
         async def _run() -> AsyncGenerator[UploadProgress, None]:
             try:
-                await self._recover(sess, stream_obj, progress_queue=progress_queue)
+                recover_tuple = await self._recover(
+                    sess, stream_obj, progress_queue=progress_queue
+                )
+                if self._state.finished:
+                    # The server already committed the whole upload, so the
+                    # query response carries the final resource.
+                    self._notify_progress(
+                        common.ProgressState.FINALIZED, progress_queue
+                    )
                 while progress_queue:
                     yield progress_queue.pop(0)
+                if self._state.finished:
+                    _, _, body_bytes = recover_tuple
+                    self._response = _format_response_payload(
+                        body_bytes, self._response_type
+                    )
+                    return
 
                 async for item in self._transmit_all_chunks(
                     sess,
