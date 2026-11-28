@@ -18,7 +18,7 @@ import sys
 import unittest
 from unittest import mock
 
-from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import Aborted, DeadlineExceeded
 from google.auth.credentials import AnonymousCredentials
 from google.rpc.code_pb2 import ABORTED
 
@@ -1211,97 +1211,50 @@ class TestCursor(unittest.TestCase):
             retry_mock.assert_called_with()
 
     @mock.patch("google.cloud.spanner_v1.Client")
-    def test_fetchone_aborted_with_cursor_not_in_retry_mode(self, mock_client):
+    def test_fetchall_reads_remaining_rows_from_replayed_cursor(self, mock_client):
         connection = connect("test-instance", "test-database")
+        connection._transaction_begin_marked = True
         cursor = connection.cursor()
-        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+        replayed_cursor = connection.cursor()
 
-        with mock.patch(
-            "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
-            side_effect=(Aborted("Aborted"), iter([])),
+        def rows_then_abort():
+            yield ("already returned",)
+            yield ("incomplete batch",)
+            raise Aborted("retry transaction")
+
+        cursor._itr = rows_then_abort()
+        cursor.transaction_helper.add_execute_statement_for_retry(
+            cursor, "SELECT * FROM table_name", None, None, False
+        )
+        self.assertEqual(cursor.fetchone(), ("already returned",))
+
+        def replay_query(*args):
+            replayed_cursor._itr = iter(
+                [("already returned",), ("incomplete batch",), ("remaining",)]
+            )
+
+        with (
+            mock.patch.object(connection, "cursor", return_value=replayed_cursor),
+            mock.patch.object(replayed_cursor, "execute", side_effect=replay_query),
         ):
-            cursor.fetchone()
-
-        transaction_helper_mock.add_fetch_statement_for_retry.assert_called_once()
-        transaction_helper_mock.retry_transaction.assert_called_once()
+            self.assertEqual(cursor.fetchall(), [("incomplete batch",), ("remaining",)])
 
     @mock.patch("google.cloud.spanner_v1.Client")
-    def test_fetchone_aborted_with_cursor_in_retry_mode(self, mock_client):
-        connection = connect("test-instance", "test-database")
-        cursor = connection.cursor()
-        cursor._in_retry_mode = True
-        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
+    def test_fetchall_raises_aborted_if_stream_cannot_be_replayed(self, mock_client):
+        def rows_then_abort():
+            yield ("row-1",)
+            raise Aborted("stream aborted")
 
-        with mock.patch(
-            "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
-            side_effect=(Aborted("Aborted"), iter([])),
-        ):
-            cursor.fetchone()
+        for read_only, in_retry_mode in ((True, False), (False, True), (False, False)):
+            with self.subTest(read_only=read_only, in_retry_mode=in_retry_mode):
+                connection = connect("test-instance", "test-database")
+                connection.read_only = read_only
+                cursor = connection.cursor()
+                cursor._in_retry_mode = in_retry_mode
+                cursor._itr = rows_then_abort()
 
-        transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
-        transaction_helper_mock.retry_transaction.assert_not_called()
-
-    @mock.patch("google.cloud.spanner_v1.Client")
-    def test_fetchall_aborted_with_cursor_not_in_retry_mode(self, mock_client):
-        connection = connect("test-instance", "test-database")
-        cursor = connection.cursor()
-        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
-
-        with mock.patch(
-            "google.cloud.spanner_dbapi.cursor.Cursor.__iter__",
-            side_effect=(Aborted("Aborted"), iter([])),
-        ):
-            cursor.fetchall()
-
-        transaction_helper_mock.add_fetch_statement_for_retry.assert_called_once()
-        transaction_helper_mock.retry_transaction.assert_called_once()
-
-    @mock.patch("google.cloud.spanner_v1.Client")
-    def test_fetchall_aborted_with_cursor_in_retry_mode(self, mock_client):
-        connection = connect("test-instance", "test-database")
-        cursor = connection.cursor()
-        cursor._in_retry_mode = True
-        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
-
-        with mock.patch(
-            "google.cloud.spanner_dbapi.cursor.Cursor.__iter__",
-            side_effect=(Aborted("Aborted"), iter([])),
-        ):
-            cursor.fetchall()
-
-        transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
-        transaction_helper_mock.retry_transaction.assert_not_called()
-
-    @mock.patch("google.cloud.spanner_v1.Client")
-    def test_fetchmany_aborted_with_cursor_not_in_retry_mode(self, mock_client):
-        connection = connect("test-instance", "test-database")
-        cursor = connection.cursor()
-        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
-
-        with mock.patch(
-            "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
-            side_effect=(Aborted("Aborted"), iter([])),
-        ):
-            cursor.fetchmany()
-
-        transaction_helper_mock.add_fetch_statement_for_retry.assert_called_once()
-        transaction_helper_mock.retry_transaction.assert_called_once()
-
-    @mock.patch("google.cloud.spanner_v1.Client")
-    def test_fetchmany_aborted_with_cursor_in_retry_mode(self, mock_client):
-        connection = connect("test-instance", "test-database")
-        cursor = connection.cursor()
-        cursor._in_retry_mode = True
-        transaction_helper_mock = cursor.transaction_helper = mock.Mock()
-
-        with mock.patch(
-            "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
-            side_effect=(Aborted("Aborted"), iter([])),
-        ):
-            cursor.fetchmany()
-
-        transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
-        transaction_helper_mock.retry_transaction.assert_not_called()
+                with self.assertRaisesRegex(Aborted, "stream aborted"):
+                    cursor.fetchall()
 
     @mock.patch("google.cloud.spanner_v1.Client")
     def test_fetch_exception_with_cursor_not_in_retry_mode(self, mock_client):
@@ -1309,14 +1262,35 @@ class TestCursor(unittest.TestCase):
         cursor = connection.cursor()
         transaction_helper_mock = cursor.transaction_helper = mock.Mock()
 
-        with mock.patch(
-            "google.cloud.spanner_dbapi.cursor.Cursor.__iter__",
-            side_effect=Exception("Exception"),
-        ):
-            cursor.fetchall()
+        row = ("row-1",)
+        error = DeadlineExceeded("result stream timed out")
 
-        transaction_helper_mock.add_fetch_statement_for_retry.assert_called_once()
-        transaction_helper_mock.retry_transaction.assert_not_called()
+        def rows_then_timeout():
+            yield row
+            raise error
+
+        for read_only in (True, False):
+            connection.read_only = read_only
+            for method, args in (
+                ("fetchall", ()),
+                ("fetchmany", (2,)),
+                ("fetchone", ()),
+            ):
+                with self.subTest(read_only=read_only, method=method):
+                    cursor._itr = rows_then_timeout()
+                    if method == "fetchone":
+                        self.assertEqual(cursor.fetchone(), row)
+                    transaction_helper_mock.reset_mock()
+
+                    with self.assertRaises(DeadlineExceeded) as raised:
+                        getattr(cursor, method)(*args)
+
+                    self.assertIs(raised.exception, error)
+                    recorded_rows = [] if method == "fetchone" else [row]
+                    transaction_helper_mock.add_fetch_statement_for_retry.assert_called_once_with(
+                        cursor, recorded_rows, error, method == "fetchall"
+                    )
+                    transaction_helper_mock.retry_transaction.assert_not_called()
 
     @mock.patch("google.cloud.spanner_v1.Client")
     def test_fetch_exception_with_cursor_in_retry_mode(self, mock_client):
@@ -1329,7 +1303,8 @@ class TestCursor(unittest.TestCase):
             "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
             side_effect=Exception("Exception"),
         ):
-            cursor.fetchmany()
+            with self.assertRaisesRegex(Exception, "Exception"):
+                cursor.fetchmany()
 
         transaction_helper_mock.add_fetch_statement_for_retry.assert_not_called()
         transaction_helper_mock.retry_transaction.assert_not_called()
