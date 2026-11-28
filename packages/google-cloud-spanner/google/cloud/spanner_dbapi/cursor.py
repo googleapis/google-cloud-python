@@ -16,6 +16,7 @@
 
 from collections import namedtuple
 from dataclasses import replace
+from typing import Any, List, Optional
 
 import sqlparse
 from google.api_core.exceptions import (
@@ -542,7 +543,7 @@ class Cursor(object):
     def fetchone(self):
         """Fetch the next row of a query result set, returning a single
         sequence, or None when no more data is available."""
-        rows = self._fetch(CursorStatementType.FETCH_ONE)
+        rows = self._fetch_with_retry(CursorStatementType.FETCH_ONE)
         if not rows:
             return
         return rows[0]
@@ -552,7 +553,7 @@ class Cursor(object):
         """Fetch all (remaining) rows of a query result, returning them as
         a sequence of sequences.
         """
-        return self._fetch(CursorStatementType.FETCH_ALL)
+        return self._fetch_with_retry(CursorStatementType.FETCH_ALL)
 
     @check_not_closed
     def fetchmany(self, size=None):
@@ -568,49 +569,95 @@ class Cursor(object):
         """
         if size is None:
             size = self.arraysize
-        return self._fetch(CursorStatementType.FETCH_MANY, size)
+        return self._fetch_with_retry(CursorStatementType.FETCH_MANY, size)
 
-    def _fetch(self, cursor_statement_type, size=None):
+    def _is_in_rw_transaction(self) -> bool:
+        """Return whether the cursor is in a retryable read-write transaction."""
+        # TODO(#19111): Check an explicit transaction mode/type property on
+        # Connection instead of inferring it from connection.read_only and
+        # _client_transaction_started.
+        return (
+            not self.connection.read_only
+            and self.connection._client_transaction_started
+            and not self._in_retry_mode
+        )
+
+    def _close_result_set(self) -> None:
+        """Close any open response iterator on the current result set."""
+        if self._result_set is None:
+            return
+        for target in (
+            self._result_set,
+            getattr(self._result_set, "_response_iterator", None),
+        ):
+            close_method = getattr(target, "close", None)
+            if callable(close_method):
+                try:
+                    close_method()
+                except Exception:
+                    pass
+
+    def _fetch(
+        self,
+        cursor_statement_type: CursorStatementType,
+        size: int = 0,
+        rows: Optional[List[Any]] = None,
+    ) -> List[Any]:
+        if rows is None:
+            rows = []
+        if cursor_statement_type == CursorStatementType.FETCH_ALL:
+            for row in self:
+                rows.append(row)
+        elif cursor_statement_type == CursorStatementType.FETCH_MANY:
+            for _ in range(size):
+                try:
+                    row = next(self)
+                    rows.append(row)
+                except StopIteration:
+                    break
+        elif cursor_statement_type == CursorStatementType.FETCH_ONE:
+            try:
+                row = next(self)
+                rows.append(row)
+            except StopIteration:
+                pass
+        else:
+            raise ValueError(
+                f"Unsupported cursor statement type: {cursor_statement_type}"
+            )
+        return rows
+
+    def _fetch_with_retry(
+        self,
+        cursor_statement_type: CursorStatementType,
+        size: int = 0,
+    ) -> List[Any]:
+        if not self._is_in_rw_transaction():
+            return self._fetch(cursor_statement_type, size)
+
         exception = None
         rows = []
-        is_fetch_all = False
+        is_fetch_all = cursor_statement_type == CursorStatementType.FETCH_ALL
         try:
             while True:
-                rows = []
+                rows.clear()
                 try:
-                    if cursor_statement_type == CursorStatementType.FETCH_ALL:
-                        is_fetch_all = True
-                        for row in self:
-                            rows.append(row)
-                    elif cursor_statement_type == CursorStatementType.FETCH_MANY:
-                        for _ in range(size):
-                            try:
-                                row = next(self)
-                                rows.append(row)
-                            except StopIteration:
-                                break
-                    elif cursor_statement_type == CursorStatementType.FETCH_ONE:
-                        try:
-                            row = next(self)
-                            rows.append(row)
-                        except StopIteration:
-                            return
-                    break
+                    return self._fetch(cursor_statement_type, size, rows)
                 except Aborted:
-                    if not self.connection.read_only:
-                        if self._in_retry_mode:
-                            raise
-                        else:
-                            self.transaction_helper.retry_transaction()
-        except Exception as e:
-            exception = e
-
+                    self.transaction_helper.retry_transaction()
+                    retried_cursor = self.transaction_helper._cursor_map.get(self)
+                    if retried_cursor is None:
+                        raise
+                    self._close_result_set()
+                    self._result_set = retried_cursor._result_set
+                    self._itr = retried_cursor._itr
+        except Exception as error:
+            exception = error
+            raise
         finally:
-            if not self._in_retry_mode:
-                self.transaction_helper.add_fetch_statement_for_retry(
-                    self, rows, exception, is_fetch_all
-                )
-        return rows
+            self.transaction_helper.add_fetch_statement_for_retry(
+                self, rows, exception, is_fetch_all
+            )
 
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
         kwargs = {"request_options": self.request_options}
