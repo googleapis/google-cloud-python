@@ -409,9 +409,19 @@ class DocumentWindowFrame(_WindowFrame):
 class WindowSpec:
     """Configuration for a window in an `AddWindowFields` pipeline stage.
 
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+
     Args:
-        partition: Field paths or expressions used to partition documents into independent windows.
-        sort: Orderings specifying how documents are sorted within each partition.
+        partition: Optional field paths or expressions used to partition documents into
+            independent windows. If `None`, all input documents are treated as a single
+            global partition.
+        sort: Optional orderings specifying how documents are sorted within each
+            partition. If `None`, documents are unordered and aggregates evaluate across
+            all documents in the partition. When specified without an explicit frame,
+            aggregates default to a running window from the start of the partition
+            through the current sort value.
         frame: Optional `DocumentWindowFrame` defining a document-count window frame.
             If `None`, the backend applies its default frame: all documents in the
             partition when `sort` is omitted, or a range frame from unbounded preceding
@@ -442,8 +452,18 @@ class WindowSpec:
 
         if sort is None:
             self.sort: list[Ordering] = []
+        elif isinstance(sort, Ordering):
+            self.sort = [sort]
+        elif (
+            isinstance(sort, (str, bytes))
+            or not isinstance(sort, Sequence)
+            or not all(isinstance(o, Ordering) for o in sort)
+        ):
+            raise TypeError(
+                "sort must be an Ordering or a sequence of Ordering objects"
+            )
         else:
-            self.sort = [sort] if isinstance(sort, Ordering) else list(sort)
+            self.sort = list(sort)
 
         self.frame: Optional[DocumentWindowFrame] = frame
 

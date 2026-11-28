@@ -1103,6 +1103,13 @@ class TestWindowTypes:
         assert WindowSpec(sort=order).sort == [order]
         assert WindowSpec(sort=[order]).sort == [order]
 
+    @pytest.mark.parametrize(
+        "bad_sort", ["rating", "", b"", ["rating"], Field.of("rating")]
+    )
+    def test_window_spec_invalid_sort(self, bad_sort):
+        with pytest.raises(TypeError, match="sort must be an Ordering"):
+            WindowSpec(sort=bad_sort)
+
     def test_window_spec_repr_and_equality(self):
         empty = WindowSpec()
         assert repr(empty) == "WindowSpec()"

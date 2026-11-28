@@ -89,12 +89,19 @@ class AddFields(Stage):
 
 
 class AddWindowFields(Stage):
-    """Adds new fields computed by window functions over a window of documents."""
+    """Adds new fields computed by window functions over a window of documents.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+    """
 
     def __init__(
         self,
-        *args: AliasedExpression[WindowFunction],
-        fields: Sequence[AliasedExpression[WindowFunction]] = (),
+        *args: AliasedExpression[AggregateFunction] | AliasedExpression[WindowFunction],
+        fields: Sequence[
+            AliasedExpression[AggregateFunction] | AliasedExpression[WindowFunction]
+        ] = (),
         window: WindowSpec | None = None,
     ):
         super().__init__("add_window_fields")
