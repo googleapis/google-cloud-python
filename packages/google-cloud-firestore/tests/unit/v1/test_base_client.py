@@ -554,14 +554,6 @@ def test_baseclient_anonymous_credentials_exempt_from_universe_mismatch():
     assert client._target == "firestore.tpc.test"
 
 
-def test_baseclient_async_anonymous_credentials_exempt_from_universe_mismatch():
-    aio_credentials = pytest.importorskip("google.auth.aio.credentials")
-
-    from google.cloud.firestore_v1.base_client import _validate_credentials_universe
-
-    _validate_credentials_universe("tpc.test", aio_credentials.AnonymousCredentials())
-
-
 def test_baseclient_compute_engine_credentials_universe_validation():
     from google.api_core import universe
     from google.auth import compute_engine

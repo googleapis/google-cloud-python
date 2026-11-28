@@ -47,7 +47,6 @@ import grpc  # type: ignore
 from google.api_core import retry as retries
 from google.api_core import universe
 from google.api_core.gapic_v1 import client_info
-from google.auth import compute_engine
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.client import ClientWithProject  # type: ignore
 
@@ -68,12 +67,6 @@ from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.pipeline_source import PipelineSource
 from google.cloud.firestore_v1.services.firestore import client as firestore_client
 
-aio_auth_credentials: Any
-try:
-    from google.auth.aio import credentials as aio_auth_credentials
-except ImportError:  # pragma: NO COVER
-    aio_auth_credentials = None
-
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
 _DEFAULT_EMULATOR_PROJECT = "google-cloud-firestore-emulator"
@@ -93,29 +86,6 @@ _DEFAULT_CHANNEL_OPTIONS: List[Tuple[str, Any]] = [
     ("grpc.keepalive_time_ms", 30000),
     *_GRPC_MSG_SIZE_OPTIONS,
 ]
-
-
-# TODO(universe-domain): Replace with
-# google.api_core.universe.validate_credentials_universe once minimum
-# google-api-core version exceeds 2.44.0.
-def _validate_credentials_universe(client_universe: str, credentials: Any) -> None:
-    """Validate that resolved client credentials match ``client_universe``."""
-    if credentials is None or isinstance(credentials, AnonymousCredentials):
-        return
-    if aio_auth_credentials is not None and isinstance(
-        credentials, aio_auth_credentials.AnonymousCredentials
-    ):
-        return
-    # Avoid synchronous GCE metadata server HTTP calls when
-    # compute_engine.Credentials hasn't resolved its universe yet.
-    if isinstance(credentials, compute_engine.Credentials) and not getattr(
-        credentials, "_universe_domain_cached", False
-    ):
-        return
-    cred_universe = getattr(credentials, "universe_domain", universe.DEFAULT_UNIVERSE)
-    if not isinstance(cred_universe, str):
-        return
-    universe.compare_domains(client_universe, credentials)
 
 
 class BaseClient(ClientWithProject):
@@ -203,7 +173,9 @@ class BaseClient(ClientWithProject):
             raise universe.EmptyUniverseError()
         self._universe_domain = universe_domain
         if self._emulator_host is None:
-            _validate_credentials_universe(self._universe_domain, self._credentials)
+            _helpers._validate_credentials_universe(
+                self._universe_domain, self._credentials
+            )
 
         self._database = database
 
@@ -219,7 +191,9 @@ class BaseClient(ClientWithProject):
             if self._emulator_host is not None:
                 channel = self._emulator_channel(transport)
             else:
-                _validate_credentials_universe(self._universe_domain, self._credentials)
+                _helpers._validate_credentials_universe(
+                    self._universe_domain, self._credentials
+                )
                 channel = transport.create_channel(
                     self._target,
                     credentials=self._credentials,
