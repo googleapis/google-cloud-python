@@ -68,30 +68,35 @@ def blob_to_proto(blob):
     retention = getattr(blob, "retention", None)
     if retention:
         mode_str = retention.get("mode")
-        mode = _storage_v2.Object.Retention.Mode.MODE_UNSPECIFIED
-        if mode_str:
-            # GCS retention modes are 'Locked' or 'Unlocked'
-            mode = getattr(
-                _storage_v2.Object.Retention.Mode,
-                mode_str.upper(),
-                _storage_v2.Object.Retention.Mode.MODE_UNSPECIFIED,
+        retain_until_time = getattr(retention, "retain_until_time", None)
+        if retain_until_time is None:
+            retain_until_time = retention.get("retain_until_time")
+
+        if mode_str or retain_until_time is not None:
+            mode = _storage_v2.Object.Retention.Mode.MODE_UNSPECIFIED
+            if mode_str:
+                # GCS retention modes are 'Locked' or 'Unlocked'
+                mode = getattr(
+                    _storage_v2.Object.Retention.Mode,
+                    mode_str.upper(),
+                    _storage_v2.Object.Retention.Mode.MODE_UNSPECIFIED,
+                )
+
+            retain_until_time_proto = None
+            if retain_until_time is not None:
+                retain_until_time_proto = timestamp_pb2.Timestamp()
+                retain_until_time_proto.FromDatetime(retain_until_time)
+
+            resource_params["retention"] = _storage_v2.Object.Retention(
+                mode=mode,
+                retain_until_time=retain_until_time_proto,
             )
 
-        retain_until_time_proto = None
-        retain_until_time = retention.get("retain_until_time")
-        if retain_until_time is not None:
-            retain_until_time_proto = timestamp_pb2.Timestamp()
-            retain_until_time_proto.FromDatetime(retain_until_time)
-
-        resource_params["retention"] = _storage_v2.Object.Retention(
-            mode=mode,
-            retain_until_time=retain_until_time_proto,
-        )
-
     contexts = getattr(blob, "contexts", None)
-    if contexts:
+    custom_contexts_map = getattr(contexts, "custom", None) if contexts else None
+    if custom_contexts_map:
         custom_contexts = {}
-        for key, payload in contexts.custom.items():
+        for key, payload in custom_contexts_map.items():
             custom_contexts[key] = _storage_v2.ObjectCustomContextPayload(
                 value=payload.value
             )
