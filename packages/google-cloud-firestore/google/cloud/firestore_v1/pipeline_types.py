@@ -15,6 +15,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass, fields
 from enum import Enum
 from typing import Optional, Sequence
 
@@ -329,6 +330,82 @@ class UnnestOptions:
         return f"{self.__class__.__name__}(index_field={self.index_field.path!r})"
 
 
+class WindowBound(str, Enum):
+    """Enumeration of symbolic window frame boundary keywords.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+    """
+
+    CURRENT = "current"
+    UNBOUNDED = "unbounded"
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}.{self.name}"
+
+
+@dataclass
+class _WindowFrame:
+    """Base class for window frame specifications."""
+
+    def _to_pb(self) -> Value:
+        pb_fields = {
+            f.name: pipeline_expressions.Expression._cast_to_expr_or_convert_to_constant(
+                getattr(self, f.name)
+            )._to_pb()
+            for f in fields(self)
+            if getattr(self, f.name) is not None
+        }
+        return Value(map_value={"fields": pb_fields})
+
+
+@dataclass
+class DocumentWindowFrame(_WindowFrame):
+    """Defines a document-count based window frame relative to the current document.
+
+    .. note::
+        This feature is in preview until the backend feature launches and is
+        subject to change.
+
+    Bounds count documents, not values. `WindowBound.CURRENT` refers only to the
+    current document's position, so documents with the same sort value are not
+    automatically included in the frame.
+
+    `sort` on the enclosing `WindowSpec` is optional for a document frame. If it
+    is omitted, documents are processed in the order they reach the stage.
+
+    Example:
+        >>> from google.cloud.firestore_v1.pipeline_expressions import Field
+        >>> from google.cloud.firestore_v1.pipeline_types import (
+        ...     DocumentWindowFrame,
+        ...     WindowBound,
+        ...     WindowSpec,
+        ... )
+        >>> window = WindowSpec(
+        ...     sort=Field.of("published").ascending(),
+        ...     frame=DocumentWindowFrame(
+        ...         preceding=WindowBound.UNBOUNDED,
+        ...         following=WindowBound.CURRENT,
+        ...     ),
+        ... )
+
+    Args:
+        preceding: The lower bound of the frame (an integer offset, `WindowBound`, or `Expression`).
+            A positive integer includes up to that many documents before the current document.
+            A negative integer indicates a boundary following the current document.
+        following: The upper bound of the frame (an integer offset, `WindowBound`, or `Expression`).
+            A positive integer includes up to that many documents after the current document.
+            A negative integer indicates a boundary preceding the current document.
+    """
+
+    preceding: WindowBound | str | int | pipeline_expressions.Expression
+    following: WindowBound | str | int | pipeline_expressions.Expression
+
+    def _to_dict(self) -> dict[str, Value]:
+        return {"documents": self._to_pb()}
+
+
 class WindowSpec:
     """Configuration for a window in an `AddWindowFields` pipeline stage.
 
@@ -345,6 +422,10 @@ class WindowSpec:
             all documents in the partition. When specified without an explicit frame,
             aggregates default to a running window from the start of the partition
             through the current sort value.
+        frame: Optional `DocumentWindowFrame` defining a document-count window frame.
+            If `None`, the backend applies its default frame: all documents in the
+            partition when `sort` is omitted, or a range frame from unbounded preceding
+            through the current sort value when `sort` is specified.
     """
 
     def __init__(
@@ -356,6 +437,7 @@ class WindowSpec:
             | str
         ] = None,
         sort: Optional[Sequence[Ordering] | Ordering] = None,
+        frame: Optional[DocumentWindowFrame] = None,
     ):
         if partition is None:
             partition_list = []
@@ -383,6 +465,8 @@ class WindowSpec:
         else:
             self.sort = list(sort)
 
+        self.frame: Optional[DocumentWindowFrame] = frame
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, WindowSpec):
             return NotImplemented
@@ -394,6 +478,8 @@ class WindowSpec:
             args.append(f"partition={self.partition!r}")
         if self.sort:
             args.append(f"sort={self.sort!r}")
+        if self.frame is not None:
+            args.append(f"frame={self.frame!r}")
         return f"{self.__class__.__name__}({', '.join(args)})"
 
     def _to_pb(self) -> Value:
@@ -406,4 +492,6 @@ class WindowSpec:
             fields["sort"] = Value(
                 array_value={"values": [s._to_pb() for s in self.sort]}
             )
+        if self.frame is not None:
+            fields.update(self.frame._to_dict())
         return Value(map_value={"fields": fields})
