@@ -13,6 +13,8 @@
 # limitations under the License.
 """py.test fixtures to be shared across multiple system test modules."""
 
+import os
+
 import google.auth  # type: ignore
 import google.auth.transport.requests as tr_requests  # type: ignore
 import pytest  # type: ignore
@@ -24,7 +26,12 @@ def ensure_bucket(transport):
     get_response = transport.get(utils.BUCKET_URL)
     if get_response.status_code == 404:
         credentials = transport.credentials
-        query_params = {"project": credentials.project_id}
+        project_id = (
+            getattr(credentials, "project_id", None)
+            or os.environ.get("GOOGLE_CLOUD_PROJECT")
+            or os.environ.get("PROJECT_ID")
+        )
+        query_params = {"project": project_id}
         payload = {"name": utils.BUCKET_NAME}
         post_response = transport.post(
             utils.BUCKET_POST_URL, params=query_params, json=payload

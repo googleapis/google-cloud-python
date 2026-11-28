@@ -1424,9 +1424,7 @@ class _DataApiTarget(abc.ABC):
 
             def execute_rpc():
                 return self.client._gapic_client.mutate_row(
-                    request=request,
-                    timeout=next(attempt_timeout_gen),
-                    retry=None,
+                    request=request, timeout=next(attempt_timeout_gen), retry=None
                 )
 
             return tracked_retry(

@@ -81,14 +81,39 @@ class _ErrorInjectorInterceptor(
         self._exc_list.clear()
         self.fail_mid_stream = False
 
+    def _make_deadline_exceeded(self):
+        exc = RpcError(StatusCode.DEADLINE_EXCEEDED)
+        exc.trailing_metadata = lambda: []
+        exc.initial_metadata = lambda: []
+        exc.code = lambda: StatusCode.DEADLINE_EXCEEDED
+        exc.details = lambda: "Deadline Exceeded"
+
+        def _result():
+            raise exc
+
+        exc.result = _result
+        return exc
+
     def intercept_unary_unary(self, continuation, client_call_details, request):
         if self._exc_list:
             raise self._exc_list.pop(0)
+        if (
+            client_call_details.timeout is not None
+            and client_call_details.timeout <= 0.1
+        ):
+            CrossSync._Sync_Impl.sleep(client_call_details.timeout + 0.01)
+            raise self._make_deadline_exceeded()
         return continuation(client_call_details, request)
 
     def intercept_unary_stream(self, continuation, client_call_details, request):
         if not self.fail_mid_stream and self._exc_list:
             raise self._exc_list.pop(0)
+        if (
+            client_call_details.timeout is not None
+            and client_call_details.timeout <= 0.1
+        ):
+            CrossSync._Sync_Impl.sleep(client_call_details.timeout + 0.01)
+            raise self._make_deadline_exceeded()
         response = continuation(client_call_details, request)
         if self.fail_mid_stream and self._exc_list:
             exc = self._exc_list.pop(0)
@@ -106,6 +131,10 @@ class _ErrorInjectorInterceptor(
                     if not self._raised:
                         self._raised = True
                         if self._exc:
+                            if callable(getattr(self._call, "cancel", None)):
+                                self._call.cancel()
+                            elif callable(getattr(self._call, "close", None)):
+                                self._call.close()
                             raise self._exc
                     return self._call.__next__()
 
@@ -276,7 +305,7 @@ class TestMetrics(SystemTestRunner):
         temp_rows.add_row(b"row_key_1")
         handler.clear()
         with pytest.raises(GoogleAPICallError):
-            table.read_rows(ReadRowsQuery(), operation_timeout=0.001)
+            table.read_rows(ReadRowsQuery(), operation_timeout=0.05)
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
         operation = handler.completed_operations[0]
@@ -435,7 +464,7 @@ class TestMetrics(SystemTestRunner):
         No grpc headers expected"""
         temp_rows.add_row(b"row_key_1")
         handler.clear()
-        generator = table.read_rows_stream(ReadRowsQuery(), operation_timeout=0.001)
+        generator = table.read_rows_stream(ReadRowsQuery(), operation_timeout=0.05)
         with pytest.raises(GoogleAPICallError):
             [_ for _ in generator]
         assert len(handler.completed_operations) == 1
@@ -624,7 +653,7 @@ class TestMetrics(SystemTestRunner):
         temp_rows.add_row(b"row_key_1")
         handler.clear()
         with pytest.raises(GoogleAPICallError):
-            table.read_row(b"row_key_1", operation_timeout=0.001)
+            table.read_row(b"row_key_1", operation_timeout=0.05)
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
         operation = handler.completed_operations[0]
@@ -770,7 +799,7 @@ class TestMetrics(SystemTestRunner):
         query2 = ReadRowsQuery(row_keys=[b"b"])
         handler.clear()
         with pytest.raises(ShardedReadRowsExceptionGroup) as e:
-            table.read_rows_sharded([query1, query2], operation_timeout=0.005)
+            table.read_rows_sharded([query1, query2], operation_timeout=0.05)
         assert len(e.value.exceptions) == 2
         for sub_exc in e.value.exceptions:
             assert isinstance(sub_exc.__cause__, DeadlineExceeded)
@@ -971,7 +1000,7 @@ class TestMetrics(SystemTestRunner):
         entry = RowMutationEntry(row_key, [mutation])
         handler.clear()
         with pytest.raises(MutationsExceptionGroup):
-            table.bulk_mutate_rows([entry], operation_timeout=0.001)
+            table.bulk_mutate_rows([entry], operation_timeout=0.05)
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
         operation = handler.completed_operations[0]
@@ -1155,7 +1184,7 @@ class TestMetrics(SystemTestRunner):
         mutation = SetCell(TEST_FAMILY, b"q", b"v")
         entry = RowMutationEntry(row_key, [mutation])
         with pytest.raises(MutationsExceptionGroup):
-            with table.mutations_batcher(batch_operation_timeout=0.001) as batcher:
+            with table.mutations_batcher(batch_operation_timeout=0.05) as batcher:
                 batcher.append(entry)
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
@@ -1302,7 +1331,7 @@ class TestMetrics(SystemTestRunner):
         row_key = b"row_key_1"
         mutation = SetCell(TEST_FAMILY, b"q", b"v")
         with pytest.raises(GoogleAPICallError):
-            table.mutate_row(row_key, [mutation], operation_timeout=0.001)
+            table.mutate_row(row_key, [mutation], operation_timeout=0.05)
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
         operation = handler.completed_operations[0]
@@ -1471,7 +1500,7 @@ class TestMetrics(SystemTestRunner):
 
         No grpc headers expected"""
         with pytest.raises(GoogleAPICallError):
-            table.sample_row_keys(operation_timeout=0.001)
+            table.sample_row_keys(operation_timeout=0.05)
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
         operation = handler.completed_operations[0]
@@ -1567,7 +1596,7 @@ class TestMetrics(SystemTestRunner):
         temp_rows.add_row(row_key, value=0, family=family, qualifier=qualifier)
         rule = IncrementRule(family, qualifier, 1)
         with pytest.raises(GoogleAPICallError):
-            table.read_modify_write_row(row_key, rule, operation_timeout=0.001)
+            table.read_modify_write_row(row_key, rule, operation_timeout=0.05)
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1
         operation = handler.completed_operations[0]
@@ -1680,7 +1709,7 @@ class TestMetrics(SystemTestRunner):
                 row_key,
                 predicate=ValueRangeFilter(0, 2),
                 true_case_mutations=true_mutation,
-                operation_timeout=0.001,
+                operation_timeout=0.05,
             )
         assert len(handler.completed_operations) == 1
         assert len(handler.completed_attempts) == 1

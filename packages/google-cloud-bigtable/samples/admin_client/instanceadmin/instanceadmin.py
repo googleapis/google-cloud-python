@@ -23,7 +23,9 @@ Prerequisites:
 import argparse
 
 
-def run_instance_operations(project_id, instance_id, cluster_id):
+def run_instance_operations(
+    project_id, instance_id, cluster_id, location_id="us-central1-f"
+):
     # [START bigtable_check_instance_exists]
     from google.api_core.exceptions import NotFound
 
@@ -49,7 +51,7 @@ def run_instance_operations(project_id, instance_id, cluster_id):
     instance_path = client.instance_path(project_id, instance_id)
 
     cluster = bigtable_admin_v2.Cluster(
-        location=client.common_location_path(project_id, "us-central1-f"),
+        location=client.common_location_path(project_id, location_id),
         serve_nodes=1,
         default_storage_type=bigtable_admin_v2.StorageType.SSD,
     )
@@ -128,7 +130,7 @@ def delete_instance(project_id, instance_id):
     # [END bigtable_delete_instance]
 
 
-def add_cluster(project_id, instance_id, cluster_id):
+def add_cluster(project_id, instance_id, cluster_id, location_id="us-central1-b"):
     # [START bigtable_create_cluster]
     from google.api_core.exceptions import NotFound
 
@@ -144,7 +146,7 @@ def add_cluster(project_id, instance_id, cluster_id):
         print(cluster.name.split("/")[-1])
 
     new_cluster = bigtable_admin_v2.Cluster(
-        location=client.common_location_path(project_id, "us-central1-a"),
+        location=client.common_location_path(project_id, location_id),
         serve_nodes=1,
         default_storage_type=bigtable_admin_v2.StorageType.SSD,
     )
